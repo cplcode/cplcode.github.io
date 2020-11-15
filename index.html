@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <title>CPL code</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Paolo Luchini">
+  <meta name="copyright" content="Copyright 2020 Paolo Luchini">
+  <meta name="description" content="CPL is a programming language designed and developed by Paolo Luchini during 1993-2020. Documentation and distribution offered for download includes a compiler, interpreter and text editor.">
+  <meta name="keywords" content="cpl CPL code program programming language compiler interpreter editor fri FRI makecpl icpl edit">
+  <link rel="canonical" href="http://CPLcode.net">
+  <style>
+    body{
+      font-family:Arial,Sans-serif;
+      background-color:#d4e6f4;
+      margin:0;
+    }
+    nav a{
+      display:inline-block;
+      width:8em;
+      font-size:large;
+    /* #  text-decoration:none; */
+      background-color:SlateGrey;
+      color:White;
+      border-radius:0.5vw;
+      padding:0.5%;
+      margin:1%;
+      margin-bottom:2%;
+      }
+    .title {
+      background-image:url('Policastro.jpg');
+      background-size:cover;
+      background-position:center;
+    /*  border-radius:0.5vw; */
+      text-align:center;
+    /*  min-height: 50vh; */
+      position:relative;
+      overflow:hidden;
+    }
+    .title h1{font-family:"Times New Roman",Serif;}
+    .container{
+      text-align:center;
+    }
+    .grad{
+      background-image: linear-gradient(rgba(212, 230, 244,0), rgba(212, 230, 244,1));
+      position:absolute;
+      bottom:0;
+      left:0;
+      width:100%;
+      height:10px;
+    }
+    .tile{
+      display:inline-block;
+      vertical-align:top;
+      width:31.33%;
+      min-width:50vh;
+      padding:1%;
+      margin-bottom:2vw;
+      text-align:center;
+    }
+    div.container div.tile img {
+      width:100%
+    }
+    div.tile a {
+      margin:auto;
+      font-size:large;
+      color:Black;
+    }
+    code{
+      font-size: large;
+      }
+    em {color:Red;}
+    .overlay{
+      position:absolute;
+      height:30vh;
+      top:8vh;
+      left:4vh;
+    }
+  </style>
+</head>
+<body>
+  <div class=title>
+    <img class=overlay src="Under-Construction.png" alt="Under construction">
+    <nav>
+      <a class=button href="WhatisCPL.html" title="and why you should be interested">What is CPL?</a>
+      <a class=button href="samples.html" title="Sample CPL programs">Applications</a>
+      <a class=button href="Documentation/cpl.html#Top" title="The CPL Language and Compiler">Documentation</a>
+      <a class=button href="Download.html" title="Download page">Download</a>
+      <a class=button href="About.html" title="About the author">About</a>
+    </nav>
+    <br><br>
+    <img src="CPL-logo.png" width=132 alt="CPL">
+    <br>
+    <h1>A Compiled Programming Language</h1>
+    <div class=grad></div>
+  </div>
+  <div class=container>
+    <div class=tile>
+      <a href="Documentation/cpl.html#makecpl" title="One command to compile and make your CPL project">makecpl</a>
+      <p>Write your program using your favorite text editor, <em>compile</em> with <code>makecpl &lt;yourprogram&gt;</code>, execute <code>&lt;yourprogram&gt;</code>.</p>
+      <img src="makecpl.png" alt="makecpl usage example">
+    </div><div class=tile>
+      <a href="Documentation/cpl.html#icpl" title="Interactive CPL interpreter and program runner">icpl</a>
+      <p>Interactive CPL: evaluate a CPL expression, either on the command line as in <code>icpl &lt;expression&gt;</code>, or in the <code>icpl</code> <em>interpreter</em>.</p>
+      <img src="icpl.png" alt="icpl usage example">
+    </div><div class=tile>
+      <a href="Documentation/readline.html#full-screen" title="Code editor integrated in the icpl environment">edit</a>
+      <p>When invoked under the <code>edit</code> alias, <code>icpl</code> turns into a terminal-screen <em>text editor</em> providing CPL word and syntax completion.</p>
+      <img src="edit.png" alt="edit usage example">
+    </div>
+  </div>
+</body>
+</html>
