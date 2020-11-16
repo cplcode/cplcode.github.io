@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang=en>
+<head><title>The CPL Programming Language and Compiler</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="author" content="Paolo Luchini">
+<meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
+<link rel="canonical" href="https://CPLcode.net/Documentation/parallel.html#Top">
+<link rel="stylesheet" href="../singlecol.css">
+<style>
+.page {
+display:none;
+}
+.page:target {
+display: block;
+min-height:100%;
+white-space: pre;
+}
+th {
+text-align:left;
+}
+</style></head>
+<body><div>
+</div><div class=page id="Top">
+Node: Top,  Next: <a href="#nonparallel">nonparallel</a>,  Prev: <a href="graphics.html#Top">(graphics)</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a>
+<hr>
+
+<h2>Parallel computing</h2>
+
+<nav><table>
+<tr><th>Menu:</th><th></th></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td><a href="#SHARED">SHARED</a>:</td><td>shared memory among parallel processes</td></tr>
+<tr><td><a href="#PARALLEL">PARALLEL</a>:</td><td>parallel execution</td></tr>
+<tr><td><a href="#syncronization">SLEEP UNTIL</a>:</td><td></td></tr>
+<tr><td><a href="#syncronization">WAKEUP</a>:</td><td></td></tr>
+<tr><td><a href="#tcpserver">tcpserver</a>:</td><td>open basic point-to-point tcp/ip socket</td></tr>
+<tr><td><a href="#tcpclient">tcpclient</a>:</td><td>connect to tcp/ip socket from another machine</td></tr>
+</table></nav>
+</div><div class=page id="SHARED">
+Node: SHARED,  Next: <a href="#PARALLEL%20MODULE">PARALLEL MODULE</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a>
+<hr>
+
+<h3>SHARED</h3>
+
+Prefix to global variable declarations specifying that the declared variables
+are to be shared among parallel modules. Variables without this declaration
+have separate instances for each module, i.e. changing their value produces no
+effect outside.
+
+Example:
+
+SHARED ARRAY(0..100) OF REAL vec
+</div><div class=page id="PARALLEL">
+Node: PARALLEL, Next: <a href="#synchronization">synchronization</a>, Prev: <a href="#SHARED">SHARED</a>, Up: <a href="#Top">Top</a>
+<hr>
+
+<h3>PARALLEL</h3>
+
+Prefix to either <a href="cpl.html#MODULE">(cpl)MODULE</a> or <a href="cpl.html#LOOP">(cpl)LOOP</a> that specifies 
+parallel execution. 
+
+A PARALLEL MODULE contains a block of code that gets executed in
+parallel with whatever follows (including possibly a sequence of other
+modules). Synchronization occurs at the end of the enclosing block: that is,
+the enclosing block does not end until all intervening modules are completed.
+
+A PARALLEL LOOP is a loop all instances of which occur in parallel.
+Synchronization occurs before the LOOP terminates and the program is allowed to
+continue.
+</div><div class=page id="synchronization">
+Node: synchronization, Next: <a href="#tcpserver">tcpserver</a>, Prev: <a href="#PARALLEL">PARALLEL</a>, Up: <a href="#Top">Top</a>
+<hr>
+
+<h3>synchronization</h3>
+
+Once parallel processes are running explicit synchronization can be achieved
+through shared variables. A process can be made to wait for a condition by the
+instruction
+
+SLEEP UNTIL &lt;condition&gt;
+
+In order to make all sleeping processes verify their condition and wake up as
+needed, the process modifying the condition must subsequently execute the
+command
+
+WAKEUP
+</div><div class=page id="nonparallel">
+Node: nonparallel,  Next: <a href="symbolic.html#Top">(symbolic)</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a>
+<hr>
+
+<h2>nonparallel.cpl</h2>
+
+Fake parallel-computing package that provides void equivalents of the
+parallel.cpl extensions.
+
+</div></body></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang=en>
+<head><title>The CPL Programming Language and Compiler</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="author" content="Paolo Luchini">
+<meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
+<link rel="canonical" href="https://CPLcode.net/Documentation/symbolic.html#Top">
+<link rel="stylesheet" href="../singlecol.css">
+<style>
+.page {
+display:none;
+}
+.page:target {
+display: block;
+min-height:100%;
+white-space: pre;
+}
+th {
+text-align:left;
+}
+</style></head>
+<body><div>
+</div><div class=page id="Top">
+Node: Top, Next: <a href="cpl.html#CHARbyCHAR">(cpl)CHARbyCHAR</a>, Prev: <a href="parallel.html#Top">(parallel)</a>, Up: <a href="cpl.html#Library">(cpl)Library</a>
+<hr>
+
+<h2>Symbolic differentiation</h2>
+
+The symbolic.cpl library adds symbolic differentiation capabilities to CPL.
+Symbolic differentiation is seamlessly integrated in the compiler, and happens
+at compile time: any desired symbolic derivatives are determined during
+compilation, and inlined in the generated code. Contrary to most other
+symbolic-differentiation environments, therefore, the purpose is not so much to
+generate user-readable derivatives as to generate (hopefully efficient) code.
+
+Symbolic manipulation operates upon and generates "symbolic expressions", which
+can be assigned a symbolic name using the == operator and, like any r.h.s. of
+this operator, may contain yet undefined variables. At the later position where
+a symbolic expression or variable appears in an executable statement, code for
+it is actually generated, just as in <a href="#Delayed%20assignment">Delayed assignment</a>.
+
+The derivative of a symbolic expression with respect to a symbolic variable
+&lt;svname&gt; (which is not allowed to contain an underscore in its name) is denoted
+by either
+
+        D_&lt;svname&gt;( &lt;symbolic expression&gt; )
+
+or
+
+        D( &lt;symbolic expression&gt; , &lt;svname&gt; )
+
+When the latter form is used, &lt;svname&gt; may also be an array element (in the
+usual indexed notation).
+
+Higher derivatives and more general compound differential operators, which take
+an expression as their argument, can be #define'd (<a href="cpl.html#C%20preprocessor">(cpl)C preprocessor</a>).
+For example:
+
+        #define laplacian(f) D_x(D_x(f))+D_y(D_y(f))+D_z(D_z(f))
+
+A mechanism is provided to associate a derivative with a user-defined
+expression (or more generally to override automatic differentiation): if a
+variable named "D_" &lt;svname&gt; "_" &lt;vname&gt;) is declared, it will be
+preferentially used wherever the derivative of variable &lt;vname&gt; with respect to
+variable &lt;svname&gt; is needed. If such a variable was not previously defined and
+&lt;vname&gt; is a symbolic expression, its derivative will be automatically
+generated, otherwise an error will result. If &lt;vname&gt; is an ordinary CPL
+variable rather than a symbolic expression, it will be treated as a constant
+whose derivative is zero. As a side effect, variable names starting with "D_"
+are reserved and should not be defined for other purposes when symbolic.cpl is
+in USE.
+
+</div></body></html>
