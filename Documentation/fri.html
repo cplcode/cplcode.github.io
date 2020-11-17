@@ -45,8 +45,7 @@ dictionary of rules. A rule is a sequence of bytes that can represent
 characters to be matched against the input stream, characters to be written to
 the output stream, or opcodes specifying general actions that can modify
 either stream, or the dictionary itself, or initiate a new rule. A rule
-<nav><table>
-<tr><td><a href="#fri">matches* if it runs to its end, or *fails* if an input character or an inner
+"matches" if it runs to its end, or "fails" if an input character or an inner
 nested rule does not match.
 
 FRI's alphabet is restricted to 7-bit ascii, and bytes with the 8th bit set,
@@ -63,11 +62,11 @@ strings are forgotten while its top string is returned to the calling rule
 
 The dictionary of rules is alphabetically ordered and, with one exception,
 independent of the order in which the rules are entered. Each new rule
-inserted in the dictionary gets assigned to a progressively numbered *scope*.
+inserted in the dictionary gets assigned to a progressively numbered "scope".
 A new scope can be opened at any time by an explicit command and will contain
 subsequently generated rules, all of which disappear when the scope is
 eventually closed. A certain number of opcodes with no action are reserved as
-*strands*, markers of rules with related meaning. Each rule must start with
+"strands", markers of rules with related meaning. Each rule must start with
 a strand opcode, but strand opcodes can also appear elsewhere with a user-
 assigned meaning. If a rule, or more accurately a strand of alternate rules, is
 viewed as a sort of subroutine, this subroutine can be "called" by inserting
@@ -80,10 +79,10 @@ repeated more than once. Execution terminates, as a match, when any one rule's
 byte sequence attains its end (or an explicit end opcode) or, as a failure,
 when the dictionary runs out of rules. For debugging purposes, it can also be
 terminated in an error message by suitable opcodes.
-
-File</a>:</td><td>info, Node:Opcodes, Next:Command line, Prev:FRI architecture, Up:Top</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
+</div><div class=page id="Opcodes">
+Node: Opcodes, Next: <a href="#Command%20line">Command line</a>, Prev: <a href="#FRI%20architecture">FRI architecture</a>, Up: <a href="#Top">Top</a>
+<hr>
+
 <h3>Language opcodes</h3>
 
 Character matching
@@ -101,8 +100,7 @@ Symbol        pronounced  action
                 matches itself.
 copy        copy        copies one (non-cork) character or one {}-enclosed block from
                 the input to the output stream.
-<nav><table>
-<tr><td><a href="#fri">copy up to        copies zero or more characters or {}-enclosed blocks from
+ *   copy up to        copies zero or more characters or {}-enclosed blocks from
                 the input to the output stream until the following character
                 (or a cork) is encountered. The matching character is popped
                 from the input stream but not written out.
@@ -214,7 +212,7 @@ Shortcut opcodes
 
 spaces        spaces        matches a sequence of zero or more blank characters (spaces and
                 tabs).
-*]=  copy all   copies all remaining characters from the last input extent to
+ *]=  copy all   copies all remaining characters from the last input extent to
                 the output stream, reading but not copying the next cork.
                 Nearly equivalent to * ]=, but notice that the boundary of an
                 input extent is internally marked, so *]= will copy all of it
@@ -286,10 +284,10 @@ ascii        ascii        outputs the character whose ascii code appears in hexa
                 notation in the next two input characters.
 shell command shell command  passes the top output string to the operating-
                 system shell for execution as a command.
-
-File</a>:</td><td>info, Node:Command line, Prev:Opcodes, Up:Top</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
+</div><div class=page id="Command%20line">
+Node: Command line, Prev: <a href="#Opcodes">Opcodes</a>, Up: <a href="#Top">Top</a>
+<hr>
+
 <h3>The fri command line</h3>
 
 Usage:              fri [rule file] [-e command] [-i] [data file] ...
