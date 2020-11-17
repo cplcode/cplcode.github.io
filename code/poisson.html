@@ -1,0 +1,73 @@
+<p>! USE rtchecks</p>
+
+<p>! nota: var(0..nx,0..ny)
+SUBROUTINE dirichlet(POINTER TO ARRAY(<em>,</em>) OF REAL var)
+END dirichlet</p>
+
+<p>! nota: var(-1..nx+1,-1..ny+1)
+SUBROUTINE neumann(POINTER TO ARRAY(<em>,</em>) OF REAL var)
+  nx=var.HI-1; ny=var(0).HI-1
+  DO var(ix,-1)=var(ix,1); var(ix,ny+1)=var(ix,ny-1) FOR ix=0 TO nx
+  DO var(-1,iy)=var(1,iy); var(nx+1,iy)=var(nx-1,iy) FOR iy=0 TO ny
+END neumann</p>
+
+<p>! nota: var(-1..nx,-1..ny)
+SUBROUTINE biperiod(POINTER TO ARRAY(<em>,</em>) OF REAL var)
+  nx=var.HI; ny=var(0).HI
+  DO var(ix,-1)=var(ix,ny-1); var(ix,ny)=var(ix,0) FOR ix=0 TO nx-1
+  DO var(-1,iy)=var(nx-1,iy); var(nx,iy)=var(0,iy) FOR iy=0 TO ny-1
+  var(-1,-1)=var(nx-1,ny-1);var(-1,ny)=var(nx-1,0); var(nx,ny)=var(0,0); var(nx,-1)=var(0,ny-1)
+END biperiod</p>
+
+<p>SUBROUTINE poissonrb(POINTER TO ARRAY(<em>,</em>) OF REAL var, tn; SUBROUTINE(POINTER TO ARRAY(<em>,</em>) OF REAL var) copyframe)
+  LOOP FOR parity=0 TO 1 
+    LOOP FOR ix=var.LO+1 TO var.HI-1 AND iy=var(0).LO+1 + (ix+var(0).LO+1+parity) MOD 2 TO var(0).HI-1 BY 2
+      var(ix,iy)=(var(ix,iy+1)+var(ix,iy-1)+var(ix+1,iy)+var(ix-1,iy))*0.25+tn(ix,iy)
+    REPEAT LOOP
+    copyframe(var)
+  REPEAT LOOP
+END poissonrb</p>
+
+<p>SUBROUTINE poissonmg(POINTER TO ARRAY(<em>,</em>) OF REAL fvar, ftn; SUBROUTINE(POINTER TO ARRAY(<em>,</em>) OF REAL var) copyframe)
+  poissonrb(fvar,ftn,copyframe)
+  ARRAY((fvar.LO-1) DIV 2..(fvar.HI+1) DIV 2, (fvar.LO2-1) DIV 2..(fvar.HI2+1) DIV 2) OF REAL cvar, ctn
+  DO cvar(ixc,iyc)=0; ctn(ixc,iyc)=0 FOR ixc=cvar.LO TO cvar.HI AND iyc=cvar(0).LO TO cvar(0).HI
+  LOOP FOR ixc=cvar.LO+1 TO cvar.HI-1 AND iyc=cvar(0).LO+1 TO cvar(0).HI-1
+    ixf=2<em>ixc; iyf=2</em>iyc
+    ctn(ixc,iyc)=[(fvar(ixf,iyf+1)+fvar(ixf,iyf-1)+fvar(ixf+1,iyf)+fvar(ixf-1,iyf))<em>0.25+ftn(ixf,iyf)-fvar(ixf,iyf)]</em>2
+    cvar(ixc,iyc)=ctn(ixc,iyc)
+  REPEAT LOOP
+  copyframe(cvar)
+  IF fvar.HI DIV 2 MOD 2 = 0 AND fvar(0).HI DIV 2 MOD 2 = 0 AND cvar.HI > 2 AND cvar(0).HI > 2 THEN
+    poissonmg(cvar,ctn,copyframe)
+  ELSE DO poissonrb(cvar,ctn,copyframe) FOR 20 TIMES
+  LOOP FOR ixc=cvar.LO+1 TO cvar.HI AND iyc=cvar(0).LO+1 TO cvar(0).HI
+    ixf=2<em>ixc; iyf=2</em>iyc
+    IF iyf&lt;=fvar.HI2 THEN fvar(ixf-1,iyf)=fvar(ixf-1,iyf)+(cvar(ixc-1,iyc)+cvar(ixc,iyc))<em>0.5
+    IF ixf&lt;=fvar.HI1 THEN fvar(ixf,iyf-1)=fvar(ixf,iyf-1)+(cvar(ixc,iyc-1)+cvar(ixc,iyc))</em>0.5
+  REPEAT LOOP
+  copyframe(fvar)
+  poissonrb(fvar,ftn,copyframe)
+END poissonmg</p>
+
+<p>REAL FUNCTION mrsd(POINTER TO ARRAY(<em>,</em>) OF REAL var, tn)
+  RESULT=0
+  LOOP FOR ix=var.LO+1 TO var.HI-1 AND iy=var(0).LO+1 TO var(0).HI-1
+    RESULT=MAX(RESULT,ABS[(var(ix,iy+1)+var(ix,iy-1)+var(ix+1,iy)+var(ix-1,iy))*0.25+tn(ix,iy)-var(ix,iy)])
+  REPEAT LOOP
+END mrsd
+!(
+! test
+ASK INTEGER nx
+ny=nx
+ARRAY(-1..nx+1,-1..ny+1) OF REAL p,tn=0
+DO p(ix,iy)=ix^2+iy^2 FOR ALL ix,iy</p>
+
+<p>REAL oldr, r=0
+LOOP main
+  oldr=r
+  r=mrsd(p,tn)
+  poissonmg(p,tn,neumann)
+  WRITE r, oldr/r
+REPEAT main FOR 20 TIMES
+!)</p>
