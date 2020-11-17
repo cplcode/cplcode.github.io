@@ -33,7 +33,7 @@
   <body>
   <div>
     <h1>Download CPL</h1>
-    The CPL tools come in the form of a self-extracting archive, which you can download as a single file by scrolling to the bottom of this page. To install, run this file as "<code>sh install-cpl.sh</code>" and follow the on-screen instructions.</p>
+    The CPL tools come in the form of a self-extracting archive, which you can download as a single file by scrolling to the bottom of this page. To install, run the downloaded file in a terminal as "<code>sh install-cpl.sh</code>" and follow the on-screen instructions.</p>
     <h2>System requirements</h2>
     <p>The CPL compiler and interpreter run on unix systems. They have been developed on <a href="https://www.debian.org" target=_blank>Debian GNU/Linux</a>, and this is the primary system suggested for their usage. Nevertheless, the installation comes in source form and is compiled on the spot, therefore it is not tied to a specific processor architecture nor to a specific flavour of Linux or unix. Although incompatibilities at times arise from variations in the system C library (your mileage may vary), installation has been successful in some versions of the <a href="https://apps.apple.com/app/xcode/id497799835?mt=12">MacOS Xcode</a> environment. And the <a href="https://docs.microsoft.com/en-us/windows/wsl/about">Windows Subsystem for Linux (WSL)</a>, which is an integral part of Windows 10, essentially <em>is</em> Debian GNU/Linux.</p> 
     <p>Only basic system tools are required: gzip, tar, cc, make, info, plus <a href="http://www.gnuplot.info/">gnuplot</a> if you want graphics. For maximum compatibility the system compiler should be <a href="https://gcc.gnu.org">gcc</a> (as it is by default in Debian), but other compilers (e.g. <a href="https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/dpc-compiler.html">icc</a>) have also been used. However, CPL nested functions use a gcc extension, and will become unavailable if a compiler other than gcc is used (or if the system's gcc disables them).</p>
@@ -41,15 +41,15 @@
     <h2>Code maturity</h2>
     <p>CPL is under active development; its portions sit at different levels of maturity. On a crude scale:</p>
     <table>
-    <tr><td class=dot style="background-color:green"></td> <td><code>makecpl</code> has been under development for ages. You should expect rare bugs.</td></tr>
-    <tr><td class=dot style="background-color:gold"></td> <td><code>icpl</code> is best classified as experimental. Don't be surprised if it does not behave as intended, but it can be very useful when it does.</td></tr>
+    <tr><td class=dot style="background-color:green"></td> <td><code>makecpl</code> has been under development for ages. It now undergoes unfrequent changes.</td></tr>
+    <tr><td class=dot style="background-color:gold"></td> <td><code>icpl</code> is best classified as experimental. Don't be surprised if it does not (yet) behave as intended, but it can be very useful when it does.</td></tr>
     <tr><td class=dot style="background-color:red"></td> <td><code>edit</code> is even younger. It may occasionally crash and lose your edits, so be warned to save often (as everybody should do anyway). Nevertheless it is what I use as an editor for my own daily work.</td></tr>
     </table>
     <p> On a finer scale, the optional CPL libraries provided with the package to power various extensions, also come with different levels of maturity.</p>
-    <p>Mature or not, bugs will happen. If you believe you found a bug, or an inconsistency between the compiler's behaviour and its documentation, you will do an appreciated service to the CPL community by filing a bug report through <img src="bugreports.png" style="vertical-align:bottom" alt="(.....)"> Please enclose with your description a code snippet, as short as possible but complete enough that it actually compiles and triggers the behaviour you didn't expect.</p> 
+    <p>Mature or not, bugs will happen. If you believe you found a bug, or an inconsistency between the compiler's behaviour and its documentation, you will do an appreciated service to the CPL community by filing a bug report through <img src="bugreports.png" style="height:0.9em;vertical-align:bottom" alt="(.....)"> Please enclose with your description a code snippet, as short as possible but complete enough that it actually compiles and triggers the behaviour you didn't expect.</p> 
     <p>Versioning is denoted by date. The file names in the version archive are supposed to be self-explicative.</p>
 
-    <h3>By clicking these download buttons (coming soon) you accept the ... license.</h3>
+    <h3>By clicking one of these download buttons (coming soon) you accept the ... license.</h3>
     <nav>
       <a class=button href="download/current" download="install-cpl.sh">Current version</a>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
