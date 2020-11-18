@@ -203,6 +203,7 @@ Node: Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev: <a 
 <tr><td><a href="#STRING">literal</a>:</td><td>constant string of characters</td></tr>
 <tr><td><a href="readline.html#full-screen">load</a>:</td><td>Load a file at current cursor position</td></tr>
 <tr><td><a href="#makecpl">makecpl</a>:</td><td>Compilation tools and their usage</td></tr>
+<tr><td><a href="#Nested%20functions">nested</a>:</td><td>are allowed wherever a declaration is.</td></tr>
 <tr><td><a href="graphics.html#nographics">nographics</a>:</td><td>fake plotting package (does nothing)</td></tr>
 <tr><td><a href="parallel.html#nonparallel">nonparallel</a>:</td><td>fake parallel package (does nothing)</td></tr>
 <tr><td><a href="parallel.html#Top">parallel</a>:</td><td>Parallel computing</td></tr>
@@ -658,6 +659,7 @@ see also <a href="#DYNAMIC">DYNAMIC</a>.
 <nav><table>
 <tr><th>Menu:</th><th></th></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td><a href="#Nested%20functions">Nested functions</a>:</td><td></td></tr>
 <tr><td><a href="#SUBROUTINE">SUBROUTINE</a>:</td><td>Subroutine declaration</td></tr>
 <tr><td><a href="#FUNCTION">FUNCTION</a>:</td><td>Function declaration</td></tr>
 <tr><td><a href="#INLINE">INLINE</a>:</td><td>Subroutines and functions as macros</td></tr>
@@ -666,8 +668,22 @@ see also <a href="#DYNAMIC">DYNAMIC</a>.
 <tr><td><a href="#Subroutine%20type">Subroutine type</a>:</td><td>variable call to a subroutine or function</td></tr>
 <tr><td><a href="#Builtin">Builtin</a>:</td><td>built-in function list</td></tr>
 </table></nav>
+</div><div class=page id="Nested%20functions">
+Node: Nested functions, Next: <a href="#SUBROUTINE">SUBROUTINE</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Functions">Functions</a>
+<hr>
+
+<h2>Nested functions</h2>
+
+Functions and subroutines exist on a par with variable <a href="#Declarations">Declarations</a> and
+can appear anywhere in a block, another function included. Nested functions are
+therefore an integral part of CPL. Like all other block contexts, they have
+access to variables (and functions) declared before them, in the same or in
+an enclosing block. The present implementation of nested functions translates
+to nested functions in the generated C code, and is therefore only compatible
+with C compilers that handle nested functions as a nonstandard feature (gcc is
+one of them).
 </div><div class=page id="SUBROUTINE">
-Node: SUBROUTINE, Next: <a href="#FUNCTION">FUNCTION</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Functions">Functions</a>
+Node: SUBROUTINE, Next: <a href="#FUNCTION">FUNCTION</a>, Prev: <a href="#Nested%20functions">Nested functions</a>, Up: <a href="#Functions">Functions</a>
 <hr>
 
 <h2>Subroutine declarations</h2>
@@ -2747,7 +2763,7 @@ variants:
 <tr><td><a href="#TIMES">TIMES</a>:</td><td>repetition by a fixed number of times</td></tr>
 <tr><td><a href="#IN">IN</a>:</td><td>run through the elements of an array</td></tr>
 <tr><td><a href="#EXCEPT">EXCEPT</a>:</td><td>exclude exceptional values</td></tr>
-<tr><td><a href="#C-style">UNTIL</a>:</td><td>loop</td></tr>
+<tr><td><a href="#C-style">UNTIL</a>:</td><td>loop with a generic incrementing operator</td></tr>
 </table></nav>
 </div><div class=page id="FOR%20AND">
 Node: FOR AND,  Next: <a href="#ALL">ALL</a>,  Prev: <a href="#FOR">FOR</a>,  Up: <a href="#FOR">FOR</a>
