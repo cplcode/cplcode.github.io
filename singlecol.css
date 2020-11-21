@@ -22,7 +22,8 @@
         text-align:justify;
         max-width:40em;
         margin:auto;
-      }
+        padding:0.5em;
+}
       code{
         font-size: large;
       }
