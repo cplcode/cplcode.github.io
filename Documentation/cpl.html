@@ -7,7 +7,7 @@
   <meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
   <meta name="description" content="CPL is a programming language designed and developed by Paolo Luchini during 1993-2020. Documentation and distribution offered for download includes a compiler, interpreter and text editor.">
   <meta name="keywords" content="cpl CPL code program programming language compiler interpreter editor fri FRI makecpl icpl edit">
-  """"<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../singlecol.css">
   <style>
     .page {
@@ -15,8 +15,7 @@
     }
     .page:target {
       display: block;
-      min-height:100%;
-      white-space: pre;
+      white-space: pre-wrap;
       }
     th {
       text-align:left;
@@ -64,12 +63,12 @@ Node: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#AND">AND</a>:</td><td>boolean AND</td></tr>
 <tr><td><a href="#ARRAY">ARRAY</a>:</td><td>subscripted arrays</td></tr>
 <tr><td><a href="#ASK">ASK</a>:</td><td>console prompting and reading</td></tr>
-<tr><td><a href="#Builtin">ATAN</a>:</td><td>arctangent</td></tr>
+<tr><td><a href="#Builtin">ATAN:Builtin</a>:</td><td>arctangent</td></tr>
 <tr><td><a href="#BINARY">BINARY</a>:</td><td>binary format input/output</td></tr>
-<tr><td><a href="#Bitwise">BITAND</a>:</td><td>boolean operator</td></tr>
-<tr><td><a href="#Bitwise">BITNOT</a>:</td><td>boolean operator</td></tr>
-<tr><td><a href="#Bitwise">BITOR</a>:</td><td>boolean operator</td></tr>
-<tr><td><a href="#Bitwise">BITXOR</a>:</td><td>boolean operator</td></tr>
+<tr><td><a href="#Bitwise">BITAND:Bitwise</a>:</td><td>boolean operator</td></tr>
+<tr><td><a href="#Bitwise">BITNOT:Bitwise</a>:</td><td>boolean operator</td></tr>
+<tr><td><a href="#Bitwise">BITOR:Bitwise</a>:</td><td>boolean operator</td></tr>
+<tr><td><a href="#Bitwise">BITXOR:Bitwise</a>:</td><td>boolean operator</td></tr>
 <tr><td><a href="#BOOLEAN">BOOLEAN</a>:</td><td>primitive type declarator</td></tr>
 <tr><td><a href="#BY">BY</a>:</td><td>used in FOR, READ, WRITE</td></tr>
 <tr><td><a href="#C%20SECTION">C SECTION</a>:</td><td>transparent C source code inclusion</td></tr>
@@ -80,37 +79,37 @@ Node: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#CHARbyCHAR">CHARbyCHAR</a>:</td><td>live keyboard input</td></tr>
 <tr><td><a href="#COMMANDLINE">COMMANDLINE</a>:</td><td>command line parameter access</td></tr>
 <tr><td><a href="#CONSTANT">CONSTANT</a>:</td><td>value which cannot be altered later in the program</td></tr>
-<tr><td><a href="#Builtin">COS</a>:</td><td>cosine</td></tr>
+<tr><td><a href="#Builtin">COS:Builtin</a>:</td><td>cosine</td></tr>
 <tr><td><a href="#CREATE">CREATE</a>:</td><td>open a buffered file of zero length</td></tr>
-<tr><td><a href="#WRITE">DEFAULTFORMAT</a>:</td><td>default format</td></tr>
-<tr><td><a href="#INTEGER%20operator">DIV</a>:</td><td></td></tr>
+<tr><td><a href="#WRITE">DEFAULTFORMAT:WRITE</a>:</td><td>default format</td></tr>
+<tr><td><a href="#INTEGER%20operator">DIV:INTEGER operator</a>:</td><td></td></tr>
 <tr><td><a href="#DO">DO</a>:</td><td>conditional and sequential loops</td></tr>
-<tr><td><a href="#FOR">DOWN</a>:</td><td>Loop with decreasing index</td></tr>
+<tr><td><a href="#FOR">DOWN:FOR</a>:</td><td>Loop with decreasing index</td></tr>
 <tr><td><a href="#ELSE">ELSE</a>:</td><td>conditionally executed statements</td></tr>
 <tr><td><a href="#END">END</a>:</td><td>ends a block</td></tr>
-<tr><td><a href="#Builtin">EOF</a>:</td><td>test for end of file</td></tr>
+<tr><td><a href="#Builtin">EOF:Builtin</a>:</td><td>test for end of file</td></tr>
 <tr><td><a href="#ERROR">ERROR</a>:</td><td>signal an error and exit or trigger a TRAP</td></tr>
-<tr><td><a href="#TRAP">ERRORMESSAGE</a>:</td><td>error message string</td></tr>
+<tr><td><a href="#TRAP">ERRORMESSAGE:TRAP</a>:</td><td>error message string</td></tr>
 <tr><td><a href="#EXCEPT">EXCEPT</a>:</td><td>loop specifier</td></tr>
 <tr><td><a href="#EXIT">EXIT</a>:</td><td>exit from loop, module or subroutine</td></tr>
-<tr><td><a href="#Builtin">EXP</a>:</td><td>exponential</td></tr>
-<tr><td><a href="#BOOLEAN">FALSE</a>:</td><td>value</td></tr>
+<tr><td><a href="#Builtin">EXP:Builtin</a>:</td><td>exponential</td></tr>
+<tr><td><a href="#BOOLEAN">FALSE:BOOLEAN</a>:</td><td>value</td></tr>
 <tr><td><a href="#FILE">FILE</a>:</td><td>buffered file-descriptor type</td></tr>
 <tr><td><a href="#FLOOR">FLOOR</a>:</td><td>smaller or equal integer</td></tr>
 <tr><td><a href="#FLUSH">FLUSH</a>:</td><td>flush a file's write buffer</td></tr>
 <tr><td><a href="#FOLLOWS">FOLLOWS</a>:</td><td>Function prototypes</td></tr>
 <tr><td><a href="#FOR">FOR</a>:</td><td>loop specifier</td></tr>
-<tr><td><a href="#FORTRAN%20interface">FORTRANCALL</a>:</td><td></td></tr>
-<tr><td><a href="#FORTRAN%20interface">FORTRANFUNCTION</a>:</td><td></td></tr>
+<tr><td><a href="#FORTRAN%20interface">FORTRANCALL:FORTRAN interface</a>:</td><td></td></tr>
+<tr><td><a href="#FORTRAN%20interface">FORTRANFUNCTION:FORTRAN interface</a>:</td><td></td></tr>
 <tr><td><a href="#FREE">FREE</a>:</td><td>release dynamically allocated memory or file</td></tr>
 <tr><td><a href="#FRI%20SECTION">FRI SECTION</a>:</td><td>dynamic extension of the language</td></tr>
 <tr><td><a href="#FROM">FROM</a>:</td><td>used in READ statements</td></tr>
 <tr><td><a href="#FUNCTION">FUNCTION</a>:</td><td>Function declaration</td></tr>
 <tr><td><a href="#GAUSS">GAUSS</a>:</td><td>gaussian distributed random REAL number with variance 1</td></tr>
 <tr><td><a href="#HI">HI</a>:</td><td>upper bound of an array index</td></tr>
-<tr><td><a href="#HI">HI1</a>:</td><td></td></tr>
-<tr><td><a href="#HI">HI2</a>:</td><td></td></tr>
-<tr><td><a href="#HI">HI3</a>:</td><td></td></tr>
+<tr><td><a href="#HI">HI1:HI</a>:</td><td></td></tr>
+<tr><td><a href="#HI">HI2:HI</a>:</td><td></td></tr>
+<tr><td><a href="#HI">HI3:HI</a>:</td><td></td></tr>
 <tr><td><a href="#IF">IF</a>:</td><td>conditionally executed statements</td></tr>
 <tr><td><a href="#IN">IN</a>:</td><td>loop specifier</td></tr>
 <tr><td><a href="#INCLUDE">INCLUDE</a>:</td><td>source file inclusion</td></tr>
@@ -121,12 +120,12 @@ Node: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#IS">IS</a>:</td><td>type comparison operator</td></tr>
 <tr><td><a href="#LENGTH">LENGTH</a>:</td><td>number of elements of an array</td></tr>
 <tr><td><a href="#LO">LO</a>:</td><td>lower bound of an array index</td></tr>
-<tr><td><a href="#LO">LO1</a>:</td><td></td></tr>
-<tr><td><a href="#LO">LO2</a>:</td><td></td></tr>
-<tr><td><a href="#LO">LO3</a>:</td><td></td></tr>
-<tr><td><a href="#Builtin">LOG</a>:</td><td>logarithm</td></tr>
+<tr><td><a href="#LO">LO1:LO</a>:</td><td></td></tr>
+<tr><td><a href="#LO">LO2:LO</a>:</td><td></td></tr>
+<tr><td><a href="#LO">LO3:LO</a>:</td><td></td></tr>
+<tr><td><a href="#Builtin">LOG:Builtin</a>:</td><td>logarithm</td></tr>
 <tr><td><a href="#LOOP">LOOP</a>:</td><td>conditional and sequential loops</td></tr>
-<tr><td><a href="#Bitwise">LSHIFTED</a>:</td><td>boolean operator</td></tr>
+<tr><td><a href="#Bitwise">LSHIFTED:Bitwise</a>:</td><td>boolean operator</td></tr>
 <tr><td><a href="#MAX">MAX</a>:</td><td>maximum value function or looping operator</td></tr>
 <tr><td><a href="#MAXABS">MAXABS</a>:</td><td>maximum absolute value</td></tr>
 <tr><td><a href="#MIN">MIN</a>:</td><td>minimum value function or looping operator</td></tr>
@@ -134,113 +133,113 @@ Node: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#MODULE">MODULE</a>:</td><td>separately scoped program block</td></tr>
 <tr><td><a href="#NAME">NAME</a>:</td><td>writing and reading a variable's name</td></tr>
 <tr><td><a href="#NEW">NEW</a>:</td><td>dynamically allocate temporary memory space or file</td></tr>
-<tr><td><a href="#BOOLEAN">NO</a>:</td><td>value</td></tr>
+<tr><td><a href="#BOOLEAN">NO:BOOLEAN</a>:</td><td>value</td></tr>
 <tr><td><a href="#NORM">NORM</a>:</td><td>squared absolute value</td></tr>
 <tr><td><a href="#NOT">NOT</a>:</td><td>boolean NOT</td></tr>
-<tr><td><a href="#POINTER">NULL</a>:</td><td></td></tr>
+<tr><td><a href="#POINTER">NULL:POINTER</a>:</td><td></td></tr>
 <tr><td><a href="#DYNAMIC">DYNAMIC</a>:</td><td>object-oriented features</td></tr>
-<tr><td><a href="#Builtin">ODD</a>:</td><td>test for odd number</td></tr>
+<tr><td><a href="#Builtin">ODD:Builtin</a>:</td><td>test for odd number</td></tr>
 <tr><td><a href="#OF">OF</a>:</td><td>used in ARRAY and CASE</td></tr>
 <tr><td><a href="#OPEN">OPEN</a>:</td><td>open a file and associate a buffered file descriptor</td></tr>
 <tr><td><a href="#OPTIONAL">OPTIONAL</a>:</td><td>optional function parameters recognized by name</td></tr>
 <tr><td><a href="#OR">OR</a>:</td><td>boolean OR</td></tr>
-<tr><td><a href="parallel.html#Top">PARALLEL MODULE</a>:</td><td>Forking a parallel process</td></tr>
-<tr><td><a href="parallel.html#Top">PARALLEL LOOP</a>:</td><td>Simultaneous multiple processes</td></tr>
+<tr><td><a href="parallel.html#Top">PARALLEL MODULE:(parallel)</a>:</td><td>Forking a parallel process</td></tr>
+<tr><td><a href="parallel.html#Top">PARALLEL LOOP:(parallel)</a>:</td><td>Simultaneous multiple processes</td></tr>
 <tr><td><a href="#POINTER">POINTER</a>:</td><td>pointer to a memory address</td></tr>
 <tr><td><a href="#POSITION">POSITION</a>:</td><td>read or set a file's current position</td></tr>
-<tr><td><a href="#Looping%20operator">PRODUCT</a>:</td><td></td></tr>
+<tr><td><a href="#Looping%20operator">PRODUCT:Looping operator</a>:</td><td></td></tr>
 <tr><td><a href="#PROMPT">PROMPT</a>:</td><td>terminal input prompt</td></tr>
 <tr><td><a href="#RAND">RAND</a>:</td><td>uniformly distributed in (0,1) random REAL number</td></tr>
 <tr><td><a href="#READ">READ</a>:</td><td>input from character files and devices</td></tr>
 <tr><td><a href="#REAL">REAL</a>:</td><td>primitive type declarator</td></tr>
-<tr><td><a href="graphics.html#gnuplot">REALTABLE</a>:</td><td>read matrix from table file</td></tr>
-<tr><td><a href="#LOOP">REPEAT</a>:</td><td></td></tr>
-<tr><td><a href="#FUNCTION">RESULT</a>:</td><td></td></tr>
-<tr><td><a href="#FUNCTION">RETURN</a>:</td><td></td></tr>
+<tr><td><a href="graphics.html#gnuplot">REALTABLE:(graphics)gnuplot</a>:</td><td>read matrix from table file</td></tr>
+<tr><td><a href="#LOOP">REPEAT:LOOP</a>:</td><td></td></tr>
+<tr><td><a href="#FUNCTION">RESULT:FUNCTION</a>:</td><td></td></tr>
+<tr><td><a href="#FUNCTION">RETURN:FUNCTION</a>:</td><td></td></tr>
 <tr><td><a href="#ROUND">ROUND</a>:</td><td>nearest integer</td></tr>
-<tr><td><a href="#Bitwise">RSHIFTED</a>:</td><td>boolean operator</td></tr>
-<tr><td><a href="parallel.html#Top">SHARED</a>:</td><td>Shared memory among parallel processes</td></tr>
-<tr><td><a href="#Builtin">SIN</a>:</td><td>sine</td></tr>
+<tr><td><a href="#Bitwise">RSHIFTED:Bitwise</a>:</td><td>boolean operator</td></tr>
+<tr><td><a href="parallel.html#Top">SHARED:(parallel)</a>:</td><td>Shared memory among parallel processes</td></tr>
+<tr><td><a href="#Builtin">SIN:Builtin</a>:</td><td>sine</td></tr>
 <tr><td><a href="#SINGLE">SINGLE</a>:</td><td>primitive type declarator</td></tr>
-<tr><td><a href="#TYPE">SIZEOF</a>:</td><td>memory occupation</td></tr>
-<tr><td><a href="#Builtin">SQRT</a>:</td><td>square root</td></tr>
+<tr><td><a href="#TYPE">SIZEOF:TYPE</a>:</td><td>memory occupation</td></tr>
+<tr><td><a href="#Builtin">SQRT:Builtin</a>:</td><td>square root</td></tr>
 <tr><td><a href="#STOP">STOP</a>:</td><td>stop the program</td></tr>
 <tr><td><a href="#STORED">STORED</a>:</td><td>random-access files as disk-resident variables</td></tr>
-<tr><td><a href="#FORTRAN%20interface">STRIDEOF</a>:</td><td></td></tr>
+<tr><td><a href="#FORTRAN%20interface">STRIDEOF:FORTRAN interface</a>:</td><td></td></tr>
 <tr><td><a href="#STRING">STRING</a>:</td><td>strings of characters</td></tr>
 <tr><td><a href="#STRUCTURE">STRUCTURE</a>:</td><td>compound variables</td></tr>
 <tr><td><a href="#STRUCTURED">STRUCTURED</a>:</td><td>ARRAY     may appear as both a structure and an array</td></tr>
 <tr><td><a href="#SUBROUTINE">SUBROUTINE</a>:</td><td>Subroutine declaration</td></tr>
-<tr><td><a href="#Looping%20operator">SUM</a>:</td><td></td></tr>
-<tr><td><a href="graphics.html#gnuplot">TABLE</a>:</td><td>WRITE TABLE to file using plot syntax</td></tr>
-<tr><td><a href="#Builtin">TAN</a>:</td><td>tangent</td></tr>
-<tr><td><a href="#IF">THEN</a>:</td><td>conditionally executed statements</td></tr>
+<tr><td><a href="#Looping%20operator">SUM:Looping operator</a>:</td><td></td></tr>
+<tr><td><a href="graphics.html#gnuplot">TABLE:(graphics)gnuplot</a>:</td><td>WRITE TABLE to file using plot syntax</td></tr>
+<tr><td><a href="#Builtin">TAN:Builtin</a>:</td><td>tangent</td></tr>
+<tr><td><a href="#IF">THEN:IF</a>:</td><td>conditionally executed statements</td></tr>
 <tr><td><a href="#TIMES">TIMES</a>:</td><td>loop specifier</td></tr>
 <tr><td><a href="#TO">TO</a>:</td><td>used in POINTER, WRITE, FOR</td></tr>
 <tr><td><a href="#TRACE">TRACE</a>:</td><td>ON/OFF         turns execution tracing on/off.</td></tr>
-<tr><td><a href="#TRACE">TROFF</a>:</td><td>turns execution tracing off.</td></tr>
-<tr><td><a href="#TRACE">TRON</a>:</td><td>turns execution tracing on.</td></tr>
-<tr><td><a href="#subarray">TRANSPOSED</a>:</td><td>operation to transpose a matrix</td></tr>
+<tr><td><a href="#TRACE">TROFF:TRACE</a>:</td><td>turns execution tracing off.</td></tr>
+<tr><td><a href="#TRACE">TRON:TRACE</a>:</td><td>turns execution tracing on.</td></tr>
+<tr><td><a href="#subarray">TRANSPOSED:subarray</a>:</td><td>operation to transpose a matrix</td></tr>
 <tr><td><a href="#TRAP">TRAP</a>:</td><td>error handling</td></tr>
-<tr><td><a href="#BOOLEAN">TRUE</a>:</td><td>value</td></tr>
+<tr><td><a href="#BOOLEAN">TRUE:BOOLEAN</a>:</td><td>value</td></tr>
 <tr><td><a href="#TYPE">TYPE</a>:</td><td>declaration of a new type identifier</td></tr>
-<tr><td><a href="#TYPE">TYPEOF</a>:</td><td>extraction pseudo-function</td></tr>
+<tr><td><a href="#TYPE">TYPEOF:TYPE</a>:</td><td>extraction pseudo-function</td></tr>
 <tr><td><a href="#UNTIL">UNTIL</a>:</td><td>loop terminating condition</td></tr>
 <tr><td><a href="#USE">USE</a>:</td><td>separately compiled modules</td></tr>
 <tr><td><a href="#VARIABLE">VARIABLE</a>:</td><td>can be re-assigned multiple times</td></tr>
 <tr><td><a href="#WHILE">WHILE</a>:</td><td>loop continuation condition</td></tr>
 <tr><td><a href="#WITH">WITH</a>:</td><td>implicit access to structure fields and functions</td></tr>
 <tr><td><a href="#WRITE">WRITE</a>:</td><td>output to character files and devices</td></tr>
-<tr><td><a href="graphics.html#gnuplot">WRITE TABLE</a>:</td><td>write table to file using plot syntax</td></tr>
-<tr><td><a href="#BOOLEAN">YES</a>:</td><td>value</td></tr>
-<tr><td><a href="matrix.html#Top">cbmat</a>:</td><td>Complex square and Banded Matrix operations</td></tr>
-<tr><td><a href="#icpl">clear</a>:</td><td>remove variable and its associated storage</td></tr>
-<tr><td><a href="complex.html#Top">complex</a>:</td><td>Complex numbers</td></tr>
+<tr><td><a href="graphics.html#gnuplot">WRITE TABLE:(graphics)gnuplot</a>:</td><td>write table to file using plot syntax</td></tr>
+<tr><td><a href="#BOOLEAN">YES:BOOLEAN</a>:</td><td>value</td></tr>
+<tr><td><a href="matrix.html#Top">cbmat:(matrix)</a>:</td><td>Complex square and Banded Matrix operations</td></tr>
+<tr><td><a href="#icpl">clear:icpl</a>:</td><td>remove variable and its associated storage</td></tr>
+<tr><td><a href="complex.html#Top">complex:(complex)</a>:</td><td>Complex numbers</td></tr>
 <tr><td><a href="#cpl">cpl</a>:</td><td>The CPL-to-C compiler</td></tr>
-<tr><td><a href="editor.html#full-screen">edit</a>:</td><td>Open an existing or new file in full-screen editor</td></tr>
-<tr><td><a href="#icpl">exit</a>:</td><td>quit icpl</td></tr>
-<tr><td><a href="fft.html#Top">fft</a>:</td><td>Fast Fourier Transforms</td></tr>
+<tr><td><a href="editor.html#full-screen">edit:(editor)full-screen</a>:</td><td>Open an existing or new file in full-screen editor</td></tr>
+<tr><td><a href="#icpl">exit:icpl</a>:</td><td>quit icpl</td></tr>
+<tr><td><a href="fft.html#Top">fft:(fft)</a>:</td><td>Fast Fourier Transforms</td></tr>
 <tr><td><a href="#fri">fri</a>:</td><td>The Formal Rule Interpreter</td></tr>
-<tr><td><a href="graphics.html#gnuplot">gnuplot</a>:</td><td>plotting primitives rendered through gnuplot</td></tr>
-<tr><td><a href="graphics.html#Top">graphics</a>:</td><td>plotting primitives using GNU plotutils</td></tr>
+<tr><td><a href="graphics.html#gnuplot">gnuplot:(graphics)gnuplot</a>:</td><td>plotting primitives rendered through gnuplot</td></tr>
+<tr><td><a href="graphics.html#Top">graphics:(graphics)</a>:</td><td>plotting primitives using GNU plotutils</td></tr>
 <tr><td><a href="#icpl">icpl</a>:</td><td>Interactive CPL</td></tr>
-<tr><td><a href="#command%20interpretation">icpl</a>:</td><td>of a run-time generated CPL statement</td></tr>
+<tr><td><a href="#command%20interpretation">icpl:command interpretation</a>:</td><td>of a run-time generated CPL statement</td></tr>
 <tr><td><a href="#infocpl">infocpl</a>:</td><td>info reading script</td></tr>
-<tr><td><a href="#STRING">literal</a>:</td><td>constant string of characters</td></tr>
-<tr><td><a href="editor.html#full-screen">load</a>:</td><td>Load a file at current cursor position</td></tr>
+<tr><td><a href="#STRING">literal:STRING</a>:</td><td>constant string of characters</td></tr>
+<tr><td><a href="editor.html#full-screen">load:(editor)full-screen</a>:</td><td>Load a file at current cursor position</td></tr>
 <tr><td><a href="#makecpl">makecpl</a>:</td><td>Compilation tools and their usage</td></tr>
-<tr><td><a href="#Nested%20functions">nested</a>:</td><td>are allowed wherever a declaration is.</td></tr>
-<tr><td><a href="graphics.html#nographics">nographics</a>:</td><td>fake plotting package (does nothing)</td></tr>
-<tr><td><a href="parallel.html#nonparallel">nonparallel</a>:</td><td>fake parallel package (does nothing)</td></tr>
-<tr><td><a href="parallel.html#Top">parallel</a>:</td><td>Parallel computing</td></tr>
-<tr><td><a href="graphics.html#gnuplot">plot</a>:</td><td>gnuplot plot command with CPL arguments</td></tr>
-<tr><td><a href="#icpl">quit</a>:</td><td>exit icpl</td></tr>
-<tr><td><a href="matrix.html#Top">rbmat</a>:</td><td>Real square and Banded Matrix operations</td></tr>
-<tr><td><a href="editor.html#Top">readline</a>:</td><td>Own implementation of readline input editor</td></tr>
+<tr><td><a href="#Nested%20functions">nested:Nested functions</a>:</td><td>are allowed wherever a declaration is.</td></tr>
+<tr><td><a href="graphics.html#nographics">nographics:(graphics)nographics</a>:</td><td>fake plotting package (does nothing)</td></tr>
+<tr><td><a href="parallel.html#nonparallel">nonparallel:(parallel)nonparallel</a>:</td><td>fake parallel package (does nothing)</td></tr>
+<tr><td><a href="parallel.html#Top">parallel:(parallel)</a>:</td><td>Parallel computing</td></tr>
+<tr><td><a href="graphics.html#gnuplot">plot:(graphics)gnuplot</a>:</td><td>gnuplot plot command with CPL arguments</td></tr>
+<tr><td><a href="#icpl">quit:icpl</a>:</td><td>exit icpl</td></tr>
+<tr><td><a href="matrix.html#Top">rbmat:(matrix)</a>:</td><td>Real square and Banded Matrix operations</td></tr>
+<tr><td><a href="editor.html#Top">readline:(editor)</a>:</td><td>Own implementation of readline input editor</td></tr>
 <tr><td><a href="#rtchecks">rtchecks</a>:</td><td>.                Run Time bounds Checking</td></tr>
-<tr><td><a href="editor.html#full-screen">save</a>:</td><td>Save the session log or current screen to a file</td></tr>
-<tr><td><a href="graphics.html#gnuplot">set</a>:</td><td>set command for gnuplot, passed as is </td></tr>
-<tr><td><a href="strlines.html#Top">strlines</a>:</td><td>Streamline plotting</td></tr>
-<tr><td><a href="symbolic.html#Top">symbolic</a>:</td><td>Symbolic differentiation</td></tr>
-<tr><td><a href="#ARRAY">*</a>:</td><td>or multiplication operator</td></tr>
-<tr><td><a href="#compound%20index">**</a>:</td><td>Also alternate power operator</td></tr>
-<tr><td><a href="#Assignment">=</a>:</td><td>Also comparison operator</td></tr>
-<tr><td><a href="#Delayed%20assignment">==</a>:</td><td></td></tr>
-<tr><td><a href="#REAL%20operator">^</a>:</td><td>or postfix POINTER dereference</td></tr>
-<tr><td><a href="#Assignment">~</a>:</td><td>place-holder for the l.h.s.</td></tr>
-<tr><td><a href="#C%20SECTION">&lt;*</a>:</td><td></td></tr>
-<tr><td><a href="#STRING">&lt;&lt;</a>:</td><td></td></tr>
-<tr><td><a href="#Comparison">#</a>:</td><td></td></tr>
-<tr><td><a href="#C%20preprocessor">#define</a>:</td><td></td></tr>
-<tr><td><a href="#C%20preprocessor">#else</a>:</td><td></td></tr>
-<tr><td><a href="#C%20preprocessor">#endif</a>:</td><td></td></tr>
-<tr><td><a href="#C%20preprocessor">#if</a>:</td><td></td></tr>
-<tr><td><a href="#C%20interface">#include</a>:</td><td></td></tr>
-<tr><td><a href="#C%20interface">#includedir</a>:</td><td></td></tr>
-<tr><td><a href="#C%20interface">#link</a>:</td><td></td></tr>
-<tr><td><a href="#C%20preprocessor">#undef</a>:</td><td></td></tr>
-<tr><td><a href="#Einstein%20convention">$</a>:</td><td></td></tr>
-<tr><td><a href="#Comments">!</a>:</td><td></td></tr>
+<tr><td><a href="editor.html#full-screen">save:(editor)full-screen</a>:</td><td>Save the session log or current screen to a file</td></tr>
+<tr><td><a href="graphics.html#gnuplot">set:(graphics)gnuplot</a>:</td><td>set command for gnuplot, passed as is </td></tr>
+<tr><td><a href="strlines.html#Top">strlines:(strlines)</a>:</td><td>Streamline plotting</td></tr>
+<tr><td><a href="symbolic.html#Top">symbolic:(symbolic)</a>:</td><td>Symbolic differentiation</td></tr>
+<tr><td><a href="#ARRAY">*:ARRAY</a>:</td><td>or multiplication operator</td></tr>
+<tr><td><a href="#compound%20index">**:compound index</a>:</td><td>Also alternate power operator</td></tr>
+<tr><td><a href="#Assignment">=:Assignment</a>:</td><td>Also comparison operator</td></tr>
+<tr><td><a href="#Delayed%20assignment">==:Delayed assignment</a>:</td><td></td></tr>
+<tr><td><a href="#REAL%20operator">^:REAL operator</a>:</td><td>or postfix POINTER dereference</td></tr>
+<tr><td><a href="#Assignment">~:Assignment</a>:</td><td>place-holder for the l.h.s.</td></tr>
+<tr><td><a href="#C%20SECTION">&lt;*:C SECTION</a>:</td><td></td></tr>
+<tr><td><a href="#STRING">&lt;&lt;:STRING</a>:</td><td></td></tr>
+<tr><td><a href="#Comparison">#:Comparison</a>:</td><td></td></tr>
+<tr><td><a href="#C%20preprocessor">#define:C preprocessor</a>:</td><td></td></tr>
+<tr><td><a href="#C%20preprocessor">#else:C preprocessor</a>:</td><td></td></tr>
+<tr><td><a href="#C%20preprocessor">#endif:C preprocessor</a>:</td><td></td></tr>
+<tr><td><a href="#C%20preprocessor">#if:C preprocessor</a>:</td><td></td></tr>
+<tr><td><a href="#C%20interface">#include:C interface</a>:</td><td></td></tr>
+<tr><td><a href="#C%20interface">#includedir:C interface</a>:</td><td></td></tr>
+<tr><td><a href="#C%20interface">#link:C interface</a>:</td><td></td></tr>
+<tr><td><a href="#C%20preprocessor">#undef:C preprocessor</a>:</td><td></td></tr>
+<tr><td><a href="#Einstein%20convention">$:Einstein convention</a>:</td><td></td></tr>
+<tr><td><a href="#Comments">!:Comments</a>:</td><td></td></tr>
 <tr><td><a href="#?">?</a>:</td><td>icpl help</td></tr>
 <tr><td><a href="#Top"></a>:</td><td>:                        icpl shell command</td></tr>
 <tr><td><a href="#$">$</a>:</td><td>icpl last result</td></tr>
@@ -319,7 +318,7 @@ a variable can be declared and initialized in a single statement.
 
 CPL has Custom Parameter Lists, meaning that not just commas but any
 non-ambiguous single character or character sequence may be used as parameter
-separators in function calls. (<a href="#Functions">Custom Parameter Lists</a>) Whereas
+separators in function calls. (<a href="#Functions">Custom Parameter Lists:Functions</a>) Whereas
 commas will still be the commonest choice for short parameter lists, a
 remindful choice of separators can make long parameter lists both more
 understandable and more thoroughly checked by the compiler. Parameters may also
@@ -378,7 +377,7 @@ Node: (cpl)C preprocessor, Next: <a href="#Source%20file">Source file</a>, Prev:
 
 <h2>Macro definition and conditional compilation</h2>
 
-C preprocessor #define and #if constructs (<a href="#(/usr/share/info/cpp"></a>).)
+C preprocessor #define and #if constructs (<a href="#(/usr/share/info/cpp">:(/usr/share/info/cpp</a>).)
 are used in a CPL program to define macros and alter the flow of compilation.
 For file inclusion see <a href="#USE">USE</a>, <a href="#INCLUDE">INCLUDE</a>, and <a href="#C%20interface">C interface</a>. 
 </div><div class=page id="Source%20file">
@@ -394,7 +393,7 @@ and end of the file itself. Optionally the statement
 
         USE cpl
         
-may appear as the first line. <a href="#fri">USE cpl</a>.
+may appear as the first line. <a href="#fri">USE cpl:fri</a>.
 
 <nav><table>
 <tr><th>Menu:</th><th></th></tr>
@@ -544,7 +543,7 @@ The user must take care of the fact that FORTRAN has multidimensional array
 indices in the reverse order with respect to both C and cpl. Arrays to be
 passed as such arguments should be declared and used accordingly.
 
-For (e.g. lapack) library calls that require the number of elements used in
+For (e.g. Lapack) library calls that require the number of elements used in
 actual memory storage for the rows of a matrix as an argument, the
 pseudofunction
 
@@ -906,7 +905,7 @@ In alternative, a statement of the form
         newid = value
         
 implicitly declares a CONSTANT whose type is the type of the r.h.s. and assigns
-its value (see, however, <a href="#Concealed%20Pointer%20Lookup">CONSTANT</a>).
+its value (see, however, <a href="#Concealed%20Pointer%20Lookup">CONSTANT:Concealed Pointer Lookup</a>).
 
 If the r.h.s. of a CONSTANT declaration is known at compile time (what is
 denoted as a compile-time constant), the new identifier becomes just an alias
@@ -958,7 +957,7 @@ BOOLEAN values are denoted as YES or TRUE and NO or FALSE, and written as "Y"
 and "N". On reading any complete word starting with "T", "Y", "t" or "y" is
 read as YES, any word starting with "F", "N", "f", "n" as NO.
 
-See also <a href="#BOOLEAN%20ops">BOOLEAN ops</a>, <a href="#Comparison">Comparison</a>, <a href="#Builtin">BOOLEAN</a>.
+See also <a href="#BOOLEAN%20ops">BOOLEAN ops</a>, <a href="#Comparison">Comparison</a>, <a href="#Builtin">BOOLEAN:Builtin</a>.
 </div><div class=page id="CHAR">
 Node: (cpl)CHAR,  Next: <a href="#INTEGER">INTEGER</a>,  Prev: <a href="#BOOLEAN">BOOLEAN</a>,  Up: <a href="#Declarations">Declarations</a>
 <hr>
@@ -970,7 +969,7 @@ Primitive type declarator for character variables translated into C type
 
 Where needed, a single-character <a href="#STRING">STRING</a> literal is implicitly converted
 to a CHAR constant, which is in turn implicitly converted to an INTEGER ASCII
-code. INTEGER to CHAR conversion must be explicit (<a href="#Builtin">CHAR</a>).
+code. INTEGER to CHAR conversion must be explicit (<a href="#Builtin">CHAR:Builtin</a>).
 </div><div class=page id="INTEGER">
 Node: (cpl)INTEGER,  Next: <a href="#REAL">REAL</a>,  Prev: <a href="#CHAR">CHAR</a>,  Up: <a href="#Declarations">Declarations</a>
 <hr>
@@ -980,7 +979,7 @@ Node: (cpl)INTEGER,  Next: <a href="#REAL">REAL</a>,  Prev: <a href="#CHAR">CHAR
 Primitive type declarator for integer variables, translated into C type "int".
 
 Can be implicitly converted to REAL. REAL to INTEGER conversion must be
-explicit (<a href="#Builtin">INTEGER</a>).
+explicit (<a href="#Builtin">INTEGER:Builtin</a>).
 
 See also <a href="#INTEGER%20operator">INTEGER operator</a>.
 </div><div class=page id="REAL">
@@ -991,7 +990,7 @@ Node: (cpl)REAL,  Next: <a href="#SINGLE">SINGLE</a>,  Prev: <a href="#INTEGER">
 
 Primitive type declarator for real variables, translated into C type "double".
 
-See also <a href="#REAL%20operator">REAL operator</a>, <a href="#Builtin">REAL</a>.
+See also <a href="#REAL%20operator">REAL operator</a>, <a href="#Builtin">REAL:Builtin</a>.
 </div><div class=page id="SINGLE">
 Node: (cpl)SINGLE,  Next: <a href="#TYPE">TYPE</a>,  Prev: <a href="#REAL">REAL</a>,  Up: <a href="#Declarations">Declarations</a>
 <hr>
@@ -1002,7 +1001,7 @@ Primitive type declarator for single-precision real variables, translated into
 C type "float".
 
 Can be implicitly converted to REAL. REAL to SINGLE conversion must be explicit
-(<a href="#Builtin">SINGLE</a>).
+(<a href="#Builtin">SINGLE:Builtin</a>).
 </div><div class=page id="TYPE">
 Node: (cpl)TYPE, Next: <a href="#STRUCTURE">STRUCTURE</a>, Prev: <a href="#REAL">REAL</a>,  Up: <a href="#Declarations">Declarations</a>
 <hr>
@@ -1082,7 +1081,7 @@ Anonymous structure fields are the CPL way of defining objects that inherit the
 structure of other more general objects and add their own specific fields. When
 these objects are accessed as arguments to functions or subroutines, the
 appropriate function among those with the same name and different arguments is
-automatically selected. See also <a href="#Functions">overloading</a>, <a href="#DYNAMIC">DYNAMIC</a>.
+automatically selected. See also <a href="#Functions">overloading:Functions</a>, <a href="#DYNAMIC">DYNAMIC</a>.
 </div><div class=page id="ARRAY">
 Node: (cpl)ARRAY, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#STRUCTURE">STRUCTURE</a>, Up: <a href="#Declarations">Declarations</a>
 <hr>
@@ -1153,7 +1152,7 @@ The following special operations are defined on ARRAYs:
 <tr><td><a href="#compound%20index">compound index</a>:</td><td>sequential access to a multidimensional array</td></tr>
 <tr><td><a href="#ARRAY%20operations">ARRAY operations</a>:</td><td>linear space</td></tr>
 <tr><td><a href="#Einstein%20convention">Einstein convention</a>:</td><td>implicit index iteration</td></tr>
-<tr><td><a href="#INTO">Pointer arithmetics</a>:</td><td></td></tr>
+<tr><td><a href="#INTO">Pointer arithmetics:INTO</a>:</td><td></td></tr>
 </table></nav>
 </div><div class=page id="HI">
 Node: (cpl)HI,  Next: <a href="#LO">LO</a>,  Prev: <a href="#ARRAY">ARRAY</a>,  Up: <a href="#ARRAY">ARRAY</a>
@@ -1206,7 +1205,7 @@ subarray</a> extracted, and its bounds and length are available through function
 </table></nav>
 always indexed starting from 0) can be generated either at compile time, as
 quoted strings of characters, or dynamically through <a href="#String">String</a>
-concatenation, and can either be given a name through <a href="#Top">implicit</a>
+concatenation, and can either be given a name through <a href="#Top">implicit:</a>
 CONSTANT. declaration or passed as actual parameters to function calls and
 further string concatenations.
 
@@ -1222,7 +1221,7 @@ not to be part of the literal itself.
 Where appropriate, a single-character literal is implicitly converted to a CHAR
 constant, which is in turn implicitly converted to an INTEGER ASCII code.
 Strings may also be concatenated among themselves and with variables, see <a href="#String">
-conversion</a>.
+conversion:String</a>.
 
 Standard C functions returning a char* (<a href="/usr/share/info/libc.html#%20String%20andArray%20Utilities">(/usr/share/info/libc) String and
 Array Utilities</a>) are also interpreted as generating a STRING value. Just
@@ -1237,7 +1236,7 @@ STRING VARIABLEs may also be declared and assigned a value.
 <tr><th>Menu:</th><th>Predefined strings are:</th></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td><a href="#COMMANDLINE">COMMANDLINE</a>:</td><td>command line parameter access</td></tr>
-<tr><td><a href="#TRAP">ERRORMESSAGE</a>:</td><td>error message string</td></tr>
+<tr><td><a href="#TRAP">ERRORMESSAGE:TRAP</a>:</td><td>error message string</td></tr>
 </table></nav>
 </div><div class=page id="STRUCTURED">
 Node: (cpl)STRUCTURED, Next: <a href="#POINTER">POINTER</a>, Prev: <a href="#STRING">STRING</a>, Up: <a href="#Declarations">Declarations</a>
@@ -1306,7 +1305,7 @@ manipulation of generic pointers. Type checking will still be enforced based
 on the equality of type name. Of course, uncommitted pointers of this kind can
 never be dereferenced within the body of the subroutine itself.
 
-See also <a href="#NEW">Memory allocation</a>, <a href="#DYNAMIC">Object-oriented features</a>.
+See also <a href="#NEW">Memory allocation:NEW</a>, <a href="#DYNAMIC">Object-oriented features:DYNAMIC</a>.
 </div><div class=page id="INTO">
 Node: (cpl)INTO, Next: <a href="#DYNAMIC">DYNAMIC</a>, Prev: <a href="#POINTER">POINTER</a>, Up: <a href="#Declarations">Declarations</a>
 <hr>
@@ -1346,8 +1345,8 @@ Node: (cpl)DYNAMIC, Next: <a href="#IS">IS</a>, Prev: <a href="#INTO">INTO</a>, 
 CPL is not an object-oriented language in the sense that functions are
 supposed to be declared within object class declarations, and intentionally
 so. Object-like behaviour is achieved through overloaded function names (<a href="#Functions">
-Function overloading</a>) and implicit type conversion (<a href="#STRUCTURE">
-anonymous</a>).
+Function overloading:Functions</a>) and implicit type conversion (<a href="#STRUCTURE">
+anonymous:STRUCTURE</a>).
 
 In addition, situations where the type of an object is not fixed at compile
 time are catered for by "dynamic pointers", pointers that can reference and
@@ -1403,7 +1402,7 @@ Node: (cpl)Postfix, Next: <a href="#Subroutine%20type">Subroutine type</a>, Prev
 
 <h2>Postfix type modifiers</h2>
 
-A postfix ^ denotes either pointer dereferencing (<a href="#Concealed%20Pointer">^</a>
+A postfix ^ denotes either pointer dereferencing (<a href="#Concealed%20Pointer">^:Concealed Pointer</a>
 Lookup) or a short form of the POINTER declaration. For instance
 
                         INTEGER a^,b^
@@ -1486,11 +1485,11 @@ Node: (cpl)Statements, Next: <a href="#Control">Control</a>, Prev: <a href="#Dec
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td><a href="#Expressions">Expressions</a>:</td><td>construction and operators</td></tr>
 <tr><td><a href="#Assignment">Assignment</a>:</td><td>rules</td></tr>
-<tr><td><a href="#Assignment">~</a>:</td><td>place-holder for the l.h.s.</td></tr>
+<tr><td><a href="#Assignment">~:Assignment</a>:</td><td>place-holder for the l.h.s.</td></tr>
 <tr><td><a href="#Delayed%20Assignment">Delayed Assignment</a>:</td><td>to be performed where the symbol is used</td></tr>
-<tr><td><a href="#Concealed%20Pointer%20Lookup">Implicit type conversion</a>:</td><td></td></tr>
+<tr><td><a href="#Concealed%20Pointer%20Lookup">Implicit type conversion:Concealed Pointer Lookup</a>:</td><td></td></tr>
 <tr><td><a href="#WITH">WITH</a>:</td><td>implicit access to structure fields and functions</td></tr>
-<tr><td><a href="#NEW">Memory or file allocation</a>:</td><td>and FREE</td></tr>
+<tr><td><a href="#NEW">Memory or file allocation:NEW</a>:</td><td>and FREE</td></tr>
 <tr><td><a href="#Input/Output">Input/Output</a>:</td><td>formatted and binary</td></tr>
 <tr><td><a href="#Control">Control</a>:</td><td>Program flow control statements</td></tr>
 </table></nav>
@@ -1539,7 +1538,7 @@ Node: (cpl)REAL operator, Next: <a href="#Comparison">Comparison</a>, Prev: <a h
 <h3>REAL operators:                +  -  *  /  ^ (or **)</h3>
 
 An infix ^ (or **) is the exponentiation operator. <a href="#Postfix">Postfix</a> ^ is the
-pointer dereferencing operator. Also <a href="#Concealed%20Pointer%20Lookup">prefix ^</a>.
+pointer dereferencing operator. Also <a href="#Concealed%20Pointer%20Lookup">prefix ^:Concealed Pointer Lookup</a>.
 </div><div class=page id="Comparison">
 Node: (cpl)Comparison, Next: <a href="#BOOLEAN%20ops">BOOLEAN ops</a>, Prev: <a href="#REAL%20operator">REAL operator</a>, Up: <a href="#Expressions">Expressions</a>
 <hr>
@@ -1556,7 +1555,7 @@ variables, denotes the comparison of the values of A and B rather than their
 addresses). Explicit type cast or pointer dereferencing may at times be
 necessary, and is always advised, where ambiguities exist.
 
-The type-testing operator IS is described in <a href="#Top">Object-oriented features</a>
+The type-testing operator IS is described in <a href="#Top">Object-oriented features:</a>
 DYNAMIC.
 </div><div class=page id="BOOLEAN%20ops">
 Node: (cpl)BOOLEAN ops, Next: <a href="#Conditional%20expressions">Conditional expressions</a>, Prev: <a href="#Comparison">Comparison</a>, Up: <a href="#Expressions">Expressions</a>
@@ -1572,7 +1571,7 @@ Node: (cpl)BOOLEAN ops, Next: <a href="#Conditional%20expressions">Conditional e
 <tr><td><a href="#NOT">NOT</a>:</td><td>boolean NOT operator</td></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table></nav>
-BOOLEAN results are produced by <a href="#Comparison">Comparison</a> and <a href="#Builtin">BOOLEAN</a>.
+BOOLEAN results are produced by <a href="#Comparison">Comparison</a> and <a href="#Builtin">BOOLEAN:Builtin</a>.
 </div><div class=page id="AND">
 Node: (cpl)AND,  Next: <a href="#OR">OR</a>,  Prev: <a href="#BOOLEAN%20ops">BOOLEAN ops</a>,  Up: <a href="#BOOLEAN%20ops">BOOLEAN ops</a>
 <hr>
@@ -1622,8 +1621,8 @@ Node: (cpl)Bitwise, Next: <a href="#String">String</a>, Prev: <a href="#Conditio
 
 The C-like notation &amp; | &gt;&gt; &lt;&lt; is also available for BITAND BITOR RSHIFTED
 LSHIFTED.
-^ and ~ are reserved as the <a href="#REAL%20operator">exponentiation</a>. and the <a href="#Assignment">
-placeholder</a>.
+^ and ~ are reserved as the <a href="#REAL%20operator">exponentiation:REAL operator</a>. and the <a href="#Assignment">
+placeholder:Assignment</a>.
 </div><div class=page id="String">
 Node: (cpl)String, Next: <a href="#Looping%20operator">Looping operator</a>, Prev: <a href="#Bitwise">Bitwise</a>, Up: <a href="#Expressions">Expressions</a>
 <hr>
@@ -1719,7 +1718,7 @@ Node: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Loop
 </table></nav>
   ODD:                        INTEGER argument is odd
 <nav><table>
-<tr><td><a href="#READ">BOOLEAN</a>:</td><td>read and report success or failure</td></tr>
+<tr><td><a href="#READ">BOOLEAN:READ</a>:</td><td>read and report success or failure</td></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table></nav>
 <h3>Builtin type conversion functions</h3>
@@ -1734,7 +1733,7 @@ Node: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Loop
 
 <nav><table>
 <tr><td><a href="#COMMANDLINE">COMMANDLINE</a>:</td><td>command line parameter access</td></tr>
-<tr><td><a href="#TRAP">ERRORMESSAGE</a>:</td><td>error message string</td></tr>
+<tr><td><a href="#TRAP">ERRORMESSAGE:TRAP</a>:</td><td>error message string</td></tr>
 <tr><td><a href="#String">String</a>:</td><td>Concatenation and conversion.</td></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table></nav>
@@ -1943,7 +1942,7 @@ V(*,*,*,*) which represents its original arrangement). By the same token
 V(*,**,*) is the three-dimensional array obtained by compounding the two
 central indices into one. Bounds of a compound index can be retrieved by the
 <nav><table>
-<tr><td><a href="#LO">note</a>:</td><td>and <a href="#HI"></a>. functions as usual.</td></tr>
+<tr><td><a href="#LO">note:LO</a>:</td><td>and <a href="#HI">:HI</a>. functions as usual.</td></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table></nav>
 Compound indices are restricted to arrays (or portions of them) that are
@@ -1968,12 +1967,12 @@ The constant "0" (but not any other constant) can be assigned as a value to a
 whole array.
 
 Some <a href="#builtin">builtin</a> functions operate on whole arrays. A larger set of vector
-and matrix algebra operations are supported by the <a href="#(matrix">rbmat</a>). and
+and matrix algebra operations are supported by the <a href="#(matrix">rbmat:(matrix</a>). and
 <nav><table>
-<tr><td><a href="matrix.html#Top">note cbmat</a>:</td><td>libraries.</td></tr>
+<tr><td><a href="matrix.html#Top">note cbmat:(matrix)</a>:</td><td>libraries.</td></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table></nav>
-Matrix transposition is provided as the <a href="#subarray">TRANSPOSED</a>. operation.
+Matrix transposition is provided as the <a href="#subarray">TRANSPOSED:subarray</a>. operation.
 
 All ARRAY operations can also be applied to <a href="#STORED">STORED</a> ARRAYs and <a href="#STRUCTURED">
 STRUCTURED</a> ARRAYs.
@@ -2531,6 +2530,7 @@ Node: (cpl)INPUTREADY, Next: <a href="#COMMANDLINE">COMMANDLINE</a>, Prev: <a hr
 
 
 <h3>Test for input ready on a file descriptor or stdin</h3>
+This function is contained in the inputready library (USE inputready).
 
 The BOOLEAN function
 
@@ -2769,7 +2769,7 @@ variants:
 <tr><td><a href="#TIMES">TIMES</a>:</td><td>repetition by a fixed number of times</td></tr>
 <tr><td><a href="#IN">IN</a>:</td><td>run through the elements of an array</td></tr>
 <tr><td><a href="#EXCEPT">EXCEPT</a>:</td><td>exclude exceptional values</td></tr>
-<tr><td><a href="#C-style">UNTIL</a>:</td><td>loop with a generic incrementing operator</td></tr>
+<tr><td><a href="#C-style">UNTIL:C-style</a>:</td><td>loop with a generic incrementing operator</td></tr>
 </table></nav>
 </div><div class=page id="FOR%20AND">
 Node: (cpl)FOR AND,  Next: <a href="#ALL">ALL</a>,  Prev: <a href="#FOR">FOR</a>,  Up: <a href="#FOR">FOR</a>
@@ -3094,7 +3094,7 @@ The auxiliary keyword OF is used in:
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td><a href="#ARRAY">ARRAY</a>:</td><td>indexed array type</td></tr>
 <tr><td><a href="#CASE">CASE</a>:</td><td>multiple-choice selection</td></tr>
-<tr><td><a href="#STORED">FILE</a>:</td><td>random-access file</td></tr>
+<tr><td><a href="#STORED">FILE:STORED</a>:</td><td>random-access file</td></tr>
 </table></nav>
 </div><div class=page id="TO">
 Node: (cpl)TO,  Next: <a href="#TRAP">TRAP</a>,  Prev: <a href="#TIMES">TIMES</a>,  Up: <a href="#Control">Control</a>
@@ -3261,8 +3261,8 @@ typing "H" for a list of basic key bindings. Type "q" to quit Info.
 <nav><table>
 <tr><th>Menu:</th><th></th></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td><a href="editor.html#Top">readline</a>:</td><td>Console input editing keys.</td></tr>
-<tr><td><a href="#Syntax">syntax</a>:</td><td>CPL language specification.  </td></tr>
+<tr><td><a href="editor.html#Top">readline:(editor)</a>:</td><td>Console input editing keys.</td></tr>
+<tr><td><a href="#Syntax">syntax:Syntax</a>:</td><td>CPL language specification.  </td></tr>
 <tr><td><a href="#icpl%20commands">icpl commands</a>:</td><td>icpl specific commands.</td></tr>
 <tr><td><a href="#icpl%20command%20line">icpl command line</a>:</td><td>parameters.</td></tr>
 </table></nav>
@@ -3276,7 +3276,7 @@ Node: (cpl)icpl commands,  Next: <a href="#Library">Library</a>,  Prev: <a href=
 <tr><td><a href="#?">?</a>:</td><td>help</td></tr>
 <tr><td><a href="#Top"></a>:</td><td>:                shell commands</td></tr>
 <tr><td><a href="#$">$</a>:</td><td>last result</td></tr>
-<tr><td><a href="#command%20interpretation">icpl</a>:</td><td>of a run-time generated CPL statement</td></tr>
+<tr><td><a href="#command%20interpretation">icpl:command interpretation</a>:</td><td>of a run-time generated CPL statement</td></tr>
 <tr><td><a href="#clear">clear</a>:</td><td>cancel variable declaration and free its associated storage</td></tr>
 <tr><td><a href="#save">save</a>:</td><td>save command history to file</td></tr>
 <tr><td><a href="#load">load</a>:</td><td>load and execute command history from file</td></tr>
@@ -3426,19 +3426,22 @@ Node: (cpl)Library,  Prev: <a href="#icpl">icpl</a>,  Next: <a href="#rtchecks">
 <tr><th>Menu:</th><th>The following libraries are included with CPL:</th></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 <tr><td><a href="#rtchecks">rtchecks</a>:</td><td>Run Time bounds Checking and more</td></tr>
-<tr><td><a href="complex.html#Top">complex</a>:</td><td>Complex numbers</td></tr>
-<tr><td><a href="fft.html#Top">fft</a>:</td><td>Fast Fourier Transforms</td></tr>
-<tr><td><a href="matrix.html#Top">rbmat</a>:</td><td>Real square and Banded Matrix operations</td></tr>
-<tr><td><a href="matrix.html#Top">cbmat</a>:</td><td>Complex square and Banded Matrix operations</td></tr>
-<tr><td><a href="graphics.html#Top">graphics</a>:</td><td>plotting primitives using GNU plotutils</td></tr>
-<tr><td><a href="graphics.html#nographics">nographics</a>:</td><td>fake plotting package (does nothing)</td></tr>
-<tr><td><a href="graphics.html#gnuplot">gnuplot</a>:</td><td>plotting primitives rendered through gnuplot</td></tr>
-<tr><td><a href="graphics.html#strlines">strlines</a>:</td><td>Streamline plotting</td></tr>
-<tr><td><a href="parallel.html#Top">parallel</a>:</td><td>Parallel computing</td></tr>
-<tr><td><a href="parallel.html#nonparallel">nonparallel</a>:</td><td>fake parallel package (does nothing)</td></tr>
-<tr><td><a href="symbolic.html#Top">symbolic</a>:</td><td>Symbolic differentiation</td></tr>
+<tr><td><a href="complex.html#Top">complex:(complex)</a>:</td><td>Complex numbers</td></tr>
+<tr><td><a href="fft.html#Top">fft:(fft)</a>:</td><td>Fast Fourier Transforms</td></tr>
+<tr><td><a href="matrix.html#Top">rbmat:(matrix)</a>:</td><td>Real square and Banded Matrix operations</td></tr>
+<tr><td><a href="matrix.html#Top">cbmat:(matrix)</a>:</td><td>Complex square and Banded Matrix operations</td></tr>
+<tr><td><a href="graphics.html#Top">graphics:(graphics)</a>:</td><td>plotting primitives using GNU plotutils</td></tr>
+<tr><td><a href="graphics.html#nographics">nographics:(graphics)nographics</a>:</td><td>fake plotting package (does nothing)</td></tr>
+<tr><td><a href="graphics.html#gnuplot">gnuplot:(graphics)gnuplot</a>:</td><td>plotting primitives rendered through gnuplot</td></tr>
+<tr><td><a href="graphics.html#strlines">strlines:(graphics)strlines</a>:</td><td>Streamline plotting</td></tr>
+<tr><td><a href="parallel.html#Top">parallel:(parallel)</a>:</td><td>Parallel computing</td></tr>
+<tr><td><a href="parallel.html#nonparallel">nonparallel:(parallel)nonparallel</a>:</td><td>fake parallel package (does nothing)</td></tr>
+<tr><td><a href="symbolic.html#Top">symbolic:(symbolic)</a>:</td><td>Symbolic differentiation</td></tr>
 <tr><td><a href="#CHARbyCHAR">CHARbyCHAR</a>:</td><td>live keyboard input</td></tr>
+<tr><td><a href="#INPUTREADY">inputready:INPUTREADY</a>:</td><td>test for input ready on a file descriptor or stdin </td></tr>
 <tr><td><a href="#lapack">lapack</a>:</td><td>partial interface to LAPACK eigenvalue routines</td></tr>
+<tr><td><a href="#matlib">matlib</a>:</td><td>Some basic compact matrix-defining functions</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table></nav>
 </div><div class=page id="rtchecks">
 Node: (cpl)rtchecks,  Next: <a href="complex.html#Top">(complex)</a>,  Prev: <a href="#Library">Library</a>,  Up: <a href="#Library">Library</a>
@@ -3492,7 +3495,7 @@ V,v: view. Open a vi window at the present line in the source code, which can
         instruction of the enclosing block.
 Any other key displays a one-line reminder of the above.
 </div><div class=page id="CHARbyCHAR">
-Node: (cpl)CHARbyCHAR,  Prev: <a href="symbolic.html#Top">(symbolic)</a>,  Up: <a href="#Library">Library</a>
+Node: (cpl)CHARbyCHAR, Next: <a href="#lapack">lapack</a>, Prev: <a href="symbolic.html#Top">(symbolic)</a>, Up: <a href="#Library">Library</a>
 <hr>
 
 <h2>Live keyboard input</h2>
@@ -3502,5 +3505,32 @@ activate unbuffered terminal input, so that the input of a single character may
 be read immediately (normally input is transferred from the terminal to the
 running program one line at a time, i.e. only when a newline is entered).
 USEing this library is all that is necessary. Input is then performed as usual.
+</div><div class=page id="lapack">
+Node: (cpl)lapack,  Next: <a href="#matlib">matlib</a>,  Prev: <a href="#CHARbyCHAR">CHARbyCHAR</a>,  Up: <a href="#Library">Library</a>
+<hr>
+
+<h2>Interface to some LAPACK functions</h2>
+
+This library packs the dgees and zgees LAPACK functions into the wrapper CPL
+functions
+
+        INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(COMPLEX A(*,*))
+
+        INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(REAL A(*,*))
+
+thus providing the eigenvalues of a general real or complex matrix.
+
+More Lapack functions may be included in the future.
+</div><div class=page id="matlib">
+Node: (cpl)matlib,  Prev: <a href="#lapack">lapack</a>,  Up: <a href="#Library">Library</a>
+<hr>
+
+<h2>Basic matrix-creating functions</h2>
+
+The matlib.cpl library is used by the m2cpl script in order to translate
+simple MATLAB programs into their CPL equivalents.
+
+Both matlib and m2cpl are in very preliminary development and only include
+the most basic functions.
 
 </div></body></html>

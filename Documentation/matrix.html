@@ -7,7 +7,7 @@
   <meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
   <meta name="description" content="CPL is a programming language designed and developed by Paolo Luchini during 1993-2020. Documentation and distribution offered for download includes a compiler, interpreter and text editor.">
   <meta name="keywords" content="cpl CPL code program programming language compiler interpreter editor fri FRI makecpl icpl edit">
-  """"<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../singlecol.css">
   <style>
     .page {
@@ -15,8 +15,7 @@
     }
     .page:target {
       display: block;
-      min-height:100%;
-      white-space: pre;
+      white-space: pre-wrap;
       }
     th {
       text-align:left;
@@ -167,7 +166,7 @@ Node: (matrix)PLU,  Next: <a href="#INVERT">INVERT</a>,  Prev: <a href="#Lanczos
 Computes the LU decomposition of (necessarily square) matrix A with pivoting.
 Returns an appropriate INVMAT compound variable containing the LU decomposition
 of A, which can be passed to either <a href="#LeftLUDiv">LeftLUDiv</a> or <a href="#RightLUDiv">RightLUDiv</a> and
-must be explicitly freed by <a href="#(cpl">FREE</a>)NEW. once no longer needed.
+must be explicitly freed by <a href="#(cpl">FREE:(cpl</a>)NEW. once no longer needed.
 </div><div class=page id="INVERT">
 Node: (matrix)INVERT,  Next: <a href="#DET">DET</a>,  Prev: <a href="#PLU">PLU</a>,  Up: <a href="#Top">Top</a>
 <hr>

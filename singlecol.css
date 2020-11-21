@@ -11,6 +11,7 @@
         min-height:100%;
         margin:0;
         font-family:Arial,Sans-serif;
+        /* background-color:Silver; */
         background-image:url('CPL-logo.png');
         background-size:66px 41px;
         background-position:15px 20px;
@@ -21,8 +22,9 @@
         background-color:white;
         text-align:justify;
         max-width:40em;
+        min-height:100%;
         margin:auto;
-        padding:0.5em;
+        padding-left:1em; padding-right:1em;
 }
       code{
         font-size: large;

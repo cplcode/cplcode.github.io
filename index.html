@@ -12,14 +12,14 @@
   <style>
     body{
       font-family:Arial,Sans-serif;
-      background-color:#d4e6f4;
+      background-color:LightGrey;
       margin:0;
     }
     nav a{
       display:inline-block;
-      width:8em;
+      width:7.5em;
       font-size:large;
-    /* #  text-decoration:none; */
+      text-decoration:none;
       background-color:SlateGrey;
       color:White;
       border-radius:0.5vw;
@@ -34,21 +34,22 @@
       background-position:center;
     /*  border-radius:0.5vw; */
       text-align:center;
-    /*  min-height: 50vh; */
+      min-height: 34vw;
       position:relative;
       overflow:hidden;
     }
     .title h1{font-family:"Times New Roman",Serif;}
     .container{
+      background-color:#dee2eb;
       text-align:center;
     }
     .grad{
-      background-image: linear-gradient(rgba(212, 230, 244,0), rgba(212, 230, 244,1));
+     background-image: linear-gradient(rgba(222, 226, 235,0), rgba(222, 226, 235,1));
       position:absolute;
       bottom:0;
       left:0;
       width:100%;
-      height:10px;
+      height:8px;
     }
     .tile{
       display:inline-block;
@@ -64,8 +65,12 @@
     }
     div.tile a {
       margin:auto;
-      font-size:large;
+      font-size:x-large;
+      text-decoration:none;
       color:Black;
+    }
+    div.tile a:hover {
+      color:Blue;
     }
     code{
       font-size: large;
@@ -89,7 +94,7 @@
       <a class=button href="Download.html" title="Download page">Download</a>
       <a class=button href="About.html" title="About the author">About</a>
     </nav>
-    <br><br>
+    <br><br><br>
     <img src="CPL-logo.png" width=132 alt="CPL">
     <br>
     <h1>A Compiled Programming Language</h1>
@@ -99,15 +104,15 @@
     <div class=tile>
       <a href="Documentation/cpl.html#makecpl" title="One command to compile and make your CPL project">makecpl</a>
       <p>Write your program using your favorite text editor, <em>compile</em> with <code>makecpl &lt;yourprogram&gt;</code>, execute <code>&lt;yourprogram&gt;</code>.</p>
-      <img src="makecpl.png" alt="makecpl usage example">
+<!--      <img src="makecpl.png" alt="makecpl usage example"> -->
     </div><div class=tile>
-      <a href="Documentation/cpl.html#icpl" title="Interactive CPL interpreter and program runner">icpl</a>
+      <a href="Documentation/cpl.html#icpl" title="Interactive CPL interpreter and program shell">icpl</a>
       <p>Interactive cpl: evaluate a CPL expression, either on the command line as in <code>icpl &lt;expression&gt;</code>, or in the <code>icpl</code> <em>interpreter</em>.</p>
-      <img src="icpl.png" alt="icpl usage example">
+<!--      <img src="icpl.png" alt="icpl usage example"> -->
     </div><div class=tile>
-      <a href="Documentation/readline.html#full-screen" title="Code editor integrated in the icpl environment">edit</a>
+      <a href="Documentation/editor.html#full-screen" title="Code editor embedded in the icpl environment">edit</a>
       <p>When invoked under the <code>edit</code> alias, <code>icpl</code> turns into a terminal-screen <em>text editor</em> providing CPL word and syntax completion.</p>
-      <img src="edit.png" alt="edit usage example">
+<!--      <img src="edit.png" alt="edit usage example"> -->
     </div>
   </div>
 </body>

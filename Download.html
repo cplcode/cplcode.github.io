@@ -23,7 +23,15 @@
       border-radius:0.5em;
       padding:0.5em;
     }
-    .button:hover{background-color:gold}
+    .button:hover{
+      background-color:gold;
+    }
+    .button:active{
+      background-color:transparent;
+      background-image:url('author.png');
+      background-size:cover;
+      background-position:top;
+    }
     .dot {
       height: 1em;
       width: 1em;
@@ -35,9 +43,9 @@
   <body>
   <div>
     <h1>Download CPL</h1>
-    The CPL tools come in a self-extracting archive, which you can download at the bottom of this page. The archive extracts to its own directory in user space and requires no privileges. To unpack, run the downloaded file in a terminal as <strong>"<code>sh unpack-cpl.sh</code>" and follow the instructions on screen</strong>.</p>
+    <p>The CPL tools come in a self-extracting archive, which you can download at the bottom of this page. The archive extracts to its own directory in user space and requires no privileges. To unpack, run the downloaded file in a terminal as <strong>"<code>sh unpack-cpl.sh</code>" and follow the instructions on screen</strong>.</p>
     <h2>System requirements</h2>
-    <p>The CPL compiler and interpreter run on Linux/unix systems. They have been developed on <a href="https://www.debian.org" target=_blank>Debian GNU/Linux</a>, and this is the primary system suggested for their usage. Nevertheless, the tools are not tied to a specific flavour of Linux or unix nor to a specific processor architecture. Although incompatibilities can arise from variations in the system C library (your mileage may vary), they have been successfully used in some versions of the <a href="https://apps.apple.com/app/xcode/id497799835?mt=12" target=_blank>MacOS Xcode</a> environment, as well as in <a href="https://raspberrypi.org" target=_blank>Raspberry Pi</a> and <a href="https://www.element14.com/community/docs/DOC-84108/l/beaglebone-black-development-board-with-1ghz-am335x-arm-cortex-a8-processor" target=_blank>Beaglebone Black</a> ARM-based microboards. And the <a href="https://docs.microsoft.com/en-us/windows/wsl/about target=_blank">Windows Subsystem for Linux (WSL)</a>, which is an integral part of Windows 10, essentially <em>is</em> Debian GNU/Linux.</p> 
+    <p>The CPL compiler and interpreter run on Linux/unix systems. They have been developed on <a href="https://www.debian.org" target=_blank>Debian GNU/Linux</a>, and this is the primary system suggested for their usage. Nevertheless, the tools are not tied to a specific flavour of Linux or unix nor to a specific processor architecture. Although incompatibilities can arise from variations in the system C library (your mileage may vary), they have been successfully used in some versions of the <a href="https://apps.apple.com/app/xcode/id497799835?mt=12" target=_blank>MacOS Xcode</a> environment, as well as in <a href="https://raspberrypi.org" target=_blank>Raspberry Pi</a> and <a href="https://www.element14.com/community/docs/DOC-84108/l/beaglebone-black-development-board-with-1ghz-am335x-arm-cortex-a8-processor" target=_blank>Beaglebone Black</a> ARM-based microboards. And the <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target=_blank>Windows Subsystem for Linux (WSL)</a>, which is an integral part of Windows 10, essentially <em>is</em> Debian GNU/Linux.</p> 
     <p>Only basic system tools are required: gzip, tar, cc, make, info, plus <a href="https://sourceforge.net/projects/gnuplot/" target=_blank>gnuplot</a> if you want graphics. For maximal compatibility the system compiler should be <a href="https://gcc.gnu.org" target=_blank>gcc</a> (as it is by default in Debian), but other compilers (e.g. <a href="https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/dpc-compiler.html" target=_blank>icc</a>) have also been used. However, CPL <a href="Documentation/cpl.html#Nested%20functions">nested functions</a> are implemented as C nested functions, a nonstandard gcc extension, and will become unavailable if a compiler other than gcc is used (or if the system's gcc disables them).</p>
 
     <h2>Storage requirements</h2>
