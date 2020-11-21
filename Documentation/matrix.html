@@ -1,27 +1,32 @@
-<!DOCTYPE html><html lang=en>
-<head><title>The CPL Programming Language and Compiler</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="author" content="Paolo Luchini">
-<meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <title>The CPL Programming Language and Compiler</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Paolo Luchini">
+  <meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
+  <meta name="description" content="CPL is a programming language designed and developed by Paolo Luchini during 1993-2020. Documentation and distribution offered for download includes a compiler, interpreter and text editor.">
+  <meta name="keywords" content="cpl CPL code program programming language compiler interpreter editor fri FRI makecpl icpl edit">
+  """"<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../singlecol.css">
+  <style>
+    .page {
+      display:none;
+    }
+    .page:target {
+      display: block;
+      min-height:100%;
+      white-space: pre;
+      }
+    th {
+      text-align:left;
+    }
+  </style>
 <link rel="canonical" href="https://CPLcode.net/Documentation/matrix.html#Top">
-<link rel="stylesheet" href="../singlecol.css">
-<style>
-.page {
-display:none;
-}
-.page:target {
-display: block;
-min-height:100%;
-white-space: pre;
-}
-th {
-text-align:left;
-}
-</style></head>
+</head>
 <body><div>
 </div><div class=page id="Top">
-Node: Top,  Next: <a href="graphics.html#Top">(graphics)</a>,  Prev: <a href="fft.html#Top">(fft)</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a>
+Node: (matrix)Top,  Next: <a href="graphics.html#Top">(graphics)</a>,  Prev: <a href="fft.html#Top">(fft)</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a>
 <hr>
 
 <h2>Matrix Operations</h2>
@@ -51,7 +56,7 @@ that allows matrix operations to be specified in the usual algebraic notation.
 <tr><td><a href="#DET">DET</a>:</td><td>determinant of a matrix</td></tr>
 </table></nav>
 </div><div class=page id="MatEqu">
-Node: MatEqu,  Next: <a href="#DotProduct">DotProduct</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a>
+Node: (matrix)MatEqu,  Next: <a href="#DotProduct">DotProduct</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>SUBROUTINE MatEqu(POINTER TO ARRAY(*,*) OF number c; number a)</h3>
@@ -61,7 +66,7 @@ matrix &lt;c&gt;, and zeros all the non-diagonal elements.
 
 Equivalent infix notation:        c = a
 </div><div class=page id="DotProduct">
-Node: DotProduct,  Next: <a href="#LeftMult">LeftMult</a>,  Prev: <a href="#MatEqu">MatEqu</a>,  Up: <a href="#Top">Top</a>
+Node: (matrix)DotProduct,  Next: <a href="#LeftMult">LeftMult</a>,  Prev: <a href="#MatEqu">MatEqu</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>number FUNCTION DotProduct(ARRAY(*) OF number a,b)</h3>
@@ -77,7 +82,7 @@ Computes CONJG(a)*b
 
 Equivalent infix notation:        a | b
 </div><div class=page id="LeftMult">
-Node: LeftMult,  Next: <a href="#RightMult">RightMult</a>,  Prev: <a href="#DotProduct">DotProduct</a>,  Up: <a href="#Top">Top</a>
+Node: (matrix)LeftMult,  Next: <a href="#RightMult">RightMult</a>,  Prev: <a href="#DotProduct">DotProduct</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>SUBROUTINE LeftMult(ARRAY(*) OF number c^; ARRAY(*,*) OF number A; ARRAY(*) OF number b)</h3>
@@ -88,7 +93,7 @@ Computes the left-hand product of matrix &lt;A&gt; by vector &lt;b&gt;, that is
 
 Equivalent infix notation:        A * b
 </div><div class=page id="RightMult">
-Node: RightMult,  Next: <a href="#LUdecomp">LUdecomp</a>,  Prev: <a href="#LeftMult">LeftMult</a>,  Up: <a href="#Top">Top</a>
+Node: (matrix)RightMult,  Next: <a href="#LUdecomp">LUdecomp</a>,  Prev: <a href="#LeftMult">LeftMult</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>SUBROUTINE RightMult(ARRAY(*) OF number c^,a; ARRAY(*,*) OF number B)</h3>
@@ -106,7 +111,7 @@ Computes CONJG(a)*B
 
 Equivalent infix notation:        a | B
 </div><div class=page id="LUdecomp">
-Node: LUdecomp,  Next: <a href="#LeftLUDiv">LeftLUDiv</a>,  Prev: <a href="#RightMult">RightMult</a>,  Up: <a href="#Top">Top</a>
+Node: (matrix)LUdecomp,  Next: <a href="#LeftLUDiv">LeftLUDiv</a>,  Prev: <a href="#RightMult">RightMult</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>SUBROUTINE LUdecomp(POINTER TO ARRAY(*,*) OF number A)</h3>
@@ -118,7 +123,7 @@ Computes the LU decomposition of (square or banded) matrix A in place.
 
 Returns the LU decomposition of A, which remains untouched.
 </div><div class=page id="LeftLUDiv">
-Node: LeftLUDiv,  Next: <a href="#RightLUDiv">RightLUDiv</a>,  Prev: <a href="#LUdecomp">LUdecomp</a>,  Up: <a href="#Top">Top</a>
+Node: (matrix)LeftLUDiv,  Next: <a href="#RightLUDiv">RightLUDiv</a>,  Prev: <a href="#LUdecomp">LUdecomp</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>SUBROUTINE LeftLUDiv(POINTER TO ARRAY(*) OF number x; ARRAY(*,*) OF number A; ARRAY(*) OF number t)</h3>
@@ -131,7 +136,7 @@ matrix &lt;A&gt;, that is A^-1*t. A must have been preventively treated with eit
 </table></nav>
 Equivalent infix notation:        A \ t
 </div><div class=page id="RightLUDiv">
-Node: RightLUDiv,  Next: <a href="#Lanczos">Lanczos</a>,  Prev: <a href="#LeftLUDiv">LeftLUDiv</a>,  Up: <a href="#Top">Top</a>
+Node: (matrix)RightLUDiv,  Next: <a href="#Lanczos">Lanczos</a>,  Prev: <a href="#LeftLUDiv">LeftLUDiv</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>SUBROUTINE RightLUDiv(ARRAY(*) OF number x^,t; ARRAY(*,*) OF number A)</h3>
@@ -144,7 +149,7 @@ matrix &lt;A&gt;, that is t*A^-1. A must have been preventively treated with eit
 </table></nav>
 Equivalent infix notation:        t / A
 </div><div class=page id="Lanczos">
-Node: Lanczos,  Next: <a href="#PLU">PLU</a>,  Prev: <a href="#RightLUDiv">RightLUDiv</a>,  Up: <a href="#Top">Top</a>
+Node: (matrix)Lanczos,  Next: <a href="#PLU">PLU</a>,  Prev: <a href="#RightLUDiv">RightLUDiv</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 SUBROUTINE Lanczos(POINTER TO ARRAY(*) OF number x
@@ -154,7 +159,7 @@ SUBROUTINE Lanczos(POINTER TO ARRAY(*) OF number x
                    ARRAY(*,*) OF number M
                    ARRAY(*) OF number y1; REAL eps)
 </div><div class=page id="PLU">
-Node: PLU,  Next: <a href="#INVERT">INVERT</a>,  Prev: <a href="#Lanczos">Lanczos</a>,  Up: <a href="#Top">Top</a>
+Node: (matrix)PLU,  Next: <a href="#INVERT">INVERT</a>,  Prev: <a href="#Lanczos">Lanczos</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>POINTER TO INVMAT FUNCTION PLU(ARRAY(*,*) OF number m)</h3>
@@ -164,7 +169,7 @@ Returns an appropriate INVMAT compound variable containing the LU decomposition
 of A, which can be passed to either <a href="#LeftLUDiv">LeftLUDiv</a> or <a href="#RightLUDiv">RightLUDiv</a> and
 must be explicitly freed by <a href="#(cpl">FREE</a>)NEW. once no longer needed.
 </div><div class=page id="INVERT">
-Node: INVERT,  Next: <a href="#DET">DET</a>,  Prev: <a href="#PLU">PLU</a>,  Up: <a href="#Top">Top</a>
+Node: (matrix)INVERT,  Next: <a href="#DET">DET</a>,  Prev: <a href="#PLU">PLU</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>SUBROUTINE INVERT(ARRAY(*,*) OF number mat^, RESULT^)</h3>
@@ -177,7 +182,7 @@ internally.
 Computes the inverse of square matrix &lt;mat&gt; in place. Uses <a href="#PLU">PLU</a>
 internally.
 </div><div class=page id="DET">
-Node: DET,  Prev: <a href="#INVERT">INVERT</a>,  Up: <a href="#Top">Top</a>
+Node: (matrix)DET,  Prev: <a href="#INVERT">INVERT</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>number FUNCTION DET(ARRAY(*,*) OF number mat)</h3>

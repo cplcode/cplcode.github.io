@@ -1,27 +1,32 @@
-<!DOCTYPE html><html lang=en>
-<head><title>The CPL Programming Language and Compiler</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="author" content="Paolo Luchini">
-<meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <title>The CPL Programming Language and Compiler</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Paolo Luchini">
+  <meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
+  <meta name="description" content="CPL is a programming language designed and developed by Paolo Luchini during 1993-2020. Documentation and distribution offered for download includes a compiler, interpreter and text editor.">
+  <meta name="keywords" content="cpl CPL code program programming language compiler interpreter editor fri FRI makecpl icpl edit">
+  """"<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../singlecol.css">
+  <style>
+    .page {
+      display:none;
+    }
+    .page:target {
+      display: block;
+      min-height:100%;
+      white-space: pre;
+      }
+    th {
+      text-align:left;
+    }
+  </style>
 <link rel="canonical" href="https://CPLcode.net/Documentation/fri.html#Top">
-<link rel="stylesheet" href="../singlecol.css">
-<style>
-.page {
-display:none;
-}
-.page:target {
-display: block;
-min-height:100%;
-white-space: pre;
-}
-th {
-text-align:left;
-}
-</style></head>
+</head>
 <body><div>
 </div><div class=page id="Top">
-Node: Top, Next: <a href="#Opcodes">Opcodes</a>, Up: <a href="cpl.html#makecpl">(cpl)makecpl</a>
+Node: (fri)Top, Next: <a href="#Opcodes">Opcodes</a>, Up: <a href="cpl.html#makecpl">(cpl)makecpl</a>
 <hr>
 
 <h2>The FRI interpreter</h2>
@@ -35,7 +40,7 @@ Node: Top, Next: <a href="#Opcodes">Opcodes</a>, Up: <a href="cpl.html#makecpl">
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table></nav>
 </div><div class=page id="FRI%20architecture">
-Node: FRI architecture, Next: <a href="#Opcodes">Opcodes</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
+Node: (fri)FRI architecture, Next: <a href="#Opcodes">Opcodes</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>FRI architecture</h3>
@@ -81,7 +86,7 @@ byte sequence attains its end (or an explicit end opcode) or, as a failure,
 when the dictionary runs out of rules. For debugging purposes, it can also be
 terminated in an error message by suitable opcodes.
 </div><div class=page id="Opcodes">
-Node: Opcodes, Next: <a href="#Command%20line">Command line</a>, Prev: <a href="#FRI%20architecture">FRI architecture</a>, Up: <a href="#Top">Top</a>
+Node: (fri)Opcodes, Next: <a href="#Command%20line">Command line</a>, Prev: <a href="#FRI%20architecture">FRI architecture</a>, Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>Language opcodes</h3>
@@ -286,7 +291,7 @@ ascii        ascii        outputs the character whose ascii code appears in hexa
 shell command shell command  passes the top output string to the operating-
                 system shell for execution as a command.
 </div><div class=page id="Command%20line">
-Node: Command line, Prev: <a href="#Opcodes">Opcodes</a>, Up: <a href="#Top">Top</a>
+Node: (fri)Command line, Prev: <a href="#Opcodes">Opcodes</a>, Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>The fri command line</h3>

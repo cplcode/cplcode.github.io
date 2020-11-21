@@ -1,31 +1,35 @@
-<!DOCTYPE html><html lang=en>
-<head><title>The CPL Programming Language and Compiler</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="author" content="Paolo Luchini">
-<meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="canonical" href="https://CPLcode.net/Documentation/readline.html#Top">
-<link rel="stylesheet" href="../singlecol.css">
-<style>
-.page {
-display:none;
-}
-.page:target {
-display: block;
-min-height:100%;
-white-space: pre;
-}
-th {
-text-align:left;
-}
-</style></head>
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <title>The CPL Programming Language and Compiler</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Paolo Luchini">
+  <meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
+  <meta name="description" content="CPL is a programming language designed and developed by Paolo Luchini during 1993-2020. Documentation and distribution offered for download includes a compiler, interpreter and text editor.">
+  <meta name="keywords" content="cpl CPL code program programming language compiler interpreter editor fri FRI makecpl icpl edit">
+  """"<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../singlecol.css">
+  <style>
+    .page {
+      display:none;
+    }
+    .page:target {
+      display: block;
+      min-height:100%;
+      white-space: pre;
+      }
+    th {
+      text-align:left;
+    }
+  </style>
+<link rel="canonical" href="https://CPLcode.net/Documentation/editor.html#Top">
+</head>
 <body><div>
 </div><div class=page id="Top">
-Node: Top, Next: <a href="#readline">readline</a>,  Up: <a href="cpl.html#icpl">(cpl)icpl</a>
+Node: (editor)Top, Next: <a href="#readline">readline</a>,  Up: <a href="cpl.html#icpl">(cpl)icpl</a>
 <hr>
-This documentation is offered through the GNU "info" reader.
 
-<h1>Readline assisted console input</h1>
+<h1>icpl-embedded line and full-screen editor</h1>
 
 Bash-like command completion and command history are traditionally provided by
 the GNU readline library, which supplies the familiar Tab and Up Arrow
@@ -33,10 +37,10 @@ commands, input logging and more. The purpose of readline is to allow the user
 to edit each command line before committing it, and to keep a history of
 previous commands for rapid reuse.
 
-In icpl, console input is handled through an independent implementation of the 
-readline library (readlinedit.cpl, also available for user programs), which
-combines the most essential features of the traditional readline and a
-full-screen editor.
+In icpl, console input is handled through an independent, limited implement-
+ation of the readline library (also available to user programs that are run
+under icpl), which serves double purpose, when requested, as a full-screen
+editor.
 
 icpl readline accepts cursor-movement and other commands in one of three
 equivalent ways: dedicated editing keys, vi-like single-letter commands, and
@@ -67,10 +71,10 @@ except that history lines are now edited in place.
 <tr><td><a href="#full-screen">full-screen</a>:</td><td>history and general-file editor with multiple tabs</td></tr>
 </table></nav>
 </div><div class=page id="readline">
-Node: readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
+Node: (editor)readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
 <hr>
 
-<h3>Readline mode</h3>
+<h2>Readline assisted console input</h2>
 
 In readline mode the following editing keys are available:
 
@@ -93,10 +97,10 @@ In readline mode the following editing keys are available:
 - Esc u, Esc U: Undo, respectively redo, the last modification.
 - Esc \, Ctrl-\: add next (special or control) character verbatim
 </div><div class=page id="full-screen">
-Node: full-screen, Next: <a href="#Select">Select</a>, Prev: <a href="#readline">readline</a>, Up: <a href="#Top">Top</a>
+Node: (editor)full-screen, Next: <a href="#Select">Select</a>, Prev: <a href="#readline">readline</a>, Up: <a href="#Top">Top</a>
 <hr>
 
-<h3>An icpl-embedded full-screen editor</h3>
+<h2>Full-screen editor</h2>
 
 The following editing keys are available:
 
@@ -163,7 +167,7 @@ screen is currently in view.
 <tr><td><a href="#Undo">Undo</a>:</td><td>and redo</td></tr>
 </table></nav>
 </div><div class=page id="Select">
-Node: Select, Next: <a href="#Indentation">Indentation</a>, Prev: <a href="#full-screen">full-screen</a>, Up: <a href="#Top">Top</a>
+Node: (editor)Select, Next: <a href="#Indentation">Indentation</a>, Prev: <a href="#full-screen">full-screen</a>, Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>Select, Insert and Delete</h3>
@@ -211,7 +215,7 @@ also available, and necessary if you want to copy some text from/to the X
 clipboard. This is accessed by pressing Shift together with the corresponding
 xterm mouse button (left button to select, center button to paste).
 </div><div class=page id="Indentation">
-Node: Indentation, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a>
+Node: (editor)Indentation, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>CPL syntax-sensitive indentation and completion</h3>
@@ -241,7 +245,7 @@ Esc + : indent the current selection one more space to the right,
 Esc - : unindent the current selection by one space to the left,
 Esc = : even the margin of the current selection and indent as to CPL syntax.
 </div><div class=page id="Find">
-Node: Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#Top">Top</a>
+Node: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>Find and replace</h3>
@@ -264,7 +268,7 @@ if searching backwards) of file.
 Enter repeats the last command, possibly the last (forward or backward) find
 or the last replace-and-find-again.
 </div><div class=page id="Undo">
-Node: Undo,  Prev: <a href="#Find">Find</a>,  Up: <a href="#Top">Top</a>
+Node: (editor)Undo,  Prev: <a href="#Find">Find</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>Undo and redo</h3>

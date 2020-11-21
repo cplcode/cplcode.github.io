@@ -1,27 +1,32 @@
-<!DOCTYPE html><html lang=en>
-<head><title>The CPL Programming Language and Compiler</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="author" content="Paolo Luchini">
-<meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <title>The CPL Programming Language and Compiler</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Paolo Luchini">
+  <meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
+  <meta name="description" content="CPL is a programming language designed and developed by Paolo Luchini during 1993-2020. Documentation and distribution offered for download includes a compiler, interpreter and text editor.">
+  <meta name="keywords" content="cpl CPL code program programming language compiler interpreter editor fri FRI makecpl icpl edit">
+  """"<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../singlecol.css">
+  <style>
+    .page {
+      display:none;
+    }
+    .page:target {
+      display: block;
+      min-height:100%;
+      white-space: pre;
+      }
+    th {
+      text-align:left;
+    }
+  </style>
 <link rel="canonical" href="https://CPLcode.net/Documentation/parallel.html#Top">
-<link rel="stylesheet" href="../singlecol.css">
-<style>
-.page {
-display:none;
-}
-.page:target {
-display: block;
-min-height:100%;
-white-space: pre;
-}
-th {
-text-align:left;
-}
-</style></head>
+</head>
 <body><div>
 </div><div class=page id="Top">
-Node: Top,  Next: <a href="#nonparallel">nonparallel</a>,  Prev: <a href="graphics.html#Top">(graphics)</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a>
+Node: (parallel)Top,  Next: <a href="#nonparallel">nonparallel</a>,  Prev: <a href="graphics.html#Top">(graphics)</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a>
 <hr>
 
 <h2>Parallel computing</h2>
@@ -37,7 +42,7 @@ Node: Top,  Next: <a href="#nonparallel">nonparallel</a>,  Prev: <a href="graphi
 <tr><td><a href="#tcpclient">tcpclient</a>:</td><td>connect to tcp/ip socket from another machine</td></tr>
 </table></nav>
 </div><div class=page id="SHARED">
-Node: SHARED,  Next: <a href="#PARALLEL">PARALLEL</a>,  Up: <a href="#Top">Top</a>
+Node: (parallel)SHARED,  Next: <a href="#PARALLEL">PARALLEL</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>SHARED</h3>
@@ -51,7 +56,7 @@ Example:
 
 SHARED ARRAY(0..100) OF REAL vec
 </div><div class=page id="PARALLEL">
-Node: PARALLEL, Next: <a href="#synchronization">synchronization</a>, Prev: <a href="#SHARED">SHARED</a>, Up: <a href="#Top">Top</a>
+Node: (parallel)PARALLEL, Next: <a href="#synchronization">synchronization</a>, Prev: <a href="#SHARED">SHARED</a>, Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>PARALLEL</h3>
@@ -68,7 +73,7 @@ A PARALLEL LOOP is a loop all instances of which occur in parallel.
 Synchronization occurs before the LOOP terminates and the program is allowed to
 continue.
 </div><div class=page id="synchronization">
-Node: synchronization, Next: <a href="#tcpserver">tcpserver</a>, Prev: <a href="#PARALLEL">PARALLEL</a>, Up: <a href="#Top">Top</a>
+Node: (parallel)synchronization, Next: <a href="#tcpserver">tcpserver</a>, Prev: <a href="#PARALLEL">PARALLEL</a>, Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>synchronization</h3>
@@ -85,7 +90,7 @@ command
 
 WAKEUP
 </div><div class=page id="nonparallel">
-Node: nonparallel,  Next: <a href="symbolic.html#Top">(symbolic)</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a>
+Node: (parallel)nonparallel,  Next: <a href="symbolic.html#Top">(symbolic)</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a>
 <hr>
 
 <h2>nonparallel.cpl</h2>

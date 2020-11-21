@@ -9,6 +9,7 @@
       body {
         width:100%;
         min-height:100%;
+        margin:0;
         font-family:Arial,Sans-serif;
         background-image:url('CPL-logo.png');
         background-size:66px 41px;
