@@ -13,17 +13,30 @@
         font-family:Arial,Sans-serif;
         /* background-color:WhiteSmoke; */
       }
-      #header {
+      #leftcol {
         position:fixed;
         top:20px;
-        left:0;
+        left:15px;
+        z-index:-1;
+        background-image:url("CPL-logo.png");
+        background-repeat:no-repeat;
+        background-size:cover;
+        width:66px;
+        height:41px;
       }
-      body div {
+      #transparent {
+        position:fixed;
+        top:20px;
+        left:15px;
+        width:66px;
+        height:41px;
+      }
+      .page {
         background-color:white;
         text-align:justify;
+        margin:auto;
         max-width:40em;
         min-height:100%;
-        margin:auto;
         padding-left:1em; padding-right:1em;
 }
       code{
