@@ -12,11 +12,11 @@
         margin:0;
         font-family:Arial,Sans-serif;
         /* background-color:WhiteSmoke; */
-        background-image:url('CPL-logo.png');
-        background-size:66px 41px;
-        background-position:15px 20px;
-        background-repeat:no-repeat;
-        background-attachment:fixed;
+      }
+      #header {
+        position:fixed;
+        top:20px;
+        left:0;
       }
       body div {
         background-color:white;
