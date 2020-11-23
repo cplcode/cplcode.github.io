@@ -753,10 +753,8 @@ The keyword INLINE prefixed to a <a href="#SUBROUTINE">SUBROUTINE</a> or <a href
 declaration (either in long or short form) generates a compile-time macro that
 is inserted in place of each call to the subroutine.
 
-<nav><table>
-<tr><td><a href="#note%20EXIT">note EXIT</a>:</td><td>cannot presently be used in INLINE functions.</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
+<a href="#EXIT">EXIT</a> cannot presently be used in INLINE functions.
+
 See also <a href="#INLINE%20LOOP">INLINE LOOP</a>.
 </div><div class=page id="FOLLOWS">
 Node: (cpl)FOLLOWS,  Next: <a href="#OPTIONAL">OPTIONAL</a>,  Prev: <a href="#INLINE">INLINE</a>,  Up: <a href="#Functions">Functions</a>
@@ -935,9 +933,7 @@ are to be reassigned within the subroutine's body.
 Notice that the value assigned to a VARIABLE parameter is invisible after the
 subroutine returns. In order to change the value of variables which exist
 outside the subroutine, the corresponding formal parameter must be declared
-<nav><table>
-<tr><td><a href="#note%20POINTER">note POINTER</a>:</td><td>. Indeed VARIABLE behaviour of a formal parameter is seldom</td></tr>
-</table></nav>
+<a href="#POINTER">POINTER</a>. Indeed VARIABLE behaviour of a formal parameter is seldom
 needed, and making CONSTANT the default improves error catching.
 
 When a VARIABLE identifier is used in an expression, it initially stands for
@@ -1116,9 +1112,7 @@ ALL</a> looping when requested. The actual upper and lower bounds of an array
 index can always be recovered through the functions <a href="#HI">HI</a> and <a href="#LO">LO</a>,
 and the total number of elements through the function <a href="#LENGTH">LENGTH</a>. In the
 case of multidimensional arrays, these functions apply to the first index only;
-<nav><table>
-<tr><td><a href="#note%20subarray">note subarray</a>:</td><td>selection can be used in order to extract the bounds of other</td></tr>
-</table></nav>
+<a href="#subarray">subarray</a> selection can be used in order to extract the bounds of other
 indices. Alternatively, LO1, LO2, LO3 and HI1, HI2, HI3 can be used to refer to
 the first three indices.
 
@@ -1200,9 +1194,7 @@ Node: (cpl)STRING, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#A
 Type declaration STRING is a synonim for ARRAY(*) OF <a href="#CHAR">CHAR</a>, and can be
 used wherever the last can. In particular, a STRING can be subscripted or <a href="#subarray">
 subarray</a> extracted, and its bounds and length are available through functions
-<nav><table>
-<tr><td><a href="#note%20LO">note LO</a>:</td><td>, <a href="#HI">HI</a>, and <a href="#LENGTH">LENGTH</a>. STRING valued constants (which are</td></tr>
-</table></nav>
+<a href="#LO">LO</a>, <a href="#HI">HI</a>, and <a href="#LENGTH">LENGTH</a>. STRING valued constants (which are
 always indexed starting from 0) can be generated either at compile time, as
 quoted strings of characters, or dynamically through <a href="#String">String</a>
 concatenation, and can either be given a name through <a href="#CONSTANT">implicit:
@@ -1941,10 +1933,8 @@ then V(****) is a onedimensional "view" of the same array (as opposed to
 V(*,*,*,*) which represents its original arrangement). By the same token
 V(*,**,*) is the three-dimensional array obtained by compounding the two
 central indices into one. Bounds of a compound index can be retrieved by the
-<nav><table>
-<tr><td><a href="#LO">note:LO</a>:</td><td>and <a href="#HI">:HI</a>. functions as usual.</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
+<a href="#LO">:LO</a>. and <a href="#HI">:HI</a>. functions as usual.
+
 Compound indices are restricted to arrays (or portions of them) that are
 contiguous in memory. This generally precludes their use after subarray
 operations that permute, stride, or restrict the range of indices.
@@ -1968,10 +1958,8 @@ whole array.
 
 Some <a href="#builtin">builtin</a> functions operate on whole arrays. A larger set of vector
 and matrix algebra operations are supported by the <a href="#(matrix">rbmat:(matrix</a>). and
-<nav><table>
-<tr><td><a href="matrix.html#Top">note cbmat:(matrix)</a>:</td><td>libraries.</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
+<a href="#(matrix">cbmat:(matrix</a>). libraries.
+
 Matrix transposition is provided as the <a href="#subarray">TRANSPOSED:subarray</a>. operation.
 
 All ARRAY operations can also be applied to <a href="#STORED">STORED</a> ARRAYs and <a href="#STRUCTURED">
@@ -2147,18 +2135,14 @@ implicitly declared if they are <a href="#CONSTANT">CONSTANT</a> and be part of 
 like all other variables. Association to a file is obtained through <a href="#OPEN">
 OPEN</a> and <a href="#CREATE">CREATE</a>. A FILE variable is translated to the C type FILE*,
 and can be used in C library I/O functions transparently accessed through the
-<nav><table>
-<tr><td><a href="#note%20C%20Interface">note C Interface</a>:</td><td>.</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
+<a href="#C%20Interface">C Interface</a>.
+
 Sequential binary I/O is performed by adding the <a href="#BINARY">BINARY</a> keyword to the
 READ and WRITE instructions. No distinction is made between text and binary
 files at the filesystem level.
 
 Random-access binary I/O is where cpl really differs from other languages; see
-<nav><table>
-<tr><td><a href="#note%20STORED">note STORED</a>:</td><td>. A more traditional and lower-level method of random access is</td></tr>
-</table></nav>
+<a href="#STORED">STORED</a>. A more traditional and lower-level method of random access is
 described in <a href="#POSITION">POSITION</a>.
 
 <nav><table>
@@ -2222,11 +2206,9 @@ If &lt;file&gt; is present, "WRITE TO" may be omitted.
         &lt;value&gt;[:&lt;format&gt;]
 
 or ",".        &lt;value&gt; can be of any type except POINTER (which if present undergoes
-<nav><table>
-<tr><td><a href="#note%20Concealed%20Pointer%20Lookup">note Concealed Pointer Lookup</a>:</td><td>). Compound types such as <a href="#ARRAY">ARRAY</a> and</td></tr>
-<tr><td><a href="#note%20STRUCTURE">note STRUCTURE</a>:</td><td>are printed in a standard format which is understandable to</td></tr>
-<tr><td><a href="#note%20READ">note READ</a>:</td><td>. (If STRUCTURE elements are POINTERs, however, they are printed as</td></tr>
-</table></nav>
+<a href="#Concealed%20Pointer%20Lookup">Concealed Pointer Lookup</a>). Compound types such as <a href="#ARRAY">ARRAY</a> and
+<a href="#STRUCTURE">STRUCTURE</a> are printed in a standard format which is understandable to
+<a href="#READ">READ</a>. (If STRUCTURE elements are POINTERs, however, they are printed as
 the string "POINTER" and cannot be read back.) If a SUBROUTINE named WRITE is
 defined with first argument of type FILE and second argument of a user-defined
 TYPE, it is used to print variables of such type. Primitive types are printed
@@ -2253,9 +2235,7 @@ expression is a single identifier, this format can be read back by the
 statement READ BY NAME.
 
 WRITE syntax may also be used to convert any expression into a string. See
-<nav><table>
-<tr><td><a href="#note%20String">note String</a>:</td><td>conversion.</td></tr>
-</table></nav>
+<a href="#String">String</a>conversion.
 </div><div class=page id="READ">
 Node: (cpl)READ,  Next: <a href="#FROM">FROM</a>,  Prev: <a href="#WRITE">WRITE</a>,  Up: <a href="#Input/Output">Input/Output</a>
 <hr>
@@ -2275,9 +2255,7 @@ the file is implicitly opened before READ is executed and closed afterwards. If
 variable, which can be of any type except POINTER. Compound types such as <a href="#ARRAY">
 ARRAY</a> and <a href="#STRUCTURE">STRUCTURE</a> are also accepted; they are expected to appear in
 the same format as produced by <a href="#WRITE">WRITE</a>. &lt;variable&gt; can also be a literal
-<nav><table>
-<tr><td><a href="#note%20STRING">note STRING</a>:</td><td>, which is then expected to appear verbatim in the input file. If</td></tr>
-</table></nav>
+<a href="#STRING">STRING</a>, which is then expected to appear verbatim in the input file. If
 &lt;variable&gt; is an ARRAY OF CHAR, characters are read until the array is full or
 a newline appears. In all other cases, blanks, tabs and newlines are
 automatically skipped. Lines starting with "!" are considered comments and
@@ -2541,10 +2519,8 @@ returns YES if there are characters available for input on file descriptor
 been pressed before reading. Notice that if the terminal is in line-buffered
 mode (as by default Unix terminals are), characters become available only
 after a line feed has been entered. Terminal mode may be altered by
-<nav><table>
-<tr><td><a href="#note%20CHARbyCHAR">note CHARbyCHAR</a>:</td><td>.</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
+<a href="#CHARbyCHAR">CHARbyCHAR</a>.
+
         INPUTREADY()
 
 is a shorthand for INPUTREADY(stdin).
@@ -2752,9 +2728,7 @@ non-terminating loop.
 Both INTEGER and REAL types are allowed. &lt;index&gt; may be an already existing
 variable or be implicitly declared by the loop itself (<a href="#Declarations">Declarations</a>).
 In the latter case it acquires the type of the loop bounds and behaves as a
-<nav><table>
-<tr><td><a href="#note%20CONSTANT">note CONSTANT</a>:</td><td>within the body of the loop. If the index is REAL, BY cannot</td></tr>
-</table></nav>
+<a href="#CONSTANT">CONSTANT</a> within the body of the loop. If the index is REAL, BY cannot
 be omitted.
 
 FOR clauses can appear in a <a href="#LOOP">LOOP</a>, <a href="#DO">DO</a> and <a href="#Looping%20operator">Looping
@@ -3167,9 +3141,7 @@ Node: (cpl)cpl,  Next: <a href="#fri">fri</a>,  Prev: <a href="#makecpl">makecpl
 
 The CPL compiler itself is not an executable file, but rather a formal
 description of the language that is interpreted by the Formal Rule Interpreter
-<nav><table>
-<tr><td><a href="#note%20fri">note fri</a>:</td><td>. The cpl file is made executable by the shell convention of having</td></tr>
-</table></nav>
+<a href="#fri">fri</a>. The cpl file is made executable by the shell convention of having
 #!/usr/local/fri/fri as its first line. Where this convention is understood,
 the CPL-to-C compilation command is
 

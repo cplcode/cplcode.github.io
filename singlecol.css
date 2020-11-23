@@ -30,6 +30,13 @@
         left:15px;
         width:66px;
         height:41px;
+        border-radius:5px;
+      }
+      #transparent:hover {
+        background-color:rgba(188, 194, 214,0.5);
+        background-image:url("CPL-logo.png");
+        background-repeat:no-repeat;
+        background-size:cover;
       }
       .page {
         background-color:white;
