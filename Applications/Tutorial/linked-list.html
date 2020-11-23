@@ -1,0 +1,24 @@
+<html><body style="font-size:large"><pre>
+! Linked-list version of the GaussSeidel update
+TYPE CELL=STRUCTURE(POINTER TO CELL next; INTEGER col; REAL var, rhs)
+POINTER TO CELL RowStart(ROWMIN..ROWMAX)
+INLINE REAL FUNCTION val(POINTER TO POINTER TO CELL p; INTEGER c)
+LOOP WHILE p.col&lt;c: p=p.next
+IF p.col=c THEN RESULT=p.var ELSE RESULT=0
+END val
+LOOP FOR i=LO+1 TO HI-1
+POINTER TO CELL above=RowStart(i+1), center=RowStart(i),
+left=RowStart(i), right=RowStart(i), below=RowStart(i-1)
+LOOP WHILE center#NULL
+j=center.col
+center.var=[val(above,j)+val(below,j)+val(left,j-1)+
+val(right,j+1)]/4 + center.rhs
+center=center.next
+REPEAT LOOP
+REPEAT LOOP
+!(
+C-like (or Pascal-like) structures and pointers can be declared, but dereferencing is implicit
+(no * or &amp; or  explicitly appears in their usage). Variables can be declared and initialized in
+one statement.
+!)
+</pre></body></html>

@@ -1,0 +1,27 @@
+<html><body style="font-size:large"><pre>
+! Levinson algorithm
+USE cbmat
+SUBROUTINE levinson(COMPLEX xg(*,*), A(*,*,*), tg(*,*))
+x=xg(LO+(*)); t==tg(LO+(*))
+N==A.HI; TYPEOF(A(0)) x1(0..N), x2(-N..0)
+x1(0)=INV(A(0))
+x(0)=x1(0)*t(0)
+IF N&gt;0 THEN x2(0)=x1(0); x(1..HI)=0; x1(1..HI)=0; x2(LO..-1)=0
+LOOP FOR n=1 TO N
+a=SUM A(i-n)*x1(i) FOR i=0 TO n-1
+b=SUM A(i+n)*x2(i) FOR i=1-n TO 0
+TYPEOF(A(0)) c=1; c=c-b*a; cinv=PLU(c)
+TYPEOF(A(0)) d=1; d=d-a*b; dinv=PLU(d)
+DO temp1=x1(i,k)-x2(i-n,k)*a; temp2=x2(i-n,k)-x1(i,k)*b;
+x2(i-n,k)=temp2/dinv; x1(i,k)=temp1/cinv FOR i=0 TO n AND ALL k
+TYPEOF(t(n)) tt=t(n); DO tt= -A(i-n)*x(i) FOR i=0 TO n-1
+DO x(i)= +x2(i-n)*tt FOR i=0 TO n
+REPEAT
+END levinson
+!(
+A multidimensional-array manipulation algorithm 2 using several constructions that will be
+expounded later. CPL natively includes a SUM mation operator. In addition, libraries can provide
+  language extensions. In this example, the cbmat library (which will appear in 2.5.3) adds
+matrix-algebra operations.
+!)
+</pre></body></html>

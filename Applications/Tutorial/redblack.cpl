@@ -1,0 +1,13 @@
+! Red-black update for the Poisson equation
+INTEGER nx,ny
+ARRAY(3..nx,8..ny) OF REAL var,rhs
+LOOP FOR parity=0 TO 1 AND i=LO+1 TO HI-1 AND j=LO+1 +
+  (i+LO+1+parity) MOD 2 TO HI-1 BY 2
+  var(i,j)=[var(i,j+1)+var(i,j-1)+var(i+1,j)+var(i-1,j)]/4 +
+    rhs(i,j)
+REPEAT LOOP
+!(
+Variables are allowed as array dimensions. The bounds of loop indices are automatically
+extracted from arrays the indices are used in, and made available through the predefined LO and
+HI variables.
+!)

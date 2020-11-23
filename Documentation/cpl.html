@@ -3278,17 +3278,17 @@ Node: (cpl)icpl commands,  Next: <a href="#Library">Library</a>,  Prev: <a href=
 <tr><td><a href="#$">$</a>:</td><td>last result</td></tr>
 <tr><td><a href="#command%20interpretation">icpl:command interpretation</a>:</td><td>of a run-time generated CPL statement</td></tr>
 <tr><td><a href="#clear">clear</a>:</td><td>cancel variable declaration and free its associated storage</td></tr>
-<tr><td><a href="#save">save</a>:</td><td>save command history to file</td></tr>
-<tr><td><a href="#load">load</a>:</td><td>load and execute command history from file</td></tr>
-<tr><td><a href="#edit">edit</a>:</td><td>open file in new full-screen window</td></tr>
-<tr><td><a href="#close">close</a>:</td><td>close present full-screen window</td></tr>
+<tr><td><a href="editor.html#readline">save:(editor)readline</a>:</td><td>save command history to file</td></tr>
+<tr><td><a href="editor.html#readline">load:(editor)readline</a>:</td><td>load and execute command history from file</td></tr>
+<tr><td><a href="editor.html#full-screen">edit:(editor)full-screen</a>:</td><td>open file in new full-screen window</td></tr>
+<tr><td><a href="editor.html#full-screen">close:(editor)full-screen</a>:</td><td>close present full-screen window</td></tr>
 <tr><td><a href="#q">q</a>:</td><td>exit icpl (also :q, useful if q exists as a variable)</td></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table></nav>
-A most interesting feature of icpl is its capability to transparently USE
-(<a href="#USE">USE</a>) a compiled CPL program or #include (<a href="#C%20interface">C interface</a>) a
-compiled C program. All functions and variables in such programs become
-accessible at the cpl&gt; prompt as well as at the <a href="#?">?</a> request for help.
+A powerful feature of icpl is its capability to transparently USE (<a href="#USE">USE</a>)
+a compiled CPL program or #include (<a href="#C%20interface">C interface</a>) a compiled C program.
+All functions and variables in such programs become accessible at the cpl&gt;
+prompt as well as at the <a href="#?">?</a> request for info.
 
 For icpl to work, the Formal Rule Interpreter (<a href="#fri">fri</a>) must have been
 compiled with readline (<a href="editor.html#Top">(editor)</a>) and dynamic loading

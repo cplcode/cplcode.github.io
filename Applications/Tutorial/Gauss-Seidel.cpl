@@ -1,0 +1,8 @@
+ARRAY(0..20,0..40) OF REAL var,rhs
+! read some rhs and initial condition ...
+LOOP FOR i=1 TO 19 AND j=1 TO 39
+  var(i,j)=[var(i,j+1)+var(i,j-1)+var(i+1,j)+var(i-1,j)]/4 + rhs(i,j)
+REPEAT LOOP
+!(
+  A ! denotes a comment. A single LOOP instruction can loop over several indices. Indices are implicitly declared. Round, square and curly brackets are available to be used like in mathematics.
+!)
