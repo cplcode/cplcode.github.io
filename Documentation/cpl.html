@@ -431,7 +431,7 @@ In case actual headers must be generated in order to save space (or to
 distribute a library without source code) it is possible to USE a source file
 with empty subroutine bodies, since the compiler would not read the subroutine
 bodies anyway, provided the object file is artificially given a more recent
-date (for instance, through <a href="*manpages*.html#touch.)%20If%20this%20is%20not%20done,subroutines%20will%20be%20recompiled%20empty,%20with%20obviously%20unwanted%20results.In%20an%20interpreted%20program%20(*note%20icpl">(*manpages*)touch.) If this is not done,
+date (for instance, through <a href="*manpages*.html#touch.)%20If%20this%20is%20not%20done,%20subroutines%20will%20be%20recompiled%20empty,%20with%20obviously%20unwanted%20results.%20%20In%20an%20interpreted%20program%20(*note%20icpl">(*manpages*)touch.) If this is not done,
 subroutines will be recompiled empty, with obviously unwanted results.
 
 In an interpreted program (*note icpl</a>) just as well, USE loads a separately
@@ -706,7 +706,7 @@ In short form:
 where &lt;single-line block&gt; is a sequence of statements separated by semicolons
 and terminated by the first newline.
 
-The keyword SUBROUTINE is also used to declare variables of <a href="#Subroutinetype">Subroutine
+The keyword SUBROUTINE is also used to declare variables of <a href="#Subroutine%20type">Subroutine
 type</a>.
 </div><div class=page id="FUNCTION">
 Node: (cpl)FUNCTION, Next: <a href="#INLINE">INLINE</a>, Prev: <a href="#SUBROUTINE">SUBROUTINE</a>, Up: <a href="#Functions">Functions</a>
@@ -741,7 +741,7 @@ is a shorthand for
 
         RESULT=&lt;value&gt;; EXIT &lt;function&gt;. 
 
-The keyword FUNCTION is also used to declare variables of <a href="#Subroutinetype">Subroutine
+The keyword FUNCTION is also used to declare variables of <a href="#Subroutine%20type">Subroutine
 type</a>. The statement RETURN is also used in <a href="#interactive%20session">interactive session</a>.
 </div><div class=page id="INLINE">
 Node: (cpl)INLINE,  Next: <a href="#FOLLOWS">FOLLOWS</a>,  Prev: <a href="#FUNCTION">FUNCTION</a>,  Up: <a href="#Functions">Functions</a>
@@ -819,7 +819,7 @@ Variables, types and constants are denoted by identifiers introduced through
 the relevant declarations as follows. Identifiers cannot be duplicated as long
 as a previous declaration is in effect (in either the same or an enclosing
 block). An identifier which was not previously declared in the same or an
-enclosing block and does not coincide with a CPL keyword (see <a href="#Keywordindex">Keyword
+enclosing block and does not coincide with a CPL keyword (see <a href="#Keyword%20index">Keyword
 index</a>) is denoted as a newid below.
 
 A general declaration has the form:
@@ -1030,7 +1030,7 @@ this function returns the underlying base type.
 In order to test whether a variable is of a given type the <a href="#IS">IS</a>
 comparison operator is available. See also <a href="#Type%20identity">Type identity</a>.
 
-The memory size in bytes of a type or variable (useful when using the <a href="#Cinterface">C
+The memory size in bytes of a type or variable (useful when using the <a href="#C%20interface">C
 interface</a> or to estimate the memory requirements of the program) can be
 obtained from the pseudo-function
 
@@ -1111,7 +1111,7 @@ The special dimension * can only appear in the declaration of an ARRAY formal
 parameter or of a POINTER TO ARRAY, and declares a special type of pointer that
 remembers the current dimensions of the array together with its address. A
 formal parameter or pointer of this type can be dynamically assigned arrays
-of different length and still provide runtime range checking and <a href="#FORALL">FOR
+of different length and still provide runtime range checking and <a href="#FOR%20ALL">FOR
 ALL</a> looping when requested. The actual upper and lower bounds of an array
 index can always be recovered through the functions <a href="#HI">HI</a> and <a href="#LO">LO</a>,
 and the total number of elements through the function <a href="#LENGTH">LENGTH</a>. In the
@@ -1205,8 +1205,8 @@ subarray</a> extracted, and its bounds and length are available through function
 </table></nav>
 always indexed starting from 0) can be generated either at compile time, as
 quoted strings of characters, or dynamically through <a href="#String">String</a>
-concatenation, and can either be given a name through <a href="#Top">implicit:</a>
-CONSTANT. declaration or passed as actual parameters to function calls and
+concatenation, and can either be given a name through <a href="#CONSTANT">implicit:
+CONSTANT</a>. declaration or passed as actual parameters to function calls and
 further string concatenations.
 
 Quoted strings of characters, also known as literals, are delimited by either
@@ -1223,7 +1223,7 @@ constant, which is in turn implicitly converted to an INTEGER ASCII code.
 Strings may also be concatenated among themselves and with variables, see <a href="#String">
 conversion:String</a>.
 
-Standard C functions returning a char* (<a href="/usr/share/info/libc.html#%20String%20andArray%20Utilities">(/usr/share/info/libc) String and
+Standard C functions returning a char* (<a href="/usr/share/info/libc.html#%20String%20and%20Array%20Utilities">(/usr/share/info/libc) String and
 Array Utilities</a>) are also interpreted as generating a STRING value. Just
 as for all <a href="#C%20Interface">C Interface</a> calls, it is the programmer's responsibility to
 ensure that such C library functions are used consistently and to free any
@@ -1402,8 +1402,8 @@ Node: (cpl)Postfix, Next: <a href="#Subroutine%20type">Subroutine type</a>, Prev
 
 <h2>Postfix type modifiers</h2>
 
-A postfix ^ denotes either pointer dereferencing (<a href="#Concealed%20Pointer">^:Concealed Pointer</a>
-Lookup) or a short form of the POINTER declaration. For instance
+A postfix ^ denotes either pointer dereferencing (<a href="#Concealed%20Pointer%20Lookup">^:Concealed Pointer
+Lookup</a>) or a short form of the POINTER declaration. For instance
 
                         INTEGER a^,b^
 is a shorthand for
@@ -1555,8 +1555,8 @@ variables, denotes the comparison of the values of A and B rather than their
 addresses). Explicit type cast or pointer dereferencing may at times be
 necessary, and is always advised, where ambiguities exist.
 
-The type-testing operator IS is described in <a href="#Top">Object-oriented features:</a>
-DYNAMIC.
+The type-testing operator IS is described in <a href="#DYNAMIC">Object-oriented features:
+DYNAMIC</a>.
 </div><div class=page id="BOOLEAN%20ops">
 Node: (cpl)BOOLEAN ops, Next: <a href="#Conditional%20expressions">Conditional expressions</a>, Prev: <a href="#Comparison">Comparison</a>, Up: <a href="#Expressions">Expressions</a>
 <hr>
@@ -2493,7 +2493,7 @@ lost. If a possible file of the same name is to be preserved, <a href="#OPEN">OP
 should be used instead.
 
 "CREATE" calls the "open" system function with options O_RDWR|O_CREAT|O_TRUNC.
-For other requirements the "fopen" function may be called directly (<a href="#Cinterface">C
+For other requirements the "fopen" function may be called directly (<a href="#C%20interface">C
 interface</a>).
 </div><div class=page id="FLUSH">
 Node: (cpl)FLUSH,  Next: <a href="#POSITION">POSITION</a>,  Prev: <a href="#CREATE">CREATE</a>,  Up: <a href="#Input/Output">Input/Output</a>
@@ -2757,7 +2757,7 @@ In the latter case it acquires the type of the loop bounds and behaves as a
 </table></nav>
 be omitted.
 
-FOR clauses can appear in a <a href="#LOOP">LOOP</a>, <a href="#DO">DO</a> and <a href="#Loopingoperator">Looping
+FOR clauses can appear in a <a href="#LOOP">LOOP</a>, <a href="#DO">DO</a> and <a href="#Looping%20operator">Looping
 operator</a>. In addition to the two basic forms, they can have the following
 variants:
 
@@ -3066,7 +3066,7 @@ Node: (cpl)ELSE,  Next: <a href="#END">END</a>,  Prev: <a href="#DOWN">DOWN</a>,
 The auxiliary keyword ELSE is used in
 
 <nav><table>
-<tr><td><a href="#Menu*%20IF">Menu
+<tr><td><a href="#Menu%20%20*%20IF">Menu
 
 * IF</a>:</td><td>conditionally executed statements</td></tr>
 <tr><td><a href="#CASE">CASE</a>:</td><td>multiple-choice selection</td></tr>
@@ -3199,7 +3199,7 @@ time the compiler is invoked. Translators for many other languages can in
 principle be written in it. The interpreted nature of the CPL compiler, in
 addition to having allowed a smooth continued development and fine-tuning over
 the years, has the effect that its syntax can be extended on the fly by the
-compiled program itself with a few lines of FRI code written in a <a href="#FRISECTION">FRI
+compiled program itself with a few lines of FRI code written in a <a href="#FRI%20SECTION">FRI
 SECTION</a>. This possibility is used by <a href="#Library">Library</a> modules in order to
 define, for instance, complex-number notation, matrix-algebra operations or
 symbolic manipulations.
