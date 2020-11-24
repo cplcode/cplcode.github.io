@@ -13,39 +13,41 @@
         font-family:Arial,Sans-serif;
         /* background-color:WhiteSmoke; */
       }
-      #leftcol {
+      #seal {
         position:fixed;
         top:20px;
         left:15px;
-        z-index:-1;
         background-image:url("images/CPL-logo.png");
         background-repeat:no-repeat;
         background-size:cover;
         width:66px;
         height:41px;
-      }
-      #transparent {
-        position:fixed;
-        top:20px;
-        left:15px;
-        width:66px;
-        height:41px;
         border-radius:5px;
       }
-      #transparent:hover {
+      #seal:hover {
         background-color:rgba(188, 194, 214,0.5);
-        background-image:url("CPL-logo.png");
-        background-repeat:no-repeat;
-        background-size:cover;
       }
       .page {
+        position:absolute;
+        left:0; right:0;
+        margin:auto;
         background-color:white;
         text-align:justify;
-        margin:auto;
         max-width:40em;
         min-height:100%;
         padding-left:1em; padding-right:1em;
 }
       code{
         font-size: large;
+      }
+      iframe.news {
+        position:absolute;
+        max-width:40em;
+        height:10em;
+        left:0; right:0;
+        bottom:-12em;
+        margin:auto;
+        border:solid grey;
+        border-radius:4px;
+        background-color:white;
       }
