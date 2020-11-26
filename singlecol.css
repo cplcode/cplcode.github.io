@@ -37,7 +37,7 @@
         min-height:100%;
         padding-left:1em; padding-right:1em;
 }
-      code{
+      code {
         font-size: large;
       }
       iframe.news {
@@ -45,9 +45,14 @@
         max-width:40em;
         height:10em;
         left:0; right:0;
-        bottom:-12em;
+        top:3em;
         margin:auto;
         border:solid grey;
         border-radius:4px;
         background-color:white;
+      }
+      .download {
+        background-color:orange;
+        border-radius:0.1em;
+        text-decoration:none;
       }
