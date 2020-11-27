@@ -44,7 +44,7 @@
     <p>Only basic system tools are required: gzip, tar, cc, make, info, plus <a href="https://sourceforge.net/projects/gnuplot/" target=_blank>gnuplot</a> if you want graphics. For maximal compatibility the system compiler should be <a href="https://gcc.gnu.org" target=_blank>gcc</a> (as it is by default in Debian), but other compilers (e.g. <a href="https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/dpc-compiler.html" target=_blank>icc</a>) have also been used with success. However, CPL <a href="Documentation/cpl.html#Nested%20functions">nested functions</a> are implemented as C nested functions, a nonstandard gcc extension, and will become unavailable if a compiler other than gcc is used (or if the system's default gcc options disable them).</p>
 
     <h2>Storage requirements</h2>
-    <p>Unobtrusive by any standard! The uncompressed archive, inclusive of documentation and libraries, altogether takes about 1.5 megabytes (0.0015 GB)).</p>
+    <p>Unobtrusive by any standard. The uncompressed archive, inclusive of documentation and libraries, altogether takes about 1.5 megabytes (0.0015 GB)).</p>
 
     <h2>Code maturity</h2>
     <p>CPL is under active development; its tools sit at different levels of maturity. On a crude scale:</p>
@@ -54,14 +54,14 @@
     <tr><td class=circle style="background-color:red"></td> <td><a href="Documentation/readline.html#full-screen"><code>edit</code></a> is even younger. It may on rare occasions crash and lose your last edits, so be warned to save often (as everybody should do anyway). Nevertheless it is the editor of choice for the maintenance of CPL itself, writing this website included.</td></tr>
     </table>
     <p> On a finer scale, the optional CPL libraries provided in the package also come with different levels of maturity. See comments in each.</p>
-    <p>Mature or not as the code is, bugs will happen. If you believe you found a bug, or an inconsistency between the compiler's behaviour and its documentation, you will do an appreciable service to the CPL community by filing a bug report with <img src="images/bugreports.png" style="height:0.9em;vertical-align:bottom" alt="(.....)"> With your description please enclose a code snippet, as short as possible but complete enough that it compiles without modification and triggers the non-conforming behaviour.</p> 
+    <p>Mature or not as the code is, bugs will happen. If you believe you found a bug, or an inconsistency between the compiler's behaviour and its documentation, you will do an appreciable service to the CPL community by filing a bug report with <img src="images/bugreports.png" style="height:0.9em;vertical-align:bottom" alt="(.....)">&nbsp; With your description please enclose a code snippet, as short as possible but complete enough that it compiles without modification and triggers the non-conforming behaviour.</p> 
     <p>Version updates are denoted by their date. File names in the version archive include dates.</p>
 
     <p><strong>By downloading and unpacking or otherwise using this software (coming soon) you agree to be bound by its <a href="archive/LICENSE.html" target=_blank>LICENSE</a>.</strong></p>
     <nav>
-      <a class=button href="archive/current" download="unpack-cpl.sh">Download current version</a>
+      <a class=button href="version-archive/current" download="unpack-cpl.sh">Download current version</a>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class=button href="archive/">Access version archive</a>
+      <a class=button href="version-archive/">Access version archive</a>
     </nav>
     <div style="position:relative;">
       <iframe class=news src="news.html">

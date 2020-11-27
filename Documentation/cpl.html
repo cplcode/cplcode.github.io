@@ -395,6 +395,13 @@ and end of the file itself. Optionally the statement
         
 may appear as the first line. <a href="#fri">USE cpl:fri</a>.
 
+The standard ending for CPL source files is .cpl, and is automatically added by
+the compiler if omitted. Though this ending is unambiguous in unix, it does
+have a small inconvenience in being banned from some email services because
+of malicious exploitation in Microsoft Windows Control PaneL files. If you
+encounter this problem, just rename your .cpl files to some other ending before
+sending them as email attachments.
+
 <nav><table>
 <tr><th>Menu:</th><th></th></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
@@ -3411,7 +3418,6 @@ Node: (cpl)Library,  Prev: <a href="#icpl">icpl</a>,  Next: <a href="#rtchecks">
 <tr><td><a href="symbolic.html#Top">symbolic:(symbolic)</a>:</td><td>Symbolic differentiation</td></tr>
 <tr><td><a href="#CHARbyCHAR">CHARbyCHAR</a>:</td><td>live keyboard input</td></tr>
 <tr><td><a href="#INPUTREADY">inputready:INPUTREADY</a>:</td><td>test for input ready on a file descriptor or stdin </td></tr>
-<tr><td><a href="#lapack">lapack</a>:</td><td>partial interface to LAPACK eigenvalue routines</td></tr>
 <tr><td><a href="#matlib">matlib</a>:</td><td>Some basic compact matrix-defining functions</td></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table></nav>
@@ -3467,7 +3473,7 @@ V,v: view. Open a vi window at the present line in the source code, which can
         instruction of the enclosing block.
 Any other key displays a one-line reminder of the above.
 </div><div class=page id="CHARbyCHAR">
-Node: (cpl)CHARbyCHAR, Next: <a href="#lapack">lapack</a>, Prev: <a href="symbolic.html#Top">(symbolic)</a>, Up: <a href="#Library">Library</a>
+Node: (cpl)CHARbyCHAR, Next: <a href="#matlib">matlib</a>, Prev: <a href="symbolic.html#Top">(symbolic)</a>, Up: <a href="#Library">Library</a>
 <hr>
 
 <h2>Live keyboard input</h2>
@@ -3477,24 +3483,8 @@ activate unbuffered terminal input, so that the input of a single character may
 be read immediately (normally input is transferred from the terminal to the
 running program one line at a time, i.e. only when a newline is entered).
 USEing this library is all that is necessary. Input is then performed as usual.
-</div><div class=page id="lapack">
-Node: (cpl)lapack,  Next: <a href="#matlib">matlib</a>,  Prev: <a href="#CHARbyCHAR">CHARbyCHAR</a>,  Up: <a href="#Library">Library</a>
-<hr>
-
-<h2>Interface to some LAPACK functions</h2>
-
-This library packs the dgees and zgees LAPACK functions into the wrapper CPL
-functions
-
-        INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(COMPLEX A(*,*))
-
-        INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(REAL A(*,*))
-
-thus providing the eigenvalues of a general real or complex matrix.
-
-More Lapack functions may be included in the future.
 </div><div class=page id="matlib">
-Node: (cpl)matlib,  Prev: <a href="#lapack">lapack</a>,  Up: <a href="#Library">Library</a>
+Node: (cpl)matlib,  Prev: <a href="#CHARbyCHAR">CHARbyCHAR</a>,  Up: <a href="#Library">Library</a>
 <hr>
 
 <h2>Basic matrix-creating functions</h2>

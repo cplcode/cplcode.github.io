@@ -1,4 +1,7 @@
 WRITE "Hello world"
 
 ! that's all. ("!" introduces a comment.)
-!( A single-liner that doesnt require many explanations. The programs beginning and end are marked by the beginning and end of the text itself. In an interactive icpl session WRITE will be implied if omitted. !)
+!( A single-liner that doesn't require many explanations. The program's
+  beginning and end are marked by the beginning and end of the text itself.
+  In an interactive icpl session WRITE will be implied if omitted.
+  And this is a multi-line comment. !)

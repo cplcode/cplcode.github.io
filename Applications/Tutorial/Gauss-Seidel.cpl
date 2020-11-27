@@ -1,8 +1,22 @@
-ARRAY(0..20,0..40) OF REAL var,rhs
-! read some rhs and initial condition ...
-LOOP FOR i=1 TO 19 AND j=1 TO 39
-  var(i,j)=[var(i,j+1)+var(i,j-1)+var(i+1,j)+var(i-1,j)]/4 + rhs(i,j)
+! Gauss-Seidel iteration for Poisson's equation
+
+USE gnuplot   ! prepare for plotting
+ARRAY(0..20,0..40) OF REAL var,rhs   ! declare and allocate ARRAY variables
+
+var=0; rhs=0
+DO var(i,HI)=1 FOR ALL i   ! assign some boundary condition
+
+LOOP FOR 100 TIMES   ! main iteration loop
+  LOOP FOR i=LO+1 TO HI-1 AND j=LO+1 TO HI-1
+    var(i,j)=[var(i,j+1)+var(i,j-1)+var(i+1,j)+var(i-1,j) + rhs(i,j)]/4
+  REPEAT LOOP   ! these three lines are the core iteration
 REPEAT LOOP
+
+SPLOT var
+READ   ! wait for user to press Enter before closing the plot
+
 !(
-  A ! denotes a comment. A single LOOP instruction can loop over several indices. Indices are implicitly declared. Round, square and curly brackets are available to be used like in mathematics.
+  A single LOOP instruction can loop over several indices. Indices are
+  implicitly declared. Various LOOP and DO forms are available.
+  Round, square and curly brackets can be used like in mathematics.
 !)

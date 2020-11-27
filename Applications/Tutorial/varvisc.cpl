@@ -1,26 +1,43 @@
+! apply red-black iteration to a nonlinear diffusion equation extracted from a
+! variational principle via symbolic differentiation.
+!
+! minimize mu*(nabla u)^2 - px*u, with mu=0.05+exp[-(nabla u)^2/m]
+
 USE gnuplot
 USE symbolic
 ! USE rtchecks
 nx=40
 dx=1/nx
-m=10
-REAL u(0..nx,0..nx)=0, px=1
-INTEGER f(0..nx,0..nx)
+m=10   ! define some constants
+REAL u(0..nx,0..nx)=0, px=1   ! u is the unknown
+INTEGER f(0..nx,0..nx)    !( f is a quantized level function defining (at first
+  order) the solution domain as the one where f=1 !)
 DO f(ix,iy)=IF (ix/nx-0.5)^2+(iy/nx-0.5)^2<0.25 THEN 1 ELSE 0 FOR ALL ix,iy
+! circular domain is defined here
 DO u(i,j)=3*f(i,j) FOR i=5 TO nx DIV 2 AND j=5 TO nx DIV 2
-mod=={[lu(i+1,j+1)-lu(i,j+1)]^2+[lu(i+1,j)-lu(i,j)]^2+[lu(i+1,j+1)-lu(i+1,j)]^2+[lu(i,j+1)-lu(i,j)]^2}/dx^2/2
+! initialize the iteration
+mod=={[lu(i+1,j+1)-lu(i,j+1)]^2+[lu(i+1,j)-lu(i,j)]^2+[lu(i+1,j+1)-lu(i+1,j)]^2+[lu(i,j+1)-lu(i,j)]^2}/dx^2/2   ! mod is centered in i+1/2, j+1/2
 mu==(EXP(-mod/m)+0.05)
 J==mu*mod
-LOOP iter FOR n=1 TO 10000000
+! these three steps declare the symbolic function J (of yet undeclared array lu)
+! to be minimized
+LOOP iter FOR n=1 TO 100000
   REAL maxrsd=0
-  LOOP FOR parity=0 TO 1 AND ix=1 TO nx-1 AND iy=2-(ix+parity) MOD 2 TO nx-1 BY 2 EXCEPT f(ix,iy)=0
-    lu=^u(ix+(-1..1),iy+(-1..1))
-    rsd=SUM D(J,lu(0,0))-px FOR i=-1 TO 0 AND j=-1 TO 0
-    mu0=SUM mu FOR i=-1 TO 0 AND j=-1 TO 0
-    lu(0,0)=~-dx*dx/4/mu0*rsd
-    maxrsd=MAX(maxrsd,ABS(rsd))
+  LOOP FOR parity=0 TO 1 AND ix=1 TO nx-1 AND iy=2-(ix+parity) MOD 2 TO nx-1 BY 2 EXCEPT f(ix,iy)=0 !(this is the red-black iteration. Notice use of EXCEPT
+    to exclude the region where f=0!)
+    lu=^u(ix+(-1..1),iy+(-1..1))   !( define lu as a subarray of u centered
+      in ix,iy. This is not a copy but a pointer !)
+    rsd=SUM D(J,lu(0,0))-px FOR i=-1 TO 0 AND j=-1 TO 0 !( current residual
+      calculated as the symbolic derivative OF J, AND then averaged in 0,0.
+      i,j are passed implicitly to J which acts as a macro or INLINE FUNCTION!)
+      mu0=SUM mu FOR i=-1 TO 0 AND j=-1 TO 0   !( viscosity in 0,0. Here too,
+      mu is expanded at compile time and contains i,j implicitly !)    
+    lu(0,0)=~-dx*dx/4/mu0*rsd   ! standard Gauss-Seidel update
+    maxrsd=MAX(maxrsd,ABS(rsd))   ! residual for convergence verification
   REPEAT
   fr=dx^2*(SUM u(ix,iy) FOR ALL ix,iy)
-  px=px*(0.8+0.2/fr)
-IF n MOD 10 =0 THEN WRITE maxrsd; SPLOT u
+  px=px*(0.8+0.2/fr)   ! feed back upon px so as to normalize the mean velocity
+  IF n MOD 10 =0 THEN WRITE maxrsd; SPLOT u
+  IF maxrsd<1E-2 THEN EXIT iter   ! loops can be exited by name
 REPEAT iter
+READ   ! keep plot visible until Enter is pressed
