@@ -56,3 +56,13 @@
         border-radius:0.1em;
         text-decoration:none;
       }
+      .pdflink {
+        background-color:Crimson;
+        border-radius:0.1em;
+        color:white;
+        font-size:small;
+        text-decoration:none; 
+      }
+      tr {
+        vertical-align:top;
+      }
