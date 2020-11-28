@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="en"><head></head><body style="font-size:large"><pre>
+! Generate Fibonacci numbers
+! ==========================
+
+INTEGER n
+ASK "How many? ":n   ! ask for console input
+INTEGER Fib(0..2)
+Fib(0)=1; Fib(1)=0   ! initialize recursion
+LOOP FOR n TIMES
+  Fib(2)=Fib(1)
+  Fib(1)=Fib(0)
+  Fib(0)=Fib(1)+Fib(2)   ! Fibonacci's recursive formula
+  WRITE Fib(0)   ! write each new number in turn to standard output
+REPEAT LOOP
+</pre></body></html>

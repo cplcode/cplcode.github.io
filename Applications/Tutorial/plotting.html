@@ -1,0 +1,14 @@
+<!DOCTYPE html><html lang="en"><head></head><body style="font-size:large"><pre>
+! CPL plotting primitives are mapped to gnuplot commands
+! ======================================================
+
+USE gnuplot
+INTEGER n
+ASK "How many? ":n   ! what it says
+REAL Fib(0..n)
+Fib(0)=0; Fib(1)=1
+LOOP FOR i=2 TO n   ! fill up array
+  Fib(i)=Fib(i-1)+Fib(i-2)
+REPEAT LOOP
+PLOT Fib   ! this makes the plot.
+</pre></body></html>
