@@ -54,5 +54,5 @@ READ
 !(
   C-like (or Pascal-like) structures and pointers are a standard part of
   CPL, but dereferencing is implicit. Only three ^'s need appear in the above
-  program, all beside = or # operators.
+  program, all at the side of = or # operators.
 !)

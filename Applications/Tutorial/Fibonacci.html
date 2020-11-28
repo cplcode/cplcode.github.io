@@ -1,15 +1,15 @@
-<!DOCTYPE html><html lang="en"><head></head><body style="font-size:large"><pre>
-! Generate Fibonacci numbers
-! ==========================
+<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
+<span class=comment>! Generate Fibonacci numbers</span>
+<span class=comment>! ==========================</span>
 
-INTEGER n
-ASK "How many? ":n   ! ask for console input
-INTEGER Fib(0..2)
-Fib(0)=1; Fib(1)=0   ! initialize recursion
-LOOP FOR n TIMES
+<a href="../../Documentation/cpl.html#INTEGER">INTEGER</a> n
+<a href="../../Documentation/cpl.html#ASK">ASK</a> "How many? ":n   <span class=comment>! ask for console input</span>
+<a href="../../Documentation/cpl.html#INTEGER">INTEGER</a> Fib(0..2)
+Fib(0)=1; Fib(1)=0   <span class=comment>! initialize recursion</span>
+<a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> n <a href="../../Documentation/cpl.html#TIMES">TIMES</a>
   Fib(2)=Fib(1)
   Fib(1)=Fib(0)
-  Fib(0)=Fib(1)+Fib(2)   ! Fibonacci's recursive formula
-  WRITE Fib(0)   ! write each new number in turn to standard output
-REPEAT LOOP
+  Fib(0)=Fib(1)+Fib(2)   <span class=comment>! Fibonacci's recursive formula</span>
+  <a href="../../Documentation/cpl.html#WRITE">WRITE</a> Fib(0)   <span class=comment>! write each new number in turn to standard output</span>
+<a href="../../Documentation/cpl.html#REPEAT">REPEAT</a> <a href="../../Documentation/cpl.html#LOOP">LOOP</a>
 </pre></body></html>

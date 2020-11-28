@@ -35,6 +35,12 @@
       }
       .index img{
         margin-top:1em;
+        padding-bottom:4px;
+        margin-bottom:-4px;
+      }
+      .index img:hover{
+        padding-bottom:2px;
+        border-bottom: 2px solid black;
       }
       #codelist {
         position:absolute;
@@ -44,6 +50,9 @@
         left:0; bottom:0;
         overflow:auto;
         text-align:left;
+      }
+      a.item:focus {
+      color:DarkRed;
       }
       .codewindow{
         display:inline-block;
@@ -66,16 +75,16 @@
         <h3>Tutorial</h3>
         <div id=codelist>
         <ol style="line-height:200%">
-          <li><a href="Helloworld.html" target=codewindow>Hello world</a>&nbsp;<a href="Helloworld.cpl" download class=download>&#x21E9;</a></li>
-          <li><a href="Fibonacci.html" target=codewindow>Fibonacci</a>&nbsp;<a href="Fibonacci.cpl" download class=download>&#x21E9;</a></li>
-          <li><a href="plotting.html" target=codewindow>Plotting</a>&nbsp;<a href="plotting.cpl" download class=download>&#x21E9;</a></li>
-          <li><a href="animation.html" target=codewindow>Animation</a>&nbsp;<a href="animation.cpl" download class=download>&#x21E9;</a></li>
-          <li><a href="wallclock.html" target=codewindow>Clock function</a>&nbsp;<a href="wallclock.cpl" download class=download>&#x21E9;</a></li>
-          <li><a href="lapack.html" target=codewindow>LAPACK interface</a>&nbsp;<a href="lapack.cpl" download class=download>&#x21E9;</a></li>
-          <li><a href="Gauss-Seidel.html" target=codewindow>Poisson Gauss-Seidel</a>&nbsp;<a href="Gauss-Seidel.cpl" download class=download>&#x21E9;</a></li>
-          <li><a href="redblack.html" target=codewindow>Poisson red-black</a>&nbsp;<a href="redblack.cpl" download class=download>&#x21E9;</a></li>
-          <li><a href="linked-list.html" target=codewindow>Poisson linked list</a>&nbsp;<a href="linked-list.cpl" download class=download>&#x21E9;</a></li>
-          <li><a href="varvisc.html" target=codewindow>Nonlinear diffusion</a>&nbsp;<a href="varvisc.cpl" download class=download>&#x21E9;</a></li>
+          <li><a class=item href="Helloworld.html" target=codewindow>Hello world</a>&nbsp;<a href="Helloworld.cpl" download class=download>&#x21E9;</a></li>
+          <li><a class=item href="Fibonacci.html" target=codewindow>Fibonacci</a>&nbsp;<a href="Fibonacci.cpl" download class=download>&#x21E9;</a></li>
+          <li><a class=item href="plotting.html" target=codewindow>Plotting</a>&nbsp;<a href="plotting.cpl" download class=download>&#x21E9;</a></li>
+          <li><a class=item href="animation.html" target=codewindow>Animation</a>&nbsp;<a href="animation.cpl" download class=download>&#x21E9;</a></li>
+          <li><a class=item href="wallclock.html" target=codewindow>Clock function</a>&nbsp;<a href="wallclock.cpl" download class=download>&#x21E9;</a></li>
+          <li><a class=item href="lapack.html" target=codewindow>LAPACK eigenvalues</a>&nbsp;<a href="lapack.cpl" download class=download>&#x21E9;</a></li>
+          <li><a class=item href="Gauss-Seidel.html" target=codewindow>Poisson Gauss-Seidel</a>&nbsp;<a href="Gauss-Seidel.cpl" download class=download>&#x21E9;</a></li>
+          <li><a class=item href="redblack.html" target=codewindow>Poisson red-black</a>&nbsp;<a href="redblack.cpl" download class=download>&#x21E9;</a></li>
+          <li><a class=item href="linked-list.html" target=codewindow>Poisson linked list</a>&nbsp;<a href="linked-list.cpl" download class=download>&#x21E9;</a></li>
+          <li><a class=item href="varvisc.html" target=codewindow>Nonlinear diffusion</a>&nbsp;<a href="varvisc.cpl" download class=download>&#x21E9;</a></li>
         </ol>
         </div>
       </div><iframe class=codewindow name="codewindow" src="ApplPick.html">

@@ -1,60 +1,60 @@
-<!DOCTYPE html><html lang="en"><head></head><body style="font-size:large"><pre>
-! Linked-list version of the Gauss-Seidel update
-! ==============================================
+<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
+<span class=comment>! Linked-list version of the Gauss-Seidel update</span>
+<span class=comment>! ==============================================</span>
 
-USE gnuplot
+<a href="../../Documentation/cpl.html#USE">USE</a> gnuplot
 
-TYPE CELL=STRUCTURE(POINTER TO CELL next; INTEGER col; REAL var, rhs)
-!   declare a new STRUCTURE type. "TYPE" is optional here
+<a href="../../Documentation/cpl.html#TYPE">TYPE</a> CELL=<a href="../../Documentation/cpl.html#STRUCTURE">STRUCTURE</a>(<a href="../../Documentation/cpl.html#POINTER">POINTER</a> <a href="../../Documentation/cpl.html#TO">TO</a> CELL next; <a href="../../Documentation/cpl.html#INTEGER">INTEGER</a> col; <a href="../../Documentation/cpl.html#REAL">REAL</a> var, rhs)
+<span class=comment>!   declare a new STRUCTURE type. "TYPE" is optional here</span>
 
-POINTER TO CELL RowStart(0..20) !   declare row pointers
-LOOP FOR ALL i !   allocate and fill in the sparse-array structures
-  POINTER TO POINTER TO CELL p=RowStart(i)
-  LOOP FOR j=i TO i+20
-    p^=NEW CELL !   here explicit dereferencing is needed for = assignment
+<a href="../../Documentation/cpl.html#POINTER">POINTER</a> <a href="../../Documentation/cpl.html#TO">TO</a> CELL RowStart(0..20) <span class=comment>!   declare row pointers</span>
+<a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> <a href="../../Documentation/cpl.html#ALL">ALL</a> i <span class=comment>!   allocate and fill in the sparse-array structures</span>
+  <a href="../../Documentation/cpl.html#POINTER">POINTER</a> <a href="../../Documentation/cpl.html#TO">TO</a> <a href="../../Documentation/cpl.html#POINTER">POINTER</a> <a href="../../Documentation/cpl.html#TO">TO</a> CELL p=RowStart(i)
+  <a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> j=i <a href="../../Documentation/cpl.html#TO">TO</a> i+20
+    p^=<a href="../../Documentation/cpl.html#NEW">NEW</a> CELL <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
     p.col=j; p.var=0; p.rhs=0
     p=p.next
-  REPEAT LOOP
-  p^=NULL !   here explicit dereferencing is needed for = assignment
-REPEAT LOOP
+  <a href="../../Documentation/cpl.html#REPEAT">REPEAT</a> <a href="../../Documentation/cpl.html#LOOP">LOOP</a>
+  p^=<a href="../../Documentation/cpl.html#POINTER">NULL</a> <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
+<a href="../../Documentation/cpl.html#REPEAT">REPEAT</a> <a href="../../Documentation/cpl.html#LOOP">LOOP</a>
 
-DO p.var=1 FOR p=RowStart(HI) UNTIL p=NULL BY p=p.next
-! assign some boundary condition
+<a href="../../Documentation/cpl.html#DO">DO</a> p.var=1 <a href="../../Documentation/cpl.html#FOR">FOR</a> p=RowStart(<a href="../../Documentation/cpl.html#HI">HI</a>) <a href="../../Documentation/cpl.html#UNTIL">UNTIL</a> p=<a href="../../Documentation/cpl.html#POINTER">NULL</a> <a href="../../Documentation/cpl.html#BY">BY</a> p=p.next
+<span class=comment>! assign some boundary condition</span>
 
-INLINE REAL FUNCTION val(POINTER TO POINTER TO CELL p; INTEGER c)
-  LOOP WHILE p^#NULL POINTER TO CELL AND p.col&lt;c: p=p.next
-  !   move pointer p until column c or end of row
-  IF p.col=c THEN RESULT=p.var ELSE RESULT=0 !  return zero if element not found
-END val !   otherwise return element's "var" value
+<a href="../../Documentation/cpl.html#INLINE">INLINE</a> <a href="../../Documentation/cpl.html#REAL">REAL</a> <a href="../../Documentation/cpl.html#FUNCTION">FUNCTION</a> val(<a href="../../Documentation/cpl.html#POINTER">POINTER</a> <a href="../../Documentation/cpl.html#TO">TO</a> <a href="../../Documentation/cpl.html#POINTER">POINTER</a> <a href="../../Documentation/cpl.html#TO">TO</a> CELL p; <a href="../../Documentation/cpl.html#INTEGER">INTEGER</a> c)
+  <a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#WHILE">WHILE</a> p^#<a href="../../Documentation/cpl.html#POINTER">NULL</a> <a href="../../Documentation/cpl.html#POINTER">POINTER</a> <a href="../../Documentation/cpl.html#TO">TO</a> CELL <a href="../../Documentation/cpl.html#AND">AND</a> p.col&lt;c: p=p.next
+  <span class=comment>!   move pointer p until column c or end of row</span>
+  <a href="../../Documentation/cpl.html#IF">IF</a> p.col=c <a href="../../Documentation/cpl.html#THEN">THEN</a> <a href="../../Documentation/cpl.html#RESULT">RESULT</a>=p.var <a href="../../Documentation/cpl.html#ELSE">ELSE</a> <a href="../../Documentation/cpl.html#RESULT">RESULT</a>=0 <span class=comment>!  return zero if element not found</span>
+<a href="../../Documentation/cpl.html#END">END</a> val <span class=comment>!   otherwise return element's "var" value</span>
 
-LOOP FOR 100 TIMES   ! main iteration loop
-  LOOP FOR i=LO+1 TO HI-1   ! for each row
-    POINTER TO CELL above=RowStart(i+1),
+<a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> 100 <a href="../../Documentation/cpl.html#TIMES">TIMES</a>   <span class=comment>! main iteration loop</span>
+  <a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> i=<a href="../../Documentation/cpl.html#LO">LO</a>+1 <a href="../../Documentation/cpl.html#TO">TO</a> <a href="../../Documentation/cpl.html#HI">HI</a>-1   <span class=comment>! for each row</span>
+    <a href="../../Documentation/cpl.html#POINTER">POINTER</a> <a href="../../Documentation/cpl.html#TO">TO</a> CELL above=RowStart(i+1),
     left=RowStart(i), center=left.next, right=center.next,
-    below=RowStart(i-1)   ! initialize pointers to surrounding cells
-    LOOP WHILE right#NULL
-      j=center.col   ! read column index stored in central cell
+    below=RowStart(i-1)   <span class=comment>! initialize pointers to surrounding cells</span>
+    <a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#WHILE">WHILE</a> right#<a href="../../Documentation/cpl.html#POINTER">NULL</a>
+      j=center.col   <span class=comment>! read column index stored in central cell</span>
       center.var=[val(above,j)+val(below,j)+val(left,j-1)+val(right,j+1)+
         center.rhs]/4
-      ! with the "val" trick, notation is very similar to standard 
+      <span class=comment>! with the "val" trick, notation is very similar to standard </span>
       center=center.next
-      IF right=center THEN right=right.next
-    REPEAT LOOP
-  REPEAT LOOP
-REPEAT LOOP
+      <a href="../../Documentation/cpl.html#IF">IF</a> right=center <a href="../../Documentation/cpl.html#THEN">THEN</a> right=right.next
+    <a href="../../Documentation/cpl.html#REPEAT">REPEAT</a> <a href="../../Documentation/cpl.html#LOOP">LOOP</a>
+  <a href="../../Documentation/cpl.html#REPEAT">REPEAT</a> <a href="../../Documentation/cpl.html#LOOP">LOOP</a>
+<a href="../../Documentation/cpl.html#REPEAT">REPEAT</a> <a href="../../Documentation/cpl.html#LOOP">LOOP</a>
 
-! now plot something
-RANGE (0)..(40),(0)..(2)
-LOOP FOR i=RowStart.LO TO RowStart.HI
-  STARTLINE; DO DRAW p.col,p.var+i/20 FOR p=RowStart(i) UNTIL p=NULL BY p=p.next
-REPEAT
-SHOWGRAPH
-READ
+<span class=comment>! now plot something</span>
+<a href="../../Documentation/graphics.html#RANGE">RANGE</a> (0)..(40),(0)..(2)
+<a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> i=RowStart.<a href="../../Documentation/cpl.html#LO">LO</a> <a href="../../Documentation/cpl.html#TO">TO</a> RowStart.<a href="../../Documentation/cpl.html#HI">HI</a>
+  <a href="../../Documentation/graphics.html#STARTLINE">STARTLINE</a>; <a href="../../Documentation/cpl.html#DO">DO</a> <a href="../../Documentation/graphics.html#DRAW">DRAW</a> p.col,p.var+i/20 <a href="../../Documentation/cpl.html#FOR">FOR</a> p=RowStart(i) <a href="../../Documentation/cpl.html#UNTIL">UNTIL</a> p=<a href="../../Documentation/cpl.html#POINTER">NULL</a> <a href="../../Documentation/cpl.html#BY">BY</a> p=p.next
+<a href="../../Documentation/cpl.html#REPEAT">REPEAT</a>
+<a href="../../Documentation/graphics.html#SHOWGRAPH">SHOWGRAPH</a>
+<a href="../../Documentation/cpl.html#READ">READ</a>
 
 
-!(
+<span class=comment>!(
   C-like (or Pascal-like) structures and pointers are a standard part of
   CPL, but dereferencing is implicit. Only three ^'s need appear in the above
-  program, all beside = or # operators.
-!)
+  program, all at the side of = or # operators.
+!)</span>
 </pre></body></html>

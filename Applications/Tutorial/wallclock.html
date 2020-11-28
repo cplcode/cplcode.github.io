@@ -1,26 +1,26 @@
-<!DOCTYPE html><html lang="en"><head></head><body style="font-size:large"><pre>
-! CPL wrapper around the gettimeofday system function
-! ===================================================
-!
-! provides a REAL-valued clock in seconds, e.g. for timing program execution
-! demonstrates how C functions can be used seamlessly in a CPL program
-! demonstrates the use of MODULEs to hide static variables
+<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
+<span class=comment>! CPL wrapper around the gettimeofday system function</span>
+<span class=comment>! ===================================================</span>
+<span class=comment>!</span>
+<span class=comment>! provides a REAL-valued clock in seconds, e.g. for timing program execution</span>
+<span class=comment>! demonstrates how C functions can be used seamlessly in a CPL program</span>
+<span class=comment>! demonstrates the use of MODULEs to hide static variables</span>
 
-#include &lt;sys/time.h&gt;
-! make C declarations available in this CPL program
+<a href="../../Documentation/cpl.html#C%20interface">#include</a> &lt;sys/time.h&gt;
+<span class=comment>! make C declarations available in this CPL program</span>
 
-REAL FUNCTION wallclock() FOLLOWS
-! content of wallclock is inside the module; this declares it globally
+<a href="../../Documentation/cpl.html#REAL">REAL</a> <a href="../../Documentation/cpl.html#FUNCTION">FUNCTION</a> wallclock() <a href="../../Documentation/cpl.html#FOLLOWS">FOLLOWS</a>
+<span class=comment>! content of wallclock is inside the MODULE; this declares it globally</span>
 
-MODULE wallclock
-  struct timeval startim   ! declaration using C struct declared in time.h
-  gettimeofday(startim,NULL)   ! libc function call
-  ! initialize startim when execution starts
-  REAL FUNCTION wallclock()
+<a href="../../Documentation/cpl.html#MODULE">MODULE</a> wallclock
+  struct timeval startim   <span class=comment>! declaration using C struct declared in time.h</span>
+  gettimeofday(startim,<a href="../../Documentation/cpl.html#POINTER">NULL</a>)   <span class=comment>! libc function call</span>
+  <span class=comment>! initialize startim when execution starts</span>
+  <a href="../../Documentation/cpl.html#REAL">REAL</a> <a href="../../Documentation/cpl.html#FUNCTION">FUNCTION</a> wallclock()
     struct timeval tim
-    gettimeofday(tim,NULL)   ! libc function call
-    RESULT=(tim.tv_sec-startim.tv_sec)+1E-6*(tim.tv_usec-startim.tv_usec)
-    ! return time in seconds since program started
-  END wallclock
-END wallclock
+    gettimeofday(tim,<a href="../../Documentation/cpl.html#POINTER">NULL</a>)   <span class=comment>! libc function call</span>
+    <a href="../../Documentation/cpl.html#RESULT">RESULT</a>=(tim.tv_sec-startim.tv_sec)+1E-6*(tim.tv_usec-startim.tv_usec)
+    <span class=comment>! return time in seconds since program started</span>
+  <a href="../../Documentation/cpl.html#END">END</a> wallclock
+<a href="../../Documentation/cpl.html#END">END</a> wallclock
 </pre></body></html>

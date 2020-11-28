@@ -29,7 +29,7 @@ LOOP iter FOR n=1 TO 100000
     lu=^u(ix+(-1..1),iy+(-1..1))   !( define lu as a subarray of u centered
       in ix,iy. This is not a copy but a pointer !)
     rsd=SUM D(J,lu(0,0))-px FOR i=-1 TO 0 AND j=-1 TO 0 !( current residual
-      calculated as the symbolic derivative OF J, AND then averaged in 0,0.
+      calculated as the symbolic derivative of J, and then averaged in 0,0.
       i,j are passed implicitly to J which acts as a macro or INLINE FUNCTION!)
       mu0=SUM mu FOR i=-1 TO 0 AND j=-1 TO 0   !( viscosity in 0,0. Here too,
       mu is expanded at compile time and contains i,j implicitly !)    

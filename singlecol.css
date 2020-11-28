@@ -17,15 +17,12 @@
         position:fixed;
         top:20px;
         left:15px;
-        background-image:url("images/CPL-logo.png");
-        background-repeat:no-repeat;
-        background-size:cover;
         width:66px;
         height:41px;
-        border-radius:5px;
-      }
+        padding-bottom:2px;
+        }
       #seal:hover {
-        background-color:rgba(188, 194, 214,0.5);
+        border-bottom: 2px solid black;
       }
       .page {
         position:absolute;

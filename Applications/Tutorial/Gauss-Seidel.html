@@ -1,25 +1,25 @@
-<!DOCTYPE html><html lang="en"><head></head><body style="font-size:large"><pre>
-! Gauss-Seidel iteration for Poisson's equation
-! =============================================
+<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
+<span class=comment>! Gauss-Seidel iteration for Poisson's equation</span>
+<span class=comment>! =============================================</span>
 
-USE gnuplot   ! prepare for plotting
-ARRAY(0..20,0..40) OF REAL var,rhs   ! declare and allocate ARRAY variables
+<a href="../../Documentation/cpl.html#USE">USE</a> gnuplot   <span class=comment>! prepare for plotting</span>
+<a href="../../Documentation/cpl.html#ARRAY">ARRAY</a>(0..20,0..40) <a href="../../Documentation/cpl.html#OF">OF</a> <a href="../../Documentation/cpl.html#REAL">REAL</a> var,rhs   <span class=comment>! declare and allocate ARRAY variables</span>
 
 var=0; rhs=0
-DO var(i,HI)=1 FOR ALL i   ! assign some boundary condition
+<a href="../../Documentation/cpl.html#DO">DO</a> var(i,<a href="../../Documentation/cpl.html#HI">HI</a>)=1 <a href="../../Documentation/cpl.html#FOR">FOR</a> <a href="../../Documentation/cpl.html#ALL">ALL</a> i   <span class=comment>! assign some boundary condition</span>
 
-LOOP FOR 100 TIMES   ! main iteration loop
-  LOOP FOR i=LO+1 TO HI-1 AND j=LO+1 TO HI-1
+<a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> 100 <a href="../../Documentation/cpl.html#TIMES">TIMES</a>   <span class=comment>! main iteration loop</span>
+  <a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> i=<a href="../../Documentation/cpl.html#LO">LO</a>+1 <a href="../../Documentation/cpl.html#TO">TO</a> <a href="../../Documentation/cpl.html#HI">HI</a>-1 <a href="../../Documentation/cpl.html#AND">AND</a> j=<a href="../../Documentation/cpl.html#LO">LO</a>+1 <a href="../../Documentation/cpl.html#TO">TO</a> <a href="../../Documentation/cpl.html#HI">HI</a>-1
     var(i,j)=[var(i,j+1)+var(i,j-1)+var(i+1,j)+var(i-1,j) + rhs(i,j)]/4
-  REPEAT LOOP   ! these three lines are the core iteration
-REPEAT LOOP
+  <a href="../../Documentation/cpl.html#REPEAT">REPEAT</a> <a href="../../Documentation/cpl.html#LOOP">LOOP</a>   <span class=comment>! these three lines are the core iteration</span>
+<a href="../../Documentation/cpl.html#REPEAT">REPEAT</a> <a href="../../Documentation/cpl.html#LOOP">LOOP</a>
 
-SPLOT var
-READ   ! wait for user to press Enter before closing the plot
+<a href="../../Documentation/graphics.html#SPLOT">SPLOT</a> var
+<a href="../../Documentation/cpl.html#READ">READ</a>   <span class=comment>! wait for user to press Enter before closing the plot</span>
 
-!(
+<span class=comment>!(
   A single LOOP instruction can loop over several indices. Indices are
   implicitly declared. Various LOOP and DO forms are available.
   Round, square and curly brackets can be used like in mathematics.
-!)
+!)</span>
 </pre></body></html>

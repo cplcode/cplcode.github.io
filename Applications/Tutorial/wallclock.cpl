@@ -9,7 +9,7 @@
 ! make C declarations available in this CPL program
 
 REAL FUNCTION wallclock() FOLLOWS
-! content of wallclock is inside the module; this declares it globally
+! content of wallclock is inside the MODULE; this declares it globally
 
 MODULE wallclock
   struct timeval startim   ! declaration using C struct declared in time.h

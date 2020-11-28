@@ -1,54 +1,54 @@
-<!DOCTYPE html><html lang="en"><head></head><body style="font-size:large"><pre>
-! Interface to some LAPACK functions
-! ==================================
-!
-! packs the dgees and zgees LAPACK functions into a single, overloaded
-! wrapper CPL function eigv(A) providing an ARRAY of eigenvalues
-! of a general real or complex matrix as its result.
-! It may serve as a template to include more LAPACK functions.
+<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
+<span class=comment>! Interface to some LAPACK functions</span>
+<span class=comment>! ==================================</span>
+<span class=comment>!</span>
+<span class=comment>! packs the dgees and zgees LAPACK functions into a single, overloaded</span>
+<span class=comment>! wrapper CPL function eigv(A) providing an ARRAY of eigenvalues</span>
+<span class=comment>! of a general real or complex matrix as its result.</span>
+<span class=comment>! It may serve as a template to include more LAPACK functions.</span>
 
-USE complex
+<a href="../../Documentation/cpl.html#USE">USE</a> complex
 
-#link "-llapack -lblas"
-! directive to the C compiler.
-! On Debian the liblapack3 package or one equivalent must be installed.
+<a href="../../Documentation/cpl.html#C%20interface">#link</a> "-llapack -lblas"
+<span class=comment>! directive to the C compiler.</span>
+<span class=comment>! On Debian the liblapack3 package or one equivalent must be installed.</span>
 
-INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(COMPLEX A(*,*))
-! This function will declare its result a a constant array if none was declared
-  INTEGER SDIM,info
-  LA=LENGTH(A)
-  IF LA#LENGTH(A(LO)) THEN ERROR "matrix is not square"
-  LWORK=3*LA
-  COMPLEX WORK(1..LWORK)
-  REAL RWORK(1..LA)
-  COMPLEX Acopy(0..LA-1,0..LA-1)=A(LO+*,LO+*)
-  FORTRANCALL zgees("N","N",NULL,LA,Acopy,STRIDEOF(Acopy),SDIM,RESULT,NULL,LA,WORK,LWORK,RWORK,NULL,info)
-  ! interface to FORTRAN call, applied without any prototype checking
-  IF info#0 THEN ERROR "zgees: " info
-END eigv
-! encapsulating zgees inside eigv turns on prototype checking
+<a href="../../Documentation/cpl.html#INLINE">INLINE</a> <a href="../../Documentation/cpl.html#ARRAY">ARRAY</a>(A.<a href="../../Documentation/cpl.html#LO">LO</a>..A.<a href="../../Documentation/cpl.html#HI">HI</a>) <a href="../../Documentation/cpl.html#OF">OF</a> <a href="../../Documentation/complex.html#COMPLEX">COMPLEX</a> <a href="../../Documentation/cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="../../Documentation/complex.html#COMPLEX">COMPLEX</a> A(*,*))
+<span class=comment>! This function will declare its result a a constant array if none was declared</span>
+  <a href="../../Documentation/cpl.html#INTEGER">INTEGER</a> SDIM,info
+  LA=<a href="../../Documentation/cpl.html#LENGTH">LENGTH</a>(A)
+  <a href="../../Documentation/cpl.html#IF">IF</a> LA#<a href="../../Documentation/cpl.html#LENGTH">LENGTH</a>(A(<a href="../../Documentation/cpl.html#LO">LO</a>)) <a href="../../Documentation/cpl.html#THEN">THEN</a> <a href="../../Documentation/cpl.html#ERROR">ERROR</a> "matrix is not square"
+  LW<a href="../../Documentation/cpl.html#OR">OR</a>K=3*LA
+  <a href="../../Documentation/complex.html#COMPLEX">COMPLEX</a> W<a href="../../Documentation/cpl.html#OR">OR</a>K(1..LW<a href="../../Documentation/cpl.html#OR">OR</a>K)
+  <a href="../../Documentation/cpl.html#REAL">REAL</a> RW<a href="../../Documentation/cpl.html#OR">OR</a>K(1..LA)
+  <a href="../../Documentation/complex.html#COMPLEX">COMPLEX</a> Acopy(0..LA-1,0..LA-1)=A(<a href="../../Documentation/cpl.html#LO">LO</a>+*,<a href="../../Documentation/cpl.html#LO">LO</a>+*)
+  <a href="../../Documentation/cpl.html#FORTRANCALL">FORTRANCALL</a> zgees("N","N",<a href="../../Documentation/cpl.html#POINTER">NULL</a>,LA,Acopy,<a href="../../Documentation/cpl.html#FORTRANCALL">STRIDEOF</a>(Acopy),SDIM,<a href="../../Documentation/cpl.html#RESULT">RESULT</a>,<a href="../../Documentation/cpl.html#POINTER">NULL</a>,LA,W<a href="../../Documentation/cpl.html#OR">OR</a>K,LW<a href="../../Documentation/cpl.html#OR">OR</a>K,RW<a href="../../Documentation/cpl.html#OR">OR</a>K,<a href="../../Documentation/cpl.html#POINTER">NULL</a>,info)
+  <span class=comment>! interface to FORTRAN call, applied without any prototype checking</span>
+  <a href="../../Documentation/cpl.html#IF">IF</a> info#0 <a href="../../Documentation/cpl.html#THEN">THEN</a> <a href="../../Documentation/cpl.html#ERROR">ERROR</a> "zgees: " info
+<a href="../../Documentation/cpl.html#END">END</a> eigv
+<span class=comment>! encapsulating zgees inside eigv turns on prototype checking</span>
 
-INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(REAL A(*,*))
-! same name as above but different argument list: overloaded function
-INTEGER SDIM,info
-  LA=LENGTH(A)
-  IF LA#LENGTH(A(LO)) THEN ERROR "matrix is not square"
-  LWORK=3*LA
-  REAL WORK(1..LWORK)
-  REAL WR(1..LA),WI(1..LA)
-  REAL Acopy(0..LA-1,0..LA-1)=A(LO+*,LO+*)
-  FORTRANCALL dgees("N","N",NULL,LA,Acopy,STRIDEOF(Acopy),SDIM,WR,WI,NULL,LA,WORK,LWORK,NULL,info)
-  ! interface to FORTRAN call, applied without any prototype checking
-  IF info#0 THEN ERROR "dgees: " info
-  RESULT(*+LO-1).REAL=WR; RESULT(*+LO-1).IMAG=WI
-END eigv
-! encapsulating dgees inside eigv turns on prototype checking
+<a href="../../Documentation/cpl.html#INLINE">INLINE</a> <a href="../../Documentation/cpl.html#ARRAY">ARRAY</a>(A.<a href="../../Documentation/cpl.html#LO">LO</a>..A.<a href="../../Documentation/cpl.html#HI">HI</a>) <a href="../../Documentation/cpl.html#OF">OF</a> <a href="../../Documentation/complex.html#COMPLEX">COMPLEX</a> <a href="../../Documentation/cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="../../Documentation/cpl.html#REAL">REAL</a> A(*,*))
+<span class=comment>! same name as above but different argument list: overloaded function</span>
+<a href="../../Documentation/cpl.html#INTEGER">INTEGER</a> SDIM,info
+  LA=<a href="../../Documentation/cpl.html#LENGTH">LENGTH</a>(A)
+  <a href="../../Documentation/cpl.html#IF">IF</a> LA#<a href="../../Documentation/cpl.html#LENGTH">LENGTH</a>(A(<a href="../../Documentation/cpl.html#LO">LO</a>)) <a href="../../Documentation/cpl.html#THEN">THEN</a> <a href="../../Documentation/cpl.html#ERROR">ERROR</a> "matrix is not square"
+  LW<a href="../../Documentation/cpl.html#OR">OR</a>K=3*LA
+  <a href="../../Documentation/cpl.html#REAL">REAL</a> W<a href="../../Documentation/cpl.html#OR">OR</a>K(1..LW<a href="../../Documentation/cpl.html#OR">OR</a>K)
+  <a href="../../Documentation/cpl.html#REAL">REAL</a> WR(1..LA),WI(1..LA)
+  <a href="../../Documentation/cpl.html#REAL">REAL</a> Acopy(0..LA-1,0..LA-1)=A(<a href="../../Documentation/cpl.html#LO">LO</a>+*,<a href="../../Documentation/cpl.html#LO">LO</a>+*)
+  <a href="../../Documentation/cpl.html#FORTRANCALL">FORTRANCALL</a> dgees("N","N",<a href="../../Documentation/cpl.html#POINTER">NULL</a>,LA,Acopy,<a href="../../Documentation/cpl.html#FORTRANCALL">STRIDEOF</a>(Acopy),SDIM,WR,WI,<a href="../../Documentation/cpl.html#POINTER">NULL</a>,LA,W<a href="../../Documentation/cpl.html#OR">OR</a>K,LW<a href="../../Documentation/cpl.html#OR">OR</a>K,<a href="../../Documentation/cpl.html#POINTER">NULL</a>,info)
+  <span class=comment>! interface to FORTRAN call, applied without any prototype checking</span>
+  <a href="../../Documentation/cpl.html#IF">IF</a> info#0 <a href="../../Documentation/cpl.html#THEN">THEN</a> <a href="../../Documentation/cpl.html#ERROR">ERROR</a> "dgees: " info
+  <a href="../../Documentation/cpl.html#RESULT">RESULT</a>(*+<a href="../../Documentation/cpl.html#LO">LO</a>-1).<a href="../../Documentation/cpl.html#REAL">REAL</a>=WR; <a href="../../Documentation/cpl.html#RESULT">RESULT</a>(*+<a href="../../Documentation/cpl.html#LO">LO</a>-1).IMAG=WI
+<a href="../../Documentation/cpl.html#END">END</a> eigv
+<span class=comment>! encapsulating dgees inside eigv turns on prototype checking</span>
 
-! Example: uncomment this or type it in icpl.
-!(
+<span class=comment>! Example: uncomment this or type it in icpl.</span>
+<span class=comment>!(
   REAL A(1..2,1..2)
   A(1,1)=1; A(1,2)=3
   A(2,1)=8; A(2,2)=7
   WRITE eigv(A)
-!)
+!)</span>
 </pre></body></html>
