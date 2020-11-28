@@ -1,24 +1,25 @@
-<html><body style="font-size:large"><pre>
+<!DOCTYPE html><html lang="en"><head></head><body style="font-size:large"><pre>
 ! CPL wrapper around the gettimeofday system function
 !
-! provides a REAL-valued clock function, e.g. for timing program execution
-!
-! This is a tutorial exercise released to the Public Domain.
+! provides a REAL-valued clock in seconds, e.g. for timing program execution
+! demonstrates how C functions can be used seamlessly in a CPL program
+! demonstrates the use of MODULEs to hide static variables
 
+#include &lt;sys/time.h&gt;
+! make C declarations available in this CPL program
 
 REAL FUNCTION wallclock() FOLLOWS
+! content of wallclock is inside the module; this declares it globally
 
 MODULE wallclock
-  struct timeval startim
-REAL FUNCTION wallclock() FOLLOWS
-
-MODULE wallclock
-  struct timeval startim
-  gettimeofday(startim,NULL)
+  struct timeval startim   ! declaration using C struct declared in time.h
+  gettimeofday(startim,NULL)   ! libc function call
+  ! initialize startim when execution starts
   REAL FUNCTION wallclock()
     struct timeval tim
-    gettimeofday(tim,NULL)
+    gettimeofday(tim,NULL)   ! libc function call
     RESULT=(tim.tv_sec-startim.tv_sec)+1E-6*(tim.tv_usec-startim.tv_usec)
+    ! return time in seconds since program started
   END wallclock
 END wallclock
 </pre></body></html>

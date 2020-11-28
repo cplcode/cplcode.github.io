@@ -8,6 +8,8 @@
     <meta name="description" content="Tutorial examples of CPL, a programming language designed and developed by Paolo Luchini during 1993-2020.">
     <meta name="keywords" content="cpl CPL numerical computation computational code program programmer programming language compiler interpreter editor fri FRI makecpl icpl edit">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index,nofollow">
+    <link rel="stylesheet" href="../../singlecol.css">
     <link rel="canonical" href="https://CPLcode.net/Applications/Tutorial/">
     <style>
       footer {
@@ -31,15 +33,17 @@
         width:25%;
         height:100%;
       }
-      #topdiv img{
+      .index img{
         margin-top:1em;
       }
-      .index iframe {
+      #codelist {
         position:absolute;
         border:none;
         width:100%;
         height:calc(100% - 8.5em);
         left:0; bottom:0;
+        overflow:auto;
+        text-align:left;
       }
       .codewindow{
         display:inline-block;
@@ -57,13 +61,20 @@
   </head>
   <body>
       <div class=index>
-        <div id=topdiv>
-          <a href="../../"><img src="../../images/CPL-logo.png" alt="CPL" width=66></a>
-          <a href="../"><h3>Applications</h3></a>
-          <h3>Tutorial</h3>
+        <a href="../../"><img src="../../images/CPL-logo.png" alt="CPL" width=66></a>
+        <a href="../"><h3>Applications</h3></a>
+        <h3>Tutorial</h3>
+        <div id=codelist>
+        <ol style="line-height:200%">
+          <li><a href="Helloworld.html" target=codewindow>Hello world</a>&nbsp;<a href="Helloworld.cpl" download class=download>&#x21E9;</a></li>
+          <li><a href="wallclock.html" target=codewindow>REAL clock function</a>&nbsp;<a href="wallclock.cpl" download class=download>&#x21E9;</a></li>
+          <li><a href="lapack.html" target=codewindow>LAPACK functions</a>&nbsp;<a href="lapack.cpl" download class=download>&#x21E9;</a></li>
+          <li><a href="Gauss-Seidel.html" target=codewindow>Poisson Gauss-Seidel</a>&nbsp;<a href="Gauss-Seidel.cpl" download class=download>&#x21E9;</a></li>
+          <li><a href="redblack.html" target=codewindow>Poisson red-black</a>&nbsp;<a href="redblack.cpl" download class=download>&#x21E9;</a></li>
+          <li><a href="linked-list.html" target=codewindow>Poisson linked list</a>&nbsp;<a href="linked-list.cpl" download class=download>&#x21E9;</a></li>
+          <li><a href="varvisc.html" target=codewindow>Nonlinear diffusion</a>&nbsp;<a href="varvisc.cpl" download class=download>&#x21E9;</a></li>
+        </ol>
         </div>
-        <iframe src="codelist.html">
-        </iframe>
       </div><iframe class=codewindow name="codewindow" src="ApplPick.html">
       </iframe>
   </body>
