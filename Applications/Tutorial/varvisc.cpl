@@ -41,4 +41,3 @@ LOOP iter FOR n=1 TO 100000
   IF n MOD 10 =0 THEN WRITE maxrsd; SPLOT u
   IF maxrsd<1E-2 THEN EXIT iter   ! loops can be exited by name
 REPEAT iter
-READ   ! keep plot visible until Enter is pressed

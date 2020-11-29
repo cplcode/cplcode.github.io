@@ -19,7 +19,6 @@ LOOP FOR 100 TIMES   ! main iteration loop
 REPEAT   ! "LOOP" is optional here
   
 SPLOT var
-READ   ! wait for user to press Enter before closing the plot
   
 !(
   Variables are allowed as ARRAY dimensions. The bounds OF LOOP indices are
