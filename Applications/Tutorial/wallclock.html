@@ -2,9 +2,10 @@
 <span class=comment>! CPL wrapper around the gettimeofday system function</span>
 <span class=comment>! ===================================================</span>
 <span class=comment>!</span>
-<span class=comment>! provides a REAL-valued clock in seconds, e.g. for timing program execution</span>
-<span class=comment>! demonstrates how C functions can be used seamlessly in a CPL program</span>
-<span class=comment>! demonstrates the use of MODULEs to hide static variables</span>
+<span class=comment>! This function provides a REAL-valued clock in seconds, e.g. for timing</span>
+<span class=comment>! program execution.</span>
+<span class=comment>! It demonstrates how C functions can be used seamlessly in a CPL program</span>
+<span class=comment>! It demonstrates the use of MODULEs to hide static variables</span>
 
 <a href="cpl.html#C%20interface">#include</a> &lt;sys/time.h&gt;
 <span class=comment>! make C declarations available in this CPL program</span>
@@ -23,4 +24,14 @@
     <span class=comment>! return time in seconds since program started</span>
   <a href="cpl.html#END">END</a> wallclock
 <a href="cpl.html#END">END</a> wallclock
+
+<span class=comment>! test example</span>
+<span class=comment>!(
+  REAL x=0
+  WRITE "starting at " wallclock()
+  LOOP FOR i=1 TO 10000
+    x=x+SIN(i)
+  REPEAT LOOP
+  WRITE "ending at " wallclock()
+!)</span>
 </pre></body></html>

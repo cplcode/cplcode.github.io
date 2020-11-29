@@ -1,13 +1,17 @@
-! Linked-list version of the Gauss-Seidel update
-! ==============================================
+! Linked-list version of the Gauss-Seidel iteration
+! =================================================
+!
+! works on a sparse array in which each row is a singly linked list
+! of possibly non-adjacent cell nodes, with missing cells treated as
+! containing a value of zero.
 
 USE gnuplot
 
 TYPE CELL=STRUCTURE(POINTER TO CELL next; INTEGER col; REAL var, rhs)
-!   declare a new STRUCTURE type. "TYPE" is optional here
+!   declare a new STRUCTURE type. Keyword "TYPE" is optional here
 
 POINTER TO CELL RowStart(0..20) !   declare row pointers
-LOOP FOR ALL i !   allocate and fill in the sparse-array structures
+LOOP FOR ALL i !   allocate and initialize to zero the sparse-array structures
   POINTER TO POINTER TO CELL p=RowStart(i)
   LOOP FOR j=i TO i+20
     p^=NEW CELL !   here explicit dereferencing is needed for = assignment
@@ -21,7 +25,7 @@ DO p.var=1 FOR p=RowStart(HI) UNTIL p=NULL BY p=p.next
 ! assign some boundary condition
 
 INLINE REAL FUNCTION val(POINTER TO POINTER TO CELL p; INTEGER c)
-  LOOP WHILE p^#NULL POINTER TO CELL AND p.col<c: p=p.next
+  LOOP WHILE p.col<c: p=p.next
   !   move pointer p until column c or end of row
   IF p.col=c THEN RESULT=p.var ELSE RESULT=0 !  return zero if element not found
 END val !   otherwise return element's "var" value
@@ -35,15 +39,17 @@ LOOP FOR 100 TIMES   ! main iteration loop
       j=center.col   ! read column index stored in central cell
       center.var=[val(above,j)+val(below,j)+val(left,j-1)+val(right,j+1)+
         center.rhs]/4
-      ! with the "val" trick, notation is very similar to standard 
-      center=center.next
+      ! with the "val" function, notation is very similar to standard 
+      center=next(center)
       IF right=center THEN right=right.next
+      ! notice that STRUCTURE elements can be accessed in either dotted
+      ! or function notation
     REPEAT LOOP
   REPEAT LOOP
 REPEAT LOOP
 
 ! now plot something
-RANGE (0)..(40),(0)..(2)
+RANGE 0,40,0,2
 LOOP FOR i=RowStart.LO TO RowStart.HI
   STARTLINE; DO DRAW p.col,p.var+i/20 FOR p=RowStart(i) UNTIL p=NULL BY p=p.next
 REPEAT

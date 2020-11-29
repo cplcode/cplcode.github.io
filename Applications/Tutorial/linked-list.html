@@ -1,14 +1,18 @@
 <!DOCTYPE html><html lang="en"><head><title="linked-list.cpl"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
-<span class=comment>! Linked-list version of the Gauss-Seidel update</span>
-<span class=comment>! ==============================================</span>
+<span class=comment>! Linked-list version of the Gauss-Seidel iteration</span>
+<span class=comment>! =================================================</span>
+<span class=comment>!</span>
+<span class=comment>! works on a sparse array in which each row is a singly linked list</span>
+<span class=comment>! of possibly non-adjacent cell nodes, with missing cells treated as</span>
+<span class=comment>! containing a value of zero.</span>
 
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
 
 <a href="cpl.html#TYPE">TYPE</a> CELL=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL next; <a href="cpl.html#INTEGER">INTEGER</a> col; <a href="cpl.html#REAL">REAL</a> var, rhs)
-<span class=comment>!   declare a new STRUCTURE type. "TYPE" is optional here</span>
+<span class=comment>!   declare a new STRUCTURE type. Keyword "TYPE" is optional here</span>
 
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL RowStart(0..20) <span class=comment>!   declare row pointers</span>
-<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>!   allocate and fill in the sparse-array structures</span>
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>!   allocate and initialize to zero the sparse-array structures</span>
   <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL p=RowStart(i)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> j=i <a href="cpl.html#TO">TO</a> i+20
     p^=<a href="cpl.html#NEW">NEW</a> CELL <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
@@ -44,7 +48,7 @@
 <a href="cpl.html#REPEAT">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 
 <span class=comment>! now plot something</span>
-<a href="graphics.html#RANGE">RANGE</a> (0)..(40),(0)..(2)
+<a href="graphics.html#RANGE">RANGE</a> 0,40,0,2
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=RowStart.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> RowStart.<a href="cpl.html#HI">HI</a>
   <a href="graphics.html#STARTLINE">STARTLINE</a>; <a href="cpl.html#DO">DO</a> <a href="graphics.html#DRAW">DRAW</a> p.col,p.var+i/20 <a href="cpl.html#FOR">FOR</a> p=RowStart(i) <a href="cpl.html#UNTIL">UNTIL</a> p=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#BY">BY</a> p=p.next
 <a href="cpl.html#REPEAT">REPEAT</a>

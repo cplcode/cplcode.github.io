@@ -3,8 +3,9 @@
 
 USE gnuplot
 REAL g(-20..20,-20..20)
-NEWGRAPH   ! open a clean graphics window 
+OPENGRAPH   ! open a clean graphics window 
 set zrange [-1:1]   ! "set" commands are passed to gnuplot unchanged
+! zrange must be set or it will change from one image to another
 LOOP FOR t=0. TO 10000 BY 0.3   ! LOOP with a REAL index
   amp=SIN(t)
   DO g(ix,iy)=amp*EXP{-[(0.1*ix)^2+(0.1*iy)^2]/2} FOR ALL ix,iy
