@@ -1,26 +1,26 @@
-<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
+<!DOCTYPE html><html lang="en"><head><title="redblack.cpl"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
 <span class=comment>! Red-black update for Poisson's equation</span>
 <span class=comment>! =======================================</span>
 
-<a href="../../Documentation/cpl.html#USE">USE</a> gnuplot   <span class=comment>! prepare for plotting</span>
-<a href="../../Documentation/cpl.html#INTEGER">INTEGER</a> nx,ny   <span class=comment>! declare two INTEGER variables</span>
-<a href="../../Documentation/cpl.html#ASK">ASK</a> nx,ny   <span class=comment>! ask array dimensions from the console user</span>
-<a href="../../Documentation/cpl.html#ARRAY">ARRAY</a>(1..nx,1..ny) <a href="../../Documentation/cpl.html#OF">OF</a> <a href="../../Documentation/cpl.html#REAL">REAL</a> var,rhs   <span class=comment>! variable ARRAY dimensions are allowed</span>
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>   <span class=comment>! prepare for plotting</span>
+<a href="cpl.html#INTEGER">INTEGER</a> nx,ny   <span class=comment>! declare two INTEGER variables</span>
+<a href="cpl.html#ASK">ASK</a> nx,ny   <span class=comment>! ask array dimensions from the console user</span>
+<a href="cpl.html#ARRAY">ARRAY</a>(1..nx,1..ny) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var,rhs   <span class=comment>! variable ARRAY dimensions are allowed</span>
 
 var=0; rhs=0
-<a href="../../Documentation/cpl.html#DO">DO</a> var(i,<a href="../../Documentation/cpl.html#HI">HI</a>)=1 <a href="../../Documentation/cpl.html#FOR">FOR</a> <a href="../../Documentation/cpl.html#ALL">ALL</a> i   <span class=comment>! assign some boundary condition</span>
+<a href="cpl.html#DO">DO</a> var(i,<a href="cpl.html#HI">HI</a>)=1 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i   <span class=comment>! assign some boundary condition</span>
 
-<a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> 100 <a href="../../Documentation/cpl.html#TIMES">TIMES</a>   <span class=comment>! main iteration loop</span>
-  <a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> parity=0 <a href="../../Documentation/cpl.html#TO">TO</a> 1 <a href="../../Documentation/cpl.html#AND">AND</a> i=<a href="../../Documentation/cpl.html#LO">LO</a>+1 <a href="../../Documentation/cpl.html#TO">TO</a> <a href="../../Documentation/cpl.html#HI">HI</a>-1 <a href="../../Documentation/cpl.html#AND">AND</a> j=<a href="../../Documentation/cpl.html#LO">LO</a>+1 +
-    (i+<a href="../../Documentation/cpl.html#LO">LO</a>+1+parity) <a href="../../Documentation/cpl.html#MOD">MOD</a> 2 <a href="../../Documentation/cpl.html#TO">TO</a> <a href="../../Documentation/cpl.html#HI">HI</a>-1 <a href="../../Documentation/cpl.html#BY">BY</a> 2
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> 100 <a href="cpl.html#TIMES">TIMES</a>   <span class=comment>! main iteration loop</span>
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> i=<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> j=<a href="cpl.html#LO">LO</a>+1 +
+    (i+<a href="cpl.html#LO">LO</a>+1+parity) <a href="cpl.html#MOD">MOD</a> 2 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#BY">BY</a> 2
     <span class=comment>! this traverses the array in checkerboard fashion</span>
     var(i,j)=[var(i,j+1)+var(i,j-1)+var(i+1,j)+var(i-1,j)+rhs(i,j)]/4
     <span class=comment>! this statement is unchanged from Gauss-Seidel</span>
-  <a href="../../Documentation/cpl.html#REPEAT">REPEAT</a> <a href="../../Documentation/cpl.html#LOOP">LOOP</a>
-<a href="../../Documentation/cpl.html#REPEAT">REPEAT</a>   <span class=comment>! "LOOP" is optional here</span>
+  <a href="cpl.html#REPEAT">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#REPEAT">REPEAT</a>   <span class=comment>! "LOOP" is optional here</span>
   
-<a href="../../Documentation/graphics.html#SPLOT">SPLOT</a> var
-<a href="../../Documentation/cpl.html#READ">READ</a>   <span class=comment>! wait for user to press Enter before closing the plot</span>
+<a href="graphics.html#SPLOT">SPLOT</a> var
+<a href="cpl.html#READ">READ</a>   <span class=comment>! wait for user to press Enter before closing the plot</span>
   
 <span class=comment>!(
   Variables are allowed as ARRAY dimensions. The bounds OF LOOP indices are

@@ -1,46 +1,46 @@
-<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
+<!DOCTYPE html><html lang="en"><head><title="varvisc.cpl"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
 <span class=comment>! apply red-black iteration to a nonlinear diffusion equation extracted from a</span>
 <span class=comment>! variational principle via symbolic differentiation.</span>
 <span class=comment>! ============================================================================</span>
 <span class=comment>!</span>
 <span class=comment>! minimize mu*(nabla u)^2 - px*u, with mu=0.05+exp[-(nabla u)^2/m]</span>
 
-<a href="../../Documentation/cpl.html#USE">USE</a> gnuplot
-<a href="../../Documentation/cpl.html#USE">USE</a> symbolic
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
+<a href="cpl.html#USE">USE</a> <a href="symbolic.html#Top">symbolic</a>
 <span class=comment>! USE rtchecks</span>
 nx=40
 dx=1/nx
 m=10   <span class=comment>! define some constants</span>
-<a href="../../Documentation/cpl.html#REAL">REAL</a> u(0..nx,0..nx)=0, px=1   <span class=comment>! u is the unknown</span>
-<a href="../../Documentation/cpl.html#INTEGER">INTEGER</a> f(0..nx,0..nx)    <span class=comment>!( f is a quantized level function defining (at first
+<a href="cpl.html#REAL">REAL</a> u(0..nx,0..nx)=0, px=1   <span class=comment>! u is the unknown</span>
+<a href="cpl.html#INTEGER">INTEGER</a> f(0..nx,0..nx)    <span class=comment>!( f is a quantized level function defining (at first
   order) the solution domain as the one where f=1 !)</span>
-<a href="../../Documentation/cpl.html#DO">DO</a> f(ix,iy)=<a href="../../Documentation/cpl.html#IF">IF</a> (ix/nx-0.5)^2+(iy/nx-0.5)^2&lt;0.25 <a href="../../Documentation/cpl.html#THEN">THEN</a> 1 <a href="../../Documentation/cpl.html#ELSE">ELSE</a> 0 <a href="../../Documentation/cpl.html#FOR">FOR</a> <a href="../../Documentation/cpl.html#ALL">ALL</a> ix,iy
+<a href="cpl.html#DO">DO</a> f(ix,iy)=<a href="cpl.html#IF">IF</a> (ix/nx-0.5)^2+(iy/nx-0.5)^2&lt;0.25 <a href="cpl.html#THEN">THEN</a> 1 <a href="cpl.html#ELSE">ELSE</a> 0 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy
 <span class=comment>! circular domain is defined here</span>
-<a href="../../Documentation/cpl.html#DO">DO</a> u(i,j)=3*f(i,j) <a href="../../Documentation/cpl.html#FOR">FOR</a> i=5 <a href="../../Documentation/cpl.html#TO">TO</a> nx <a href="../../Documentation/cpl.html#DIV">DIV</a> 2 <a href="../../Documentation/cpl.html#AND">AND</a> j=5 <a href="../../Documentation/cpl.html#TO">TO</a> nx <a href="../../Documentation/cpl.html#DIV">DIV</a> 2
+<a href="cpl.html#DO">DO</a> u(i,j)=3*f(i,j) <a href="cpl.html#FOR">FOR</a> i=5 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#DIV">DIV</a> 2 <a href="cpl.html#AND">AND</a> j=5 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#DIV">DIV</a> 2
 <span class=comment>! initialize the iteration</span>
 mod=={[lu(i+1,j+1)-lu(i,j+1)]^2+[lu(i+1,j)-lu(i,j)]^2+[lu(i+1,j+1)-lu(i+1,j)]^2+[lu(i,j+1)-lu(i,j)]^2}/dx^2/2   <span class=comment>! mod is centered in i+1/2, j+1/2</span>
-mu==(<a href="../../Documentation/cpl.html#Builtin">EXP</a>(-mod/m)+0.05)
+mu==(<a href="cpl.html#Builtin">EXP</a>(-mod/m)+0.05)
 J==mu*mod
 <span class=comment>! these three steps declare the symbolic function J (of yet undeclared array lu)</span>
 <span class=comment>! to be minimized</span>
-<a href="../../Documentation/cpl.html#LOOP">LOOP</a> iter <a href="../../Documentation/cpl.html#FOR">FOR</a> n=1 <a href="../../Documentation/cpl.html#TO">TO</a> 100000
-  <a href="../../Documentation/cpl.html#REAL">REAL</a> maxrsd=0
-  <a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> parity=0 <a href="../../Documentation/cpl.html#TO">TO</a> 1 <a href="../../Documentation/cpl.html#AND">AND</a> ix=1 <a href="../../Documentation/cpl.html#TO">TO</a> nx-1 <a href="../../Documentation/cpl.html#AND">AND</a> iy=2-(ix+parity) <a href="../../Documentation/cpl.html#MOD">MOD</a> 2 <a href="../../Documentation/cpl.html#TO">TO</a> nx-1 <a href="../../Documentation/cpl.html#BY">BY</a> 2 EXCEPT f(ix,iy)=0 <span class=comment>!(this is the red-black iteration. Notice use of EXCEPT
+<a href="cpl.html#LOOP">LOOP</a> iter <a href="cpl.html#FOR">FOR</a> n=1 <a href="cpl.html#TO">TO</a> 100000
+  <a href="cpl.html#REAL">REAL</a> maxrsd=0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> ix=1 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#AND">AND</a> iy=2-(ix+parity) <a href="cpl.html#MOD">MOD</a> 2 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#BY">BY</a> 2 EXCEPT f(ix,iy)=0 <span class=comment>!(this is the red-black iteration. Notice use of EXCEPT
     to exclude the region where f=0!)</span>
     lu=^u(ix+(-1..1),iy+(-1..1))   <span class=comment>!( define lu as a subarray of u centered
       in ix,iy. This is not a copy but a pointer !)</span>
-    rsd=<a href="../../Documentation/cpl.html#Looping%20operator">SUM</a> D(J,lu(0,0))-px <a href="../../Documentation/cpl.html#FOR">FOR</a> i=-1 <a href="../../Documentation/cpl.html#TO">TO</a> 0 <a href="../../Documentation/cpl.html#AND">AND</a> j=-1 <a href="../../Documentation/cpl.html#TO">TO</a> 0 <span class=comment>!( current residual
+    rsd=<a href="cpl.html#Looping%20operator">SUM</a> D(J,lu(0,0))-px <a href="cpl.html#FOR">FOR</a> i=-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 0 <span class=comment>!( current residual
       calculated as the symbolic derivative of J, and then averaged in 0,0.
       i,j are passed implicitly to J which acts as a macro or INLINE FUNCTION!)</span>
-      mu0=<a href="../../Documentation/cpl.html#Looping%20operator">SUM</a> mu <a href="../../Documentation/cpl.html#FOR">FOR</a> i=-1 <a href="../../Documentation/cpl.html#TO">TO</a> 0 <a href="../../Documentation/cpl.html#AND">AND</a> j=-1 <a href="../../Documentation/cpl.html#TO">TO</a> 0   <span class=comment>!( viscosity in 0,0. Here too,
+      mu0=<a href="cpl.html#Looping%20operator">SUM</a> mu <a href="cpl.html#FOR">FOR</a> i=-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 0   <span class=comment>!( viscosity in 0,0. Here too,
       mu is expanded at compile time and contains i,j implicitly !)</span>    
     lu(0,0)=~-dx*dx/4/mu0*rsd   <span class=comment>! standard Gauss-Seidel update</span>
     maxrsd=MAX(maxrsd,ABS(rsd))   <span class=comment>! residual for convergence verification</span>
-  <a href="../../Documentation/cpl.html#REPEAT">REPEAT</a>
-  fr=dx^2*(<a href="../../Documentation/cpl.html#Looping%20operator">SUM</a> u(ix,iy) <a href="../../Documentation/cpl.html#FOR">FOR</a> <a href="../../Documentation/cpl.html#ALL">ALL</a> ix,iy)
+  <a href="cpl.html#REPEAT">REPEAT</a>
+  fr=dx^2*(<a href="cpl.html#Looping%20operator">SUM</a> u(ix,iy) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy)
   px=px*(0.8+0.2/fr)   <span class=comment>! feed back upon px so as to normalize the mean velocity</span>
-  <a href="../../Documentation/cpl.html#IF">IF</a> n <a href="../../Documentation/cpl.html#MOD">MOD</a> 10 =0 <a href="../../Documentation/cpl.html#THEN">THEN</a> <a href="../../Documentation/cpl.html#WRITE">WRITE</a> maxrsd; <a href="../../Documentation/graphics.html#SPLOT">SPLOT</a> u
-  <a href="../../Documentation/cpl.html#IF">IF</a> maxrsd&lt;1E-2 <a href="../../Documentation/cpl.html#THEN">THEN</a> EXIT iter   <span class=comment>! loops can be exited by name</span>
-<a href="../../Documentation/cpl.html#REPEAT">REPEAT</a> iter
-<a href="../../Documentation/cpl.html#READ">READ</a>   <span class=comment>! keep plot visible until Enter is pressed</span>
+  <a href="cpl.html#IF">IF</a> n <a href="cpl.html#MOD">MOD</a> 10 =0 <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#WRITE">WRITE</a> maxrsd; <a href="graphics.html#SPLOT">SPLOT</a> u
+  <a href="cpl.html#IF">IF</a> maxrsd&lt;1E-2 <a href="cpl.html#THEN">THEN</a> EXIT iter   <span class=comment>! loops can be exited by name</span>
+<a href="cpl.html#REPEAT">REPEAT</a> iter
+<a href="cpl.html#READ">READ</a>   <span class=comment>! keep plot visible until Enter is pressed</span>
 </pre></body></html>

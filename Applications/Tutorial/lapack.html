@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
+<!DOCTYPE html><html lang="en"><head><title="lapack.cpl"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
 <span class=comment>! Interface to some LAPACK functions</span>
 <span class=comment>! ==================================</span>
 <span class=comment>!</span>
@@ -7,41 +7,41 @@
 <span class=comment>! of a general real or complex matrix as its result.</span>
 <span class=comment>! It may serve as a template to include more LAPACK functions.</span>
 
-<a href="../../Documentation/cpl.html#USE">USE</a> complex
+<a href="cpl.html#USE">USE</a> <a href="complex.html#Top">complex</a>
 
-<a href="../../Documentation/cpl.html#C%20interface">#link</a> "-llapack -lblas"
+<a href="cpl.html#C%20interface">#link</a> "-llapack -lblas"
 <span class=comment>! directive to the C compiler.</span>
 <span class=comment>! On Debian the liblapack3 package or one equivalent must be installed.</span>
 
-<a href="../../Documentation/cpl.html#INLINE">INLINE</a> <a href="../../Documentation/cpl.html#ARRAY">ARRAY</a>(A.<a href="../../Documentation/cpl.html#LO">LO</a>..A.<a href="../../Documentation/cpl.html#HI">HI</a>) <a href="../../Documentation/cpl.html#OF">OF</a> <a href="../../Documentation/complex.html#COMPLEX">COMPLEX</a> <a href="../../Documentation/cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="../../Documentation/complex.html#COMPLEX">COMPLEX</a> A(*,*))
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#COMPLEX">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="complex.html#COMPLEX">COMPLEX</a> A(*,*))
 <span class=comment>! This function will declare its result a a constant array if none was declared</span>
-  <a href="../../Documentation/cpl.html#INTEGER">INTEGER</a> SDIM,info
-  LA=<a href="../../Documentation/cpl.html#LENGTH">LENGTH</a>(A)
-  <a href="../../Documentation/cpl.html#IF">IF</a> LA#<a href="../../Documentation/cpl.html#LENGTH">LENGTH</a>(A(<a href="../../Documentation/cpl.html#LO">LO</a>)) <a href="../../Documentation/cpl.html#THEN">THEN</a> <a href="../../Documentation/cpl.html#ERROR">ERROR</a> "matrix is not square"
-  LW<a href="../../Documentation/cpl.html#OR">OR</a>K=3*LA
-  <a href="../../Documentation/complex.html#COMPLEX">COMPLEX</a> W<a href="../../Documentation/cpl.html#OR">OR</a>K(1..LW<a href="../../Documentation/cpl.html#OR">OR</a>K)
-  <a href="../../Documentation/cpl.html#REAL">REAL</a> RW<a href="../../Documentation/cpl.html#OR">OR</a>K(1..LA)
-  <a href="../../Documentation/complex.html#COMPLEX">COMPLEX</a> Acopy(0..LA-1,0..LA-1)=A(<a href="../../Documentation/cpl.html#LO">LO</a>+*,<a href="../../Documentation/cpl.html#LO">LO</a>+*)
-  <a href="../../Documentation/cpl.html#FORTRANCALL">FORTRANCALL</a> zgees("N","N",<a href="../../Documentation/cpl.html#POINTER">NULL</a>,LA,Acopy,<a href="../../Documentation/cpl.html#FORTRANCALL">STRIDEOF</a>(Acopy),SDIM,<a href="../../Documentation/cpl.html#RESULT">RESULT</a>,<a href="../../Documentation/cpl.html#POINTER">NULL</a>,LA,W<a href="../../Documentation/cpl.html#OR">OR</a>K,LW<a href="../../Documentation/cpl.html#OR">OR</a>K,RW<a href="../../Documentation/cpl.html#OR">OR</a>K,<a href="../../Documentation/cpl.html#POINTER">NULL</a>,info)
+  <a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
+  LA=<a href="cpl.html#LENGTH">LENGTH</a>(A)
+  <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "matrix is not square"
+  LW<a href="cpl.html#OR">OR</a>K=3*LA
+  <a href="complex.html#COMPLEX">COMPLEX</a> W<a href="cpl.html#OR">OR</a>K(1..LW<a href="cpl.html#OR">OR</a>K)
+  <a href="cpl.html#REAL">REAL</a> RW<a href="cpl.html#OR">OR</a>K(1..LA)
+  <a href="complex.html#COMPLEX">COMPLEX</a> Acopy(0..LA-1,0..LA-1)=A(<a href="cpl.html#LO">LO</a>+*,<a href="cpl.html#LO">LO</a>+*)
+  <a href="cpl.html#FORTRANCALL">FORTRANCALL</a> zgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,Acopy,<a href="cpl.html#FORTRANCALL">STRIDEOF</a>(Acopy),SDIM,<a href="cpl.html#RESULT">RESULT</a>,<a href="cpl.html#POINTER">NULL</a>,LA,W<a href="cpl.html#OR">OR</a>K,LW<a href="cpl.html#OR">OR</a>K,RW<a href="cpl.html#OR">OR</a>K,<a href="cpl.html#POINTER">NULL</a>,info)
   <span class=comment>! interface to FORTRAN call, applied without any prototype checking</span>
-  <a href="../../Documentation/cpl.html#IF">IF</a> info#0 <a href="../../Documentation/cpl.html#THEN">THEN</a> <a href="../../Documentation/cpl.html#ERROR">ERROR</a> "zgees: " info
-<a href="../../Documentation/cpl.html#END">END</a> eigv
+  <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: " info
+<a href="cpl.html#END">END</a> eigv
 <span class=comment>! encapsulating zgees inside eigv turns on prototype checking</span>
 
-<a href="../../Documentation/cpl.html#INLINE">INLINE</a> <a href="../../Documentation/cpl.html#ARRAY">ARRAY</a>(A.<a href="../../Documentation/cpl.html#LO">LO</a>..A.<a href="../../Documentation/cpl.html#HI">HI</a>) <a href="../../Documentation/cpl.html#OF">OF</a> <a href="../../Documentation/complex.html#COMPLEX">COMPLEX</a> <a href="../../Documentation/cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="../../Documentation/cpl.html#REAL">REAL</a> A(*,*))
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#COMPLEX">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="cpl.html#REAL">REAL</a> A(*,*))
 <span class=comment>! same name as above but different argument list: overloaded function</span>
-<a href="../../Documentation/cpl.html#INTEGER">INTEGER</a> SDIM,info
-  LA=<a href="../../Documentation/cpl.html#LENGTH">LENGTH</a>(A)
-  <a href="../../Documentation/cpl.html#IF">IF</a> LA#<a href="../../Documentation/cpl.html#LENGTH">LENGTH</a>(A(<a href="../../Documentation/cpl.html#LO">LO</a>)) <a href="../../Documentation/cpl.html#THEN">THEN</a> <a href="../../Documentation/cpl.html#ERROR">ERROR</a> "matrix is not square"
-  LW<a href="../../Documentation/cpl.html#OR">OR</a>K=3*LA
-  <a href="../../Documentation/cpl.html#REAL">REAL</a> W<a href="../../Documentation/cpl.html#OR">OR</a>K(1..LW<a href="../../Documentation/cpl.html#OR">OR</a>K)
-  <a href="../../Documentation/cpl.html#REAL">REAL</a> WR(1..LA),WI(1..LA)
-  <a href="../../Documentation/cpl.html#REAL">REAL</a> Acopy(0..LA-1,0..LA-1)=A(<a href="../../Documentation/cpl.html#LO">LO</a>+*,<a href="../../Documentation/cpl.html#LO">LO</a>+*)
-  <a href="../../Documentation/cpl.html#FORTRANCALL">FORTRANCALL</a> dgees("N","N",<a href="../../Documentation/cpl.html#POINTER">NULL</a>,LA,Acopy,<a href="../../Documentation/cpl.html#FORTRANCALL">STRIDEOF</a>(Acopy),SDIM,WR,WI,<a href="../../Documentation/cpl.html#POINTER">NULL</a>,LA,W<a href="../../Documentation/cpl.html#OR">OR</a>K,LW<a href="../../Documentation/cpl.html#OR">OR</a>K,<a href="../../Documentation/cpl.html#POINTER">NULL</a>,info)
+<a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
+  LA=<a href="cpl.html#LENGTH">LENGTH</a>(A)
+  <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "matrix is not square"
+  LW<a href="cpl.html#OR">OR</a>K=3*LA
+  <a href="cpl.html#REAL">REAL</a> W<a href="cpl.html#OR">OR</a>K(1..LW<a href="cpl.html#OR">OR</a>K)
+  <a href="cpl.html#REAL">REAL</a> WR(1..LA),WI(1..LA)
+  <a href="cpl.html#REAL">REAL</a> Acopy(0..LA-1,0..LA-1)=A(<a href="cpl.html#LO">LO</a>+*,<a href="cpl.html#LO">LO</a>+*)
+  <a href="cpl.html#FORTRANCALL">FORTRANCALL</a> dgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,Acopy,<a href="cpl.html#FORTRANCALL">STRIDEOF</a>(Acopy),SDIM,WR,WI,<a href="cpl.html#POINTER">NULL</a>,LA,W<a href="cpl.html#OR">OR</a>K,LW<a href="cpl.html#OR">OR</a>K,<a href="cpl.html#POINTER">NULL</a>,info)
   <span class=comment>! interface to FORTRAN call, applied without any prototype checking</span>
-  <a href="../../Documentation/cpl.html#IF">IF</a> info#0 <a href="../../Documentation/cpl.html#THEN">THEN</a> <a href="../../Documentation/cpl.html#ERROR">ERROR</a> "dgees: " info
-  <a href="../../Documentation/cpl.html#RESULT">RESULT</a>(*+<a href="../../Documentation/cpl.html#LO">LO</a>-1).<a href="../../Documentation/cpl.html#REAL">REAL</a>=WR; <a href="../../Documentation/cpl.html#RESULT">RESULT</a>(*+<a href="../../Documentation/cpl.html#LO">LO</a>-1).IMAG=WI
-<a href="../../Documentation/cpl.html#END">END</a> eigv
+  <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: " info
+  <a href="cpl.html#RESULT">RESULT</a>(*+<a href="cpl.html#LO">LO</a>-1).<a href="cpl.html#REAL">REAL</a>=WR; <a href="cpl.html#RESULT">RESULT</a>(*+<a href="cpl.html#LO">LO</a>-1).IMAG=WI
+<a href="cpl.html#END">END</a> eigv
 <span class=comment>! encapsulating dgees inside eigv turns on prototype checking</span>
 
 <span class=comment>! Example: uncomment this or type it in icpl.</span>

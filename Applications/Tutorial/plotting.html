@@ -1,14 +1,14 @@
-<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
+<!DOCTYPE html><html lang="en"><head><title="plotting.cpl"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
 <span class=comment>! CPL plotting primitives are mapped to gnuplot commands</span>
 <span class=comment>! ======================================================</span>
 
-<a href="../../Documentation/cpl.html#USE">USE</a> gnuplot
-<a href="../../Documentation/cpl.html#INTEGER">INTEGER</a> n
-<a href="../../Documentation/cpl.html#ASK">ASK</a> "How many? ":n   <span class=comment>! ask the console user</span>
-<a href="../../Documentation/cpl.html#REAL">REAL</a> Fib(0..n)
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
+<a href="cpl.html#INTEGER">INTEGER</a> n
+<a href="cpl.html#ASK">ASK</a> "How many? ":n   <span class=comment>! ask the console user</span>
+<a href="cpl.html#REAL">REAL</a> Fib(0..n)
 Fib(0)=0; Fib(1)=1
-<a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> i=2 <a href="../../Documentation/cpl.html#TO">TO</a> n   <span class=comment>! fill up array of Fibonacci values</span>
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=2 <a href="cpl.html#TO">TO</a> n   <span class=comment>! fill up array of Fibonacci values</span>
   Fib(i)=Fib(i-1)+Fib(i-2)
-<a href="../../Documentation/cpl.html#REPEAT">REPEAT</a> <a href="../../Documentation/cpl.html#LOOP">LOOP</a>
-<a href="../../Documentation/graphics.html#PLOT">PLOT</a> Fib   <span class=comment>! plot the array.</span>
+<a href="cpl.html#REPEAT">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="graphics.html#PLOT">PLOT</a> Fib   <span class=comment>! plot the array.</span>
 </pre></body></html>

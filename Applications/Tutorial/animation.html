@@ -1,15 +1,15 @@
-<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
+<!DOCTYPE html><html lang="en"><head><title="animation.cpl"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
 <span class=comment>! Animate gnuplot</span>
 <span class=comment>! ===============</span>
 
-<a href="../../Documentation/cpl.html#USE">USE</a> gnuplot
-<a href="../../Documentation/cpl.html#REAL">REAL</a> g(-20..20,-20..20)
-<a href="../../Documentation/graphics.html#NEWGRAPH">NEWGRAPH</a>   <span class=comment>! open a clean graphics window </span>
-<a href="../../Documentation/graphics.html#gnuplot">set</a> zrange [-1:1]   <span class=comment>! "set" commands are passed to gnuplot unchanged</span>
-<a href="../../Documentation/cpl.html#LOOP">LOOP</a> <a href="../../Documentation/cpl.html#FOR">FOR</a> t=0. <a href="../../Documentation/cpl.html#TO">TO</a> 10000 <a href="../../Documentation/cpl.html#BY">BY</a> 0.3   <span class=comment>! LOOP with a REAL index</span>
-  amp=<a href="../../Documentation/cpl.html#Builtin">SIN</a>(t)
-  <a href="../../Documentation/cpl.html#DO">DO</a> g(ix,iy)=amp*<a href="../../Documentation/cpl.html#Builtin">EXP</a>{-[(0.1*ix)^2+(0.1*iy)^2]/2} <a href="../../Documentation/cpl.html#FOR">FOR</a> <a href="../../Documentation/cpl.html#ALL">ALL</a> ix,iy
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
+<a href="cpl.html#REAL">REAL</a> g(-20..20,-20..20)
+<a href="graphics.html#NEWGRAPH">NEWGRAPH</a>   <span class=comment>! open a clean graphics window </span>
+<a href="graphics.html#gnuplot">set</a> zrange [-1:1]   <span class=comment>! "set" commands are passed to gnuplot unchanged</span>
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> t=0. <a href="cpl.html#TO">TO</a> 10000 <a href="cpl.html#BY">BY</a> 0.3   <span class=comment>! LOOP with a REAL index</span>
+  amp=<a href="cpl.html#Builtin">SIN</a>(t)
+  <a href="cpl.html#DO">DO</a> g(ix,iy)=amp*<a href="cpl.html#Builtin">EXP</a>{-[(0.1*ix)^2+(0.1*iy)^2]/2} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy
   <span class=comment>! notice optional use of alternating parentheses for clarity</span>
-  <a href="../../Documentation/graphics.html#SPLOT">SPLOT</a> g
-<a href="../../Documentation/cpl.html#REPEAT">REPEAT</a>
+  <a href="graphics.html#SPLOT">SPLOT</a> g
+<a href="cpl.html#REPEAT">REPEAT</a>
 </pre></body></html>
