@@ -66,3 +66,23 @@
       tr {
         vertical-align:top;
       }
+      .leftinset {
+        float:left;
+        max-width:10em;
+        margin-top:0.5em;
+        margin-bottom:0.5em;
+        margin-right:1em;
+        padding-right:0.5em;
+        border-right:0.2em solid grey;
+        font-size:large;
+      }
+      .rightinset {
+        float:right;
+        max-width:10em;
+        margin-top:0.5em;
+        margin-bottom:0.5em;
+        margin-left:1em;
+        padding-left:0.5em;
+        border-left:0.2em solid grey;
+        font-size:large;
+      }
