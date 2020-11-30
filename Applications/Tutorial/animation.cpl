@@ -2,13 +2,14 @@
 ! =======================
 
 USE gnuplot
-REAL g(-20..20,-20..20)
-OPENGRAPH   ! open a clean graphics window 
+REAL g(-20..20,-20..20) ! declare a 2D array with negative lower bounds
+OPENGRAPH           ! open a clean graphics window 
 set zrange [-1:1]   ! "set" commands are passed to gnuplot unchanged
 ! zrange must be set or it will change from one image to another
-LOOP FOR t=0. TO 10000 BY 0.3   ! LOOP with a REAL index
-  amp=SIN(t)
+LOOP FOR t=0. TO 10000 BY 0.3   ! LOOP can have a REAL index
+  amp=SIN(t)        ! time-varying amplitude
   DO g(ix,iy)=amp*EXP{-[(0.1*ix)^2+(0.1*iy)^2]/2} FOR ALL ix,iy
-  ! notice the (optional) use of alternating parentheses for clarity
-  SPLOT g
+  ! this is an alternate, compact form of loop
+  ! brackets may optionally be rotated to improve clarity
+  SPLOT g           ! plot 2D array as a surface
 REPEAT

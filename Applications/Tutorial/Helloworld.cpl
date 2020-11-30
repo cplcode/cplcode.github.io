@@ -1,19 +1,19 @@
 WRITE "Hello world"
 
-! that's all folks: a single-liner that doesn't require many explanations.
+! that's all, folks: a single-liner that doesn't require many explanations.
 
 
 !( The program's beginning and end are marked by the beginning and end of the
   text itself. If "Hello world" (or "Hi there", or 2+2) is typed at the icpl
-  console, even WRITE (but not quotes) can be omitted. !)
+  console, even WRITE (but not quotes) may be omitted. !)
 
 !( ! makes the rest of the line a comment. !(...!) bracket a multi-line or an
   in-line comment. Comments can be nested. !)
 
-!( If this is your first CPL program, download this (or any of the other
+![ If this is your first CPL program, download this (or any of the other
   examples) to a working directory in your computer, compile it with the
-  command "makecpl Helloworld", then execute "Helloworld". !)
+  command "makecpl Helloworld", then execute "Helloworld". !]
 
-!( As an alternative you can launch the "icpl" interactive shell in the
+!{ As an alternative you can launch the "icpl" interactive shell in the
   directory where Helloworld.cpl resides and then enter "Helloworld".
-  Just its name will both compile and execute this or any other program. !)
+  Just its name will both compile and execute this or any other program. !}

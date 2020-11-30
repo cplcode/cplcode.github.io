@@ -3,14 +3,15 @@
 <span class=comment>! =======================</span>
 
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
-<a href="cpl.html#REAL">REAL</a> g(-20..20,-20..20)
-<a href="graphics.html#OPENGRAPH">OPENGRAPH</a>   <span class=comment>! open a clean graphics window </span>
+<a href="cpl.html#REAL">REAL</a> g(-20..20,-20..20) <span class=comment>! declare a 2D array with negative lower bounds</span>
+<a href="graphics.html#OPENGRAPH">OPENGRAPH</a>           <span class=comment>! open a clean graphics window </span>
 <a href="graphics.html#gnuplot">set</a> zrange [-1:1]   <span class=comment>! "set" commands are passed to gnuplot unchanged</span>
 <span class=comment>! zrange must be set or it will change from one image to another</span>
-<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> t=0. <a href="cpl.html#TO">TO</a> 10000 <a href="cpl.html#BY">BY</a> 0.3   <span class=comment>! LOOP with a REAL index</span>
-  amp=<a href="cpl.html#Builtin">SIN</a>(t)
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> t=0. <a href="cpl.html#TO">TO</a> 10000 <a href="cpl.html#BY">BY</a> 0.3   <span class=comment>! LOOP can have a REAL index</span>
+  amp=<a href="cpl.html#Builtin">SIN</a>(t)        <span class=comment>! time-varying amplitude</span>
   <a href="cpl.html#DO">DO</a> g(ix,iy)=amp*<a href="cpl.html#Builtin">EXP</a>{-[(0.1*ix)^2+(0.1*iy)^2]/2} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy
-  <span class=comment>! notice the (optional) use of alternating parentheses for clarity</span>
-  <a href="graphics.html#SPLOT">SPLOT</a> g
+  <span class=comment>! this is an alternate, compact form of loop</span>
+  <span class=comment>! brackets may optionally be rotated to improve clarity</span>
+  <a href="graphics.html#SPLOT">SPLOT</a> g           <span class=comment>! plot 2D array as a surface</span>
 <a href="cpl.html#REPEAT">REPEAT</a>
 </pre></body></html>
