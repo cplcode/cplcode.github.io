@@ -70,8 +70,10 @@
       .leftinset {
         float:left;
         max-width:20em;
-        margin-top:0.5em;
-        margin-bottom:0.5em;
+        margin-top:0.25em;
+        padding-top:0.25em;
+        margin-bottom:0.25em;
+        padding-bottom:0.25em;
         margin-right:1em;
         padding-right:0.5em;
         border-right:0.2em solid grey;
@@ -81,8 +83,10 @@
       .rightinset {
         float:right;
         max-width:25em;
-        margin-top:0.5em;
-        margin-bottom:0.5em;
+        margin-top:0.25em;
+        padding-top:0.25em;
+        margin-bottom:0.25em;
+        padding-bottom:0.25em;
         margin-left:1em;
         padding-left:0.5em;
         border-left:0.2em solid grey;
