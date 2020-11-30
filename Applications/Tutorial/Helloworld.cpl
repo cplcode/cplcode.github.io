@@ -12,8 +12,8 @@ WRITE "Hello world"
 
 !( If this is your first CPL program, download this (or any of the other
   examples) to a working directory in your computer, compile it with the
-  command "makecpl Helloworld", execute "Helloworld". !)
+  command "makecpl Helloworld", then execute "Helloworld". !)
 
-!( Alternatively you can launch the "icpl" interactive shell in the directory
-  where Helloworld.cpl resides. Typing "Helloworld" (its name) will both
-  compile and execute this (or any other) program. !)
+!( As an alternative you can launch the "icpl" interactive shell in the
+  directory where Helloworld.cpl resides and then enter "Helloworld".
+  Just its name will both compile and execute this or any other program. !)

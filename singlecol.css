@@ -34,8 +34,9 @@
         min-height:100%;
         padding-left:1em; padding-right:1em;
 }
-      code {
-        font-size: large;
+      code,pre {
+        font-size: 1em;
+        font-family:monospace,monospace;
       }
       iframe.news {
         position:absolute;
@@ -68,21 +69,23 @@
       }
       .leftinset {
         float:left;
-        max-width:15em;
+        max-width:20em;
         margin-top:0.5em;
         margin-bottom:0.5em;
         margin-right:1em;
         padding-right:0.5em;
         border-right:0.2em solid grey;
-        font-size:large;
+        font-family:monospace,monospace;
+        font-size:1em;
       }
       .rightinset {
         float:right;
-        max-width:15em;
+        max-width:25em;
         margin-top:0.5em;
         margin-bottom:0.5em;
         margin-left:1em;
         padding-left:0.5em;
         border-left:0.2em solid grey;
-        font-size:large;
+        font-family:monospace,monospace;
+        font-size:1em;
       }
