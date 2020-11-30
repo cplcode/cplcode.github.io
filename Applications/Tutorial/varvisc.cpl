@@ -20,8 +20,8 @@ DO u(i,j)=3*f(i,j) FOR i=5 TO nx DIV 2 AND j=5 TO nx DIV 2
 mod=={[lu(i+1,j+1)-lu(i,j+1)]^2+[lu(i+1,j)-lu(i,j)]^2+[lu(i+1,j+1)-lu(i+1,j)]^2+[lu(i,j+1)-lu(i,j)]^2}/dx^2/2   ! mod is centered in i+1/2, j+1/2
 mu==(EXP(-mod/m)+0.05)
 J==mu*mod
-! these three steps declare the symbolic function J (of yet undeclared array lu)
-! to be minimized
+! these three == delayed assignments define the symbolic function J
+! (of yet undeclared array lu) to be minimized.
 LOOP iter FOR n=1 TO 100000
   REAL maxrsd=0
   LOOP FOR parity=0 TO 1 AND ix=1 TO nx-1 AND iy=2-(ix+parity) MOD 2 TO nx-1 BY 2 EXCEPT f(ix,iy)=0 !(this is the red-black iteration. Notice use of EXCEPT

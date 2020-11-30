@@ -1,5 +1,5 @@
-! Animate gnuplot
-! ===============
+! Animate a gnuplot graph
+! =======================
 
 USE gnuplot
 REAL g(-20..20,-20..20)
@@ -9,6 +9,6 @@ set zrange [-1:1]   ! "set" commands are passed to gnuplot unchanged
 LOOP FOR t=0. TO 10000 BY 0.3   ! LOOP with a REAL index
   amp=SIN(t)
   DO g(ix,iy)=amp*EXP{-[(0.1*ix)^2+(0.1*iy)^2]/2} FOR ALL ix,iy
-  ! notice optional use of alternating parentheses for clarity
+  ! notice the (optional) use of alternating parentheses for clarity
   SPLOT g
 REPEAT

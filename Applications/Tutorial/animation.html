@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><title="animation.cpl"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style></head><body><pre>
-<span class=comment>! Animate gnuplot</span>
-<span class=comment>! ===============</span>
+<span class=comment>! Animate a gnuplot graph</span>
+<span class=comment>! =======================</span>
 
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
 <a href="cpl.html#REAL">REAL</a> g(-20..20,-20..20)
@@ -10,7 +10,7 @@
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> t=0. <a href="cpl.html#TO">TO</a> 10000 <a href="cpl.html#BY">BY</a> 0.3   <span class=comment>! LOOP with a REAL index</span>
   amp=<a href="cpl.html#Builtin">SIN</a>(t)
   <a href="cpl.html#DO">DO</a> g(ix,iy)=amp*<a href="cpl.html#Builtin">EXP</a>{-[(0.1*ix)^2+(0.1*iy)^2]/2} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy
-  <span class=comment>! notice optional use of alternating parentheses for clarity</span>
+  <span class=comment>! notice the (optional) use of alternating parentheses for clarity</span>
   <a href="graphics.html#SPLOT">SPLOT</a> g
 <a href="cpl.html#REPEAT">REPEAT</a>
 </pre></body></html>
