@@ -18,8 +18,8 @@ from the inclusion or the translation of libraries provided in this software,
 to all applicable extent except forbidding others from using similar code.
 
 2) This software may automate the operation of additional, not included,
-software tools on behalf of the user, such as but not limited to a C compiler
-or a graphics program. It is the user's exclusive responsibility to obtain such
+software tools, such as but not limited to a C compiler or a graphics program,
+on behalf of the user. It is the user's exclusive responsibility to obtain such
 additional software, to comply with its license, and to ensure that it is used
 appropriately.
 
@@ -28,10 +28,11 @@ for any purpose with or without fee is hereby granted, provided that the above
 copyright notice appear in all copies and that both that copyright notice and
 the full text of this license appear in supporting documentation.
 
-Distribution of this software in modified form is permitted if the above
-conditions are met and in addition: changes are clearly marked and attributed
-to their source; individually modified files, as well as the package, are given
-names differing from the original and do not interfere with their use. 
+Distribution of this software or portions of it in modified form is permitted
+if the above conditions are met and in addition: changes are clearly marked and
+attributed to their source; individually modified files, as well as the
+package, are given names differing from the original and do not interfere with
+their use. 
 
 This software is provided "as is" without express or implied warranty to
 the extent permitted by applicable law.

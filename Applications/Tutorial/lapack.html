@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><title="lapack.cpl"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
+<!DOCTYPE html><html lang="en"><head><title="lapack.cpl"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;} a:link,a:visited{color:MediumBlue}</style></head><body><pre>
 <span class=comment>! Interface to some LAPACK functions</span>
 <span class=comment>! ==================================</span>
 <span class=comment>!</span>
@@ -25,12 +25,11 @@
   <a href="cpl.html#FORTRANCALL">FORTRANCALL</a> zgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,Acopy,<a href="cpl.html#FORTRANCALL">STRIDEOF</a>(Acopy),SDIM,<a href="cpl.html#RESULT">RESULT</a>,<a href="cpl.html#POINTER">NULL</a>,LA,W<a href="cpl.html#OR">OR</a>K,LW<a href="cpl.html#OR">OR</a>K,RW<a href="cpl.html#OR">OR</a>K,<a href="cpl.html#POINTER">NULL</a>,info)
   <span class=comment>! interface to FORTRAN call, applied without any prototype checking</span>
   <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: " info
-<a href="cpl.html#END">END</a> eigv
-<span class=comment>! encapsulating zgees inside eigv turns on prototype checking</span>
+<a href="cpl.html#END">END</a> eigv   <span class=comment>! encapsulating zgees inside eigv turns on prototype checking</span>
 
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#COMPLEX">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="cpl.html#REAL">REAL</a> A(*,*))
 <span class=comment>! same name as above but different argument list: overloaded function</span>
-<a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
+  <a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
   LA=<a href="cpl.html#LENGTH">LENGTH</a>(A)
   <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "matrix is not square"
   LW<a href="cpl.html#OR">OR</a>K=3*LA
@@ -41,10 +40,9 @@
   <span class=comment>! interface to FORTRAN call, applied without any prototype checking</span>
   <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: " info
   <a href="cpl.html#RESULT">RESULT</a>(*+<a href="cpl.html#LO">LO</a>-1).<a href="cpl.html#REAL">REAL</a>=WR; <a href="cpl.html#RESULT">RESULT</a>(*+<a href="cpl.html#LO">LO</a>-1).IMAG=WI
-<a href="cpl.html#END">END</a> eigv
-<span class=comment>! encapsulating dgees inside eigv turns on prototype checking</span>
+<a href="cpl.html#END">END</a> eigv   <span class=comment>! encapsulating dgees inside eigv turns on prototype checking</span>
 
-<span class=comment>! Example: uncomment this or type it in icpl.</span>
+<span class=comment>! Example: uncomment this, or type it in icpl after "USE lapack".</span>
 <span class=comment>!(
   REAL A(1..2,1..2)
   A(1,1)=1; A(1,2)=3

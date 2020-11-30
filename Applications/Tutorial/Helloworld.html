@@ -1,10 +1,21 @@
-<!DOCTYPE html><html lang="en"><head><title="Helloworld.cpl"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;}</style></head><body><pre>
+<!DOCTYPE html><html lang="en"><head><title="Helloworld.cpl"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>body{font-size:large;} .comment{color:DeepPink;} a:link,a:visited{color:MediumBlue}</style></head><body><pre>
 <a href="cpl.html#WRITE">WRITE</a> "Hello world"
 
-<span class=comment>! that's all folks<span class=comment>! ("<span class=comment>!" introduces a comment.)</span></span></span>
+<span class=comment>! that's all folks: a single-liner that doesn't require many explanations.</span>
 
-<span class=comment>!( A single-liner that doesn't require many explanations. The program's
-  beginning and end are marked by the beginning and end of the text itself.
-  In an interactive icpl session WRITE will be implied if omitted.
-  And this is a multi-line comment. !)</span>
+
+<span class=comment>!( The program's beginning and end are marked by the beginning and end of the
+  text itself. If "Hello world" (or "Hi there", or 2+2) is typed at the icpl
+  console, even WRITE (but not quotes) can be omitted. !)</span>
+
+<span class=comment>!( <span class=comment>! makes the rest of the line a comment. <span class=comment>!(...!)</span> bracket a multi-line or an</span>
+  in-line comment. Comments can be nested. !)</span>
+
+<span class=comment>!( If this is your first CPL program, download this (or any of the other
+  examples) to a working directory in your computer, compile it with the
+  command "makecpl Helloworld", execute "Helloworld". !)</span>
+
+<span class=comment>!( Alternatively you can launch the "icpl" interactive shell in the directory
+  where Helloworld.cpl resides. Typing "Helloworld" (its name) will both
+  compile and execute this (or any other) program. !)</span>
 </pre></body></html>

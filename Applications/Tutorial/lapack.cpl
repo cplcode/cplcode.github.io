@@ -24,12 +24,11 @@ INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(COMPLEX A(*,*))
   FORTRANCALL zgees("N","N",NULL,LA,Acopy,STRIDEOF(Acopy),SDIM,RESULT,NULL,LA,WORK,LWORK,RWORK,NULL,info)
   ! interface to FORTRAN call, applied without any prototype checking
   IF info#0 THEN ERROR "zgees: " info
-END eigv
-! encapsulating zgees inside eigv turns on prototype checking
+END eigv   ! encapsulating zgees inside eigv turns on prototype checking
 
 INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(REAL A(*,*))
 ! same name as above but different argument list: overloaded function
-INTEGER SDIM,info
+  INTEGER SDIM,info
   LA=LENGTH(A)
   IF LA#LENGTH(A(LO)) THEN ERROR "matrix is not square"
   LWORK=3*LA
@@ -40,10 +39,9 @@ INTEGER SDIM,info
   ! interface to FORTRAN call, applied without any prototype checking
   IF info#0 THEN ERROR "dgees: " info
   RESULT(*+LO-1).REAL=WR; RESULT(*+LO-1).IMAG=WI
-END eigv
-! encapsulating dgees inside eigv turns on prototype checking
+END eigv   ! encapsulating dgees inside eigv turns on prototype checking
 
-! Example: uncomment this or type it in icpl.
+! Example: uncomment this, or type it in icpl after "USE lapack".
 !(
   REAL A(1..2,1..2)
   A(1,1)=1; A(1,2)=3
