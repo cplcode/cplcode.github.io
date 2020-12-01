@@ -28,7 +28,7 @@
 Node: (cpl)Top,  Next: <a href="#Keyword%20Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a>
 <hr>
 This is the documentation for the CPL programming language and its compiler,
-as of November 2020.
+as of December 2020.
 
 CPL = Concealed Pointer Lookup
 CPL = Custom Parameter Lists
@@ -3303,18 +3303,20 @@ An interactive CPL command can alternately be specified on the
 
 &lt;command&gt; may need to be quoted if it contains characters that are interpreted
 by the shell specially. If, either at the console prompt or on the command
-line, the name of a CPL file is given as a command, this source file is
-automatically compiled as necessary (if it is more recent than its executable),
-and then executed at compiled speed but with interpreted commands available.
-Exploiting the unix interpreter convention, any CPL source program can be
-made directly executable by writing "#!/usr/bin/env icpl" as its first line and
-turning on the executable permission flag. (<a href="bash.html#Shell%20Scripts">(bash)Shell Scripts</a>)
+line, the name of a CPL file is given as a command without the ".cpl" exten-
+sion, this source file is automatically compiled as necessary (if it is more
+recent than its executable), and then executed at compiled speed but with
+interpreted commands available. If the name of a CPL file is given as a command with the ".cpl" extension included, it is loaded and executed in the inter-
+preter as when it appears in an <a href="#INCLUDE">INCLUDE</a> statement. Exploiting the unix
+interpreter convention, a CPL source program can be made directly executable
+by writing "#!/usr/bin/env icpl" as its first line and turning on the
+executable permission flag. (<a href="bash.html#Shell%20Scripts">(bash)Shell Scripts</a>)
 
 The
 
-         icpl
+        icpl
         
-command alone launches an interactive icpl session.
+command with no arguments launches an interactive icpl session.
 
 icpl followed by a CPL expression (possibly quoted to avoid interpretation by
 the shell) calculates and prints that expression.
