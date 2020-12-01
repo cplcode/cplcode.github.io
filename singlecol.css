@@ -93,3 +93,8 @@
         font-family:monospace,monospace;
         font-size:1em;
       }
+      img.em {
+        height:0.9em;
+        vertical-align:bottom
+      }
+      

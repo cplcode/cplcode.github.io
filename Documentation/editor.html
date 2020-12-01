@@ -240,8 +240,8 @@ just as in readline mode.
 
 Where needed, the following explicit indentation commands are available:
 
-Esc + : indent the current selection one more space to the right,
-Esc - : unindent the current selection by one space to the left,
+Esc ] : indent the current selection one more space to the right,
+Esc [ : unindent the current selection by one space to the left,
 Esc = : even the margin of the current selection and indent as to CPL syntax.
 </div><div class=page id="Find">
 Node: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#Top">Top</a>
@@ -249,13 +249,17 @@ Node: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Se
 
 <h3>Find and replace</h3>
 
-"find" (Esc /) and "goto" (Esc g) seek the cursor to a given word or a given
-line number. Esc ? (or clicking "find" with the right mouse button) seeks
-backwards. The found string is automatically selected. In order to find and
-replace, find a given text, exit Esc mode, and start typing the replacement.
-Esc , repeats the last find. Esc / and Esc ? with an empty argument also repeat
-the last find, possibly changing its direction. If some text is selected, Esc /
-and Esc ? with an empty argument find the selected text.
+"find" (Esc /) and "goto" (Esc g or Esc +) seek the cursor to a given string or
+a given line number. Esc ? (or clicking "find" with the right mouse button)
+seeks backwards. The search is case-insensitive if the first character of the
+search string is a lowercase letter, case-sensitive otherwise. The found string
+is automatically selected.
+
+In order to find and replace, find a given text, exit Esc mode, and start
+typing the replacement. Esc , repeats the last find. Esc / and Esc ? with an
+empty argument also repeat the last find, possibly changing its direction.
+If some text is selected when Esc / or Esc ? are pressed, the selected text
+will appear as the search string.
 
 Esc . inserts the most recently typed text or the butlast selected text (the
 last selection being the string just found). It can be used to repeat the last
@@ -264,8 +268,8 @@ and thus serves as replace-and-find-again. Keeping  Esc &gt; pressed is a means 
 perform multiple replacements, possibly to the end (or to the beginning,
 if searching backwards) of file.
 
-Enter repeats the last command, possibly the last (forward or backward) find
-or the last replace-and-find-again.
+Esc Enter repeats whatever the last command was, possibly the last (forward or
+backward) find or the last replace-and-find-again.
 </div><div class=page id="Undo">
 Node: (editor)Undo,  Prev: <a href="#Find">Find</a>,  Up: <a href="#Top">Top</a>
 <hr>
