@@ -36,10 +36,10 @@ J<a href="cpl.html#Delayed%20assignment">==</a>mu*mod
       mu is expanded at compile time and contains i,j implicitly !)</span>    
     lu(0,0)=~-dx*dx/4/mu0*rsd   <span class=comment>! standard Gauss-Seidel update</span>
     maxrsd=MAX(maxrsd,ABS(rsd))   <span class=comment>! residual for convergence verification</span>
-  <a href="cpl.html#REPEAT">REPEAT</a>
+  <a href="cpl.html#LOOP">REPEAT</a>
   fr=dx^2*(<a href="cpl.html#Looping%20operator">SUM</a> u(ix,iy) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy)
   px=px*(0.8+0.2/fr)   <span class=comment>! feed back upon px so as to normalize the mean velocity</span>
   <a href="cpl.html#IF">IF</a> n <a href="cpl.html#MOD">MOD</a> 10 =0 <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#WRITE">WRITE</a> maxrsd; <a href="graphics.html#SPLOT">SPLOT</a> u
   <a href="cpl.html#IF">IF</a> maxrsd&lt;1E-2 <a href="cpl.html#THEN">THEN</a> EXIT iter   <span class=comment>! loops can be exited by name</span>
-<a href="cpl.html#REPEAT">REPEAT</a> iter
+<a href="cpl.html#LOOP">REPEAT</a> iter
 </pre></body></html>

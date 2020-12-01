@@ -1117,6 +1117,11 @@ automatically decides for static or dynamic allocation of memory space as
 needed. Arrays can contain elements of any primitive or compound type and can
 in turn appear as fields in structures or be pointed at by pointers.
 
+The lower bound of an array index is not fixed and can be specified. An array
+can be assigned in a single = statement to another of the same base type and
+number of elements, and is implicitly converted to having a compatible lower
+bound. A similar conversion takes place for function arguments.
+
 The special dimension * can only appear in the declaration of an ARRAY formal
 parameter or of a POINTER TO ARRAY, and declares a special type of pointer that
 remembers the current dimensions of the array together with its address. A

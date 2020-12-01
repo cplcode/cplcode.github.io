@@ -16,8 +16,8 @@ var=0; rhs=0
     <span class=comment>! this traverses the array in checkerboard fashion</span>
     var(i,j)=[var(i,j+1)+var(i,j-1)+var(i+1,j)+var(i-1,j)+rhs(i,j)]/4
     <span class=comment>! this statement is unchanged from Gauss-Seidel</span>
-  <a href="cpl.html#REPEAT">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-<a href="cpl.html#REPEAT">REPEAT</a>   <span class=comment>! "LOOP" is optional here</span>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#LOOP">REPEAT</a>   <span class=comment>! "LOOP" is optional here</span>
   
 <a href="graphics.html#SPLOT">SPLOT</a> var
   

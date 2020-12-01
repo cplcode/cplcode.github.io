@@ -18,9 +18,9 @@
     p^=<a href="cpl.html#NEW">NEW</a> CELL <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
     p.col=j; p.var=0; p.rhs=0
     p=p.next
-  <a href="cpl.html#REPEAT">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   p^=<a href="cpl.html#POINTER">NULL</a> <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
-<a href="cpl.html#REPEAT">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 
 <a href="cpl.html#DO">DO</a> p.var=1 <a href="cpl.html#FOR">FOR</a> p=RowStart(<a href="cpl.html#HI">HI</a>) <a href="cpl.html#UNTIL">UNTIL</a> p=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#BY">BY</a> p=p.next
 <span class=comment>! assign some boundary condition</span>
@@ -45,15 +45,15 @@
       <a href="cpl.html#IF">IF</a> right=center <a href="cpl.html#THEN">THEN</a> right=right.next
       <span class=comment>! notice that STRUCTURE elements can be accessed in either dotted</span>
       <span class=comment>! or function notation</span>
-    <a href="cpl.html#REPEAT">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-  <a href="cpl.html#REPEAT">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-<a href="cpl.html#REPEAT">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 
 <span class=comment>! now plot something</span>
 <a href="graphics.html#RANGE">RANGE</a> 0,40,0,2
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=RowStart.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> RowStart.<a href="cpl.html#HI">HI</a>
   <a href="graphics.html#STARTLINE">STARTLINE</a>; <a href="cpl.html#DO">DO</a> <a href="graphics.html#DRAW">DRAW</a> p.col,p.var+i/20 <a href="cpl.html#FOR">FOR</a> p=RowStart(i) <a href="cpl.html#UNTIL">UNTIL</a> p=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#BY">BY</a> p=p.next
-<a href="cpl.html#REPEAT">REPEAT</a>
+<a href="cpl.html#LOOP">REPEAT</a>
 <a href="graphics.html#SHOWGRAPH">SHOWGRAPH</a>
 
 <span class=comment>!(

@@ -13,16 +13,17 @@ REAL FUNCTION wallclock() FOLLOWS
 ! content of wallclock is inside the MODULE; this declares it globally
 
 MODULE wallclock
-  struct timeval startim   ! declaration using C struct declared in time.h
+  struct timeval startim       ! declaration using C struct declared in time.h
+                               ! this static variable is local to the MODULE
   gettimeofday(startim,NULL)   ! libc function call
-  ! initialize startim when execution starts
+                               ! initializes startim when execution starts
   REAL FUNCTION wallclock()
     struct timeval tim
-    gettimeofday(tim,NULL)   ! libc function call
+    gettimeofday(tim,NULL)     ! libc function call
     RESULT=(tim.tv_sec-startim.tv_sec)+1E-6*(tim.tv_usec-startim.tv_usec)
-    ! return time in seconds since program started
-  END wallclock
-END wallclock
+                               ! return time in seconds since program started
+  END wallclock  !(function!)
+END wallclock    !(module!)
 
 ! test example
 !(
