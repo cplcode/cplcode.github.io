@@ -5,7 +5,7 @@ INTEGER n
 ASK "How many? ":n   ! ask for console input and read it in n
 INTEGER Fib(0..2)    ! declare and allocate array
 Fib(0)=1; Fib(1)=0   ! initialize recursion
-LOOP FOR n TIMES     ! the simplest of several LOOP forms
+LOOP FOR n TIMES     ! the simplest of several LOOP forms available
   Fib(2)=Fib(1)      ! move up
   Fib(1)=Fib(0)      ! move up
   Fib(0)=Fib(1)+Fib(2)   ! Fibonacci's recursive formula

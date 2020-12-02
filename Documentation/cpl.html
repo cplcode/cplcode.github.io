@@ -205,6 +205,7 @@ Node: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#icpl">icpl</a>:</td><td>Interactive CPL</td></tr>
 <tr><td><a href="#command%20interpretation">icpl:command interpretation</a>:</td><td>of a run-time generated CPL statement</td></tr>
 <tr><td><a href="#infocpl">infocpl</a>:</td><td>info reading script</td></tr>
+<tr><td><a href="#lapack-eigv">lapack-eigv</a>:</td><td>interface to LAPACK matrix eigenvalue routines</td></tr>
 <tr><td><a href="#STRING">literal:STRING</a>:</td><td>constant string of characters</td></tr>
 <tr><td><a href="editor.html#full-screen">load:(editor)full-screen</a>:</td><td>Load a file at current cursor position</td></tr>
 <tr><td><a href="#makecpl">makecpl</a>:</td><td>Compilation tools and their usage</td></tr>
@@ -848,7 +849,7 @@ implicit:
   newid = &lt;compound type&gt;  declares a <a href="#TYPE">TYPE</a> identifier to denote the
                  compound type on the r.h.s.
   A newid used as the running index of a <a href="#FOR">FOR</a> loop is implicitly
-                   declared CONSTANT in the scope of the loop.
+                 declared CONSTANT in the scope of the loop.
 
 <nav><table>
 <tr><th>Menu:</th><th></th></tr>
@@ -1149,7 +1150,7 @@ Therefore, a notation such as arr(4) is allowed, and has type ARRAY(2..9) OF
 REAL. This is a particular case of a <a href="#subarray">subarray</a>. By the same token, the
 second line might also have been written as
 
-        WRITE arr(4)(5)                
+        WRITE arr(4)(5)
 
 <nav><table>
 <tr><th>Menu:</th><th></th></tr>
@@ -2214,11 +2215,11 @@ The output statement WRITE is used as follows:
 
         WRITE [TO &lt;file&gt;] [BY NAME] [&lt;outputexpr&gt;] [./.]
 
-&lt;file&gt; can be a file descriptor, of type FILE, such as returned by <a href="#OPEN">OPEN</a>
-or <a href="#CREATE">CREATE</a>, or else a string representing a filename. In the latter case
-the file is implicitly CREATEd before WRITEing and FREEd afterwards.
-If "TO &lt;file&gt;" is omitted, stdout is implied.
-If &lt;file&gt; is present, "WRITE TO" may be omitted.
+&lt;file&gt; can be a file descriptor, of type <a href="#FILE">FILE</a>, such as returned by
+<a href="#OPEN">OPEN</a> or <a href="#CREATE">CREATE</a>, or else a string representing a filename. In
+the latter case the file is implicitly CREATEd before WRITEing and FREEd
+afterwards. If "TO &lt;file&gt;" is omitted, stdout is implied. If &lt;file&gt; is present,
+"WRITE TO" may be omitted.
 
 &lt;outputexpr&gt; can be
 
@@ -2265,10 +2266,10 @@ The input statement READ is used as follows:
 
         READ [BY NAME] [FROM &lt;file&gt;] [&lt;variable&gt; [&lt;conjunction&gt; &lt;variable&gt;]]
 
-&lt;file&gt; can be a file descriptor, of type FILE, such as returned by <a href="#OPEN">OPEN</a>
-or <a href="#CREATE">CREATE</a>, or else a string representing a filename. In the latter case
-the file is implicitly opened before READ is executed and closed afterwards. If
-"FROM &lt;file&gt;" is omitted, stdin is assumed.
+&lt;file&gt; can be a file descriptor, of type <a href="#FILE">FILE</a>, such as returned by
+<a href="#OPEN">OPEN</a> or <a href="#CREATE">CREATE</a>, or else a string representing a filename. In
+the latter case the file is implicitly opened before READ is executed and
+closed afterwards. If "FROM &lt;file&gt;" is omitted, stdin is assumed.
 
 &lt;variable&gt; must be a <a href="#VARIABLE">VARIABLE</a> identifier or a <a href="#POINTER">POINTER</a> to a
 variable, which can be of any type except POINTER. Compound types such as <a href="#ARRAY">
@@ -2358,7 +2359,7 @@ prompt is the optional "literal" if present or the name of the variable
 followed by a "?" otherwise.
 
 Console prompting can be compounded with CONSTANT declaration. If &lt;type&gt; is
-present, each variable is declared as a CONSTANT before being asked.
+present, each variable is declared as a <a href="#CONSTANT">CONSTANT</a> before being asked.
 </div><div class=page id="BINARY">
 Node: (cpl)BINARY,  Next: <a href="#STORED">STORED</a>,  Prev: <a href="#ASK">ASK</a>,  Up: <a href="#Input/Output">Input/Output</a>
 <hr>
@@ -3431,7 +3432,8 @@ Node: (cpl)Library,  Prev: <a href="#icpl">icpl</a>,  Next: <a href="#rtchecks">
 <tr><td><a href="parallel.html#nonparallel">nonparallel:(parallel)nonparallel</a>:</td><td>fake parallel package (does nothing)</td></tr>
 <tr><td><a href="symbolic.html#Top">symbolic:(symbolic)</a>:</td><td>Symbolic differentiation</td></tr>
 <tr><td><a href="#CHARbyCHAR">CHARbyCHAR</a>:</td><td>live keyboard input</td></tr>
-<tr><td><a href="#INPUTREADY">inputready:INPUTREADY</a>:</td><td>test for input ready on a file descriptor or stdin </td></tr>
+<tr><td><a href="#INPUTREADY">inputready:INPUTREADY</a>:</td><td>test for input ready on a file descriptor or stdin</td></tr>
+<tr><td><a href="#lapack-eigv">lapack-eigv</a>:</td><td>interface to LAPACK matrix eigenvalue routines</td></tr>
 <tr><td><a href="#matlib">matlib</a>:</td><td>Some basic compact matrix-defining functions</td></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
 </table></nav>
@@ -3497,8 +3499,22 @@ activate unbuffered terminal input, so that the input of a single character may
 be read immediately (normally input is transferred from the terminal to the
 running program one line at a time, i.e. only when a newline is entered).
 USEing this library is all that is necessary. Input is then performed as usual.
+</div><div class=page id="lapack-eigv">
+Node: (cpl)lapack-eigv,  Prev: <a href="#CHARbyCHAR">CHARbyCHAR</a>,  Next: <a href="#matlib">matlib</a>,  Up: <a href="#Library">Library</a>
+<hr>
+
+<h2>Interface to LAPACK eigenvalue routines</h2>
+
+The lapack-eigv.cpl library declares the functions
+
+       INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(REAL A(*,*))
+
+       INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(COMPLEX A(*,*))
+
+providing the full set of eigenvalues of, respectively, a <a href="#REAL">REAL</a> or a
+<a href="#COMPLEX">COMPLEX</a> matrix.
 </div><div class=page id="matlib">
-Node: (cpl)matlib,  Prev: <a href="#CHARbyCHAR">CHARbyCHAR</a>,  Up: <a href="#Library">Library</a>
+Node: (cpl)matlib,  Prev: <a href="#lapack-eigv">lapack-eigv</a>,  Up: <a href="#Library">Library</a>
 <hr>
 
 <h2>Basic matrix-creating functions</h2>
