@@ -25,21 +25,21 @@ J<a href="cpl.html#Delayed%20assignment">==</a>mu*mod
 <span class=comment>! (of yet undeclared array lu) to be minimized.</span>
 <a href="cpl.html#LOOP">LOOP</a> iter <a href="cpl.html#FOR">FOR</a> n=1 <a href="cpl.html#TO">TO</a> 100000
   <a href="cpl.html#REAL">REAL</a> maxrsd=0
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> ix=1 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#AND">AND</a> iy=2-(ix+parity) <a href="cpl.html#MOD">MOD</a> 2 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#BY">BY</a> 2 EXCEPT f(ix,iy)=0 <span class=comment>!(this is the red-black iteration. Notice use of EXCEPT
-    to exclude the region where f=0!)</span>
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> ix=1 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#AND">AND</a> iy=2-(ix+parity) <a href="cpl.html#MOD">MOD</a> 2 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#BY">BY</a> 2 EXCEPT f(ix,iy)=0
+  <span class=comment>!(this is the red-black iteration. Notice use of EXCEPT to exclude the region where f=0!)</span>
     lu=^u(ix+(-1..1),iy+(-1..1))   <span class=comment>!( define lu as a subarray of u centered
-      in ix,iy. This is not a copy but a pointer !)</span>
+      in ix,iy. ^ specifies that this is not a copy but a pointer !)</span>
     rsd=<a href="cpl.html#Looping%20operator">SUM</a> D(J,lu(0,0))-px <a href="cpl.html#FOR">FOR</a> i=-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 0 <span class=comment>!( current residual
       calculated as the symbolic derivative of J, and then averaged in 0,0.
       i,j are passed implicitly to J which acts as a macro or INLINE FUNCTION!)</span>
       mu0=<a href="cpl.html#Looping%20operator">SUM</a> mu <a href="cpl.html#FOR">FOR</a> i=-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 0   <span class=comment>!( viscosity in 0,0. Here too,
       mu is expanded at compile time and contains i,j implicitly !)</span>    
     lu(0,0)=~-dx*dx/4/mu0*rsd   <span class=comment>! standard Gauss-Seidel update</span>
-    maxrsd=MAX(maxrsd,ABS(rsd))   <span class=comment>! residual for convergence verification</span>
+    maxrsd=<a href="cpl.html#Looping%20operator">MAX</a>(maxrsd,ABS(rsd))   <span class=comment>! residual for convergence verification</span>
   <a href="cpl.html#LOOP">REPEAT</a>
   fr=dx^2*(<a href="cpl.html#Looping%20operator">SUM</a> u(ix,iy) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy)
   px=px*(0.8+0.2/fr)   <span class=comment>! feed back upon px so as to normalize the mean velocity</span>
   <a href="cpl.html#IF">IF</a> n <a href="cpl.html#MOD">MOD</a> 10 =0 <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#WRITE">WRITE</a> maxrsd; <a href="graphics.html#SPLOT">SPLOT</a> u
-  <a href="cpl.html#IF">IF</a> maxrsd&lt;1E-2 <a href="cpl.html#THEN">THEN</a> EXIT iter   <span class=comment>! loops can be exited by name</span>
+  <a href="cpl.html#IF">IF</a> maxrsd&lt;1E-2 <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#EXIT">EXIT</a> iter   <span class=comment>! loops can be exited by name</span>
 <a href="cpl.html#LOOP">REPEAT</a> iter
 </pre></body></html>

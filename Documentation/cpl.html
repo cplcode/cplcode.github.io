@@ -1118,10 +1118,11 @@ automatically decides for static or dynamic allocation of memory space as
 needed. Arrays can contain elements of any primitive or compound type and can
 in turn appear as fields in structures or be pointed at by pointers.
 
-The lower bound of an array index is not fixed and can be specified. An array
-can be assigned in a single = statement to another of the same base type and
-number of elements, and is implicitly converted to having a compatible lower
-bound. A similar conversion takes place for function arguments.
+When an ARRAY is assigned in a single = statement to another of the same base
+type and number of elements, its lower bound is implicitly realigned. A similar
+realignment takes place for function arguments. Assigning to a different base
+type triggers an error. Mismatch in the number of elements is flagged by
+<a href="#rtchecks">rtchecks</a>.
 
 The special dimension * can only appear in the declaration of an ARRAY formal
 parameter or of a POINTER TO ARRAY, and declares a special type of pointer that
@@ -1834,7 +1835,7 @@ The function
 
 returns the modulus (square root of the <a href="#NORM">NORM</a>) of the array.
 
-MOD is also a <a href="#INTEGER%20operator">INTEGER operator</a>.
+MOD is also an <a href="#INTEGER%20operator">INTEGER operator</a>.
 </div><div class=page id="NORM">
 Node: (cpl)NORM,  Next: <a href="#RAND">RAND</a>,  Prev: <a href="#MOD">MOD</a>,  Up: <a href="#Builtin">Builtin</a>
 <hr>
@@ -1984,9 +1985,29 @@ Matrix transposition is provided as the <a href="#subarray">TRANSPOSED:subarray<
 
 All ARRAY operations can also be applied to <a href="#STORED">STORED</a> ARRAYs and <a href="#STRUCTURED">
 STRUCTURED</a> ARRAYs.
+</div><div class=page id="Einstein%20convention">
+Node: (cpl)Einstein convention, Next: <a href="#Assignment">Assignment</a>, Prev: <a href="#ARRAY%20operations">ARRAY operations</a>, Up: <a href="#Expressions">Expressions</a>
+<hr>
+
+<h3>Implicit looping over array indices</h3>
+
+When indices in an expression are prefixed with $ the Einstein convention is
+implied. I.e., in a contraction or a product the Einstein index must appear
+exactly twice, and the result will be summed over <a href="#ALL">ALL</a> values of this
+index; in a sum and assignment, Einstein indices must appear exactly once in
+each and all terms including the l.h.s., and the assignment will be repeated
+over <a href="#ALL">ALL</a> values of these indices. For example:
+
+        C($i,$j)=A($i,$j,$m)*B($i,$m,$j)+D($j,$i)
+
+Footnote: the euro symbol would have been appropriate to match the "e" of
+Einstein, but is not part of the 7-bit ascii codes so we replaced it by a
+currency that is (the $).
 </div><div class=page id="Assignment">
 Node: (cpl)Assignment, Next: <a href="#Delayed%20assignment">Delayed assignment</a>, Prev: <a href="#Expressions">Expressions</a>, Up: <a href="#Statements">Statements</a>
 <hr>
+
+<h2>Assignment</h2>
 
 Assignment is performed by a single "=" sign. The l.h.s. must be a POINTER, and
 the r.h.s. is required to be a value of the TYPE pointed to or to be implicitly
@@ -2012,6 +2033,8 @@ place-holder for the left hand. For example:
 Node: (cpl)Delayed assignment, Next: <a href="#Concealed%20Pointer%20Lookup">Concealed Pointer Lookup</a>, Prev: <a href="#Assignment">Assignment</a>, Up: <a href="#Statements">Statements</a>
 <hr>
 
+<h2>Delayed assignment</h2>
+
 When an assignment is performed by a double "==" sign, no statement is
 generated in place. The l.h.s. is instead defined to be an alias for the
 r.h.s., and the assignment will be performed (and error messages issued, if
@@ -2023,24 +2046,6 @@ actually used. It also allows compile-time constants to be given symbolic names
 and still be recognized as such.
 
 This construction is further extended in the <a href="symbolic.html#Top">(symbolic)</a> library.
-</div><div class=page id="Einstein%20convention">
-Node: (cpl)Einstein convention, Next: <a href="#Assignment">Assignment</a>, Prev: <a href="#ARRAY%20operations">ARRAY operations</a>, Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>Implicit looping over array indices</h3>
-
-When indices in an expression are prefixed with $ the Einstein convention is
-implied. I.e., in a contraction or a product the Einstein index must appear
-exactly twice, and the result will be summed over <a href="#ALL">ALL</a> values of this
-index; in a sum and assignment, Einstein indices must appear exactly once in
-each and all terms including the l.h.s., and the assignment will be repeated
-over <a href="#ALL">ALL</a> values of these indices. For example:
-
-        C($i,$j)=A($i,$j,$m)*B($i,$m,$j)+D($j,$i)
-
-Footnote: the euro symbol would have been appropriate to match the "e" of
-Einstein, but is not part of the 7-bit ascii codes so we replaced it by a
-currency that is (the $).
 </div><div class=page id="Concealed%20Pointer%20Lookup">
 Node: (cpl)Concealed Pointer Lookup, Next: <a href="#WITH">WITH</a>, Prev: <a href="#Delayed%20assignment">Delayed assignment</a>, Up: <a href="#Statements">Statements</a>
 <hr>
@@ -3489,7 +3494,7 @@ V,v: view. Open a vi window at the present line in the source code, which can
         instruction of the enclosing block.
 Any other key displays a one-line reminder of the above.
 </div><div class=page id="CHARbyCHAR">
-Node: (cpl)CHARbyCHAR, Next: <a href="#matlib">matlib</a>, Prev: <a href="symbolic.html#Top">(symbolic)</a>, Up: <a href="#Library">Library</a>
+Node: (cpl)CHARbyCHAR, Next: <a href="#lapack-eigv">lapack-eigv</a>, Prev: <a href="symbolic.html#Top">(symbolic)</a>, Up: <a href="#Library">Library</a>
 <hr>
 
 <h2>Live keyboard input</h2>
@@ -3507,12 +3512,12 @@ Node: (cpl)lapack-eigv,  Prev: <a href="#CHARbyCHAR">CHARbyCHAR</a>,  Next: <a h
 
 The lapack-eigv.cpl library declares the functions
 
-       INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(REAL A(*,*))
+       ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(REAL A(*,*))
 
-       INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(COMPLEX A(*,*))
+       ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(COMPLEX A(*,*))
 
 providing the full set of eigenvalues of, respectively, a <a href="#REAL">REAL</a> or a
-<a href="#COMPLEX">COMPLEX</a> matrix.
+<a href="#COMPLEX">COMPLEX</a> square matrix.
 </div><div class=page id="matlib">
 Node: (cpl)matlib,  Prev: <a href="#lapack-eigv">lapack-eigv</a>,  Up: <a href="#Library">Library</a>
 <hr>

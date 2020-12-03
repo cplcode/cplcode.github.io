@@ -24,10 +24,10 @@ J==mu*mod
 ! (of yet undeclared array lu) to be minimized.
 LOOP iter FOR n=1 TO 100000
   REAL maxrsd=0
-  LOOP FOR parity=0 TO 1 AND ix=1 TO nx-1 AND iy=2-(ix+parity) MOD 2 TO nx-1 BY 2 EXCEPT f(ix,iy)=0 !(this is the red-black iteration. Notice use of EXCEPT
-    to exclude the region where f=0!)
+  LOOP FOR parity=0 TO 1 AND ix=1 TO nx-1 AND iy=2-(ix+parity) MOD 2 TO nx-1 BY 2 EXCEPT f(ix,iy)=0
+  !(this is the red-black iteration. Notice use of EXCEPT to exclude the region where f=0!)
     lu=^u(ix+(-1..1),iy+(-1..1))   !( define lu as a subarray of u centered
-      in ix,iy. This is not a copy but a pointer !)
+      in ix,iy. ^ specifies that this is not a copy but a pointer !)
     rsd=SUM D(J,lu(0,0))-px FOR i=-1 TO 0 AND j=-1 TO 0 !( current residual
       calculated as the symbolic derivative of J, and then averaged in 0,0.
       i,j are passed implicitly to J which acts as a macro or INLINE FUNCTION!)
