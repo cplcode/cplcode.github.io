@@ -3130,8 +3130,8 @@ and then running make (<a href="make.html#Top">(make)</a>) on this makefile. Any
 present on the makecpl command line are passed on through make to the system C
 compiler and linker, or to the command-line designated compiler.
 
-The default C compiler is the make default; an alternate C compiler can be
-specified in the environment variable CC or as CC= on the command line.
+The default C compiler is make's default; an alternate C compiler can be
+specified in the CC environment variable or as CC= on the command line.
 
 The -D and -I options are interpreted by cpl, in addition to being passed to
 the C compiler, and provide pre-#defined constants and include directories to
@@ -3148,6 +3148,11 @@ full re-compilation may be necessary, the command
         makecpl -a &lt;programtobecompiled&gt;
         
 achieves this by deleting the object files first.
+
+If your system includes the wget command (on Debian, apt install wget), makecpl
+provides the functionality to poll the CPLcode.net website once a day in the
+background and inform you when updates become available. This may be disabled
+by editing the makecpl script and turning ENABLE_UPDATES to false.
 
 <nav><table>
 <tr><th>Menu:</th><th></th></tr>
