@@ -24,6 +24,7 @@
 <link rel="canonical" href="https://CPLcode.net/Documentation/graphics.html#Top">
 </head>
 <body><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
+
 </div><div class=page id="Top">
 Node: (graphics)Top, Next: <a href="#nographics">nographics</a>, Prev: <a href="matrix.html#Top">(matrix)</a>, Up: <a href="cpl.html#Library">(cpl)Library</a>
 <hr>
@@ -49,6 +50,7 @@ gnuplot</a>
 <tr><td><a href="#PLOT">PLOT</a>:</td><td>plot a complete curve with default settings</td></tr>
 <tr><td><a href="#strlines">strlines</a>:</td><td>Streamline plotting</td></tr>
 </table></nav>
+
 </div><div class=page id="OPENGRAPH">
 Node: (graphics)OPENGRAPH,  Next: <a href="#WINDOW">WINDOW</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a>
 <hr>
@@ -72,6 +74,7 @@ previously opened.
 A graphics window may be closed without opening a new one by the
 
 SUBROUTINE CLOSEGRAPH()
+
 </div><div class=page id="WINDOW">
 Node: (graphics)WINDOW,  Next: <a href="#RANGE">RANGE</a>,  Prev: <a href="#OPENGRAPH">OPENGRAPH</a>,  Up: <a href="#Top">Top</a>
 <hr>
@@ -82,6 +85,7 @@ Specifies a plotting window within the current graph, in a system of
 coordinates going from 0 to 1 along either axis.
 
 If WINDOW was not specified, 0,1,0,1 is assumed.
+
 </div><div class=page id="RANGE">
 Node: (graphics)RANGE,  Next: <a href="#STARTLINE">STARTLINE</a>,  Prev: <a href="#WINDOW">WINDOW</a>,  Up: <a href="#Top">Top</a>
 <hr>
@@ -103,6 +107,7 @@ range may be read from the
 REAL CONSTANT XMIN,XMAX,YMIN,YMAX
 
 If RANGE was not specified, 0,1,0,1 is assumed (except for <a href="#PLOT">PLOT</a>).
+
 </div><div class=page id="STARTLINE">
 Node: (graphics)STARTLINE,  Next: <a href="#DRAW">DRAW</a>,  Prev: <a href="#RANGE">RANGE</a>,  Up: <a href="#Top">Top</a>
 <hr>
@@ -119,6 +124,7 @@ next <a href="#DRAW">DRAW</a> command will not draw a segment but just a point.
 STARTCIRCLE specifies that a small circle be drawn in each point rather than
 connecting them with segments. In the <a href="#gnuplot">gnuplot</a> version only, the
 argument &lt;style&gt; may be added to specify a gnuplot-recognized line style.
+
 </div><div class=page id="DRAW">
 Node: (graphics)DRAW,  Next: <a href="#LABEL">LABEL</a>,  Prev: <a href="#STARTLINE">STARTLINE</a>,  Up: <a href="#Top">Top</a>
 <hr>
@@ -141,6 +147,7 @@ SUBROUTINE BOX(REAL x1,x2,y1,y2)
 SUBROUTINE CIRCLE(REAL x,y,r)
 
 do what their names imply.
+
 </div><div class=page id="LABEL">
 Node: (graphics)LABEL,  Next: <a href="#SHOWGRAPH">SHOWGRAPH</a>,  Prev: <a href="#DRAW">DRAW</a>,  Up: <a href="#Top">Top</a>
 <hr>
@@ -148,6 +155,7 @@ Node: (graphics)LABEL,  Next: <a href="#SHOWGRAPH">SHOWGRAPH</a>,  Prev: <a href
 <h3>SUBROUTINE LABEL(REAL x,y; POINTER TO CSTRING s)</h3>
 
 writes character string &lt;s&gt; starting at coordinates &lt;x&gt;, &lt;y&gt;.
+
 </div><div class=page id="SHOWGRAPH">
 Node: (graphics)SHOWGRAPH,  Next: <a href="#PLOT">PLOT</a>,  Prev: <a href="#LABEL">LABEL</a>,  Up: <a href="#Top">Top</a>
 <hr>
@@ -156,6 +164,7 @@ Node: (graphics)SHOWGRAPH,  Next: <a href="#PLOT">PLOT</a>,  Prev: <a href="#LAB
 
 flushes the internal buffer, which could otherwise delay the graph from being
 shown on screen.
+
 </div><div class=page id="PLOT">
 Node: (graphics)PLOT,  Next: <a href="#strlines%20%20Prev:SHOWGRAPH">strlines  Prev:SHOWGRAPH</a>,  Up: <a href="#Top">Top</a>
 <hr>
@@ -174,6 +183,7 @@ These subroutines have the purpose of plotting an entire function or data array
 in a predefined format with a single command. If a <a href="#RANGE">RANGE</a> was not
 specified between <a href="#OPENGRAPH">OPENGRAPH</a> and the current <a href="#PLOT">PLOT</a>, it is
 automatically determined.
+
 </div><div class=page id="strlines">
 Node: (graphics)strlines,  Next: <a href="parallel.html#Top">(parallel)</a>,  Prev: <a href="#gnuplot">gnuplot</a>,  Up: <a href="#Top">Top</a>
 <hr>
@@ -182,6 +192,7 @@ Node: (graphics)strlines,  Next: <a href="parallel.html#Top">(parallel)</a>,  Pr
 
 This separate library contains specialized routines to draw random streamline
 segments out of an array of velocity values.
+
 </div><div class=page id="nographics">
 Node: (graphics)nographics,  Next: <a href="#gnuplot">gnuplot</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a>
 <hr>
@@ -190,6 +201,7 @@ Node: (graphics)nographics,  Next: <a href="#gnuplot">gnuplot</a>,  Prev: <a hre
 
 Fake plotting package that allows graphics to be turned off by USEing this
 library instead of graphics without modifying the rest of the program.
+
 </div><div class=page id="gnuplot">
 Node: (graphics)gnuplot,  Next: <a href="#strlines">strlines</a>,  Prev: <a href="#nographics">nographics</a>,  Up: <a href="#Top">Top</a>
 <hr>
@@ -214,7 +226,7 @@ In addition the following commands are available in gnuplot.cpl only:
 </table></nav>
           format, with automatic dimensioning.
 <nav><table>
-<tr><td><a href="#WRITE%20TABLE%20[TO%20POINTER%20TO%20FILE]">WRITE TABLE [TO POINTER TO FILE]</a>:</td><td>accepts the same syntax as "plot", but</td></tr>
+<tr><td><a href="#WRITE%20TABLE%20[TO%20POINTER%20TO%20FILE]">WRITE TABLE [TO POINTER TO FILE]</a>:</td><td>accepts the same syntax as <q>plot</q>, but</td></tr>
 </table></nav>
           write out the corresponding data in table format.
 

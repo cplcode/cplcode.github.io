@@ -24,6 +24,7 @@
 <link rel="canonical" href="https://CPLcode.net/Documentation/editor.html#Top">
 </head>
 <body><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
+
 </div><div class=page id="Top">
 Node: (editor)Top, Next: <a href="#readline">readline</a>,  Up: <a href="cpl.html#icpl">(cpl)icpl</a>
 <hr>
@@ -53,7 +54,7 @@ With the exception of Ctrl-i (Tab) and Ctrl-h (Backspace), Ctrl-&lt;key&gt; also
 works as an alternative to Esc followed by the same lower-case key.
 
 The full-screen editor can be accessed directly from a unix shell by giving the
-command "edit &lt;file&gt; [+&lt;linenumber&gt;]". "edit" is actually a symbolic link
+command <q>edit &lt;file&gt; [+&lt;linenumber&gt;]</q>. <q>edit</q> is actually a symbolic link
 to the icpl executable script, which when called under a different name
 executes that name as its first command. <a href="cpl.html#icpl%20command%20line">(cpl)icpl command line</a>.
 In full-screen mode the command history shows up in a tidy full-screen editor,
@@ -69,6 +70,7 @@ except that history lines are now edited in place.
 <tr><td><a href="#readline">readline</a>:</td><td>flexible input-line editing with history and completion</td></tr>
 <tr><td><a href="#full-screen">full-screen</a>:</td><td>history and general-file editor with multiple tabs</td></tr>
 </table></nav>
+
 </div><div class=page id="readline">
 Node: (editor)readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
 <hr>
@@ -95,11 +97,15 @@ In readline mode the following editing keys are available:
 - F1, Esc Space: switch to full-screen mode.
 - Esc u, Esc U: Undo, respectively redo, the last modification.
 - Esc \, Ctrl-\: add next (special or control) character verbatim
+
 </div><div class=page id="full-screen">
 Node: (editor)full-screen, Next: <a href="#Select">Select</a>, Prev: <a href="#readline">readline</a>, Up: <a href="#Top">Top</a>
 <hr>
 
 <h2>Full-screen editor</h2>
+
+The full-screen editor is accessed as <q>edit</q> in icpl, or as <q>icpl -edit</q> in the
+shell, or as <q>edit</q> in the shell if no other <q>edit</q> command comes first.
 
 The following editing keys are available:
 
@@ -131,31 +137,33 @@ to the session log (command history). Simultaneously open buffers are
 rotated into focus by clicking the mouse menu, which shows them as tabs, or
 by pressing Esc &lt;digit&gt;.
 
-A file is opened in a new screen with the "edit" icpl command (also available
-in the menu, or as Esc e, or as the "edit" symbolic link from a unix shell),
-and closed with the "close" menu command (aka Esc c or Ctrl-c). "Edit", or
-Esc E, or right-clicking the "edit" menu button, opens the file to be edited in
+A file is opened in a new screen with the <q>edit</q> icpl command (also available
+in the menu, or as Esc e, or as the <q>edit</q> symbolic link from a unix shell),
+and closed with the <q>close</q> menu command (aka Esc c or Ctrl-c). <q>Edit</q>, or
+Esc E, or right-clicking the <q>edit</q> menu button, opens the file to be edited in
 a separate terminal window. The optional parameter +&lt;linenumber&gt; at the end of
-the "edit" or "Edit" commands opens the file at the given line number.
+the <q>edit</q> or <q>Edit</q> commands opens the file at the given line number.
 The bottom status line contains the name of the currently displayed file and
 the current line number. A star trailing the file name denotes whether the
 in-memory buffer has been modified since last saved (and warns that changes
 would be lost if not saved again). Closing an unsaved file elicits a prompt
 asking for confirmation before exit.
 
-"load" and "save" (Esc o and Esc s) respectively load (insert) a file at the
+<q>load</q> and <q>save</q> (Esc o and Esc s) respectively load (insert) a file at the
 current cursor position and save the current in-memory buffer to a file,
 with the original file name as a default. Ctrl-s immediately saves the
 in-memory buffer to the original file name. If some text was just selected,
-Esc s opens a "save selection as" prompt which saves the current selection
+Esc s opens a <q>save selection as</q> prompt which saves the current selection
 to a file.
 
-"run" (Esc r) runs the current screen as a CPL program, after saving all
+<q>run</q> (Esc r) runs the current screen as a CPL program, after saving all
 unsaved screens so that other possibly USEd files are up to date. By contrast,
 switching into line mode always runs the session log, independent of which
 screen is currently in view.
 
-"attr" (Esc a) opens a menu of file buffer attributes.
+<q>attr</q> (Esc a) opens a menu of file buffer attributes.
+
+Most prompts and menus can be aborted by pressing Esc *twice*.
 
 <nav><table>
 <tr><th>Menu:</th><th></th></tr>
@@ -165,6 +173,7 @@ screen is currently in view.
 <tr><td><a href="#Find">Find</a>:</td><td>find and replace functionality</td></tr>
 <tr><td><a href="#Undo">Undo</a>:</td><td>and redo</td></tr>
 </table></nav>
+
 </div><div class=page id="Select">
 Node: (editor)Select, Next: <a href="#Indentation">Indentation</a>, Prev: <a href="#full-screen">full-screen</a>, Up: <a href="#Top">Top</a>
 <hr>
@@ -179,12 +188,12 @@ a rectangular area with the given corners (useful to select columns). Esc t
 toggles in and out of rectangular mode. Esc w or double-clicking the mouse
 selects a word under the cursor; if applied to an opening or closing bracket,
 Esc w or double clicking selects the entire parenthesis. Esc n or triple click-
-ing selects the line under the cursor. Esc "S", or clicking save with the right
+ing selects the line under the cursor. Esc <q>S</q>, or clicking save with the right
 mouse button, saves the current selection to a file.
 
 Whenever text is selected, the Insert key (or Esc i, or Ctrl-v for those who
 are accustomed to it) inserts (pastes) the selected text at the current cursor
-position; no "copy" function is needed or provided. The Backspace or Delete key
+position; no <q>copy</q> function is needed or provided. The Backspace or Delete key
 (also aliased to Esc d, Esc x, Ctrl-x) erases the selected text if pressed
 immediately after a selection. (At any other time these keys erase a single
 character, the preceding one for Backspace.) Deleted text remains invisibly
@@ -213,6 +222,7 @@ The copy-and-paste functionality of the underlying xterm-compatible terminal is
 also available, and necessary if you want to copy some text from/to the X
 clipboard. This is accessed by pressing Shift together with the corresponding
 xterm mouse button (left button to select, center button to paste).
+
 </div><div class=page id="Indentation">
 Node: (editor)Indentation, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a>
 <hr>
@@ -243,14 +253,15 @@ Where needed, the following explicit indentation commands are available:
 Esc ) : indent the current selection one more space to the right,
 Esc ( : unindent the current selection by one space to the left,
 Esc = : even the margin of the current selection or indent as to CPL syntax.
+
 </div><div class=page id="Find">
 Node: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>Find and replace</h3>
 
-"find" (Esc /) and "goto" (Esc g or Esc +) seek the cursor to a given string or
-a given line number. Esc ? (or clicking "find" with the right mouse button)
+<q>find</q> (Esc /) and <q>goto</q> (Esc g or Esc +) seek the cursor to a given string or
+a given line number. Esc ? (or clicking <q>find</q> with the right mouse button)
 seeks backwards. The search is case-insensitive if the first character of the
 search string is a lowercase letter, case-sensitive otherwise. The found string
 is automatically selected.
@@ -270,6 +281,7 @@ if searching backwards) of file.
 
 Esc Enter repeats whatever the last command was, possibly the last (forward or
 backward) find or the last replace-and-find-again.
+
 </div><div class=page id="Undo">
 Node: (editor)Undo,  Prev: <a href="#Find">Find</a>,  Up: <a href="#Top">Top</a>
 <hr>
@@ -291,9 +303,9 @@ your redo buffer is gone forever, and all you typed in the meanwhile is gone
 with it.
 
 Emacs and its kin keep memory of the complete history of commands including
-undo's. You do not "redo" in emacs, you undo an undo. You never lose anything,
-if no cap is posed on the length of the history, but once you start to "undo
-an undo an undo" the interface may become confusing, and the distance to any
+undo's. You do not <q>redo</q> in emacs, you undo an undo. You never lose anything,
+if no cap is posed on the length of the history, but once you start to <q>undo
+an undo an undo</q> the interface may become confusing, and the distance to any
 given past command increases rapidly.
 
 In the CPL editor you can think of undo and redo commands as not changing any-
