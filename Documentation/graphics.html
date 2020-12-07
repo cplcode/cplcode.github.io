@@ -30,7 +30,6 @@ Node: (graphics)Top, Next: <a href="#nographics">nographics</a>, Prev: <a href="
 <hr>
 
 <h2>Plotting library</h2>
-
 The graphics.cpl library provides basic plotting instructions by linking a CPL
 program to GNU plotutils.
 
@@ -60,7 +59,6 @@ SUBROUTINE OPENGRAPH()
 SUBROUTINE OPENGRAPH(STRING filename)
 
 <h3>SUBROUTINE OPENGRAPH(INTEGER n)</h3>
-
 Starts a new graph, or clears a previously existing one. If the argument
 &lt;filename&gt; is specified, the graph is simultaneously piped to the screen and to
 a file of graphics commands that allows the graph to be reproduced later. If
@@ -80,7 +78,6 @@ Node: (graphics)WINDOW,  Next: <a href="#RANGE">RANGE</a>,  Prev: <a href="#OPEN
 <hr>
 
 <h3>SUBROUTINE WINDOW(REAL VARIABLE x1, x2, y1, y2)</h3>
-
 Specifies a plotting window within the current graph, in a system of
 coordinates going from 0 to 1 along either axis.
 
@@ -94,7 +91,6 @@ SUBROUTINE RANGE(REAL x1,x2; FUNCTION(REAL z)-&gt;REAL newxmap
                  REAL y1,y2; FUNCTION(REAL z)-&gt;REAL newymap)
 
 <h3>SUBROUTINE RANGE(REAL x1,x2,y1,y2)</h3>
-
 Specifies a range for the drawing coordinates on either axis, and possibly a
 mapping function (system- or user-provided). For example:
 
@@ -117,7 +113,6 @@ SUBROUTINE STARTLINE()
 SUBROUTINE STARTCIRCLE()
 
 <h3>SUBROUTINE STARTLINE(ARRAY(*) OF CHAR style)</h3>
-
 Starts a new line (chain of segments) within the current graph. That is, the
 next <a href="#DRAW">DRAW</a> command will not draw a segment but just a point.
 
@@ -130,7 +125,6 @@ Node: (graphics)DRAW,  Next: <a href="#LABEL">LABEL</a>,  Prev: <a href="#STARTL
 <hr>
 
 <h3>SUBROUTINE DRAW(REAL x,y)</h3>
-
 The basic drawing primitive, draws a line segment up to point &lt;x&gt;, &lt;y&gt; or a
 symbol according to the style specified by <a href="#STARTLINE">STARTLINE</a>.
 
@@ -153,7 +147,6 @@ Node: (graphics)LABEL,  Next: <a href="#SHOWGRAPH">SHOWGRAPH</a>,  Prev: <a href
 <hr>
 
 <h3>SUBROUTINE LABEL(REAL x,y; POINTER TO CSTRING s)</h3>
-
 writes character string &lt;s&gt; starting at coordinates &lt;x&gt;, &lt;y&gt;.
 
 </div><div class=page id="SHOWGRAPH">
@@ -161,7 +154,6 @@ Node: (graphics)SHOWGRAPH,  Next: <a href="#PLOT">PLOT</a>,  Prev: <a href="#LAB
 <hr>
 
 <h3>SUBROUTINE SHOWGRAPH()</h3>
-
 flushes the internal buffer, which could otherwise delay the graph from being
 shown on screen.
 
@@ -178,7 +170,6 @@ SUBROUTINE PLOT(REAL FUNCTION(INTEGER) f; ARRAY(*) OF REAL vecx)
 SUBROUTINE PLOT(ARRAY(*) OF REAL vec)
 
 <h3>SUBROUTINE PLOT(ARRAY(*) OF REAL vecy,vecx)</h3>
-
 These subroutines have the purpose of plotting an entire function or data array
 in a predefined format with a single command. If a <a href="#RANGE">RANGE</a> was not
 specified between <a href="#OPENGRAPH">OPENGRAPH</a> and the current <a href="#PLOT">PLOT</a>, it is
@@ -189,7 +180,6 @@ Node: (graphics)strlines,  Next: <a href="parallel.html#Top">(parallel)</a>,  Pr
 <hr>
 
 <h2>strlines.cpl</h2>
-
 This separate library contains specialized routines to draw random streamline
 segments out of an array of velocity values.
 
@@ -198,7 +188,6 @@ Node: (graphics)nographics,  Next: <a href="#gnuplot">gnuplot</a>,  Prev: <a hre
 <hr>
 
 <h2>nographics.cpl</h2>
-
 Fake plotting package that allows graphics to be turned off by USEing this
 library instead of graphics without modifying the rest of the program.
 
@@ -207,7 +196,6 @@ Node: (graphics)gnuplot,  Next: <a href="#strlines">strlines</a>,  Prev: <a href
 <hr>
 
 <h2>gnuplot.cpl</h2>
-
 This library provides the same plotting instructions as graphics.cpl but pipes
 the appropriate commands to a gnuplot process.
 

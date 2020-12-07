@@ -30,7 +30,6 @@ Node: (matrix)Top,  Next: <a href="graphics.html#Top">(graphics)</a>,  Prev: <a 
 <hr>
 
 <h2>Matrix Operations</h2>
-
 The rbmat.cpl and cbmat.cpl libraries add matrix algebra to CPL. The same
 functions and operators are defined in both, for real and complex numbers
 respectively, and therefore their result type is indicated as just <q>number</q> in
@@ -61,7 +60,6 @@ Node: (matrix)MatEqu,  Next: <a href="#DotProduct">DotProduct</a>,  Prev: <a hre
 <hr>
 
 <h3>SUBROUTINE MatEqu(POINTER TO ARRAY(*,*) OF number c; number a)</h3>
-
 Assigns the scalar (REAL or COMPLEX) value &lt;a&gt; to the diagonal elements of
 matrix &lt;c&gt;, and zeros all the non-diagonal elements.
 
@@ -72,14 +70,12 @@ Node: (matrix)DotProduct,  Next: <a href="#LeftMult">LeftMult</a>,  Prev: <a hre
 <hr>
 
 <h3>number FUNCTION DotProduct(ARRAY(*) OF number a,b)</h3>
-
 Computes the sum of products of the elements of &lt;a&gt; and &lt;b&gt;.
 
 Equivalent infix notation:        a * b
 
 
 <h3>COMPLEX FUNCTION DotProduct2(ARRAY(*) OF COMPLEX a,b)</h3>
-
 Computes CONJG(a)*b
 
 Equivalent infix notation:        a | b
@@ -89,7 +85,6 @@ Node: (matrix)LeftMult,  Next: <a href="#RightMult">RightMult</a>,  Prev: <a hre
 <hr>
 
 <h3>SUBROUTINE LeftMult(ARRAY(*) OF number c^; ARRAY(*,*) OF number A; ARRAY(*) OF number b)</h3>
-
 Computes the left-hand product of matrix &lt;A&gt; by vector &lt;b&gt;, that is
 
         c(i)=SUM A(i,j)*b(j) FOR ALL j
@@ -101,7 +96,6 @@ Node: (matrix)RightMult,  Next: <a href="#LUdecomp">LUdecomp</a>,  Prev: <a href
 <hr>
 
 <h3>SUBROUTINE RightMult(ARRAY(*) OF number c^,a; ARRAY(*,*) OF number B)</h3>
-
 Computes the right-hand product of vector &lt;a&gt; by matrix &lt;B&gt;, that is
 
         c(j)=SUM a(i)*B(i,j) FOR ALL i
@@ -110,7 +104,6 @@ Equivalent infix notation:        a * B
 
 
 <h3>SUBROUTINE RightMult2(ARRAY(*) OF COMPLEX c^,a; ARRAY(*,*) OF COMPLEX B)</h3>
-
 Computes CONJG(a)*B
 
 Equivalent infix notation:        a | B
@@ -120,12 +113,10 @@ Node: (matrix)LUdecomp,  Next: <a href="#LeftLUDiv">LeftLUDiv</a>,  Prev: <a hre
 <hr>
 
 <h3>SUBROUTINE LUdecomp(POINTER TO ARRAY(*,*) OF number A)</h3>
-
 Computes the LU decomposition of (square or banded) matrix A in place.
 
 
 <h3>FUNCTION LU(A)</h3>
-
 Returns the LU decomposition of A, which remains untouched.
 
 </div><div class=page id="LeftLUDiv">
@@ -133,7 +124,6 @@ Node: (matrix)LeftLUDiv,  Next: <a href="#RightLUDiv">RightLUDiv</a>,  Prev: <a 
 <hr>
 
 <h3>SUBROUTINE LeftLUDiv(POINTER TO ARRAY(*) OF number x; ARRAY(*,*) OF number A; ARRAY(*) OF number t)</h3>
-
 Computes the left-hand division of vector &lt;t&gt; by the previously LU-decomposed
 matrix &lt;A&gt;, that is A^-1*t. A must have been preventively treated with either
 <a href="#LUdecomp">LUdecomp</a> or <a href="#PLU">PLU</a>.
@@ -145,7 +135,6 @@ Node: (matrix)RightLUDiv,  Next: <a href="#Lanczos">Lanczos</a>,  Prev: <a href=
 <hr>
 
 <h3>SUBROUTINE RightLUDiv(ARRAY(*) OF number x^,t; ARRAY(*,*) OF number A)</h3>
-
 Computes the right-hand division of vector &lt;t&gt; by the previously LU-decomposed
 matrix &lt;A&gt;, that is t*A^-1. A must have been preventively treated with either
 <a href="#LUdecomp">LUdecomp</a> or <a href="#PLU">PLU</a>.
@@ -168,7 +157,6 @@ Node: (matrix)PLU,  Next: <a href="#INVERT">INVERT</a>,  Prev: <a href="#Lanczos
 <hr>
 
 <h3>POINTER TO INVMAT FUNCTION PLU(ARRAY(*,*) OF number m)</h3>
-
 Computes the LU decomposition of (necessarily square) matrix A with pivoting.
 Returns an appropriate INVMAT compound variable containing the LU decomposition
 of A, which can be passed to either <a href="#LeftLUDiv">LeftLUDiv</a> or <a href="#RightLUDiv">RightLUDiv</a> and
@@ -179,12 +167,10 @@ Node: (matrix)INVERT,  Next: <a href="#DET">DET</a>,  Prev: <a href="#PLU">PLU</
 <hr>
 
 <h3>SUBROUTINE INVERT(ARRAY(*,*) OF number mat^, RESULT^)</h3>
-
 Returns the inverse of square matrix &lt;mat&gt; in matrix &lt;RESULT&gt;. Uses <a href="#PLU">PLU</a>
 internally.
 
 <h3>SUBROUTINE INVERT(number m^(*,*))</h3>
-
 Computes the inverse of square matrix &lt;mat&gt; in place. Uses <a href="#PLU">PLU</a>
 internally.
 
@@ -193,7 +179,6 @@ Node: (matrix)DET,  Prev: <a href="#INVERT">INVERT</a>,  Up: <a href="#Top">Top<
 <hr>
 
 <h3>number FUNCTION DET(ARRAY(*,*) OF number mat)</h3>
-
 Returns the determinant of square matrix &lt;mat&gt;. Uses <a href="#PLU">PLU</a> internally.
 
 </div></body></html>
