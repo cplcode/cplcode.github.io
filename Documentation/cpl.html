@@ -330,7 +330,7 @@ then <q>Helloworld</q>). icpl will automatically compile and execute &lt;yourpro
 if a more recent &lt;yourprogram&gt;.cpl file is found in the same directory, or
 interpret &lt;yourprogram&gt;.cpl if the .cpl suffix is included.
 
-<h3>My program crashes and I have no clue</h3>
+<h3>My program crashes and I have no error messages</h3>
 Always put <q>USE rtchecks</q> as the first line of your main program during devel-
 opment. <a href="#rtchecks">rtchecks</a> adds a number of runtime checks and error messages
 at the expense of execution speed. You will remove it once your program is
@@ -1777,7 +1777,7 @@ form that is allowed in a <a href="#FOR">FOR</a> loop.
 
 For example:
 
-        WRITE (MAX SIN(x) FOR x=0 TO 2 BY 0.5)+(PRODUCT arr(n) FOR ALL n)
+        WRITE (MAX SIN(x) FOR x=0. TO 2 BY 0.5)+(PRODUCT arr(n) FOR ALL n)
 
 See also <a href="#MAX">MAX</a>, <a href="#MIN">MIN</a>.
 
