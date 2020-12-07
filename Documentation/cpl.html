@@ -6,7 +6,7 @@
   <meta name="author" content="Paolo Luchini">
   <meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
   <meta name="description" content="Language reference for CPL, a programming language designed and developed by Paolo Luchini during 1993-2020. Documentation and distribution offered for download includes a compiler, interpreter and text editor.">
-  <meta name="keywords" content="cpl CPL numerical computation computational code program programmer programming language compiler interpreter editor fri FRI makecpl icpl edit">
+  <meta name="keywords" content="cpl CPL cplcode CPLcode numerical computation computational code program programmer programming language compiler interpreter editor fri FRI makecpl icpl edit">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../singlecol.css">
   <style>
@@ -20,8 +20,35 @@
     th {
       text-align:left;
     }
-  </style>
-<link rel="canonical" href="https://CPLcode.net/Documentation/cpl.html#Top">
+    input {
+      width:5em;
+    }
+</style>
+<script>
+  function tsearch() {
+    // Declare variables
+    var target, input, filter, table, tr, td, i, txtValue;
+    target=document.getElementById(location.hash.substring(1));
+    input = target.getElementsByTagName("input")[0];
+    filter = input.value.toUpperCase();
+    table = target.getElementsByTagName("table")[0];
+    tr = table.getElementsByTagName("tr");
+  
+    // Loop through all table rows, and hide those that don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) == 0) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
+<link rel="canonical" href="https://CPLcode.net/Documentation/">
 </head>
 <body><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
 
@@ -38,8 +65,9 @@ CPL = Compiled Programming Language
 CPL = Conceived by Paolo Luchini
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#Installation">Installation</a>:</td><td>Directory structure</td></tr>
 <tr><td><a href="#Syntax">Syntax</a>:</td><td>Language syntax overview</td></tr>
 <tr><td><a href="#Functions">Functions</a>:</td><td>Functions and subroutines</td></tr>
@@ -57,8 +85,9 @@ Node: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 
 <h1>Keyword index</h1>
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#ABS">ABS</a>:</td><td>absolute value</td></tr>
 <tr><td><a href="#ALL">ALL</a>:</td><td>loop specifier</td></tr>
 <tr><td><a href="#AND">AND</a>:</td><td>boolean AND</td></tr>
@@ -263,42 +292,42 @@ root privileges nor write permission; it suffices that they be readable and
 executable by every interested user.
 
 Once the directory is created and contains the appropriate files, you should cd
-to it and run setup (cpl.sh already does this for you). setup (or <q>sh setup</q>
-if this file's executable flag is not turned on) should be run again every time
-modifications or updates are made.
+to it and run setup (unpack-cpl.sh already does this for you). setup (or
+<q>sh setup</q> if this file's executable flag is not turned on) should be run again if custom modifications are made.
 
-Documentation in info format can be read through the script <q>infocpl</q>, or by
+Documentation in info format can be read through the <q>infocpl</q> script, or by
 starting the cpl interpreter <q>icpl</q> (if installed) and typing the command <q>?</q>.
 Typing <q>infocpl &lt;keyword&gt;</q> brings you help about a given CPL keyword.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#Q&A">Common problems and their solutions:Q&amp;A</a>:</td><td></td></tr>
 </table></nav>
 
 </div><div class=page id="Q&A">
-Node: (cpl)Q&amp;A, Next: <a href="#Functions">Functions</a>, Prev: <a href="#Installation">Installation</a>, Up: <a href="#Installation">Installation</a>
+Node: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#Installation">Installation</a>, Up: <a href="#Installation">Installation</a>
 <hr>
 
 <h2>Common problems and their solutions</h2>
 <h3>makecpl: command not found</h3>
 If <q>$HOME/fri/makecpl</q> or <q>/usr/local/fri/makecpl</q> do work, this is a PATH
-problem. unpack-cpl.sh makes commands available to the unix shell by placing
-symbolic links in either $HOME/bin or /usr/local/bin. Please check that these
-links have been created and are in reach of your PATH. If you have to modify it
-manually, you can put <q>$HOME/fri</q> or <q>usr/local/fri</q> there. Please see your
-shell's instructions for how to modify the PATH variable.
+problem. unpack-cpl.sh setup makes commands available to the unix shell by
+placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that
+these links have been created and are within reach of your PATH. If you have to
+modify the PATH manually, you can put <q>$HOME/fri</q> or <q>usr/local/fri</q> there.
+Please see your shell's instructions for how to modify the PATH variable.
 
 <h3>My program compiles but does not execute</h3>
-Is . in your PATH? Many Linux distributions do not by default have their
+Is . in your PATH? Many Linux distributions do not by default have your
 current working directory in the set of automatically searched file paths.
 Solutions:
 1) prefix ./ to the name of your executable, as in <q>./Helloworld</q>
 2) modify your PATH environment variable (look up instructions for your shell)
 3) use <a href="#icpl">icpl</a> as your shell (either <q>icpl Helloworld</q> or just <q>icpl</q> and
 then <q>Helloworld</q>). icpl will automatically compile and execute &lt;yourprogram&gt;
-if a corresponding &lt;yourprogram&gt;.cpl file is found in the same directory, or
+if a more recent &lt;yourprogram&gt;.cpl file is found in the same directory, or
 interpret &lt;yourprogram&gt;.cpl if the .cpl suffix is included.
 
 <h3>My program crashes and I have no clue</h3>
@@ -380,8 +409,9 @@ that the outermost block can, including further subroutines and modules, but
 the declared items cease to exist on exit from the block.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#Comments">Comments</a>:</td><td>syntax for comments</td></tr>
 <tr><td><a href="#Parentheses">Parentheses</a>:</td><td>Round, square and curly brackets</td></tr>
 <tr><td><a href="#C%20preprocessor">C preprocessor</a>:</td><td>macro definition and conditional compilation</td></tr>
@@ -452,8 +482,9 @@ encounter this problem, just rename your .cpl files to some other ending before
 sending them as email attachments.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#USE">USE</a>:</td><td>Separately compiled program segments</td></tr>
 <tr><td><a href="#INCLUDE">INCLUDE</a>:</td><td>File inclusion</td></tr>
 <tr><td><a href="#C%20interface">C interface</a>:</td><td>Use and inclusion of C libraries</td></tr>
@@ -718,8 +749,9 @@ other, and are transparently handled. For other object-oriented features
 see also <a href="#DYNAMIC">DYNAMIC</a>.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#Nested%20functions">Nested functions</a>:</td><td></td></tr>
 <tr><td><a href="#SUBROUTINE">SUBROUTINE</a>:</td><td>Subroutine declaration</td></tr>
 <tr><td><a href="#FUNCTION">FUNCTION</a>:</td><td>Function declaration</td></tr>
@@ -900,28 +932,34 @@ implicit:
                  declared CONSTANT in the scope of the loop.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#CONSTANT">CONSTANT</a>:</td><td>constant identifier</td></tr>
 <tr><td><a href="#VARIABLE">VARIABLE</a>:</td><td>variable identifier</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
-Primitive types are:
-
-<nav><table>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2">Primitive types are:
+</td></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#BOOLEAN">BOOLEAN</a>:</td><td>primitive type declarator</td></tr>
 <tr><td><a href="#CHAR">CHAR</a>:</td><td>primitive type declarator</td></tr>
 <tr><td><a href="#INTEGER">INTEGER</a>:</td><td>primitive type declarator</td></tr>
 <tr><td><a href="#REAL">REAL</a>:</td><td>primitive type declarator</td></tr>
 <tr><td><a href="#SINGLE">SINGLE</a>:</td><td>primitive type declarator</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
-Compound types may be equivalently specified through a compound type expression
-or type identifier used as the type declarator (common to all variables in the
-declaration list) or through a &lt;postfix modifier&gt; attached to each single
-variable to which it is meant to apply.
-
-<nav><table>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2">Compound types may be equivalently specified through a compound type expression
+</td></tr>
+<tr><td colspan="2">or type identifier used as the type declarator (common to all variables in the
+</td></tr>
+<tr><td colspan="2">declaration list) or through a &lt;postfix modifier&gt; attached to each single
+</td></tr>
+<tr><td colspan="2">variable to which it is meant to apply.
+</td></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#TYPE">TYPE</a>:</td><td>declaration of a new type identifier</td></tr>
 <tr><td><a href="#STRUCTURE">STRUCTURE</a>:</td><td>compound variables</td></tr>
 <tr><td><a href="#ARRAY">ARRAY</a>:</td><td>subscripted arrays</td></tr>
@@ -1011,8 +1049,9 @@ and <q>N</q>. On reading any complete word starting with <q>T</q>, <q>Y</q>, <q>
 read as YES, any word starting with <q>F</q>, <q>N</q>, <q>f</q>, <q>n</q> as NO.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#BOOLEAN%20ops">BOOLEAN ops</a>:</td><td>AND  OR  NOT</td></tr>
 <tr><td><a href="#Comparison">Comparison</a>:</td><td>&gt;  &gt;=  &lt;  &lt;=  =  #  IS</td></tr>
 <tr><td><a href="#Builtin">BOOLEAN:Builtin</a>:</td><td>built-in functions</td></tr>
@@ -1202,12 +1241,13 @@ second line might also have been written as
         WRITE arr(4)(5)
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
-The following special operations are defined on ARRAYs:
-
-<nav><table>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2">The following special operations are defined on ARRAYs:
+</td></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#HI">HI</a>:</td><td>upper bound of an array index</td></tr>
 <tr><td><a href="#LO">LO</a>:</td><td>lower bound of an array index</td></tr>
 <tr><td><a href="#LENGTH">LENGTH</a>:</td><td>number of elements of an array</td></tr>
@@ -1297,8 +1337,9 @@ As an experimental feature, and an exception to the general rule for ARRAY(*),
 STRING VARIABLEs may also be declared and assigned a value.
 
 <nav><table>
-<tr><th>Menu:</th><th>Predefined strings are:</th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th>Predefined strings are:</th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#COMMANDLINE">COMMANDLINE</a>:</td><td>command line parameter access</td></tr>
 <tr><td><a href="#TRAP">ERRORMESSAGE:TRAP</a>:</td><td>error message string</td></tr>
 </table></nav>
@@ -1544,8 +1585,9 @@ Node: (cpl)Statements, Next: <a href="#Control">Control</a>, Prev: <a href="#Dec
 
 <h1>Executable statements and expressions</h1>
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#Expressions">Expressions</a>:</td><td>construction and operators</td></tr>
 <tr><td><a href="#Assignment">Assignment</a>:</td><td>rules</td></tr>
 <tr><td><a href="#Assignment">~:Assignment</a>:</td><td>place-holder for the l.h.s.</td></tr>
@@ -1563,8 +1605,9 @@ Node: (cpl)Expressions, Next: <a href="#Assignment">Assignment</a>, Prev: <a hre
 
 <h2>Expressions</h2>
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#INTEGER%20operator">INTEGER operator</a>:</td><td>+  -  *  DIV  MOD</td></tr>
 <tr><td><a href="#REAL%20operator">REAL operator</a>:</td><td>+  -  *  /  ^</td></tr>
 <tr><td><a href="#Comparison">Comparison</a>:</td><td>&gt;  &gt;=  &lt;  &lt;=  =  #  IS</td></tr>
@@ -1627,14 +1670,17 @@ Node: (cpl)BOOLEAN ops, Next: <a href="#Conditional%20expressions">Conditional e
 
 <h3>BOOLEAN operators</h3>
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#AND">AND</a>:</td><td>boolean AND operator</td></tr>
 <tr><td><a href="#OR">OR</a>:</td><td>boolean OR operator</td></tr>
 <tr><td><a href="#NOT">NOT</a>:</td><td>boolean NOT operator</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2">BOOLEAN results are produced by <a href="#Comparison">Comparison</a> and <a href="#Builtin">BOOLEAN:Builtin</a>.
+</td></tr>
 </table></nav>
-BOOLEAN results are produced by <a href="#Comparison">Comparison</a> and <a href="#Builtin">BOOLEAN:Builtin</a>.
 
 </div><div class=page id="AND">
 Node: (cpl)AND,  Next: <a href="#OR">OR</a>,  Prev: <a href="#BOOLEAN%20ops">BOOLEAN ops</a>,  Up: <a href="#BOOLEAN%20ops">BOOLEAN ops</a>
@@ -1739,67 +1785,79 @@ See also <a href="#MAX">MAX</a>, <a href="#MIN">MIN</a>.
 Node: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Looping%20operator">Looping operator</a>, Up: <a href="#Expressions">Expressions</a>
 <hr>
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
-<h3>Builtin INTEGER functions</h3>
-<nav><table>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2"><h3>Builtin INTEGER functions</h3>
+</td></tr>
 <tr><td><a href="#ABS">ABS</a>:</td><td>absolute value</td></tr>
 <tr><td><a href="#CEILING">CEILING</a>:</td><td>larger or equal integer</td></tr>
 <tr><td><a href="#FLOOR">FLOOR</a>:</td><td>lesser or equal integer</td></tr>
 <tr><td><a href="#MAX">MAX</a>:</td><td>maximum</td></tr>
 <tr><td><a href="#MIN">MIN</a>:</td><td>minimum</td></tr>
 <tr><td><a href="#ROUND">ROUND</a>:</td><td>nearest integer</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
-<h3>Builtin REAL functions</h3>
-<nav><table>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2"><h3>Builtin REAL functions</h3>
+</td></tr>
 <tr><td><a href="#ABS">ABS</a>:</td><td>absolute value</td></tr>
-</table></nav>
-  ATAN:                        arctangent
-  COS:                        cosine
-  EXP:                        exponential
-<nav><table>
+<tr><td colspan="2">  ATAN:                        arctangent
+</td></tr>
+<tr><td colspan="2">  COS:                        cosine
+</td></tr>
+<tr><td colspan="2">  EXP:                        exponential
+</td></tr>
 <tr><td><a href="#GAUSS">GAUSS</a>:</td><td>gaussian distributed random REAL number with variance 1</td></tr>
-</table></nav>
-  LOG:                        logarithm
-<nav><table>
+<tr><td colspan="2">  LOG:                        logarithm
+</td></tr>
 <tr><td><a href="#MAX">MAX</a>:</td><td>maximum</td></tr>
 <tr><td><a href="#MAXABS">MAXABS</a>:</td><td>maximum absolute value</td></tr>
 <tr><td><a href="#MIN">MIN</a>:</td><td>minimum</td></tr>
 <tr><td><a href="#MOD">MOD</a>:</td><td>modulus or absolute value of an ARRAY</td></tr>
 <tr><td><a href="#NORM">NORM</a>:</td><td>squared absolute value</td></tr>
 <tr><td><a href="#RAND">RAND</a>:</td><td>uniformly distributed in [0,1] random number</td></tr>
-</table></nav>
-  SIN:                        sine
-  TAN:                        tangent
-
-<h3>Builtin BOOLEAN functions</h3>
-  EOF:                        end of file
-<nav><table>
+<tr><td colspan="2">  SIN:                        sine
+</td></tr>
+<tr><td colspan="2">  TAN:                        tangent
+</td></tr>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2"><h3>Builtin BOOLEAN functions</h3>
+</td></tr>
+<tr><td colspan="2">  EOF:                        end of file
+</td></tr>
 <tr><td><a href="#INPUTREADY">INPUTREADY</a>:</td><td>test for input ready on a file descriptor or stdin</td></tr>
-</table></nav>
-  ODD:                        INTEGER argument is odd
-<nav><table>
+<tr><td colspan="2">  ODD:                        INTEGER argument is odd
+</td></tr>
 <tr><td><a href="#READ">BOOLEAN:READ</a>:</td><td>read and report success or failure</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
-<h3>Builtin type conversion functions</h3>
-  CHAR:                        INTEGER to CHAR
-  INTEGER:                BOOLEAN to INTEGER (1 for YES, 0 for NO)
-  INTEGER:                REAL to INTEGER (same as <a href="#FLOOR">FLOOR</a>)
-  REAL:                        INTEGER to REAL (may be omitted)
-  SINGLE:                REAL to SINGLE
-
-<h3>Builtin STRING functions</h3>
-<nav><table>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2"><h3>Builtin type conversion functions</h3>
+</td></tr>
+<tr><td colspan="2">  CHAR:                        INTEGER to CHAR
+</td></tr>
+<tr><td colspan="2">  INTEGER:                BOOLEAN to INTEGER (1 for YES, 0 for NO)
+</td></tr>
+<tr><td colspan="2">  INTEGER:                REAL to INTEGER (same as <a href="#FLOOR">FLOOR</a>)
+</td></tr>
+<tr><td colspan="2">  REAL:                        INTEGER to REAL (may be omitted)
+</td></tr>
+<tr><td colspan="2">  SINGLE:                REAL to SINGLE
+</td></tr>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2"><h3>Builtin STRING functions</h3>
+</td></tr>
 <tr><td><a href="#COMMANDLINE">COMMANDLINE</a>:</td><td>command line parameter access</td></tr>
 <tr><td><a href="#TRAP">ERRORMESSAGE:TRAP</a>:</td><td>error message string</td></tr>
 <tr><td><a href="#String">String</a>:</td><td>Concatenation and conversion.</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2">In addition, nearly all C library mathematical and other functions are
+</td></tr>
+<tr><td colspan="2">transparently available with their original names. See <a href="#C%20interface">C interface</a>.
+</td></tr>
 </table></nav>
-In addition, nearly all C library mathematical and other functions are
-transparently available with their original names. See <a href="#C%20interface">C interface</a>.
 
 </div><div class=page id="ABS">
 Node: (cpl)ABS,  Next: <a href="#CEILING">CEILING</a>,  Prev: <a href="#Builtin">Builtin</a>,  Up: <a href="#Builtin">Builtin</a>
@@ -2230,8 +2288,9 @@ Random-access binary I/O is where cpl really differs from other languages; see
 described in <a href="#POSITION">POSITION</a>.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#FILE">FILE</a>:</td><td>buffered file-descriptor type</td></tr>
 <tr><td><a href="#WRITE">WRITE</a>:</td><td>output to character files and devices</td></tr>
 <tr><td><a href="#READ">READ</a>:</td><td>input from character files and devices</td></tr>
@@ -2640,8 +2699,9 @@ Node: (cpl)Control,  Next: <a href="#makecpl">makecpl</a>,  Prev: <a href="#Stat
 
 <h1>Program flow control statements</h1>
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#IF">IF</a>:</td><td>conditionally executed statements</td></tr>
 <tr><td><a href="#LOOP">LOOP</a>:</td><td>conditional and sequential loops</td></tr>
 <tr><td><a href="#DO">DO</a>:</td><td>short form of conditional and sequential loops</td></tr>
@@ -2653,7 +2713,8 @@ Node: (cpl)Control,  Next: <a href="#makecpl">makecpl</a>,  Prev: <a href="#Stat
 <tr><td><a href="#STOP">STOP</a>:</td><td>stop the program</td></tr>
 <tr><td><a href="#ERROR">ERROR</a>:</td><td>signal an error and exit or trigger a TRAP</td></tr>
 <tr><td><a href="#TRAP">TRAP</a>:</td><td>error handling</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">
+</td></tr>
 </table></nav>
 
 </div><div class=page id="IF">
@@ -2745,14 +2806,17 @@ terminated by <a href="#EXIT">EXIT</a>.
 &lt;test&gt; may be any one of
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#WHILE">WHILE</a>:</td><td>loop continuation condition</td></tr>
 <tr><td><a href="#UNTIL">UNTIL</a>:</td><td>loop termination condition</td></tr>
 <tr><td><a href="#FOR">FOR</a>:</td><td>indexed loop</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2">See also <a href="#INLINE%20LOOP">INLINE LOOP</a>, <a href="#Looping%20operator">Looping operator</a>.
+</td></tr>
 </table></nav>
-See also <a href="#INLINE%20LOOP">INLINE LOOP</a>, <a href="#Looping%20operator">Looping operator</a>.
 
 </div><div class=page id="WHILE">
 Node: (cpl)WHILE,  Next: <a href="#UNTIL">UNTIL</a>,  Prev: <a href="#LOOP">LOOP</a>,  Up: <a href="#LOOP">LOOP</a>
@@ -2822,8 +2886,9 @@ operator</a>. In addition to the two basic forms, they can have the following
 variants:
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#FOR%20AND">FOR AND</a>:</td><td>multiple loop</td></tr>
 <tr><td><a href="#ALL">ALL</a>:</td><td>implicit determination of loop bounds</td></tr>
 <tr><td><a href="#TIMES">TIMES</a>:</td><td>repetition by a fixed number of times</td></tr>
@@ -2938,14 +3003,17 @@ one or more times) is
 where &lt;test&gt; may be any one of
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#WHILE">WHILE</a>:</td><td>loop terminating condition</td></tr>
 <tr><td><a href="#UNTIL">UNTIL</a>:</td><td>loop terminating condition</td></tr>
 <tr><td><a href="#FOR">FOR</a>:</td><td>loop specifier</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2">See also <a href="#LOOP">LOOP</a>.
+</td></tr>
 </table></nav>
-See also <a href="#LOOP">LOOP</a>.
 
 </div><div class=page id="INLINE%20LOOP">
 Node: (cpl)INLINE LOOP,  Next: <a href="#CASE">CASE</a>,  Prev: <a href="#DO">DO</a>,  Up: <a href="#Control">Control</a>
@@ -3030,13 +3098,15 @@ subroutine labelled &lt;name&gt;. EXIT may be nested in an inner scope, such as 
 further loop or an IF statement.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#LOOP">LOOP</a>:</td><td>conditional and sequential loops</td></tr>
 <tr><td><a href="#MODULE">MODULE</a>:</td><td>separately scoped program block</td></tr>
 <tr><td><a href="#FUNCTION">FUNCTION</a>:</td><td>value-returning subroutine</td></tr>
 <tr><td><a href="#SUBROUTINE">SUBROUTINE</a>:</td><td>sub-routine</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">
+</td></tr>
 </table></nav>
 
 </div><div class=page id="END">
@@ -3048,8 +3118,9 @@ END &lt;name&gt; terminates the body of a module, function or subroutine named
 terminate the corresponding statements.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#MODULE">MODULE</a>:</td><td>separately scoped program block</td></tr>
 <tr><td><a href="#FUNCTION">FUNCTION</a>:</td><td>value-returning subroutine</td></tr>
 <tr><td><a href="#SUBROUTINE">SUBROUTINE</a>:</td><td>subroutine</td></tr>
@@ -3122,8 +3193,9 @@ Node: (cpl)BY,  Next: <a href="#C%20SECTION">C SECTION</a>,  Prev: <a href="#BOO
 The auxiliary keyword BY is used in
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#FOR">FOR</a>:</td><td>loop specifier</td></tr>
 <tr><td><a href="#READ">READ</a>:</td><td>input from character files and devices</td></tr>
 <tr><td><a href="#WRITE">WRITE</a>:</td><td>output to character files and devices</td></tr>
@@ -3136,8 +3208,9 @@ Node: (cpl)ELSE,  Next: <a href="#END">END</a>,  Prev: <a href="#DOWN">DOWN</a>,
 The auxiliary keyword ELSE is used in
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#IF">IF</a>:</td><td>conditionally executed statements</td></tr>
 <tr><td><a href="#CASE">CASE</a>:</td><td>multiple-choice selection</td></tr>
 </table></nav>
@@ -3149,8 +3222,9 @@ Node: (cpl)NAME,  Next: <a href="#NEW">NEW</a>,  Prev: <a href="#MODULE">MODULE<
 The auxiliary keyword NAME is used in
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#READ">READ</a>:</td><td>input from character files and devices</td></tr>
 <tr><td><a href="#WRITE">WRITE</a>:</td><td>output to character files and devices</td></tr>
 </table></nav>
@@ -3162,8 +3236,9 @@ Node: (cpl)OF,  Next: <a href="#POINTER">POINTER</a>,  Prev: <a href="#NOT">NOT<
 The auxiliary keyword OF is used in:
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#ARRAY">ARRAY</a>:</td><td>indexed array type</td></tr>
 <tr><td><a href="#CASE">CASE</a>:</td><td>multiple-choice selection</td></tr>
 <tr><td><a href="#STORED">FILE:STORED</a>:</td><td>random-access file</td></tr>
@@ -3176,8 +3251,9 @@ Node: (cpl)TO,  Next: <a href="#TRAP">TRAP</a>,  Prev: <a href="#TIMES">TIMES</a
 The auxiliary keyword TO is used in:
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#FOR">FOR</a>:</td><td>loop specifier</td></tr>
 <tr><td><a href="#POINTER">POINTER</a>:</td><td>pointers to memory addresses</td></tr>
 <tr><td><a href="#WRITE">WRITE</a>:</td><td>output to character files and devices</td></tr>
@@ -3230,8 +3306,9 @@ available. This functionality can be disabled by editing the makecpl script
 and turning ENABLE_UPDATES to NO.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#cpl">cpl</a>:</td><td>The CPL-to-C compiler</td></tr>
 <tr><td><a href="#fri">fri</a>:</td><td>The Formal Rule Interpreter</td></tr>
 <tr><td><a href="#FRI%20SECTION">FRI SECTION</a>:</td><td>Dynamic extension of the CPL language</td></tr>
@@ -3282,15 +3359,19 @@ define, for instance, complex-number notation, matrix-algebra operations or
 symbolic manipulations.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="fri.html#FRI%20architecture">(fri)FRI architecture</a>:</td><td></td></tr>
 <tr><td><a href="fri.html#Opcodes">(fri)Opcodes</a>:</td><td></td></tr>
 <tr><td><a href="fri.html#Command%20line">(fri)Command line</a>:</td><td></td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2">For the purpose of compiling a CPL program, fri is usually not invoked directly
+</td></tr>
+<tr><td colspan="2">but rather through <a href="#makecpl">makecpl</a>.
+</td></tr>
 </table></nav>
-For the purpose of compiling a CPL program, fri is usually not invoked directly
-but rather through <a href="#makecpl">makecpl</a>.
 
 </div><div class=page id="FRI%20SECTION">
 Node: (cpl)FRI SECTION,  Next: <a href="#infocpl">infocpl</a>,  Prev: <a href="#fri">fri</a>,  Up: <a href="#makecpl">makecpl</a>
@@ -3336,8 +3417,9 @@ Info manual. If you are new to the Info reader, then you can get started by
 typing <q>H</q> for a list of basic key bindings. Type <q>q</q> to quit Info.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="editor.html#Top">readline:(editor)</a>:</td><td>Console input editing keys.</td></tr>
 <tr><td><a href="#Syntax">syntax:Syntax</a>:</td><td>CPL language specification.  </td></tr>
 <tr><td><a href="#icpl%20commands">icpl commands</a>:</td><td>icpl specific commands.</td></tr>
@@ -3349,8 +3431,9 @@ Node: (cpl)icpl commands,  Next: <a href="#Library">Library</a>,  Prev: <a href=
 <hr>
 
 <nav><table>
-<tr><th>Menu:</th><th>icpl-specific commands:</th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th>icpl-specific commands:</th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#?">?</a>:</td><td>help</td></tr>
 <tr><td><a href="#Top"></a>:</td><td>:                shell commands</td></tr>
 <tr><td><a href="#$">$</a>:</td><td>last result</td></tr>
@@ -3361,27 +3444,46 @@ Node: (cpl)icpl commands,  Next: <a href="#Library">Library</a>,  Prev: <a href=
 <tr><td><a href="editor.html#full-screen">edit:(editor)full-screen</a>:</td><td>open file in new full-screen window</td></tr>
 <tr><td><a href="editor.html#full-screen">close:(editor)full-screen</a>:</td><td>close present full-screen window</td></tr>
 <tr><td><a href="#q">q</a>:</td><td>exit icpl (also :q, useful if q exists as a variable)</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-</table></nav>
-A powerful feature of icpl is its capability to transparently USE (<a href="#USE">USE</a>)
-a compiled CPL program or #include (<a href="#C%20interface">C interface</a>) a compiled C program.
-All functions and variables in such programs become accessible at the cpl&gt;
-prompt as well as at the <a href="#?">?</a> request for info.
-
-For icpl to work, the Formal Rule Interpreter (<a href="#fri">fri</a>) must have been
-compiled with readline (<a href="editor.html#Top">(editor)</a>) and dynamic loading
-(<a href="*manpages*.html#dlopen">(*manpages*)dlopen</a>) support.
-
-When either an interpreted or a compiled program is running under icpl, <a href="#command%20interpretation">
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2">A powerful feature of icpl is its capability to transparently USE (<a href="#USE">USE</a>)
+</td></tr>
+<tr><td colspan="2">a compiled CPL program or #include (<a href="#C%20interface">C interface</a>) a compiled C program.
+</td></tr>
+<tr><td colspan="2">All functions and variables in such programs become accessible at the cpl&gt;
+</td></tr>
+<tr><td colspan="2">prompt as well as at the <a href="#?">?</a> request for info.
+</td></tr>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2">For icpl to work, the Formal Rule Interpreter (<a href="#fri">fri</a>) must have been
+</td></tr>
+<tr><td colspan="2">compiled with readline (<a href="editor.html#Top">(editor)</a>) and dynamic loading
+</td></tr>
+<tr><td colspan="2">(<a href="*manpages*.html#dlopen">(*manpages*)dlopen</a>) support.
+</td></tr>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2">When either an interpreted or a compiled program is running under icpl, <a href="#command%20interpretation">
 command interpretation</a> becomes available inside the program, and typing
-ctrl-C brings up an <a href="#interactive%20session">interactive session</a> instead of stopping it.
-
-Console input functionality is extended under <a href="#icpl">icpl</a>. An icpl shell is
-opened whenever a (compiled or interpreted) program is waiting for input, and
-any number of icpl commands can be executed interactively. The first expression
-given alone on the command line, which would normally be printed, is instead
-returned as input to the waiting program. The simplest way to obtain such
-extended capabilities is to run &lt;program&gt; as &lt;icpl program&gt;.
+</td></tr>
+<tr><td colspan="2">ctrl-C brings up an <a href="#interactive%20session">interactive session</a> instead of stopping it.
+</td></tr>
+<tr><td colspan="2">
+</td></tr>
+<tr><td colspan="2">Console input functionality is extended under <a href="#icpl">icpl</a>. An icpl shell is
+</td></tr>
+<tr><td colspan="2">opened whenever a (compiled or interpreted) program is waiting for input, and
+</td></tr>
+<tr><td colspan="2">any number of icpl commands can be executed interactively. The first expression
+</td></tr>
+<tr><td colspan="2">given alone on the command line, which would normally be printed, is instead
+</td></tr>
+<tr><td colspan="2">returned as input to the waiting program. The simplest way to obtain such
+</td></tr>
+<tr><td colspan="2">extended capabilities is to run &lt;program&gt; as &lt;icpl program&gt;.
+</td></tr>
+</table></nav>
 
 </div><div class=page id="icpl%20command%20line">
 Node: (cpl)icpl command line,  Next: <a href="#?">?</a>,  Prev: <a href="#icpl%20commands">icpl commands</a>,  Up: <a href="#icpl">icpl</a>
@@ -3503,8 +3605,9 @@ Node: (cpl)Library,  Prev: <a href="#icpl">icpl</a>,  Next: <a href="#rtchecks">
 
 <h1>Ready to <a href="#USE">USE</a> library of CPL modules</h1>
 <nav><table>
-<tr><th>Menu:</th><th>The following libraries are included with CPL:</th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th>The following libraries are included with CPL:</th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#rtchecks">rtchecks</a>:</td><td>Run Time bounds Checking and more</td></tr>
 <tr><td><a href="complex.html#Top">complex:(complex)</a>:</td><td>Complex numbers</td></tr>
 <tr><td><a href="fft.html#Top">fft:(fft)</a>:</td><td>Fast Fourier Transforms</td></tr>
@@ -3521,7 +3624,8 @@ Node: (cpl)Library,  Prev: <a href="#icpl">icpl</a>,  Next: <a href="#rtchecks">
 <tr><td><a href="#INPUTREADY">inputready:INPUTREADY</a>:</td><td>test for input ready on a file descriptor or stdin</td></tr>
 <tr><td><a href="#lapack-eigv">lapack-eigv</a>:</td><td>interface to LAPACK matrix eigenvalue routines</td></tr>
 <tr><td><a href="#matlib">matlib</a>:</td><td>Some basic compact matrix-defining functions</td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td colspan="2">
+</td></tr>
 </table></nav>
 
 </div><div class=page id="rtchecks">
@@ -3541,8 +3645,9 @@ all error messages are modified so as to display the position in the source
 code where the error occurred.
 
 <nav><table>
-<tr><th>Menu:</th><th>rtchecks specific commands</th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th>rtchecks specific commands</th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#TRACE">TRACE</a>:</td><td>ON                        Turn execution tracing on</td></tr>
 <tr><td><a href="#TRACE">TRACE</a>:</td><td>OFF                        Turn execution tracing off</td></tr>
 </table></nav>

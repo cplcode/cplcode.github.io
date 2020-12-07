@@ -6,7 +6,7 @@
   <meta name="author" content="Paolo Luchini">
   <meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
   <meta name="description" content="Language reference for CPL, a programming language designed and developed by Paolo Luchini during 1993-2020. Documentation and distribution offered for download includes a compiler, interpreter and text editor.">
-  <meta name="keywords" content="cpl CPL numerical computation computational code program programmer programming language compiler interpreter editor fri FRI makecpl icpl edit">
+  <meta name="keywords" content="cpl CPL cplcode CPLcode numerical computation computational code program programmer programming language compiler interpreter editor fri FRI makecpl icpl edit">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../singlecol.css">
   <style>
@@ -20,8 +20,35 @@
     th {
       text-align:left;
     }
-  </style>
-<link rel="canonical" href="https://CPLcode.net/Documentation/editor.html#Top">
+    input {
+      width:5em;
+    }
+</style>
+<script>
+  function tsearch() {
+    // Declare variables
+    var target, input, filter, table, tr, td, i, txtValue;
+    target=document.getElementById(location.hash.substring(1));
+    input = target.getElementsByTagName("input")[0];
+    filter = input.value.toUpperCase();
+    table = target.getElementsByTagName("table")[0];
+    tr = table.getElementsByTagName("tr");
+  
+    // Loop through all table rows, and hide those that don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) == 0) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
+<link rel="canonical" href="https://CPLcode.net/Documentation/">
 </head>
 <body><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
 
@@ -64,8 +91,9 @@ afresh when it was launched. Other editing keys work just as in readline mode,
 except that history lines are now edited in place.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#readline">readline</a>:</td><td>flexible input-line editing with history and completion</td></tr>
 <tr><td><a href="#full-screen">full-screen</a>:</td><td>history and general-file editor with multiple tabs</td></tr>
 </table></nav>
@@ -163,8 +191,9 @@ screen is currently in view.
 Most prompts and menus can be aborted by pressing Esc *twice*.
 
 <nav><table>
-<tr><th>Menu:</th><th></th></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><td colspan="2">
+</td></tr>
 <tr><td><a href="#Select">Select</a>:</td><td>text selection, insertion and deletion</td></tr>
 <tr><td><a href="#Indentation">Indentation</a>:</td><td>CPL syntax-sensitive indentation and completion</td></tr>
 <tr><td><a href="#Find">Find</a>:</td><td>find and replace functionality</td></tr>
