@@ -318,8 +318,8 @@ If <q>$HOME/fri/makecpl</q> or <q>/usr/local/fri/makecpl</q> do work, this is a 
 problem. unpack-cpl.sh setup makes commands available to the unix shell by
 placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that
 these links have been created and are within reach of your PATH. If you have to
-modify the PATH manually, you can put <q>$HOME/fri</q> or <q>usr/local/fri</q> there.
-Please see your shell's instructions for how to modify the PATH variable.
+modify the PATH manually, you can put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there.
+Please see your shell's instructions on how to modify the PATH variable.
 
 <h3>My program compiles but does not execute</h3>
 Is . in your PATH? Many Linux distributions do not by default have your
@@ -343,10 +343,10 @@ Drag and drop the <q>interactive CPL</q> icon from wherever your <q>fri</q> dire
 (typically, /usr/local/fri or $HOME/fri) to your Desktop.
 
 <h3>I want to receive automatic updates</h3>
-The CPL tools will automatically offer updates when they become available. If
-you did not get an update, please check that the <q>curl</q> command is installed.
-To disable this feature, edit the makecpl script and turn ENABLE_UPDATES to
-<q>NO</q>.
+The CPL tools will automatically offer updates. If you did not get a warning
+when an update was available, please check that the <q>curl</q> command is installed
+and that you have write access to the directory where fri/ resides. To disable
+this feature, edit the makecpl script and turn ENABLE_UPDATES to <q>NO</q>.
 
 </div><div class=page id="Syntax">
 Node: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a>
