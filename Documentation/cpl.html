@@ -318,8 +318,8 @@ If <q>$HOME/fri/makecpl</q> or <q>/usr/local/fri/makecpl</q> do work, this is a 
 problem. unpack-cpl.sh setup makes commands available to the unix shell by
 placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that
 these links have been created and are within reach of your PATH. If you have to
-modify the PATH manually, you can put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there.
-Please see your shell's instructions on how to modify the PATH variable.
+modify the PATH manually, you may want to put <q>$HOME/fri</q> or <q>/usr/local/fri</q>
+there. Please see your shell's instructions on how to modify the PATH variable.
 
 <h3>My program compiles but does not execute</h3>
 Is . in your PATH? Many Linux distributions do not by default have your
@@ -338,21 +338,23 @@ opment. <a href="#rtchecks">rtchecks</a> adds a number of runtime checks and err
 at the expense of execution speed. You will remove it once your program is
 debugged.
 
-<h3>I want to access icpl from my Desktop without opening a terminal first</h3>
+<h3>I want to access icpl from my Desktop</h3>
 Drag and drop the <q>interactive CPL</q> icon from wherever your <q>fri</q> directory is
 (typically, /usr/local/fri or $HOME/fri) to your Desktop.
 
 <h3>I want to receive automatic updates</h3>
 The CPL tools will automatically offer updates. If you did not get a warning
 when an update was available, please check that the <q>curl</q> command is installed
-and that you have write access to the directory where fri/ resides. To disable
-this feature, edit the makecpl script and turn ENABLE_UPDATES to <q>NO</q>.
+and that you have write access to the directory where fri/ resides. In case you
+would rather disable this feature, edit the makecpl script and turn
+ENABLE_UPDATES to <q>NO</q>.
 
 <h3>I want to use icpl and/or edit remotely</h3>
 icpl is perfectly compatible with ssh. Just ssh into your remote system where
 CPL is installed, and give the <q>icpl</q> command there. Non-Linux ssh clients
-are ok too. In a pinch, you can log in from your smartphone with VX ConnectBot
-or similar.
+are ok too. All special and arrow keys have alphabetic equivalents for the case
+they may be missing or hard to combine on your keyboard. In a pinch, you can
+log in from your smartphone with VX ConnectBot or similar.
 
 <h3>On my system, <q>edit</q> opens up a different editor</h3>
 The <q>edit</q> command is used as an alias by more than one editor, including vim
@@ -360,11 +362,11 @@ and other vi derivatives. You can always access the CPL editor by its unaliased
 name <q>icpl -edit</q> (with a space), or as <q>edit</q> within icpl, or you can modify
 your PATH so it takes precedence.
 
-<h3>My .cpl files get rejected when I send them as email attachments</h3>
+<h3>My .cpl files get rejected when sent as email attachments</h3>
 Some email servers automatically reject files with the .cpl extension because
-this extension is shared by MS Windows Control PaneL files. If you encounter
-this difficulty, unfortunately you will have to rename your files to a
-different (e.g., .txt) extension and rename them back on the receiving end.
+this extension is shared with MS Windows Control PaneL files. This difficulty
+is unfortunate, but a remedy is to rename your files to another (e.g., .txt)
+extension before sending, and rename them back on the receiving end.
 
 </div><div class=page id="Syntax">
 Node: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a>
