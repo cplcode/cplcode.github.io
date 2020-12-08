@@ -39,11 +39,11 @@ LOOP FOR 100 TIMES   ! main iteration loop
       j=center.col   ! read column index stored in central cell
       center.var=[val(above,j)+val(below,j)+val(left,j-1)+val(right,j+1)+
         center.rhs]/4
-      ! with the "val" function, notation is very similar to standard 
+      ! with the "val" function defined, notation is very similar to standard 
       center=next(center)
       IF right=center THEN right=right.next
-      ! notice that STRUCTURE elements can be accessed in either dotted
-      ! or function notation
+      ! notice that STRUCTURE elements can be indifferently accessed in either
+      ! dotted or function notation. Same is true for functions.
     REPEAT LOOP
   REPEAT LOOP
 REPEAT LOOP

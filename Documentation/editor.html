@@ -29,20 +29,22 @@
     // Declare variables
     var target, input, filter, table, tr, td, i, txtValue;
     target=document.getElementById(location.hash.substring(1));
-    input = target.getElementsByTagName("input")[0];
-    filter = input.value.toUpperCase();
     table = target.getElementsByTagName("table")[0];
-    tr = table.getElementsByTagName("tr");
-  
-    // Loop through all table rows, and hide those that don't match the search query
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) == 0) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
+    if(table) {
+      input = table.getElementsByTagName("input")[0];
+      filter = input.value.toUpperCase();
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those that don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) == 0) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
         }
       }
     }
@@ -91,7 +93,7 @@ afresh when it was launched. Other editing keys work just as in readline mode,
 except that history lines are now edited in place.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#readline">readline</a>:</td><td>flexible input-line editing with history and completion</td></tr>
@@ -191,7 +193,7 @@ screen is currently in view.
 Most prompts and menus can be aborted by pressing Esc *twice*.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#Select">Select</a>:</td><td>text selection, insertion and deletion</td></tr>
@@ -244,9 +246,10 @@ Esc !, respectively Esc @, turns the current selection to all uppercase or all
 lowercase letters.
 
 The copy-and-paste functionality of the underlying xterm-compatible terminal is
-also available, and necessary if you want to copy some text from/to the X
+also available, and necessary if you want to copy some text to/from the X
 clipboard. This is accessed by pressing Shift together with the corresponding
-xterm mouse button (left button to select, center button to paste).
+xterm mouse button (left button to select, center button to paste). Ctrl-Insert
+and Shift-Insert also keep their function of copying to/from the X clipboard.
 
 </div><div class=page id="Indentation">
 Node: (editor)Indentation, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a>

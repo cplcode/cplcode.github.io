@@ -29,20 +29,22 @@
     // Declare variables
     var target, input, filter, table, tr, td, i, txtValue;
     target=document.getElementById(location.hash.substring(1));
-    input = target.getElementsByTagName("input")[0];
-    filter = input.value.toUpperCase();
     table = target.getElementsByTagName("table")[0];
-    tr = table.getElementsByTagName("tr");
-  
-    // Loop through all table rows, and hide those that don't match the search query
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) == 0) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
+    if(table) {
+      input = table.getElementsByTagName("input")[0];
+      filter = input.value.toUpperCase();
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those that don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) == 0) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
         }
       }
     }
@@ -58,7 +60,7 @@ Node: (fri)Top, Next: <a href="#Opcodes">Opcodes</a>, Up: <a href="cpl.html#make
 
 <h2>The FRI interpreter</h2>
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#FRI%20architecture">FRI architecture</a>:</td><td></td></tr>

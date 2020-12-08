@@ -40,11 +40,11 @@
       j=center.col   <span class=comment>! read column index stored in central cell</span>
       center.var=[val(above,j)+val(below,j)+val(left,j-1)+val(right,j+1)+
         center.rhs]/4
-      <span class=comment>! with the "val" function, notation is very similar to standard </span>
+      <span class=comment>! with the "val" function defined, notation is very similar to standard </span>
       center=next(center)
       <a href="cpl.html#IF">IF</a> right=center <a href="cpl.html#THEN">THEN</a> right=right.next
-      <span class=comment>! notice that STRUCTURE elements can be accessed in either dotted</span>
-      <span class=comment>! or function notation</span>
+      <span class=comment>! notice that STRUCTURE elements can be indifferently accessed in either</span>
+      <span class=comment>! dotted or function notation. Same is true for functions.</span>
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>

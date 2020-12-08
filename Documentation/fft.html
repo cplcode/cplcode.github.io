@@ -29,20 +29,22 @@
     // Declare variables
     var target, input, filter, table, tr, td, i, txtValue;
     target=document.getElementById(location.hash.substring(1));
-    input = target.getElementsByTagName("input")[0];
-    filter = input.value.toUpperCase();
     table = target.getElementsByTagName("table")[0];
-    tr = table.getElementsByTagName("tr");
-  
-    // Loop through all table rows, and hide those that don't match the search query
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) == 0) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
+    if(table) {
+      input = table.getElementsByTagName("input")[0];
+      filter = input.value.toUpperCase();
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those that don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) == 0) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
         }
       }
     }
@@ -97,8 +99,9 @@ For instance, the REAL ARRAY hidden in the COMPLEX ARRAY Rout may be accessed
 as REALIFIED(Rout), or equivalently as Rout.REALIFIED.
 
 The variants IFTU, RFTU, FFTU and HFTU of the above routines achieve a slightly
-shorter computation time by leaving the output array of the first two (and accepting the input array of the last two) unordered. They are,
-nonetheless, mutually inverse transforms and can be usefully applied to perform
+shorter computation time by leaving the output array of the first two (and
+accepting the input array of the last two) unordered. They are, nonetheless,
+mutually inverse transforms and can be usefully applied to perform
 convolutions.
 
 </div></body></html>
