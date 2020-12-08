@@ -17,7 +17,8 @@ DO f(ix,iy)=IF (ix/nx-0.5)^2+(iy/nx-0.5)^2<0.25 THEN 1 ELSE 0 FOR ALL ix,iy
 ! circular domain is defined here
 DO u(i,j)=3*f(i,j) FOR i=5 TO nx DIV 2 AND j=5 TO nx DIV 2
 ! initialize the iteration
-mod=={[lu(i+1,j+1)-lu(i,j+1)]^2+[lu(i+1,j)-lu(i,j)]^2+[lu(i+1,j+1)-lu(i+1,j)]^2+[lu(i,j+1)-lu(i,j)]^2}/dx^2/2   ! mod is centered in i+1/2, j+1/2
+mod=={[lu(i+1,j+1)-lu(i,j+1)]^2+[lu(i+1,j)-lu(i,j)]^2+[lu(i+1,j+1)-lu(i+1,j)]^2+[lu(i,j+1)-lu(i,j)]^2}/dx^2/2
+    ! mod here is centered in i+1/2, j+1/2
 mu==(EXP(-mod/m)+0.05)
 J==mu*mod
 ! these three == delayed assignments define the symbolic function J

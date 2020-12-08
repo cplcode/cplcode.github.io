@@ -18,14 +18,15 @@ m=10   <span class=comment>! define some constants</span>
 <span class=comment>! circular domain is defined here</span>
 <a href="cpl.html#DO">DO</a> u(i,j)=3*f(i,j) <a href="cpl.html#FOR">FOR</a> i=5 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#DIV">DIV</a> 2 <a href="cpl.html#AND">AND</a> j=5 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#DIV">DIV</a> 2
 <span class=comment>! initialize the iteration</span>
-mod<a href="cpl.html#Delayed%20assignment">==</a>{[lu(i+1,j+1)-lu(i,j+1)]^2+[lu(i+1,j)-lu(i,j)]^2+[lu(i+1,j+1)-lu(i+1,j)]^2+[lu(i,j+1)-lu(i,j)]^2}/dx^2/2   <span class=comment>! mod is centered in i+1/2, j+1/2</span>
+mod<a href="cpl.html#Delayed%20assignment">==</a>{[lu(i+1,j+1)-lu(i,j+1)]^2+[lu(i+1,j)-lu(i,j)]^2+[lu(i+1,j+1)-lu(i+1,j)]^2+[lu(i,j+1)-lu(i,j)]^2}/dx^2/2
+    <span class=comment>! mod here is centered in i+1/2, j+1/2</span>
 mu<a href="cpl.html#Delayed%20assignment">==</a>(<a href="cpl.html#Builtin">EXP</a>(-mod/m)+0.05)
 J<a href="cpl.html#Delayed%20assignment">==</a>mu*mod
 <span class=comment>! these three == delayed assignments define the symbolic function J</span>
 <span class=comment>! (of yet undeclared array lu) to be minimized.</span>
 <a href="cpl.html#LOOP">LOOP</a> iter <a href="cpl.html#FOR">FOR</a> n=1 <a href="cpl.html#TO">TO</a> 100000
   <a href="cpl.html#REAL">REAL</a> maxrsd=0
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> ix=1 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#AND">AND</a> iy=2-(ix+parity) <a href="cpl.html#MOD">MOD</a> 2 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#BY">BY</a> 2 EXCEPT f(ix,iy)=0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> ix=1 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#AND">AND</a> iy=2-(ix+parity) <a href="cpl.html#MOD">MOD</a> 2 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#BY">BY</a> 2 <a href="cpl.html#EXCEPT">EXCEPT</a> f(ix,iy)=0
   <span class=comment>!(this is the red-black iteration. Notice use of EXCEPT to exclude the region where f=0!)</span>
     lu=^u(ix+(-1..1),iy+(-1..1))   <span class=comment>!( define lu as a subarray of u centered
       in ix,iy. ^ specifies that this is not a copy but a pointer !)</span>

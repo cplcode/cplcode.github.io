@@ -348,6 +348,24 @@ when an update was available, please check that the <q>curl</q> command is insta
 and that you have write access to the directory where fri/ resides. To disable
 this feature, edit the makecpl script and turn ENABLE_UPDATES to <q>NO</q>.
 
+<h3>I want to use icpl and/or edit remotely</h3>
+icpl is perfectly compatible with ssh. Just ssh into your remote system where
+CPL is installed, and give the <q>icpl</q> command there. Non-Linux ssh clients
+are ok too. In a pinch, you can log in from your smartphone with VX ConnectBot
+or similar.
+
+<h3>On my system, <q>edit</q> opens up a different editor</h3>
+The <q>edit</q> command is used as an alias by more than one editor, including vim
+and other vi derivatives. You can always access the CPL editor by its unaliased
+name <q>icpl -edit</q> (with a space), or as <q>edit</q> within icpl, or you can modify
+your PATH so it takes precedence.
+
+<h3>My .cpl files get rejected when I send them as email attachments</h3>
+Some email servers automatically reject files with the .cpl extension because
+this extension is shared by MS Windows Control PaneL files. If you encounter
+this difficulty, unfortunately you will have to rename your files to a
+different (e.g., .txt) extension and rename them back on the receiving end.
+
 </div><div class=page id="Syntax">
 Node: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a>
 <hr>
