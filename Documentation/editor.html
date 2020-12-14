@@ -20,8 +20,8 @@
     th {
       text-align:left;
     }
-    input {
-      width:5em;
+    .filter {
+      width:1.6em;
     }
 </style>
 <script>
@@ -93,7 +93,7 @@ afresh when it was launched. Other editing keys work just as in readline mode,
 except that history lines are now edited in place.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#readline">readline</a>:</td><td>flexible input-line editing with history and completion</td></tr>
@@ -105,7 +105,7 @@ Node: (editor)readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a h
 <hr>
 
 <h2>Readline assisted console input</h2>
-In readline mode the following editing keys are available:
+Most used editing keys:
 
 - Left arrow (Esc h), right arrow (Esc l): move cursor
 - Home (Esc ^), end (Esc $): beginning, end of line
@@ -117,13 +117,11 @@ In readline mode the following editing keys are available:
   partial line is entered, only lines containing it become visible. Previous
   commands are immutable; when a character is added or deleted in a previous
   command, this is copied to the most recent position before being modified.
-- PageUp (Esc f), pageDown (Esc b): move up or down until a paragraph of
-  the same or lesser indentation.
 - Tab: autocomplete keyword or identifier. Successive tabs move forward along
   the list of available completions; Shift-Tab moves backwards.
-- Enter: commit command to icpl.
+- Enter: submit line.
 - F1, Esc Space: switch to full-screen mode.
-- Esc u, Esc U: Undo, respectively redo, the last modification.
+- Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
 - Esc \, Ctrl-\: add next (special or control) character verbatim
 
 </div><div class=page id="full-screen">
@@ -134,7 +132,7 @@ Node: (editor)full-screen, Next: <a href="#Select">Select</a>, Prev: <a href="#r
 The full-screen editor is accessed as <q>edit</q> in icpl, or as <q>icpl -edit</q> in the
 shell, or as <q>edit</q> in the shell if no other <q>edit</q> command comes first.
 
-The following editing keys are available:
+Most used editing keys:
 
 - Left arrow (Esc h), right arrow (Esc l): move cursor
 - Home (Esc ^), End (Esc $): beginning, end of line
@@ -146,9 +144,11 @@ The following editing keys are available:
   lesser indentation.
 - Tab: autocomplete keyword or identifier. Successive tabs move forward along
   the list of available completions; Shift-Tab moves backwards.
+- Enter: Enter new line, and trigger possible autocompletion of CPL syntax
+- Esc =: Autoindent current line or selection (<a href="#Indentation">Indentation</a>)
 - F1, Esc Space: switch in and out of command-line mode.
 - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
-- Esc a, Ctrl-a: add next (special or control) character verbatim.
+- Esc \, Ctrl-\: add next (special or control) character verbatim.
 
 Selection is achieved by cursor-moving keys with Shift pressed (<a href="#Select">Select</a>),
 or by moving the mouse with its left button pressed. The center mouse button
@@ -157,7 +157,8 @@ copies the current selection.
 Clicking the mouse on the bottom left corner, or pressing Esc m (or Esc
 followed by any unassigned key), opens up a menu of editor commands. Clicking
 the mouse on the bottom right corner opens context-sensitive help (through
-the info program), about the currently selected word.
+the info program), about the word where the cursor is, or this info page if the
+cursor is outside any word.
 
 The full-screen editor can work on multiple screens (aka tabs), in addition
 to the session log (command history). Simultaneously open buffers are
@@ -166,15 +167,15 @@ by pressing Esc &lt;digit&gt;.
 
 A file is opened in a new screen with the <q>edit</q> icpl command (also available
 in the menu, or as Esc e, or as the <q>edit</q> symbolic link from a unix shell),
-and closed with the <q>close</q> menu command (aka Esc c or Ctrl-c). <q>Edit</q>, or
-Esc E, or right-clicking the <q>edit</q> menu button, opens the file to be edited in
-a separate terminal window. The optional parameter +&lt;linenumber&gt; at the end of
-the <q>edit</q> or <q>Edit</q> commands opens the file at the given line number.
-The bottom status line contains the name of the currently displayed file and
-the current line number. A star trailing the file name denotes whether the
-in-memory buffer has been modified since last saved (and warns that changes
-would be lost if not saved again). Closing an unsaved file elicits a prompt
-asking for confirmation before exit.
+and closed with the <q>close</q> menu command (aka Esc c or Ctrl-c or Esq q or
+Ctrl-q). Capitalized <q>Edit</q>, or Esc E, or right-clicking the <q>edit</q> menu
+button, opens the file to be edited in a separate terminal window. The optional
++&lt;linenumber&gt; parameter at the end of the <q>edit</q> or <q>Edit</q> commands opens the
+file at the given line number. The bottom status line contains the name of the
+currently displayed file and the current line number. A star trailing the file
+name denotes whether the in-memory buffer has been modified since last saved
+(and warns that changes would be lost if not saved again). Closing an unsaved
+file elicits a prompt asking for confirmation before exit.
 
 <q>load</q> and <q>save</q> (Esc o and Esc s) respectively load (insert) a file at the
 current cursor position and save the current in-memory buffer to a file,
@@ -193,7 +194,7 @@ screen is currently in view.
 Most prompts and menus can be aborted by pressing Esc *twice*.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#Select">Select</a>:</td><td>text selection, insertion and deletion</td></tr>
@@ -290,20 +291,17 @@ Node: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Se
 a given line number. Esc ? (or clicking <q>find</q> with the right mouse button)
 seeks backwards. The search is case-insensitive if the first character of the
 search string is a lowercase letter, case-sensitive otherwise. The found string
-is automatically selected.
+is automatically selected. If some text is selected when Esc / or Esc ? are
+pressed, the selected text will appear as the search string.
 
 In order to find and replace, find a given text, exit Esc mode, and start
-typing the replacement. Esc , repeats the last find. Esc / and Esc ? with an
+typing the replacement. Esc , (lowercase &lt;) repeats the last find backwards.
+Esc . (lowercase &gt;) repeats the last find forwards. Esc / and Esc ? with an
 empty argument also repeat the last find, possibly changing its direction.
-If some text is selected when Esc / or Esc ? are pressed, the selected text
-will appear as the search string.
 
-Esc . inserts the most recently typed text or the butlast selected text (the
-last selection being the string just found). It can be used to repeat the last
-replacement. Esc &gt; is a shortcut for pressing Esc . and Esc , in a sequence,
-and thus serves as replace-and-find-again. Keeping  Esc &gt; pressed is a means to
-perform multiple replacements, possibly to the end (or to the beginning,
-if searching backwards) of file.
+Esc &gt; is a shortcut for pressing Insert and Esc . one after the other, and thus serves as replace-and-find-again. Keeping  Esc &gt; pressed is a means to perform
+multiple replacements, possibly to the end of file. Esc &lt; likewise replaces-
+and-finds backwards.
 
 Esc Enter repeats whatever the last command was, possibly the last (forward or
 backward) find or the last replace-and-find-again.

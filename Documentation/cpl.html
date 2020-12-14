@@ -20,8 +20,8 @@
     th {
       text-align:left;
     }
-    input {
-      width:5em;
+    .filter {
+      width:1.6em;
     }
 </style>
 <script>
@@ -67,7 +67,7 @@ CPL = Compiled Programming Language
 CPL = Conceived by Paolo Luchini
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#Installation">Installation</a>:</td><td>Directory structure</td></tr>
@@ -87,7 +87,7 @@ Node: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 
 <h1>Keyword index</h1>
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#ABS">ABS</a>:</td><td>absolute value</td></tr>
@@ -237,7 +237,6 @@ Node: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#icpl">icpl</a>:</td><td>Interactive CPL</td></tr>
 <tr><td><a href="#command%20interpretation">icpl:command interpretation</a>:</td><td>of a run-time generated CPL statement</td></tr>
 <tr><td><a href="#infocpl">infocpl</a>:</td><td>info reading script</td></tr>
-<tr><td><a href="#lapack-eigv">lapack-eigv</a>:</td><td>interface to LAPACK matrix eigenvalue routines</td></tr>
 <tr><td><a href="#STRING">literal:STRING</a>:</td><td>constant string of characters</td></tr>
 <tr><td><a href="editor.html#full-screen">load:(editor)full-screen</a>:</td><td>Load a file at current cursor position</td></tr>
 <tr><td><a href="#makecpl">makecpl</a>:</td><td>Compilation tools and their usage</td></tr>
@@ -259,7 +258,7 @@ Node: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#Assignment">=:Assignment</a>:</td><td>Also comparison operator</td></tr>
 <tr><td><a href="#Delayed%20assignment">==:Delayed assignment</a>:</td><td></td></tr>
 <tr><td><a href="#REAL%20operator">^:REAL operator</a>:</td><td>or postfix POINTER dereference</td></tr>
-<tr><td><a href="#Assignment">~:Assignment</a>:</td><td>place-holder for the l.h.s.</td></tr>
+<tr><td><a href="#Assignment">~:Assignment</a>:</td><td>placeholder for the l.h.s.</td></tr>
 <tr><td><a href="#C%20SECTION">&lt;*:C SECTION</a>:</td><td></td></tr>
 <tr><td><a href="#STRING">&lt;&lt;:STRING</a>:</td><td></td></tr>
 <tr><td><a href="#Comparison">#:Comparison</a>:</td><td></td></tr>
@@ -284,40 +283,81 @@ Node: (cpl)Installation, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#Key
 
 <h1>Installation</h1>
 This is CPL, a high-level programming language designed and developed by Paolo
-Luchini for his own use and his collaborators' during 1993-2020.
+Luchini. Copyright Paolo Luchini 1993-2020 http://cplcode.net
 
-The files that compose the CPL system are located in their own directory,
-separate from user programs, and can be shared among users. This directory is
-preferably named /usr/local/fri in a shared installation or ~/fri in a single
-user's space, but any other name can be used as well. None of the tools require
-root privileges nor write permission; it suffices that they be readable and
-executable by every interested user.
+The files that compose the CPL system are located in their own directory, and
+can be shared among users. This directory is initially named /usr/local/fri in
+a shared installation or ~/fri in a single user's home, but may be renamed
+if needed. None of the tools require root privileges nor write permission;
+it suffices for them to be readable and executable by every interested user.
 
-Once the directory is created and contains the appropriate files, you should cd
-to it and run setup (unpack-cpl.sh already does this for you). setup (or
-<q>sh setup</q> if this file's executable flag is not turned on) should be run again if custom modifications are made.
+Documentation in info format can be read through the <q>infocpl</q> script.
+Typing <q>infocpl &lt;keyword&gt;</q> brings you help about the given CPL keyword.
 
-Documentation in info format can be read through the <q>infocpl</q> script, or by
-starting the cpl interpreter <q>icpl</q> (if installed) and typing the command <q>?</q>.
-Typing <q>infocpl &lt;keyword&gt;</q> brings you help about a given CPL keyword.
+A CPL source file is a list of statements, and references other files through
+<q>USE</q> statements. Consistency is enforced. Compilation is achieved under most
+circumstances by the single command <q>makecpl &lt;file&gt;</q>. If the curl command is
+available (on Debian, <q>apt install curl</q>), makecpl also checks for updates.
+
+The interactive CPL interpreter (if installed) accepts any CPL expression,
+statement or system command for immediate execution, either on the command line
+or in a full-screen editor (F1 key, or <q>edit &lt;file&gt;</q>). Type <q>icpl</q> in a
+terminal to try it, and copy the <q>icpl.desktop</q> shortcut to your Desktop.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
+<tr><td><a href="#automatic%20updates">automatic updates</a>:</td><td></td></tr>
+<tr><td><a href="#multi-user">multi-user</a>:</td><td>installation for multiple users</td></tr>
 <tr><td><a href="#Q&A">Common problems and their solutions:Q&amp;A</a>:</td><td></td></tr>
+<tr><td><a href="#makecpl">makecpl</a>:</td><td>Compilation tools and their usage</td></tr>
 </table></nav>
 
+</div><div class=page id="automatic%20updates">
+Node: (cpl)automatic updates, Next: <a href="#multi-user">multi-user</a>, Prev: <a href="#Installation">Installation</a>, Up: <a href="#Installation">Installation</a>
+<hr>
+
+<h2>Automatic updates</h2>
+The <a href="#makecpl">makecpl</a> script checks for updates to itself if the curl program is
+installed in the system (on Debian, <q>apt install curl</q>) and the network is
+available. This transparent background check at most takes place once a day,
+and only while makecpl is being run.
+
+If a new version is found, you are offered to upgrade to it. In case the answer
+is <q>no</q>, you won't be asked again and you will have to download the update
+manually from the CPLcode.net website. If the answer is <q>later</q> (or any other
+key), you will be prompted again on the next day.
+
+This functionality can be disabled, if undesired, by editing the makecpl script
+and turning ENABLE_UPDATES to <q>NO</q>.
+
+</div><div class=page id="multi-user">
+Node: (cpl)multi-user, Next: <a href="#Q&A">Q&amp;A</a>, Prev: <a href="#automatic%20updates">automatic updates</a>, Up: <a href="#Installation">Installation</a>
+<hr>
+
+<h2>Installation for multiple users</h2>
+If you unpack the CPL archive while you have write access to the /usr/local/
+directory (generally this requires root privileges), the archive gets expanded
+in /usr/local/fri/ with symbolic links in /usr/local/bin/. This is the simplest
+way to make CPL simultaneously available to all users of the system.
+
+If you have no access to /usr/local/, or prefer to avoid root privileges even
+if you can have them, a slightly more complex alternative is to go through the
+normal single-user installation, make sure that your fri directory and all
+files in it have read permission for the interested group, and then have every
+other interested user create their own symbolic links by running fri/linksetup. 
+
 </div><div class=page id="Q&A">
-Node: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#Installation">Installation</a>, Up: <a href="#Installation">Installation</a>
+Node: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#multi-user">multi-user</a>, Up: <a href="#Installation">Installation</a>
 <hr>
 
 <h2>Common problems and their solutions</h2>
 <h3>makecpl: command not found</h3>
 If <q>$HOME/fri/makecpl</q> or <q>/usr/local/fri/makecpl</q> do work, this is a PATH
-problem. unpack-cpl.sh setup makes commands available to the unix shell by
-placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that
-these links have been created and are within reach of your PATH. If you have to
+problem. The CPL setup makes commands available to the unix shell by placing
+symbolic links in either $HOME/bin or /usr/local/bin. Please check that these
+links have been created and are within reach of your PATH. If you have to
 modify the PATH manually, you may want to put <q>$HOME/fri</q> or <q>/usr/local/fri</q>
 there. Please see your shell's instructions on how to modify the PATH variable.
 
@@ -332,7 +372,7 @@ then <q>Helloworld</q>). icpl will automatically compile and execute &lt;yourpro
 if a more recent &lt;yourprogram&gt;.cpl file is found in the same directory, or
 interpret &lt;yourprogram&gt;.cpl if the .cpl suffix is included.
 
-<h3>My program crashes and I have no error messages</h3>
+<h3>My program crashes without any error messages</h3>
 Always put <q>USE rtchecks</q> as the first line of your main program during devel-
 opment. <a href="#rtchecks">rtchecks</a> adds a number of runtime checks and error messages
 at the expense of execution speed. You will remove it once your program is
@@ -343,11 +383,11 @@ Drag and drop the <q>interactive CPL</q> icon from wherever your <q>fri</q> dire
 (typically, /usr/local/fri or $HOME/fri) to your Desktop.
 
 <h3>I want to receive automatic updates</h3>
-The CPL tools will automatically offer updates. If you did not get a warning
-when an update was available, please check that the <q>curl</q> command is installed
-and that you have write access to the directory where fri/ resides. In case you
-would rather disable this feature, edit the makecpl script and turn
-ENABLE_UPDATES to <q>NO</q>.
+makecpl will automatically offer updates on a daily basis. If you did not get
+a warning when an update was available, please check that the <q>curl</q> command is
+installed (on Debian, <q>apt install curl</q>) and that you have write access to the
+directory where fri/ resides. In case you would rather disable this feature,
+edit the makecpl script and turn ENABLE_UPDATES to <q>NO</q>.
 
 <h3>I want to use icpl and/or edit remotely</h3>
 icpl is perfectly compatible with ssh. Just ssh into your remote system where
@@ -356,11 +396,11 @@ are ok too. All special and arrow keys have alphabetic equivalents for the case
 they may be missing or hard to combine on your keyboard. In a pinch, you can
 log in from your smartphone with ConnectBot or similar.
 
-<h3>On my system, <q>edit</q> opens up a different editor</h3>
+<h3>On my system, <q>edit</q> pops up a different editor</h3>
 The <q>edit</q> command is used as an alias by more than one editor, including vim
 and other vi derivatives. You can always access the icpl editor by its
 unaliased name <q>icpl -edit</q> (with a space), or as <q>edit</q> within icpl, or
-you can modify your PATH so the <q>edit</q> link to it takes precedence.
+you can modify your PATH so the <q>edit</q> link to icpl takes precedence.
 
 <h3>My .cpl files get rejected when sent as email attachments</h3>
 Some email servers automatically reject files with the .cpl extension because
@@ -431,7 +471,7 @@ that the outermost block can, including further subroutines and modules, but
 the declared items cease to exist on exit from the block.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#Comments">Comments</a>:</td><td>syntax for comments</td></tr>
@@ -504,7 +544,7 @@ encounter this problem, just rename your .cpl files to some other ending before
 sending them as email attachments.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#USE">USE</a>:</td><td>Separately compiled program segments</td></tr>
@@ -652,7 +692,7 @@ The user must take care of the fact that FORTRAN has multidimensional array
 indices in the reverse order with respect to both C and cpl. Arrays to be
 passed as such arguments should be declared and used accordingly.
 
-For (e.g. Lapack) library calls that require the number of elements used in
+For (e.g. LAPACK) library calls that require the number of elements used in
 actual memory storage for the rows of a matrix as an argument, the
 pseudofunction
 
@@ -771,7 +811,7 @@ other, and are transparently handled. For other object-oriented features
 see also <a href="#DYNAMIC">DYNAMIC</a>.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#Nested%20functions">Nested functions</a>:</td><td></td></tr>
@@ -954,7 +994,7 @@ implicit:
                  declared CONSTANT in the scope of the loop.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#CONSTANT">CONSTANT</a>:</td><td>constant identifier</td></tr>
@@ -1071,7 +1111,7 @@ and <q>N</q>. On reading any complete word starting with <q>T</q>, <q>Y</q>, <q>
 read as YES, any word starting with <q>F</q>, <q>N</q>, <q>f</q>, <q>n</q> as NO.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#BOOLEAN%20ops">BOOLEAN ops</a>:</td><td>AND  OR  NOT</td></tr>
@@ -1230,8 +1270,8 @@ in turn appear as fields in structures or be pointed at by pointers.
 When an ARRAY is assigned in a single = statement to another of the same base
 type and number of elements, its lower bound is implicitly realigned. A similar
 realignment takes place for function arguments. Assigning to a different base
-type triggers an error. Mismatch in the number of elements is flagged by
-<a href="#rtchecks">rtchecks</a>.
+type triggers a compilation error. Mismatch in the number of elements is
+flagged by <a href="#rtchecks">rtchecks</a>.
 
 The special dimension * can only appear in the declaration of an ARRAY formal
 parameter or of a POINTER TO ARRAY, and declares a special type of pointer that
@@ -1263,7 +1303,7 @@ second line might also have been written as
         WRITE arr(4)(5)
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td colspan="2">The following special operations are defined on ARRAYs:
@@ -1359,7 +1399,7 @@ As an experimental feature, and an exception to the general rule for ARRAY(*),
 STRING VARIABLEs may also be declared and assigned a value.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th>Predefined strings are:</th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>Predefined strings are:</th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#COMMANDLINE">COMMANDLINE</a>:</td><td>command line parameter access</td></tr>
@@ -1470,9 +1510,9 @@ Node: (cpl)DYNAMIC, Next: <a href="#IS">IS</a>, Prev: <a href="#INTO">INTO</a>, 
 <h2>Object-oriented features</h2>
 CPL is not an object-oriented language in the sense that functions are
 supposed to be declared within object class declarations, and intentionally
-so. Object-like behaviour is achieved through overloaded function names (<a href="#Functions">
-Function overloading:Functions</a>) and implicit type conversion (<a href="#STRUCTURE">
-anonymous:STRUCTURE</a>).
+so. Object-like behaviour is achieved through overloaded function names
+(<a href="#Functions">Function overloading:Functions</a>) and implicit type conversion
+(<a href="#STRUCTURE">anonymous:STRUCTURE</a>).
 
 In addition, situations where the type of an object is not fixed at compile
 time are catered for by <q>dynamic pointers</q>, pointers that can reference and
@@ -1607,12 +1647,12 @@ Node: (cpl)Statements, Next: <a href="#Control">Control</a>, Prev: <a href="#Dec
 
 <h1>Executable statements and expressions</h1>
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#Expressions">Expressions</a>:</td><td>construction and operators</td></tr>
 <tr><td><a href="#Assignment">Assignment</a>:</td><td>rules</td></tr>
-<tr><td><a href="#Assignment">~:Assignment</a>:</td><td>place-holder for the l.h.s.</td></tr>
+<tr><td><a href="#Assignment">~:Assignment</a>:</td><td>placeholder for the l.h.s.</td></tr>
 <tr><td><a href="#Delayed%20Assignment">Delayed Assignment</a>:</td><td>to be performed where the symbol is used</td></tr>
 <tr><td><a href="#Concealed%20Pointer%20Lookup">Implicit type conversion:Concealed Pointer Lookup</a>:</td><td></td></tr>
 <tr><td><a href="#WITH">WITH</a>:</td><td>implicit access to structure fields and functions</td></tr>
@@ -1627,7 +1667,7 @@ Node: (cpl)Expressions, Next: <a href="#Assignment">Assignment</a>, Prev: <a hre
 
 <h2>Expressions</h2>
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#INTEGER%20operator">INTEGER operator</a>:</td><td>+  -  *  DIV  MOD</td></tr>
@@ -1692,7 +1732,7 @@ Node: (cpl)BOOLEAN ops, Next: <a href="#Conditional%20expressions">Conditional e
 
 <h3>BOOLEAN operators</h3>
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#AND">AND</a>:</td><td>boolean AND operator</td></tr>
@@ -1807,7 +1847,7 @@ See also <a href="#MAX">MAX</a>, <a href="#MIN">MIN</a>.
 Node: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Looping%20operator">Looping operator</a>, Up: <a href="#Expressions">Expressions</a>
 <hr>
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td colspan="2"><h3>Builtin INTEGER functions</h3>
@@ -2130,17 +2170,17 @@ Node: (cpl)Einstein convention, Next: <a href="#Assignment">Assignment</a>, Prev
 <hr>
 
 <h3>Implicit looping over array indices</h3>
-When indices in an expression are prefixed with $ the Einstein convention is
-implied. I.e., in a contraction or a product the Einstein index must appear
-exactly twice, and the result will be summed over <a href="#ALL">ALL</a> values of this
-index; in a sum and assignment, Einstein indices must appear exactly once in
-each and all terms including the l.h.s., and the assignment will be repeated
-over <a href="#ALL">ALL</a> values of these indices. For example:
+When indices in an expression are prefixed with a <q>$</q> character, the Einstein
+convention is implied. In a contraction or in a product the Einstein index must
+appear exactly twice, and the result will be summed over <a href="#ALL">ALL</a> values of
+this index; in a sum or in an assignment, Einstein indices must appear exactly
+once in each and all terms including the l.h.s., and the assignment will be
+repeated over <a href="#ALL">ALL</a> values of these indices. For example:
 
         C($i,$j)=A($i,$j,$m)*B($i,$m,$j)+D($j,$i)
 
 Footnote: the euro symbol would have been appropriate to match the <q>e</q> of
-Einstein, but is not part of the 7-bit ascii codes so we replaced it by a
+Einstein, but it is not part of the 7-bit ascii codes so we replaced it by a
 currency that is (the $).
 
 </div><div class=page id="Assignment">
@@ -2163,7 +2203,7 @@ specified as in (after the declaration REAL a^,b)
         REAL a=b        equivalent to      a^=b.
 
 On the right-hand side of an assignment the symbol ~ can be used as a
-place-holder for the left hand. For example:
+placeholder for the left hand. For example:
 
         counter = ~ + 2
         listelement = ~.next
@@ -2310,7 +2350,7 @@ Random-access binary I/O is where cpl really differs from other languages; see
 described in <a href="#POSITION">POSITION</a>.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#FILE">FILE</a>:</td><td>buffered file-descriptor type</td></tr>
@@ -2721,7 +2761,7 @@ Node: (cpl)Control,  Next: <a href="#makecpl">makecpl</a>,  Prev: <a href="#Stat
 
 <h1>Program flow control statements</h1>
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#IF">IF</a>:</td><td>conditionally executed statements</td></tr>
@@ -2828,7 +2868,7 @@ terminated by <a href="#EXIT">EXIT</a>.
 &lt;test&gt; may be any one of
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#WHILE">WHILE</a>:</td><td>loop continuation condition</td></tr>
@@ -2908,7 +2948,7 @@ operator</a>. In addition to the two basic forms, they can have the following
 variants:
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#FOR%20AND">FOR AND</a>:</td><td>multiple loop</td></tr>
@@ -3025,7 +3065,7 @@ one or more times) is
 where &lt;test&gt; may be any one of
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#WHILE">WHILE</a>:</td><td>loop terminating condition</td></tr>
@@ -3120,7 +3160,7 @@ subroutine labelled &lt;name&gt;. EXIT may be nested in an inner scope, such as 
 further loop or an IF statement.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#LOOP">LOOP</a>:</td><td>conditional and sequential loops</td></tr>
@@ -3140,7 +3180,7 @@ END &lt;name&gt; terminates the body of a module, function or subroutine named
 terminate the corresponding statements.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#MODULE">MODULE</a>:</td><td>separately scoped program block</td></tr>
@@ -3215,7 +3255,7 @@ Node: (cpl)BY,  Next: <a href="#C%20SECTION">C SECTION</a>,  Prev: <a href="#BOO
 The auxiliary keyword BY is used in
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#FOR">FOR</a>:</td><td>loop specifier</td></tr>
@@ -3230,7 +3270,7 @@ Node: (cpl)ELSE,  Next: <a href="#END">END</a>,  Prev: <a href="#DOWN">DOWN</a>,
 The auxiliary keyword ELSE is used in
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#IF">IF</a>:</td><td>conditionally executed statements</td></tr>
@@ -3244,7 +3284,7 @@ Node: (cpl)NAME,  Next: <a href="#NEW">NEW</a>,  Prev: <a href="#MODULE">MODULE<
 The auxiliary keyword NAME is used in
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#READ">READ</a>:</td><td>input from character files and devices</td></tr>
@@ -3258,7 +3298,7 @@ Node: (cpl)OF,  Next: <a href="#POINTER">POINTER</a>,  Prev: <a href="#NOT">NOT<
 The auxiliary keyword OF is used in:
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#ARRAY">ARRAY</a>:</td><td>indexed array type</td></tr>
@@ -3273,7 +3313,7 @@ Node: (cpl)TO,  Next: <a href="#TRAP">TRAP</a>,  Prev: <a href="#TIMES">TIMES</a
 The auxiliary keyword TO is used in:
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#FOR">FOR</a>:</td><td>loop specifier</td></tr>
@@ -3321,14 +3361,12 @@ full re-compilation may be necessary, the command
         
 achieves this by deleting the object files first.
 
-If your system includes the wget command (on Debian you can install it as <q>apt
-install wget</q>), makecpl provides the functionality to poll the CPLcode.net
-website once a day in the background and inform you when updates become
-available. This functionality can be disabled by editing the makecpl script
-and turning ENABLE_UPDATES to NO.
+If your system includes the curl command (on Debian you can install it as <q>apt
+install curl</q>), makecpl provides the functionality to poll the CPLcode.net
+website in the background. See <a href="#automatic%20updates">automatic updates</a>.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#cpl">cpl</a>:</td><td>The CPL-to-C compiler</td></tr>
@@ -3381,7 +3419,7 @@ define, for instance, complex-number notation, matrix-algebra operations or
 symbolic manipulations.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="fri.html#FRI%20architecture">(fri)FRI architecture</a>:</td><td></td></tr>
@@ -3439,7 +3477,7 @@ Info manual. If you are new to the Info reader, then you can get started by
 typing <q>H</q> for a list of basic key bindings. Type <q>q</q> to quit Info.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th></th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="editor.html#Top">readline:(editor)</a>:</td><td>Console input editing keys.</td></tr>
@@ -3453,7 +3491,7 @@ Node: (cpl)icpl commands,  Next: <a href="#Library">Library</a>,  Prev: <a href=
 <hr>
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th>icpl-specific commands:</th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>icpl-specific commands:</th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#?">?</a>:</td><td>help</td></tr>
@@ -3627,7 +3665,7 @@ Node: (cpl)Library,  Prev: <a href="#icpl">icpl</a>,  Next: <a href="#rtchecks">
 
 <h1>Ready to <a href="#USE">USE</a> library of CPL modules</h1>
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th>The following libraries are included with CPL:</th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>The following libraries are included with CPL:</th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#rtchecks">rtchecks</a>:</td><td>Run Time bounds Checking and more</td></tr>
@@ -3644,7 +3682,6 @@ Node: (cpl)Library,  Prev: <a href="#icpl">icpl</a>,  Next: <a href="#rtchecks">
 <tr><td><a href="symbolic.html#Top">symbolic:(symbolic)</a>:</td><td>Symbolic differentiation</td></tr>
 <tr><td><a href="#CHARbyCHAR">CHARbyCHAR</a>:</td><td>live keyboard input</td></tr>
 <tr><td><a href="#INPUTREADY">inputready:INPUTREADY</a>:</td><td>test for input ready on a file descriptor or stdin</td></tr>
-<tr><td><a href="#lapack-eigv">lapack-eigv</a>:</td><td>interface to LAPACK matrix eigenvalue routines</td></tr>
 <tr><td><a href="#matlib">matlib</a>:</td><td>Some basic compact matrix-defining functions</td></tr>
 <tr><td colspan="2">
 </td></tr>
@@ -3667,7 +3704,7 @@ all error messages are modified so as to display the position in the source
 code where the error occurred.
 
 <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="filter" title="Filter menu items"></th><th>rtchecks specific commands</th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>rtchecks specific commands</th></tr>
 <tr><td colspan="2">
 </td></tr>
 <tr><td><a href="#TRACE">TRACE</a>:</td><td>ON                        Turn execution tracing on</td></tr>
@@ -3703,7 +3740,7 @@ V,v: view. Open a vi window at the present line in the source code, which can
 Any other key displays a one-line reminder of the above.
 
 </div><div class=page id="CHARbyCHAR">
-Node: (cpl)CHARbyCHAR, Next: <a href="#lapack-eigv">lapack-eigv</a>, Prev: <a href="symbolic.html#Top">(symbolic)</a>, Up: <a href="#Library">Library</a>
+Node: (cpl)CHARbyCHAR, Next: <a href="#matlib">matlib</a>, Prev: <a href="symbolic.html#Top">(symbolic)</a>, Up: <a href="#Library">Library</a>
 <hr>
 
 <h2>Live keyboard input</h2>
@@ -3713,22 +3750,8 @@ be read immediately (normally input is transferred from the terminal to the
 running program one line at a time, i.e. only when a newline is entered).
 USEing this library is all that is necessary. Input is then performed as usual.
 
-</div><div class=page id="lapack-eigv">
-Node: (cpl)lapack-eigv,  Prev: <a href="#CHARbyCHAR">CHARbyCHAR</a>,  Next: <a href="#matlib">matlib</a>,  Up: <a href="#Library">Library</a>
-<hr>
-
-<h2>Interface to LAPACK eigenvalue routines</h2>
-The lapack-eigv.cpl library declares the functions
-
-       ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(REAL A(*,*))
-
-       ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(COMPLEX A(*,*))
-
-providing the full set of eigenvalues of, respectively, a <a href="#REAL">REAL</a> or a
-<a href="#COMPLEX">COMPLEX</a> square matrix.
-
 </div><div class=page id="matlib">
-Node: (cpl)matlib,  Prev: <a href="#lapack-eigv">lapack-eigv</a>,  Up: <a href="#Library">Library</a>
+Node: (cpl)matlib,  Prev: <a href="#CHARbyCHAR">CHARbyCHAR</a>,  Up: <a href="#Library">Library</a>
 <hr>
 
 <h2>Basic matrix-creating functions</h2>

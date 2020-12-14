@@ -1,4 +1,4 @@
-WRITE "Hello world"
+WRITE "Hello world!"
 
 ! that's all, folks: a single-liner that doesn't require many explanations.
 

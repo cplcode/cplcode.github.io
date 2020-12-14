@@ -2,9 +2,10 @@
         text-align:right;
       }
       body {
-        width:100vw;
+        width:100%;
         min-height:100vh;
         margin:0;
+        padding:0;
         font-family:Arial,Sans-serif;
         /* background-color:WhiteSmoke; */
       }
@@ -27,7 +28,7 @@
         text-align:justify;
         max-width:40em;
         min-height:100%;
-        padding-left:1em; padding-right:1em;
+        padding-left:0.75em; padding-right:0.75em;
 }
       code,pre {
         font-size: 1em;
@@ -35,7 +36,7 @@
       }
       iframe.news {
         position:absolute;
-        max-width:40em;
+        width:95%;
         height:10em;
         left:0; right:0;
         top:3em;
@@ -65,26 +66,26 @@
       .leftinset {
         float:left;
         max-width:20em;
-        margin-top:0.25em;
-        padding-top:0.25em;
+        margin-top:0.5em;
+        padding-top:0.5em;
         margin-bottom:0.25em;
         padding-bottom:0.25em;
-        margin-right:1em;
+        margin-right:0.75em;
         padding-right:0.5em;
-        border-right:0.2em solid grey;
+        border-right:0.25em solid lightgrey;
         font-family:monospace,monospace;
         font-size:1em;
       }
       .rightinset {
         float:right;
         max-width:25em;
-        margin-top:0.25em;
+        margin-top:0.75em;
         padding-top:0.25em;
         margin-bottom:0.25em;
         padding-bottom:0.25em;
-        margin-left:1em;
+        margin-left:0.75em;
         padding-left:0.5em;
-        border-left:0.2em solid grey;
+        border-left:0.25em solid lightgrey;
         font-family:monospace,monospace;
         font-size:1em;
       }
