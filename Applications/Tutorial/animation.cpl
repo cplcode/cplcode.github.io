@@ -9,7 +9,7 @@ set zrange [-1:1]   ! "set" commands are passed to gnuplot unchanged
 LOOP FOR t=0. TO 10000 BY 0.3   ! LOOP can have a REAL index
   amp=SIN(t)        ! time-varying amplitude
   DO g(ix,iy)=amp*EXP{-[(0.1*ix)^2+(0.1*iy)^2]/2} FOR ALL ix,iy
-  ! this is an alternate, compact form of loop
-  ! brackets may optionally be rotated to improve clarity
+  ! this is a more compact form of LOOP
+  ! alternating the three kinds of brackets improves clarity
   SPLOT g           ! plot 2D array as a surface
 REPEAT
