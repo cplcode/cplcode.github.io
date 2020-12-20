@@ -17,28 +17,28 @@
 <span class=comment>! This function will declare its result a a constant array if none was declared</span>
   <a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
   LA=<a href="cpl.html#LENGTH">LENGTH</a>(A)
-  <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "matrix is not square"
+  <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "matrix is not square"
   LWORK=3*LA
   <a href="complex.html#COMPLEX">COMPLEX</a> WORK(1..LWORK)
   <a href="cpl.html#REAL">REAL</a> RWORK(1..LA)
   <a href="complex.html#COMPLEX">COMPLEX</a> Acopy(0..LA-1,0..LA-1)=A(<a href="cpl.html#LO">LO</a>+*,<a href="cpl.html#LO">LO</a>+*)
   <a href="cpl.html#FORTRAN%20interface">FORTRANCALL</a> zgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,Acopy,<a href="cpl.html#FORTRANCALL">STRIDEOF</a>(Acopy),SDIM,<a href="cpl.html#RESULT">RESULT</a>,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,RWORK,<a href="cpl.html#POINTER">NULL</a>,info)
   <span class=comment>! interface to FORTRAN call, applied without any prototype checking</span>
-  <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: " info
+  <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: " info
 <a href="cpl.html#END">END</a> eigv   <span class=comment>! encapsulating zgees inside eigv turns on prototype checking</span>
 
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#COMPLEX">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="cpl.html#REAL">REAL</a> A(*,*))
 <span class=comment>! same name as above but different argument list: overloaded function</span>
   <a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
   LA=<a href="cpl.html#LENGTH">LENGTH</a>(A)
-  <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "matrix is not square"
+  <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "matrix is not square"
   LWORK=3*LA
   <a href="cpl.html#REAL">REAL</a> WORK(1..LWORK)
   <a href="cpl.html#REAL">REAL</a> WR(1..LA),WI(1..LA)
   <a href="cpl.html#REAL">REAL</a> Acopy(0..LA-1,0..LA-1)=A(<a href="cpl.html#LO">LO</a>+*,<a href="cpl.html#LO">LO</a>+*)
   <a href="cpl.html#FORTRAN%20interface">FORTRANCALL</a> dgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,Acopy,<a href="cpl.html#FORTRANCALL">STRIDEOF</a>(Acopy),SDIM,WR,WI,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,<a href="cpl.html#POINTER">NULL</a>,info)
   <span class=comment>! interface to FORTRAN call, applied without any prototype checking</span>
-  <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#THEN">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: " info
+  <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: " info
   <a href="cpl.html#RESULT">RESULT</a>(*+<a href="cpl.html#LO">LO</a>-1).<a href="cpl.html#REAL">REAL</a>=WR; <a href="cpl.html#RESULT">RESULT</a>(*+<a href="cpl.html#LO">LO</a>-1).IMAG=WI
 <a href="cpl.html#END">END</a> eigv   <span class=comment>! encapsulating dgees inside eigv turns on prototype checking</span>
 
