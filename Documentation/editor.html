@@ -56,46 +56,18 @@
 
 </div><div class=page id="Top">
 Node: (editor)Top, Next: <a href="#readline">readline</a>,  Up: <a href="cpl.html#icpl">(cpl)icpl</a>
-<hr>
+<hr>  <h1>icpl-embedded line and full-screen editor</h1>
+Bash-like command completion and command history are traditionally provided by the GNU readline library, which supplies the familiar Tab and Up Arrow commands, input logging and more. The purpose of readline is to allow the user  to edit each command line before committing it, and to keep a history of previous commands for rapid reuse.
 
-<h1>icpl-embedded line and full-screen editor</h1>
-Bash-like command completion and command history are traditionally provided by
-the GNU readline library, which supplies the familiar Tab and Up Arrow
-commands, input logging and more. The purpose of readline is to allow the user 
-to edit each command line before committing it, and to keep a history of
-previous commands for rapid reuse.
+In icpl, console input is handled through an independent, limited implement- ation of the readline library (also available to user programs that are run under icpl), which serves double purpose, when requested, as a full-screen editor.
 
-In icpl, console input is handled through an independent, limited implement-
-ation of the readline library (also available to user programs that are run
-under icpl), which serves double purpose, when requested, as a full-screen
-editor.
+icpl readline accepts cursor-movement and other commands in one of three equivalent ways: dedicated editing keys, vi-like single-letter commands, and the mouse. Single-letter command mode is toggled in and out of by the Esc key. Full-screen mode is toggled in and out of by F1 or Esc Space (or by the Insert key when no text is currently selected). Any cursor movement while Shift is pressed (or mouse movement with left button pressed) selects text. For functions which admit an inverse (such as undo - redo or search forward - search backward), Shift or right mouse button selects the inverse. With the exception of Ctrl-i (Tab) and Ctrl-h (Backspace), Ctrl-&lt;key&gt; also works as an alternative to Esc followed by the same lower-case key.
 
-icpl readline accepts cursor-movement and other commands in one of three
-equivalent ways: dedicated editing keys, vi-like single-letter commands, and
-the mouse. Single-letter command mode is toggled in and out of by the Esc
-key. Full-screen mode is toggled in and out of by F1 or Esc Space
-(or by the Insert key when no text is currently selected). Any cursor movement
-while Shift is pressed (or mouse movement with left button pressed) selects
-text. For functions which admit an inverse (such as undo - redo or search
-forward - search backward), Shift or right mouse button selects the inverse.
-With the exception of Ctrl-i (Tab) and Ctrl-h (Backspace), Ctrl-&lt;key&gt; also
-works as an alternative to Esc followed by the same lower-case key.
-
-The full-screen editor can be accessed directly from a unix shell by giving the
-command <q>edit &lt;file&gt; [+&lt;linenumber&gt;]</q>. <q>edit</q> is actually a symbolic link
-to the icpl executable script, which when called under a different name
-executes that name as its first command. <a href="cpl.html#icpl%20command%20line">(cpl)icpl command line</a>.
-In full-screen mode the command history shows up in a tidy full-screen editor,
-and the Enter key is now entered as a regular newline. On return to readline
-mode (when F1 or Esc Space is pressed again), the modified command
-history is replayed through icpl as if this list of commands had been given
-afresh when it was launched. Other editing keys work just as in readline mode,
-except that history lines are now edited in place.
+The full-screen editor can be accessed directly from a unix shell by giving the command <q>edit &lt;file&gt; [+&lt;linenumber&gt;]</q>. <q>edit</q> is actually a symbolic link to the icpl executable script, which when called under a different name executes that name as its first command. <a href="cpl.html#icpl%20command%20line">(cpl)icpl command line</a>. In full-screen mode the command history shows up in a tidy full-screen editor, and the Enter key is now entered as a regular newline. On return to readline mode (when F1 or Esc Space is pressed again), the modified command history is replayed through icpl as if this list of commands had been given afresh when it was launched. Other editing keys work just as in readline mode, except that history lines are now edited in place.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
-<tr><td colspan="2">
-</td></tr>
+<tr><td colspan="2"> </td></tr>
 <tr><td><a href="#readline">readline</a>:</td><td>flexible input-line editing with history and completion</td></tr>
 <tr><td><a href="#full-screen">full-screen</a>:</td><td>history and general-file editor with multiple tabs</td></tr>
 </table></nav>
@@ -107,87 +79,33 @@ Node: (editor)readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a h
 <h2>Readline assisted console input</h2>
 Most used editing keys:
 
-- Left arrow (Esc h), right arrow (Esc l): move cursor
-- Home (Esc ^), end (Esc $): beginning, end of line
-- Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file
-- Backspace: erase left
-- Delete (Esc d): erase right
-- Shift-delete (Esc D): erase line
-- Up (Esc j), down arrow (Esc k): previous, next command in history. If a
+- Left arrow (Esc h), right arrow (Esc l): move cursor - Home (Esc ^), end (Esc $): beginning, end of line - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file - Backspace: erase left - Delete (Esc d): erase right - Shift-delete (Esc D): erase line - Up (Esc j), down arrow (Esc k): previous, next command in history. If a
   partial line is entered, only lines containing it become visible. Previous
   commands are immutable; when a character is added or deleted in a previous
-  command, this is copied to the most recent position before being modified.
-- Tab: autocomplete keyword or identifier. Successive tabs move forward along
-  the list of available completions; Shift-Tab moves backwards.
-- Enter: submit line.
-- F1, Esc Space: switch to full-screen mode.
-- Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
-- Esc \, Ctrl-\: add next (special or control) character verbatim
-
+  command, this is copied to the most recent position before being modified. - Tab: autocomplete keyword or identifier. Successive tabs move forward along
+  the list of available completions; Shift-Tab moves backwards. - Enter: submit line. - F1, Esc Space: switch to full-screen mode. - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>) - Esc \, Ctrl-\: add next (special or control) character verbatim 
 </div><div class=page id="full-screen">
 Node: (editor)full-screen, Next: <a href="#Select">Select</a>, Prev: <a href="#readline">readline</a>, Up: <a href="#Top">Top</a>
-<hr>
-
-<h2>Full-screen editor</h2>
-The full-screen editor is accessed as <q>edit</q> in icpl, or as <q>icpl -edit</q> in the
-shell, or as <q>edit</q> in the shell if no other <q>edit</q> command comes first.
+<hr>  <h2>Full-screen editor</h2>
+The full-screen editor is accessed as <q>edit</q> in icpl, or as <q>icpl -edit</q> in the shell, or as <q>edit</q> in the shell if no other <q>edit</q> command comes first.
 
 Most used editing keys:
 
-- Left arrow (Esc h), right arrow (Esc l): move cursor
-- Home (Esc ^), End (Esc $): beginning, end of line
-- Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file
-- Backspace: erase left; Delete (Esc d): erase at cursor
-- Shift-Delete (Esc D): erase line
-- Up arrow (Esc j), down arrow (Esc k): previous, next line.
-- PgUp (Esc p), PgDn (Esc n): move to prev or next paragraph of the same or
-  lesser indentation.
-- Tab: autocomplete keyword or identifier. Successive tabs move forward along
-  the list of available completions; Shift-Tab moves backwards.
-- Enter: Enter new line, and trigger possible autocompletion of CPL syntax
-- Esc =: Autoindent current line or selection (<a href="#Indentation">Indentation</a>)
-- F1, Esc Space: switch in and out of command-line mode.
-- Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
-- Esc \, Ctrl-\: add next (special or control) character verbatim.
+- Left arrow (Esc h), right arrow (Esc l): move cursor - Home (Esc ^), End (Esc $): beginning, end of line - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file - Backspace: erase left; Delete (Esc d): erase at cursor - Shift-Delete (Esc D): erase line - Up arrow (Esc j), down arrow (Esc k): previous, next line. - PgUp (Esc p), PgDn (Esc n): move to prev or next paragraph of the same or
+  lesser indentation. - Tab: autocomplete keyword or identifier. Successive tabs move forward along
+  the list of available completions; Shift-Tab moves backwards. - Enter: Enter new line, and trigger possible autocompletion of CPL syntax - Esc =: Autoindent current line or selection (<a href="#Indentation">Indentation</a>) - F1, Esc Space: switch in and out of command-line mode. - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>) - Esc \, Ctrl-\: add next (special or control) character verbatim.
 
-Selection is achieved by cursor-moving keys with Shift pressed (<a href="#Select">Select</a>),
-or by moving the mouse with its left button pressed. The center mouse button
-copies the current selection.
+Selection is achieved by cursor-moving keys with Shift pressed (<a href="#Select">Select</a>), or by moving the mouse with its left button pressed. The center mouse button copies the current selection.
 
-Clicking the mouse on the bottom left corner, or pressing Esc m (or Esc
-followed by any unassigned key), opens up a menu of editor commands. Clicking
-the mouse on the bottom right corner opens context-sensitive help (through
-the info program), about the word where the cursor is, or this info page if the
-cursor is outside any word.
+Clicking the mouse on the bottom left corner, or pressing Esc m (or Esc followed by any unassigned key), opens up a menu of editor commands. Clicking the mouse on the bottom right corner opens context-sensitive help (through the info program), about the word where the cursor is, or this info page if the cursor is outside any word.
 
-The full-screen editor can work on multiple screens (aka tabs), in addition
-to the session log (command history). Simultaneously open buffers are
-rotated into focus by clicking the mouse menu, which shows them as tabs, or
-by pressing Esc &lt;digit&gt;.
+The full-screen editor can work on multiple screens (aka tabs), in addition to the session log (command history). Simultaneously open buffers are rotated into focus by clicking the mouse menu, which shows them as tabs, or by pressing Esc &lt;digit&gt;.
 
-A file is opened in a new screen with the <q>edit</q> icpl command (also available
-in the menu, or as Esc e, or as the <q>edit</q> symbolic link from a unix shell),
-and closed with the <q>close</q> menu command (aka Esc c or Ctrl-c or Esq q or
-Ctrl-q). Capitalized <q>Edit</q>, or Esc E, or right-clicking the <q>edit</q> menu
-button, opens the file to be edited in a separate terminal window. The optional
-+&lt;linenumber&gt; parameter at the end of the <q>edit</q> or <q>Edit</q> commands opens the
-file at the given line number. The bottom status line contains the name of the
-currently displayed file and the current line number. A star trailing the file
-name denotes whether the in-memory buffer has been modified since last saved
-(and warns that changes would be lost if not saved again). Closing an unsaved
-file elicits a prompt asking for confirmation before exit.
+A file is opened in a new screen with the <q>edit</q> icpl command (also available in the menu, or as Esc e, or as the <q>edit</q> symbolic link from a unix shell), and closed with the <q>close</q> menu command (aka Esc c or Ctrl-c or Esq q or Ctrl-q). Capitalized <q>Edit</q>, or Esc E, or right-clicking the <q>edit</q> menu button, opens the file to be edited in a separate terminal window. The optional +&lt;linenumber&gt; parameter at the end of the <q>edit</q> or <q>Edit</q> commands opens the file at the given line number. The bottom status line contains the name of the currently displayed file and the current line number. A star trailing the file name denotes whether the in-memory buffer has been modified since last saved (and warns that changes would be lost if not saved again). Closing an unsaved file elicits a prompt asking for confirmation before exit.
 
-<q>load</q> and <q>save</q> (Esc o and Esc s) respectively load (insert) a file at the
-current cursor position and save the current in-memory buffer to a file,
-with the original file name as a default. Ctrl-s immediately saves the
-in-memory buffer to the original file name. If some text was just selected,
-Esc s opens a <q>save selection as</q> prompt which saves the current selection
-to a file.
+<q>load</q> and <q>save</q> (Esc o and Esc s) respectively load (insert) a file at the current cursor position and save the current in-memory buffer to a file, with the original file name as a default. Ctrl-s immediately saves the in-memory buffer to the original file name. If some text was just selected, Esc s opens a <q>save selection as</q> prompt which saves the current selection to a file.
 
-<q>run</q> (Esc r) runs the current screen as a CPL program, after saving all
-unsaved screens so that other possibly USEd files are up to date. By contrast,
-switching into line mode always runs the session log, independent of which
-screen is currently in view.
+<q>run</q> (Esc r) runs the current screen as a CPL program, after saving all unsaved screens so that other possibly USEd files are up to date. By contrast, switching into line mode always runs the session log, independent of which screen is currently in view.
 
 <q>attr</q> (Esc a) opens a menu of file buffer attributes.
 
@@ -195,8 +113,7 @@ Most prompts and menus can be aborted by pressing Esc *twice*.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
-<tr><td colspan="2">
-</td></tr>
+<tr><td colspan="2"> </td></tr>
 <tr><td><a href="#Select">Select</a>:</td><td>text selection, insertion and deletion</td></tr>
 <tr><td><a href="#Indentation">Indentation</a>:</td><td>CPL syntax-sensitive indentation and completion</td></tr>
 <tr><td><a href="#Find">Find</a>:</td><td>find and replace functionality</td></tr>
@@ -208,149 +125,64 @@ Node: (editor)Select, Next: <a href="#Indentation">Indentation</a>, Prev: <a hre
 <hr>
 
 <h3>Select, Insert and Delete</h3>
-Selection of a text area is achieved either by keeping the left mouse button
-pressed, or by clicking the right mouse button on the end of the selected area,
-or by pressing shift together with any cursor motion key. Selection can apply
-to the text comprised between the starting and ending selected positions or to
-a rectangular area with the given corners (useful to select columns). Esc t
-toggles in and out of rectangular mode. Esc w or double-clicking the mouse
-selects a word under the cursor; if applied to an opening or closing bracket,
-Esc w or double clicking selects the entire parenthesis. Esc n or triple click-
-ing selects the line under the cursor. Esc <q>S</q>, or clicking save with the right
-mouse button, saves the current selection to a file.
+Selection of a text area is achieved either by keeping the left mouse button pressed, or by clicking the right mouse button on the end of the selected area, or by pressing shift together with any cursor motion key. Selection can apply to the text comprised between the starting and ending selected positions or to a rectangular area with the given corners (useful to select columns). Esc t toggles in and out of rectangular mode. Esc w or double-clicking the mouse selects a word under the cursor; if applied to an opening or closing bracket, Esc w or double clicking selects the entire parenthesis. Esc n or triple click- ing selects the line under the cursor. Esc <q>S</q>, or clicking save with the right mouse button, saves the current selection to a file.
 
-Whenever text is selected, the Insert key (or Esc i, or Ctrl-v for those who
-are accustomed to it) inserts (pastes) the selected text at the current cursor
-position; no <q>copy</q> function is needed or provided. The Backspace or Delete key
-(also aliased to Esc d, Esc x, Ctrl-x) erases the selected text if pressed
-immediately after a selection. (At any other time these keys erase a single
-character, the preceding one for Backspace.) Deleted text remains invisibly
-selected and can be re-inserted after its deletion, up until a new selection is
-performed. Typing a new character, or pressing Insert, immediately after a
-selection without any intervening cursor movement replaces the current
-selection. In this case the function of Insert changes to inserting the butlast
-selection. Esc . also inserts either the butlast selection or the last typed
-text, whichever is more recent.
+Whenever text is selected, the Insert key (or Esc i, or Ctrl-v for those who are accustomed to it) inserts (pastes) the selected text at the current cursor position; no <q>copy</q> function is needed or provided. The Backspace or Delete key (also aliased to Esc d, Esc x, Ctrl-x) erases the selected text if pressed immediately after a selection. (At any other time these keys erase a single character, the preceding one for Backspace.) Deleted text remains invisibly selected and can be re-inserted after its deletion, up until a new selection is performed. Typing a new character, or pressing Insert, immediately after a selection without any intervening cursor movement replaces the current selection. In this case the function of Insert changes to inserting the butlast selection. Esc . also inserts either the butlast selection or the last typed text, whichever is more recent.
 
 In the way of example, in order to:
 
-delete:           select, delete;
-overtype:         select, type;
-copy and paste:   select, move, insert;
-cut and paste:    select, delete, move, insert;
-copy and replace: select, move, select, insert;
-cut and replace:  select, delete, move, select, insert.
-type again:       type something, move, insert;
-type and replace: type something, move, select, insert.
+delete:           select, delete; overtype:         select, type; copy and paste:   select, move, insert; cut and paste:    select, delete, move, insert; copy and replace: select, move, select, insert; cut and replace:  select, delete, move, select, insert. type again:       type something, move, insert; type and replace: type something, move, select, insert.
 
-Esc !, respectively Esc @, turns the current selection to all uppercase or all
-lowercase letters.
+Esc !, respectively Esc @, turns the current selection to all uppercase or all lowercase letters.
 
-The copy-and-paste functionality of the underlying xterm-compatible terminal is
-also available, and necessary if you want to copy some text to/from the X
-clipboard. This is accessed by pressing Shift together with the corresponding
-xterm mouse button (left button to select, center button to paste). Ctrl-Insert
-and Shift-Insert also keep their function of copying to/from the X clipboard.
-
+The copy-and-paste functionality of the underlying xterm-compatible terminal is also available, and necessary if you want to copy some text to/from the X clipboard. This is accessed by pressing Shift together with the corresponding xterm mouse button (left button to select, center button to paste). Ctrl-Insert and Shift-Insert also keep their function of copying to/from the X clipboard. 
 </div><div class=page id="Indentation">
 Node: (editor)Indentation, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>CPL syntax-sensitive indentation and completion</h3>
-When a .cpl file is being edited, pressing Enter at the end of a freshly
-modified line automatically:
+When a .cpl file is being edited, pressing Enter at the end of a freshly modified line automatically:
 
-1) indents the new line according to the contents of the previous line;
-2) if the line is the opening of a new program block, like a subroutine, loop
-or IF statement, it inserts the corresponding closing statement and the
-   appropriate indentation for the block's contents;
-3) it converts to upper case some CPL keywords when they are recognized as
-   having been entered in lower case;
-4) open brackets are automatically provided with a matching closing bracket;
+1) indents the new line according to the contents of the previous line; 2) if the line is the opening of a new program block, like a subroutine, loop or IF statement, it inserts the corresponding closing statement and the
+   appropriate indentation for the block's contents; 3) it converts to upper case some CPL keywords when they are recognized as
+   having been entered in lower case; 4) open brackets are automatically provided with a matching closing bracket;
    typing of the closing bracket is optional, and silently ignored if brackets
-   match;
-5) since CPL allows the usage of the three kinds of brackets like in
+   match; 5) since CPL allows the usage of the three kinds of brackets like in
    mathematics (<a href="cpl.html#Parentheses">(cpl)Parentheses</a>), the editor automatically alternates
    the three kinds even if only one kind is typed in.
 
-In addition, word completion using the Tab key is available in full-screen
-just as in readline mode.
+In addition, word completion using the Tab key is available in full-screen just as in readline mode.
 
 Where needed, the following explicit indentation commands are available:
 
-Esc ) : indent the current selection one more space to the right,
-Esc ( : unindent the current selection by one space to the left,
-Esc = : even the margin of the current selection or indent as to CPL syntax.
-
+Esc ) : indent the current selection one more space to the right, Esc ( : unindent the current selection by one space to the left, Esc = : even the margin of the current selection or indent as to CPL syntax. 
 </div><div class=page id="Find">
 Node: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>Find and replace</h3>
-<q>find</q> (Esc /) and <q>goto</q> (Esc g or Esc +) seek the cursor to a given string or
-a given line number. Esc ? (or clicking <q>find</q> with the right mouse button)
-seeks backwards. The search is case-insensitive if the first character of the
-search string is a lowercase letter, case-sensitive otherwise. The found string
-is automatically selected. If some text is selected when Esc / or Esc ? are
-pressed, the selected text will appear as the search string.
+<q>find</q> (Esc /) and <q>goto</q> (Esc g or Esc +) seek the cursor to a given string or a given line number. Esc ? (or clicking <q>find</q> with the right mouse button) seeks backwards. The search is case-insensitive if the first character of the search string is a lowercase letter, case-sensitive otherwise. The found string is automatically selected. If some text is selected when Esc / or Esc ? are pressed, the selected text will appear as the search string.
 
-In order to find and replace, find a given text, exit Esc mode, and start
-typing the replacement. Esc , (lowercase &lt;) repeats the last find backwards.
-Esc . (lowercase &gt;) repeats the last find forwards. Esc / and Esc ? with an
-empty argument also repeat the last find, possibly changing its direction.
+In order to find and replace, find a given text, exit Esc mode, and start typing the replacement. Esc , (lowercase &lt;) repeats the last find backwards. Esc . (lowercase &gt;) repeats the last find forwards. Esc / and Esc ? with an empty argument also repeat the last find, possibly changing its direction.
 
-Esc &gt; is a shortcut for pressing Insert and Esc . one after the other, and thus serves as replace-and-find-again. Keeping  Esc &gt; pressed is a means to perform
-multiple replacements, possibly to the end of file. Esc &lt; likewise replaces-
-and-finds backwards.
+Esc &gt; is a shortcut for pressing Insert and Esc . one after the other, and thus serves as replace-and-find-again. Keeping  Esc &gt; pressed is a means to perform multiple replacements, possibly to the end of file. Esc &lt; likewise replaces- and-finds backwards.
 
-Esc Enter repeats whatever the last command was, possibly the last (forward or
-backward) find or the last replace-and-find-again.
-
+Esc Enter repeats whatever the last command was, possibly the last (forward or backward) find or the last replace-and-find-again. 
 </div><div class=page id="Undo">
 Node: (editor)Undo,  Prev: <a href="#Find">Find</a>,  Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>Undo and redo</h3>
-Unlimited undo and redo functionality is supported, activated by Esc u and
-Esc U respectively (or Esc z and Esc Z as alternates, or Ctrl-z and Ctrl-y,
-but with the variation detailed below).
-As a distinctive feature of this editor (shared by hardly any others, a
-history-setting notable exception being emacs), memory of the undone edits
-is retained even when further edits take place after an undo.
+Unlimited undo and redo functionality is supported, activated by Esc u and Esc U respectively (or Esc z and Esc Z as alternates, or Ctrl-z and Ctrl-y, but with the variation detailed below). As a distinctive feature of this editor (shared by hardly any others, a history-setting notable exception being emacs), memory of the undone edits is retained even when further edits take place after an undo.
 
-A standard editor allows the following trap to occur: you undo several times
-with the purpose of inspecting how your text was at an earlier stage, but with
-the intention to return to the present, and then before redo-ing, you accident-
-ally hit a key (for example, redo is Ctrl-y and you hit y without Ctrl); now
-your redo buffer is gone forever, and all you typed in the meanwhile is gone
-with it.
+A standard editor allows the following trap to occur: you undo several times with the purpose of inspecting how your text was at an earlier stage, but with the intention to return to the present, and then before redo-ing, you accident- ally hit a key (for example, redo is Ctrl-y and you hit y without Ctrl); now your redo buffer is gone forever, and all you typed in the meanwhile is gone with it.
 
-Emacs and its kin keep memory of the complete history of commands including
-undo's. You do not <q>redo</q> in emacs, you undo an undo. You never lose anything,
-if no cap is posed on the length of the history, but once you start to <q>undo
-an undo an undo</q> the interface may become confusing, and the distance to any
-given past command increases rapidly.
+Emacs and its kin keep memory of the complete history of commands including undo's. You do not <q>redo</q> in emacs, you undo an undo. You never lose anything, if no cap is posed on the length of the history, but once you start to <q>undo
+an undo an undo</q> the interface may become confusing, and the distance to any given past command increases rapidly.
 
-In the CPL editor you can think of undo and redo commands as not changing any-
-thing, just inspecting what you did before. It is when you start typing again
-(or save) that actual changes take place. The next time you undo, you will roll
-back the time series of changes without again seeing your past undo's, and roll
-forward when you redo. If you redo all the way to the present nothing is
-recorded, but otherwise the new position where you resume typing is. Save for
-undo's and redo's, and for characters corrected with backspace immediately
-after being written, the complete history of changes remains available since
-the file was opened, and is never overwritten when you resume editing after
-undoing your previous edits. It is, however, not stored with the file and lost
-when this is closed.
+In the CPL editor you can think of undo and redo commands as not changing any- thing, just inspecting what you did before. It is when you start typing again (or save) that actual changes take place. The next time you undo, you will roll back the time series of changes without again seeing your past undo's, and roll forward when you redo. If you redo all the way to the present nothing is recorded, but otherwise the new position where you resume typing is. Save for undo's and redo's, and for characters corrected with backspace immediately after being written, the complete history of changes remains available since the file was opened, and is never overwritten when you resume editing after undoing your previous edits. It is, however, not stored with the file and lost when this is closed.
 
-For added flexibility, Esc z or Ctrl-z provides the traditional undo while
-Esc u or Ctrl-u provides the full undo. History is not lost with either, and
-redo is always full.
+For added flexibility, Esc z or Ctrl-z provides the traditional undo while Esc u or Ctrl-u provides the full undo. History is not lost with either, and redo is always full.
 
-Multi-line movements (PgUp, PgDn, Ctrl-Home, Ctrl-End, find and go to line) can
-also be undone, and are undone using the Esc b (back) key. Memory is only kept
-up to the most recent text modification. Esc U, Esc Z and Esc R redo (reverse
-undo) interchangeably. Ctrl-y is also available for those who are accustomed
-to it.
-
+Multi-line movements (PgUp, PgDn, Ctrl-Home, Ctrl-End, find and go to line) can also be undone, and are undone using the Esc b (back) key. Memory is only kept up to the most recent text modification. Esc U, Esc Z and Esc R redo (reverse undo) interchangeably. Ctrl-y is also available for those who are accustomed to it. 
 </div></body></html>

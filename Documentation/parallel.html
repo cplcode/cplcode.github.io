@@ -61,8 +61,7 @@ Node: (parallel)Top,  Next: <a href="#nonparallel">nonparallel</a>,  Prev: <a hr
 <h2>Parallel computing</h2>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
-<tr><td colspan="2">
-</td></tr>
+<tr><td colspan="2"> </td></tr>
 <tr><td><a href="#SHARED">SHARED</a>:</td><td>shared memory among parallel processes</td></tr>
 <tr><td><a href="#PARALLEL">PARALLEL</a>:</td><td>parallel execution</td></tr>
 <tr><td><a href="#synchronization">SLEEP UNTIL:synchronization</a>:</td><td></td></tr>
@@ -76,55 +75,37 @@ Node: (parallel)SHARED,  Next: <a href="#PARALLEL">PARALLEL</a>,  Up: <a href="#
 <hr>
 
 <h3>SHARED</h3>
-Prefix to global variable declarations specifying that the declared variables
-are to be shared among parallel modules. Variables without this declaration
-have separate instances for each module, i.e. changing their value produces no
-effect outside.
+Prefix to global variable declarations specifying that the declared variables are to be shared among parallel modules. Variables without this declaration have separate instances for each module, i.e. changing their value produces no effect outside.
 
 Example:
 
-SHARED ARRAY(0..100) OF REAL vec
-
+SHARED ARRAY(0..100) OF REAL vec 
 </div><div class=page id="PARALLEL">
 Node: (parallel)PARALLEL, Next: <a href="#synchronization">synchronization</a>, Prev: <a href="#SHARED">SHARED</a>, Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>PARALLEL</h3>
-Prefix to either <a href="cpl.html#MODULE">(cpl)MODULE</a> or <a href="cpl.html#LOOP">(cpl)LOOP</a> that specifies 
-parallel execution. 
+Prefix to either <a href="cpl.html#MODULE">(cpl)MODULE</a> or <a href="cpl.html#LOOP">(cpl)LOOP</a> that specifies  parallel execution. 
 
-A PARALLEL MODULE contains a block of code that gets executed in
-parallel with whatever follows (including possibly a sequence of other
-modules). Synchronization occurs at the end of the enclosing block: that is,
-the enclosing block does not end until all intervening modules are completed.
+A PARALLEL MODULE contains a block of code that gets executed in parallel with whatever follows (including possibly a sequence of other modules). Synchronization occurs at the end of the enclosing block: that is, the enclosing block does not end until all intervening modules are completed.
 
-A PARALLEL LOOP is a loop all instances of which occur in parallel.
-Synchronization occurs before the LOOP terminates and the program is allowed to
-continue.
-
+A PARALLEL LOOP is a loop all instances of which occur in parallel. Synchronization occurs before the LOOP terminates and the program is allowed to continue. 
 </div><div class=page id="synchronization">
 Node: (parallel)synchronization, Next: <a href="#tcpserver">tcpserver</a>, Prev: <a href="#PARALLEL">PARALLEL</a>, Up: <a href="#Top">Top</a>
 <hr>
 
 <h3>synchronization</h3>
-Once parallel processes are running explicit synchronization can be achieved
-through shared variables. A process can be made to wait for a condition by the
-instruction
+Once parallel processes are running explicit synchronization can be achieved through shared variables. A process can be made to wait for a condition by the instruction
 
 SLEEP UNTIL &lt;condition&gt;
 
-In order to make all sleeping processes verify their condition and wake up as
-needed, the process modifying the condition must subsequently execute the
-command
+In order to make all sleeping processes verify their condition and wake up as needed, the process modifying the condition must subsequently execute the command
 
-WAKEUP
-
+WAKEUP 
 </div><div class=page id="nonparallel">
 Node: (parallel)nonparallel,  Next: <a href="symbolic.html#Top">(symbolic)</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a>
 <hr>
 
 <h2>nonparallel.cpl</h2>
-Fake parallel-computing package that provides void equivalents of the
-parallel.cpl extensions.
-
+Fake parallel-computing package that provides void equivalents of the parallel.cpl extensions. 
 </div></body></html>

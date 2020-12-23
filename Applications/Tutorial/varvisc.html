@@ -22,7 +22,7 @@ mod<a href="cpl.html#Delayed%20assignment">==</a>{[lu(i+1,j+1)-lu(i,j+1)]^2+[lu(
     <span class=comment>! mod here is centered in i+1/2, j+1/2</span>
 mu<a href="cpl.html#Delayed%20assignment">==</a>(<a href="cpl.html#Builtin">EXP</a>(-mod/m)+0.05)
 J<a href="cpl.html#Delayed%20assignment">==</a>mu*mod
-<span class=comment>! these three == delayed assignments define the symbolic function J</span>
+<span class=comment>! these three == deferred assignments define the symbolic function J</span>
 <span class=comment>! (of yet undeclared array lu) to be minimized.</span>
 <a href="cpl.html#LOOP">LOOP</a> iter <a href="cpl.html#FOR">FOR</a> n=1 <a href="cpl.html#TO">TO</a> 100000
   <a href="cpl.html#REAL">REAL</a> maxrsd=0
@@ -35,7 +35,7 @@ J<a href="cpl.html#Delayed%20assignment">==</a>mu*mod
       i,j are passed implicitly to J which acts as a macro or INLINE FUNCTION!)</span>
       mu0=<a href="cpl.html#Looping%20operator">SUM</a> mu <a href="cpl.html#FOR">FOR</a> i=-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 0   <span class=comment>!( viscosity in 0,0. Here too,
       mu is expanded at compile time and contains i,j implicitly !)</span>    
-    lu(0,0)=~-dx*dx/4/mu0*rsd   <span class=comment>! standard Gauss-Seidel update</span>
+    lu(0,0)=~-dx*dx/2/mu0*rsd   <span class=comment>! under-relaxed Gauss-Seidel update</span>
     maxrsd=<a href="cpl.html#Looping%20operator">MAX</a>(maxrsd,ABS(rsd))   <span class=comment>! residual for convergence verification</span>
   <a href="cpl.html#LOOP">REPEAT</a>
   fr=dx^2*(<a href="cpl.html#Looping%20operator">SUM</a> u(ix,iy) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy)

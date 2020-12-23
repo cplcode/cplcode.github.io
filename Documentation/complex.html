@@ -59,33 +59,17 @@ Node: (complex)Top, Next: <a href="fft.html#Top">(fft)</a>, Prev: <a href="cpl.h
 <hr>
 
 <h2>Complex numbers</h2>
-The complex.cpl library adds complex-number algebra to CPL. Type COMPLEX is in
-fact an ordinary STRUCTURE defined as
+The complex.cpl library adds complex-number algebra to CPL. Type COMPLEX is in fact an ordinary STRUCTURE defined as
 
         STRUCTURE(REAL REAL,IMAG)
 
-In addition to being used as a structure, a COMPLEX can appear in algebraic
-expressions and be written or read in the form &lt;real&gt; + &lt;imag&gt; * I. The
-predefined constant I denotes the imaginary unit. All complex-number operations
-are inlined for performance. The following functions are defined:
+In addition to being used as a structure, a COMPLEX can appear in algebraic expressions and be written or read in the form &lt;real&gt; + &lt;imag&gt; * I. The predefined constant I denotes the imaginary unit. All complex-number operations are inlined for performance. The following functions are defined:
 
-SQRT:                square root
-EXP:                exponential
-LOG:                logarithm
-SIN:                sine
-COS:                cosine
-TAN:                tangent
-ABS:                absolute value
-NORM:                squared absolute value
-ARG:                argument or phase
-CONJG:                Conjugate (inlined)
+SQRT:                square root EXP:                exponential LOG:                logarithm SIN:                sine COS:                cosine TAN:                tangent ABS:                absolute value NORM:                squared absolute value ARG:                argument or phase CONJG:                Conjugate (inlined)
 
-In addition to the ordinary + - * / ^ algebraic operations, an additional
-product operator is defined as
+In addition to the ordinary + - * / ^ algebraic operations, an additional product operator is defined as
 
         a | b = CONJG(a)*b
 
-CONJG(a) and this scalar-product operator are also defined when a and b are
-arrays of COMPLEX, just as all linear-space <a href="cpl.html#%20ARRAY%20operations">(cpl) ARRAY operations</a> are.
-
+CONJG(a) and this scalar-product operator are also defined when a and b are arrays of COMPLEX, just as all linear-space <a href="cpl.html#%20ARRAY%20operations">(cpl) ARRAY operations</a> are. 
 </div></body></html>

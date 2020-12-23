@@ -21,7 +21,7 @@ mod=={[lu(i+1,j+1)-lu(i,j+1)]^2+[lu(i+1,j)-lu(i,j)]^2+[lu(i+1,j+1)-lu(i+1,j)]^2+
     ! mod here is centered in i+1/2, j+1/2
 mu==(EXP(-mod/m)+0.05)
 J==mu*mod
-! these three == delayed assignments define the symbolic function J
+! these three == deferred assignments define the symbolic function J
 ! (of yet undeclared array lu) to be minimized.
 LOOP iter FOR n=1 TO 100000
   REAL maxrsd=0
@@ -34,7 +34,7 @@ LOOP iter FOR n=1 TO 100000
       i,j are passed implicitly to J which acts as a macro or INLINE FUNCTION!)
       mu0=SUM mu FOR i=-1 TO 0 AND j=-1 TO 0   !( viscosity in 0,0. Here too,
       mu is expanded at compile time and contains i,j implicitly !)    
-    lu(0,0)=~-dx*dx/4/mu0*rsd   ! standard Gauss-Seidel update
+    lu(0,0)=~-dx*dx/2/mu0*rsd   ! under-relaxed Gauss-Seidel update
     maxrsd=MAX(maxrsd,ABS(rsd))   ! residual for convergence verification
   REPEAT
   fr=dx^2*(SUM u(ix,iy) FOR ALL ix,iy)

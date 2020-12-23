@@ -59,26 +59,19 @@ Node: (fft)Top,  Next: <a href="matrix.html#Top">(matrix)</a>,  Prev: <a href="c
 <hr>
 
 <h2>Fast Fourier Transform</h2>
-The fft.cpl library handles fast Fourier transforms. All of the following
-routines accept one or two parameters, being implied that when only one array
-is specified this acts as both input and output.
+The fft.cpl library handles fast Fourier transforms. All of the following routines accept one or two parameters, being implied that when only one array is specified this acts as both input and output.
 
-        SUBROUTINE IFT(COMPLEX Rin^(*), Rout^(*))
-computes
+        SUBROUTINE IFT(COMPLEX Rin^(*), Rout^(*)) computes
         Rout(i) = SUM Rin(j)*EXP(2*PI*I*i*j/Rin.LENGTH) FOR ALL j
 
-        SUBROUTINE FFT(COMPLEX Rin^(*), Rout^(*))
-computes
+        SUBROUTINE FFT(COMPLEX Rin^(*), Rout^(*)) computes
         Rout(j) = [SUM Rin(i)*EXP(-2*PI*I*i*j/Rin.LENGTH) FOR ALL i]/Rin.LENGTH
 
-These sums are actually computed by a fast-Fourier-transform algorithm which
-only works when Rin.LENGTH is the product of a power of two and possibly a
-single factor of three. The
+These sums are actually computed by a fast-Fourier-transform algorithm which only works when Rin.LENGTH is the product of a power of two and possibly a single factor of three. The
 
         BOOLEAN FUNCTION FFTfit(INTEGER VARIABLE N)
 
-can be used to test whether N is a suitable dimension for an array to be passed
-to the FFT routines.
+can be used to test whether N is a suitable dimension for an array to be passed to the FFT routines.
 
 The following variants produce discrete Fourier transforms of real arrays:
 
@@ -86,22 +79,13 @@ The following variants produce discrete Fourier transforms of real arrays:
 
         SUBROUTINE HFT(COMPLEX Rin^(*), Rout^(*))
 
-Of these RFT is defined to give the real part of the corresponding IFT, but
-with double the resolution. HFT is the inverse of RFT.
+Of these RFT is defined to give the real part of the corresponding IFT, but with double the resolution. HFT is the inverse of RFT.
 
-The output of RFT and the input of HFT is formally a COMPLEX ARRAY (so that
-either of these transforms may be executed in place) that actually contains a
-double number of REAL elements. These may be extracted by the ad hoc function
+The output of RFT and the input of HFT is formally a COMPLEX ARRAY (so that either of these transforms may be executed in place) that actually contains a double number of REAL elements. These may be extracted by the ad hoc function
 
         REALIFIED(POINTER TO ARRAY(*) OF COMPLEX x)
 
-For instance, the REAL ARRAY hidden in the COMPLEX ARRAY Rout may be accessed
-as REALIFIED(Rout), or equivalently as Rout.REALIFIED.
+For instance, the REAL ARRAY hidden in the COMPLEX ARRAY Rout may be accessed as REALIFIED(Rout), or equivalently as Rout.REALIFIED.
 
-The variants IFTU, RFTU, FFTU and HFTU of the above routines achieve a slightly
-shorter computation time by leaving the output array of the first two (and
-accepting the input array of the last two) unordered. They are, nonetheless,
-mutually inverse transforms and can be usefully applied to perform
-convolutions.
-
+The variants IFTU, RFTU, FFTU and HFTU of the above routines achieve a slightly shorter computation time by leaving the output array of the first two (and accepting the input array of the last two) unordered. They are, nonetheless, mutually inverse transforms and can be usefully applied to perform convolutions. 
 </div></body></html>
