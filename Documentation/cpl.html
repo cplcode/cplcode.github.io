@@ -56,7 +56,13 @@
 
 </div><div class=page id="Top">
 Node: (cpl)Top,  Next: <a href="#Keyword%20Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a>
-<hr> This is the documentation for the CPL programming language and its compiler, as of December 2020. Printable version at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> .  CPL = Concealed Pointer Lookup CPL = Custom Parameter Lists CPL = Consistent Procedure Linkage CPL = Compiled Programming Language CPL = Conceived by Paolo Luchini
+<hr> This is the documentation for the CPL programming language and its compiler, as of December 2020. Printable version at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
+
+  CPL = Concealed Pointer Lookup
+  CPL = Custom Parameter Lists
+  CPL = Consistent Procedure Linkage
+  CPL = Compiled Programming Language
+  CPL = Conceived by Paolo Luchini
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -342,7 +348,11 @@ Node: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#I
 <hr>
 
 <h1>The CPL programming language syntax</h1>
-CPL = Concealed Pointer Lookup CPL = Custom Parameter Lists CPL = Consistent Procedure Linkage CPL = Computer Programming Language CPL = Conceived by Paolo Luchini
+  CPL = Concealed Pointer Lookup
+  CPL = Custom Parameter Lists
+  CPL = Consistent Procedure Linkage
+  CPL = Computer Programming Language
+  CPL = Conceived by Paolo Luchini
 
 A CPL <a href="#Source%20file">Source file</a> is composed of nested blocks of statements which take effect in a hierarchical top-down order, much like Pascal or Modula-2. Statements are composed of keywords (<a href="#Keyword%20index">Keyword index</a>), identifiers and separators.
 
@@ -450,7 +460,10 @@ Node: (cpl)C interface, Next: <a href="#C%20SECTION">C SECTION</a>, Prev: <a hre
 <h3>C interface</h3>
 The directive
 
-        #include <q>file</q> or
+        #include <q>file</q>
+
+or
+
         #include &lt;file&gt;
 
 in addition to being copied into the generated C code has a special meaning. <q>file</q> is expected to contain a C header or program, which is scanned for declarations by the CPL compiler. The declarations and prototypes contained in the C file thus become transparently available to the including CPL program.
@@ -503,7 +516,10 @@ Node: (cpl)FORTRAN interface, Next: <a href="#MODULE">MODULE</a>, Prev: <a href=
 <h3>Use of FORTRAN subroutine calls</h3>
 An interface to FORTRAN precompiled subroutines is provided by the statements
 
-        FORTRANCALL &lt;subrname&gt; ( &lt;parameters&gt; ) and
+        FORTRANCALL &lt;subrname&gt; ( &lt;parameters&gt; )
+
+and
+
         &lt;type&gt; FORTRANFUNCTION &lt;functionname&gt; ( &lt;parameters&gt; )
 
 These have the following effects:
@@ -1023,7 +1039,10 @@ Node: (cpl)POINTER,  Next: <a href="#INTO">INTO</a>,  Prev: <a href="#ARRAY">ARR
 <h2>POINTERs</h2>
 The type declarator for pointers is POINTER TO (prefix) or ^ (postfix) (<a href="#Postfix">Postfix</a>). For example
 
-        POINTER TO INTEGER a,b; INTEGER c and
+        POINTER TO INTEGER a,b; INTEGER c
+
+and
+
         INTEGER a^,b^,c
 
 are equivalent declarations. The notation for pointer dereferencing is described in <a href="#Concealed%20Pointer%20Lookup">Concealed Pointer Lookup</a>.

@@ -56,7 +56,8 @@
 
 </div><div class=page id="Top">
 Node: (editor)Top, Next: <a href="#readline">readline</a>,  Up: <a href="cpl.html#icpl">(cpl)icpl</a>
-<hr>  <h1>icpl-embedded line and full-screen editor</h1>
+<hr> 
+ <h1>icpl-embedded line and full-screen editor</h1>
 Bash-like command completion and command history are traditionally provided by the GNU readline library, which supplies the familiar Tab and Up Arrow commands, input logging and more. The purpose of readline is to allow the user  to edit each command line before committing it, and to keep a history of previous commands for rapid reuse.
 
 In icpl, console input is handled through an independent, limited implement- ation of the readline library (also available to user programs that are run under icpl), which serves double purpose, when requested, as a full-screen editor.
@@ -86,7 +87,8 @@ Most used editing keys:
   the list of available completions; Shift-Tab moves backwards. - Enter: submit line. - F1, Esc Space: switch to full-screen mode. - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>) - Esc \, Ctrl-\: add next (special or control) character verbatim 
 </div><div class=page id="full-screen">
 Node: (editor)full-screen, Next: <a href="#Select">Select</a>, Prev: <a href="#readline">readline</a>, Up: <a href="#Top">Top</a>
-<hr>  <h2>Full-screen editor</h2>
+<hr> 
+ <h2>Full-screen editor</h2>
 The full-screen editor is accessed as <q>edit</q> in icpl, or as <q>icpl -edit</q> in the shell, or as <q>edit</q> in the shell if no other <q>edit</q> command comes first.
 
 Most used editing keys:
