@@ -59,9 +59,7 @@
 
 </div><div class=page id="Top">
 Node: (symbolic)Top, Next: <a href="cpl.html#CHARbyCHAR">(cpl)CHARbyCHAR</a>, Prev: <a href="parallel.html#Top">(parallel)</a>, Up: <a href="cpl.html#Library">(cpl)Library</a>
-<hr>
-
-<h2>Symbolic differentiation</h2>
+<hr> <h2>Symbolic differentiation</h2>
 The symbolic.cpl library adds symbolic differentiation capabilities to CPL. Symbolic differentiation is seamlessly integrated in the compiler, and happens at compile time: any desired symbolic derivatives are determined during compilation, and inlined in the generated code. Contrary to most other symbolic-differentiation environments, therefore, the purpose is not so much to generate user-readable derivatives as to generate (hopefully efficient) code.
 
 Symbolic manipulation operates upon and generates <q>symbolic expressions</q>, which can be assigned a symbolic name using the == operator and, like any r.h.s. of this operator, may contain yet undefined variables. At the later position where a symbolic expression or variable appears in an executable statement, code for it is actually generated, just as in <a href="cpl.html#Deferred%20assignment">(cpl)Deferred assignment</a>.

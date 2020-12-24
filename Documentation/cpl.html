@@ -59,7 +59,7 @@
 
 </div><div class=page id="Top">
 Node: (cpl)Top,  Next: <a href="#Keyword%20Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a>
-<hr> Documentation for the CPL programming language and its compiler, December 2020. Printable and citable version at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
+<hr>Documentation for the CPL programming language and its compiler, December 2020. Printable and citable version at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
 
   CPL = Concealed Pointer Lookup
   CPL = Custom Parameter Lists
@@ -83,9 +83,7 @@ Node: (cpl)Top,  Next: <a href="#Keyword%20Index">Keyword Index</a>, Up: <a href
 
 </div><div class=page id="Keyword%20Index">
 Node: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a>
-<hr>
-
-<h1>Keyword index</h1>
+<hr> <h1>Keyword index</h1>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
@@ -278,9 +276,7 @@ Node: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 
 </div><div class=page id="Installation">
 Node: (cpl)Installation, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#Keyword%20Index">Keyword Index</a>, Up: <a href="#Top">Top</a>
-<hr>
-
-<h1>Installation</h1>
+<hr> <h1>Installation</h1>
 This is CPL, a high-level programming language designed and developed by Paolo Luchini. Copyright 1993-2020 Paolo Luchini <a href="http://cplcode.net">cplcode.net</a>
 
 The files that compose the CPL system are located in their own directory, and can be shared among users. This directory is initially named /usr/local/fri in a shared installation or ~/fri in a single user's home, but may be renamed if needed. None of the tools require root privileges nor write permission; it suffices for them to be readable and executable by every interested user.
@@ -302,9 +298,7 @@ The interactive CPL interpreter (if installed) accepts any CPL expression, state
 
 </div><div class=page id="automatic%20updates">
 Node: (cpl)automatic updates, Next: <a href="#multi-user">multi-user</a>, Prev: <a href="#Installation">Installation</a>, Up: <a href="#Installation">Installation</a>
-<hr>
-
-<h2>Automatic updates</h2>
+<hr> <h2>Automatic updates</h2>
 The <a href="#makecpl">makecpl</a> script checks for updates to itself if the curl program is installed in the system (on Debian, <q>apt install curl</q>) and the network is available. This transparent background check at most takes place once a day, and only while makecpl is being run.
 
 If a new version is found, you are offered to upgrade to it. In case the answer is <q>no</q>, you won't be asked again and you will have to download the update manually from the CPLcode.net website. If the answer is <q>later</q> (or any other key), you will be prompted again on the next day.
@@ -312,17 +306,13 @@ If a new version is found, you are offered to upgrade to it. In case the answer 
 This functionality can be disabled, if undesired, by editing the makecpl script and turning ENABLE_UPDATES to <q>NO</q>. 
 </div><div class=page id="multi-user">
 Node: (cpl)multi-user, Next: <a href="#Q&A">Q&amp;A</a>, Prev: <a href="#automatic%20updates">automatic updates</a>, Up: <a href="#Installation">Installation</a>
-<hr>
-
-<h2>Installation for multiple users</h2>
+<hr> <h2>Installation for multiple users</h2>
 If you unpack the CPL archive while you have write access to the /usr/local/ directory (generally this requires root privileges), the archive gets expanded in /usr/local/fri/ with symbolic links in /usr/local/bin/. This is the simplest way to make CPL simultaneously available to all users of the system.
 
 If you have no access to /usr/local/, or prefer to avoid root privileges even if you can have them, a slightly more complex alternative is to go through the normal single-user installation, make sure that your fri directory and all files in it have read permission for the interested group, and then have every other interested user create their own symbolic links by cd-ing to your fri directory and running ./linksetup.  
 </div><div class=page id="Q&A">
 Node: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#multi-user">multi-user</a>, Up: <a href="#Installation">Installation</a>
-<hr>
-
-<h2>Common problems and their solutions</h2>
+<hr> <h2>Common problems and their solutions</h2>
 <h3>makecpl: command not found</h3>
 If <q>$HOME/fri/makecpl</q> or <q>/usr/local/fri/makecpl</q> do work, this is a PATH problem. The CPL setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may want to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions on how to modify the PATH variable.
 
@@ -348,9 +338,7 @@ The <q>edit</q> command is used as an alias by more than one editor, including v
 Some email servers automatically reject files with the .cpl extension because this extension is shared with MS Windows Control PaneL files. This difficulty is unfortunate, but a remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end. 
 </div><div class=page id="Syntax">
 Node: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a>
-<hr>
-
-<h1>The CPL programming language syntax</h1>
+<hr> <h1>The CPL programming language syntax</h1>
   CPL = Concealed Pointer Lookup
   CPL = Custom Parameter Lists
   CPL = Consistent Procedure Linkage
@@ -389,31 +377,23 @@ Loops and all other flow control statements (<a href="#Control">Control</a>) imp
 
 </div><div class=page id="Comments">
 Node: (cpl)Comments,  Next: <a href="#Parentheses">Parentheses</a>,  Prev: <a href="#Syntax">Syntax</a>,  Up: <a href="#Syntax">Syntax</a>
-<hr>
-
-<h2>Comments</h2>
+<hr> <h2>Comments</h2>
 Comments delimited by ! without a following bracket extend to the end of line.
 
 Comments delimited by !( ... !) or ![ ... !] or !{ ... !} can be inserted wherever a space can, and can extend over a few characters or over several lines. The compiler will still match !bracket pairs within comments, and consider the comment finished only when all opened parentheses have been closed. 
 </div><div class=page id="Parentheses">
 Node: (cpl)Parentheses, Next: <a href="#C%20preprocessor">C preprocessor</a>, Prev: <a href="#Comments">Comments</a>, Up: <a href="#Syntax">Syntax</a>
-<hr>
-
-<h2>Parentheses</h2>
+<hr> <h2>Parentheses</h2>
 Round, square and curly brackets can all be used interchangeably wherever a parenthesis is needed, but the compiler requires that every opening bracket is closed by a matching bracket of the same kind, just as in mathematics. Alternating the three kinds of bracket, while not mandatory, makes for easier reading by the programmer and more effective error catching by the compiler.
 
 When round brackets are used in the statement prototypes contained in this manual, it is always understood that the other two styles may be used as well. In such prototypes square brackets denote optional items. 
 </div><div class=page id="C%20preprocessor">
 Node: (cpl)C preprocessor, Next: <a href="#Source%20file">Source file</a>, Prev: <a href="#Parentheses">Parentheses</a>, Up: <a href="#Syntax">Syntax</a>
-<hr>
-
-<h2>Macro definition and conditional compilation</h2>
+<hr> <h2>Macro definition and conditional compilation</h2>
 C preprocessor #define and #if constructs (<a href="/usr/share/info/cpp.html#Top">:(/usr/share/info/cpp)</a>.) are used in a CPL program to define macros and alter the flow of compilation. For file inclusion see <a href="#USE">USE</a>, <a href="#INCLUDE">INCLUDE</a>, and <a href="#C%20interface">C interface</a>.  
 </div><div class=page id="Source%20file">
 Node: (cpl)Source file, Next: <a href="#MODULE">MODULE</a>, Prev: <a href="#C%20preprocessor">C preprocessor</a>, Up: <a href="#Syntax">Syntax</a>
-<hr>
-
-<h2>Source files</h2>
+<hr> <h2>Source files</h2>
 A CPL program file directly consists of a sequential block of declarations and statements, some of which may in turn contain other blocks, without any need to mark the beginning and end of the complete program other than by the beginning and end of the file itself.
 
 The standard ending for CPL source files is .cpl, and is automatically added by the compiler if omitted. Though this ending is unambiguous in unix, it does have a small inconvenience in being banned from some email services because of malicious exploitation in Microsoft Windows Control PaneL files. If you encounter this problem, just rename your .cpl files to some other ending before sending them as email attachments.
@@ -430,9 +410,7 @@ The standard ending for CPL source files is .cpl, and is automatically added by 
 
 </div><div class=page id="USE">
 Node: (cpl)USE, Next: <a href="#INCLUDE">INCLUDE</a>, Prev: <a href="#Source%20file">Source file</a>, Up: <a href="#Source%20file">Source file</a>
-<hr>
-
-<h3>Separately compiled program segments</h3>
+<hr> <h3>Separately compiled program segments</h3>
 USE: separately compiled source files can be used with the statement
 
         USE &lt;filename&gt;
@@ -446,9 +424,7 @@ In case actual headers must be generated in order to save space (or to distribut
 In an interpreted program (<a href="#icpl">icpl</a>) just as well, USE loads a separately compiled module, whose subroutines can then be executed at compiled speed, and executes its main body, if any, before passing control back to the console. 
 </div><div class=page id="INCLUDE">
 Node: (cpl)INCLUDE, Next: <a href="#C%20interface">C interface</a>, Prev: <a href="#USE">USE</a>, Up: <a href="#Source%20file">Source file</a>
-<hr>
-
-<h3>File inclusion</h3>
+<hr> <h3>File inclusion</h3>
 Files included with
 
         INCLUDE filename[(name=value [,name=value])]
@@ -458,9 +434,7 @@ are treated as if they appeared in the place of the INCLUDE statement during com
 If the optional arguments are present, name becomes an alias for value within the scope of the INCLUDEd file only. 
 </div><div class=page id="C%20interface">
 Node: (cpl)C interface, Next: <a href="#C%20SECTION">C SECTION</a>, Prev: <a href="#INCLUDE">INCLUDE</a>, Up: <a href="#Source%20file">Source file</a>
-<hr>
-
-<h3>C interface</h3>
+<hr> <h3>C interface</h3>
 The directive
 
         #include <q>file</q>
@@ -496,9 +470,7 @@ The standard libc headers
 are pre-included in all CPL programs and need not (but may) be included again. 
 </div><div class=page id="C%20SECTION">
 Node: (cpl)C SECTION, Next: <a href="#FORTRAN%20interface">FORTRAN interface</a>, Prev: <a href="#C%20interface">C interface</a>, Up: <a href="#Source%20file">Source file</a>
-<hr>
-
-<h3>C SECTION</h3>
+<hr> <h3>C SECTION</h3>
 C code excerpts can be inserted in a CPL program through the statement
 
         C SECTION
@@ -514,9 +486,7 @@ As an alternative, C code may also be inserted between <q>&lt;*</q> and <q>*&gt;
 In this case, anything that appears between <q>&lt;*</q> and <q>*&gt;</q> is copied verbatim in the generated C code without any intervention of the CPL compiler. It is up to the programmer to ensure that the resulting code makes sense, so this construction should only be used as a last resort. 
 </div><div class=page id="FORTRAN%20interface">
 Node: (cpl)FORTRAN interface, Next: <a href="#MODULE">MODULE</a>, Prev: <a href="#C%20SECTION">C SECTION</a>, Up: <a href="#Source%20file">Source file</a>
-<hr>
-
-<h3>Use of FORTRAN subroutine calls</h3>
+<hr> <h3>Use of FORTRAN subroutine calls</h3>
 An interface to FORTRAN precompiled subroutines is provided by the statements
 
         FORTRANCALL &lt;subrname&gt; ( &lt;parameters&gt; )
@@ -548,9 +518,7 @@ The name of the object file containing the FORTRAN compiled subroutines must be 
 together with any other linking options required (e.g., -lg2c to provide the FORTRAN run time library, if g77 was used as the FORTRAN compiler). 
 </div><div class=page id="MODULE">
 Node: (cpl)MODULE, Next: <a href="#Functions">Functions</a>, Prev: <a href="#Source%20file">Source file</a>, Up: <a href="#Syntax">Syntax</a>
-<hr>
-
-<h2>Separately scoped program block</h2>
+<hr> <h2>Separately scoped program block</h2>
 A block of code can be explicitly delimited as
 
         MODULE name
@@ -568,9 +536,7 @@ This construction limits the visibility of variables declared inside the MODULE,
 In order to be exported outside, a function declared inside a module must also be declared before the MODULE with the keyword <a href="#FOLLOWS">FOLLOWS</a>. Variables or constants can be simply declared outside a MODULE and assigned a value inside it as necessary. 
 </div><div class=page id="Functions">
 Node: (cpl)Functions,  Next: <a href="#Declarations">Declarations</a>,  Prev: <a href="#Syntax">Syntax</a>,  Up: <a href="#Top">Top</a>
-<hr>
-
-<h1>Functions and Subroutines</h1>
+<hr> <h1>Functions and Subroutines</h1>
 Functions (<a href="#FUNCTION">FUNCTION</a>) and subroutines (<a href="#SUBROUTINE">SUBROUTINE</a>) have a long and a short declaration form. In long form, a subroutine declaration reads
 
         SUBROUTINE name( &lt;parameter declarations&gt; )
@@ -618,15 +584,11 @@ Function overloading is an inherent feature of CPL. Since type checking is enfor
 
 </div><div class=page id="Nested%20functions">
 Node: (cpl)Nested functions, Next: <a href="#SUBROUTINE">SUBROUTINE</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Functions">Functions</a>
-<hr>
-
-<h2>Nested functions</h2>
+<hr> <h2>Nested functions</h2>
 Functions and subroutines exist on a par with variable <a href="#Declarations">Declarations</a> and can appear anywhere in a block, another function included. Nested functions are therefore an integral part of CPL. Like all other block contexts, they have access to variables (and functions) declared before them, in the same or in an enclosing block. The present implementation of nested functions translates to nested functions in the generated C code, and is therefore only compatible with C compilers that handle nested functions as a nonstandard feature (gcc is one of them). 
 </div><div class=page id="SUBROUTINE">
 Node: (cpl)SUBROUTINE, Next: <a href="#FUNCTION">FUNCTION</a>, Prev: <a href="#Nested%20functions">Nested functions</a>, Up: <a href="#Functions">Functions</a>
-<hr>
-
-<h2>Subroutine declarations</h2>
+<hr> <h2>Subroutine declarations</h2>
 In long form, a subroutine declaration reads
 
         SUBROUTINE name( &lt;parameter declarations&gt; )
@@ -643,9 +605,7 @@ The keyword SUBROUTINE is also used to declare variables of <a href="#Subroutine
 type</a>. 
 </div><div class=page id="FUNCTION">
 Node: (cpl)FUNCTION, Next: <a href="#INLINE">INLINE</a>, Prev: <a href="#SUBROUTINE">SUBROUTINE</a>, Up: <a href="#Functions">Functions</a>
-<hr>
-
-<h2>Function declarations</h2>
+<hr> <h2>Function declarations</h2>
 In long form, a function declaration reads
 
         &lt;type&gt; FUNCTION name( &lt;parameter declarations&gt; )
@@ -672,9 +632,7 @@ The keyword FUNCTION is also used to declare variables of <a href="#Subroutine%2
 type</a>. The statement RETURN is also used in <a href="#interactive%20session">interactive session</a>. 
 </div><div class=page id="INLINE">
 Node: (cpl)INLINE,  Next: <a href="#FOLLOWS">FOLLOWS</a>,  Prev: <a href="#FUNCTION">FUNCTION</a>,  Up: <a href="#Functions">Functions</a>
-<hr>
-
-<h2>Inline functions and subroutines</h2>
+<hr> <h2>Inline functions and subroutines</h2>
 The keyword INLINE prefixed to a <a href="#SUBROUTINE">SUBROUTINE</a> or <a href="#FUNCTION">FUNCTION</a> declaration (either in long or short form) generates a compile-time macro that is inserted in place of each call to the subroutine.
 
 <a href="#EXIT">EXIT</a> cannot presently be used in INLINE functions.
@@ -682,9 +640,7 @@ The keyword INLINE prefixed to a <a href="#SUBROUTINE">SUBROUTINE</a> or <a href
 See also <a href="#INLINE%20LOOP">INLINE LOOP</a>. 
 </div><div class=page id="FOLLOWS">
 Node: (cpl)FOLLOWS,  Next: <a href="#OPTIONAL">OPTIONAL</a>,  Prev: <a href="#INLINE">INLINE</a>,  Up: <a href="#Functions">Functions</a>
-<hr>
-
-<h2>Function prototypes</h2>
+<hr> <h2>Function prototypes</h2>
 In case the prototype of a subroutine must be declared in advance, the construction
 
         SUBROUTINE name( &lt;parameter declarations&gt; ) FOLLOWS
@@ -694,9 +650,7 @@ In case the prototype of a subroutine must be declared in advance, the construct
 A prototype may also be defined for a <a href="#CONSTANT">CONSTANT</a>. 
 </div><div class=page id="OPTIONAL">
 Node: (cpl)OPTIONAL,  Next: <a href="#RESULT">RESULT</a>,  Prev: <a href="#FOLLOWS">FOLLOWS</a>,  Up: <a href="#Functions">Functions</a>
-<hr>
-
-<h2>Optional parameters</h2>
+<hr> <h2>Optional parameters</h2>
 The parameter list of a function or subroutine can include optional items. In the function declaration, optional parameters must appear after all ordinary positional parameters (if there are any), separated by the keyword OPTIONAL. Each optional parameter must be assigned a default value in its declaration. Example:
 
         SUBROUTINE test(INTEGER x; OPTIONAL INTEGER y=0,z=3; REAL w=3.14)
@@ -710,14 +664,10 @@ In the calling statement, optional parameters follow all standard positional par
 Optional parameters cannot be used to disambiguate overloaded function names. 
 </div><div class=page id="RESULT">
 Node: (cpl)RESULT, Next: <a href="#Declarations">Declarations</a>, Prev: <a href="#OPTIONAL">OPTIONAL</a>, Up: <a href="#Functions">Functions</a>
-<hr>
-
-Formal name of the result of a <a href="#FUNCTION">FUNCTION</a> inside of the function's body. RESULT is implicitly declared as a variable of the type indicated in the FUNCTION's declaration and may be used and assigned like any other variable. On exit it becomes the function's value returned to the calling program. 
+<hr> Formal name of the result of a <a href="#FUNCTION">FUNCTION</a> inside of the function's body. RESULT is implicitly declared as a variable of the type indicated in the FUNCTION's declaration and may be used and assigned like any other variable. On exit it becomes the function's value returned to the calling program. 
 </div><div class=page id="Declarations">
 Node: (cpl)Declarations, Next: <a href="#Statements">Statements</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Top">Top</a>
-<hr>
-
-<h1>Variables, types and constants</h1>
+<hr> <h1>Variables, types and constants</h1>
 Variables, types and constants are denoted by identifiers introduced through the relevant declarations as follows. Identifiers cannot be duplicated as long as a previous declaration is in effect (in either the same or an enclosing block). An identifier which was not previously declared in the same or an enclosing block and does not coincide with a CPL keyword (see <a href="#Keyword%20index">Keyword
 index</a>) is denoted as a newid below.
 
@@ -777,9 +727,7 @@ CPL is a type-checking language and requires that every VARIABLE be declared bef
 
 </div><div class=page id="CONSTANT">
 Node: (cpl)CONSTANT, Next: <a href="#VARIABLE">VARIABLE</a>, Prev: <a href="#Declarations">Declarations</a>, Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>CONSTANT</h2>
+<hr> <h2>CONSTANT</h2>
 The word CONSTANT in <a href="#Declarations">Declarations</a> specifies that the declared item cannot be modified. Thus a CONSTANT is not the same thing as a <q>compile-time
 constant</q>, that is an expression whose value can be known at compile time, but more generally a value which cannot appear on the left side of an assignment or have its address assigned to a POINTER.
 
@@ -798,9 +746,7 @@ If the r.h.s. of a CONSTANT declaration is known at compile time (what is denote
 Subroutine formal parameters are by default CONSTANT, with the actual parameter as their value, and must be explicitly declared <a href="#VARIABLE">VARIABLE</a> if they are to be reassigned within the subroutine's body. 
 </div><div class=page id="VARIABLE">
 Node: (cpl)VARIABLE, Next: <a href="#BOOLEAN">BOOLEAN</a>, Prev: <a href="#CONSTANT">CONSTANT</a>, Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>VARIABLE</h2>
+<hr> <h2>VARIABLE</h2>
 The word VARIABLE in <a href="#Declarations">Declarations</a> specifies that the declared item is a regular variable and can be modified. In fact, this is the default and the word VARIABLE is optional in ordinary declarations.
 
 However, subroutine formal parameters are by default <a href="#CONSTANT">CONSTANT</a>, with the actual parameters as values, and must be explicitly declared VARIABLE if they are to be reassigned within the subroutine's body.
@@ -810,9 +756,7 @@ Notice that the value assigned to a VARIABLE parameter is invisible after the su
 When a VARIABLE identifier is used in an expression, it initially stands for the variable's address in memory, and thus can be used wherever a POINTER is expected; the same identifier gets automatically converted to the variable's value where needed through <a href="#Concealed%20Pointer%20Lookup">Concealed Pointer Lookup</a>. 
 </div><div class=page id="BOOLEAN">
 Node: (cpl)BOOLEAN, Next: <a href="#CHAR">CHAR</a>, Prev: <a href="#VARIABLE">VARIABLE</a>, Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>BOOLEAN</h2>
+<hr> <h2>BOOLEAN</h2>
 Primitive type declarator for boolean logical variables translated into C type <q>int</q>. (<a href="#Declarations">Declarations</a>)
 
 BOOLEAN values are denoted as YES or TRUE and NO or FALSE, and written as <q>Y</q> and <q>N</q>. On reading any complete word starting with <q>T</q>, <q>Y</q>, <q>t</q> or <q>y</q> is read as YES, any word starting with <q>F</q>, <q>N</q>, <q>f</q>, <q>n</q> as NO.
@@ -827,17 +771,13 @@ BOOLEAN values are denoted as YES or TRUE and NO or FALSE, and written as <q>Y</
 
 </div><div class=page id="CHAR">
 Node: (cpl)CHAR,  Next: <a href="#INTEGER">INTEGER</a>,  Prev: <a href="#BOOLEAN">BOOLEAN</a>,  Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>CHAR</h2>
+<hr> <h2>CHAR</h2>
 Primitive type declarator for character variables translated into C type <q>char</q>. (<a href="#Declarations">Declarations</a>)
 
 Where needed, a single-character <a href="#STRING">STRING</a> literal is implicitly converted to a CHAR constant, which is in turn implicitly converted to an INTEGER ASCII code. INTEGER to CHAR conversion must be explicit (<a href="#Builtin">CHAR:Builtin</a>). 
 </div><div class=page id="INTEGER">
 Node: (cpl)INTEGER,  Next: <a href="#REAL">REAL</a>,  Prev: <a href="#CHAR">CHAR</a>,  Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>INTEGER</h2>
+<hr> <h2>INTEGER</h2>
 Primitive type declarator for integer variables, translated into C type <q>int</q>.
 
 Can be implicitly converted to REAL. REAL to INTEGER conversion must be explicit (<a href="#Builtin">INTEGER:Builtin</a>).
@@ -845,25 +785,19 @@ Can be implicitly converted to REAL. REAL to INTEGER conversion must be explicit
 See also <a href="#INTEGER%20operator">INTEGER operator</a>. 
 </div><div class=page id="REAL">
 Node: (cpl)REAL,  Next: <a href="#SINGLE">SINGLE</a>,  Prev: <a href="#INTEGER">INTEGER</a>,  Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>REAL</h2>
+<hr> <h2>REAL</h2>
 Primitive type declarator for real variables, translated into C type <q>double</q>.
 
 See also <a href="#REAL%20operator">REAL operator</a>, <a href="#Builtin">REAL:Builtin</a>. 
 </div><div class=page id="SINGLE">
 Node: (cpl)SINGLE,  Next: <a href="#TYPE">TYPE</a>,  Prev: <a href="#REAL">REAL</a>,  Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>SINGLE</h2>
+<hr> <h2>SINGLE</h2>
 Primitive type declarator for single-precision real variables, translated into C type <q>float</q>.
 
 Can be implicitly converted to REAL. REAL to SINGLE conversion must be explicit (<a href="#Builtin">SINGLE:Builtin</a>). 
 </div><div class=page id="TYPE">
 Node: (cpl)TYPE, Next: <a href="#STRUCTURE">STRUCTURE</a>, Prev: <a href="#REAL">REAL</a>,  Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>Declaration of new type identifiers</h2>
+<hr> <h2>Declaration of new type identifiers</h2>
 A new type identifier can be declared as either
 
         TYPE newid = &lt;compound type&gt;
@@ -888,9 +822,7 @@ interface</a> or to estimate the memory requirements of the program) can be obta
         SIZEOF(&lt;typeorvariable&gt;) 
 </div><div class=page id="STRUCTURE">
 Node: (cpl)STRUCTURE, Next: <a href="#ARRAY">ARRAY</a>, Prev: <a href="#TYPE">TYPE</a>, Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>STRUCTUREs</h2>
+<hr> <h2>STRUCTUREs</h2>
 The type declarator for structures is
 
         STRUCTURE(&lt;field declarations&gt;)
@@ -924,9 +856,7 @@ var includes a field of type t1 of which var.a denotes the <q>a</q> field.
 Anonymous structure fields are the CPL way of defining objects that inherit the structure of other more general objects and add their own specific fields. When these objects are accessed as arguments to functions or subroutines, the appropriate function among those with the same name and different arguments is automatically selected. See also <a href="#Functions">overloading:Functions</a>, <a href="#DYNAMIC">DYNAMIC</a>. 
 </div><div class=page id="ARRAY">
 Node: (cpl)ARRAY, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#STRUCTURE">STRUCTURE</a>, Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>ARRAYs</h2>
+<hr> <h2>ARRAYs</h2>
 The prefix type declarator for arrays is
 
         ARRAY(dimension[,dimension]) OF &lt;type&gt;
@@ -975,34 +905,26 @@ Therefore, a notation such as arr(4) is allowed, and has type ARRAY(2..9) OF REA
 
 </div><div class=page id="HI">
 Node: (cpl)HI,  Next: <a href="#LO">LO</a>,  Prev: <a href="#ARRAY">ARRAY</a>,  Up: <a href="#ARRAY">ARRAY</a>
-<hr>
-
-HI:                        upper bound of an array index
+<hr> HI:                        upper bound of an array index
 
 The function HI applied to an ARRAY returns the upper bound of its first index. HI1 is a synonym for HI; HI2 and HI3 return the upper bound of the second and third index respectively. Further indices can be accessed by <a href="#subarray">subarray</a> selection.
 
 The argument of HI is implicit (i.e., HI may be written without any argument as if <a href="#WITH">WITH</a> were in action) when HI is used inside the index itself as in arr(HI-3) or in the specification of a <a href="#FOR">FOR</a> loop. 
 </div><div class=page id="LO">
 Node: (cpl)LO,  Next: <a href="#LENGTH">LENGTH</a>,  Prev: <a href="#HI">HI</a>,  Up: <a href="#ARRAY">ARRAY</a>
-<hr>
-
-LO:                        lower bound of an array index
+<hr> LO:                        lower bound of an array index
 
 The function LO applied to an ARRAY returns the lower bound of its first index. LO1 is a synonym for LO; LO2 and LO3 return the lower bound of the second and third index respectively. Further indices can be accessed by <a href="#subarray">subarray</a> selection.
 
 The argument of LO is implicit (i.e., LO may be written without any argument as if <a href="#WITH">WITH</a> were in action) when LO is used inside the index itself as in arr(LO+2) or in the specification of a <a href="#FOR">FOR</a> loop. 
 </div><div class=page id="LENGTH">
 Node: (cpl)LENGTH,  Prev: <a href="#LO">LO</a>,  Up: <a href="#ARRAY">ARRAY</a>
-<hr>
-
-LENGTH:                        number of elements of an array
+<hr> LENGTH:                        number of elements of an array
 
 The function LENGTH applied to an ARRAY returns its number of elements. LENGTH is equivalent to HI-LO+1. In a multidimensional ARRAY, the number of values of the first index only is returned. 
 </div><div class=page id="STRING">
 Node: (cpl)STRING, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#ARRAY">ARRAY</a>, Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>STRINGs</h2>
+<hr> <h2>STRINGs</h2>
 Type declaration STRING is a synonim for ARRAY(*) OF <a href="#CHAR">CHAR</a>, and can be used wherever the last can. In particular, a STRING can be subscripted or <a href="#subarray">subarray</a> extracted, and its bounds and length are available through functions <a href="#LO">LO</a>, <a href="#HI">HI</a>, and <a href="#LENGTH">LENGTH</a>. STRING valued constants (which are always indexed starting from 0) can be generated either at compile time, as quoted strings of characters, or dynamically through <a href="#String">String</a> concatenation, and can either be given a name through <a href="#CONSTANT">implicit:CONSTANT</a>. declaration or passed as actual parameters to function calls and further string concatenations.
 
 Quoted strings of characters, also known as literals, are delimited by either double or single quotes, in matching pairs. A single quote may appear inside a literal delimited by double quotes and vice versa. In addition, C escape sequences are literals, but contrary to C must be unquoted.  The empty string <q></q> is also a valid (zero-character-long) STRING value. Finally, in bash-like syntax, multi-line literals may be introduced by &lt;&lt; DELIMITER and ended by DELIMITER alone on a new line, where DELIMITER can be any word that is not to be part of the literal itself.
@@ -1023,9 +945,7 @@ As an experimental feature, and an exception to the general rule for ARRAY(*), S
 
 </div><div class=page id="STRUCTURED">
 Node: (cpl)STRUCTURED, Next: <a href="#POINTER">POINTER</a>, Prev: <a href="#STRING">STRING</a>, Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>STRUCTURED ARRAY</h2>
+<hr> <h2>STRUCTURED ARRAY</h2>
 A structure (<a href="#STRUCTURE">STRUCTURE</a>) of like elements that may also be accessed as a linear array (<a href="#ARRAY">ARRAY</a>) of such. Its type declarator is
 
         STRUCTURED ARRAY(&lt;field declarations&gt;) OF &lt;type&gt;
@@ -1037,9 +957,7 @@ where &lt;field declarations&gt;, separated by commas, are either single newids 
 defines a STRUCTURE named stra with fields a, b of type REAL and c of type ARRAY(1..4,1..2) OF REAL. At the same time, stra may also be accessed as an ARRAY(0..9) OF REAL, with automatically determined bounds. This is particularly useful when the new type has to be subjected to <a href="#ARRAY%20operations">ARRAY operations</a>. For instance, one can define a <q>Vector</q> type with fields x,y,z and then perform vector operations on variables of this type. 
 </div><div class=page id="POINTER">
 Node: (cpl)POINTER,  Next: <a href="#INTO">INTO</a>,  Prev: <a href="#ARRAY">ARRAY</a>,  Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>POINTERs</h2>
+<hr> <h2>POINTERs</h2>
 The type declarator for pointers is POINTER TO (prefix) or ^ (postfix) (<a href="#Postfix">Postfix</a>). For example
 
         POINTER TO INTEGER a,b; INTEGER c
@@ -1068,9 +986,7 @@ Uncommitted pointers acquire a special meaning if used as formal parameters or f
 See also <a href="#NEW">Memory allocation:NEW</a>, <a href="#DYNAMIC">Object-oriented features:DYNAMIC</a>. 
 </div><div class=page id="INTO">
 Node: (cpl)INTO, Next: <a href="#DYNAMIC">DYNAMIC</a>, Prev: <a href="#POINTER">POINTER</a>, Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>Pointer arithmetics</h2>
+<hr> <h2>Pointer arithmetics</h2>
 Pointer arithmetics is the most powerful feature C has in common with assembly language. It is, however, also one of its weakest points as far as type checking is concerned. For these reasons CPL only allows restricted forms of pointer arithmetics. One of these is <a href="#subarray">subarray</a> extraction. The other is the type declarator
 
         POINTER INTO &lt;array&gt;
@@ -1087,9 +1003,7 @@ which defines a pointer that can be decremented or incremented provided it stays
 In other words, code is written just as if an INTEGER index were used, but the program is compiled to use a pointer instead. This can sometimes improve performance, especially in short loops that perform few repetitive operations. 
 </div><div class=page id="DYNAMIC">
 Node: (cpl)DYNAMIC, Next: <a href="#IS">IS</a>, Prev: <a href="#INTO">INTO</a>, Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>Object-oriented features</h2>
+<hr> <h2>Object-oriented features</h2>
 CPL is not an object-oriented language in the sense that functions are supposed to be declared within object class declarations, and intentionally so. Object-like behaviour is achieved through overloaded function names (<a href="#Functions">Function overloading:Functions</a>) and implicit type conversion (<a href="#STRUCTURE">anonymous:STRUCTURE</a>).
 
 In addition, situations where the type of an object is not fixed at compile time are catered for by <q>dynamic pointers</q>, pointers that can reference and provide type checking for objects whose type will only be known at run time. These are declared by the type declarator
@@ -1107,9 +1021,7 @@ In this case only types which can be implicitly converted to &lt;type declarator
 The actual type a dynamic pointer points to can be tested by the <a href="#IS">IS</a> operator. 
 </div><div class=page id="IS">
 Node: (cpl)IS,  Next: <a href="#Postfix">Postfix</a>,  Prev: <a href="#DYNAMIC">DYNAMIC</a>,  Up: <a href="#DYNAMIC">DYNAMIC</a>
-<hr>
-
-<h3>Type comparison</h3>
+<hr> <h3>Type comparison</h3>
 The actual type of the variable pointed to by a dynamic pointer (or, for that matter, of any variable) can be tested by the BOOLEAN expression
 
         &lt;pointer&gt; IS &lt;type&gt;
@@ -1125,9 +1037,7 @@ For instance, in
 the IF block is executed only if the dynamic pointer dyn points at run time to a variable of INTEGER type. In addition, the IS test has the side effect of casting a dynamic pointer to an ordinary pointer of the tested type when the test succeeds, thus allowing its use as a regular variable. That is, in the above example dyn is implicitly converted to a POINTER TO INTEGER for the scope of the IF block. A restricted dynamic pointer may always be implicitly converted to its base type, as compatibility is enforced at compile time. 
 </div><div class=page id="Postfix">
 Node: (cpl)Postfix, Next: <a href="#Subroutine%20type">Subroutine type</a>, Prev: <a href="#DYNAMIC">DYNAMIC</a>, Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>Postfix type modifiers</h2>
+<hr> <h2>Postfix type modifiers</h2>
 A postfix ^ denotes either pointer dereferencing (<a href="#Concealed%20Pointer%20Lookup">^:Concealed Pointer
 Lookup</a>) or a short form of the POINTER declaration. For instance
 
@@ -1148,9 +1058,7 @@ is equivalent to
         POINTER TO ARRAY(10) OF STRUCTURE(INTEGER x,y) A 
 </div><div class=page id="Subroutine%20type">
 Node: (cpl)Subroutine type, Next: <a href="#Type%20identity">Type identity</a>, Prev: <a href="#Postfix">Postfix</a>, Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>Variable call to a subroutine or function</h2>
+<hr> <h2>Variable call to a subroutine or function</h2>
 A subroutine variable may be specified through the type declarator
 
         SUBROUTINE( &lt;parameter declarations&gt; )
@@ -1165,17 +1073,13 @@ the first form being mandatory when the result &lt;type&gt; is a pointer type an
 These type declarators can be used, just like all other type declarators, to declare variables and formal parameters, or as a part of new compound types. In addition to being assigned or compared to each other, subroutine variables can be assigned the name of a compatible subroutine as their value or as the actual parameter, and can later be called with the same syntax as normal (constant) subroutines and functions. 
 </div><div class=page id="Type%20identity">
 Node: (cpl)Type identity, Prev: <a href="#Subroutine%20type">Subroutine type</a>, Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-<h2>Type identity</h2>
+<hr> <h2>Type identity</h2>
 When are two VARIABLEs of the same TYPE? Pascal-like strongly typed languages only consider variables of the same type when they are declared by the same typename or they appear in the same compound declaration. In other words, repeated compound declarations are not considered the same type even when they are equal, just as are not considered the same type two different typenames with similar definitions. C, on the other hand, handles typenames as bare aliases, and compares their definitions directly. None of these languages has runtime-dimensioned arrays. CPL takes the C approach when possible, and compares type definitions, but explicitly considers two different typenames different even when they correspond to the same declaration. Generally, it is good practice to declare variables that must be of the same type in a single declaration, or through a single typename, or through <a href="#TYPEOF">TYPEOF</a>. This is particularly true with runtime-dimensioned arrays (ARRAYs whose bounds are specified by a VARIABLE and are only known at run time). In fact, since a VARIABLE may take on different values in different parts of the program, multiple declarations of this type are necessarily considered different.
 
 In order to test whether a variable is of a given type the <a href="#IS">IS</a> comparison operator is available. 
 </div><div class=page id="Statements">
 Node: (cpl)Statements, Next: <a href="#Control">Control</a>, Prev: <a href="#Declarations">Declarations</a>, Up: <a href="#Top">Top</a>
-<hr>
-
-<h1>Executable statements and expressions</h1>
+<hr> <h1>Executable statements and expressions</h1>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
@@ -1192,9 +1096,7 @@ Node: (cpl)Statements, Next: <a href="#Control">Control</a>, Prev: <a href="#Dec
 
 </div><div class=page id="Expressions">
 Node: (cpl)Expressions, Next: <a href="#Assignment">Assignment</a>, Prev: <a href="#Statements">Statements</a>, Up: <a href="#Statements">Statements</a>
-<hr>
-
-<h2>Expressions</h2>
+<hr> <h2>Expressions</h2>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
@@ -1215,9 +1117,7 @@ Node: (cpl)Expressions, Next: <a href="#Assignment">Assignment</a>, Prev: <a hre
 
 </div><div class=page id="INTEGER%20operator">
 Node: (cpl)INTEGER operator, Next: <a href="#REAL%20operator">REAL operator</a>, Prev: <a href="#Expressions">Expressions</a>, Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>INTEGER operators:        +  -  *  DIV  MOD</h3>
+<hr> <h3>INTEGER operators:        +  -  *  DIV  MOD</h3>
 DIV is the INTEGER division operator, and produces a truncated INTEGER quotient. <q>/</q> is reserved for REALs, and produces a REAL result even when the operands are INTEGERs.
 
 MOD is the <q>modulo</q> infix operator. If a and b are INTEGERs,
@@ -1227,23 +1127,17 @@ MOD is the <q>modulo</q> infix operator. If a and b are INTEGERs,
 represents the remainder of the integer division of a by b. 
 </div><div class=page id="REAL%20operator">
 Node: (cpl)REAL operator, Next: <a href="#Comparison">Comparison</a>, Prev: <a href="#INTEGER%20operator">INTEGER operator</a>, Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>REAL operators:                +  -  *  /  ^ (or **)</h3>
+<hr> <h3>REAL operators:                +  -  *  /  ^ (or **)</h3>
 An infix ^ (or **) is the exponentiation operator. <a href="#Postfix">Postfix</a> ^ is the pointer dereferencing operator. Also <a href="#Concealed%20Pointer%20Lookup">prefix ^:Concealed Pointer Lookup</a>. 
 </div><div class=page id="Comparison">
 Node: (cpl)Comparison, Next: <a href="#BOOLEAN%20ops">BOOLEAN ops</a>, Prev: <a href="#REAL%20operator">REAL operator</a>, Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>Comparison:                &gt;  &gt;=  &lt;  &lt;=  =  #  IS</h3>
+<hr> <h3>Comparison:                &gt;  &gt;=  &lt;  &lt;=  =  #  IS</h3>
 The equality and inequality operators apply to any type, including pointers. Since pointers are implicitly dereferenced (<a href="#Concealed%20Pointer%20Lookup">Concealed Pointer Lookup</a>), an ambiguity may arise as to whether the values or addresses of the two sides must be compared. The comparison generally takes place at the lowest dereferencing level at which types match, but the comparison of two constant addresses is not allowed (so that A = B, where A and B are two simple variables, denotes the comparison of the values of A and B rather than their addresses). Explicit type cast or pointer dereferencing may at times be necessary, and is always advised, where ambiguities exist.
 
 The type-testing operator IS is described in <a href="#DYNAMIC">Object-oriented features:DYNAMIC</a>. 
 </div><div class=page id="BOOLEAN%20ops">
 Node: (cpl)BOOLEAN ops, Next: <a href="#Conditional%20expressions">Conditional expressions</a>, Prev: <a href="#Comparison">Comparison</a>, Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>BOOLEAN operators</h3>
+<hr> <h3>BOOLEAN operators</h3>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
@@ -1256,34 +1150,26 @@ Node: (cpl)BOOLEAN ops, Next: <a href="#Conditional%20expressions">Conditional e
 
 </div><div class=page id="AND">
 Node: (cpl)AND,  Next: <a href="#OR">OR</a>,  Prev: <a href="#BOOLEAN%20ops">BOOLEAN ops</a>,  Up: <a href="#BOOLEAN%20ops">BOOLEAN ops</a>
-<hr>
-
-AND:                boolean AND operator
+<hr> AND:                boolean AND operator
 
 Takes precedence over OR but not NOT.
 
 AND may also appear in a FOR clause (<a href="#FOR%20AND">FOR AND</a>) and in <a href="#READ">READ</a>. 
 </div><div class=page id="OR">
 Node: (cpl)OR,  Next: <a href="#NOT">NOT</a>,  Prev: <a href="#AND">AND</a>,  Up: <a href="#BOOLEAN%20ops">BOOLEAN ops</a>
-<hr>
-
-OR:                boolean OR operator
+<hr> OR:                boolean OR operator
 
 Has lower precedence than either AND or NOT.
 
 OR may also appear in a <a href="#READ">READ</a> statement. 
 </div><div class=page id="NOT">
 Node: (cpl)NOT,  Prev: <a href="#OR">OR</a>,  Up: <a href="#BOOLEAN%20ops">BOOLEAN ops</a>
-<hr>
-
-NOT:                boolean NOT operator
+<hr> NOT:                boolean NOT operator
 
 Has higher precedence than either AND or OR. 
 </div><div class=page id="Conditional%20expressions">
 Node: (cpl)Conditional expressions, Next: <a href="#Bitwise">Bitwise</a>, Prev: <a href="#BOOLEAN%20ops">BOOLEAN ops</a>,  Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>Conditional expressions</h3>
+<hr> <h3>Conditional expressions</h3>
         IF &lt;BOOLEAN&gt; THEN &lt;expr1&gt; ELSE &lt;expr2&gt;
 
 is an expression that takes the value of &lt;expr1&gt; if &lt;BOOLEAN&gt; is true and &lt;expr2&gt; if false. &lt;expr1&gt; and &lt;expr2&gt; must evaluate to values of the same type (or implicitly convertible to the same type) and this is the type of the result, which can be embedded in a larger expression like any other operator. Notice that the ELSE part is mandatory, as otherwise the value would be undefined.
@@ -1291,15 +1177,11 @@ is an expression that takes the value of &lt;expr1&gt; if &lt;BOOLEAN&gt; is tru
 See also the <a href="#IF">IF</a> statement. 
 </div><div class=page id="Bitwise">
 Node: (cpl)Bitwise, Next: <a href="#String">String</a>, Prev: <a href="#Conditional%20expressions">Conditional expressions</a>, Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>Bitwise boolean operations: BITAND BITOR BITXOR BITNOT RSHIFTED LSHIFTED</h3>
+<hr> <h3>Bitwise boolean operations: BITAND BITOR BITXOR BITNOT RSHIFTED LSHIFTED</h3>
 The C-like notation &amp; | &gt;&gt; &lt;&lt; is also available for BITAND BITOR RSHIFTED LSHIFTED. ^ and ~ are reserved as the <a href="#REAL%20operator">exponentiation:REAL operator</a>. and the <a href="#Assignment">placeholder:Assignment</a>. 
 </div><div class=page id="String">
 Node: (cpl)String, Next: <a href="#Looping%20operator">Looping operator</a>, Prev: <a href="#Bitwise">Bitwise</a>, Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>String concatenation</h3>
+<hr> <h3>String concatenation</h3>
 STRINGs written one after the other with no intervening operator (whitespace is allowed, but newlines must be escaped), either in literal (quoted) form or through their names, are concatenated into a single <a href="#STRING">STRING</a>. If all of the STRINGs are literals (i.e., known at compile time), the result will also be a literal, otherwise it will be a dynamically allocated ARRAY(*) OF CHAR which is transparently freed at the end of the enclosing code block.
 
 <h3>String conversion</h3>
@@ -1310,9 +1192,7 @@ When a string literal is defined in &lt;&lt; DELIMITER notation (<a href="#STRIN
 
 </div><div class=page id="Looping%20operator">
 Node: (cpl)Looping operator, Next: <a href="#Builtin">Builtin</a>, Prev: <a href="#String">String</a>, Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>Looping operators</h3>
+<hr> <h3>Looping operators</h3>
 The four operators  SUM  PRODUCT  MAX  MIN  embody a loop to denote respectively the sum, product, maximum and minimum of an expression over a running index. They are constructed as
 
         SUM &lt;expression&gt; FOR &lt;for clause&gt;
@@ -1326,7 +1206,7 @@ For example:
 See also <a href="#MAX">MAX</a>, <a href="#MIN">MIN</a>. 
 </div><div class=page id="Builtin">
 Node: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Looping%20operator">Looping operator</a>, Up: <a href="#Expressions">Expressions</a>
-<hr> <nav><table>
+<hr><nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td colspan="2"><h3>Builtin INTEGER functions</h3>
@@ -1390,30 +1270,22 @@ Node: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Loop
 
 </div><div class=page id="ABS">
 Node: (cpl)ABS,  Next: <a href="#CEILING">CEILING</a>,  Prev: <a href="#Builtin">Builtin</a>,  Up: <a href="#Builtin">Builtin</a>
-<hr>
-
-ABS:                absolute value
+<hr> ABS:                absolute value
 
 The function ABS returns the absolute value of an INTEGER, REAL or COMPLEX scalar number, or an ARRAY of those. 
 </div><div class=page id="CEILING">
 Node: (cpl)CEILING,  Next: <a href="#FLOOR">FLOOR</a>,  Prev: <a href="#ABS">ABS</a>,  Up: <a href="#Builtin">Builtin</a>
-<hr>
-
-CEILING:        larger or equal integer
+<hr> CEILING:        larger or equal integer
 
 The function CEILING returns the larger or equal INTEGER to a given REAL value. 
 </div><div class=page id="FLOOR">
 Node: (cpl)FLOOR,  Next: <a href="#MAX">MAX</a>,  Prev: <a href="#CEILING">CEILING</a>,  Up: <a href="#Builtin">Builtin</a>
-<hr>
-
-FLOOR:                lesser or equal integer
+<hr> FLOOR:                lesser or equal integer
 
 The function FLOOR returns the lesser or equal INTEGER to a given REAL value. 
 </div><div class=page id="MAX">
 Node: (cpl)MAX,  Next: <a href="#MAXABS">MAXABS</a>,  Prev: <a href="#ABS">ABS</a>,  Up: <a href="#Builtin">Builtin</a>
-<hr>
-
-MAX:                maximum
+<hr> MAX:                maximum
 
 The function
 
@@ -1430,9 +1302,7 @@ returns the maximum of the elements of the array.
 MAX without a following bracket is a <a href="#Looping%20operator">Looping operator</a>. 
 </div><div class=page id="MAXABS">
 Node: (cpl)MAXABS,  Next: <a href="#MIN">MIN</a>,  Prev: <a href="#MAX">MAX</a>,  Up: <a href="#Builtin">Builtin</a>
-<hr>
-
-MAXABS:                maximum absolute value
+<hr> MAXABS:                maximum absolute value
 
 The function
 
@@ -1441,9 +1311,7 @@ The function
 returns the maximum absolute value of the elements of the array. 
 </div><div class=page id="MIN">
 Node: (cpl)MIN,  Next: <a href="#NORM">NORM</a>,  Prev: <a href="#MAXABS">MAXABS</a>,  Up: <a href="#Builtin">Builtin</a>
-<hr>
-
-MIN:                minimum
+<hr> MIN:                minimum
 
 The function
 
@@ -1460,39 +1328,29 @@ returns the minimum of the elements of the array.
 MIN without a following bracket is a <a href="#Looping%20operator">Looping operator</a>. 
 </div><div class=page id="NORM">
 Node: (cpl)NORM,  Next: <a href="#RAND">RAND</a>,  Prev: <a href="#MIN">MIN</a>,  Up: <a href="#Builtin">Builtin</a>
-<hr>
-
-NORM:                squared absolute value
+<hr> NORM:                squared absolute value
 
 The function NORM returns the squared absolute value of either a number or a whole array. 
 </div><div class=page id="RAND">
 Node: (cpl)RAND,  Next: <a href="#GAUSS">GAUSS</a>,  Prev: <a href="#MIN">MIN</a>,  Up: <a href="#Builtin">Builtin</a>
-<hr>
-
-RAND:                uniformly distributed in (0,1) random REAL number
+<hr> RAND:                uniformly distributed in (0,1) random REAL number
 
 The function RAND takes no argument. It is based on the INTEGER C library function rand, whose seed can be changed with srand (<a href="*manpages*.html#rand">(*manpages*)rand</a>). 
 </div><div class=page id="GAUSS">
 Node: (cpl)GAUSS,  Next: <a href="#ROUND">ROUND</a>,  Prev: <a href="#RAND">RAND</a>,  Up: <a href="#Builtin">Builtin</a>
-<hr>
-
-GAUSS:                gaussian distributed random REAL number with variance 1
+<hr> GAUSS:                gaussian distributed random REAL number with variance 1
 
 The function GAUSS takes no argument. It is based on <a href="#RAND">RAND</a>, and the analytic formula (see Knuth, The Art of Computer Programming, chapter on random numbers):
 
         GAUSS = SQRT{-2*LOG[RAND()]}*COS[PI*RAND()] 
 </div><div class=page id="ROUND">
 Node: (cpl)ROUND,  Prev: <a href="#GAUSS">GAUSS</a>,  Up: <a href="#Builtin">Builtin</a>
-<hr>
-
-ROUND:                nearest integer
+<hr> ROUND:                nearest integer
 
 The function ROUND returns the nearest INTEGER to a given REAL value. 
 </div><div class=page id="subarray">
 Node: (cpl)subarray, Next: <a href="#compound%20index">compound index</a>, Prev: <a href="#Builtin">Builtin</a>, Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>Subarray selection</h3>
+<hr> <h3>Subarray selection</h3>
 A portion of an array can be selected by specifying new dimensions. For example, if the declaration is REAL arr(1..10), the notation
 
         arr(2..5)
@@ -1530,9 +1388,7 @@ It should be noted that all subarray selections are just address manipulations: 
 All subarray selections can also be applied to <a href="#STORED">STORED</a> ARRAYs and <a href="#STRUCTURED">STRUCTURED</a> ARRAYs. 
 </div><div class=page id="compound%20index">
 Node: (cpl)compound index, Next: <a href="#ARRAY%20operations">ARRAY operations</a>, Prev: <a href="#subarray">subarray</a>, Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>Compound index</h3>
+<hr> <h3>Compound index</h3>
 This CPL address manipulation allows a multidimensional ARRAY to be accessed sequentially through a single index, for instance in order to apply linear algebra to it. The syntax for this operation is a sequence of as many * as indices are to be compounded. For example if V is defined as
 
         ARRAY(0..4,1..5,-7..7,0..2) OF REAL V
@@ -1542,9 +1398,7 @@ then V(****) is a onedimensional <q>view</q> of the same array (as opposed to V(
 Compound indices are restricted to arrays (or portions of them) that are contiguous in memory. This generally precludes their use after subarray operations that permute, stride, or restrict the range of indices. 
 </div><div class=page id="ARRAY%20operations">
 Node: (cpl)ARRAY operations, Next: <a href="#Einstein%20convention">Einstein convention</a>, Prev: <a href="#compound%20index">compound index</a>, Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>Linear-space ARRAY operations</h3>
+<hr> <h3>Linear-space ARRAY operations</h3>
 Linear-space operations are supported on arrays. That is, congruent ARRAYs of any number of dimensions can be added to or subtracted from each other and multiplied or divided by a scalar inside an expression, as well as appear on the left side of an assignment.
 
 The scalar product of two congruent arrays is denoted by the infix operator | . This is defined as the sum over all dimensions of the products of corresponding elements. (Except for <a href="complex.html#Top">(complex)</a>)
@@ -1558,9 +1412,7 @@ Matrix transposition is provided as the <a href="#subarray">TRANSPOSED:subarray<
 All ARRAY operations can also be applied to <a href="#STORED">STORED</a> ARRAYs and <a href="#STRUCTURED">STRUCTURED</a> ARRAYs. 
 </div><div class=page id="Einstein%20convention">
 Node: (cpl)Einstein convention, Next: <a href="#Assignment">Assignment</a>, Prev: <a href="#ARRAY%20operations">ARRAY operations</a>, Up: <a href="#Expressions">Expressions</a>
-<hr>
-
-<h3>Implicit looping over array indices</h3>
+<hr> <h3>Implicit looping over array indices</h3>
 When indices in an expression are prefixed with a <q>$</q> character, the Einstein convention is implied. In a contraction or in a product the Einstein index must appear exactly twice, and the result will be summed over <a href="#ALL">ALL</a> values of this index; in a sum or in an assignment, Einstein indices must appear exactly once in each and all terms including the l.h.s., and the assignment will be repeated over <a href="#ALL">ALL</a> values of these indices. For example:
 
         C($i,$j)=A($i,$j,$m)*B($i,$m,$j)+D($j,$i)
@@ -1568,9 +1420,7 @@ When indices in an expression are prefixed with a <q>$</q> character, the Einste
 Footnote: the euro symbol would have been appropriate to match the <q>e</q> of Einstein, but it is not part of the 7-bit ascii codes so we replaced it by a currency that is (the $). 
 </div><div class=page id="Assignment">
 Node: (cpl)Assignment, Next: <a href="#Deferred%20assignment">Deferred assignment</a>, Prev: <a href="#Expressions">Expressions</a>, Up: <a href="#Statements">Statements</a>
-<hr>
-
-<h2>Assignment</h2>
+<hr> <h2>Assignment</h2>
 Assignment is performed by a single <q>=</q> sign. The l.h.s. must be a POINTER, and the r.h.s. is required to be a value of the TYPE pointed to or to be implicitly convertible to it (<a href="#Concealed%20Pointer%20Lookup">Concealed Pointer Lookup</a>). Compound variables can be assigned as a whole if types match.
 
 Owing to their omnicomprehensive role, assignment and equality/inequality tests are the only situations in which pointer dereferencing must be explicit. The left side of an assignment will never be implicitly dereferenced, and must be dereferenced by a postfix <q>^</q> if assignment of the value pointed to is desired. For increased clarity, the type of the object to be assigned may also be specified as in (after the declaration REAL a^,b)
@@ -1584,9 +1434,7 @@ On the right-hand side of an assignment the symbol ~ can be used as a placeholde
         A(i,j,k) = 3 * LOG(~) + gamma(~)         
 </div><div class=page id="Deferred%20assignment">
 Node: (cpl)Deferred assignment, Next: <a href="#Concealed%20Pointer%20Lookup">Concealed Pointer Lookup</a>, Prev: <a href="#Assignment">Assignment</a>, Up: <a href="#Statements">Statements</a>
-<hr>
-
-<h2>Deferred assignment</h2>
+<hr> <h2>Deferred assignment</h2>
 When an assignment is performed by a double <q>==</q> sign, no statement is generated in place. The l.h.s. is instead defined to be an alias for the r.h.s., and the assignment will be performed (and error messages issued, if any) at the location where this alias is first used.
 
 Deferred assignment permits the appearance on the r.h.s. of yet undefined variables and functions, provided these will be defined before the l.h.s. is actually used. It also allows compile-time constants to be given symbolic names and still be recognized as such.
@@ -1594,9 +1442,7 @@ Deferred assignment permits the appearance on the r.h.s. of yet undefined variab
 This construction is further extended in the <a href="symbolic.html#Top">(symbolic)</a> library. 
 </div><div class=page id="Concealed%20Pointer%20Lookup">
 Node: (cpl)Concealed Pointer Lookup, Next: <a href="#WITH">WITH</a>, Prev: <a href="#Deferred%20assignment">Deferred assignment</a>, Up: <a href="#Statements">Statements</a>
-<hr>
-
-<h2>Implicit type conversion</h2>
+<hr> <h2>Implicit type conversion</h2>
 Type consistency in expressions and assignments is enforced. However some types can be implicitly converted to others. Possible conversions are automatically checked out in the attempt to build a consistent expression. Only if this turns out impossible, a compilation error results. The basic rule is that a type can be implicitly converted to one other type only and that there cannot be closed type conversion loops. INTEGERs are implicitly converted to REALs. POINTERs are implicitly converted to the value they point to. Owing to this Concealed Pointer Lookup, it is hardly ever necessary to explicitly dereference pointers. When really wanted, the dereferencing operator is a postfix ^ (as in Pascal). Vice versa, a prefix ^ forces taking the address rather than the value of a variable; this construction too is rarely needed. Notice however that, in a the assignment of a previously undeclared CONSTANT,
 
         c = var
@@ -1608,9 +1454,7 @@ implicitly declares c as a copy of the value of var, whereas
 declares c as a POINTER to var. 
 </div><div class=page id="WITH">
 Node: (cpl)WITH, Next: <a href="#NEW">NEW</a>, Prev: <a href="#Concealed%20Pointer%20Lookup">Concealed Pointer Lookup</a>, Up: <a href="#Statements">Statements</a>
-<hr>
-
-<h2>Implicit access to structure fields and functions</h2>
+<hr> <h2>Implicit access to structure fields and functions</h2>
 Like in Pascal or Modula2, a structure may be implicitly selected by the WITH statement. WITH has both a multi-line form:
 
         WITH &lt;structure&gt; [,&lt;structure&gt;] [:]
@@ -1638,9 +1482,7 @@ Given the symmetry of treatment of structure fields and functions by CPL (<a hre
 is equivalent to WRITE SIN(3). Of course this notation is not very useful for REAL functions, but becomes handy when functions are defined to access user-defined compound types as if they were structures. 
 </div><div class=page id="NEW">
 Node: (cpl)NEW,  Next: <a href="#FREE">FREE</a>,  Prev: <a href="#WITH">WITH</a>,  Up: <a href="#Statements">Statements</a>
-<hr>
-
-<h2>Memory allocation</h2>
+<hr> <h2>Memory allocation</h2>
 Runtime memory allocation is achieved either through the statement
 
         NEW &lt;pointer&gt; [,&lt;pointer&gt;]
@@ -1654,17 +1496,13 @@ The NEW statement allocates (through the `malloc' system call) the space necessa
 Dynamically allocated space is retained, independently of subroutine scoping, until it is returned to the system by the <a href="#FREE">FREE</a>. statement. 
 </div><div class=page id="FREE">
 Node: (cpl)FREE,  Next: <a href="#Input/Output">Input/Output</a>,  Prev: <a href="#NEW">NEW</a>,  Up: <a href="#Statements">Statements</a>
-<hr>
-
-<h2>Freeing memory or file allocation</h2>
+<hr> <h2>Freeing memory or file allocation</h2>
         FREE &lt;pointer&gt; [,&lt;pointer&gt;]
 
 releases the memory space or file pointed to by each &lt;pointer&gt;, which must have been previously obtained from <a href="#NEW">NEW</a>, <a href="#OPEN">OPEN</a>, or <a href="#CREATE">CREATE</a>. &lt;pointer&gt; is subsequently zeroed, so that any subsequent dereferencing generates a visible runtime exception. If &lt;pointer&gt; is a file descriptor, FREEing it also writes out any previously buffered data. 
 </div><div class=page id="Input/Output">
 Node: (cpl)Input/Output, Next: <a href="#Control">Control</a>, Prev: <a href="#NEW">NEW</a>, Up: <a href="#Statements">Statements</a>
-<hr>
-
-<h2>Input/Output</h2>
+<hr> <h2>Input/Output</h2>
 Text I/O is performed by <a href="#READ">READ</a> and <a href="#WRITE">WRITE</a> instructions on variables of type <a href="#FILE">FILE</a>, which must be declared like ordinary variables and associated with a file before being used for I/O. FILE variables can be implicitly declared if they are <a href="#CONSTANT">CONSTANT</a> and be part of compound types like all other variables. Association to a file is obtained through <a href="#OPEN">OPEN</a> and <a href="#CREATE">CREATE</a>. A FILE variable is translated to the C type FILE*, and can be used in C library I/O functions transparently accessed through the <a href="#C%20interface">C interface</a>.
 
 Sequential binary I/O is performed by adding the <a href="#BINARY">BINARY</a> keyword to the READ and WRITE instructions. No distinction is made between text and binary files at the filesystem level.
@@ -1692,9 +1530,7 @@ Random-access binary I/O is where cpl really differs from other languages; see <
 
 </div><div class=page id="FILE">
 Node: (cpl)FILE, Next: <a href="#WRITE">WRITE</a>, Prev: <a href="#Input/Output">Input/Output</a>, Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>FILE</h3>
+<hr> <h3>FILE</h3>
 File descriptor type, translated to C type FILE*
 
 The predefined C file descriptors
@@ -1712,9 +1548,7 @@ is used for random-access files (see <a href="#STORED">STORED</a>).
 Type FILE is equivalent to FILE OF CHAR. 
 </div><div class=page id="WRITE">
 Node: (cpl)WRITE,  Next: <a href="#READ">READ</a>,  Prev: <a href="#FILE">FILE</a>,  Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>WRITE</h3>
+<hr> <h3>WRITE</h3>
 The output statement WRITE is used as follows:
 
         WRITE [TO &lt;file&gt;] [BY NAME] [&lt;outputexpr&gt;] [./.]
@@ -1740,9 +1574,7 @@ If the optional BY NAME qualification is present, WRITE prepends each value with
 WRITE syntax may also be used to convert any expression into a string. See <a href="#String">String</a>conversion. 
 </div><div class=page id="READ">
 Node: (cpl)READ,  Next: <a href="#FROM">FROM</a>,  Prev: <a href="#WRITE">WRITE</a>,  Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>READ</h3>
+<hr> <h3>READ</h3>
 The input statement READ is used as follows:
 
         READ [BY NAME] [FROM &lt;file&gt;] [&lt;variable&gt; [&lt;conjunction&gt; &lt;variable&gt;]]
@@ -1760,9 +1592,7 @@ READ may also appear as a function in a BOOLEAN expression, and should then be p
 If the optional BY NAME qualifier is present, READ expects to find the value of each variable preceded by its name in the input file in the form name=value. 
 </div><div class=page id="FROM">
 Node: (cpl)FROM,  Next: <a href="#PROMPT">PROMPT</a>,  Prev: <a href="#READ">READ</a>,  Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>FROM</h3>
+<hr> <h3>FROM</h3>
 As an auxiliary keyword, FROM is used in <a href="#READ">READ</a>. statements to introduce the <a href="#FILE">FILE</a> data are read from.
 
 In addition, the construction
@@ -1780,9 +1610,7 @@ can replace
         WRITE TO stdout 3*temp 
 </div><div class=page id="PROMPT">
 Node: (cpl)PROMPT,  Next: <a href="#ASK">ASK</a>,  Prev: <a href="#FROM">FROM</a>,  Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>PROMPT(&lt;string&gt;)</h3>
+<hr> <h3>PROMPT(&lt;string&gt;)</h3>
 This is a FILE-valued function that writes &lt;string&gt; to stderr and returns stdin as its value. This makes a construction such as the following possible:
 
         REAL x
@@ -1801,9 +1629,7 @@ Both have the same effect as
 PROMPT will disappear. Use <a href="#ASK">ASK</a> instead. 
 </div><div class=page id="ASK">
 Node: (cpl)ASK,  Next: <a href="#BINARY">BINARY</a>,  Prev: <a href="#PROMPT">PROMPT</a>,  Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>Console prompting and reading</h3>
+<hr> <h3>Console prompting and reading</h3>
         ASK [&lt;type&gt;] [<q>literal</q>:] &lt;variable&gt; [, [<q>literal</q>:] &lt;variable&gt;]
 
 has the effect that a prompt is automatically written to stderr for each variable and the value of the variable is subsequently read from stdin. The prompt is the optional <q>literal</q> if present or the name of the variable followed by a <q>?</q> otherwise.
@@ -1811,9 +1637,7 @@ has the effect that a prompt is automatically written to stderr for each variabl
 Console prompting can be compounded with CONSTANT declaration. If &lt;type&gt; is present, each variable is declared as a <a href="#CONSTANT">CONSTANT</a> before being asked. 
 </div><div class=page id="BINARY">
 Node: (cpl)BINARY,  Next: <a href="#STORED">STORED</a>,  Prev: <a href="#ASK">ASK</a>,  Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>Binary (unformatted) Input/Output</h3>
+<hr> <h3>Binary (unformatted) Input/Output</h3>
 Sequential binary I/O is obtained by appending the word BINARY to either <a href="#READ">READ</a> or <a href="#WRITE">WRITE</a>, as in
 
         READ BINARY FROM &lt;file&gt; &lt;variable&gt; [,&lt;variable&gt;]
@@ -1825,9 +1649,7 @@ In binary I/O no format need, of course, be specified and no newline is automati
 For random-access binary I/O the statement <a href="#POSITION">POSITION</a> can be used to get and set the reading and writing position in the file. A more powerful and frequently preferable mechanism is provided by the <a href="#STORED">STORED</a> declaration. 
 </div><div class=page id="STORED">
 Node: (cpl)STORED,  Next: <a href="#OPEN">OPEN</a>,  Prev: <a href="#BINARY">BINARY</a>,  Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>Random-access files as disk-resident variables</h3>
+<hr> <h3>Random-access files as disk-resident variables</h3>
 A random-access binary file typically contains fields and records at fixed addresses, which can be accessed by POSITIONing the file cursor (<a href="#POSITION">POSITION</a>) before each READ or WRITE <a href="#BINARY">BINARY</a>. However, this process requires knowing the address of each field and is quite error-prone.
 
 CPL provides a powerful alternative: a pointer to a compound variable residing in a disk file. Records and fields are then defined by just declaring a suitable compound type through the usual <a href="#STRUCTURE">STRUCTURE</a> and <a href="#ARRAY">ARRAY</a> declarations. For this purpose a type declaration prefixed by the keyword STORED is used, as in the example:
@@ -1863,9 +1685,7 @@ The ordinary <a href="#FILE">FILE</a> type declarator is a shorthand for FILE OF
 STORED ARRAYs and POINTER TO STORED ARRAYs with multiple * dimensions are allowed as function formal parameters, just like their non-STORED equivalents. The corresponding actual parameter must be a STORED ARRAY of matching number of dimensions and type (not just an OPENed file). 
 </div><div class=page id="OPEN">
 Node: (cpl)OPEN,  Next: <a href="#CREATE">CREATE</a>,  Prev: <a href="#STORED">STORED</a>,  Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>Open an existing file and associate a file descriptor with it</h3>
+<hr> <h3>Open an existing file and associate a file descriptor with it</h3>
 The statement
 
         OPEN &lt;fd&gt;, &lt;filename&gt;
@@ -1883,9 +1703,7 @@ returns &lt;fd&gt; as its value.
 <q>OPEN</q> calls the <q>open</q> system function with options O_RDWR|O_CREAT. For other requirements the <q>fopen</q> function may be called directly (<a href="#C%20interface">C interface</a>). 
 </div><div class=page id="CREATE">
 Node: (cpl)CREATE,  Next: <a href="#FLUSH">FLUSH</a>,  Prev: <a href="#OPEN">OPEN</a>,  Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>Create a new, empty file</h3>
+<hr> <h3>Create a new, empty file</h3>
 The statement
 
         CREATE &lt;fd&gt;, &lt;filename&gt;
@@ -1903,9 +1721,7 @@ returns &lt;fd&gt; as its value.
 <q>CREATE</q> calls the <q>open</q> system function with options O_RDWR|O_CREAT|O_TRUNC. For other requirements the <q>fopen</q> function may be called directly (<a href="#C%20interface">C interface</a>). 
 </div><div class=page id="FLUSH">
 Node: (cpl)FLUSH,  Next: <a href="#POSITION">POSITION</a>,  Prev: <a href="#CREATE">CREATE</a>,  Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>Flush a file's write buffer</h3>
+<hr> <h3>Flush a file's write buffer</h3>
 The statement
 
         FLUSH &lt;fd&gt;
@@ -1913,9 +1729,7 @@ The statement
 writes out any buffered data for the file descriptor &lt;fd&gt;. 
 </div><div class=page id="POSITION">
 Node: (cpl)POSITION, Next: <a href="#INPUTREADY">INPUTREADY</a>, Prev: <a href="#FLUSH">FLUSH</a>, Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>Read or set a file's current position</h3>
+<hr> <h3>Read or set a file's current position</h3>
 The statement
 
         POSITION &lt;fd&gt;, n
@@ -1931,7 +1745,7 @@ returns as an INTEGER the current READ/WRITE position in file descriptor &lt;fd&
 Node: (cpl)INPUTREADY, Next: <a href="#COMMANDLINE">COMMANDLINE</a>, Prev: <a href="#POSITION">POSITION</a>, Up: <a href="#Input/Output">Input/Output</a>
 <hr>
 
- <h3>Test for input ready on a file descriptor or stdin</h3>
+<h3>Test for input ready on a file descriptor or stdin</h3>
 This function is contained in the inputready library (USE inputready).
 
 The BOOLEAN function
@@ -1953,9 +1767,7 @@ waits for input for the given &lt;time&gt; (in seconds, a REAL) before returning
 is a shorthand for INPUTREADY(stdin,&lt;time&gt;). 
 </div><div class=page id="COMMANDLINE">
 Node: (cpl)COMMANDLINE,  Prev: <a href="#INPUTREADY">INPUTREADY</a>,  Up: <a href="#Builtin">Builtin</a>
-<hr>
-
-Command-line parameter access
+<hr> Command-line parameter access
 
 The command line through which the program was launched is available in the predefined ARRAY OF STRING
 
@@ -1964,9 +1776,7 @@ The command line through which the program was launched is available in the pred
 (the same that is usually named argv in C programs). Therefore the first word passed after the program name is COMMANDLINE(1), the second is COMMANDLINE(2), etc. The program name itself is COMMANDLINE(0). The index of the last word present, just as for all ARRAYs, is COMMANDLINE.HI 
 </div><div class=page id="Control">
 Node: (cpl)Control,  Next: <a href="#makecpl">makecpl</a>,  Prev: <a href="#Statements">Statements</a>,  Up: <a href="#Top">Top</a>
-<hr>
-
-<h1>Program flow control statements</h1>
+<hr> <h1>Program flow control statements</h1>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
@@ -1986,9 +1796,7 @@ Node: (cpl)Control,  Next: <a href="#makecpl">makecpl</a>,  Prev: <a href="#Stat
 
 </div><div class=page id="IF">
 Node: (cpl)IF,  Next: <a href="#LOOP">LOOP</a>,  Prev: <a href="#Control">Control</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-<h2>Conditional execution</h2>
+<hr> <h2>Conditional execution</h2>
 IF statements have a single-line form and a multi-line form. (For the additional use of IF inside expressions see <a href="#Conditional%20expressions">Conditional expressions</a>) As in BASIC, single-line IF statements terminate at the end of a line, whereas multi-line IF statements are explicitly terminated by END IF. (<a href="#END">END</a>) Multi-line IF statements have the structure:
 
         IF &lt;BOOLEAN&gt; THEN
@@ -2040,9 +1848,7 @@ Multiple-choice conditionals are simply obtained by nesting another IF in the &l
         END IF 
 </div><div class=page id="LOOP">
 Node: (cpl)LOOP,  Next: <a href="#DO">DO</a>,  Prev: <a href="#IF">IF</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-<h2>Loops</h2>
+<hr> <h2>Loops</h2>
 Loops tested at their beginning (which are executed zero or more times) are coded as
 
         LOOP &lt;test&gt;
@@ -2085,9 +1891,7 @@ A named loop can be terminated at any point in its body by the <a href="#EXIT">E
 
 </div><div class=page id="WHILE">
 Node: (cpl)WHILE,  Next: <a href="#UNTIL">UNTIL</a>,  Prev: <a href="#LOOP">LOOP</a>,  Up: <a href="#LOOP">LOOP</a>
-<hr>
-
-<h3>WHILE loops</h3>
+<hr> <h3>WHILE loops</h3>
 The simplest test that can be used to decide whether to iterate a loop is
 
         WHILE &lt;BOOLEAN&gt;
@@ -2101,9 +1905,7 @@ will repeat while the boolean condition is true.
 WHILE is equivalent to <a href="#UNTIL">UNTIL</a> NOT. 
 </div><div class=page id="UNTIL">
 Node: (cpl)UNTIL,  Next: <a href="#FOR">FOR</a>,  Prev: <a href="#WHILE">WHILE</a>,  Up: <a href="#LOOP">LOOP</a>
-<hr>
-
-<h3>UNTIL loops</h3>
+<hr> <h3>UNTIL loops</h3>
 The simplest test that can be used to decide whether to terminate a loop is
 
         UNTIL &lt;BOOLEAN&gt;
@@ -2117,9 +1919,7 @@ will repeat until the boolean condition becomes true.
 UNTIL is equivalent to <a href="#WHILE">WHILE</a> NOT. See also <a href="#C-style">C-style</a> FOR loops. 
 </div><div class=page id="FOR">
 Node: (cpl)FOR,  Next: <a href="#DO">DO</a>,  Prev: <a href="#UNTIL">UNTIL</a>,  Up: <a href="#LOOP">LOOP</a>
-<hr>
-
-<h3>FOR loops</h3>
+<hr> <h3>FOR loops</h3>
 The &lt;test&gt; for indexed loops is
 
         FOR &lt;for clause&gt;
@@ -2152,9 +1952,7 @@ operator</a>. In addition to the two basic forms, they can have the following va
 
 </div><div class=page id="FOR%20AND">
 Node: (cpl)FOR AND,  Next: <a href="#ALL">ALL</a>,  Prev: <a href="#FOR">FOR</a>,  Up: <a href="#FOR">FOR</a>
-<hr>
-
-Two or more FOR loops can be combined in a single &lt;test&gt; through the keyword AND (not to be confused with the logical <a href="#AND">AND</a> operator), as in the following example:
+<hr> Two or more FOR loops can be combined in a single &lt;test&gt; through the keyword AND (not to be confused with the logical <a href="#AND">AND</a> operator), as in the following example:
 
         LOOP FOR i1=l1 TO u1 AND i2=l2 TO u2
         &lt;block&gt;
@@ -2169,9 +1967,7 @@ which is equivalent to
         REPEAT 
 </div><div class=page id="ALL">
 Node: (cpl)ALL,  Next: <a href="#TIMES">TIMES</a>,  Prev: <a href="#FOR%20AND">FOR AND</a>,  Up: <a href="#FOR">FOR</a>
-<hr>
-
-LOOP FOR ALL &lt;index&gt; [,&lt;index&gt;]
+<hr> LOOP FOR ALL &lt;index&gt; [,&lt;index&gt;]
 
 denotes a loop whose bounds are automatically determined as the bounds of the first ARRAY that &lt;index&gt; appears in. Its use should preferably be limited to short loops in which only arrays of the same dimensions appear and no index arithmetics are performed.
 
@@ -2181,14 +1977,12 @@ ALL can be combined in a multiple loop with AND (<a href="#FOR%20AND">FOR AND</a
 </div><div class=page id="TIMES">
 Node: (cpl)TIMES,  Next: <a href="#IN">IN</a>,  Prev: <a href="#ALL">ALL</a>,  Up: <a href="#FOR">FOR</a>
 <hr>
-
         LOOP FOR &lt;number&gt; TIMES
 
 does exactly that, when just a counter and no indexing is needed. 
 </div><div class=page id="IN">
 Node: (cpl)IN,  Next: <a href="#EXCEPT">EXCEPT</a>,  Prev: <a href="#TIMES">TIMES</a>,  Up: <a href="#FOR">FOR</a>
 <hr>
-
         LOOP FOR &lt;element&gt; IN &lt;array&gt;
 
 Here &lt;element&gt; is not an INTEGER, but rather a POINTER to elements of the ARRAY &lt;array&gt;. A LOOP is performed in which &lt;element&gt; runs in succession through all the elements of the array. As a particular case, a constant array can be constructed from a set of elements of the same TYPE enclosed in brackets, as in
@@ -2196,16 +1990,12 @@ Here &lt;element&gt; is not an INTEGER, but rather a POINTER to elements of the 
         LOOP FOR n IN (2,5,11) 
 </div><div class=page id="EXCEPT">
 Node: (cpl)EXCEPT,  Next: <a href="#C-style">C-style</a>,  Prev: <a href="#IN">IN</a>,  Up: <a href="#FOR">FOR</a>
-<hr>
-
-LOOP FOR &lt;for clause&gt; EXCEPT &lt;condition&gt; [<q>,</q> &lt;condition&gt;]
+<hr> LOOP FOR &lt;for clause&gt; EXCEPT &lt;condition&gt; [<q>,</q> &lt;condition&gt;]
 
 The EXCEPT qualifier added to any of the FOR loop constructions excludes exceptional values of the index from the iteration. &lt;condition&gt; may be either an expression of BOOLEAN type, meaning that the loop is skipped when the &lt;condition&gt; is TRUE, or an expression of the same type as the index, meaning that the given value is excluded. 
 </div><div class=page id="C-style">
 Node: (cpl)C-style,  Prev: <a href="#EXCEPT">EXCEPT</a>,  Up: <a href="#FOR">FOR</a>
-<hr>
-
-LOOP FOR &lt;index&gt; = &lt;start&gt; UNTIL &lt;ending condition&gt; BY &lt;incrementing statement&gt;
+<hr> LOOP FOR &lt;index&gt; = &lt;start&gt; UNTIL &lt;ending condition&gt; BY &lt;incrementing statement&gt;
 
 is a C-style FOR clause in which the index is not necessarily a number but can be of any type; for instance, a pointer to a structure.
 
@@ -2214,9 +2004,7 @@ is a C-style FOR clause in which the index is not necessarily a number but can b
 Either &lt;ending condition&gt; or &lt;incrementing statement&gt; may take an alternative short form. The short form of &lt;ending condition&gt; is an expression of the same type as &lt;start&gt;; this is equivalent to the BOOLEAN &lt;index&gt; = &lt;ending condition&gt;. The short form of &lt;incrementing statement&gt; is a single identifier denoting a function or structure element. This is a shorthand for &lt;index&gt; = &lt;incrementing statement&gt;(&lt;index&gt;). 
 </div><div class=page id="DO">
 Node: (cpl)DO,  Next: <a href="#INLINE%20LOOP">INLINE LOOP</a>,  Prev: <a href="#LOOP">LOOP</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-<h2>Loops (short form)</h2>
+<hr> <h2>Loops (short form)</h2>
 A short form for nameless loops tested at the end (which are always executed one or more times) is
 
         DO &lt;block&gt; &lt;test&gt;
@@ -2235,9 +2023,7 @@ where &lt;test&gt; may be any one of
 
 </div><div class=page id="INLINE%20LOOP">
 Node: (cpl)INLINE LOOP,  Next: <a href="#CASE">CASE</a>,  Prev: <a href="#DO">DO</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-<h2>INLINE LOOP</h2>
+<hr> <h2>INLINE LOOP</h2>
 The statement
 
         INLINE LOOP [name] FOR element IN &lt;array&gt;
@@ -2247,9 +2033,7 @@ The statement
 expands in line by repeating the loop for each element of &lt;array&gt;, whose dimensions must be known at compile time. 
 </div><div class=page id="CASE">
 Node: (cpl)CASE,  Next: <a href="#CASE%20LOOP">CASE LOOP</a>,  Prev: <a href="#INLINE%20LOOP">INLINE LOOP</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-<h2>Multiple-choice selection</h2>
+<hr> <h2>Multiple-choice selection</h2>
 A multiple-choice branch is specified as
 
        CASE &lt;INTEGER&gt; OF
@@ -2263,9 +2047,7 @@ A multiple-choice branch is specified as
 where &lt;INTEGER&gt; is any expression of type INTEGER and tag1, tag2,... tagn are integer compile-time constants. A list of values separated by commas may also appear as a tag. 
 </div><div class=page id="CASE%20LOOP">
 Node: (cpl)CASE LOOP,  Next: <a href="#EXIT">EXIT</a>,  Prev: <a href="#CASE">CASE</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-<h2>Multiple-choice loop</h2>
+<hr> <h2>Multiple-choice loop</h2>
 A multiple-choice loop is specified as
 
         CASE LOOP OF
@@ -2299,9 +2081,7 @@ The CASE LOOP construction is functionally equivalent to a CASE in a LOOP, e.g.
 CASE LOOP maintains statements in the same order, but is easier to read and is implemented without auxiliary variables. 
 </div><div class=page id="EXIT">
 Node: (cpl)EXIT,  Next: <a href="#END">END</a>,  Prev: <a href="#CASE">CASE</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-EXIT &lt;name&gt; transfers control past the end of the loop, module, function or subroutine labelled &lt;name&gt;. EXIT may be nested in an inner scope, such as a further loop or an IF statement.
+<hr> EXIT &lt;name&gt; transfers control past the end of the loop, module, function or subroutine labelled &lt;name&gt;. EXIT may be nested in an inner scope, such as a further loop or an IF statement.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -2315,9 +2095,7 @@ EXIT &lt;name&gt; transfers control past the end of the loop, module, function o
 
 </div><div class=page id="END">
 Node: (cpl)END,  Next: <a href="#STOP">STOP</a>,  Prev: <a href="#EXIT">EXIT</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-END &lt;name&gt; terminates the body of a module, function or subroutine named &lt;name&gt;. END IF, END CASE, END WITH, END C SECTION, END FRI SECTION and END TRAP terminate the corresponding statements.
+<hr> END &lt;name&gt; terminates the body of a module, function or subroutine named &lt;name&gt;. END IF, END CASE, END WITH, END C SECTION, END FRI SECTION and END TRAP terminate the corresponding statements.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -2335,15 +2113,11 @@ END &lt;name&gt; terminates the body of a module, function or subroutine named &
 
 </div><div class=page id="STOP">
 Node: (cpl)STOP,  Next: <a href="#ERROR">ERROR</a>,  Prev: <a href="#END">END</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-<h2>STOP</h2>
+<hr> <h2>STOP</h2>
 Stop the program and exit (unless intercepted by a <a href="#TRAP">TRAP</a>). Has the same effect as the SIGINT (^C) signal. 
 </div><div class=page id="ERROR">
 Node: (cpl)ERROR,  Next: <a href="#TRAP">TRAP</a>,  Prev: <a href="#STOP">STOP</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-<h2>Error signal</h2>
+<hr> <h2>Error signal</h2>
 The command
 
         ERROR &lt;outputexpr&gt;
@@ -2351,9 +2125,7 @@ The command
 writes &lt;outputexpr&gt; to the predefined string variable ERRORMESSAGE and signals an error. Unless a <a href="#TRAP">TRAP</a> has been set, this causes the program to exit after writing ERRORMESSAGE to stderr. 
 </div><div class=page id="TRAP">
 Node: (cpl)TRAP,  Prev: <a href="#ERROR">ERROR</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-<h2>Error handling</h2>
+<hr> <h2>Error handling</h2>
 An error, either caused by a system signal or by the <a href="#ERROR">ERROR</a> statement, normally causes the program to terminate after writing a message to stderr. A trap for errors may be set by the statement
 
         TRAP
@@ -2377,9 +2149,7 @@ At the END TRAP statement, control is passed to the end of the enclosing block, 
 An exception caused by SIGINT or STOP is accompanied by an empty ERRORMESSAGE. 
 </div><div class=page id="BY">
 Node: (cpl)BY,  Next: <a href="#C%20SECTION">C SECTION</a>,  Prev: <a href="#BOOLEAN">BOOLEAN</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-The auxiliary keyword BY is used in
+<hr> The auxiliary keyword BY is used in
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -2391,9 +2161,7 @@ The auxiliary keyword BY is used in
 
 </div><div class=page id="ELSE">
 Node: (cpl)ELSE,  Next: <a href="#END">END</a>,  Prev: <a href="#DOWN">DOWN</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-The auxiliary keyword ELSE is used in
+<hr> The auxiliary keyword ELSE is used in
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -2404,9 +2172,7 @@ The auxiliary keyword ELSE is used in
 
 </div><div class=page id="NAME">
 Node: (cpl)NAME,  Next: <a href="#NEW">NEW</a>,  Prev: <a href="#MODULE">MODULE</a>,  Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-The auxiliary keyword NAME is used in
+<hr> The auxiliary keyword NAME is used in
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -2417,9 +2183,7 @@ The auxiliary keyword NAME is used in
 
 </div><div class=page id="OF">
 Node: (cpl)OF,  Next: <a href="#POINTER">POINTER</a>,  Prev: <a href="#NOT">NOT</a>,  Up: <a href="#Declarations">Declarations</a>
-<hr>
-
-The auxiliary keyword OF is used in:
+<hr> The auxiliary keyword OF is used in:
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -2431,9 +2195,7 @@ The auxiliary keyword OF is used in:
 
 </div><div class=page id="TO">
 Node: (cpl)TO,  Next: <a href="#TRAP">TRAP</a>,  Prev: <a href="#TIMES">TIMES</a>,  Up: <a href="#Control">Control</a>
-<hr>
-
-The auxiliary keyword TO is used in:
+<hr> The auxiliary keyword TO is used in:
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -2445,9 +2207,7 @@ The auxiliary keyword TO is used in:
 
 </div><div class=page id="makecpl">
 Node: (cpl)makecpl,  Next: <a href="#cpl">cpl</a>,  Prev: <a href="#Control">Control</a>,  Up: <a href="#Top">Top</a>
-<hr>
-
-<h1>Compilation tools and their usage</h1>
+<hr> <h1>Compilation tools and their usage</h1>
 The compilation and linking of a cpl <a href="#Source%20file">Source file</a> is managed by a shell script named makecpl. For most purposes the single command
 
         makecpl [-a] &lt;programtobecompiled&gt;[.cpl] [local dir] [options]
@@ -2483,9 +2243,7 @@ install curl</q>), makecpl provides the functionality to poll the CPLcode.net we
 
 </div><div class=page id="cpl">
 Node: (cpl)cpl,  Next: <a href="#fri">fri</a>,  Prev: <a href="#makecpl">makecpl</a>,  Up: <a href="#makecpl">makecpl</a>
-<hr>
-
-<h2>The CPL-to-C compiler</h2>
+<hr> <h2>The CPL-to-C compiler</h2>
 The CPL compiler itself is not an executable file, but rather a formal description of the language that is interpreted by the Formal Rule Interpreter <a href="#fri">fri</a>. The cpl file is made executable by the shell convention of having #!/usr/bin/env fri as its first line. Where this convention is understood, the CPL-to-C compilation command is
 
         cpl &lt;source.cpl&gt;
@@ -2497,9 +2255,7 @@ On systems where the #! convention does not work as expected, this command must 
 All this is normally handled inside the <a href="#makecpl">makecpl</a> driver script; direct use of the cpl command is not needed. 
 </div><div class=page id="fri">
 Node: (cpl)fri,  Next: <a href="#FRI%20SECTION">FRI SECTION</a>,  Prev: <a href="#cpl">cpl</a>,  Up: <a href="#makecpl">makecpl</a>
-<hr>
-
-<h2>The Formal Rule Interpreter</h2>
+<hr> <h2>The Formal Rule Interpreter</h2>
 The design of most compilers passes through a formal description of the language that is compiled by a parser generator like yacc into a C program. At the heart of CPL's extensibility there is a different structure, where a formal description of the language is never compiled to generate the compiler, but rather interpreted each time a compilation is run. The engine that does this is named fri, the Formal Rule Interpreter. If yacc is a compiler-compiler, fri may be called a compiler-interpreter.
 
 In fact, fri is a quite general pattern-matching engine with its own FRI meta-language, and only <q>learns</q> about CPL when it reads the cpl file every time the compiler is invoked. Translators for many other languages can in principle be written in it. The interpreted nature of the CPL compiler, in addition to having allowed a smooth continued development and fine-tuning over the years, has the effect that its syntax can be extended on the fly by the compiled program itself with a few lines of FRI code written in a <a href="#FRI%20SECTION">FRI SECTION</a>. This possibility is used by <a href="#Library">Library</a> modules in order to define, for instance, complex-number notation, matrix-algebra operations or symbolic manipulations.
@@ -2517,9 +2273,7 @@ In fact, fri is a quite general pattern-matching engine with its own FRI meta-la
 
 </div><div class=page id="FRI%20SECTION">
 Node: (cpl)FRI SECTION,  Next: <a href="#infocpl">infocpl</a>,  Prev: <a href="#fri">fri</a>,  Up: <a href="#makecpl">makecpl</a>
-<hr>
-
-<h3>Dynamic extension of the CPL language</h3>
+<hr> <h3>Dynamic extension of the CPL language</h3>
 FRI language excerpts may be inserted at any point of a CPL program block by the statement
 
         FRI SECTION
@@ -2529,15 +2283,11 @@ FRI language excerpts may be inserted at any point of a CPL program block by the
 This has the effect of dynamically adding new statement constructions and for all purposes extending the syntax of the language. (See <a href="#fri">fri</a>) Like everything else in CPL, the new extensions are available from the point where the FRI SECTION appears through the end of the enclosing block. 
 </div><div class=page id="infocpl">
 Node: (cpl)infocpl,  Next: <a href="#icpl">icpl</a>,  Prev: <a href="#FRI%20SECTION">FRI SECTION</a>,  Up: <a href="#Top">Top</a>
-<hr>
-
-<h2>info reading script</h2>
+<hr> <h2>info reading script</h2>
 Unless the info file you are reading is registered in the general info tree, the command for reading it is relatively cumbersome. To encapsulate this command, the infocpl script exists. Typing just <q>infocpl</q> brings you to this file. Typing <q>infocpl &lt;keyword&gt;</q> brings you help about a specific CPL keyword. 
 </div><div class=page id="icpl">
 Node: (cpl)icpl,  Next: <a href="#Library">Library</a>,  Prev: <a href="#infocpl">infocpl</a>,  Up: <a href="#Top">Top</a>
-<hr>
-
-<h1>Interactive CPL</h1>
+<hr> <h1>Interactive CPL</h1>
 The interactive CPL interpreter, accepting expressions, statements or commands at a console prompt, is launched by the command
 
         icpl
@@ -2554,9 +2304,7 @@ icpl's syntax is totally compatible with CPL's. Any valid CPL statement is execu
 
 </div><div class=page id="icpl%20commands">
 Node: (cpl)icpl commands,  Next: <a href="#Library">Library</a>,  Prev: <a href="#icpl">icpl</a>,  Up: <a href="#Top">Top</a>
-<hr>
-
-<nav><table>
+<hr> <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>icpl-specific commands:</th></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#?">?</a>:</td><td>help</td></tr>
@@ -2595,9 +2343,7 @@ Node: (cpl)icpl commands,  Next: <a href="#Library">Library</a>,  Prev: <a href=
 
 </div><div class=page id="icpl%20command%20line">
 Node: (cpl)icpl command line,  Next: <a href="#?">?</a>,  Prev: <a href="#icpl%20commands">icpl commands</a>,  Up: <a href="#icpl">icpl</a>
-<hr>
-
-<h2>The icpl command line</h2>
+<hr> <h2>The icpl command line</h2>
 An interactive CPL command can alternately be specified on the (<a href="#icpl%20command%20line">icpl command line</a>) as in
 
         icpl &lt;command&gt;
@@ -2619,29 +2365,21 @@ Finally, if icpl is executed under a different name (by defining a link to it), 
 When the input of icpl is redirected (or piped) from an alternate source, commands from that source are interpreted as soon as each line arrives. 
 </div><div class=page id="?">
 Node: (cpl)?,  Next: <a href="#:">:</a>,  Prev: <a href="#icpl%20command%20line">icpl command line</a>,  Up: <a href="#icpl">icpl</a>
-<hr>
-
-<h2>The icpl help system</h2>
+<hr> <h2>The icpl help system</h2>
 The ? command given at the cpl&gt; command prompt brings you to the Top of this info file. ? followed by any user-declared identifier or system-reserved keyword elicits related help. 
 </div><div class=page id=":">
 Node: (cpl):,  Next: <a href="#$">$</a>,  Prev: <a href="#?">?</a>,  Up: <a href="#icpl">icpl</a>
-<hr>
-
-<h2>(icpl) Shell commands</h2>
+<hr> <h2>(icpl) Shell commands</h2>
 Any command that is meaningless to icpl, or not the name of a program to be executed, is passed on to the shell before giving up. Thus most shell commands can be given directly at the cpl&gt; prompt. In case of ambiguity, passing a command to the shell can be forced with
 
         :&lt;shell command&gt; 
 </div><div class=page id="$">
 Node: (cpl)$,  Next: <a href="#command%20interpretation">command interpretation</a>,  Prev: <a href="#:">:</a>,  Up: <a href="#icpl">icpl</a>
-<hr>
-
-<h2>(icpl) Last result</h2>
+<hr> <h2>(icpl) Last result</h2>
 Within an icpl expression, the $ symbol stands for the last result printed out by a previous command. 
 </div><div class=page id="command%20interpretation">
 Node: (cpl)command interpretation, Next: <a href="#interactive%20session">interactive session</a>, Prev: <a href="#$">$</a>, Up: <a href="#icpl">icpl</a>
-<hr>
-
-<h2>(icpl) Command interpretation</h2>
+<hr> <h2>(icpl) Command interpretation</h2>
 A statement contained in a string &lt;string&gt; can be executed just as it were typed at the cpl&gt; prompt by the statement
 
         icpl &lt;string&gt;
@@ -2649,9 +2387,7 @@ A statement contained in a string &lt;string&gt; can be executed just as it were
 The icpl statement is available not only to interpreted but also to compiled programs, provided the latter are run under icpl, thus enabling the on-the-fly execution of program-generated statements. All the global variables and subroutines defined in either the compiled or the interpreted part are accessible to the run-time generated command. 
 </div><div class=page id="interactive%20session">
 Node: (cpl)interactive session, Prev: <a href="#command%20interpretation">command interpretation</a>, Up: <a href="#icpl">icpl</a>
-<hr>
-
-<h2>(icpl) Interactive session</h2>
+<hr> <h2>(icpl) Interactive session</h2>
 An interactive icpl session can be started in the middle of a running program either by the user typing ctrl-C at the controlling terminal (or any other process giving signal SIGINT), or by the program itself executing the statement
 
         icpl
@@ -2664,9 +2400,7 @@ The inner session thus opened is signalled by an additional <q>&gt;</q> in the c
   kill the interrupted program and return to the session where it was invoked. 
 </div><div class=page id="Library">
 Node: (cpl)Library,  Prev: <a href="#icpl">icpl</a>,  Next: <a href="#rtchecks">rtchecks</a>,  Up: <a href="#Top">Top</a>
-<hr>
-
-<h1>Ready to <a href="#USE">USE</a> library of CPL modules</h1>
+<hr> <h1>Ready to <a href="#USE">USE</a> library of CPL modules</h1>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>The following libraries are included with CPL:</th></tr>
 <tr><td colspan="2"> </td></tr>
@@ -2690,9 +2424,7 @@ Node: (cpl)Library,  Prev: <a href="#icpl">icpl</a>,  Next: <a href="#rtchecks">
 
 </div><div class=page id="rtchecks">
 Node: (cpl)rtchecks,  Next: <a href="complex.html#Top">(complex)</a>,  Prev: <a href="#Library">Library</a>,  Up: <a href="#Library">Library</a>
-<hr>
-
-<h2>Run Time bounds Checking</h2>
+<hr> <h2>Run Time bounds Checking</h2>
 The rtchecks.cpl library does not add any new subroutines or instructions, but modifies already existing ones in such a way as to provide run-time bounds checking. The impact on performance is considerable; therefore rtchecks should only (and always) be used during development and later disabled once the program is deemed to be reliable. In particular:
 
 all array indexing and subarray extraction operations are bounds-checked, pointers are initialized to NULL and NULL-pointer dereferencing is trapped, all error messages are modified so as to display the position in the source code where the error occurred.
@@ -2706,9 +2438,7 @@ all array indexing and subarray extraction operations are bounds-checked, pointe
 
 </div><div class=page id="TRACE">
 Node: (cpl)TRACE,  Prev: <a href="#rtchecks">rtchecks</a>,  Up: <a href="#rtchecks">rtchecks</a>
-<hr>
-
-<h2>TRACE ON/OFF (also abbreviated TRON/TROFF)</h2>
+<hr> <h2>TRACE ON/OFF (also abbreviated TRON/TROFF)</h2>
 toggles execution tracing. When tracing is on, instructions from the source file are displayed in the upper part of the terminal screen while program output goes to the lower part (unless redirected to a file or to another terminal). Each block (e.g., subroutine or loop) of execution is displayed on a new line, thus the last instruction of each block is simultaneously within sight. Each line is prefixed by its source line number and repetition count. Immediate keypresses (with no Enter) alter tracing as follows:
 
   P,p: pause. Pause execution, or resume if paused.
@@ -2728,15 +2458,11 @@ toggles execution tracing. When tracing is on, instructions from the source file
 Any other key displays a single-line reminder of the above. 
 </div><div class=page id="CHARbyCHAR">
 Node: (cpl)CHARbyCHAR, Next: <a href="#matlib">matlib</a>, Prev: <a href="symbolic.html#Top">(symbolic)</a>, Up: <a href="#Library">Library</a>
-<hr>
-
-<h2>Live keyboard input</h2>
+<hr> <h2>Live keyboard input</h2>
 The CHARbyCHAR.cpl library contains the system calls (termios) necessary to activate unbuffered terminal input, so that the input of a single character may be read immediately (normally input is transferred from the terminal to the running program one line at a time, i.e. only when a newline is entered). USEing this library is all that is necessary. Input is then performed as usual. 
 </div><div class=page id="matlib">
 Node: (cpl)matlib,  Prev: <a href="#CHARbyCHAR">CHARbyCHAR</a>,  Up: <a href="#Library">Library</a>
-<hr>
-
-<h2>Basic matrix-creating functions</h2>
+<hr> <h2>Basic matrix-creating functions</h2>
 The matlib.cpl library is used by the m2cpl script in order to translate simple MATLAB programs into their CPL equivalents.
 
 Both matlib and m2cpl are in very preliminary development and only include the most basic functions. 
