@@ -59,7 +59,7 @@
 
 </div><div class=page id="Top">
 Node: (cpl)Top,  Next: <a href="#Keyword%20Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a>
-<hr> This is the documentation for the CPL programming language and its compiler, as of December 2020. Printable version at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
+<hr> Documentation for the CPL programming language and its compiler, December 2020. Printable and citable version at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
 
   CPL = Concealed Pointer Lookup
   CPL = Custom Parameter Lists
@@ -281,7 +281,7 @@ Node: (cpl)Installation, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#Key
 <hr>
 
 <h1>Installation</h1>
-This is CPL, a high-level programming language designed and developed by Paolo Luchini. Copyright Paolo Luchini 1993-2020 <a href="http://cplcode.net">cplcode.net</a>
+This is CPL, a high-level programming language designed and developed by Paolo Luchini. Copyright 1993-2020 Paolo Luchini <a href="http://cplcode.net">cplcode.net</a>
 
 The files that compose the CPL system are located in their own directory, and can be shared among users. This directory is initially named /usr/local/fri in a shared installation or ~/fri in a single user's home, but may be renamed if needed. None of the tools require root privileges nor write permission; it suffices for them to be readable and executable by every interested user.
 
@@ -2492,7 +2492,9 @@ The CPL compiler itself is not an executable file, but rather a formal descripti
 
 On systems where the #! convention does not work as expected, this command must be expanded into
 
-        fri cpl &lt;source.cpl&gt; 
+        fri cpl &lt;source.cpl&gt;
+
+All this is normally handled inside the <a href="#makecpl">makecpl</a> driver script; direct use of the cpl command is not needed. 
 </div><div class=page id="fri">
 Node: (cpl)fri,  Next: <a href="#FRI%20SECTION">FRI SECTION</a>,  Prev: <a href="#cpl">cpl</a>,  Up: <a href="#makecpl">makecpl</a>
 <hr>
