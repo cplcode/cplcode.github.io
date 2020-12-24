@@ -78,7 +78,7 @@ FRI's alphabet is restricted to 7-bit ascii, and bytes with the 8th bit set, whe
 
 The input stream is generally attached to an input file to be manipulated, but can also be modified by explicit instructions (opcodes). The output stream is not automatically attached to a file and must be written out explicitly when desired. It is internally subdivided into a stack of strings which can be individually recalled. Every time a rule matches, all but its top output strings are forgotten while its top string is returned to the calling rule (either appended to its output or prepended to its input).
 
-The dictionary of rules is alphabetically ordered and, with one exception, independent of the order in which the rules are entered. Each new rule inserted in the dictionary gets assigned to a progressively numbered <q>scope</q>. A new scope can be opened at any time by an explicit command and will contain subsequently generated rules, all of which disappear when the scope is eventually closed. A certain number of opcodes with no action are reserved as <q>strands</q>, markers of rules with related meaning. Each rule must start with a strand opcode, but strand opcodes can also appear elsewhere with a user- assigned meaning. If a rule, or more accurately a strand of alternate rules, is viewed as a sort of subroutine, this subroutine can be <q>called</q> by inserting its strand byte in the input stream.
+The dictionary of rules is alphabetically ordered and, with one exception, independent of the order in which the rules are entered. Each new rule inserted in the dictionary gets assigned to a progressively numbered <q>scope</q>. A new scope can be opened at any time by an explicit command and will contain subsequently generated rules, all of which disappear when the scope is eventually closed. A certain number of opcodes with no action are reserved as <q>strands</q>, markers of rules with related meaning. Each rule must start with a strand opcode, but strand opcodes can also appear elsewhere with a userassigned meaning. If a rule, or more accurately a strand of alternate rules, is viewed as a sort of subroutine, this subroutine can be <q>called</q> by inserting its strand byte in the input stream.
 
 When one rule fails, execution restarts with the next one in the dictionary. If two rules have a common root, only the part of the rule that failed undergoes a new attempt; side effects of the part that matched will not be repeated more than once. Execution terminates, as a match, when any one rule's byte sequence attains its end (or an explicit end opcode) or, as a failure, when the dictionary runs out of rules. For debugging purposes, it can also be terminated in an error message by suitable opcodes. 
 </div><div class=page id="Opcodes">
@@ -86,207 +86,204 @@ Node: (fri)Opcodes, Next: <a href="#Command%20line">Command line</a>, Prev: <a h
 <hr> <h3>Language opcodes</h3>
 Character matching
 
-Symbol        pronounced  action
- ascii char        any 7-bit ascii character matches itself.
- --         except        matches if the following character does not match the input.
+Symbol	pronounced  action
+ ascii char	any 7-bit ascii character matches itself.
+ -- 	except	matches if the following character does not match the input.
  -      through  matches if the input is not alphabetically enclosed (in ascii
-                 order) between the next two characters, excluded.
- ]=        cork        (coded as ascii char 127) automatically added to the input
-                stream every time new input is provided; like all ascii
-                characters, matches itself.
- {        {        (ascii code 18) if found in the input stream, groups a block of
-                zero or more characters up to the next } (ascii code 19) for
-                copying purposes. Can be nested. Like all ascii characters,
-                matches itself.
- copy        copy        copies one (non-cork) character or one {}-enclosed block from
-                the input to the output stream.
- *   copy up to        copies zero or more characters or {}-enclosed blocks from
-                the input to the output stream until the following character
-                (or a cork) is encountered. The matching character is popped
-                from the input stream but not written out.
+	 	order) between the next two characters, excluded.
+ ]=	cork	(coded as ascii char 127) automatically added to the input
+		stream every time new input is provided; like all ascii
+		characters, matches itself.
+ {	{	(ascii code 18) if found in the input stream, groups a block of
+		zero or more characters up to the next } (ascii code 19) for
+		copying purposes. Can be nested. Like all ascii characters,
+		matches itself.
+ copy	copy	copies one (non-cork) character or one {}-enclosed block from
+		the input to the output stream.
+ *   copy up to	copies zero or more characters or {}-enclosed blocks from
+		the input to the output stream until the following character
+		(or a cork) is encountered. The matching character is popped
+		from the input stream but not written out.
 
 Character writing
 
- =[        put        opens a new string in the output stack and switches from input
-                to output mode, which will last until the next unescaped opcode
-                starting with a ], -&gt; or *.
- ascii char        in output mode an ascii character is just written; even opcodes
-                are written rather than executed, with the exception of the
-                above output terminators, which restore input mode and are then
-                executed, and #, ^, delete, UniqueNo, LineNo which are executed
-                without leaving output mode.
- ^        escape        the character following an escape is written to the output
-                stream unconditionally, in either mode and even if it is an
-                opcode. A sequence of $n$ escapes is written as a sequence of
-                $n-1$ escapes plus the following character, except if the
-                following character is a null (ascii 0) which is not written.
- #        number        recalls an output string identified by the number that follows,
-                and appends it to the current output. It can be followed by a
-                positive number, denoting a stack count backwards from the top,
-                a negative number, denoting a stack count backwards from the
-                first string of the present rule, or a symbolic label assigned
-                by the @ pseudocode.
- @        label        an assembler pseudo-opcode that assigns the following alpha-
-                numeric string as a label to the current position in the output
-                stack, so it can later be recalled (within the same rule only)
-                by name.
- ]        end        exits output mode or the current control sequence or the
-                current rule.
- ]=        cork        exits output mode and adjoins the top two output strings,
-                decreasing the stack count by one.
+ =[	put	opens a new string in the output stack and switches from input
+		to output mode, which will last until the next unescaped opcode
+		starting with a ], -&gt; or *.
+ ascii char	in output mode an ascii character is just written; even opcodes
+		are written rather than executed, with the exception of the
+		above output terminators, which restore input mode and are then
+		executed, and #, ^, delete, UniqueNo, LineNo which are executed
+		without leaving output mode.
+ ^	escape	the character following an escape is written to the output
+		stream unconditionally, in either mode and even if it is an
+		opcode. A sequence of $n$ escapes is written as a sequence of
+		$n-1$ escapes plus the following character, except if the
+		following character is a null (ascii 0) which is not written.
+ #	number	recalls an output string identified by the number that follows,
+		and appends it to the current output. It can be followed by a
+		positive number, denoting a stack count backwards from the top,
+		a negative number, denoting a stack count backwards from the
+		first string of the present rule, or a symbolic label assigned
+		by the @ pseudocode.
+ @	label	an assembler pseudo-opcode that assigns the following alpha		numeric string as a label to the current position in the output
+		stack, so it can later be recalled (within the same rule only)
+		by name.
+ ]	end	exits output mode or the current control sequence or the
+		current rule.
+ ]=	cork	exits output mode and adjoins the top two output strings,
+		decreasing the stack count by one.
  backspace backspace  drops the top string from the output stack.
 
 Flow control
 
- -&gt;  pipe into        pops the top output string and prepends it as a new input
-                extent to the current input, separated by a ]= (cork) byte. The
-                new input shall either be passed as such to the rest of the
-                rule, if it starts with a 7-bit ascii character, or be
-                processed by a new instance of the rule-matching virtual
-                machine if it starts with an opcode. After the called-up rule
-                matches, its output becomes the new input and the calling rule
-                continues, but in case of a later failure the rule-matching
-                machine is invoked again and again until a match is obtained or
-                no more rules are available.
- convert        convert null opcode, matches itself and returns what follows in its
-                input extent. Typically used before another opcode in a -&gt;
-                (pipe into) operation, in order for its contents to get a
-                chance to be examined as input by the rest of the rule before
-                being ``converted'' by a new rule-matching passage.
- ]        end        successfully terminates the current rule, the output mode, or
-                any of the compound sub-rules described below.
+ -&gt;  pipe into	pops the top output string and prepends it as a new input
+		extent to the current input, separated by a ]= (cork) byte. The
+		new input shall either be passed as such to the rest of the
+		rule, if it starts with a 7-bit ascii character, or be
+		processed by a new instance of the rule-matching virtual
+		machine if it starts with an opcode. After the called-up rule
+		matches, its output becomes the new input and the calling rule
+		continues, but in case of a later failure the rule-matching
+		machine is invoked again and again until a match is obtained or
+		no more rules are available.
+ convert	convert null opcode, matches itself and returns what follows in its
+		input extent. Typically used before another opcode in a -&gt;
+		(pipe into) operation, in order for its contents to get a
+		chance to be examined as input by the rest of the rule before
+		being ``converted'' by a new rule-matching passage.
+ ]	end	successfully terminates the current rule, the output mode, or
+		any of the compound sub-rules described below.
  1[    optional  executes the enclosed subrule (up to a matching <q>]</q>) 0 or 1
-                times, reporting success to the containing rule.
- [        repeat        repeats the enclosed subrule (up to a matching <q>]</q>) 0 or more
-                times until it fails, reporting success to the containing rule
-                and adjoining each output to the output stream.
- r[        recur        repeats the enclosed subrule (up to a matching <q>]</q>) 0 or more
-                times until it fails, reporting success to the containing rule
-                and replacing the output stream by each output.
- ifnot[        if not        succeeds if the enclosed rule fails, and fails if the enclosed
-                subrule (up to a closing <q>]</q>) matches, discarding its output.
- until[        until        succeeds if the enclosed rule fails and fails if the enclosed
-                subrule (up to a closing <q>]</q>) matches, saving its output in the
-                output stream.
- #        number        when used in input mode, recalls a string from the output stack
-                (by the same numbering scheme as in output mode), and executes
-                it as a string of bytecodes, as if they appeared at the current
-                position in the current        rule.
- cut        cut        like the Prolog ``cut'', asserts that failure beyond its
-                position is not intended to occur. If the present rule fails
-                after a cut, an error will be reported rather than moving on to
-                the next rule. In addition, cut has lower priority than all
-                other opcodes except ], so if two rules are identical up to
-                where a cut appears, the cut rule will be tried last.
+		times, reporting success to the containing rule.
+ [	repeat	repeats the enclosed subrule (up to a matching <q>]</q>) 0 or more
+		times until it fails, reporting success to the containing rule
+		and adjoining each output to the output stream.
+ r[	recur	repeats the enclosed subrule (up to a matching <q>]</q>) 0 or more
+		times until it fails, reporting success to the containing rule
+		and replacing the output stream by each output.
+ ifnot[	if not	succeeds if the enclosed rule fails, and fails if the enclosed
+		subrule (up to a closing <q>]</q>) matches, discarding its output.
+ until[	until	succeeds if the enclosed rule fails and fails if the enclosed
+		subrule (up to a closing <q>]</q>) matches, saving its output in the
+		output stream.
+ #	number	when used in input mode, recalls a string from the output stack
+		(by the same numbering scheme as in output mode), and executes
+		it as a string of bytecodes, as if they appeared at the current
+		position in the current	rule.
+ cut	cut	like the Prolog ``cut'', asserts that failure beyond its
+		position is not intended to occur. If the present rule fails
+		after a cut, an error will be reported rather than moving on to
+		the next rule. In addition, cut has lower priority than all
+		other opcodes except ], so if two rules are identical up to
+		where a cut appears, the cut rule will be tried last.
 
  Dictionary manipulation
 
- ]-&gt;        save        saves the top output string to the dictionary as a new rule, in
-                the same scope as rules starting with the following opcode, or
-                in the current scope if the following character is null.
+ ]-&gt;	save	saves the top output string to the dictionary as a new rule, in
+		the same scope as rules starting with the following opcode, or
+		in the current scope if the following character is null.
  openscope open scope  opens a new scope.
- closescope close scope        closes the current scope and erases all rules generated
-                since the last openscope.
- delete        delete        deletes from the dictionary all rules that start with the byte
-                sequence contained in the top output string and belong in the
-                current scope.
+ closescope close scope	closes the current scope and erases all rules generated
+		since the last openscope.
+ delete	delete	deletes from the dictionary all rules that start with the byte
+		sequence contained in the top output string and belong in the
+		current scope.
 
 File handling
 
- open        open        opens a file for output, taking its name from the top output
-                string.
- close        close        closes the current output file, resuming output to the
-                previously open one.
+ open	open	opens a file for output, taking its name from the top output
+		string.
+ close	close	closes the current output file, resuming output to the
+		previously open one.
  ]-&gt;out write out  writes the top output string to the current output file and
-                pops it off the output stack.
- include        include  opens a file for input, taking its name from the top output
-                string, and includes it at the current position in the input
-                stream, followed by a ]= (cork). At the end of this file the
-                file will be closed and the previous input will resume
-                automatically.
- closein        close input  forces closing the current input file, resuming input from
-                where it was in the previously opened one.
+		pops it off the output stack.
+ include	include  opens a file for input, taking its name from the top output
+		string, and includes it at the current position in the input
+		stream, followed by a ]= (cork). At the end of this file the
+		file will be closed and the previous input will resume
+		automatically.
+ closein	close input  forces closing the current input file, resuming input from
+		where it was in the previously opened one.
 
 Shortcut opcodes
 
- spaces        spaces        matches a sequence of zero or more blank characters (spaces and
-                tabs).
+ spaces	spaces	matches a sequence of zero or more blank characters (spaces and
+		tabs).
  *]=  copy all   copies all remaining characters from the last input extent to
-                the output stream, reading but not copying the next cork.
-                Nearly equivalent to * ]=, but notice that the boundary of an
-                input extent is internally marked, so *]= will copy all of it
-                even if it contains an internal ]=} (cork).
- =[]  put end        opens an empty new string in the output stack and goes back to
-                input mode; single opcode equivalent to =[ ].
- do        do        starts execution of the rule that begins with the next bytecode
-                in a new virtual machine; replaces a single-byte -&gt; (pipe).
- ]&gt;        append        appends the top output string to the rule that starts with the
-                following bytecode. Useful for the temporary storage of
-                arbitrary strings.
- get        get        a do (do) replacement that only executes a rule composed of a
-                single =[ (put), presumably created by a sequence of ]&gt;
-                (append) operations, and deletes the rule at the same time. It
-                does its job by reference, which for long strings speeds up
-                execution.
+		the output stream, reading but not copying the next cork.
+		Nearly equivalent to * ]=, but notice that the boundary of an
+		input extent is internally marked, so *]= will copy all of it
+		even if it contains an internal ]=} (cork).
+ =[]  put end	opens an empty new string in the output stack and goes back to
+		input mode; single opcode equivalent to =[ ].
+ do	do	starts execution of the rule that begins with the next bytecode
+		in a new virtual machine; replaces a single-byte -&gt; (pipe).
+ ]&gt;	append	appends the top output string to the rule that starts with the
+		following bytecode. Useful for the temporary storage of
+		arbitrary strings.
+ get	get	a do (do) replacement that only executes a rule composed of a
+		single =[ (put), presumably created by a sequence of ]&gt;
+		(append) operations, and deletes the rule at the same time. It
+		does its job by reference, which for long strings speeds up
+		execution.
 
 Debugging
 
  ]-&gt;error cast error  writes the top output string to stderr and terminates
-                execution in error.
- trace        trace        toggles in and out of tracing mode, where an interactive
-                animation of the rule-matching process is displayed on the
-                controlling terminal.
+		execution in error.
+ trace	trace	toggles in and out of tracing mode, where an interactive
+		animation of the rule-matching process is displayed on the
+		controlling terminal.
  LineNo line number  writes the current input-file line number to the output
-                stream.
- list-&gt;        list        extracts from the dictionary all the rules that start by the
-                byte sequence provided in the top output string, and prepends
-                them to the input one after the other, each one as a new input
-                extent separated by a ]= (cork), with an empty input extent
-                terminating the whole list.
+		stream.
+ list-&gt;	list	extracts from the dictionary all the rules that start by the
+		byte sequence provided in the top output string, and prepends
+		them to the input one after the other, each one as a new input
+		extent separated by a ]= (cork), with an empty input extent
+		terminating the whole list.
  wrsym write symbol  converts the opcode provided in the top output character to
-                its symbolic name.
+		its symbolic name.
  display display  displays the top output string on the controlling terminal.
 
 Miscellaneous, less frequently used operations
 
  ## scope number  only valid in output mode, recalls the current scope
-                identifier so it can later be used in a ]-&gt; (save) operation.
+		identifier so it can later be used in a ]-&gt; (save) operation.
  =&gt; force write  appends everything that follows to the output stream in an
-                8-bit safe way, including any opcodes that might terminate a
-                normal =[ (put).
+		8-bit safe way, including any opcodes that might terminate a
+		normal =[ (put).
  AssignStrand assign strand  decrements an internal counter and outputs the next
-                available still unused null opcode (deputed as a rule strand).
+		available still unused null opcode (deputed as a rule strand).
  UniqueNo unique number  increments and outputs (in decimal ascii) the
-                internal Unique Number counter, made available in order to
-                assign unambiguous identifiers to variables.
+		internal Unique Number counter, made available in order to
+		assign unambiguous identifiers to variables.
  pushNo push number  pushes the value of the Unique Number counter (as a binary
-                integer) onto the output stream.
+		integer) onto the output stream.
  popNo pop number  pops the value of the Unique Number counter (as a binary
-                integer) from the output stream.
+		integer) from the output stream.
  writeimage write image  writes a binary image of the whole dictionary to the
-                output file (so it can later be quickly reloaded rather re-
-                translated).
+		output file (so it can later be quickly reloaded rather re		translated).
  readimage read image  reads in a binary dictionary image prepared by
-                writeimage.
- younger        younger  matches if the current input file is younger (has a more
-                recent modification time) than the file named in the top output
-                string, or the latter does not exist.
+		writeimage.
+ younger	younger  matches if the current input file is younger (has a more
+		recent modification time) than the file named in the top output
+		string, or the latter does not exist.
  wrinputpos write input position  writes the input-stream position pointer (as a
-                binary sequence of bytes) to the output stream.
+		binary sequence of bytes) to the output stream.
  rdinputpos read input position  pops the input-stream position pointer (as a
-                binary sequence of bytes) from the output stream, effectively
-                resuming input from where it was when wrinputpos was invoked.
+		binary sequence of bytes) from the output stream, effectively
+		resuming input from where it was when wrinputpos was invoked.
  cpinputpos copy input position  outputs the input-stream chunk going from the
-                position previously marked by wrinputpos to the current input
-                position.
- ascii        ascii        outputs the character whose ascii code appears in hexadecimal
-                notation in the next two input characters.
- shell command shell command  passes the top output string to the operating-
-                system shell for execution as a command. 
+		position previously marked by wrinputpos to the current input
+		position.
+ ascii	ascii	outputs the character whose ascii code appears in hexadecimal
+		notation in the next two input characters.
+ shell command shell command  passes the top output string to the operating		system shell for execution as a command. 
 </div><div class=page id="Command%20line">
 Node: (fri)Command line, Prev: <a href="#Opcodes">Opcodes</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>The fri command line</h3>
-Usage:              fri [rule file] [-e command] [-i] [data file] ...
+Usage:	      fri [rule file] [-e command] [-i] [data file] ...
 
 All arguments are optional. fri called with no arguments displays its copyright and version message and exits.
 
@@ -301,12 +298,12 @@ If the -i option is present, each data file is overwritten in place; otherwise e
 EXAMPLES
 
 cat replacement:
-        fri -e copy
+	fri -e copy
 
 tac replacement:
-        fri -e 'r[ =[ * \n =[\n #2]=]'
+	fri -e 'r[ =[ * \n =[\n #2]=]'
 
 substitute apples for oranges:
-        fri -e '<q>orange</q> =[<q>apple</q>]'
+	fri -e '<q>orange</q> =[<q>apple</q>]'
   
 </div></body></html>
