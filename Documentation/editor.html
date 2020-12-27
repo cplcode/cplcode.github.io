@@ -81,7 +81,7 @@ Node: (editor)readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a h
 <hr> <h2>Readline assisted console input</h2>
 Most used editing keys:
 
-- Left arrow (Esc h), right arrow (Esc l): move cursor - Home (Esc ^), end (Esc $): beginning, end of line - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file - Backspace: erase left - Delete (Esc d): erase right - Shift-delete (Esc D): erase line - Up (Esc j), down arrow (Esc k): previous, next command in history. If a
+- Left (Esc h), right arrow (Esc l): previous, next char - Home (Esc ^), end (Esc $): beginning, end of line - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file - Backspace: erase left - Delete (Esc d): erase right - Shift-delete (Esc D): erase line - Up (Esc j), down arrow (Esc k): previous, next command in history. If a
   partial line is entered, only lines containing it become visible. Previous
   commands are immutable; when a character is added or deleted in a previous
   command, this is copied to the most recent position before being modified. - Tab: autocomplete keyword or identifier. Successive tabs move forward along
@@ -94,7 +94,7 @@ The full-screen editor is accessed as <q>edit</q> in icpl, or as <q>icpl -edit</
 
 Most used editing keys:
 
-- Left arrow (Esc h), right arrow (Esc l): move cursor - Home (Esc ^), End (Esc $): beginning, end of line - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file - Backspace: erase left; Delete (Esc d): erase at cursor - Shift-Delete (Esc D): erase line - Up arrow (Esc j), down arrow (Esc k): previous, next line. - PgUp (Esc p), PgDn (Esc n): move to prev or next paragraph of the same or
+- Left (Esc h), right arrow (Esc l): previous, next char - Home (Esc ^), End (Esc $): beginning, end of line - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file - Backspace: erase left; Delete (Esc d): erase at cursor - Shift-Delete (Esc D): erase line - Up arrow (Esc j), down arrow (Esc k): previous, next line. - PgUp (Esc p), PgDn (Esc n): move to prev or next paragraph of the same or
   lesser indentation. - Tab: autocomplete keyword or identifier. Successive tabs move forward along
   the list of available completions; Shift-Tab moves backwards. - Enter: Enter new line, and trigger possible autocompletion of CPL syntax - Esc =: Autoindent current line or selection (<a href="#Indentation">Indentation</a>) - F1, Esc Space: switch in and out of command-line mode. - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>) - Esc \, Ctrl-\: add next (special or control) character verbatim.
 
