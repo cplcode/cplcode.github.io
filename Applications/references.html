@@ -10,9 +10,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="canonical" href="https://CPLcode.net/Applications/references">
 <style>
-  table {
-    table-layout: fixed;
-  }
   tr {
     vertical-align: Top;
   }
@@ -31,7 +28,7 @@
     if(table) {
       input = document.getElementsByTagName("input")[0];
       filter = input.value;
-      if (filter[0].toLowerCase()==filter[0]) {filter=filter.toLowerCase();}
+      if (filter && filter[0].toLowerCase()==filter[0]) {filter=filter.toLowerCase();}
       tr = table.getElementsByTagName("tr");
     
       // Loop through all table rows, and hide those that don't match the search query
@@ -39,7 +36,7 @@
         td = tr[i].getElementsByTagName("td")[1];
         if (td) {
           txtValue = td.textContent || td.innerText;
-          if (filter[0].toLowerCase()==filter[0]) {txtValue=txtValue.toLowerCase();}
+          if (filter && filter[0].toLowerCase()==filter[0]) {txtValue=txtValue.toLowerCase();}
           if (txtValue.indexOf(filter) >= 0) {
             tr[i].style.display = "";
           } else {
