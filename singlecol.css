@@ -29,6 +29,7 @@
         max-width:40em;
         min-height:100%;
         padding-left:0.75em; padding-right:0.75em;
+        padding-bottom:1em;
 }
       code,pre {
         font-size: 1em;
