@@ -84,11 +84,22 @@ Node: (editor)readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a h
 <hr> <h2>Readline assisted console input</h2>
 Most used editing keys:
 
-- Left (Esc h), right arrow (Esc l): previous, next char - Home (Esc ^), end (Esc $): beginning, end of line - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file - Backspace: erase left - Delete (Esc d): erase right - Shift-delete (Esc D): erase line - Up (Esc j), down arrow (Esc k): previous, next command in history. If a
-  partial line is entered, only lines containing it become visible. Previous
-  commands are immutable; when a character is added or deleted in a previous
-  command, this is copied to the most recent position before being modified. - Tab: autocomplete keyword or identifier. Successive tabs move forward along
-  the list of available completions; Shift-Tab moves backwards. - Enter: submit line. - F1, Esc Space: switch to full-screen mode. - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>) - Esc \, Ctrl-\: add next (special or control) character verbatim 
+ - Left (Esc h), right arrow (Esc l): previous, next char
+ - Home (Esc ^), end (Esc $): beginning, end of line
+ - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file
+ - Backspace: erase left
+ - Delete (Esc d): erase right
+ - Shift-delete (Esc D): erase line
+ - Up (Esc j), down arrow (Esc k): previous, next command in history. If a
+   partial line is entered, only lines containing it become visible. Previous
+   commands are immutable; when a character is added or deleted in a previous
+   command, this is copied to the most recent position before being modified.
+ - Tab: autocomplete keyword or identifier. Successive tabs move forward along
+   the list of available completions; Shift-Tab moves backwards.
+ - Enter: submit line.
+ - F1, Esc Space: switch to full-screen mode.
+ - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
+ - Esc \, Ctrl-\: add next (special or control) character verbatim 
 </div><div class=page id="full-screen">
 Node: (editor)full-screen, Next: <a href="#Select">Select</a>, Prev: <a href="#readline">readline</a>, Up: <a href="#Top">Top</a>
 <hr>
@@ -97,9 +108,21 @@ The full-screen editor is accessed as <q>edit</q> in icpl, or as <q>icpl -edit</
 
 Most used editing keys:
 
-- Left (Esc h), right arrow (Esc l): previous, next char - Home (Esc ^), End (Esc $): beginning, end of line - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file - Backspace: erase left; Delete (Esc d): erase at cursor - Shift-Delete (Esc D): erase line - Up arrow (Esc j), down arrow (Esc k): previous, next line. - PgUp (Esc p), PgDn (Esc n): move to prev or next paragraph of the same or
-  lesser indentation. - Tab: autocomplete keyword or identifier. Successive tabs move forward along
-  the list of available completions; Shift-Tab moves backwards. - Enter: Enter new line, and trigger possible autocompletion of CPL syntax - Esc =: Autoindent current line or selection (<a href="#Indentation">Indentation</a>) - F1, Esc Space: switch in and out of command-line mode. - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>) - Esc \, Ctrl-\: add next (special or control) character verbatim.
+ - Left (Esc h), right arrow (Esc l): previous, next char
+ - Home (Esc ^), End (Esc $): beginning, end of line
+ - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file
+ - Backspace: erase left; Delete (Esc d): erase at cursor
+ - Shift-Delete (Esc D): erase line
+ - Up arrow (Esc j), down arrow (Esc k): previous, next line.
+ - PgUp (Esc p), PgDn (Esc n): move to prev or next paragraph of the same or
+   lesser indentation.
+ - Tab: autocomplete keyword or identifier. Successive tabs move forward along
+   the list of available completions; Shift-Tab moves backwards.
+ - Enter: Enter new line, and trigger possible autocompletion of CPL syntax
+ - Esc =: Autoindent current line or selection (<a href="#Indentation">Indentation</a>)
+ - F1, Esc Space: switch in and out of command-line mode.
+ - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
+ - Esc \, Ctrl-\: add next (special or control) character verbatim.
 
 Selection is achieved by cursor-moving keys with Shift pressed (<a href="#Select">Select</a>), or by moving the mouse with its left button pressed. The center mouse button copies the current selection.
 
@@ -135,7 +158,14 @@ Whenever text is selected, the Insert key (or Esc i, or Ctrl-v for those who are
 
 In the way of example, in order to:
 
-delete:           select, delete; overtype:         select, type; copy and paste:   select, move, insert; cut and paste:    select, delete, move, insert; copy and replace: select, move, select, insert; cut and replace:  select, delete, move, select, insert. type again:       type something, move, insert; type and replace: type something, move, select, insert.
+ delete:           select, delete;
+ overtype:         select, type;
+ copy and paste:   select, move, insert;
+ cut and paste:    select, delete, move, insert;
+ copy and replace: select, move, select, insert;
+ cut and replace:  select, delete, move, select, insert.
+ type again:       type something, move, insert;
+ type and replace: type something, move, select, insert.
 
 Esc !, respectively Esc @, turns the current selection to all uppercase or all lowercase letters.
 
@@ -145,23 +175,30 @@ Node: (editor)Indentation, Next: <a href="#Find">Find</a>, Prev: <a href="#Selec
 <hr> <h3>CPL syntax-sensitive indentation and completion</h3>
 When a .cpl file is being edited, pressing Enter at the end of a freshly modified line automatically:
 
-1) indents the new line according to the contents of the previous line; 2) if the line is the opening of a new program block, like a subroutine, loop or IF statement, it inserts the corresponding closing statement and the
-   appropriate indentation for the block's contents; 3) it converts to upper case some CPL keywords when they are recognized as
-   having been entered in lower case; 4) open brackets are automatically provided with a matching closing bracket;
-   typing of the closing bracket is optional, and silently ignored if brackets
-   match; 5) since CPL allows the usage of the three kinds of brackets like in
-   mathematics (<a href="cpl.html#Parentheses">(cpl)Parentheses</a>), the editor automatically alternates
-   the three kinds even if only one kind is typed in.
+ 1) indents the new line according to the contents of the previous line;
+ 2) if the line is the opening of a new program block, like a subroutine, loop
+    or IF statement, it inserts the corresponding closing statement and the
+    appropriate indentation for the block's contents;
+ 3) it converts to upper case some CPL keywords when they are recognized as
+    having been entered in lower case;
+ 4) open brackets are automatically provided with a matching closing bracket;
+    typing of the closing bracket is optional, and silently ignored if brackets
+    match;
+ 5) since CPL allows the usage of the three kinds of brackets like in
+    mathematics (<a href="cpl.html#Parentheses">(cpl)Parentheses</a>), the editor automatically alternates
+    the three kinds even if only one kind is typed in.
 
 In addition, word completion using the Tab key is available in full-screen just as in readline mode.
 
 Where needed, the following explicit indentation commands are available:
 
-Esc ) : indent the current selection one more space to the right, Esc ( : unindent the current selection by one space to the left, Esc = : even the margin of the current selection or indent as to CPL syntax. 
+ Esc ) : indent the current selection one more space to the right,
+ Esc ( : unindent the current selection by one space to the left,
+ Esc = : even the margin of the current selection, or indent as to CPL syntax. 
 </div><div class=page id="Find">
 Node: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#Top">Top</a>
 <hr> <h3>Find and replace</h3>
-<q>find</q> (Esc /) and <q>goto</q> (Esc g or Esc +) seek the cursor to a given string or a given line number. Esc ? (or clicking <q>find</q> with the right mouse button) seeks backwards. The search is case-insensitive if the first character of the search string is a lowercase letter, case-sensitive otherwise. The found string is automatically selected. If some text is selected when Esc / or Esc ? are pressed, the selected text will appear as the search string.
+<q>find</q> (Esc /) and <q>goto</q> (Esc g or Esc +) seek the cursor to a given string or to a given line number. Esc ? (or clicking <q>find</q> with the right mouse button) seeks backwards. The search is case-insensitive if the first character of the search string is a lowercase letter, case-sensitive otherwise. The found string is automatically selected. If some text is selected when Esc / or Esc ? are pressed, the selected text will appear as a proposed search string.
 
 In order to find and replace, find a given text, exit Esc mode, and start typing the replacement. Esc , (lowercase &lt;) repeats the last find backwards. Esc . (lowercase &gt;) repeats the last find forwards. Esc / and Esc ? with an empty argument also repeat the last find, possibly changing its direction.
 

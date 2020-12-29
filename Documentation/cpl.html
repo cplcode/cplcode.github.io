@@ -2221,7 +2221,7 @@ The task of makecpl is achieved by first running <a href="#cpl">cpl</a>, the CPL
 
 The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line.
 
-The -D and -I options are interpreted by cpl, in addition to being passed to the C compiler, and provide pre-#defined constants and include directories to both.
+The -D and -I options are interpreted by cpl, in addition to being passed to the C compiler, and provide pre#defined constants and include directories to both.
 
 C source and object files are kept in a local subdirectory usually named .cpl (and therefore hidden from listing under unix convention). An alternate name can be specified in the environment variable OBJDIR or on the command line.
 
@@ -2229,7 +2229,7 @@ Only those source files whose corresponding object file does not exist or is old
 
 	makecpl -a &lt;programtobecompiled&gt;
 
-achieves this by deleting the object files first.
+achieves this by deleting the object files first. remakecpl is another alias for makecpl -a.
 
 If your system includes the curl command (on Debian you can install it as <q>apt
 install curl</q>), makecpl provides the functionality to poll the CPLcode.net website in the background. See <a href="#automatic%20updates">automatic updates</a>.
@@ -2365,7 +2365,7 @@ icpl followed by one or more CPL statements executes those statements and exits;
 
 Finally, if icpl is executed under a different name (by defining a link to it), that name is executed as a command after <q>icpl -</q>. For instance, setup defines a link to icpl named <q>edit</q>, which is executed as <q>icpl - edit</q>. 
 
-When the input of icpl is redirected (or piped) from an alternate source, commands from that source are interpreted as soon as each line arrives. 
+When the input of icpl is redirected (or piped) from an alternate source, commands from that source are interpreted on a line-by-line basis. 
 </div><div class=page id="?">
 Node: (cpl)?,  Next: <a href="#:">:</a>,  Prev: <a href="#icpl%20command%20line">icpl command line</a>,  Up: <a href="#icpl">icpl</a>
 <hr> <h2>The icpl help system</h2>
