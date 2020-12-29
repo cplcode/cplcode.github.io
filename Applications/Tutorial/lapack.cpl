@@ -9,11 +9,11 @@
 USE complex
 
 #link "-llapack -lblas"
-! directive to the C compiler.
+! directive to the linker through the C compiler.
 ! On Debian the liblapack3 package or one equivalent must be installed.
 
 INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(COMPLEX A(*,*))
-! This function will declare its result a a constant array if none was declared
+! This function will produce a constant array if assigned to an undeclared id
   INTEGER SDIM,info
   LA=LENGTH(A)
   IF LA#LENGTH(A(LO)) THEN ERROR "matrix is not square"
@@ -27,7 +27,7 @@ INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(COMPLEX A(*,*))
 END eigv   ! encapsulating zgees inside eigv turns on prototype checking
 
 INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(REAL A(*,*))
-! same name as above but different argument list: overloaded function
+! same name as above: overloaded function will be recognized based on argument type
   INTEGER SDIM,info
   LA=LENGTH(A)
   IF LA#LENGTH(A(LO)) THEN ERROR "matrix is not square"

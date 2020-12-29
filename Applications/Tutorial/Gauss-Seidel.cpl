@@ -5,7 +5,7 @@ USE gnuplot   ! prepare for plotting
 ARRAY(0..20,0..40) OF REAL var,rhs   ! declare and allocate ARRAY variables
 
 var=0; rhs=0
-DO var(i,HI)=1 FOR ALL i   ! assign some boundary condition
+DO var(i,HI)=1 FOR ALL i   ! assign some boundary conditions
 
 LOOP FOR 100 TIMES   ! main iteration loop
   LOOP FOR i=LO+1 TO HI-1 AND j=LO+1 TO HI-1

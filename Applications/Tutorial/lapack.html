@@ -10,11 +10,11 @@
 <a href="cpl.html#USE">USE</a> <a href="complex.html#Top">complex</a>
 
 <a href="cpl.html#C%20interface">#link</a> "-llapack -lblas"
-<span class=comment>! directive to the C compiler.</span>
+<span class=comment>! directive to the linker through the C compiler.</span>
 <span class=comment>! On Debian the liblapack3 package or one equivalent must be installed.</span>
 
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#COMPLEX">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="complex.html#COMPLEX">COMPLEX</a> A(*,*))
-<span class=comment>! This function will declare its result a a constant array if none was declared</span>
+<span class=comment>! This function will produce a constant array if assigned to an undeclared id</span>
   <a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
   LA=<a href="cpl.html#LENGTH">LENGTH</a>(A)
   <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "matrix is not square"
@@ -28,7 +28,7 @@
 <a href="cpl.html#END">END</a> eigv   <span class=comment>! encapsulating zgees inside eigv turns on prototype checking</span>
 
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#COMPLEX">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="cpl.html#REAL">REAL</a> A(*,*))
-<span class=comment>! same name as above but different argument list: overloaded function</span>
+<span class=comment>! same name as above: overloaded function will be recognized based on argument type</span>
   <a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
   LA=<a href="cpl.html#LENGTH">LENGTH</a>(A)
   <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "matrix is not square"
