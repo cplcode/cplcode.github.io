@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CPL on Debian on Windows</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="author" content="Paolo Luchini">
+    <meta name="copyright" content="Copyright 2020 Paolo Luchini">
+    <meta name="description" content="CPL-on-Debian-on-Windows howto.">
+    <meta name="keywords" content="cpl CPL numerical computation computational code program programmer programming language compiler interpreter editor fri FRI makecpl icpl edit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://CPLcode.net/Windows-howto.html">
+    <link rel="stylesheet" href="singlecol.css">
+</head>
+  <body>
+  <a href="./"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
+  <div class=page>
+    <h2>CPL-on-Debian-on-Windows howto</h2>
+    <dl>
+    <dh>1 - Enable WSL</dh>
+    <dd>To enable the Windows Subsystem for Linux (WSL), available in Microsoft Windows 10, you can use a sequence of Powershell terminal commands (described <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target=_blank>here</a>), or more simply open the Control Panel, then Program and Features, then Turn Windows Features On or Off, and check the case for Windows Subsystem for Linux.</dd>
+    <dh>2 - Install Debian</dh>
+    <dd>Open Microsoft Store, enter debian in search box, install the free Debian app (or your favourite other linux distribution); launch the app.</dd>
+    <dh>3 - Upgrade Debian to current updates</dh>
+    <dd> In the Debian terminal type:<br>
+    sudo apt update<br>
+    sudo apt upgrade
+    </dd>
+    <dh>4 - Install gcc and make</dh>
+    <dd>sudo apt install gcc make
+    </dd>
+    <dh>5 - Copy CPL archive to your Linux home</dh>
+    <dd>cp /mnt/c/Users/<em>yourusername</em>/Downloads/*cpl.sh ./
+    </dd>
+    <dh>6 - Unpack the CPL archive</dh>
+    <dd>sh *cpl.sh
+    </dd>
+    </dl>
+    <p>You are all set!</p>
+    <p>Note: Microsoft's Windows Subsystem for Linux is terminal-based and excludes graphics. Graphics can be provided through a non-official X server, but if the application you foresee is graphical, you may prefer to start from scratch with a non-Microsoft Linux distribution. On the other hand, WSL offers a quick path to trying CPL on Windows, and if you like it you can always upgrade to a complete Linux later.</p> 
+    <footer>
+      <p><a href="./">Back</a></p>
+    </footer>
+  </div>
+  </body> 
+</html>
