@@ -15,28 +15,31 @@
   <a href="./"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
   <div class=page>
     <h2>CPL-on-Debian-on-Windows howto</h2>
+    Step by step instructions.
     <dl>
-    <dh>1 - Enable WSL</dh>
-    <dd>To enable the Windows Subsystem for Linux (WSL), available in Microsoft Windows 10, you can use a sequence of Powershell terminal commands (described <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target=_blank>here</a>), or more simply open the Control Panel, then Programs and Features, then Turn Windows Features On or Off, and check the case for Windows Subsystem for Linux.</dd>
-    <dh>2 - Install Debian</dh>
+    <dh>1 - Enable WSL:</dh>
+    <dd>To enable the Windows Subsystem for Linux (WSL) of Microsoft Windows 10, you can use a sequence of Powershell terminal commands (described <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target=_blank>here</a>), or alternately open the Control Panel, then Programs and Features, then Turn Windows Features On or Off, and check the case for Windows Subsystem for Linux.</dd>
+    <dh>2 - Install Debian:</dh>
     <dd>Open Microsoft Store, enter debian in search box, install the free Debian app (or your favourite other Linux distribution); launch the app.</dd>
-    <dh>3 - Upgrade Debian to current updates</dh>
-    <dd> In the Debian terminal type:<br>
-    sudo apt update<br>
-    sudo apt upgrade
+    <dh>3 - Upgrade Debian to its most recent update.</dh>
+    <dd> In the Debian terminal type:
+    <pre>sudo apt update
+sudo apt upgrade</pre>
     </dd>
-    <dh>4 - Install gcc, make and info</dh>
-    <dd>sudo apt install gcc make info
+    <dh>4 - Install needed packages gcc, make, info, curl:</dh>
+    <dd><pre>sudo apt install gcc make info curl</pre>
     </dd>
-    <dh>5 - Copy the downloaded CPL archive to your Linux home</dh>
-    <dd>cp /mnt/c/Users/<em>yourusername</em>/Downloads/*cpl.sh ./
+    <dh>5 - Copy the CPL archive you previously downloaded in Windows to your new Debian home:</dh>
+    <dd><pre>cp /mnt/c/Users/<em>yourusername</em>/Downloads/*cpl.sh ./</pre>
+    (where <em>yourusername</em> must be replaced by your own Windows user directory).
     </dd>
-    <dh>6 - Unpack the CPL archive</dh>
-    <dd>sh *cpl.sh
+    <dh>6 - Unpack the CPL archive:</dh>
+    <dd><pre>sh *cpl.sh</pre>
+    You may need to close and re-open the Debian window before the installed CPL commands become available at the terminal prompt. 
     </dd>
     </dl>
     <p>You are all set!</p>
-    <p>Note: Microsoft's Windows Subsystem for Linux is terminal-based and excludes graphics. Graphics can be provided through a non-official X server, but if the application you foresee is graphical, you may prefer to start from scratch with a non-Microsoft Linux distribution. On the other hand, WSL offers a quick start off of CPL on Windows, and if you find it useful you can always upgrade to a complete Linux later.</p> 
+    <p>Notice: Microsoft's Windows Subsystem for Linux is terminal-based and gives only a limited experience of a Linux distribution. Although WSL is perfectly up to the task of running CPL, which doesn't need more than a terminal, the programs you write with it won't have access to a windowing system or to graphics, which instead a stand-alone, non-WSL Linux distribution would give you. On the other hand, WSL offers a quick way to try off CPL on Windows, and if you find it useful you can always opt for a complete Linux system later.</p> 
     <footer>
       <p><a href="./Download.html">Back</a></p>
     </footer>
