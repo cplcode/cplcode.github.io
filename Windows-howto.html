@@ -15,15 +15,14 @@
   <a href="./"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
   <div class=page>
     <h2>CPL-on-Debian-on-Windows howto</h2>
-    Step by step instructions.
+    Step by step instructions to using CPL with Microsoft Windows 10.
     <dl>
     <dh>1 - Enable WSL:</dh>
     <dd>To enable the Windows Subsystem for Linux (WSL) of Microsoft Windows 10, you can use a sequence of Powershell terminal commands (described <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target=_blank>here</a>), or alternately open the Control Panel, then Programs and Features, then Turn Windows Features On or Off, and check the case for Windows Subsystem for Linux.</dd>
     <dh>2 - Install Debian:</dh>
     <dd>Open Microsoft Store, enter debian in search box, install the free Debian app (or your favourite other Linux distribution); launch the app.</dd>
-    <dh>3 - Upgrade Debian to its most recent update.</dh>
-    <dd> In the Debian terminal type:
-    <pre>sudo apt update
+    <dh>3 - Upgrade Debian to its most recent update. In the Debian terminal type:</dh>
+    <dd><pre>sudo apt update
 sudo apt upgrade</pre>
     </dd>
     <dh>4 - Install needed packages gcc, make, info, curl:</dh>
@@ -39,8 +38,15 @@ sudo apt upgrade</pre>
     </dd>
     </dl>
     <p>You are all set!</p>
-    <p>Notice: Microsoft's Windows Subsystem for Linux is terminal-based and gives only a limited experience of a Linux distribution. Although WSL is perfectly up to the task of running CPL, which doesn't need more than a terminal, the programs you write with it won't have access to a windowing system or to graphics, which instead a stand-alone, non-WSL Linux distribution would give you. On the other hand, WSL offers a quick way to try off CPL on Windows, and if you find it useful you can always opt for a complete Linux system later.</p> 
-    <footer>
+    <p><strong>Notice about graphics:</strong> Microsoft's Windows Subsystem for Linux is terminal-based and gives only a limited experience of a Linux distribution. The CPL compiler, interpreter and editor are all built to run in a terminal and will fit in without any problems, but if your program uses <code>gnuplot.cpl</code> in order to draw graphics, the Debian gnuplot package (<code>apt install gnuplot</code>) will not do. In order to use graphics you must instead install the Windows version of gnuplot, available from the <a href="http://gnuplot.sourceforge.net">official gnuplot site</a>, and then</p>
+    <dl>
+    <dh>7 - link gnuplot to your Debian setup. After you have downloaded and installed gnuplot for Windows, open a Debian terminal and type:</dh>
+    <dd><pre>ln -s /mnt/c/Program\ Files/gnuplot/bin/gnuplot.exe bin/gnuplot
+    </pre>
+    </dd>
+    </dl>
+    Now you can open gnuplot as just <q><code>gnuplot</code></q> in your terminal window, and CPL graphics will automatically use it too.
+<footer>
       <p><a href="./Download.html">Back</a></p>
     </footer>
   </div>
