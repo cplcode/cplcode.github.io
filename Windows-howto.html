@@ -19,33 +19,33 @@
     <dl>
     <dh>1 - Enable WSL:</dh>
     <dd>To enable the Windows Subsystem for Linux (WSL) of Microsoft Windows 10, you can use a sequence of Powershell terminal commands (described <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target=_blank>here</a>), or alternately open the Control Panel, then Programs and Features, then Turn Windows Features On or Off, and check the case for Windows Subsystem for Linux.</dd>
-    <dh>2 - Install Debian:</dh>
-    <dd>Open Microsoft Store, enter debian in search box, install the free Debian app (or your favourite other Linux distribution); launch the app.</dd>
-    <dh>3 - Upgrade Debian to its most recent update. In the Debian terminal type:</dh>
+    <dh>2 - Install Debian on WSL:</dh>
+    <dd>Open Microsoft Store, enter <q>debian</q> in search box, install the free Debian app (or your favourite other Linux distribution); launch the app.</dd>
+    <dh>3 - Bring Debian up to date. In the Debian terminal type:</dh>
     <dd><pre>sudo apt update
 sudo apt upgrade</pre>
     </dd>
     <dh>4 - Install needed packages gcc, make, info, curl:</dh>
     <dd><pre>sudo apt install gcc make info curl</pre>
     </dd>
-    <dh>5 - Copy the CPL archive you previously downloaded in Windows to your new Debian home:</dh>
+    <dh>5 - Copy the CPL archive you previously downloaded from your browser to your new Debian home:</dh>
     <dd><pre>cp /mnt/c/Users/<em>yourusername</em>/Downloads/*cpl.sh ./</pre>
-    (where <em>yourusername</em> must be replaced by your own Windows user directory).
+    (where <em>yourusername</em> must be replaced by your own Windows user directory, enclosed in quotes if it contains spaces).
     </dd>
-    <dh>6 - Unpack the CPL archive:</dh>
+    <dh>6 - Unpack the cpl archive:</dh>
     <dd><pre>sh *cpl.sh</pre>
-    You may need to close and re-open the Debian window before the installed CPL commands become available at the terminal prompt. 
+    You may need to close and re-open the Debian window before the newly installed commands become available at the command prompt. You can open more than one Debian window if you want, for instance, to edit your own CPL program in one and to execute it in the other.
     </dd>
     </dl>
     <p>You are all set!</p>
-    <p><strong>Notice about graphics:</strong> Microsoft's Windows Subsystem for Linux is terminal-based and gives only a limited experience of a Linux distribution. The CPL compiler, interpreter and editor are all built to run in a terminal and will fit in without any problems, but if your program uses <code>gnuplot.cpl</code> in order to draw graphics, the Debian gnuplot package (<code>apt install gnuplot</code>) will not do. In order to use graphics you must instead install the Windows version of gnuplot, available from the <a href="http://gnuplot.sourceforge.net">official gnuplot site</a>, and then</p>
+    <p><strong>Notice about graphics:</strong> Microsoft's Windows Subsystem for Linux is terminal-only (no window manager), and gives a limited experience of a Linux distribution. The CPL compiler, interpreter and editor are all built to run in a terminal and will fit in seamlessly, but if the program you write draws graphics and uses the additional <code>gnuplot</code> package, installing it through Debian (<code>apt install gnuplot</code>) will not do. You must instead install the Windows version of gnuplot, available from the <a href="http://gnuplot.sourceforge.net">official gnuplot site</a>, and then</p>
     <dl>
-    <dh>7 - link gnuplot to your Debian setup. After you have downloaded and installed gnuplot for Windows, open a Debian terminal and type:</dh>
-    <dd><pre>ln -s /mnt/c/Program\ Files/gnuplot/bin/gnuplot.exe bin/gnuplot
+    <dh>7 - link gnuplot to your Debian setup. After you have downloaded and installed gnuplot for Windows, open a Debian terminal and type (with attention to spaces):</dh>
+    <dd><pre>ln -s '/mnt/c/Program Files/gnuplot/bin/gnuplot.exe' bin/gnuplot
     </pre>
     </dd>
     </dl>
-    Now you can open gnuplot as just <q><code>gnuplot</code></q> in your terminal window, and CPL graphics will automatically use it too.
+    Now you can open gnuplot as just <q><code>gnuplot</code></q> in your Debian terminal, and CPL graphics will automatically find it too.
 <footer>
       <p><a href="./Download.html">Back</a></p>
     </footer>
