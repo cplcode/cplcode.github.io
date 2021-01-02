@@ -38,7 +38,7 @@ sudo apt upgrade</pre>
     </dd>
     </dl>
     <p>You are all set!</p>
-    <p><strong>Notice about graphics:</strong> Microsoft's Windows Subsystem for Linux is terminal-only (no window manager), and gives a limited experience of a Linux distribution. The CPL compiler, interpreter and editor are all built to run in a terminal and will fit in seamlessly, but if the program you write draws graphics and uses the additional <code>gnuplot</code> package, installing it through Debian (<code>apt install gnuplot</code>) will not do. Instead you must install the Windows version of gnuplot, available from the <a href="http://gnuplot.sourceforge.net">official gnuplot site</a>, and then</p>
+    <p><strong>Notice about graphics:</strong> Microsoft's Windows Subsystem for Linux is terminal-only (no graphical user interface), and gives a limited experience of a Linux distribution. The CPL compiler, interpreter and editor are all built to run in a terminal and will fit in seamlessly, but if the program you write draws graphics and uses the additional <code>gnuplot</code> package, installing it through Debian (<code>apt install gnuplot</code>) will not do. Instead you must install the Windows version of gnuplot, available from the <a href="http://gnuplot.sourceforge.net">official gnuplot site</a>, and then</p>
     <dl>
     <dt>7 - link gnuplot to your Debian setup. After you have downloaded and installed gnuplot for Windows, open a Debian terminal and type (with attention to spaces):</dt>
     <dd><pre>ln -s '/mnt/c/Program Files/gnuplot/bin/gnuplot.exe' bin/gnuplot
