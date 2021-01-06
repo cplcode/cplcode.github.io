@@ -1,54 +1,57 @@
 <!DOCTYPE html><html lang="en"><head><title>lapack.cpl</title><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style></head><body><pre>
-<span class=comment>! Interface to some LAPACK functions</span>
+<span class=comment>! Interface to some Lapack functions</span>
 <span class=comment>! ==================================</span>
 <span class=comment>!</span>
-<span class=comment>! packs the dgees and zgees LAPACK functions into a single, overloaded</span>
+<span class=comment>! packs the dgees and zgees Lapack subroutines into a single, overloaded</span>
 <span class=comment>! wrapper CPL function eigv(A) providing an ARRAY of eigenvalues</span>
 <span class=comment>! of a general real or complex matrix as its result.</span>
-<span class=comment>! It may serve as a template to include more LAPACK functions.</span>
+<span class=comment>! This example is a copy of the lapack-eigenvalues library provided in the</span>
+<span class=comment>! main package. It may serve as a template to include more Lapack functions.</span>
 
 <a href="cpl.html#USE">USE</a> <a href="complex.html#Top">complex</a>
 
 <a href="cpl.html#C%20interface">#link</a> "-llapack -lblas"
 <span class=comment>! directive to the linker through the C compiler.</span>
-<span class=comment>! On Debian the liblapack3 package or one equivalent must be installed.</span>
+<span class=comment>! On Debian the liblapack3 package or one equivalent must have been installed.</span>
 
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#COMPLEX">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="complex.html#COMPLEX">COMPLEX</a> A(*,*))
-<span class=comment>! This function will produce a constant array if assigned to an undeclared id</span>
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="complex.html#Top">COMPLEX</a> A(*,*))
+  <span class=comment>! This function will produce a constant array if assigned to an undeclared id</span>
   <a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
   LA=<a href="cpl.html#LENGTH">LENGTH</a>(A)
-  <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "matrix is not square"
+  <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: matrix is not square"
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>[A(<a href="cpl.html#LO">LO</a>)]#1 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: matrix rows are not contiguous"
+  <span class=comment>! A CPL matrix is allowed to be not contiguous, but a FORTRAN matrix must be.</span>
   LWORK=3*LA
-  <a href="complex.html#COMPLEX">COMPLEX</a> WORK(1..LWORK)
+  <a href="complex.html#Top">COMPLEX</a> WORK(1..LWORK)
   <a href="cpl.html#REAL">REAL</a> RWORK(1..LA)
-  <a href="complex.html#COMPLEX">COMPLEX</a> Acopy(0..LA-1,0..LA-1)=A(<a href="cpl.html#LO">LO</a>+*,<a href="cpl.html#LO">LO</a>+*)
-  <a href="cpl.html#FORTRAN%20interface">FORTRANCALL</a> zgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,Acopy,<a href="cpl.html#FORTRANCALL">STRIDEOF</a>(Acopy),SDIM,<a href="cpl.html#RESULT">RESULT</a>,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,RWORK,<a href="cpl.html#POINTER">NULL</a>,info)
-  <span class=comment>! interface to FORTRAN call, applied without any prototype checking</span>
+  <a href="cpl.html#FORTRAN%20interface">FORTRANCALL</a> zgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,A,<a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>(A),SDIM,<a href="cpl.html#RESULT">RESULT</a>,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,RWORK,<a href="cpl.html#POINTER">NULL</a>,info)
+  <span class=comment>! interface to FORTRAN call, applied without any prototype checking.</span>
+  <span class=comment>! However, a prototype must be included if this file is to be USEd by icpl;</span>
+  <span class=comment>! see lapack-eigenvalues.cpl for an example.</span>
   <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: " info
-<a href="cpl.html#END">END</a> eigv   <span class=comment>! encapsulating zgees inside eigv turns on prototype checking</span>
+<a href="cpl.html#END">END</a> eigv   <span class=comment>! encapsulating zgees inside eigv turns on CPL prototype checking.</span>
 
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#COMPLEX">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="cpl.html#REAL">REAL</a> A(*,*))
-<span class=comment>! same name as above: overloaded function will be recognized based on argument type</span>
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="cpl.html#REAL">REAL</a> A(*,*))
+  <span class=comment>! same function name as above: correct instance of overloaded function</span>
+  <span class=comment>! will be selected based on argument type</span>
   <a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
   LA=<a href="cpl.html#LENGTH">LENGTH</a>(A)
-  <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "matrix is not square"
+  <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: matrix is not square"
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>[A(<a href="cpl.html#LO">LO</a>)]#1 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: matrix rows are not contiguous" 
+  <span class=comment>! A CPL matrix is allowed to be not contiguous, but a FORTRAN matrix must be.</span>
   LWORK=3*LA
   <a href="cpl.html#REAL">REAL</a> WORK(1..LWORK)
   <a href="cpl.html#REAL">REAL</a> WR(1..LA),WI(1..LA)
-  <a href="cpl.html#REAL">REAL</a> Acopy(0..LA-1,0..LA-1)=A(<a href="cpl.html#LO">LO</a>+*,<a href="cpl.html#LO">LO</a>+*)
-  <a href="cpl.html#FORTRAN%20interface">FORTRANCALL</a> dgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,Acopy,<a href="cpl.html#FORTRANCALL">STRIDEOF</a>(Acopy),SDIM,WR,WI,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,<a href="cpl.html#POINTER">NULL</a>,info)
-  <span class=comment>! interface to FORTRAN call, applied without any prototype checking</span>
+  <a href="cpl.html#FORTRAN%20interface">FORTRANCALL</a> dgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,A,<a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>(A),SDIM,WR,WI,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,<a href="cpl.html#POINTER">NULL</a>,info)
+  <span class=comment>! interface to FORTRAN call, applied without any prototype checking.</span>
   <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: " info
   <a href="cpl.html#RESULT">RESULT</a>(*+<a href="cpl.html#LO">LO</a>-1).<a href="cpl.html#REAL">REAL</a>=WR; <a href="cpl.html#RESULT">RESULT</a>(*+<a href="cpl.html#LO">LO</a>-1).IMAG=WI
-<a href="cpl.html#END">END</a> eigv   <span class=comment>! encapsulating dgees inside eigv turns on prototype checking</span>
+<a href="cpl.html#END">END</a> eigv   <span class=comment>! encapsulating dgees inside eigv turns on CPL prototype checking.</span>
 
-<span class=comment>! Example: uncomment the text below, compile and execute. Alternately type</span>
-<span class=comment>! the text below in icpl, in a directory where this file is present,</span>
-<span class=comment>! after entering "USE lapack".</span>
+<span class=comment>! Example: uncomment the text below, compile this file and execute.</span>
+<span class=comment>! Alternately type similar commands in icpl, but USE lapack-eigenvalues instead.</span>
 <span class=comment>!(
-  REAL A(1..2,1..2)
-  A(1,1)=1; A(1,2)=3
-  A(2,1)=8; A(2,2)=7
+  A=[(1.,2.),(4.,3.)]
   WRITE eigv(A)
 !)</span>
 </pre></body></html>

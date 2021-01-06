@@ -76,6 +76,13 @@
         border-right:0.25em solid lightgrey;
         font-family:monospace,monospace;
         font-size:1em;
+        white-space:pre;
+      }
+      .leftinset a {
+        color:inherit;
+      }
+      .leftinset a:hover {
+        color:blue;
       }
       .rightinset {
         float:right;
@@ -89,6 +96,7 @@
         border-left:0.25em solid lightgrey;
         font-family:monospace,monospace;
         font-size:1em;
+        white-space:pre;
       }
       img.em {
         height:0.9em;

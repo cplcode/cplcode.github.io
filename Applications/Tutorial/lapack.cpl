@@ -1,52 +1,55 @@
-! Interface to some LAPACK functions
+! Interface to some Lapack functions
 ! ==================================
 !
-! packs the dgees and zgees LAPACK functions into a single, overloaded
+! packs the dgees and zgees Lapack subroutines into a single, overloaded
 ! wrapper CPL function eigv(A) providing an ARRAY of eigenvalues
 ! of a general real or complex matrix as its result.
-! It may serve as a template to include more LAPACK functions.
+! This example is a copy of the lapack-eigenvalues library provided in the
+! main package. It may serve as a template to include more Lapack functions.
 
 USE complex
 
 #link "-llapack -lblas"
 ! directive to the linker through the C compiler.
-! On Debian the liblapack3 package or one equivalent must be installed.
+! On Debian the liblapack3 package or one equivalent must have been installed.
 
 INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(COMPLEX A(*,*))
-! This function will produce a constant array if assigned to an undeclared id
+  ! This function will produce a constant array if assigned to an undeclared id
   INTEGER SDIM,info
   LA=LENGTH(A)
-  IF LA#LENGTH(A(LO)) THEN ERROR "matrix is not square"
+  IF LA#LENGTH(A(LO)) THEN ERROR "zgees: matrix is not square"
+  IF STRIDEOF[A(LO)]#1 THEN ERROR "zgees: matrix rows are not contiguous"
+  ! A CPL matrix is allowed to be not contiguous, but a FORTRAN matrix must be.
   LWORK=3*LA
   COMPLEX WORK(1..LWORK)
   REAL RWORK(1..LA)
-  COMPLEX Acopy(0..LA-1,0..LA-1)=A(LO+*,LO+*)
-  FORTRANCALL zgees("N","N",NULL,LA,Acopy,STRIDEOF(Acopy),SDIM,RESULT,NULL,LA,WORK,LWORK,RWORK,NULL,info)
-  ! interface to FORTRAN call, applied without any prototype checking
+  FORTRANCALL zgees("N","N",NULL,LA,A,STRIDEOF(A),SDIM,RESULT,NULL,LA,WORK,LWORK,RWORK,NULL,info)
+  ! interface to FORTRAN call, applied without any prototype checking.
+  ! However, a prototype must be included if this file is to be USEd by icpl;
+  ! see lapack-eigenvalues.cpl for an example.
   IF info#0 THEN ERROR "zgees: " info
-END eigv   ! encapsulating zgees inside eigv turns on prototype checking
+END eigv   ! encapsulating zgees inside eigv turns on CPL prototype checking.
 
 INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(REAL A(*,*))
-! same name as above: overloaded function will be recognized based on argument type
+  ! same function name as above: correct instance of overloaded function
+  ! will be selected based on argument type
   INTEGER SDIM,info
   LA=LENGTH(A)
-  IF LA#LENGTH(A(LO)) THEN ERROR "matrix is not square"
+  IF LA#LENGTH(A(LO)) THEN ERROR "dgees: matrix is not square"
+  IF STRIDEOF[A(LO)]#1 THEN ERROR "dgees: matrix rows are not contiguous" 
+  ! A CPL matrix is allowed to be not contiguous, but a FORTRAN matrix must be.
   LWORK=3*LA
   REAL WORK(1..LWORK)
   REAL WR(1..LA),WI(1..LA)
-  REAL Acopy(0..LA-1,0..LA-1)=A(LO+*,LO+*)
-  FORTRANCALL dgees("N","N",NULL,LA,Acopy,STRIDEOF(Acopy),SDIM,WR,WI,NULL,LA,WORK,LWORK,NULL,info)
-  ! interface to FORTRAN call, applied without any prototype checking
+  FORTRANCALL dgees("N","N",NULL,LA,A,STRIDEOF(A),SDIM,WR,WI,NULL,LA,WORK,LWORK,NULL,info)
+  ! interface to FORTRAN call, applied without any prototype checking.
   IF info#0 THEN ERROR "dgees: " info
   RESULT(*+LO-1).REAL=WR; RESULT(*+LO-1).IMAG=WI
-END eigv   ! encapsulating dgees inside eigv turns on prototype checking
+END eigv   ! encapsulating dgees inside eigv turns on CPL prototype checking.
 
-! Example: uncomment the text below, compile and execute. Alternately type
-! the text below in icpl, in a directory where this file is present,
-! after entering "USE lapack".
+! Example: uncomment the text below, compile this file and execute.
+! Alternately type similar commands in icpl, but USE lapack-eigenvalues instead.
 !(
-  REAL A(1..2,1..2)
-  A(1,1)=1; A(1,2)=3
-  A(2,1)=8; A(2,2)=7
+  A=[(1.,2.),(4.,3.)]
   WRITE eigv(A)
 !)
