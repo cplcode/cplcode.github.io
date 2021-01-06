@@ -10,8 +10,8 @@
 USE complex
 
 #link "-llapack -lblas"
-! directive to the linker through the C compiler.
-! On Debian the liblapack3 package or one equivalent must have been installed.
+! directive to the linker channeled through the C compiler.
+! On Debian the liblapack-dev package or one equivalent must have been installed
 
 INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigv(COMPLEX A(*,*))
   ! This function will produce a constant array if assigned to an undeclared id
