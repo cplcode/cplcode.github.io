@@ -25,23 +25,23 @@
       <li>Conceived by Paolo Luchini</li>
     </ul>
     <p>The present CPL, unrelated to the <em>Cambridge</em> or <em>Combined Programming Language</em>, is a general-purpose programming language akin to FORTRAN or C
-    <span class=leftinset>(**p).col=j;
-p=&(**p).next;
+    <span class=leftinset>(&lowast;&lowast;p).col=j;
+p=&amp;(&lowast;&lowast;p).next;
 
 p.col=j
 p=p.next</span>
-    (but in fact even more similar to the once common Pascal and Modula-2, for those who remember them), with some unique features. It was born out of the effort to provide the pointer handling of C without the hassle of *'s and &amp;'s, the function overloading of C++ without the verbosity of classes, and the function prototypes of MODULA-2 (and most modern languages) without the need for dedicated header or interface files.</p>
+    (but in fact even more similar to the once common Pascal and Modula-2, for those who remember them), with some unique features. It was born out of the effort to provide the pointer handling of C without the hassle of &lowast;'s and &amp;'s, the function overloading of C++ without the verbosity of classes, and the function prototypes of MODULA-2 (and most modern languages) without the need for dedicated header or interface files.</p>
   <p>It also aims for the ease of use of interpreted languages like MATLAB or Python, without giving up the error-catching benefits of mandatorily declared variables and the sheer speed of compiled execution. CPL was thought out as a compiled language from the very beginning; when used for computationally intensive tasks, it has the speed of compiled C.
   <span class=rightinset>&gt; makecpl Helloworld
 &gt; ./Helloworld
 Hello world!</span>
-  In fact, its compiler is implemented as a nimble translator to C which then invokes the system C compiler; this action, as well as the re-making of any required modules that were modified in the meanwhile, occurs behind the scenes at a single <a href="Documentation/cpl.html#makecpl"><code>makecpl</code></a> command. Only much later the <a href="Documentation/cpl.html#icpl"><code>icpl</code></a> interpreter was developed, with the ability to run a combination of interpreted and compiled CPL modules, as well as any function provided by an existing C library, interactively from its console.</p>
-  <p>Did we mention that any function provided by an existing
+  In fact, its compiler is implemented as a nimble translator to C which then invokes the system C compiler; this action, as well as the re-making of any required modules that were modified in the meanwhile, occurs behind the scenes at a single <a href="Documentation/cpl.html#makecpl"><code>makecpl</code></a> command. Later the <a href="Documentation/cpl.html#icpl"><code>icpl</code></a> interpreter was also developed, with the ability to run a combination of interpreted and compiled CPL modules, as well as any function provided by an existing C library, interactively from its console.</p>
+  <p>Did we mention that any function provided by an existing C or FORTRAN library
   <span class=leftinset>USE lapack-eigenvalues
 A=[(1.,2.),(4.,3.)]
 WRITE eigenvalues(A)</span>
-C or FORTRAN library can be seamlessly called inside a CPL program? (or from the <code>icpl</code> command line.) This makes a large number of well known libraries available. And encapsulating a (e.g. <a href="http://www.netlib.org/lapack/">LAPACK</a>) call in a CPL wrapper, as exemplified in this <a href="Applications/Tutorial/lapack.html">lapack Tutorial</a>, simplifies syntax and exacts no performance penalty.</p>
-  <p>To cap this presentation, a hallmark aesthetic touch of CPL is the availability of all three kinds of brackets for grouping arithmetic (or other) expressions,
+can be seamlessly called inside a CPL program? (or from the <code>icpl</code> command line.) If the <a href="Documentation/cpl.html#Library">included libraries</a> are not enough, this feature gives easy access to a large number of public and proprietary libraries alike. And encapsulating a (e.g. <a href="http://www.netlib.org/lapack/">LAPACK</a>) call in a CPL wrapper, as exemplified in this <a href="Applications/Tutorial/lapack.html">lapack Tutorial</a>, simplifies syntax and exacts no performance penalty.</p>
+  <p>To cap this bird's-eye presentation, a hallmark aesthetic touch of CPL is the availability of all three kinds of brackets for grouping arithmetic (or other) expressions,
 <span class=rightinset>p(i)=EXP(-{[x(i)-mu]/sigma}^2/2)</span>
 just as you were taught in school. While this feature is optional and might be unessential to some, alternating brackets so much eases the human eye reading and proofreading nested parentheses. And it enhances automatic error catching too.</p> 
     <footer>
