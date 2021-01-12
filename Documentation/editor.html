@@ -61,7 +61,7 @@
 <body><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
 
 </div><div class=page id="Top">
-Node: (editor)Top, Next: <a href="#readline">readline</a>,  Up: <a href="cpl.html#icpl">(cpl)icpl</a>
+Page: (editor)Top, Next: <a href="#readline">readline</a>,  Up: <a href="cpl.html#icpl">(cpl)icpl</a>
 <hr>
  <h1>icpl-embedded line and full-screen editor</h1>
 Bash-like command completion and command history are traditionally provided by the GNU readline library, which supplies the familiar Tab and Up Arrow commands, input logging and more. The purpose of readline is to allow the user  to edit each command line before committing it, and to keep a history of previous commands for rapid reuse.
@@ -80,7 +80,7 @@ The full-screen editor can be accessed directly from a unix shell by giving the 
 </table></nav>
 
 </div><div class=page id="readline">
-Node: (editor)readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
+Page: (editor)readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
 <hr> <h2>Readline assisted console input</h2>
 Most used editing keys:
 
@@ -101,7 +101,7 @@ Most used editing keys:
  - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
  - Esc \, Ctrl-\: add next (special or control) character verbatim 
 </div><div class=page id="full-screen">
-Node: (editor)full-screen, Next: <a href="#Select">Select</a>, Prev: <a href="#readline">readline</a>, Up: <a href="#Top">Top</a>
+Page: (editor)full-screen, Next: <a href="#Select">Select</a>, Prev: <a href="#readline">readline</a>, Up: <a href="#Top">Top</a>
 <hr>
  <h2>Full-screen editor</h2>
 The full-screen editor is accessed as <q>edit</q> in icpl, or as <q>icpl -edit</q> in the shell, or as <q>edit</q> in the shell if no other <q>edit</q> command comes first.
@@ -150,7 +150,7 @@ Most prompts and menus can be aborted by pressing Esc *twice*.
 </table></nav>
 
 </div><div class=page id="Select">
-Node: (editor)Select, Next: <a href="#Indentation">Indentation</a>, Prev: <a href="#full-screen">full-screen</a>, Up: <a href="#Top">Top</a>
+Page: (editor)Select, Next: <a href="#Indentation">Indentation</a>, Prev: <a href="#full-screen">full-screen</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>Select, Insert and Delete</h3>
 Selection of a text area is achieved either by keeping the left mouse button pressed or by pressing shift together with any cursor motion key. Selection can apply to the text comprised between the starting and ending selected positions or to a rectangular area with the given corners (useful to select columns). Esc t toggles in and out of rectangular mode. Esc w or double-clicking the mouse selects a word under the cursor; if applied to an opening or closing bracket, Esc w or double clicking selects the entire parenthesis. Esc n or triple clicking selects the line under the cursor. Esc <q>S</q>, or clicking save with the right mouse button, saves the current selection to a file.
 
@@ -171,7 +171,7 @@ Esc !, respectively Esc @, turns the current selection to all uppercase or all l
 
 The copy-and-paste functionality of the underlying xterm-compatible terminal is also available, and necessary if you want to copy some text to/from the X clipboard. This is accessed by pressing Shift together with the corresponding xterm mouse button (left button to select, center button to paste). Ctrl-Insert and Shift-Insert also keep their function of copying to/from the X clipboard. 
 </div><div class=page id="Indentation">
-Node: (editor)Indentation, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a>
+Page: (editor)Indentation, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>CPL syntax-sensitive indentation and completion</h3>
 When a .cpl file is being edited, pressing Enter at the end of a freshly modified line automatically:
 
@@ -196,7 +196,7 @@ Where needed, the following explicit indentation commands are available:
  Esc ( : unindent the current selection by one space to the left,
  Esc = : even the margin of the current selection, or indent as to CPL syntax. 
 </div><div class=page id="Find">
-Node: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#Top">Top</a>
+Page: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#Top">Top</a>
 <hr> <h3>Find and replace</h3>
 <q>find</q> (Esc /) and <q>goto</q> (Esc g or Esc +) seek the cursor to a given string or to a given line number. Esc ? (or clicking <q>find</q> with the right mouse button) seeks backwards. The search is case-insensitive if the first character of the search string is a lowercase letter, case-sensitive otherwise. The found string is automatically selected. If some text is selected when Esc / or Esc ? are pressed, the selected text will appear as a proposed search string.
 
@@ -206,7 +206,7 @@ Esc &gt; is a shortcut for pressing Insert and Esc . one after the other, and th
 
 Esc Enter repeats whatever the last command was, possibly the last (forward or backward) find or the last replace-and-find-again. 
 </div><div class=page id="Undo">
-Node: (editor)Undo,  Prev: <a href="#Find">Find</a>,  Up: <a href="#Top">Top</a>
+Page: (editor)Undo,  Prev: <a href="#Find">Find</a>,  Up: <a href="#Top">Top</a>
 <hr> <h3>Undo and redo</h3>
 Unlimited undo and redo functionality is supported, activated by Esc u and Esc U respectively (or Esc z and Esc Z as alternates, or Ctrl-z and Ctrl-y, but with the variation detailed below). As a distinctive feature of this editor (shared by hardly any others, a history-setting notable exception being emacs), memory of the undone edits is retained even when further edits take place after an undo.
 

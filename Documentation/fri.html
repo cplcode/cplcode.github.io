@@ -61,7 +61,7 @@
 <body><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
 
 </div><div class=page id="Top">
-Node: (fri)Top, Next: <a href="#Opcodes">Opcodes</a>, Up: <a href="cpl.html#makecpl">(cpl)makecpl</a>
+Page: (fri)Top, Next: <a href="#Opcodes">Opcodes</a>, Up: <a href="cpl.html#makecpl">(cpl)makecpl</a>
 <hr> <h2>The FRI interpreter</h2>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -73,7 +73,7 @@ Node: (fri)Top, Next: <a href="#Opcodes">Opcodes</a>, Up: <a href="cpl.html#make
 </table></nav>
 
 </div><div class=page id="FRI%20architecture">
-Node: (fri)FRI architecture, Next: <a href="#Opcodes">Opcodes</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
+Page: (fri)FRI architecture, Next: <a href="#Opcodes">Opcodes</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>FRI architecture</h3>
 FRI is a declarative language. The FRI virtual machine's workspace is composed of three items: an input character stream, an output character stream and a dictionary of rules. A rule is a sequence of bytes that can represent characters to be matched against the input stream, characters to be written to the output stream, or opcodes specifying general actions that can modify either stream, or the dictionary itself, or initiate a new rule. A rule <q>matches</q> if it runs to its end, or <q>fails</q> if an input character or an inner nested rule does not match.
 
@@ -85,7 +85,7 @@ The dictionary of rules is alphabetically ordered and, with one exception, indep
 
 When one rule fails, execution restarts with the next one in the dictionary. If two rules have a common root, only the part of the rule that failed undergoes a new attempt; side effects of the part that matched will not be repeated more than once. Execution terminates, as a match, when any one rule's byte sequence attains its end (or an explicit end opcode) or, as a failure, when the dictionary runs out of rules. For debugging purposes, it can also be terminated in an error message by suitable opcodes. 
 </div><div class=page id="Opcodes">
-Node: (fri)Opcodes, Next: <a href="#Command%20line">Command line</a>, Prev: <a href="#FRI%20architecture">FRI architecture</a>, Up: <a href="#Top">Top</a>
+Page: (fri)Opcodes, Next: <a href="#Command%20line">Command line</a>, Prev: <a href="#FRI%20architecture">FRI architecture</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>Language opcodes</h3>
 Character matching
 
@@ -284,7 +284,7 @@ Miscellaneous, less frequently used operations
 		notation in the next two input characters.
  shell command shell command  passes the top output string to the operating		system shell for execution as a command. 
 </div><div class=page id="Command%20line">
-Node: (fri)Command line, Prev: <a href="#Opcodes">Opcodes</a>, Up: <a href="#Top">Top</a>
+Page: (fri)Command line, Prev: <a href="#Opcodes">Opcodes</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>The fri command line</h3>
 Usage:	      fri [rule file] [-e command] [-i] [data file] ...
 
