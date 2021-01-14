@@ -624,6 +624,14 @@ In short form, a function whose result can be written as a single expression  ma
 
 	&lt;type&gt; FUNCTION name( &lt;parameter declarations&gt; ) = &lt;expression&gt;
 
+A third alternate syntax, similar to the one used for  variables of <a href="#Subroutine%20type">Subroutine type</a>, has the result type follow the parameter declaration:
+
+	FUNCTION name( &lt;parameter declarations&gt; )-&gt;&lt;type&gt;
+	&lt;block&gt;
+	END name
+
+When this syntax is used, the result type may be, or contain, an ARRAY type with dimensions depending on the formal parameters themselves. Any formal parameter as well may depend on the formal parameters that precede it.
+
 Within a function's body, a variable named
 
 	RESULT
