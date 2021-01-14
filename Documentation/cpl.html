@@ -575,27 +575,22 @@ A subroutine returns at the END of the subroutine block or at the <a href="#EXIT
 
 The declared subroutine is visible from the point of its declaration to the end of the enclosing block, just as all other declarations. This includes the subroutine body itself, and recursive calls are thus automatically allowed.
 
-Function overloading is an inherent feature of CPL. Since type checking is enforced on function arguments, functions and subroutines of the same name but different (not <a href="#OPTIONAL">OPTIONAL</a>) arguments can be distinguished from each other, and are transparently handled. For other object-oriented features see also <a href="#DYNAMIC">DYNAMIC</a>.
-
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
-<tr><td><a href="#Nested%20functions">Nested functions</a>:</td><td></td></tr>
 <tr><td><a href="#SUBROUTINE">SUBROUTINE</a>:</td><td>Subroutine declaration</td></tr>
 <tr><td><a href="#FUNCTION">FUNCTION</a>:</td><td>Function declaration</td></tr>
 <tr><td><a href="#INLINE">INLINE</a>:</td><td>Subroutines and functions as macros</td></tr>
 <tr><td><a href="#FOLLOWS">FOLLOWS</a>:</td><td>Function prototypes</td></tr>
 <tr><td><a href="#OPTIONAL">OPTIONAL</a>:</td><td>optional function parameters recognized by name</td></tr>
+<tr><td><a href="#Nested%20functions">Nested functions</a>:</td><td>Nested functions</td></tr>
+<tr><td><a href="#overloading">overloading</a>:</td><td>Function overloading</td></tr>
 <tr><td><a href="#Subroutine%20type">Subroutine type</a>:</td><td>variable call to a subroutine or function</td></tr>
 <tr><td><a href="#Builtin">Builtin</a>:</td><td>built-in function list</td></tr>
 </table></nav>
 
-</div><div class=page id="Nested%20functions">
-Page: (cpl)Nested functions, Next: <a href="#SUBROUTINE">SUBROUTINE</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Functions">Functions</a>
-<hr> <h2>Nested functions</h2>
-Functions and subroutines exist on a par with variable <a href="#Declarations">Declarations</a> and can appear anywhere in a block, another function included. Nested functions are therefore an integral part of CPL. Like all other block contexts, they have access to variables (and functions) declared before them, in the same or in an enclosing block. The present implementation of nested functions translates to nested functions in the generated C code, and is therefore only compatible with C compilers that handle nested functions as an extended feature (gcc is one of them). 
 </div><div class=page id="SUBROUTINE">
-Page: (cpl)SUBROUTINE, Next: <a href="#FUNCTION">FUNCTION</a>, Prev: <a href="#Nested%20functions">Nested functions</a>, Up: <a href="#Functions">Functions</a>
+Page: (cpl)SUBROUTINE, Next: <a href="#FUNCTION">FUNCTION</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Functions">Functions</a>
 <hr> <h2>Subroutine declarations</h2>
 In long form, a subroutine declaration reads
 
@@ -644,16 +639,14 @@ is implicitly declared with the type of the function's result, and can be used j
 
 is a shorthand for
 
-	RESULT=&lt;value&gt;; EXIT &lt;function&gt;. 
+	RESULT=&lt;value&gt;; EXIT name. 
 
 The keyword FUNCTION is also used to declare variables of <a href="#Subroutine%20type">Subroutine
 type</a>. The statement RETURN is also used in <a href="#interactive%20session">interactive session</a>. 
 </div><div class=page id="INLINE">
 Page: (cpl)INLINE,  Next: <a href="#FOLLOWS">FOLLOWS</a>,  Prev: <a href="#FUNCTION">FUNCTION</a>,  Up: <a href="#Functions">Functions</a>
 <hr> <h2>Inline functions and subroutines</h2>
-The keyword INLINE prefixed to a <a href="#SUBROUTINE">SUBROUTINE</a> or <a href="#FUNCTION">FUNCTION</a> declaration (either in long or short form) generates a compile-time macro that is inserted in place of each call to the subroutine.
-
-<a href="#EXIT">EXIT</a> cannot presently be used in INLINE functions.
+The keyword INLINE prefixed to a <a href="#SUBROUTINE">SUBROUTINE</a> or <a href="#FUNCTION">FUNCTION</a> declaration (in either long or short form) generates a compile-time macro that is inserted in place of each call to the subroutine.
 
 See also <a href="#INLINE%20LOOP">INLINE LOOP</a>. 
 </div><div class=page id="FOLLOWS">
@@ -663,25 +656,33 @@ In case the prototype of a subroutine must be declared in advance, the construct
 
 	SUBROUTINE name( &lt;parameter declarations&gt; ) FOLLOWS
 
-(or its equivalent for functions) can be used to make the subroutine callable before its complete declaration appears. This prototype declaration is only needed for mutually referencing subroutines (as in Pascal or C) or for subroutines whose body is hidden in a subsequent <a href="#MODULE">MODULE</a>.
+(or its equivalent for functions) can be used to make the subroutine callable before its body appears. This prototype declaration is only really needed for mutually referencing subroutines (as in Pascal or C) or for subroutines whose body is hidden in a subsequent <a href="#MODULE">MODULE</a>.
 
-A prototype may also be defined for a <a href="#CONSTANT">CONSTANT</a>. 
+A prototype using FOLLOWS may also be defined for a <a href="#CONSTANT">CONSTANT</a>. 
 </div><div class=page id="OPTIONAL">
-Page: (cpl)OPTIONAL,  Next: <a href="#RESULT">RESULT</a>,  Prev: <a href="#FOLLOWS">FOLLOWS</a>,  Up: <a href="#Functions">Functions</a>
+Page: (cpl)OPTIONAL, Next: <a href="#Nested%20functions">Nested functions</a>, Prev: <a href="#FOLLOWS">FOLLOWS</a>, Up: <a href="#Functions">Functions</a>
 <hr> <h2>Optional parameters</h2>
 The parameter list of a function or subroutine can include optional items. In the function declaration, optional parameters must appear after all ordinary positional parameters (if there are any), separated by the keyword OPTIONAL. Each optional parameter must be assigned a default value in its declaration. Example:
 
 	SUBROUTINE test(INTEGER x; OPTIONAL INTEGER y=0,z=3; REAL w=3.14)
 
-In the body of the function optional parameters obey the same rules as local constants or variables (if qualified <a href="#VARIABLE">VARIABLE</a>), just like ordinary parameters; on entry they acquire the value of the corresponding actual parameter if one is specified in the calling statement, or their default value otherwise.
+Within the body of the function, optional parameters obey the same rules as ordinary formal parameters; on entry they acquire the value of each corresponding actual parameter if one is specified in the calling statement, or their default value otherwise.
 
-In the calling statement, optional parameters follow all standard positional parameters and can appear in any order (or not appear at all); they are identified by name rather than by position. In the above example:
+In the calling statement, optional parameters follow all standard positional parameters and can appear in any order (or not appear at all); they are identified by name rather than by position. In the above example,
 
 	test(3,w=1E2,y=1)
 
-Optional parameters cannot be used to disambiguate overloaded function names. 
+is a possible calling statement. Optional parameters cannot be used to disambiguate overloaded function names. (See <a href="#overloading">overloading</a>.) 
+</div><div class=page id="Nested%20functions">
+Page: (cpl)Nested functions, Next: <a href="#overloading">overloading</a>, Prev: <a href="#OPTIONAL">OPTIONAL</a>, Up: <a href="#Functions">Functions</a>
+<hr> <h2>Nested functions</h2>
+Functions and subroutines exist on a par with variable <a href="#Declarations">Declarations</a> and can appear anywhere in a block, another function included. Nested functions are therefore an integral part of CPL. Like all other block contexts, they have access to variables (and functions) declared before them, in the same or in an enclosing block. The present implementation of nested functions translates to nested functions in the generated C code, and is therefore only compatible with C compilers that handle nested functions as an extended feature (gcc is one of them). 
+</div><div class=page id="overloading">
+Page: (cpl)overloading, Next: <a href="#RESULT">RESULT</a>, Prev: <a href="#Nested%20functions">Nested functions</a>, Up: <a href="#Functions">Functions</a>
+<hr> <h2>Function name overloading</h2>
+Function overloading is an inherent feature of CPL. Since type checking is enforced on function arguments, functions and subroutines of the same name but different (not <a href="#OPTIONAL">OPTIONAL</a>) arguments can be distinguished from each other, and are transparently handled. This also works for runtime specified types: see <a href="#DYNAMIC">DYNAMIC</a>. 
 </div><div class=page id="RESULT">
-Page: (cpl)RESULT, Next: <a href="#Declarations">Declarations</a>, Prev: <a href="#OPTIONAL">OPTIONAL</a>, Up: <a href="#Functions">Functions</a>
+Page: (cpl)RESULT, Next: <a href="#Declarations">Declarations</a>, Prev: <a href="#overloading">overloading</a>, Up: <a href="#Functions">Functions</a>
 <hr> Formal name of the result of a <a href="#FUNCTION">FUNCTION</a> inside of the function's body. RESULT is implicitly declared as a variable of the type indicated in the FUNCTION's declaration and may be used and assigned like any other variable. On exit it becomes the function's value returned to the calling program. 
 </div><div class=page id="Declarations">
 Page: (cpl)Declarations, Next: <a href="#Statements">Statements</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Top">Top</a>
@@ -872,7 +873,7 @@ A structure declaration may also contain one or more anonymous fields. If a type
 
 var includes a field of type t1 of which var.a denotes the <q>a</q> field.
 
-Anonymous structure fields are the CPL way of defining objects that inherit the structure of other more general objects and add their own specific fields. When these objects are accessed as arguments to functions or subroutines, the appropriate function among those with the same name and different arguments is automatically selected. See also <a href="#Functions">overloading:Functions</a>, <a href="#DYNAMIC">DYNAMIC</a>. 
+Anonymous structure fields are the CPL way of defining objects that inherit the structure of other more general objects and add their own specific fields. When these objects are accessed as arguments to functions or subroutines, the appropriate function among those with the same name and different arguments is automatically selected. See also <a href="#overloading">overloading</a>, <a href="#DYNAMIC">DYNAMIC</a>. 
 </div><div class=page id="ARRAY">
 Page: (cpl)ARRAY, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#STRUCTURE">STRUCTURE</a>, Up: <a href="#Declarations">Declarations</a>
 <hr> <h2>ARRAYs</h2>
@@ -1023,7 +1024,7 @@ In other words, code is written just as if an INTEGER index were used, but the p
 </div><div class=page id="DYNAMIC">
 Page: (cpl)DYNAMIC, Next: <a href="#IS">IS</a>, Prev: <a href="#INTO">INTO</a>, Up: <a href="#Declarations">Declarations</a>
 <hr> <h2>Object-oriented features</h2>
-CPL is not an object-oriented language in the sense that functions are supposed to be declared within object class declarations, and intentionally so. Object-like behaviour is achieved through overloaded function names (<a href="#Functions">Function overloading:Functions</a>) and implicit type conversion (<a href="#STRUCTURE">anonymous:STRUCTURE</a>).
+CPL is not an object-oriented language in the sense that functions are supposed to be declared within object class declarations, and intentionally so. Object-like behaviour is achieved through overloaded function names (<a href="#overloading">Function:overloading</a>.) and implicit type conversion (<a href="#STRUCTURE">anonymous:STRUCTURE</a>).
 
 In addition, situations where the type of an object is not fixed at compile time are catered for by <q>dynamic pointers</q>, pointers that can reference and provide type checking for objects whose type will only be known at run time. These are declared by the type declarator
 
