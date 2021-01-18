@@ -119,7 +119,7 @@ If RANGE was not specified, 0,1,0,1 is assumed (except for <a href="#PLOT">PLOT<
 Page: (graphics)STARTLINE,  Next: <a href="#DRAW">DRAW</a>,  Prev: <a href="#RANGE">RANGE</a>,  Up: <a href="#Top">Top</a>
 <hr> <h3>SUBROUTINE STARTLINE()</h3>
 <h3>SUBROUTINE STARTCIRCLE()</h3>
-<h3>SUBROUTINE STARTLINE(ARRAY(*) OF CHAR style)</h3>
+<h3>SUBROUTINE STARTLINE(ARRAY(&lowast;) OF CHAR style)</h3>
 Starts a new line (chain of segments) within the current graph. That is, the next <a href="#DRAW">DRAW</a> command will not draw a segment but just a point.
 
 STARTCIRCLE specifies that a small circle be drawn in each point rather than connecting them with segments. In the <a href="#gnuplot">gnuplot</a> version only, the argument &lt;style&gt; may be added to specify a gnuplot-recognized line style. 
@@ -149,9 +149,9 @@ flushes the internal buffer, which could otherwise delay the graph from being sh
 Page: (graphics)PLOT,  Next: <a href="#strlines">strlines</a>,  Prev: <a href="#SHOWGRAPH">SHOWGRAPH</a>,  Up: <a href="#Top">Top</a>
 <hr> <h3>SUBROUTINE PLOT(REAL FUNCTION(REAL) f; REAL x1,x2)</h3>
 <h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER) f; INTEGER x1,x2)</h3>
-<h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER) f; ARRAY(*) OF REAL vecx)</h3>
-<h3>SUBROUTINE PLOT(ARRAY(*) OF REAL vec)</h3>
-<h3>SUBROUTINE PLOT(ARRAY(*) OF REAL vecy,vecx)</h3>
+<h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER) f; ARRAY(&lowast;) OF REAL vecx)</h3>
+<h3>SUBROUTINE PLOT(ARRAY(&lowast;) OF REAL vec)</h3>
+<h3>SUBROUTINE PLOT(ARRAY(&lowast;) OF REAL vecy,vecx)</h3>
 These subroutines have the purpose of plotting an entire function or data array in a predefined format with a single command. If a <a href="#RANGE">RANGE</a> was not specified between <a href="#OPENGRAPH">OPENGRAPH</a> and the current <a href="#PLOT">PLOT</a>, it is automatically determined. 
 </div><div class=page id="nographics">
 Page: (graphics)nographics,  Next: <a href="#gnuplot">gnuplot</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a>

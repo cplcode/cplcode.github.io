@@ -81,6 +81,7 @@ Page: (cpl)Top,  Next: <a href="#Keyword%20Index">Keyword Index</a>, Up: <a href
 <tr><td><a href="#Control">Control</a>:</td><td>Program flow control statements</td></tr>
 <tr><td><a href="#makecpl">makecpl</a>:</td><td>Compilation tools and their usage</td></tr>
 <tr><td><a href="#icpl">icpl</a>:</td><td>Interactive CPL</td></tr>
+<tr><td><a href="editor.html#Top">(editor)</a>:</td><td>development text editor with CPL word and syntax completion</td></tr>
 <tr><td><a href="#Library">Library</a>:</td><td>Ready to USE library of CPL modules</td></tr>
 <tr><td><a href="#Keyword%20Index">Keyword Index</a>:</td><td>Keyword Index</td></tr>
 </table></nav>
@@ -181,7 +182,6 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#POINTER">POINTER</a>:</td><td>pointer to a memory address</td></tr>
 <tr><td><a href="#POSITION">POSITION</a>:</td><td>read or set a file's current position</td></tr>
 <tr><td><a href="#Looping%20operator">PRODUCT:Looping operator</a>:</td><td></td></tr>
-<tr><td><a href="#PROMPT">PROMPT</a>:</td><td>terminal input prompt</td></tr>
 <tr><td><a href="#RAND">RAND</a>:</td><td>uniformly distributed in (0,1) random REAL number</td></tr>
 <tr><td><a href="#READ">READ</a>:</td><td>input from character files and devices</td></tr>
 <tr><td><a href="#REAL">REAL</a>:</td><td>primitive type declarator</td></tr>
@@ -242,7 +242,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#STRING">literal:STRING</a>:</td><td>constant string of characters</td></tr>
 <tr><td><a href="editor.html#full-screen">load:(editor)full-screen</a>:</td><td>Load a file at current cursor position</td></tr>
 <tr><td><a href="#makecpl">makecpl</a>:</td><td>Compilation tools and their usage</td></tr>
-<tr><td><a href="#Nested%20functions">nested:Nested functions</a>:</td><td>are allowed wherever a declaration is.</td></tr>
+<tr><td><a href="#nested%20functions">nested functions</a>:</td><td>are allowed wherever a declaration is.</td></tr>
 <tr><td><a href="graphics.html#nographics">nographics:(graphics)nographics</a>:</td><td>fake plotting package (does nothing)</td></tr>
 <tr><td><a href="parallel.html#nonparallel">nonparallel:(parallel)nonparallel</a>:</td><td>fake parallel package (does nothing)</td></tr>
 <tr><td><a href="parallel.html#Top">parallel:(parallel)</a>:</td><td>Parallel computing</td></tr>
@@ -250,18 +250,18 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#icpl">quit:icpl</a>:</td><td>exit icpl</td></tr>
 <tr><td><a href="matrix.html#Top">rbmat:(matrix)</a>:</td><td>Real square and Banded Matrix operations</td></tr>
 <tr><td><a href="editor.html#Top">readline:(editor)</a>:</td><td>Own implementation of readline input editor</td></tr>
-<tr><td><a href="#rtchecks">rtchecks</a>:</td><td>.		Run Time bounds Checking</td></tr>
+<tr><td><a href="#rtchecks">rtchecks</a>:</td><td>Run Time bounds Checking</td></tr>
 <tr><td><a href="editor.html#full-screen">save:(editor)full-screen</a>:</td><td>Save the session log or current screen to a file</td></tr>
 <tr><td><a href="graphics.html#gnuplot">set:(graphics)gnuplot</a>:</td><td>set command for gnuplot, passed as is </td></tr>
 <tr><td><a href="strlines.html#Top">strlines:(strlines)</a>:</td><td>Streamline plotting</td></tr>
 <tr><td><a href="symbolic.html#Top">symbolic:(symbolic)</a>:</td><td>Symbolic differentiation</td></tr>
-<tr><td><a href="#ARRAY">*:ARRAY</a>:</td><td>or multiplication operator</td></tr>
-<tr><td><a href="#compound%20index">**:compound index</a>:</td><td>Also alternate power operator</td></tr>
+<tr><td><a href="#ARRAY">&lowast;:ARRAY</a>:</td><td>or multiplication operator</td></tr>
+<tr><td><a href="#compound%20index">&lowast;&lowast;:compound index</a>:</td><td>Also alternate power operator</td></tr>
 <tr><td><a href="#Assignment">=:Assignment</a>:</td><td>Also comparison operator</td></tr>
 <tr><td><a href="#Deferred%20assignment">==:Deferred assignment</a>:</td><td></td></tr>
 <tr><td><a href="#REAL%20operator">^:REAL operator</a>:</td><td>or postfix POINTER dereference</td></tr>
 <tr><td><a href="#Assignment">~:Assignment</a>:</td><td>placeholder for the l.h.s.</td></tr>
-<tr><td><a href="#C%20SECTION">&lt;*:C SECTION</a>:</td><td></td></tr>
+<tr><td><a href="#C%20SECTION">&lt;&lowast;:C SECTION</a>:</td><td></td></tr>
 <tr><td><a href="#STRING">&lt;&lt;:STRING</a>:</td><td></td></tr>
 <tr><td><a href="#Comparison">#:Comparison</a>:</td><td></td></tr>
 <tr><td><a href="#C%20preprocessor">#define:C preprocessor</a>:</td><td></td></tr>
@@ -322,16 +322,19 @@ Page: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#multi-us
 If the initial setup did not report any errors, and <q>$HOME/fri/makecpl</q> or <q>/usr/local/fri/makecpl</q> do work, this is a PATH problem. CPL setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may find it easier to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions for how to modify the PATH variable.
 
 <h3>My program compiles but does not execute</h3>
-Is . in your PATH? Many Linux distributions do not by default have your current working directory in the set of automatically searched file paths. Solutions: 1) prefix ./ to the name of your executable, as in <q>./Helloworld</q> 2) modify your PATH environment variable (look up instructions for your shell) 3) use <a href="#icpl">icpl</a> as your shell (either <q>icpl Helloworld</q> or just <q>icpl</q> and then <q>Helloworld</q>). icpl will automatically compile and execute &lt;yourprogram&gt; if a more recent &lt;yourprogram&gt;.cpl file is found in the same directory, or interpret &lt;yourprogram&gt;.cpl if the .cpl suffix is included.
+Is . in your PATH? Many Linux distributions do not by default have your current working directory in the set of automatically searched file paths. Solutions:
+ 1) prefix ./ to the name of your executable, as in <q>./Helloworld</q>
+ 2) modify your PATH environment variable (look up instructions for your shell)
+ 3) use <a href="#icpl">icpl</a> as your shell (either <q>icpl Helloworld</q> or just <q>icpl</q> and then <q>Helloworld</q>). icpl will automatically compile and execute &lt;yourprogram&gt; if a more recent &lt;yourprogram&gt;.cpl file is found in the same directory, or interpret &lt;yourprogram&gt;.cpl if the .cpl suffix is included.
 
 <h3>My program crashes without any error messages</h3>
-Always put <q>USE rtchecks</q> as the first line of your main program during development. <a href="#rtchecks">rtchecks</a> adds a number of runtime checks and error messages at the expense of execution speed. You will remove it once your program is debugged.
+Always put <q>USE rtchecks</q> as the first line of your main program during development. <a href="#rtchecks">rtchecks</a> transparently adds a number of runtime checks and error messages at the expense of execution speed. You will remove it once your program is debugged.
 
 <h3>I want to access icpl from my Desktop</h3>
 Drag and drop the <q>interactive CPL</q> icon from wherever your <q>fri</q> directory is (typically, /usr/local/fri or $HOME/fri) to your Desktop.
 
 <h3>I want to receive automatic updates</h3>
-Starting with version 2020-12-16, makecpl will automatically offer updates when they become available (see <a href="#automatic%20updates">automatic updates</a>). If you see an update on the website for which you did not get a reminder from running makecpl, please check that the <q>curl</q> command is installed (on Debian, <q>apt install curl</q>) and that you have write access to the directory where fri/ resides. In case you\ would rather disable this feature, edit the makecpl script and turn ENABLE_UPDATES to <q>NO</q>.
+Starting with version 2020-12-16, makecpl will automatically offer updates when they become available (see <a href="#automatic%20updates">automatic updates</a>). If you see an update on the website for which you did not get a reminder while running makecpl, please check that the <q>curl</q> command is installed (on Debian, <q>apt install curl</q>) and that you have write access to the parent of the fri/ directory. In case you would rather disable this feature, edit the makecpl script and turn ENABLE_UPDATES to <q>NO</q>.
 
 <h3>I want to use icpl and/or edit remotely</h3>
 icpl is perfectly compatible with ssh. Just ssh into your remote system where CPL is installed, and give the <q>icpl</q> command there. Non-Linux ssh clients are ok too. All special and arrow keys have alphabetic equivalents for the case they may be missing or hard to combine on your keyboard. In a pinch, you can log in from your smartphone with ConnectBot or similar.
@@ -340,10 +343,10 @@ icpl is perfectly compatible with ssh. Just ssh into your remote system where CP
 The <q>edit</q> command is used as an alias by more than one editor, including vim and other vi derivatives. You can always access the icpl editor by its unaliased name <q>icpl -edit</q> (with a space), or as <q>edit</q> within icpl, or you can modify your PATH so the <q>edit</q> link to icpl takes precedence.
 
 <h3>On my system, <q>edit</q> used to pop up a different editor</h3>
-If having <q>edit</q> pop up a different editor is your preferred behaviour, you can just delete the bin/edit symbolic link. You will still be able to access the icpl editor by the methods specified above.
+If having <q>edit</q> pop up a different editor is your preferred behaviour, you can just delete the bin/edit symbolic link. You will still be able to access the icpl editor by one of the other methods specified above.
 
 <h3>My .cpl files get rejected when sent as email attachments</h3>
-Some email servers automatically reject files with the .cpl extension because this extension is shared with MS Windows Control PaneL files. This difficulty is unfortunate but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end. 
+Some email servers automatically reject files with the .cpl extension because this extension is shared with MS Windows Control PaneL files. This behaviour is unfortunate but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end. 
 </div><div class=page id="Syntax">
 Page: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a>
 <hr> <h1>The CPL programming language syntax</h1>
@@ -419,7 +422,7 @@ The standard ending for CPL source files is .cpl, and is automatically added by 
 </div><div class=page id="USE">
 Page: (cpl)USE, Next: <a href="#INCLUDE">INCLUDE</a>, Prev: <a href="#Source%20file">Source file</a>, Up: <a href="#Source%20file">Source file</a>
 <hr> <h3>Separately compiled program segments</h3>
-USE: separately compiled source files can be used with the statement
+Separately compiled source files can be used with the statement
 
 	USE &lt;filename&gt;
 
@@ -427,7 +430,7 @@ USE: separately compiled source files can be used with the statement
 
 The USEd file is logically treated as if it were inserted in the program sequence in place of the <q>USE</q> statement, i.e. just as if <a href="#INCLUDE">INCLUDE</a> were in place. However, in reality the file is either compiled into a separate object file or, if a more recent object file of the same name already exists, not compiled at all. In the latter case the CPL compiler reads the outermost block only from the USEd source file and skips the inner block contents altogether, generating the same effect as a Modula-2 definition file or a C header file.
 
-In case actual headers must be generated in order to save space (or to distribute a library without source code) it is possible to USE a source file with empty subroutine bodies, since the compiler would not read the subroutine bodies anyway, provided the object file is artificially given a more recent date (for instance, through <a href="*manpages*.html#touch">(*manpages*)touch</a>) If this is not done, subroutines will be recompiled empty, with obviously unwanted results.
+In case actual headers must be generated in order to save space (or to distribute a library without source code) it is possible to USE a source file with empty subroutine bodies, since the compiler would not read the subroutine bodies anyway, provided the object file is artificially given a more recent date (for instance, through <a href="*manpages*.html#touch">(&lowast;manpages&lowast;)touch</a>) If this is not done, subroutines will be recompiled empty, with obviously unwanted results.
 
 In an interpreted program (<a href="#icpl">icpl</a>) just as well, USE loads a separately compiled module, whose subroutines can then be executed at compiled speed, and executes its main body, if any, before passing control back to the console. 
 </div><div class=page id="INCLUDE">
@@ -487,11 +490,11 @@ C code excerpts can be inserted in a CPL program through the statement
 
 This has the same effect as recalling with #include a file that contains &lt;C code&gt;. That is, the identifiers declared in the C SECTION become transparently available to the CPL program.
 
-As an alternative, C code may also be inserted between <q>&lt;*</q> and <q>*&gt;</q> as:
+As an alternative, C code may also be inserted between <q>&lt;&lowast;</q> and <q>&lowast;&gt;</q> as:
 
-	&lt;* C code *&gt;
+	&lt;&lowast; C code &lowast;&gt;
 
-In this case, anything that appears between <q>&lt;*</q> and <q>*&gt;</q> is copied verbatim in the generated C code without any intervention of the CPL compiler. It is up to the programmer to ensure that the resulting code makes sense, so this construction should only be used as a last resort. 
+In this case, anything that appears between <q>&lt;&lowast;</q> and <q>&lowast;&gt;</q> is copied verbatim in the generated C code without any intervention of the CPL compiler. It is up to the programmer to ensure that the resulting code makes sense, so this construction should only be used as a last resort. 
 </div><div class=page id="FORTRAN%20interface">
 Page: (cpl)FORTRAN interface, Next: <a href="#MODULE">MODULE</a>, Prev: <a href="#C%20SECTION">C SECTION</a>, Up: <a href="#Source%20file">Source file</a>
 <hr> <h3>Use of FORTRAN subroutine calls</h3>
@@ -583,8 +586,9 @@ The declared subroutine is visible from the point of its declaration to the end 
 <tr><td><a href="#INLINE">INLINE</a>:</td><td>Subroutines and functions as macros</td></tr>
 <tr><td><a href="#FOLLOWS">FOLLOWS</a>:</td><td>Function prototypes</td></tr>
 <tr><td><a href="#OPTIONAL">OPTIONAL</a>:</td><td>optional function parameters recognized by name</td></tr>
-<tr><td><a href="#Nested%20functions">Nested functions</a>:</td><td>Nested functions</td></tr>
+<tr><td><a href="#nested%20functions">nested functions</a>:</td><td>Nested functions</td></tr>
 <tr><td><a href="#overloading">overloading</a>:</td><td>Function overloading</td></tr>
+<tr><td><a href="#array%20parameters">array parameters</a>:</td><td>passing arrays of variable dimensions</td></tr>
 <tr><td><a href="#Subroutine%20type">Subroutine type</a>:</td><td>variable call to a subroutine or function</td></tr>
 <tr><td><a href="#Builtin">Builtin</a>:</td><td>built-in function list</td></tr>
 </table></nav>
@@ -625,9 +629,9 @@ A third alternate syntax, similar to the one used for  variables of <a href="#Su
 	&lt;block&gt;
 	END name
 
-When this syntax is used, the result type may be, or contain, an ARRAY type with dimensions depending on the formal parameters themselves. Any formal parameter as well may depend on the formal parameters that precede it. For example:
+When this syntax is used, the result type may be, or contain, an ARRAY type with dimensions depending on the formal parameters themselves (see <a href="#array%20parameters">array parameters</a>). Any formal parameter as well may depend on the formal parameters that precede it. For example:
 
-	FUNCTION massagearray[ARRAY(*) OF REAL v]-&gt;ARRAY(v.LO..v.HI) OF REAL .
+	FUNCTION massagearray[ARRAY(&lowast;) OF REAL v]-&gt;ARRAY(v.LO..v.HI) OF REAL .
 
 Within a function's body, a variable named
 
@@ -660,7 +664,7 @@ In case the prototype of a subroutine must be declared in advance, the construct
 
 A prototype using FOLLOWS may also be defined for a <a href="#CONSTANT">CONSTANT</a>. 
 </div><div class=page id="OPTIONAL">
-Page: (cpl)OPTIONAL, Next: <a href="#Nested%20functions">Nested functions</a>, Prev: <a href="#FOLLOWS">FOLLOWS</a>, Up: <a href="#Functions">Functions</a>
+Page: (cpl)OPTIONAL, Next: <a href="#nested%20functions">nested functions</a>, Prev: <a href="#FOLLOWS">FOLLOWS</a>, Up: <a href="#Functions">Functions</a>
 <hr> <h2>Optional parameters</h2>
 The parameter list of a function or subroutine can include optional items. In the function declaration, optional parameters must appear after all ordinary positional parameters (if there are any), separated by the keyword OPTIONAL. Each optional parameter must be assigned a default value in its declaration. Example:
 
@@ -673,16 +677,46 @@ In the calling statement, optional parameters follow all standard positional par
 	test(3,w=1E2,y=1)
 
 is a possible calling statement. Optional parameters cannot be used to disambiguate overloaded function names. (See <a href="#overloading">overloading</a>.) 
-</div><div class=page id="Nested%20functions">
-Page: (cpl)Nested functions, Next: <a href="#overloading">overloading</a>, Prev: <a href="#OPTIONAL">OPTIONAL</a>, Up: <a href="#Functions">Functions</a>
+</div><div class=page id="nested%20functions">
+Page: (cpl)nested functions, Next: <a href="#overloading">overloading</a>, Prev: <a href="#OPTIONAL">OPTIONAL</a>, Up: <a href="#Functions">Functions</a>
 <hr> <h2>Nested functions</h2>
 Functions and subroutines exist on a par with variable <a href="#Declarations">Declarations</a> and can appear anywhere in a block, another function included. Nested functions are therefore an integral part of CPL. Like all other block contexts, they have access to variables (and functions) declared before them, in the same or in an enclosing block. The present implementation of nested functions translates to nested functions in the generated C code, and is therefore only compatible with C compilers that handle nested functions as an extended feature (gcc is one of them). 
 </div><div class=page id="overloading">
-Page: (cpl)overloading, Next: <a href="#RESULT">RESULT</a>, Prev: <a href="#Nested%20functions">Nested functions</a>, Up: <a href="#Functions">Functions</a>
+Page: (cpl)overloading, Next: <a href="#array%20parameters">array parameters</a>, Prev: <a href="#nested%20functions">nested functions</a>, Up: <a href="#Functions">Functions</a>
 <hr> <h2>Function name overloading</h2>
 Function overloading is an inherent feature of CPL. Since type checking is enforced on function arguments, functions and subroutines of the same name but different (not <a href="#OPTIONAL">OPTIONAL</a>) arguments can be distinguished from each other, and are transparently handled. This also works for runtime specified types: see <a href="#DYNAMIC">DYNAMIC</a>. 
+</div><div class=page id="array%20parameters">
+Page: (cpl)array parameters, Next: <a href="#RESULT">RESULT</a>, Prev: <a href="#overloading">overloading</a>, Up: <a href="#Functions">Functions</a>
+<hr> <h2>Passing array parameters and their dimensions</h2>
+Functions that accept array parameters of variable dimensions are a necessity that is handled differently in different languages, especially when error checking is desired. In CPL they are handled as follows.
+
+The special dimension &lowast; can be used to declare a POINTER TO ARRAY that implicitly passes the bounds of the ARRAY together with its address (see <a href="#ARRAY">ARRAY</a>). This is the most compact notation, as in e.g.
+
+	REAL FUNCTION NORM[ARRAY(&lowast;) OF REAL v]=SUM v(i)^2 FOR ALL i
+
+(same as the builtin <a href="#NORM">NORM</a> function). When this notation is used, the index bounds of the actual parameter are accessible in the function's body by the <a href="#LO">LO</a> and <a href="#HI">HI</a> builtins (in the above example, these would be v.LO and v.HI), and its number of elements by the <a href="#LENGTH">LENGTH</a> function, just as for all ARRAYs.
+
+For more elaborate needs, for instance when two arrays must have equal dimensions, CPL allows INTEGER formal parameters to be used in the declaration of subsequent compound parameters. An example would be
+
+	SUBROUTINE dosomething[INTEGER n; ARRAY(1..n) OF REAL a,b,c]
+	.....
+	END dosomething
+
+Within the body of such a subroutine or function, a, b and c are all assumed to have the same dimensions 1..n; this is similar to the convention adopted in languages (like C) that treat arrays like pointers with no special provision, but with the difference that in CPL the call of such a subroutine verifies that the actual parameters indeed have the specified dimensions at run time, and throws an error if they don't and <a href="#rtchecks">rtchecks</a> is on. The same is true if the dimension is not simply the n parameter but an expression involving n, or if the dimension is extracted from the bounds of a previous array as in
+
+	SUBROUTINE dosomething[ARRAY(&lowast;) OF REAL a; ARRAY(a.LO..a.HI) OF REAL b,c]
+	.....
+	END dosomething
+
+Additionally, the return type of a FUNCTION can as well be an ARRAY involving a formal parameter in its dimensions. An example is:
+
+	FUNCTION dosomething[ARRAY(&lowast;) OF REAL a,b]-&gt;ARRAY(a.LO..b.HI) OF REAL
+	.....
+	END dosomething
+
+After this declaration the dimensions of the return type are known to the compiler, and can either be checked by rtchecks or used to allocate a suitable ARRAY CONSTANT. 
 </div><div class=page id="RESULT">
-Page: (cpl)RESULT, Next: <a href="#Declarations">Declarations</a>, Prev: <a href="#overloading">overloading</a>, Up: <a href="#Functions">Functions</a>
+Page: (cpl)RESULT, Next: <a href="#Declarations">Declarations</a>, Prev: <a href="#array%20parameters">array parameters</a>, Up: <a href="#Functions">Functions</a>
 <hr> Formal name of the result of a <a href="#FUNCTION">FUNCTION</a> inside of the function's body. RESULT is implicitly declared as a variable of the type indicated in the FUNCTION's declaration and may be used and assigned like any other variable. On exit it becomes the function's value returned to the calling program. 
 </div><div class=page id="Declarations">
 Page: (cpl)Declarations, Next: <a href="#Statements">Statements</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Top">Top</a>
@@ -891,7 +925,7 @@ Variable dimensions are allowed wherever constant dimensions are; the compiler a
 
 When an ARRAY is assigned in a single = statement to another of the same base type and number of elements, its lower bound is implicitly realigned. A similar realignment takes place for function arguments. Assigning to a different base type triggers a compilation error. Mismatch in the number of elements is flagged by <a href="#rtchecks">rtchecks</a>.
 
-The special dimension * can only appear in the declaration of an ARRAY formal parameter or of a POINTER TO ARRAY, and declares a special type of pointer that remembers the current dimensions of the array together with its address. A formal parameter or pointer of this type can be dynamically assigned arrays of different length and still provide runtime range checking and <a href="#FOR%20ALL">FOR
+The special dimension &lowast; can only appear in the declaration of an ARRAY formal parameter or of a POINTER TO ARRAY, and declares a special type of pointer that remembers the current dimensions of the array together with its address. A formal parameter or pointer of this type can be dynamically assigned arrays of different length and still provide runtime range checking and <a href="#FOR%20ALL">FOR
 ALL</a> looping when requested. The actual upper and lower bounds of an array index can always be recovered through the functions <a href="#HI">HI</a> and <a href="#LO">LO</a>, and the total number of elements through the function <a href="#LENGTH">LENGTH</a>. In the case of multidimensional arrays, these functions apply to the first index only; <a href="#subarray">subarray</a> selection can be used in order to extract the bounds of other indices. Alternatively, LO1, LO2, LO3 and HI1, HI2, HI3 can be used to refer to the first three indices.
 
 ARRAY elements are accessed through INTEGER indices in brackets as usual, e.g.:
@@ -945,16 +979,16 @@ The function LENGTH applied to an ARRAY returns its number of elements. LENGTH i
 </div><div class=page id="STRING">
 Page: (cpl)STRING, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#ARRAY">ARRAY</a>, Up: <a href="#Declarations">Declarations</a>
 <hr> <h2>STRINGs</h2>
-Type declaration STRING is a synonim for ARRAY(*) OF <a href="#CHAR">CHAR</a>, and can be used wherever the last can. In particular, a STRING can be subscripted or <a href="#subarray">subarray</a> extracted, and its bounds and length are available through functions <a href="#LO">LO</a>, <a href="#HI">HI</a>, and <a href="#LENGTH">LENGTH</a>. STRING valued constants (which are always indexed starting from 0) can be generated either at compile time, as quoted strings of characters, or dynamically through <a href="#String">String</a> concatenation, and can either be given a name through <a href="#CONSTANT">implicit:CONSTANT</a>. declaration or passed as actual parameters to function calls and further string concatenations.
+Type declaration STRING is a synonim for ARRAY(&lowast;) OF <a href="#CHAR">CHAR</a>, and can be used wherever the last can. In particular, a STRING can be subscripted or <a href="#subarray">subarray</a> extracted, and its bounds and length are available through functions <a href="#LO">LO</a>, <a href="#HI">HI</a>, and <a href="#LENGTH">LENGTH</a>. STRING valued constants (which are always indexed starting from 0) can be generated either at compile time, as quoted strings of characters, or dynamically through <a href="#String">String</a> concatenation, and can either be given a name through <a href="#CONSTANT">implicit:CONSTANT</a>. declaration or passed as actual parameters to function calls and further string concatenations.
 
 Quoted strings of characters, also known as literals, are delimited by either double or single quotes, in matching pairs. A single quote may appear inside a literal delimited by double quotes and vice versa. In addition, C escape sequences are literals, but contrary to C must be unquoted.  The empty string <q></q> is also a valid (zero-character-long) STRING value. Finally, in bash-like syntax, multi-line literals may be introduced by &lt;&lt; DELIMITER and ended by DELIMITER alone on a new line, where DELIMITER can be any word that is not to be part of the literal itself.
 
 Where appropriate, a single-character literal is implicitly converted to a CHAR constant, which is in turn implicitly converted to an INTEGER ASCII code. Strings may also be concatenated among themselves and with variables, see <a href="#String">conversion:String</a>.
 
-Standard C functions returning a char* (<a href="/usr/share/info/libc.html#%20String%20and%20Array%20Utilities">(/usr/share/info/libc) String and
+Standard C functions returning a char&lowast; (<a href="/usr/share/info/libc.html#%20String%20and%20Array%20Utilities">(/usr/share/info/libc) String and
 Array Utilities</a>) are also interpreted as generating a STRING value. Just as for all <a href="#C%20interface">C interface</a> calls, it is the programmer's responsibility to ensure that such C library functions are used consistently and to free any possible malloc-ated space where appropriate.
 
-As an experimental feature, and an exception to the general rule for ARRAY(*), STRING VARIABLEs may also be declared and assigned a value.
+As an experimental feature, and an exception to the general rule for ARRAY(&lowast;), STRING VARIABLEs may also be declared and assigned a value.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>Predefined strings are:</th></tr>
@@ -1001,7 +1035,7 @@ A pointer can also be declared with reference to a (yet) uncommitted type name, 
 
 It is implied that &lt;newid&gt; will later denote a type identifier. Variables, constants and structure fields of uncommitted pointer type can be declared, assigned and compared to each other like all POINTERs but not dereferenced. They become POINTERs in full rights as soon as a declaration for type &lt;newid&gt; is encountered.
 
-Uncommitted pointers acquire a special meaning if used as formal parameters or function results (in which case no explicit declaration of type &lt;newid&gt; shall follow): a formal parameter of uncommitted pointer type can receive an actual parameter of any POINTER type (except POINTER TO ARRAY(*), which needs special treatment) as argument, thus allowing the coding of subroutines for the manipulation of generic pointers. Type checking will still be enforced based on the equality of type name. Of course, uncommitted pointers of this kind can never be dereferenced within the body of the subroutine itself.
+Uncommitted pointers acquire a special meaning if used as formal parameters or function results (in which case no explicit declaration of type &lt;newid&gt; shall follow): a formal parameter of uncommitted pointer type can receive an actual parameter of any POINTER type (except POINTER TO ARRAY(&lowast;), which needs special treatment) as argument, thus allowing the coding of subroutines for the manipulation of generic pointers. Type checking will still be enforced based on the equality of type name. Of course, uncommitted pointers of this kind can never be dereferenced within the body of the subroutine itself.
 
 See also <a href="#NEW">Memory allocation:NEW</a>, <a href="#DYNAMIC">Object-oriented features:DYNAMIC</a>. 
 </div><div class=page id="INTO">
@@ -1032,7 +1066,7 @@ In addition, situations where the type of an object is not fixed at compile time
 
 A function call in which such a pointer appears is transparently switched at run time to the function defined for the type of the actual arguments, or an error is thrown if no such function exists.
 
-Pointers to variables of any type except ARRAY(*) and STORED can be assigned to a DYNAMIC POINTER. If the scope of assignment is to be restricted, the declaration becomes
+Pointers to variables of any type except ARRAY(&lowast;) and STORED can be assigned to a DYNAMIC POINTER. If the scope of assignment is to be restricted, the declaration becomes
 
 	DYNAMIC POINTER TO &lt;type declarator&gt;
 
@@ -1120,8 +1154,8 @@ Page: (cpl)Expressions, Next: <a href="#Assignment">Assignment</a>, Prev: <a hre
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
-<tr><td><a href="#INTEGER%20operator">INTEGER operator</a>:</td><td>+  -  *  DIV  MOD</td></tr>
-<tr><td><a href="#REAL%20operator">REAL operator</a>:</td><td>+  -  *  /  ^</td></tr>
+<tr><td><a href="#INTEGER%20operator">INTEGER operator</a>:</td><td>+  -  &lowast;  DIV  MOD</td></tr>
+<tr><td><a href="#REAL%20operator">REAL operator</a>:</td><td>+  -  &lowast;  /  ^</td></tr>
 <tr><td><a href="#Comparison">Comparison</a>:</td><td>&gt;  &gt;=  &lt;  &lt;=  =  #  IS</td></tr>
 <tr><td><a href="#BOOLEAN%20ops">BOOLEAN ops</a>:</td><td>AND  OR  NOT</td></tr>
 <tr><td><a href="#Conditional%20expressions">Conditional expressions</a>:</td><td>embedded IF...THEN...ELSE</td></tr>
@@ -1137,7 +1171,7 @@ Page: (cpl)Expressions, Next: <a href="#Assignment">Assignment</a>, Prev: <a hre
 
 </div><div class=page id="INTEGER%20operator">
 Page: (cpl)INTEGER operator, Next: <a href="#REAL%20operator">REAL operator</a>, Prev: <a href="#Expressions">Expressions</a>, Up: <a href="#Expressions">Expressions</a>
-<hr> <h3>INTEGER operators:	+  -  *  DIV  MOD</h3>
+<hr> <h3>INTEGER operators:	+  -  &lowast;  DIV  MOD</h3>
 DIV is the INTEGER division operator, and produces a truncated INTEGER quotient. <q>/</q> is reserved for REALs, and produces a REAL result even when the operands are INTEGERs.
 
 MOD is the <q>modulo</q> infix operator. If a and b are INTEGERs,
@@ -1147,8 +1181,8 @@ MOD is the <q>modulo</q> infix operator. If a and b are INTEGERs,
 represents the remainder of the integer division of a by b. 
 </div><div class=page id="REAL%20operator">
 Page: (cpl)REAL operator, Next: <a href="#Comparison">Comparison</a>, Prev: <a href="#INTEGER%20operator">INTEGER operator</a>, Up: <a href="#Expressions">Expressions</a>
-<hr> <h3>REAL operators:		+  -  *  /  ^ (or **)</h3>
-An infix ^ (or **) is the exponentiation operator. <a href="#Postfix">Postfix</a> ^ is the pointer dereferencing operator. Also <a href="#Concealed%20Pointer%20Lookup">prefix ^:Concealed Pointer Lookup</a>. 
+<hr> <h3>REAL operators:		+  -  &lowast;  /  ^ (or &lowast;&lowast;)</h3>
+An infix ^ (or &lowast;&lowast;) is the exponentiation operator. <a href="#Postfix">Postfix</a> ^ is the pointer dereferencing operator. Also <a href="#Concealed%20Pointer%20Lookup">prefix ^:Concealed Pointer Lookup</a>. 
 </div><div class=page id="Comparison">
 Page: (cpl)Comparison, Next: <a href="#BOOLEAN%20ops">BOOLEAN ops</a>, Prev: <a href="#REAL%20operator">REAL operator</a>, Up: <a href="#Expressions">Expressions</a>
 <hr> <h3>Comparison:		&gt;  &gt;=  &lt;  &lt;=  =  #  IS</h3>
@@ -1202,7 +1236,7 @@ The C-like notation &amp; | &gt;&gt; &lt;&lt; is also available for BITAND BITOR
 </div><div class=page id="String">
 Page: (cpl)String, Next: <a href="#Looping%20operator">Looping operator</a>, Prev: <a href="#Bitwise">Bitwise</a>, Up: <a href="#Expressions">Expressions</a>
 <hr> <h3>String concatenation</h3>
-STRINGs written one after the other with no intervening operator (whitespace is allowed, but newlines must be escaped), either in literal (quoted) form or through their names, are concatenated into a single <a href="#STRING">STRING</a>. If all of the STRINGs are literals (i.e., known at compile time), the result will also be a literal, otherwise it will be a dynamically allocated ARRAY(*) OF CHAR which is transparently freed at the end of the enclosing code block.
+STRINGs written one after the other with no intervening operator (whitespace is allowed, but newlines must be escaped), either in literal (quoted) form or through their names, are concatenated into a single <a href="#STRING">STRING</a>. If all of the STRINGs are literals (i.e., known at compile time), the result will also be a literal, otherwise it will be a dynamically allocated ARRAY(&lowast;) OF CHAR which is transparently freed at the end of the enclosing code block.
 
 <h3>String conversion</h3>
 In addition to STRINGs, values of different type may also appear in a concatenation, provided the first item is an actual STRING (possibly <q></q>); they are then implicitly converted to strings just as if they appeared in a <a href="#WRITE">WRITE</a> statement. Conversion of a string into a numeric value must be handled explicitly through <a href="/usr/share/info/libc.html#%20String%20and%20Array%20Utilities">(/usr/share/info/libc) String and Array Utilities</a>.
@@ -1355,14 +1389,14 @@ The function NORM returns the squared absolute value of either a number or a who
 Page: (cpl)RAND,  Next: <a href="#GAUSS">GAUSS</a>,  Prev: <a href="#MIN">MIN</a>,  Up: <a href="#Builtin">Builtin</a>
 <hr> RAND:		uniformly distributed in (0,1) random REAL number
 
-The function RAND takes no argument. It is based on the INTEGER C library function rand, whose seed can be changed with srand (<a href="*manpages*.html#rand">(*manpages*)rand</a>). 
+The function RAND takes no argument. It is based on the INTEGER C library function rand, whose seed can be changed with srand (<a href="*manpages*.html#rand">(&lowast;manpages&lowast;)rand</a>). 
 </div><div class=page id="GAUSS">
 Page: (cpl)GAUSS,  Next: <a href="#ROUND">ROUND</a>,  Prev: <a href="#RAND">RAND</a>,  Up: <a href="#Builtin">Builtin</a>
 <hr> GAUSS:		gaussian distributed random REAL number with variance 1
 
 The function GAUSS takes no argument. It is based on <a href="#RAND">RAND</a>, and the analytic formula (see Knuth, The Art of Computer Programming, chapter on random numbers):
 
-	GAUSS = SQRT{-2*LOG[RAND()]}*COS[PI*RAND()] 
+	GAUSS = SQRT{-2&lowast;LOG[RAND()]}&lowast;COS[PI&lowast;RAND()] 
 </div><div class=page id="ROUND">
 Page: (cpl)ROUND,  Prev: <a href="#GAUSS">GAUSS</a>,  Up: <a href="#Builtin">Builtin</a>
 <hr> ROUND:		nearest integer
@@ -1375,23 +1409,23 @@ A portion of an array can be selected by specifying new dimensions. For example,
 
 	arr(2..5)
 
-denotes an array formed by the elements from 2 to 5 of array arr (which has larger dimensions). The whole range can also be selected, by the special dimension *. For instance, if the declaration is REAL arr(1..7,-2..2,3..8),
+denotes an array formed by the elements from 2 to 5 of array arr (which has larger dimensions). The whole range can also be selected, by the special dimension &lowast;. For instance, if the declaration is REAL arr(1..7,-2..2,3..8),
 
-	arr(2..5,*,6)
+	arr(2..5,&lowast;,6)
 
 denotes a two-dimensional array formed by selecting the range 2..5 of the first index and the whole range of the second index of array arr, with the third index set equal to 6.
 
 The most general subarray selection can also specify an offset and one or more strides. The notation for this is:
 
-	arr(a+b1*(&lt;newdim1&gt;)[+b2*(&lt;newdim2&gt;)...])
+	arr(a+b1&lowast;(&lt;newdim1&gt;)[+b2&lowast;(&lt;newdim2&gt;)...])
 
-where a, b1, b2... are INTEGERs and &lt;newdim&gt; is either a subrange l..h or *. The meaning of this notation is that the subarray must be formed of those elements of the original array arr whose index is the specified linear function of the new index or indices. The latter are either constrained in the explicitly indicated range l..h or in the maximum admissible range *. In fact, a general linear expression may be specified, with terms in any order and the possible occurrence of parentheses.
+where a, b1, b2... are INTEGERs and &lt;newdim&gt; is either a subrange l..h or &lowast;. The meaning of this notation is that the subarray must be formed of those elements of the original array arr whose index is the specified linear function of the new index or indices. The latter are either constrained in the explicitly indicated range l..h or in the maximum admissible range &lowast;. In fact, a general linear expression may be specified, with terms in any order and the possible occurrence of parentheses.
 
 Another form of subarray selection is index permutation, which in the particular case of a two-dimensional array becomes matrix transposition.
 
-	arr(*&lt;n&gt;,...)
+	arr(&lowast;&lt;n&gt;,...)
 
-denotes the array obtained from arr by making the &lt;n&gt;-th index become the first and shifting forward all the others. Thus the transpose of a matrix A is A(*2,*), or just A(*2); the alternative notation
+denotes the array obtained from arr by making the &lt;n&gt;-th index become the first and shifting forward all the others. Thus the transpose of a matrix A is A(&lowast;2,&lowast;), or just A(&lowast;2); the alternative notation
 
 	TRANSPOSED(A)
 
@@ -1403,17 +1437,17 @@ Finally, a subarray can be extracted from an ARRAY of STRUCTUREs. If the declara
 
 then by a straightforward notation arr.r is the ARRAY(1..10) OF REAL composed of all the r fields of each element of arr. Thus, for instance, arr(5).r and arr.r(5) denote the same REAL field. arr.r is an ARRAY in its own right; it can be copied, passed as a parameter or subjected to further subarray selections.
 
-It should be noted that all subarray selections are just address manipulations: no element of the array is ever moved and the selected subarray can appear on the left as well as on the right side of an assignment and can be passed as a POINTER TO ARRAY(*) parameter to a function or subroutine. No computational penalty is incurred because of the sheer size of either the original or the selected array, but on the other hand any modifications of the subarray also affect the original.
+It should be noted that all subarray selections are just address manipulations: no element of the array is ever moved and the selected subarray can appear on the left as well as on the right side of an assignment and can be passed as a POINTER TO ARRAY(&lowast;) parameter to a function or subroutine. No computational penalty is incurred because of the sheer size of either the original or the selected array, but on the other hand any modifications of the subarray also affect the original.
 
 All subarray selections can also be applied to <a href="#STORED">STORED</a> ARRAYs and <a href="#STRUCTURED">STRUCTURED</a> ARRAYs. 
 </div><div class=page id="compound%20index">
 Page: (cpl)compound index, Next: <a href="#ARRAY%20operations">ARRAY operations</a>, Prev: <a href="#subarray">subarray</a>, Up: <a href="#Expressions">Expressions</a>
 <hr> <h3>Compound index</h3>
-This CPL address manipulation allows a multidimensional ARRAY to be accessed sequentially through a single index, for instance in order to apply linear algebra to it. The syntax for this operation is a sequence of as many * as indices are to be compounded. For example if V is defined as
+This CPL address manipulation allows a multidimensional ARRAY to be accessed sequentially through a single index, for instance in order to apply linear algebra to it. The syntax for this operation is a sequence of as many &lowast; as indices are to be compounded. For example if V is defined as
 
 	ARRAY(0..4,1..5,-7..7,0..2) OF REAL V
 
-then V(****) is a onedimensional <q>view</q> of the same array (as opposed to V(*,*,*,*) which represents its original arrangement). By the same token V(*,**,*) is the three-dimensional array obtained by compounding the two central indices into one. Bounds of a compound index can be retrieved by the <a href="#LO">:LO</a>. and <a href="#HI">:HI</a>. functions as usual.
+then V(&lowast;&lowast;&lowast;&lowast;) is a onedimensional <q>view</q> of the same array (as opposed to V(&lowast;,&lowast;,&lowast;,&lowast;) which represents its original arrangement). By the same token V(&lowast;,&lowast;&lowast;,&lowast;) is the three-dimensional array obtained by compounding the two central indices into one. Bounds of a compound index can be retrieved by the <a href="#LO">:LO</a>. and <a href="#HI">:HI</a>. functions as usual.
 
 Compound indices are restricted to arrays (or portions of them) that are contiguous in memory. This generally precludes their use after subarray operations that permute, stride, or restrict the range of indices. 
 </div><div class=page id="ARRAY%20operations">
@@ -1435,7 +1469,7 @@ Page: (cpl)Einstein convention, Next: <a href="#Assignment">Assignment</a>, Prev
 <hr> <h3>Implicit looping over array indices</h3>
 When indices in an expression are prefixed with a <q>$</q> character, the Einstein convention is implied. In a contraction or in a product the Einstein index must appear exactly twice, and the result will be summed over <a href="#ALL">ALL</a> values of this index; in a sum or in an assignment, Einstein indices must appear exactly once in each and all terms including the l.h.s., and the assignment will be repeated over <a href="#ALL">ALL</a> values of these indices. For example:
 
-	C($i,$j)=A($i,$j,$m)*B($i,$m,$j)+D($j,$i)
+	C($i,$j)=A($i,$j,$m)&lowast;B($i,$m,$j)+D($j,$i)
 
 Footnote: the euro symbol would have been appropriate to match the <q>e</q> of Einstein, but it is not part of the 7-bit ascii codes so we replaced it by a currency that is (the $). 
 </div><div class=page id="Assignment">
@@ -1451,7 +1485,7 @@ On the right-hand side of an assignment the symbol ~ can be used as a placeholde
 
 	counter = ~ + 2
 	listelement = ~.next
-	A(i,j,k) = 3 * LOG(~) + gamma(~)	 
+	A(i,j,k) = 3 &lowast; LOG(~) + gamma(~)	 
 </div><div class=page id="Deferred%20assignment">
 Page: (cpl)Deferred assignment, Next: <a href="#Concealed%20Pointer%20Lookup">Concealed Pointer Lookup</a>, Prev: <a href="#Assignment">Assignment</a>, Up: <a href="#Statements">Statements</a>
 <hr> <h2>Deferred assignment</h2>
@@ -1485,7 +1519,7 @@ and a single-line form:
 
 	WITH &lt;structure&gt; [,&lt;structure&gt;] : &lt;single-line-block&gt;
 
-The multi-line form is recognized from a newline following the &lt;structure&gt; or the optional colon; in this case the scope of the statement extends either to the optional END WITH statement or to the end of the enclosing block; in the second to the end of line. Within the scope of a WITH statement the given structure (or structures) is understood wherever a field name alone appears. For instance, after the declaration
+The multi-line form is recognized from a newline following the &lt;structure&gt; or the optional colon; in this case the scope of the statement extends either to the optional END WITH statement or to the end of the enclosing block; in the second to the end of line. Within the scope of a WITH statement the given structure (or structures) is understood wherever a field name appears alone. For instance, after the declaration
 
 	STRUCTURE(REAL x,y) v1,v2
 
@@ -1511,9 +1545,9 @@ or the function
 
 	NEW &lt;type&gt;
 
-The NEW statement allocates (through the `malloc' system call) the space necessary for a variable of the TYPE pointed to by &lt;pointer&gt; and sets &lt;pointer&gt; to its address. The NEW function returns a <a href="#POINTER">POINTER</a>. to a dynamically allocated variable of <a href="#TYPE">TYPE</a>. &lt;type&gt;. If applied to a POINTER TO <a href="#STORED">STORED</a>. or <a href="#FILE">FILE</a>. type, NEW returns a pointer to a temporary file which will be automatically destroyed when freed or at program termination.
+The NEW statement allocates (through the `malloc' system call) the space necessary for a variable of the TYPE pointed to by &lt;pointer&gt; and sets &lt;pointer&gt; to its address. The NEW function returns a <a href="#POINTER">POINTER</a> to a dynamically allocated variable of <a href="#TYPE">TYPE</a> &lt;type&gt;. If applied to a POINTER TO <a href="#STORED">STORED</a> or <a href="#FILE">FILE</a> type, NEW returns a pointer to a temporary file which will be automatically destroyed when freed or at program termination.
 
-Dynamically allocated space is retained, independently of subroutine scoping, until it is returned to the system by the <a href="#FREE">FREE</a>. statement. 
+Dynamically allocated space is retained, independently of subroutine scoping, until it is returned to the system by the <a href="#FREE">FREE</a> statement. 
 </div><div class=page id="FREE">
 Page: (cpl)FREE,  Next: <a href="#Input/Output">Input/Output</a>,  Prev: <a href="#NEW">NEW</a>,  Up: <a href="#Statements">Statements</a>
 <hr> <h2>Freeing memory or file allocation</h2>
@@ -1523,7 +1557,7 @@ releases the memory space or file pointed to by each &lt;pointer&gt;, which must
 </div><div class=page id="Input/Output">
 Page: (cpl)Input/Output, Next: <a href="#Control">Control</a>, Prev: <a href="#NEW">NEW</a>, Up: <a href="#Statements">Statements</a>
 <hr> <h2>Input/Output</h2>
-Text I/O is performed by <a href="#READ">READ</a> and <a href="#WRITE">WRITE</a> instructions on variables of type <a href="#FILE">FILE</a>, which must be declared like ordinary variables and associated with a file before being used for I/O. FILE variables can be implicitly declared if they are <a href="#CONSTANT">CONSTANT</a> and be part of compound types like all other variables. Association to a file is obtained through <a href="#OPEN">OPEN</a> and <a href="#CREATE">CREATE</a>. A FILE variable is translated to the C type FILE*, and can be used in C library I/O functions transparently accessed through the <a href="#C%20interface">C interface</a>.
+Text I/O is performed by <a href="#READ">READ</a> and <a href="#WRITE">WRITE</a> instructions on variables of type <a href="#FILE">FILE</a>, which must be declared like ordinary variables and associated with a file before being used for I/O. FILE variables can be implicitly declared if they are <a href="#CONSTANT">CONSTANT</a> and be part of compound types like all other variables. Association to a file is obtained through <a href="#OPEN">OPEN</a> and <a href="#CREATE">CREATE</a>. A FILE variable is translated to the C type FILE&lowast;, and can be used in C library I/O functions transparently accessed through the <a href="#C%20interface">C interface</a>.
 
 Sequential binary I/O is performed by adding the <a href="#BINARY">BINARY</a> keyword to the READ and WRITE instructions. No distinction is made between text and binary files at the filesystem level.
 
@@ -1536,7 +1570,6 @@ Random-access binary I/O is where cpl really differs from other languages; see <
 <tr><td><a href="#WRITE">WRITE</a>:</td><td>output to character files and devices</td></tr>
 <tr><td><a href="#READ">READ</a>:</td><td>input from character files and devices</td></tr>
 <tr><td><a href="#FROM">FROM</a>:</td><td>input as a function</td></tr>
-<tr><td><a href="#PROMPT">PROMPT</a>:</td><td>console prompt</td></tr>
 <tr><td><a href="#ASK">ASK</a>:</td><td>console prompting and reading</td></tr>
 <tr><td><a href="#BINARY">BINARY</a>:</td><td>binary (unformatted) Input/Output</td></tr>
 <tr><td><a href="#STORED">STORED</a>:</td><td>random-access files as disk-resident variables</td></tr>
@@ -1551,7 +1584,7 @@ Random-access binary I/O is where cpl really differs from other languages; see <
 </div><div class=page id="FILE">
 Page: (cpl)FILE, Next: <a href="#WRITE">WRITE</a>, Prev: <a href="#Input/Output">Input/Output</a>, Up: <a href="#Input/Output">Input/Output</a>
 <hr> <h3>FILE</h3>
-File descriptor type, translated to C type FILE*
+File descriptor type, translated to C type FILE&lowast;
 
 The predefined C file descriptors
 
@@ -1601,7 +1634,7 @@ The input statement READ is used as follows:
 
 &lt;file&gt; can be a file descriptor, of type <a href="#FILE">FILE</a>, such as returned by <a href="#OPEN">OPEN</a> or <a href="#CREATE">CREATE</a>, or else a string representing a filename. In the latter case the file is implicitly opened before READ is executed and closed afterwards. If <q>FROM &lt;file&gt;</q> is omitted, stdin is assumed.
 
-&lt;variable&gt; must be a <a href="#VARIABLE">VARIABLE</a> identifier or a <a href="#POINTER">POINTER</a> to a variable, which can be of any type except POINTER. Compound types such as <a href="#ARRAY">ARRAY</a> and <a href="#STRUCTURE">STRUCTURE</a> are also accepted; they are expected to appear in the same format as produced by <a href="#WRITE">WRITE</a>. &lt;variable&gt; can also be a literal <a href="#STRING">STRING</a>, which is then expected to appear verbatim in the input file. If &lt;variable&gt; is an ARRAY OF CHAR, characters are read until the array is full or a newline appears. In all other cases, blanks, tabs and newlines are automatically skipped. Lines starting with <q>!</q> are considered comments and skipped.
+&lt;variable&gt; must be a <a href="#VARIABLE">VARIABLE</a> identifier or a <a href="#POINTER">POINTER</a> to a variable, which can be of any type except POINTER. Compound types such as <a href="#ARRAY">ARRAY</a> and <a href="#STRUCTURE">STRUCTURE</a> are also accepted; they are expected to appear in the same format as produced by <a href="#WRITE">WRITE</a> &lt;variable&gt; can also be a literal <a href="#STRING">STRING</a>, which is then expected to appear verbatim in the input file. If &lt;variable&gt; is an ARRAY OF CHAR, characters are read until the array is full or a newline appears. In all other cases, blanks, tabs and newlines are automatically skipped. Lines starting with <q>!</q> are considered comments and skipped.
 
 &lt;conjunction&gt; can be <q>,</q> AND or OR. If <q>,</q> or AND is used, the joined variables must both be compulsorily present in the input or an I/O error results. If the conjunction is OR, only one or the other is expected to be present and the READ statement succeeds and yields control as soon as one is found.
 
@@ -1611,9 +1644,9 @@ READ may also appear as a function in a BOOLEAN expression, and should then be p
 
 If the optional BY NAME qualifier is present, READ expects to find the value of each variable preceded by its name in the input file in the form name=value. 
 </div><div class=page id="FROM">
-Page: (cpl)FROM,  Next: <a href="#PROMPT">PROMPT</a>,  Prev: <a href="#READ">READ</a>,  Up: <a href="#Input/Output">Input/Output</a>
+Page: (cpl)FROM,  Next: <a href="#ASK">ASK</a>,  Prev: <a href="#READ">READ</a>,  Up: <a href="#Input/Output">Input/Output</a>
 <hr> <h3>FROM</h3>
-As an auxiliary keyword, FROM is used in <a href="#READ">READ</a>. statements to introduce the <a href="#FILE">FILE</a> data are read from.
+As an auxiliary keyword, FROM is used in <a href="#READ">READ</a> statements to introduce the <a href="#FILE">FILE</a> data are read from.
 
 In addition, the construction
 
@@ -1621,34 +1654,15 @@ In addition, the construction
 
 represents a value of type &lt;type declarator&gt; read from the file descriptor &lt;file&gt;. This value can directly appear in an expression just as the value of a function can. As an example,
 
-	WRITE TO stdout 3*(INTEGER FROM stdin)
+	WRITE TO stdout 3&lowast;(INTEGER FROM stdin)
 
 can replace
 
 	INTEGER temp
 	READ FROM stdin temp
-	WRITE TO stdout 3*temp 
-</div><div class=page id="PROMPT">
-Page: (cpl)PROMPT,  Next: <a href="#ASK">ASK</a>,  Prev: <a href="#FROM">FROM</a>,  Up: <a href="#Input/Output">Input/Output</a>
-<hr> <h3>PROMPT(&lt;string&gt;)</h3>
-This is a FILE-valued function that writes &lt;string&gt; to stderr and returns stdin as its value. This makes a construction such as the following possible:
-
-	REAL x
-	READ FROM PROMPT(<q>x?</q>) x
-
-or equivalently
-
-	x=REAL FROM PROMPT(<q>x?</q>)
-
-Both have the same effect as
-
-	REAL x
-	WRITE <q>x?</q> ./.
-	READ x
-
-PROMPT will disappear. Use <a href="#ASK">ASK</a> instead. 
+	WRITE TO stdout 3&lowast;temp 
 </div><div class=page id="ASK">
-Page: (cpl)ASK,  Next: <a href="#BINARY">BINARY</a>,  Prev: <a href="#PROMPT">PROMPT</a>,  Up: <a href="#Input/Output">Input/Output</a>
+Page: (cpl)ASK,  Next: <a href="#BINARY">BINARY</a>,  Prev: <a href="#FROM">FROM</a>,  Up: <a href="#Input/Output">Input/Output</a>
 <hr> <h3>Console prompting and reading</h3>
 	ASK [&lt;type&gt;] [<q>literal</q>:] &lt;variable&gt; [, [<q>literal</q>:] &lt;variable&gt;]
 
@@ -1686,23 +1700,23 @@ and
 
 are valid statements. The rule is simply that anything that could be done if v had been declared as a normal POINTER is still allowed, but the actual storage is in a disk file rather than in memory.
 
-Just as for any POINTER, accessing a variable of POINTER TO STORED type without first assigning a file descriptor to it is an error (caught by <a href="#rtchecks">rtchecks</a>. if active). On the contrary, the declaration
+Just as for any POINTER, accessing a variable of POINTER TO STORED type without first assigning a file descriptor to it is an error (caught by <a href="#rtchecks">rtchecks</a> if active). On the contrary, the declaration
 
 	STORED ARRAY(1..10) OF STRUCTURE(REAL x,y) v
 
 (using the same example) actually reserves storage for the variable v, just like the corresponding declaration without the keyword STORED would, by requesting a temporary file through <a href="#NEW">NEW</a>. This temporary file is automatically opened and closed as necessary and cannot be explicitly assigned.
 
-When declared with the special dimension *, a STORED ARRAY can contain an a-priori undetermined number of records (numbered from 0). The shorthand
+When declared with the special dimension &lowast;, a STORED ARRAY can contain an a-priori undetermined number of records (numbered from 0). The shorthand
 
 			FILE OF &lt;type&gt;
 
 is equivalent to
 
-			POINTER TO STORED ARRAY(*) OF &lt;type&gt;
+			POINTER TO STORED ARRAY(&lowast;) OF &lt;type&gt;
 
 The ordinary <a href="#FILE">FILE</a> type declarator is a shorthand for FILE OF CHAR.
 
-STORED ARRAYs and POINTER TO STORED ARRAYs with multiple * dimensions are allowed as function formal parameters, just like their non-STORED equivalents. The corresponding actual parameter must be a STORED ARRAY of matching number of dimensions and type (not just an OPENed file). 
+STORED ARRAYs and POINTER TO STORED ARRAYs with multiple &lowast; dimensions are allowed as function formal parameters, just like their non-STORED equivalents. The corresponding actual parameter must be a STORED ARRAY of matching number of dimensions and type (not just an OPENed file). 
 </div><div class=page id="OPEN">
 Page: (cpl)OPEN,  Next: <a href="#CREATE">CREATE</a>,  Prev: <a href="#STORED">STORED</a>,  Up: <a href="#Input/Output">Input/Output</a>
 <hr> <h3>Open an existing file and associate a file descriptor with it</h3>
@@ -1720,7 +1734,7 @@ returns &lt;fd&gt; as its value.
 
 &lt;filename&gt; is opened for both reading and writing, and is created if it does not exist, but it is never truncated. Therefore, it may be written over but any data which are not overwritten will remain there. If a possible file of the same name is to be cleared before writing, <a href="#CREATE">CREATE</a> should be used instead.
 
-<q>OPEN</q> calls the <q>open</q> system function with options O_RDWR|O_CREAT. For other requirements the <q>fopen</q> function may be called directly (<a href="#C%20interface">C interface</a>). 
+<q>OPEN</q> calls the <q>open</q> system function with options O_RDWR|O_CREAT. For finer control over options, the <q>open</q> or <q>fopen</q> function may be called directly, just as all other libc functions (<a href="#C%20interface">C interface</a>). 
 </div><div class=page id="CREATE">
 Page: (cpl)CREATE,  Next: <a href="#FLUSH">FLUSH</a>,  Prev: <a href="#OPEN">OPEN</a>,  Up: <a href="#Input/Output">Input/Output</a>
 <hr> <h3>Create a new, empty file</h3>
@@ -1738,7 +1752,7 @@ returns &lt;fd&gt; as its value.
 
 &lt;filename&gt; is opened for both reading and writing, is created if it does not exist, and is truncated to zero length. Therefore, it may be reread after it has been written, but any data in a pre-existing file of the same name are lost. If a possible file of the same name is to be preserved, <a href="#OPEN">OPEN</a> should be used instead.
 
-<q>CREATE</q> calls the <q>open</q> system function with options O_RDWR|O_CREAT|O_TRUNC. For other requirements the <q>fopen</q> function may be called directly (<a href="#C%20interface">C interface</a>). 
+<q>CREATE</q> calls the <q>open</q> system function with options O_RDWR|O_CREAT|O_TRUNC. For finer control over options, the <q>open</q> or <q>fopen</q> function may be called directly, just as all other libc functions (<a href="#C%20interface">C interface</a>). 
 </div><div class=page id="FLUSH">
 Page: (cpl)FLUSH,  Next: <a href="#POSITION">POSITION</a>,  Prev: <a href="#CREATE">CREATE</a>,  Up: <a href="#Input/Output">Input/Output</a>
 <hr> <h3>Flush a file's write buffer</h3>
@@ -1763,10 +1777,8 @@ The function
 returns as an INTEGER the current READ/WRITE position in file descriptor &lt;fd&gt;. 
 </div><div class=page id="INPUTREADY">
 Page: (cpl)INPUTREADY, Next: <a href="#COMMANDLINE">COMMANDLINE</a>, Prev: <a href="#POSITION">POSITION</a>, Up: <a href="#Input/Output">Input/Output</a>
-<hr>
-
-<h3>Test for input ready on a file descriptor or stdin</h3>
-This function is contained in the inputready library (USE inputready).
+<hr> <h3>Test for input ready on a file descriptor or stdin</h3>
+This function is contained in the inputready library (<a href="#USE">USE</a> inputready).
 
 The BOOLEAN function
 
@@ -1787,13 +1799,12 @@ waits for input for the given &lt;time&gt; (in seconds, a REAL) before returning
 is a shorthand for INPUTREADY(stdin,&lt;time&gt;). 
 </div><div class=page id="COMMANDLINE">
 Page: (cpl)COMMANDLINE,  Prev: <a href="#INPUTREADY">INPUTREADY</a>,  Up: <a href="#Builtin">Builtin</a>
-<hr> Command-line parameter access
-
+<hr> <h3>Command-line parameter access</h3>
 The command line through which the program was launched is available in the predefined ARRAY OF STRING
 
 	COMMANDLINE
 
-(the same that is usually named argv in C programs). Therefore the first word passed after the program name is COMMANDLINE(1), the second is COMMANDLINE(2), etc. The program name itself is COMMANDLINE(0). The index of the last word present, just as for all ARRAYs, is COMMANDLINE.HI 
+(the same that is usually named argv in C programs). Therefore the first word passed after the program name is COMMANDLINE(1), the second is COMMANDLINE(2), etc. The program name itself is COMMANDLINE(0). The index of the last word present, obeying normal <a href="#HI">ARRAY:HI</a>. convention, is COMMANDLINE.HI 
 </div><div class=page id="Control">
 Page: (cpl)Control,  Next: <a href="#makecpl">makecpl</a>,  Prev: <a href="#Statements">Statements</a>,  Up: <a href="#Top">Top</a>
 <hr> <h1>Program flow control statements</h1>
@@ -2348,7 +2359,7 @@ Page: (cpl)icpl commands,  Next: <a href="#Library">Library</a>,  Prev: <a href=
 </td></tr>
 <tr><td colspan="2">For icpl to work, the Formal Rule Interpreter (<a href="#fri">fri</a>) must have been </td></tr>
 <tr><td colspan="2">compiled with readline (<a href="editor.html#Top">(editor)</a>) and dynamic loading </td></tr>
-<tr><td colspan="2">(<a href="*manpages*.html#dlopen">(*manpages*)dlopen</a>) support.
+<tr><td colspan="2">(<a href="*manpages*.html#dlopen">(&lowast;manpages&lowast;)dlopen</a>) support.
 
 </td></tr>
 <tr><td colspan="2">When either an interpreted or a compiled program is running under icpl, <a href="#command%20interpretation">command interpretation</a> becomes available inside the program, and typing </td></tr>
@@ -2488,8 +2499,8 @@ Page: (cpl)lapack-eigenvalues,  Prev: <a href="#CHARbyCHAR">CHARbyCHAR</a>,  Nex
 <hr> <h2>CPL wrapper around Lapack eigenvalue routines</h2>
 defines:
 
-<h3>INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigenvalues(COMPLEX A(*,*))</h3>
-<h3>INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigenvalues(REAL A(*,*))</h3>
+<h3>INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigenvalues(COMPLEX A(&lowast;,&lowast;))</h3>
+<h3>INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigenvalues(REAL A(&lowast;,&lowast;))</h3>
 In order to use this library you must have the liblapack-dev Debian package (or one equivalent) installed. Please repeat the CPL setup after installing. 
 </div><div class=page id="matlib">
 Page: (cpl)matlib,  Prev: <a href="#lapack-eigenvalues">lapack-eigenvalues</a>,  Up: <a href="#Library">Library</a>

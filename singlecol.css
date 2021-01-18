@@ -27,9 +27,9 @@
         background-color:white;
         text-align:justify;
         max-width:40em;
-        min-height:100%;
         padding-left:0.75em; padding-right:0.75em;
         padding-bottom:1em;
+        min-height:calc(100% - 1em);
 }
       code,pre {
         font-size: 1em;

@@ -64,19 +64,17 @@
 Page: (editor)Top, Next: <a href="#readline">readline</a>,  Up: <a href="cpl.html#icpl">(cpl)icpl</a>
 <hr>
  <h1>icpl-embedded line and full-screen editor</h1>
-Bash-like command completion and command history are traditionally provided by the GNU readline library, which supplies the familiar Tab and Up Arrow commands, input logging and more. The purpose of readline is to allow the user  to edit each command line before committing it, and to keep a history of previous commands for rapid reuse.
+icpl also includes a text editor, which serves a double purpose as both a GNU readline look-alike, providing command completion and command history to icpl interactive input, and a full-screen editor for program development with CPL word and syntax completion. icpl and the editor are actually a single integrated environment: programs can be run from within the editor, and the icpl and editor screens can be switched at the touch of a key. Both tools display in a terminal, which spoils their graphical appeal but in exchange allows equivalent use in local and remote terminals, as well as in a terminalonly environment like the Windows subsystem for Linux, and even in a smartphone's ssh client if one feels the need for it.
 
-In icpl, console input is handled through an independent, limited implementation of the readline library (also available to user programs that are run under icpl), which serves double purpose, when requested, as a full-screen editor.
+Bash-like command completion and command history are traditionally provided by the GNU readline library, which supplies the familiar Tab and Up Arrow commands, input logging and more. The purpose of readline is to allow the user  to edit each command line before committing it, and to keep a history of previous commands for rapid reuse. icpl readline accepts cursor-movement and other commands in one of three equivalent ways: dedicated editing keys, vi-like single-letter commands, and the mouse. Single-letter command mode is toggled in and out of by the Esc key. Full-screen mode is toggled in and out of by F1 or Esc Space (or by the Insert key when no text is currently selected). Any cursor movement while Shift is pressed (or mouse movement with left button pressed) selects text. For functions which admit an inverse (such as undo - redo or search forward - search backward), Shift or right mouse button selects the inverse. With the exception of Ctrl-i (Tab) and Ctrl-h (Backspace), Ctrl-&lt;key&gt; also works as an alternative to Esc followed by the same lower-case key.
 
-icpl readline accepts cursor-movement and other commands in one of three equivalent ways: dedicated editing keys, vi-like single-letter commands, and the mouse. Single-letter command mode is toggled in and out of by the Esc key. Full-screen mode is toggled in and out of by F1 or Esc Space (or by the Insert key when no text is currently selected). Any cursor movement while Shift is pressed (or mouse movement with left button pressed) selects text. For functions which admit an inverse (such as undo - redo or search forward - search backward), Shift or right mouse button selects the inverse. With the exception of Ctrl-i (Tab) and Ctrl-h (Backspace), Ctrl-&lt;key&gt; also works as an alternative to Esc followed by the same lower-case key.
-
-The full-screen editor can be accessed directly from a unix shell by giving the command <q>edit &lt;file&gt; [+&lt;linenumber&gt;]</q>. <q>edit</q> is actually a symbolic link to the icpl executable script, which when called under a different name executes that name as its first command. <a href="cpl.html#icpl%20command%20line">(cpl)icpl command line</a>. In full-screen mode the command history shows up in a tidy full-screen editor, and the Enter key is now entered as a regular newline. On return to readline mode (when F1 or Esc Space is pressed again), the modified command history is replayed through icpl as if this list of commands had been given afresh when it was launched. Other editing keys work just as in readline mode, except that history lines are now edited in place.
+The full-screen editor can be accessed directly from a unix shell by giving the command <q>edit &lt;file&gt; [+&lt;linenumber&gt;]</q>. <q>edit</q> is actually a symbolic link to the icpl executable script, which when called under a different name executes that name as its first command. <a href="cpl.html#icpl%20command%20line">(cpl)icpl command line</a>. If full-screen mode is toggled on with no other file opened, the command history shows up in the full-screen editor, and the Enter key is now entered as a regular newline. On return to readline mode (when F1 or Esc Space is pressed again), the modified command history is replayed through icpl as if this list of commands had been given afresh when it was launched. Other editing keys work just as in readline mode, except that history lines are now edited in place.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#readline">readline</a>:</td><td>flexible input-line editing with history and completion</td></tr>
-<tr><td><a href="#full-screen">full-screen</a>:</td><td>history and general-file editor with multiple tabs</td></tr>
+<tr><td><a href="#full-screen">full-screen</a>:</td><td>editor with CPL word and syntax completion</td></tr>
 </table></nav>
 
 </div><div class=page id="readline">
@@ -104,7 +102,7 @@ Most used editing keys:
 Page: (editor)full-screen, Next: <a href="#Select">Select</a>, Prev: <a href="#readline">readline</a>, Up: <a href="#Top">Top</a>
 <hr>
  <h2>Full-screen editor</h2>
-The full-screen editor is accessed as <q>edit</q> in icpl, or as <q>icpl -edit</q> in the shell, or as <q>edit</q> in the shell if no other <q>edit</q> command comes first.
+The full-screen editor is accessed as <q>edit</q> in icpl, or as <q>icpl -edit</q> in the shell, or as <q>edit</q> in the shell if no other <q>edit</q> command takes precedence.
 
 Most used editing keys:
 
@@ -124,21 +122,21 @@ Most used editing keys:
  - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
  - Esc \, Ctrl-\: add next (special or control) character verbatim.
 
-Selection is achieved by cursor-moving keys with Shift pressed (<a href="#Select">Select</a>), or by moving the mouse with its left button pressed. The center mouse button copies the current selection.
+Selection is achieved by cursor-moving keys with Shift held pressed (<a href="#Select">Select</a>), or by moving the mouse with its left button pressed. The center mouse button copies the current selection. The right mouse button evokes info on the current selection or the selected word.
 
-Clicking the mouse on the bottom left corner, or pressing Esc m (or Esc followed by any unassigned key), opens up a menu of editor commands. Clicking the mouse on the bottom right corner opens context-sensitive help (through the info program), about the word where the cursor is, or this info page if the cursor is outside any word. Clicking the right mouse button does the same at the position where the mouse is.
+Clicking the mouse on the bottom left corner, or pressing Esc m (or Esc followed by any unassigned key), opens up a menu of editor commands. Clicking the mouse on the bottom right corner opens context-sensitive help (through the info program), about the word where the cursor is, or this info page if the cursor is outside any word. Clicking the right mouse button does the same at the position where the mouse is clicked.
 
-The full-screen editor can work on multiple screens (aka tabs), in addition to the session log (command history). Simultaneously open buffers are rotated into focus by clicking the mouse menu, which shows them as tabs, or by pressing Esc &lt;digit&gt;.
+The full-screen editor can work on multiple screens, in addition to the session log (command history). Simultaneously open buffers are rotated into focus by clicking the mouse menu, which shows them as tabs, or by pressing Esc &lt;digit&gt;.
 
 A file is opened in a new screen with the <q>edit</q> icpl command (also available in the menu, or as Esc e, or as the <q>edit</q> symbolic link from a unix shell), and closed with the <q>close</q> menu command (aka Esc c or Ctrl-c or Esq q or Ctrl-q). Capitalized <q>Edit</q>, or Esc E, or right-clicking the <q>edit</q> menu button, opens the file to be edited in a separate terminal window. The optional +&lt;linenumber&gt; parameter at the end of the <q>edit</q> or <q>Edit</q> commands opens the file at the given line number. The bottom status line contains the name of the currently displayed file and the current line number. A star trailing the file name denotes whether the in-memory buffer has been modified since last saved (and warns that changes would be lost if not saved again). Closing an unsaved file elicits a prompt asking for confirmation before exit.
 
-<q>load</q> and <q>save</q> (Esc o and Esc s) respectively load (insert) a file at the current cursor position and save the current in-memory buffer to a file, with the original file name as a default. Ctrl-s immediately saves the in-memory buffer to the original file name. If some text was just selected, Esc s opens a <q>save selection as</q> prompt which saves the current selection to a file.
+<q>load</q> and <q>save</q> (Esc o and Esc s) respectively load (insert) a file at the current cursor position and save the current in-memory buffer to a file, with the original file name as a default. Ctrl-s immediately saves the in-memory buffer to the original file name. In case some text was just selected, Esc s instead opens a <q>save selection as</q> prompt which saves the current selection to a file.
 
 <q>run</q> (Esc r) runs the current screen as a CPL program, after saving all unsaved screens so that other possibly USEd files are up to date. By contrast, switching into line mode always runs the session log, independent of which screen is currently in view.
 
 <q>attr</q> (Esc a) opens a menu of file buffer attributes.
 
-Most prompts and menus can be aborted by pressing Esc *twice*.
+Most prompts and menus can be aborted by pressing Esc &lowast;twice&lowast;.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>

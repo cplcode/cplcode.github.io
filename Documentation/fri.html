@@ -103,7 +103,7 @@ Symbol	pronounced  action
 		matches itself.
  copy	copy	copies one (non-cork) character or one {}-enclosed block from
 		the input to the output stream.
- *   copy up to	copies zero or more characters or {}-enclosed blocks from
+ &lowast;   copy up to	copies zero or more characters or {}-enclosed blocks from
 		the input to the output stream until the following character
 		(or a cork) is encountered. The matching character is popped
 		from the input stream but not written out.
@@ -112,7 +112,7 @@ Character writing
 
  =[	put	opens a new string in the output stack and switches from input
 		to output mode, which will last until the next unescaped opcode
-		starting with a ], -&gt; or *.
+		starting with a ], -&gt; or &lowast;.
  ascii char	in output mode an ascii character is just written; even opcodes
 		are written rather than executed, with the exception of the
 		above output terminators, which restore input mode and are then
@@ -213,10 +213,10 @@ Shortcut opcodes
 
  spaces	spaces	matches a sequence of zero or more blank characters (spaces and
 		tabs).
- *]=  copy all   copies all remaining characters from the last input extent to
+ &lowast;]=  copy all   copies all remaining characters from the last input extent to
 		the output stream, reading but not copying the next cork.
-		Nearly equivalent to * ]=, but notice that the boundary of an
-		input extent is internally marked, so *]= will copy all of it
+		Nearly equivalent to &lowast; ]=, but notice that the boundary of an
+		input extent is internally marked, so &lowast;]= will copy all of it
 		even if it contains an internal ]=} (cork).
  =[]  put end	opens an empty new string in the output stack and goes back to
 		input mode; single opcode equivalent to =[ ].
@@ -304,7 +304,7 @@ cat replacement:
 	fri -e copy
 
 tac replacement:
-	fri -e 'r[ =[ * \n =[\n #2]=]'
+	fri -e 'r[ =[ &lowast; \n =[\n #2]=]'
 
 substitute apples for oranges:
 	fri -e '<q>orange</q> =[<q>apple</q>]'
