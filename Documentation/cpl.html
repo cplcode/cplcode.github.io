@@ -121,6 +121,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#FOR">DOWN:FOR</a>:</td><td>Loop with decreasing index</td></tr>
 <tr><td><a href="#ELSE">ELSE</a>:</td><td>conditionally executed statements</td></tr>
 <tr><td><a href="#END">END</a>:</td><td>ends a block</td></tr>
+<tr><td><a href="#ENUM">ENUM</a>:</td><td>enumerated type</td></tr>
 <tr><td><a href="#Builtin">EOF:Builtin</a>:</td><td>test for end of file</td></tr>
 <tr><td><a href="#ERROR">ERROR</a>:</td><td>signal an error and exit or trigger a TRAP</td></tr>
 <tr><td><a href="#TRAP">ERRORMESSAGE:TRAP</a>:</td><td>error message string</td></tr>
@@ -254,8 +255,12 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="editor.html#full-screen">save:(editor)full-screen</a>:</td><td>Save the session log or current screen to a file</td></tr>
 <tr><td><a href="graphics.html#gnuplot">set:(graphics)gnuplot</a>:</td><td>set command for gnuplot, passed as is </td></tr>
 <tr><td><a href="strlines.html#Top">strlines:(strlines)</a>:</td><td>Streamline plotting</td></tr>
+<tr><td><a href="#subarray">subarray</a>:</td><td>operations to extract a portion of an array</td></tr>
 <tr><td><a href="symbolic.html#Top">symbolic:(symbolic)</a>:</td><td>Symbolic differentiation</td></tr>
+<tr><td><a href="#variable%20size">variable size</a>:</td><td>STRUCTUREs</td></tr>
 <tr><td><a href="#ARRAY">&lowast;:ARRAY</a>:</td><td>or multiplication operator</td></tr>
+<tr><td><a href="#subarray">&lowast;2:subarray</a>:</td><td>permutation</td></tr>
+<tr><td><a href="#subarray">&lowast;3:subarray</a>:</td><td>permutation</td></tr>
 <tr><td><a href="#compound%20index">&lowast;&lowast;:compound index</a>:</td><td>Also alternate power operator</td></tr>
 <tr><td><a href="#Assignment">=:Assignment</a>:</td><td>Also comparison operator</td></tr>
 <tr><td><a href="#Deferred%20assignment">==:Deferred assignment</a>:</td><td></td></tr>
@@ -765,6 +770,7 @@ CPL is a type-checking language and requires that every VARIABLE be declared bef
 
 </td></tr>
 <tr><td><a href="#TYPE">TYPE</a>:</td><td>declaration of a new type identifier</td></tr>
+<tr><td><a href="#ENUM">ENUM</a>:</td><td>enumerated type</td></tr>
 <tr><td><a href="#STRUCTURE">STRUCTURE</a>:</td><td>compound type</td></tr>
 <tr><td><a href="#ARRAY">ARRAY</a>:</td><td>subscripted arrays</td></tr>
 <tr><td><a href="#STRING">STRING</a>:</td><td>strings of characters</td></tr>
@@ -874,8 +880,16 @@ The memory size in bytes of a type or variable (useful when using the <a href="#
 interface</a> or to estimate the memory requirements of the program) can be obtained from the pseudo-function
 
 	SIZEOF(&lt;typeorvariable&gt;) 
+</div><div class=page id="ENUM">
+Page: (cpl)ENUM, Next: <a href="#STRUCTURE">STRUCTURE</a>, Prev: <a href="#TYPE">TYPE</a>, Up: <a href="#Declarations">Declarations</a>
+<hr> <h2>Enumerated type</h2>
+Not really a compound type, ENUM (much like C enum) variables take a limited set of explicitly enumerated values. The syntax of this type declaration is
+
+	ENUM(&lt;id1&gt;,&lt;id2&gt;,...)
+
+and can directly declare variables or be assigned to a new type name like all other TYPEs. &lt;id1&gt;, &lt;id2&gt;, etc. are thereby declared as constants to which variables of the given type can be set or compared. The purpose of ENUM variables is to flag a specified set of alternatives, while forbidding out-of-range values which could arise if INTEGERs were used for this purpose. No other operations than assignment and comparison are defined on them. 
 </div><div class=page id="STRUCTURE">
-Page: (cpl)STRUCTURE, Next: <a href="#ARRAY">ARRAY</a>, Prev: <a href="#TYPE">TYPE</a>, Up: <a href="#Declarations">Declarations</a>
+Page: (cpl)STRUCTURE, Next: <a href="#ARRAY">ARRAY</a>, Prev: <a href="#ENUM">ENUM</a>, Up: <a href="#Declarations">Declarations</a>
 <hr> <h2>STRUCTUREs</h2>
 The type declarator for structures is
 
@@ -907,7 +921,25 @@ A structure declaration may also contain one or more anonymous fields. If a type
 
 var includes a field of type t1 of which var.a denotes the <q>a</q> field.
 
-Anonymous structure fields are the CPL way of defining objects that inherit the structure of other more general objects and add their own specific fields. When these objects are accessed as arguments to functions or subroutines, the appropriate function among those with the same name and different arguments is automatically selected. See also <a href="#overloading">overloading</a>, <a href="#DYNAMIC">DYNAMIC</a>. 
+Anonymous structure fields are the CPL way of defining objects that inherit the structure of other more general objects and add their own specific fields. When these objects are accessed as arguments to functions or subroutines, the appropriate function among those with the same name and different arguments is automatically selected. See also <a href="#overloading">overloading</a>, <a href="#DYNAMIC">DYNAMIC</a>.
+
+<nav><table>
+<tr><td><a href="#Menu%20*%20variable%20size">Menu
+&lowast; variable size</a>:</td><td>STRUCTUREs</td></tr>
+</table></nav>
+
+</div><div class=page id="variable%20size">
+Page: (cpl)variable size, Next: <a href="#ARRAY">ARRAY</a>, Prev: <a href="#STRUCTURE">STRUCTURE</a>, Up: <a href="#STRUCTURE">STRUCTURE</a>
+<hr> <h3>Variable size STRUCTUREs</h3>
+STRUCTUREs may be defined that contain ARRAYs the size of which will only be known at run time. Such STRUCTURE TYPEs are declared with one or more INTEGER CONSTANTs among their fields. When a variable of the given type is allocated, either by using the name assigned to the TYPE in a <a href="#Declaration">Declaration</a> or in a <a href="#NEW">NEW</a> statement, the values following the type name in parentheses (like arguments of a function) are assigned to these CONSTANTs by order, and are simultaneously used to allocate a chunk of memory of the appropriate size. Being CONSTANTs, these fields cannot be altered in the subsequent life of the allocate STRUCTURE. Example:
+
+	TYPE twoarrays=STRUCTURE[REAL x; INTEGER CONSTANT n
+		POINTER TO twoarrays next
+		ARRAY(1..n) OF INTEGER k; ARRAY(-n..2&lowast;n) OF REAL data]
+	.............
+	twoarrays(8) mytwoarrays mytwoarrays.next=NEW twoarrays(2&lowast;mytwoarrays.n)
+
+Notice that this syntax is intentionally similar to the syntax for FUNCTIONs that contain ARRAYs of runtime-specified size as arguments. Compare <a href="#array%20parameters">array parameters</a>. In fact, the set of parameters of a given function may usefully be thought of as a structure, although one that is invisible to the programmer and only exists as a conceptual model. 
 </div><div class=page id="ARRAY">
 Page: (cpl)ARRAY, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#STRUCTURE">STRUCTURE</a>, Up: <a href="#Declarations">Declarations</a>
 <hr> <h2>ARRAYs</h2>
@@ -2377,7 +2409,7 @@ Page: (cpl)icpl commands,  Next: <a href="#Library">Library</a>,  Prev: <a href=
 </div><div class=page id="icpl%20command%20line">
 Page: (cpl)icpl command line,  Next: <a href="#?">?</a>,  Prev: <a href="#icpl%20commands">icpl commands</a>,  Up: <a href="#icpl">icpl</a>
 <hr> <h2>The icpl command line</h2>
-An interactive CPL command can alternately be specified on the (<a href="#icpl%20command%20line">icpl command line</a>) as in
+An interactive CPL command can alternately be specified on the icpl command line, as in
 
 	icpl &lt;command&gt;
 
@@ -2391,9 +2423,9 @@ command with no arguments launches an interactive icpl session.
 
 icpl followed by a CPL expression (possibly quoted to avoid interpretation by the shell) calculates and prints that expression.
 
-icpl followed by one or more CPL statements executes those statements and exits; however if a <q>-</q> precedes the list of statements, after the written statements an interactive session is opened. For instance, a chosen set of libraries can be loaded by default in an interactive session, if desired, by defining an alias for <q>icpl -USE &lt;libraries&gt;</q>. <q>icpl</q> with no arguments is equivalent to <q>icpl -USE rbmat,cbmat,gnuplot,rtchecks</q>.
+icpl followed by one or more CPL statements executes those statements and exits; however if a <q>-</q> precedes the list of statements, after executing those statements an interactive session is opened. For instance, a chosen set of libraries can be loaded by default in an interactive session, if desired, by defining an alias for <q>icpl -USE &lt;libraries&gt;</q>. <q>icpl</q> with no arguments is equivalent to <q>icpl -USE rbmat,cbmat,gnuplot,rtchecks</q>.
 
-Finally, if icpl is executed under a different name (by defining a link to it), that name is executed as a command after <q>icpl -</q>. For instance, setup defines a link to icpl named <q>edit</q>, which is executed as <q>icpl - edit</q>. 
+Finally, if icpl is executed under a different name (by defining a link to it), that name is executed as a command after <q>icpl -</q>. For instance, setup defines a link to icpl named <q>edit</q>, which is executed as <q>icpl -edit</q>. 
 
 When the input of icpl is redirected (or piped) from an alternate source, commands from that source are interpreted on a line-by-line basis. 
 </div><div class=page id="?">
