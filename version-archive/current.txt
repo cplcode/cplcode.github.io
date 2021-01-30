@@ -1,2 +1,2 @@
-2021-01-14
+2021-01-30
 Bugs fixed in both icpl and the editor, including one that caused rare editor crashes. Re-included lapack-eigenvalues library in the distribution archive; icpl is now able to execute it. Added new FUNCTION declaration to the syntax, with result type dimensions possibly depending on previous parameters.
