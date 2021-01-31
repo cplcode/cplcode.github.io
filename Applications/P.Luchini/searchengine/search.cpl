@@ -1,0 +1,440 @@
+#include <sys/mman.h>
+
+CHAR alpha(0..255)=0
+DO alpha(i)=i FOR i="0" TO "9"
+DO alpha(i)=i-"A"+"a" FOR i="A" TO "Z"
+DO alpha(i)=i FOR i="a" TO "z"
+alpha("?")="?"
+alpha("*")="*"
+alpha("+")="+"
+! alpha(".")="."
+alpha("'")="'"
+DO alpha(i)="a" FOR i=192 TO 197
+alpha(199)="c"
+DO alpha(i)="e" FOR i=200 TO 203
+DO alpha(i)="i" FOR i=204 TO 207
+DO alpha(i)="o" FOR i=210 TO 214
+alpha(216)="o"
+DO alpha(i)="u" FOR i=217 TO 220
+DO alpha(i)="a" FOR i=224 TO 229
+alpha(231)="c"
+DO alpha(i)="e" FOR i=232 TO 235
+DO alpha(i)="i" FOR i=236 TO 239
+DO alpha(i)="o" FOR i=242 TO 246
+alpha(248)="o"
+DO alpha(i)="u" FOR i=249 TO 252
+
+indexsize=0x10000000
+! POINTER TO STORED ARRAY(0..indexsize-1) OF INTEGER idx
+! index=MMAP(idx)
+idx=open(""database".idx",O_RDONLY)
+POINTER TO ARRAY(0..indexsize-1) OF INTEGER index
+index=mmap64(NULL,indexsize,PROT_READ,MAP_SHARED,idx,0)
+root==2
+replim=index(1)
+
+WS_type=STRUCTURE()
+Match_WS=STRUCTURE(WS_type; INTEGER loc,nw)
+Or_WS=STRUCTURE(WS_type; DYNAMIC POINTER TO WS_type W1, W2; INTEGER n1,n2)
+INTEGER FUNCTION Next(POINTER TO Or_WS WS) FOLLOWS
+And_WS=STRUCTURE(WS_type; DYNAMIC POINTER TO WS_type W1, W2; INTEGER n1,n2)
+INTEGER FUNCTION Next(POINTER TO And_WS WS) FOLLOWS
+AndNot_WS=STRUCTURE(WS_type; DYNAMIC POINTER TO WS_type W1, W2; INTEGER n1,n2)
+INTEGER FUNCTION Next(POINTER TO AndNot_WS WS) FOLLOWS
+
+INTEGER FUNCTION Next(POINTER TO Match_WS WS) WITH WS
+  IF nw>replim THEN FREE WS; RETURN INT_MAX-1
+  IF nw=0 THEN FREE WS; RETURN INT_MAX
+  INC loc; DEC nw
+  RESULT=index(loc)
+END Next
+
+INTEGER FUNCTION Next(POINTER TO And_WS WS) WITH WS
+  DO
+    IF n1<=n2 THEN n1=Next(W1) ELSE n2=Next(W2)
+  UNTIL n1=n2 OR n1=INT_MAX-1 OR n2=INT_MAX-1
+  RESULT=IF n1=INT_MAX-1 THEN n2 ELSE n1
+  IF RESULT>=INT_MAX-1 THEN FREE WS
+END Next
+
+INTEGER FUNCTION Next(POINTER TO Or_WS WS) WITH WS
+  oldn1=n1
+  IF n1<=n2 THEN n1=Next(W1)
+  IF n2<=oldn1 THEN n2=Next(W2)
+  IF n1=INT_MAX-1 THEN LOOP WHILE n2<INT_MAX-1: n2=Next(W2)
+  IF n2=INT_MAX-1 THEN LOOP WHILE n1<INT_MAX-1: n1=Next(W1)
+  RESULT=MIN(n1,n2)
+  IF RESULT>=INT_MAX-1 THEN FREE WS
+END Next
+
+INTEGER FUNCTION Next(POINTER TO AndNot_WS WS) WITH WS
+  DO
+    n1=Next(W1)
+    LOOP WHILE n1>n2; n2=Next(W2); REPEAT
+  UNTIL n1#n2 OR n1>=INT_MAX-1
+  IF n1>=INT_MAX-1 THEN FREE WS
+  RESULT=n1
+END Next
+
+DYNAMIC POINTER TO WS_type FUNCTION join(DYNAMIC POINTER TO WS_type w1,w2)
+  BOOLEAN killed=FALSE
+  IF w1 IS Match_WS THEN
+    IF w1.nw=0 THEN
+      FREE w1; RESULT=w2; killed=TRUE
+    ELSE IF w1.nw>replim THEN
+      IF w2 IS Match_WS THEN FREE w2 ELSE
+        DO n=Next(w2) UNTIL n>=INT_MAX-1
+      END IF
+      RESULT=w1; killed=TRUE  
+    END IF
+  END IF    
+  IF NOT killed THEN IF w2 IS Match_WS THEN
+    IF w2.nw=0 THEN
+      FREE w2; RESULT=w1; killed=TRUE
+    ELSE IF w2.nw>replim THEN
+      IF w1 IS Match_WS THEN FREE w1 ELSE
+        DO n=Next(w1) UNTIL n>=INT_MAX-1
+      END IF
+      RESULT=w2; killed=TRUE
+    END IF
+  END IF
+  IF NOT killed THEN
+    WSq=NEW Or_WS
+    WSq.n1=0; WSq.n2=0
+    WSq.W1=w1
+    WSq.W2=w2
+    RESULT=WSq
+  END IF
+END join
+
+DYNAMIC POINTER TO WS_type FUNCTION condjoin(DYNAMIC POINTER TO WS_type w1,w2)
+  IF w2 IS Match_WS AND (w2.nw=0 OR w2.nw>replim) THEN
+    FREE w2; RESULT=w1
+  ELSE IF w1 IS Match_WS AND (w1.nw=0 OR w1.nw>replim) THEN
+    FREE w1; RESULT=w2
+  ELSE
+    WSq=NEW Or_WS
+    WSq.n1=0; WSq.n2=0
+    WSq.W1=w1
+    WSq.W2=w2
+    RESULT=WSq
+  END IF
+END condjoin
+
+DYNAMIC POINTER TO WS_type FUNCTION chain(DYNAMIC POINTER TO WS_type w1,w2)
+  BOOLEAN killed=FALSE
+  IF w1 IS Match_WS THEN
+    IF w1.nw>replim THEN
+      FREE w1; RESULT=w2; killed=TRUE
+    ELSE IF w2 IS Match_WS THEN
+      IF w1.nw=0 THEN
+        FREE w2; RESULT=w1; killed=TRUE
+      ELSE IF w2.nw=0 THEN
+        FREE w1; RESULT=w2; killed=TRUE
+      END IF
+    END IF
+  END IF
+  IF NOT killed THEN IF w2 IS Match_WS AND w2.nw>replim THEN
+    FREE w2; RESULT=w1
+  ELSE
+    WSq=NEW And_WS
+    WSq.n1=0; WSq.n2=0
+    WSq.W1=w1
+    WSq.W2=w2
+    RESULT=WSq
+  END IF
+END chain
+
+DYNAMIC POINTER TO WS_type FUNCTION Pattern(POINTER TO CSTRING start^) FOLLOWS
+CHAR wordbuf(100),foundwords(10000)
+POINTER INTO foundwords fws,wordstart
+POINTER TO CSTRING PatternString
+
+DYNAMIC POINTER TO WS_type FUNCTION Match(POINTER TO CSTRING start^; INTEGER VARIABLE loc,sub,nerr
+    VARIABLE POINTER INTO wordbuf fw; BOOLEAN VARIABLE printfws)
+  POINTER TO CSTRING word=start,word1
+  IF word(0)="(" THEN
+    INC word; RESULT=Pattern(word)
+    start=word+1; EXIT Match
+  END IF
+  LOOP WHILE word(0)="+": INC nerr; printfws=NO; INC word
+  ARRAY(0..3) OF CHAR locchr
+  BINARY INTEGER AT locchr=index(loc)
+  WS=NEW Match_WS
+  WS.nw=0
+  RESULT=WS
+  IF nerr=0 AND NOT printfws THEN EXIT Match
+  IF expired OR (loc=root AND (alpha(word(1))=0 OR alpha(word(2))=0)) THEN
+    WS.nw=INT_MAX-1
+  ELSE LOOP match
+    CHAR w=alpha(word(0))
+    IF sub>locchr.HI OR sub>0 AND locchr(sub)=0 THEN
+      loc=index(loc+1); BINARY INTEGER AT locchr=index(loc); sub=0
+    END IF
+    CASE w OF
+    "?": IF NOT (sub>0 OR [locchr(0)#0 AND index(loc+2) BITAND 0xff=0] AND alpha(word(1))#0) THEN
+        LOOP UNTIL locchr(0)=0
+          word1=word+1
+          fw(0)=locchr(0)
+          IF locchr(1)=0 OR locchr(1)=alpha(word1(0)) OR nerr>0 THEN RESULT=condjoin(RESULT,Match(word1,loc,1,nerr,fw+1,NO))
+          loc=loc+2; BINARY INTEGER AT locchr=index(loc)
+        REPEAT
+        EXIT match
+      END IF
+      fw(0)=locchr(sub); INC fw
+    "*": LOOP WHILE (sub>0 OR [locchr(0)#0 AND index(loc+2) BITAND 0xff=0 AND alpha(word(1))#0]) AND
+        alpha(word(1))#locchr(sub)
+        fw(0)=locchr(sub); INC fw
+        INC sub; IF sub>locchr.HI OR sub>0 AND locchr(sub)=0 THEN
+          loc=index(loc+1); BINARY INTEGER AT locchr=index(loc); sub=0
+        END IF
+      REPEAT
+      IF sub=0 THEN
+        saveloc=loc
+        LOOP WHILE locchr(0)#0
+          fw(0)=locchr(0)
+          word1=word; RESULT=condjoin(RESULT,Match(word1,loc,1,nerr,fw+1,NO))
+          loc=loc+2; BINARY INTEGER AT locchr=index(loc)
+        REPEAT
+        loc=saveloc; BINARY INTEGER AT locchr=index(loc)
+      ELSE word1=word; fw(0)=locchr(sub); RESULT=condjoin(RESULT,Match(word1,loc,sub+1,nerr,fw+1,NO))
+      DEC sub
+    ELSE
+      IF nerr>0 AND w#0 AND w#alpha(word(1)) ![ AND (locchr(sub)=0 OR locchr(sub)=alpha(word(1)) OR nerr>1) !] THEN word1=word+1; RESULT=condjoin(RESULT,Match(word1,loc,sub,nerr-1,fw,printfws))
+      IF sub=0 THEN
+        LOOP UNTIL locchr(0)<=w
+          IF nerr>0 AND locchr(0)#0 THEN
+            fw(0)=locchr(0)
+            IF locchr(1)=0 OR locchr(1)=w OR nerr>1 THEN word1=word; RESULT=condjoin(RESULT,Match(word1,loc,1,nerr-1,fw+1,printfws))
+            IF w#0 AND (locchr(1)=0 OR locchr(1)=alpha(word(1)) OR nerr>1) THEN word1=word+1; RESULT=condjoin(RESULT,Match(word1,loc,1,nerr-1,fw+1,printfws))
+          END IF
+          loc=loc+2; BINARY INTEGER AT locchr=index(loc)
+        REPEAT
+        IF nerr>0 AND locchr(0)#0 THEN
+          INTEGER loc1=loc+2; TYPEOF(locchr) locchr1; BINARY INTEGER AT locchr1=index(loc1)
+          LOOP WHILE locchr1(0)#0
+            fw(0)=locchr1(0)
+            IF locchr(1)=0 OR locchr(1)=w OR nerr>1 THEN word1=word; RESULT=condjoin(RESULT,Match(word1,loc1,1,nerr-1,fw+1,printfws))
+            IF w#0 AND (locchr(1)=0 OR locchr(1)=alpha(word(1)) OR nerr>1) THEN word1=word+1; RESULT=condjoin(RESULT,Match(word1,loc1,1,nerr-1,fw+1,printfws))
+            loc1=loc1+2; BINARY INTEGER AT locchr1=index(loc1)
+          REPEAT
+        END IF
+      END IF
+      IF nerr>0 AND locchr(sub)#0 AND (locchr(sub+1)=0 OR locchr(sub+1)=w OR nerr>1) THEN
+        fw(0)=locchr(sub)
+        word1=word; RESULT=condjoin(RESULT,Match(word1,loc,sub+1,nerr-1,fw+1,printfws))
+      END IF
+      IF locchr(sub)#w THEN DEC nerr
+      IF nerr<0 OR locchr(sub)=0 OR w=0 THEN
+        IF locchr(0)=0 AND w=0 AND BINARY INTEGER AT locchr #0 THEN
+          IF nerr=0 THEN
+            IF printfws THEN
+              IF fws>wordstart+1000 OR fws>fws.HI-100 THEN
+                printfws=NO
+                IF fws(-1)#"." THEN fws(0..HI)=" ..."
+              ELSE
+                !	      POINTER TO CSTRING sw=start-1
+                !	      LOOP WHILE alpha(sw(0))#0 AND sw>=PatternString: DEC sw
+                !	      fw(0)=0; fws(0..HI)=' <A HREF="?q=' PatternString(0..sw-PatternString) wordbuf PatternString(word-PatternString..1024) '">' wordbuf '</A>(' (BINARY INTEGER AT locchr) RSHIFTED 8 ')'
+                ! nota: richiede conversione di "" in &quot
+                fw(0)=0; fws(0..HI)=' <A HREF="?q=' wordbuf '">' wordbuf '</A>(' (BINARY INTEGER AT locchr) RSHIFTED 8 ')'
+              END IF
+              LOOP UNTIL fws(0)=0 OR fws>fws.HI-5: INC fws; REPEAT
+            END IF
+          ELSE
+            WS1=NEW Match_WS
+            WS1.nw=(BINARY INTEGER AT locchr) RSHIFTED 8
+            IF WS1.nw=1 THEN WS1.loc=loc ELSE WS1.loc=index(loc+1)-1
+            RESULT=join(WS1,RESULT)
+          END IF
+        END IF
+        EXIT match
+      END IF
+      fw(0)=locchr(sub); INC fw
+    END CASE
+    INC word
+    INC sub
+  REPEAT match
+  LOOP WHILE alpha(word(0))#0: INC word
+  start=word
+END Match
+
+INLINE SUBROUTINE skipfw(POINTER TO CSTRING cur^)
+  LOOP UNTIL cur(0)=0 OR cur(0)="(" OR cur(0)=")" OR alpha(cur(0))#0: INC cur
+END skipfw
+
+DYNAMIC POINTER TO WS_type FUNCTION Pattern(POINTER TO CSTRING start^)
+  POINTER TO CSTRING cur=start
+  skipfw(cur)
+  RESULT=EMPTY WS_type
+  LOOP UNTIL cur(0)=0 OR cur(0)=")"
+    wordstart=fws
+    DYNAMIC POINTER TO WS_type ARESULT=Match(cur,root,0,1,0,YES)
+    skipfw(cur)
+    LOOP UNTIL cur(0)=0 OR cur(0)=")" OR strncmp(cur,Or,SIZEOF(Or))=0
+      IF strncmp(cur,And,SIZEOF(And))=0 THEN INC cur,SIZEOF(And); skipfw(cur)
+      IF strncmp(cur,Not,SIZEOF(Not))=0 THEN
+        INC cur,SIZEOF(Not); skipfw(cur)
+        IF cur(0)='"' THEN
+          DO INC cur UNTIL cur(0)=0 OR cur(0)='"'
+          IF cur(0)#0 THEN INC cur
+        ELSE
+          TYPEOF(cur) cur1=cur
+          LOOP WHILE cur1(0)#0 AND alpha(cur1(0))=cur1(0): INC cur1
+          IF alpha(cur1(0))#0 THEN
+            cur=cur1; DO INC cur UNTIL alpha(cur(0))=0
+          ELSE
+            WS=NEW AndNot_WS
+            WS.n1=0; WS.n2=0
+            WS.W1=ARESULT
+            WS.W2=Match(cur,root,0,1,0,NO)
+            ARESULT=WS
+          END IF
+        END IF
+      ELSE wordstart=fws; ARESULT=chain(ARESULT,Match(cur,root,0,1,0,YES))
+      skipfw(cur)
+    REPEAT
+    IF RESULT=EMPTY WS_type THEN RESULT=ARESULT ELSE RESULT=join(RESULT,ARESULT)
+    IF strncmp(cur,Or,SIZEOF(Or))=0 THEN INC cur,SIZEOF(Or); skipfw(cur)
+  REPEAT
+  start=cur
+END Pattern
+
+INLINE SUBROUTINE skipfwq(POINTER TO CSTRING cur^)
+  LOOP UNTIL cur(0)=0 OR cur(0)="(" OR cur(0)=")" OR cur(0)='"' OR alpha(cur(0))#0: INC cur
+END skipfwq
+
+BOOLEAN FUNCTION Wmatch(POINTER TO CSTRING VARIABLE s,p; INTEGER basenerr)
+  CHAR stop=0
+  IF p(0)='"' THEN stop='"'; INC p
+  INTEGER nerr=basenerr
+  LOOP
+    LOOP WHILE p(0)="+": INC nerr; INC p
+    CASE p(0) OF
+    "?":
+    "*": INC p; IF alpha(p(0))=0 THEN RETURN TRUE
+      LOOP WHILE alpha(s(0))#0
+        IF alpha(s(0))=alpha(p(0)) AND Wmatch(s,p,nerr) THEN RETURN TRUE
+        INC s
+      REPEAT
+      RETURN FALSE	 
+    ELSE
+      IF nerr>0 AND [Wmatch(s+1,p,nerr-1) OR Wmatch(s,p+1,nerr-1)] THEN
+        LOOP UNTIL alpha(s(0))=0: INC s
+        LOOP UNTIL alpha(p(0))=0: INC p
+      END IF
+      IF [alpha(p(0))=stop OR p(0)=stop] AND alpha(s(0))=0 THEN RETURN TRUE
+      IF p(0)#s(0) AND
+      NOT {[alpha(p(0))=0 OR alpha(p(0))=p(0)] AND alpha(p(0))=alpha(s(0))} THEN DEC nerr
+      IF nerr<0 THEN RETURN FALSE
+      IF alpha(p(0))=0 AND alpha(s(0))=0 THEN
+        skipfwq(p)
+        LOOP UNTIL s(0)=0 OR alpha(s(0))#0: INC s
+        nerr=basenerr
+      END IF
+    END CASE
+    INC p
+    INC s
+  REPEAT
+END Wmatch
+
+SUBROUTINE toend(POINTER TO CSTRING cur^)
+  INTEGER count=0; BOOLEAN quot=FALSE
+  DO
+    CASE cur(0) OF
+    "(": INC count
+    ")": DEC count
+    '"': quot=NOT quot
+    END CASE
+    INC cur
+  UNTIL alpha(cur(0))=0 AND count=0 AND NOT quot
+END toend
+
+BOOLEAN FUNCTION Pmatch(POINTER TO CSTRING VARIABLE start, pat)
+  skipfwq(pat)
+  LOOP UNTIL pat(0)=0 OR pat(0)=")"
+    RESULT=TRUE
+    LOOP UNTIL pat(0)=0 OR pat(0)=")" OR strncmp(pat,Or,SIZEOF(Or))=0
+      IF strncmp(pat,And,SIZEOF(And))=0 THEN INC pat,SIZEOF(And); skipfwq(pat)
+      IF RESULT THEN
+        BOOLEAN neg=strncmp(pat,Not,SIZEOF(Not))=0
+        IF neg THEN INC pat,SIZEOF(Not); skipfwq(pat)
+        IF pat(0)="(" THEN RESULT=Pmatch(start,pat+1) ELSE
+          POINTER TO CSTRING s=start
+          LOOP UNTIL s(0)=0 OR alpha(s(0))#0: INC s
+          RESULT=FALSE
+          LOOP w UNTIL s(0)=0
+            IF Wmatch(s,pat,0) THEN RESULT=TRUE; EXIT w
+            LOOP WHILE alpha(s(0))#0: INC s
+            LOOP UNTIL s(0)=0 OR alpha(s(0))#0: INC s
+          REPEAT w
+        END IF
+        RESULT = ~ XOR neg
+      END IF
+      toend(pat)
+      skipfwq(pat)
+    REPEAT
+    IF RESULT THEN EXIT Pmatch
+    IF strncmp(pat,Or,SIZEOF(Or))=0 THEN INC pat,SIZEOF(Or); skipfwq(pat)
+  REPEAT
+END Pmatch
+
+SUBROUTINE htmlwr(VARIABLE POINTER TO CSTRING s; BOOLEAN unimarc)
+  here==stdout
+  LOOP WHILE s(0)#0
+    CASE s(0) OF
+    "|": IF unimarc THEN putc("|",here) ELSE
+        INC s
+        CASE s(0) OF
+        "f": putc("/",here)
+        "e": putc(":",here)
+        "g": putc(":",here)
+        "x": putc("-",here)
+        "b": putc(" ",here)
+        "d": putc(",",here)
+        "c": putc(";",here)
+        "v": putc(";",here)
+        ELSE
+          putc(" ",here)
+        END CASE
+      END IF
+    \n: fputs("<BR>",here)
+    '"': fputs("&quot;",here)
+    "<": IF s(1)="<" THEN INC s ELSE fputs("&lt;",here)
+    ">": IF s(1)=">" THEN INC s ELSE fputs("&gt;",here)
+    "&": fputs("&amp;",here)
+    ELSE
+      putc(s(0),here)
+    END CASE
+    INC s
+  REPEAT
+END htmlwr
+
+SUBROUTINE uri2asc(POINTER TO CSTRING VARIABLE s)
+  POINTER TO CSTRING t=s
+  LOOP WHILE s(0)#0
+    CASE s(0) OF
+    "%": INC s
+      t(0)=(IF s(0)-"0"<=9 THEN s(0)-"0" ELSE s(0)-"A"+10)LSHIFTED 4
+      INC s
+      t(0)=~BITOR (IF s(0)-"0"<=9 THEN s(0)-"0" ELSE s(0)-"A"+10)
+    "+": t(0)=" "
+    ELSE t(0)=s(0)
+  END CASE
+  INC s; INC t
+REPEAT
+t(0)=0
+END uri2asc
+
+SUBROUTINE asc2uri(POINTER TO CSTRING VARIABLE s)
+  LOOP WHILE s(0)#0
+    CASE s(0) OF
+    "%": WRITE "%25" ./.
+    "+": WRITE "%2B" ./.
+    "&": WRITE "%26" ./.
+    " ": putchar("+")
+    ELSE putchar(s(0))
+  END CASE
+  INC s
+REPEAT
+END asc2uri

@@ -1,0 +1,212 @@
+database="/var/www/textsearch/Libridimec.txt"
+maxout=200
+
+! USE rtchecks
+
+BOOLEAN expired
+SUBROUTINE setexpired(INTEGER signum) = expired=YES
+signal(SIGVTALRM,setexpired)
+
+#include <sys/time.h>
+struct itimerval allowedtime
+WITH allowedtime.it_interval: tv_sec=0; tv_usec=0
+WITH allowedtime.it_value: tv_sec=0; tv_usec=100000
+
+And="e "; Or="o "; Not="non "
+
+USE search
+
+htmlheader = <<HEADEND
+Content-type: text/html
+
+<title>Catalogo della biblioteca DIMEC</title>
+<meta NAME=author CONTENT="Paolo Luchini - DIMEC - Universita` di Salerno, 2004. luchini@unisa.it">
+<link rel=StyleSheet href=/textsearch/catalog.css>
+<body onload="javascript:document.f.q.focus()">
+HEADEND
+
+benvenuti = <<BENVENUTI
+<H1 align=center>Benvenuti al catalogo della biblioteca 
+<IMG SRC="/textsearch/logodimec.gif" align=middle border=0 ALT="DIMEC"></H1>
+BENVENUTI
+
+form1 = <<FORM1
+<FORM name=f><TABLE class=query align=center width=95%><tr><td width=50
+align=left><A HREF="http://www.unisa.it">
+<IMG SRC="/textsearch/logo50.gif" height=50 width=50 align=middle border=0
+ALT="UniSa"></A></td>
+<td width=60 align=left>
+<A HREF="http://www.csab.unisa.it/catalogo.asp" class=csab><font size=2>
+Biblioteca<BR>di Ateneo</font></A></td>
+<td align=center><A HREF="http://www.dimec.unisa.it">
+<IMG SRC="/textsearch/logodimec.gif" height=30 width=50 align=top border=0
+ALT="DIMEC"></A>
+<span style="vertical-align:-22%"><INPUT TYPE=text name=q size=48 maxlength=255 value="
+FORM1
+form2 = <<FORM2
+"><INPUT type=submit VALUE="Cerca nella biblioteca"></span></td>
+<td width=10% align=left>
+<A href="?#istruzioni"><small>ISTRUZIONI</small></A></td></tr></TABLE></FORM>
+FORM2
+
+istruzioni = <<fineistruzioni
+<H3><A name=istruzioni>ISTRUZIONI</A></H3>
+<P>Indicare una o pi&uacute parole da ricercare, usando se necessario le
+congiunzioni logiche "<B>e</B>", "<B>o</B>", "<B>e non</B>". "<B>e</B>" ha
+precedenza su "<B>o</B>"; la precedenza pu&oacute essere modificata tramite
+parentesi. L'assenza di congiunzioni sottintende "<B>e</B>". Si puo' ricercare
+una sequenza di parole adiacenti racchiudendola tra virgolette.</P>
+<P>La ricerca specificata in lettere minuscole si estende automaticamente alle
+varianti maiuscole e/o accentate di ciascuna lettera. Lettere maiuscole e/o
+accentate espressamente incluse nella ricerca, invece, corrispondono solo a se
+stesse. Il simbolo <B>?</B> indica un singolo carattere non specificato, e il
+simbolo <B>*</B> una sequenza di zero o pi&uacute caratteri inspecificati.</P>
+<P>Il sistema propone una lista di parole simili a quelle date, che differiscono
+per la sostituzione, omissione o aggiunta di un singolo carattere. Per includere
+nella ricerca anche le parole contenenti uno o pi&uacute errori, premettere una
+o pi&uacute volte il simbolo <B>+</B>.</P>
+<P>Qualora la ricerca risulti in un numero eccessivo di risultati, o in una
+catena troppo lunga di operazioni (tipicamente, uso di <B>*</B> all'inizio di
+parola o troppi <B>+</B>), verr&agrave visualizzata una lista vuota o incompleta
+con il messaggio "Precisare meglio la richiesta".</P>
+fineistruzioni
+
+segnala1 = <<segnala1
+<form action="/cgi-bin/segnala" name=f method=post>
+<input type=hidden name=email value="luchini@localhost">
+<input type=hidden name=record value="
+segnala1
+segnala2 = '">Ho trovato <input type="input" name="Correggi" size=30 maxlength=255 value="'
+segnala3 = <<segnala3
+"> al posto di
+<input type="input" id="q" name="in" size=30 maxlength=255>
+<input type="submit" value="Invia">
+<BR>Altre informazioni:<BR>
+<textarea rows="3" cols="80" name="Note"> </textarea>
+</form>
+segnala3
+
+text=fopen(database,"r")
+CHAR linebuf(10000)
+
+SUBROUTINE writetitle(INTEGER rec; POINTER TO CSTRING pattern; INTEGER wrcount^)
+POINTER INTO linebuf descrline=0
+POSITION(text,rec)
+READ FROM text linebuf
+IF Pmatch(linebuf,pattern) THEN
+  WRITE '<A HREF="?w=' rec '&q=' ./.
+  asc2uri pattern
+  WRITE '"><LI>'
+  DO descrline=strchr(descrline,\t); INC descrline FOR 3 TIMES
+  strchr(descrline,\t)=":"
+  strchr(descrline,\t)=0
+  htmlwr descrline(0),NO
+  WRITE '</LI></A>'
+  INC wrcount
+END IF
+END writetitle
+
+SUBROUTINE wrfield(POINTER TO CSTRING line, name)
+  WRITE "<TR><TH align=right valign=top nowrap>" name ":</TH><TD>"
+  htmlwr line,NO
+  WRITE "</TD></TR>"
+END wrfield
+
+STRING sysnum="senza numero"
+POINTER TO CSTRING tipo
+fieldname=("Autore",
+	   "Titolo",
+	   "Editore",
+	   "Anno",
+	   "",
+	   "",
+	   "",
+	   "",
+	   "")
+
+SUBROUTINE prettyprint1(INTEGER rec)
+POSITION(text,rec)
+READ FROM text linebuf
+WRITE "<center><H2>Biblioteca del DIMEC</H2></center>"
+WRITE "<TABLE class=card align=center width=95% border=4 rules=rows>"
+POINTER INTO linebuf field=0, fieldend=strchr(field,\t)
+IF fieldend^#NULL THEN fieldend(0)=0
+sysnum=field(0..HI)
+DO field=fieldend+1; fieldend=strchr(field,\t) FOR 2 TIMES
+POINTER INTO fieldname i=0
+DO
+  field=fieldend+1; fieldend=strchr(field,\t)
+  IF fieldend^#NULL THEN fieldend(0)=0
+  wrfield[field(0),fieldname(i)]
+  INC i
+UNTIL fieldend^=NULL
+WRITE '</TABLE>'
+END prettyprint1
+  
+INLINE SUBROUTINE prettyprint2(INTEGER rec; POINTER TO CSTRING query)
+  POSITION(text,rec)
+  READ FROM text linebuf
+  POINTER INTO linebuf field=0, fieldend=strchr(field,\t)
+  WRITE '<TABLE class=coll border=0 align=center width=95%>' \
+	'<colgroup span=2 width=50%><TR><TD><P><A href="?s='rec'&q=' ./.
+  asc2uri query
+  WRITE '"><small>Se noti un errore</small></A></TD>' \
+	'<TD align=right><A href="?r='rec'"><small>'sysnum'</small></A></TD></TR>'
+  field=fieldend+1; fieldend=strchr(field,\t)
+  IF fieldend^#NULL THEN fieldend(0)=0
+  wrfield[field(0),"COLLOCAZIONE"]
+  field=fieldend+1; fieldend=strchr(field,\t)
+  IF fieldend^#NULL THEN fieldend(0)=0
+  wrfield[field(0),"SETTORE"]
+  WRITE '</TABLE>'
+END prettyprint2
+
+INLINE SUBROUTINE writefull(INTEGER rec)
+POSITION(text,rec)
+READ FROM text linebuf
+htmlwr linebuf,NO
+END writefull
+
+WRITE htmlheader
+POINTER TO CSTRING query=getenv("QUERY_STRING")
+IF query^#NULL AND query(0)#0 THEN uri2asc(query); CASE query(0) OF
+"q": <*    setitimer(ITIMER_VIRTUAL,&allowedtime_,NULL);  *>
+     expired=NO
+     fws=0
+     PatternString=query+2
+     MWS=Pattern(PatternString)
+ <*    setitimer(ITIMER_VIRTUAL,&allowedtime_,NULL);  *>
+     expired=NO
+     IF foundwords#"" THEN WRITE "<B>Parole simili:</B> " foundwords "<BR>"
+     WRITE form1 query+2 form2
+     INTEGER wrcount=0
+     WRITE '<OL>'
+     INTEGER record
+     LOOP p
+       record=Next(MWS)
+       IF record>=INT_MAX-1 OR expired OR wrcount>=maxout THEN EXIT p
+       writetitle(record,query+2,wrcount)
+     REPEAT p
+     WRITE '</OL>'
+     IF record#INT_MAX THEN
+       WRITE "<B>Precisare meglio la richiesta</B><BR>"
+     ELSE IF wrcount=0 THEN WRITE "<B>Nessun riscontro</B><BR>"
+     IF wrcount>20 THEN
+       WRITE form1 query+2 form2
+     END IF
+"w": record=atoi(query+2)
+     query=strchr(query,"&")
+     IF query^=NULL THEN query="" ELSE query=query+3
+     prettyprint1(record)
+     prettyprint2(record,query)
+     WRITE form1 query form2
+"s": record=atoi(query+2)
+     query=strchr(query,"&")
+     IF query^=NULL THEN query="" ELSE query=query+3
+     prettyprint1(record)
+     WRITE '<table class=coll border=0 align=center width=95%>' \
+       '<TR><TD><small>Se noti un errore segnalalo qui:</small></TD></TR>' \
+       '<TR><TH>' segnala1 sysnum segnala2 query segnala3 '</TH></TR></table>'
+"r": record=atoi(query+2)
+     writefull(record)
+END CASE ELSE WRITE benvenuti form1 form2 istruzioni

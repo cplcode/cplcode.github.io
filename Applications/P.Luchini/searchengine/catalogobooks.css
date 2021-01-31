@@ -1,0 +1,6 @@
+BODY 	    {background:url(books.jpeg); color:yellow}
+A:link 	    {color:#ffcc66}
+A:active    {color:yellow}
+A:visited   {color:#ffff99}
+TABLE.query {background:#cc8855}
+TABLE.card  {background:gray}

@@ -1,0 +1,106 @@
+! BoostConv -- Copyright 2010 Paolo Luchini
+! http://CPLcode.net/Applications/BoostConv/
+
+!( MIT License
+  
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. !)
+
+USE rbmat
+
+BoostConvWS=STRUCTURE[INTEGER CONSTANT N,lo,hi;
+  ! BoostConv workspace keeps internal state between calls
+  ! N,lo and hi will be specified at run time; see infocpl "variable size"
+  INTEGER rot,rot2
+  ! indices used to circulate basis vectors
+  ARRAY(0..N-1,0..N-1) OF REAL dd
+  ! symmetric square matrix holding the scalar products of base vectors 
+  ARRAY(0..N-1,lo..hi) OF REAL in,out
+  ! in and out base vectors of the boostconv algorithm
+]
+
+SUBROUTINE BoostConv[BoostConvWS ws^^; REAL r^(*); OPTIONAL INTEGER length=10]
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! Expedites the convergence of a pre-existing numerical iteration by
+  ! constructing a probable guess of the forthcoming next residual as a
+  ! linear combination of past residuals.
+  !
+  ! Calling parameters:
+  !
+  ! ws: pointer to internal workspace. If initially set to NULL, it will be
+  ! internally allocated and initialized to a new buffer with size length.
+  ! Can be deallocated with FREE when no longer needed.
+  !
+  ! r: on input, REAL ARRAY containing the residual vector of the iteration to
+  ! be accelerated; on output, substituted in place with the improved residual
+  ! vector provided by the BoostConv algorithm.
+  !
+  ! length: only significant when ws points to a NULL BoostConvWS.
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  IF ws=NULL BoostConvWS THEN
+    ! allocate new workspace and exit
+    ws=NEW BoostConvWS(length,r.LO,r.HI)
+    WITH ws ! zero history, and set first vector equal to the current residual
+    in(*)=0
+    out(*)=0
+    dd(*)=1
+    rot=0
+    rot2=0
+    in(0)=r
+    out(0)=r
+  ELSE
+    ! This is the actual iteration
+    WITH ws
+    REAL c(0..N-1) ! :projection coefficients of the current residual
+    in(rot)=~-r ! Update in(rot), provisionally containing the residual from
+    ! the previous iteration, to the difference between the last and the present
+    ! residual as required by the BoostConv logic.
+    out(rot)=~-in(rot) ! Update out(rot), containing the boosted residual
+    ! produced by BoostConv at the previous iteration, to the difference out-in
+    DO dd(rot,j)=in(rot)|in(j); dd(j,rot)=dd(rot,j) FOR ALL j
+    ! Update one row and one column only of dd with the new scalar products,
+    ! the other basis vectors being unchanged
+    DO c(j)=in(j)|r FOR ALL j ! Project the current residual onto the non-
+    c=PLU(dd)\~ ! orthogonal "in" basis by solving an NxN linear system
+    IF rot=0 THEN
+#ifdef DiscardOldest
+      rot=N-1
+#else
+      IF rot2=0 THEN rot2=N
+      rot2=rot2-1
+      rot=rot2
+#endif
+    ELSE rot=rot-1
+    ! Select the next basis vector to be worked upon: circulate by decreasing
+    ! rot by 1, and when the index hits zero reinitialize to rot2. rot2
+    ! in turn circulates at a lower rate. See description of the strategy.
+    LOOP FOR ALL k
+      in(rot,k)=r(k)
+      r(k)=~+c*out(*,k) ! The "out" array actually contains out-in at this point
+      out(rot,k)=r(k)
+    REPEAT
+    ! Update in place the current residual r with r+c*(out-in), while making
+    ! copies of the original residual into in(rot) and of the boosted residual
+    ! into out(rot), in preparation for the next iteration.
+  END IF
+END BoostConv
+
+POINTER TO BoostConvWS defaultBoostConvWS=NULL
+INLINE SUBROUTINE BoostConv[REAL r^(*); OPTIONAL INTEGER length=10]=BoostConv(defaultBoostConvWS,r,length=length)
+! If you only use BoostConv in your program for a single iterative algorithm,
+! this simplified interface hides the necessity to allocate a workspace.

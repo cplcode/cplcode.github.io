@@ -1,0 +1,236 @@
+! USE rtchecks
+
+CHAR alpha(0..255)=0
+DO alpha(i)=i FOR i="0" TO "9"
+DO alpha(i)=i-"A"+"a" FOR i="A" TO "Z"
+DO alpha(i)=i FOR i="a" TO "z"
+! alpha(".")="."
+alpha("'")="'"
+DO alpha(i)="a" FOR i=192 TO 197
+alpha(199)="c"
+DO alpha(i)="e" FOR i=200 TO 203
+DO alpha(i)="i" FOR i=204 TO 207
+DO alpha(i)="o" FOR i=210 TO 214
+alpha(216)="o"
+DO alpha(i)="u" FOR i=217 TO 220
+DO alpha(i)="a" FOR i=224 TO 229
+alpha(231)="c"
+DO alpha(i)="e" FOR i=232 TO 235
+DO alpha(i)="i" FOR i=236 TO 239
+DO alpha(i)="o" FOR i=242 TO 246
+alpha(248)="o"
+DO alpha(i)="u" FOR i=249 TO 252
+
+FRI SECTION
+function "INTEGER"]= cut argument POINTER TO type * value =[ *]= cut =[function INTEGER value "(int)" #1
+function "ITEM"]= cut argument INTEGER value =[ *]= cut =[function POINTER TO type "item" value "(void *)" #1
+END FRI SECTION
+
+TYPE item=STRUCTURE(POINTER TO item brother,son
+                    CHAR c(0..3)
+		    )
+item NIL; WITH NIL: brother=NIL; son=NIL; c(0)=255
+POINTER TO item root=NIL
+
+replim=atoi(COMMANDLINE(2))
+
+SUBROUTINE SortIn(POINTER TO POINTER TO item VARIABLE prev; POINTER TO ARRAY(*) OF CHAR buf; INTEGER ref)
+POINTER TO item loc=prev
+POINTER INTO buf pos=0
+LOOP sort
+  LOOP UNTIL loc=NIL OR loc.c(0)<=buf(pos): prev=loc.brother; loc=prev
+  IF loc=NIL OR loc.c(0)<buf(pos) THEN
+    prev^=NEW item
+    prev.brother=loc
+    loc=prev
+    loc.son=NIL
+    loc.c=0
+    loc.c(0)=buf(pos)
+    LOOP FOR i=1 TO 3
+      IF pos+i>buf.HI THEN EXIT sort
+      loc.c(i)=buf(pos+i)
+    REPEAT
+  END IF
+  INC pos
+  LOOP l2 FOR i=1 TO 3
+    IF loc.c(i)=0 THEN EXIT l2
+    IF pos>buf.HI OR loc.c(i)#buf(pos) THEN
+      new=NEW item
+      new.son=loc.son
+      new.brother=NIL
+      loc.son=new
+      new.c=0
+      LOOP FOR j=i TO 3: new.c(j-i)=loc.c(j); loc.c(j)=0
+      EXIT l2
+    END IF
+    INC pos
+  REPEAT l2
+  IF pos>buf.HI THEN EXIT sort
+  prev=loc.son
+  loc=prev
+REPEAT sort
+prev=loc.son
+LOOP WHILE prev#NIL AND prev.c(0)#0
+  prev=prev.brother
+REPEAT
+loc=prev
+LOOP WHILE prev#NIL
+  IF prev.son=ITEM(ref) THEN EXIT SortIn
+  prev=prev.brother
+REPEAT
+IF loc#NIL THEN
+  BINARY INTEGER AT loc.c=(BINARY INTEGER AT loc.c)+256
+  IF BINARY INTEGER AT loc.c>256*replim THEN EXIT SortIn
+END IF
+NEW prev^
+prev.brother=NIL
+prev.son=ITEM(ref)
+BINARY INTEGER AT prev.c=256
+END SortIn
+
+text=OPEN(COMMANDLINE(1))
+INTEGER record=0,cnt=0
+ARRAY(0..100) OF CHAR buf
+INTEGER c=0
+IF COMMANDLINE(3)="unimarc" THEN
+  BOOLEAN passed=NO
+  LOOP UNTIL EOF(text)
+    c=getc(text)
+    IF alpha(c)#0 THEN
+      INTEGER i=0
+      DO buf(i)=alpha(c); INC(i); c=getc(text) UNTIL alpha(c)=0 OR i>buf.HI
+      IF buf(0)="l" AND [strncmp(buf,"l01000010fmt",SIZEOF("l01000010fmt"))=0 OR
+	 passed AND [strncmp(buf,"l01000010ldr",SIZEOF("l01000010ldr"))=0 OR
+	 strncmp(buf,"l01000010001",SIZEOF("l01000010001"))=0]] THEN
+	passed=NO
+	record=INTEGER(POSITION(text))-SIZEOF("l01000010fmt")-1
+	INC cnt; IF cnt MOD 100 = 0 THEN WRITE \r cnt, record ./.
+      ELSE IF buf(0)="l" AND [strncmp(buf,"l01000010200",SIZEOF("l01000010200"))=0 OR
+	strncmp(buf,"l01000010sys",SIZEOF("l01000010sys"))=0] THEN
+	passed=YES
+      ELSE IF i>2 THEN SortIn(root,buf(0..i-1),record)
+    END IF
+  REPEAT
+ELSE LOOP UNTIL EOF(text)
+  IF alpha(c)#0 THEN
+    INTEGER i=0
+    DO buf(i)=alpha(c); INC(i); c=getc(text) UNTIL alpha(c)=0 OR i>buf.HI
+    IF i>2 THEN SortIn(root,buf(0..i-1),record)
+  ELSE c=getc(text)
+  IF c=\n THEN record=INTEGER(POSITION(text))
+REPEAT
+CLOSE text
+
+!(
+CHAR foundbuf(100)
+SUBROUTINE traverse(POINTER TO POINTER TO item VARIABLE oldroot,newroot; POINTER INTO foundbuf schar,fchar)
+POINTER TO item cur=newroot
+multi=(cur#NIL AND cur.c(0)#0 AND cur.brother#NIL AND cur.brother.c(0)#0)
+LOOP WHILE cur#NIL AND cur.c(0)#0
+  INTEGER sub=0
+  DO fchar(sub)=cur.c(sub); INC sub UNTIL sub>3 OR cur.c(sub)=0
+  IF newroot#oldroot THEN traverse(oldroot,cur.son,schar,fchar+sub)
+  IF multi AND fchar<3 THEN
+    fchar(0)="|"
+    traverse(newroot,cur.son,fchar,fchar+sub)
+  END IF
+  cur=cur.brother
+REPEAT
+IF cur#NIL AND newroot#oldroot AND fchar-schar>2 THEN
+  SortIn(oldroot,schar(0..fchar-schar-1),INTEGER(cur))
+END IF
+END traverse
+
+traverse(root,root,0,0)
+!)
+
+indexsize=0x10000000
+POINTER TO STORED ARRAY(0..indexsize-1) OF INTEGER index=CREATE(""COMMANDLINE(1)".idx")
+! index=MMAP(indexstor)
+
+!(
+recindex=CREATE(""COMMANDLINE(1)".rcx")
+
+SUBROUTINE WrTree(POINTER TO POINTER TO item head; BOOLEAN synth)
+  POINTER TO item cur=head
+  BOOLEAN bar=NO
+  IF cur.c(0)="|" THEN bar=YES; cur=cur.brother
+  LOOP WHILE cur#NIL AND cur.c(0)#0
+    WrTree(cur.son,synth)
+    cur=cur.brother
+  REPEAT
+  IF bar THEN WrTree(head.son,YES)
+  cur=head
+  head=ITEM(INTEGER(POSITION(index)) DIV SIZEOF(INTEGER))
+  LOOP WHILE cur#NIL AND cur.c(0)#0
+    WRITE BINARY TO index cur.c,INTEGER(cur.son)
+    cur=cur.brother
+  REPEAT
+  IF cur=NIL THEN
+    WRITE BINARY TO index 0
+  ELSE
+    cur1=BINARY INTEGER AT cur.c; BINARY INTEGER AT cur.c = INTEGER(POSITION(index))
+    WRITE BINARY TO index cur1
+    IF synth THEN
+      LOOP WHILE cur#NIL
+        WRITE BINARY TO recindex cur.son.c
+	cur=cur.brother
+      REPEAT
+    ELSE IF cur1=256 THEN
+      WRITE BINARY TO index INTEGER(cur.son)
+    ELSE IF cur1<=256*replim THEN
+      WRITE BINARY TO index INTEGER(POSITION(recindex))
+      LOOP WHILE cur#NIL
+	WRITE BINARY TO recindex INTEGER(cur.son)
+	cur=cur.brother
+      REPEAT
+    END IF
+  END IF
+END WrTree
+
+WRITE BINARY TO index 0,0
+WrTree(root,NO)
+POSITION index,0
+WRITE BINARY TO index INTEGER(root),replim
+!)
+
+index(0)="r"
+index(1)=INTEGER(root)
+INTEGER newnewloc=0, newloc=2
+LOOP UNTIL newloc=newnewloc
+  oldnewloc=newnewloc
+  newnewloc=newloc
+  LOOP FOR oldloc=oldnewloc TO newnewloc-2 BY 2
+    IF index(oldloc) BITAND 0xff # 0 THEN
+      POINTER TO item cur=ITEM(index(oldloc+1))
+      index(oldloc+1)=newloc
+      LOOP WHILE cur#NIL AND cur.c(0)#0
+	index(newloc)=BINARY INTEGER AT cur.c
+	index(newloc+1)=INTEGER(cur.son)
+	INC newloc,2
+	cur=cur.brother
+      REPEAT
+      IF cur=NIL THEN index(newloc)=0 ELSE
+	index(newloc)=BINARY INTEGER AT cur.c
+	IF BINARY INTEGER AT cur.c=256 THEN
+	  index(newloc+1)=INTEGER(cur.son)
+	ELSE index(newloc+1)=INTEGER(cur)
+      END IF
+      INC newloc,2
+    END IF
+  REPEAT
+REPEAT
+newnewloc=newloc
+LOOP FOR oldloc=2 TO newnewloc-2 BY 2
+  IF index(oldloc) BITAND 0xff = 0 AND index(oldloc)>256 AND index(oldloc)<=256*replim THEN
+    POINTER TO item cur=ITEM(index(oldloc+1))
+    index(oldloc+1)=newloc
+    LOOP WHILE cur#NIL
+      index(newloc)=INTEGER(cur.son)
+      INC newloc
+      cur=cur.brother
+    REPEAT
+  END IF
+REPEAT
+index(0)=2
+index(1)=replim

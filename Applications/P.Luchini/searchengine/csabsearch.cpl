@@ -1,0 +1,278 @@
+database="/var/www/textsearch/Biblio.Txt"
+maxout=200
+
+! USE rtchecks
+
+BOOLEAN expired
+SUBROUTINE setexpired(INTEGER signum) = expired=YES
+signal(SIGVTALRM,setexpired)
+
+#include <sys/time.h>
+struct itimerval allowedtime
+WITH allowedtime.it_interval: tv_sec=0; tv_usec=0
+WITH allowedtime.it_value: tv_sec=0; tv_usec=100000
+
+And="e "; Or="o "; Not="non "
+
+USE search
+
+htmlheader = <<HEADEND
+Content-type: text/html
+
+<title>Catalogo della biblioteca UniSa</title>
+<meta NAME=author CONTENT="Paolo Luchini - DIMEC - Universita` di Salerno, 2004. luchini@unisa.it">
+<link rel=StyleSheet href=/textsearch/catalog.css>
+<body onload="javascript:document.f.q.focus()">
+HEADEND
+
+benvenuti = <<BENVENUTI
+<center><big><big>
+Benvenuti al catalogo della biblioteca UniSa: <B>questa &egrave; una versione di prova</B>
+</big></big></center><BR>
+BENVENUTI
+
+form1 = <<FORM1
+<FORM name=f><TABLE class=query align=center width=95%><tr><td width=10% align=right>
+<A HREF=http://www.csab.unisa.it class=csab>CSAB</A><BR><A HREF=http://www.csab.unisa.it/proposte/><small>PROPOSTE</small></A>
+</td><td width=80% align=center><A HREF="http://www.unisa.it">
+<IMG SRC="/textsearch/logo50.gif" height=50 width=50 align=middle border=0 ALT="UniSa"></A>
+<span style="vertical-align:-25%"><INPUT TYPE=text name=q size=48 maxlength=255 value="
+FORM1
+form2 = <<FORM2
+"><INPUT type=submit VALUE="Cerca nella biblioteca"></span></td>
+<td width=10% align=left>
+<A href="?#istruzioni"><small>ISTRUZIONI</small></A></td></tr></TABLE></FORM>
+FORM2
+
+istruzioni = <<ISTRUZIONI
+<H3><A name=istruzioni>ISTRUZIONI</A></H3>
+<P>Indicare una o pi&uacute parole da ricercare, usando se necessario le
+congiunzioni logiche "<B>e</B>", "<B>o</B>", "<B>e non</B>". "<B>e</B>" ha
+precedenza su "<B>o</B>"; la precedenza pu&oacute essere modificata tramite
+parentesi. L'assenza di congiunzioni sottintende "<B>e</B>". Si puo' ricercare
+una sequenza di parole adiacenti racchiudendola tra virgolette.</P>
+<P>La ricerca specificata in lettere minuscole si estende automaticamente alle
+varianti maiuscole e/o accentate di ciascuna lettera. Lettere maiuscole e/o
+accentate espressamente incluse nella ricerca, invece, corrispondono solo a se
+stesse. Il simbolo <B>?</B> indica un singolo carattere non specificato, e il
+simbolo <B>*</B> una sequenza di zero o pi&uacute caratteri inspecificati.</P>
+<P>Il sistema propone una lista di parole simili a quelle date, che differiscono
+per la sostituzione, omissione o aggiunta di un singolo carattere. Per includere
+nella ricerca anche le parole contenenti uno o pi&uacute errori, premettere una
+o pi&uacute volte il simbolo <B>+</B>.</P>
+<P>Qualora la ricerca risulti in un numero eccessivo di risultati, o in una
+catena troppo lunga di operazioni (tipicamente, uso di <B>*</B> all'inizio di
+parola o troppi <B>+</B>), verr&agrave visualizzata una lista vuota o incompleta
+con il messaggio <B>Richiesta troppo generica</B>. Specificare meglio la
+richiesta.</P>
+<P>Per esempio: &nbsp <A href="?q=%2Bwave*+fluid%3F+e+non+water"> +wave* fluid?
+e non water</A></P>
+ISTRUZIONI
+
+segnala1 = <<segnala1
+<form action="/~luchini/segnala.cgi" name="f" method="post">
+<input type=hidden name=email value="luchini@localhost">
+<input type="hidden" name="scheda" value="
+segnala1
+segnala2 = '">Ho trovato <input type="input" name="Correggi" size=30 maxlength=255 value="'
+segnala3 = <<segnala3
+"> al posto di
+<input type="input" id="q" name="in" size=30 maxlength=255>
+<input type="submit" value="Invia">
+<BR>Eventuali commenti:<BR>
+<textarea rows="3" cols="80" name="Note"> </textarea>
+</form>
+segnala3
+
+text=fopen(database,"r")
+
+fmt="FMT"
+ldr="LDR"
+title="200"
+
+SUBROUTINE writetitle(INTEGER rec; POINTER TO CSTRING pattern; INTEGER wrcount^)
+CHAR fullrecord(100000)
+POINTER INTO fullrecord line=0,descrline
+POSITION(text,rec)
+READ FROM text line(0..HI); line=line+9
+DO
+  IF strncmp(line,title,SIZEOF(title))=0 THEN
+    descrline=strstr(line,"L|")
+    IF descrline^=NULL THEN descrline=line
+    descrline=descrline+3
+  END IF
+  LOOP UNTIL line(0)=0 OR line=fullrecord.HI: INC line; REPEAT
+  line(0)=\n; INC line
+  READ FROM text line(0..HI); line=line+9
+UNTIL EOF(text) OR strncmp(line,fmt,SIZEOF(fmt))=0
+line(-9)=0
+IF Pmatch(fullrecord,pattern) THEN
+  WRITE '<A HREF="?w=' rec '&q=' ./.
+  asc2uri pattern
+  WRITE '"><LI>'
+  strchr(descrline,\n)=0
+  htmlwr descrline,NO
+  WRITE '</LI></A>'
+  INC wrcount
+END IF
+END writetitle
+
+sysno="001"
+isbn="010"
+lingua="101"
+publ="210"
+formato="215"
+editor="702"
+author="70"
+origin="7"
+collana="410"
+titorig="454"
+subject="606"
+subject1="610"
+contiene="327"
+descr="3"
+area="BAS"
+colloc="95"
+
+SUBROUTINE wrfield(POINTER TO CSTRING line, name; BOOLEAN onefield)
+  POINTER TO CSTRING l=strstr(line,"|a")
+  IF l^=NULL THEN l=strstr(line," L")
+  IF l^=NULL THEN l=strchr(line,"|")
+  IF l^=NULL THEN EXIT wrfield
+  l=l+2
+  IF onefield THEN
+    POINTER TO CHAR ll=strchr(l,"|"); IF ll^#NULL THEN ll^=0
+  END IF
+  WRITE "<TR><TH align=right valign=top nowrap>" name ":</TH><TD>"
+  htmlwr l,NO
+  WRITE "</TD></TR>"
+END wrfield
+
+STRING sysnum="senza numero"
+POINTER TO CSTRING tipo
+CHAR linebuf(1000); POINTER INTO linebuf line=9
+
+SUBROUTINE prettyprint1(INTEGER rec)
+POSITION(text,rec)
+READ FROM text linebuf
+IF strncmp(line,fmt,SIZEOF(fmt))=0 OR strncmp(line,ldr,SIZEOF(ldr))=0 THEN
+  IF strstr(line,"LBK")#NULL THEN
+    tipo="Monografia"
+  ELSE IF strstr(line,"LSE")#NULL THEN
+    tipo="Periodico"
+  ELSE tipo="Non classificato"
+  WRITE "<center><H2>" tipo "</H2></center>" \
+  "<table class=card align=center width=95% border=4 rules=rows>"
+  DO
+    IF strncmp(line,sysno,SIZEOF(sysno))=0 THEN
+      TYPEOF(line) l=strchr(line,"L")
+      IF l^#NULL THEN sysnum=(l+1)(0..HI)
+    ELSE IF strncmp(line,title,SIZEOF(title))=0 THEN
+      POINTER TO CHAR ll=strstr(line,"|f"); IF ll^#NULL THEN ll^=0
+      wrfield(line,"TITOLO",NO)
+    ELSE IF strncmp(line,isbn,SIZEOF(isbn))=0 THEN
+      wrfield(line,"ISBN",NO)
+    ELSE IF strncmp(line,publ,SIZEOF(publ))=0 THEN
+      wrfield(line,"STAMPATO&nbsp;A",NO)
+    ELSE IF strncmp(line,formato,SIZEOF(formato))=0 THEN
+      wrfield(line,"FORMATO",NO)
+    ELSE IF strncmp(line,editor,SIZEOF(editor))=0 THEN
+      wrfield(line,"A&nbsp;CURA&nbsp;DI",NO)
+    ELSE IF strncmp(line,author,SIZEOF(author))=0 THEN
+      wrfield(line,"AUTORE",NO)
+    ELSE IF line(0)=origin THEN
+      wrfield(line,"FONTE",NO)
+    ELSE IF strncmp(line,collana,SIZEOF(collana))=0 THEN
+      wrfield(line,"COLLANA",NO)
+    ELSE IF strncmp(line,subject,SIZEOF(subject))=0 OR
+    	    strncmp(line,subject1,SIZEOF(subject1))=0 THEN
+      wrfield(line,"ARGOMENTO",NO)
+    ELSE IF strncmp(line,titorig,SIZEOF(titorig))=0 THEN
+      wrfield(line,"TITOLO&nbsp;ORIGINALE",NO)
+    ELSE IF strncmp(line,contiene,SIZEOF(contiene))=0 THEN
+      wrfield(line,"CONTIENE",NO)
+    ELSE IF line(0)=descr THEN
+      wrfield(line,"DESCRIZIONE",NO)
+    ELSE IF strncmp(line,lingua,SIZEOF(lingua))=0 THEN
+      wrfield(line,"LINGUA",NO)
+    END IF
+    READ FROM text linebuf
+  UNTIL EOF(text) OR strncmp(line,fmt,SIZEOF(fmt))=0 OR strncmp(line,colloc,SIZEOF(colloc))=0
+  WRITE '</TABLE>'
+END IF
+END prettyprint1
+  
+INLINE SUBROUTINE prettyprint2(INTEGER rec; POINTER TO CSTRING query)
+  WRITE '<table class=coll border=0 align=center width=95%>' \
+	'<colgroup span=2 width=50%><TR><TD><P><A href="?s='rec'&q=' ./.
+  asc2uri query
+  WRITE '"><small>Se noti un errore</small></A></TD>' \
+	'<TD align=right><A href="?r='rec'"><small>'sysnum'</small></A></TD></TR>'
+  IF strncmp(line,colloc,SIZEOF(colloc))=0 THEN
+    IF tipo(0)="P" THEN wrfield(line,"POSSEDUTO",NO) ELSE wrfield(line,"COLLOCAZIONE",YES)
+    READ FROM text linebuf
+  END IF    
+  DO
+    IF strncmp(line,colloc,SIZEOF(colloc))=0 THEN
+      wrfield(line,"",tipo(0)="M")
+    ELSE IF strncmp(line,area,SIZEOF(area))=0 THEN
+      wrfield(line,"AREA",NO)
+    END IF
+    READ FROM text linebuf
+  UNTIL EOF(text) OR strncmp(line,fmt,SIZEOF(fmt))=0 OR strncmp(line,ldr,SIZEOF(ldr))=0
+  WRITE '</TABLE>'
+END prettyprint2
+
+INLINE SUBROUTINE writefull(INTEGER rec)
+POSITION(text,rec)
+READ FROM text linebuf
+IF strncmp(line,fmt,SIZEOF(fmt))=0 OR strncmp(line,ldr,SIZEOF(ldr))=0 THEN DO
+  htmlwr line,YES
+  WRITE "<BR>"
+  READ FROM text linebuf
+UNTIL EOF(text) OR strncmp(line,fmt,SIZEOF(fmt))=0
+END writefull
+
+WRITE htmlheader
+POINTER TO CSTRING query=getenv("QUERY_STRING")
+IF query^#NULL AND query(0)#0 THEN uri2asc(query); CASE query(0) OF
+"q": <*    setitimer(ITIMER_VIRTUAL,&allowedtime_,NULL);  *>
+     expired=NO
+     fws=0
+     PatternString=query+2
+     MWS=Pattern(PatternString)
+ <*    setitimer(ITIMER_VIRTUAL,&allowedtime_,NULL);  *>
+     expired=NO
+     IF foundwords#"" THEN WRITE "<B>Parole simili:</B> " foundwords "<BR>"
+     WRITE form1 query+2 form2
+     INTEGER wrcount=0
+     WRITE '<OL>'
+     INTEGER record
+     LOOP p
+       record=Next(MWS)
+       IF record>=INT_MAX-1 OR expired OR wrcount>=maxout THEN EXIT p
+       writetitle(record,query+2,wrcount)
+     REPEAT p
+     WRITE '</OL>'
+     IF record#INT_MAX THEN
+       WRITE "<B>Precisare meglio la richiesta</B><BR>"
+     ELSE IF wrcount=0 THEN WRITE "<B>Nessun riscontro</B><BR>"
+     IF wrcount>20 THEN
+       WRITE form1 query+2 form2
+     END IF
+"w": record=atoi(query+2)
+     query=strchr(query,"&")
+     IF query^=NULL THEN query="" ELSE query=query+3
+     prettyprint1(record)
+     prettyprint2(record,query)
+     WRITE form1 query form2
+"s": record=atoi(query+2)
+     query=strchr(query,"&")
+     IF query^=NULL THEN query="" ELSE query=query+3
+     prettyprint1(record)
+     WRITE '<table class=coll border=0 align=center width=95%>' \
+       '<TR><TD><small>Se noti un errore segnalalo qui:</small></TD></TR>' \
+       '<TR><TH>' segnala1 sysnum segnala2 query segnala3 '</TH></TR></table>'
+"r": record=atoi(query+2)
+     writefull(record)
+END CASE ELSE WRITE benvenuti form1 form2 istruzioni

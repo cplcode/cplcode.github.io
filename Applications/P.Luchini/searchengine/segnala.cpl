@@ -1,0 +1,51 @@
+LOGFILE="/var/www/textsearch/log"
+
+#include <time.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+! USE rtchecks
+
+INTEGER FUNCTION uriget()
+  c=getchar()
+  CASE c OF
+  "%": c1=getchar()
+       RESULT=(IF c1-"0"<=9 THEN c1-"0" ELSE c1-"A"+10)LSHIFTED 4
+       c2=getchar()
+       RESULT=~BITOR (IF c2-"0"<=9 THEN c2-"0" ELSE c2-"A"+10)
+  "+": RESULT=" "
+  "&": RESULT=\n
+  ELSE RESULT=c
+  END CASE
+END uriget
+
+senderip=getenv("REMOTE_ADDR")
+struct in_addr addr; inet_aton(senderip,addr)
+senderhn=gethostbyaddr(addr,SIZEOF(addr),AF_INET)
+CHAR email(1000)
+FILE log
+POINTER INTO email i=0
+DO u=uriget(); email(i)=u; INC i; UNTIL i>email.HI OR u=\n OR u<0
+WRITE TO stderr email
+IF strstr(email(0..5),"email=")=email(0) THEN
+  log=popen("/usr/bin/tee -a "LOGFILE" | /usr/bin/mail -s 'Catalogo' "email(6..HI),"w")
+ELSE log=fopen(LOGFILE,"a"); WRITE TO log \n\n email
+
+WRITE TO log "Segnalazione da " IF senderhn#NULL AND senderhn.h_name #NULL
+ THEN senderhn.h_name ELSE senderip
+time_t t=time(NULL)
+WRITE TO log ctime(t) ./.
+LOOP l FOR 10000 TIMES
+  c=uriget()
+  IF c<0 THEN EXIT l
+  putc(c,log)
+REPEAT l
+WRITE TO log \n
+CLOSE log
+WRITE <<REPLY
+Content-type: text/html
+
+<CENTER><H1>Segnalazione inviata.
+<H2>Si ringrazia per l'aiuto<BR>
+e si provveder&agrave al pi&uacute presto possibile
+<H2><A href="javascript:history.go(-2)">OK</A></CENTER>
+REPLY

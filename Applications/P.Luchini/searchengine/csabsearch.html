@@ -1,0 +1,280 @@
+<!DOCTYPE html><html lang="en"><head><title>P.Luchini/searchengine/csabsearch.cpl</title><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style></head><body><pre>
+database="/var/www/textsearch/Biblio.Txt"
+maxout=200
+
+<span class=comment>! USE rtchecks</span>
+
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> expired
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> setexpired(<a href="cpl.html#INTEGER">INTEGER</a> signum) = expired=YES
+signal(SIGVTALRM,setexpired)
+
+<a href="cpl.html#C%20interface">#include</a> &lt;sys/time.h&gt;
+struct itimerval allowedtime
+<a href="cpl.html#WITH">WITH</a> allowedtime.it_interval: tv_sec=0; tv_usec=0
+<a href="cpl.html#WITH">WITH</a> allowedtime.it_value: tv_sec=0; tv_usec=100000
+
+And="e "; Or="o "; Not="non "
+
+<a href="cpl.html#USE">USE</a> search
+
+htmlheader = &lt;&lt;HEADEND
+Content-type: text/html
+
+&lt;title&gt;Catalogo della biblioteca UniSa&lt;/title&gt;
+&lt;meta NAME=author CONTENT="Paolo Luchini - DIMEC - Universita` di Salerno, 2004. luchini@unisa.it"&gt;
+&lt;link rel=StyleSheet href=/textsearch/catalog.css&gt;
+&lt;body onload="javascript:document.f.q.focus()"&gt;
+HEADEND
+
+benvenuti = &lt;&lt;BENVENUTI
+&lt;center&gt;&lt;big&gt;&lt;big&gt;
+Benvenuti al catalogo della biblioteca UniSa: &lt;B&gt;questa &amp;egrave; una versione di prova&lt;/B&gt;
+&lt;/big&gt;&lt;/big&gt;&lt;/center&gt;&lt;BR&gt;
+BENVENUTI
+
+form1 = &lt;&lt;FORM1
+&lt;FORM name=f&gt;&lt;TABLE class=query align=center width=95%&gt;&lt;tr&gt;&lt;td width=10% align=right&gt;
+&lt;A HREF=http://www.csab.unisa.it class=csab&gt;CSAB&lt;/A&gt;&lt;BR&gt;&lt;A HREF=http://www.csab.unisa.it/proposte/&gt;&lt;small&gt;PROPOSTE&lt;/small&gt;&lt;/A&gt;
+&lt;/td&gt;&lt;td width=80% align=center&gt;&lt;A HREF="http://www.unisa.it"&gt;
+&lt;IMG SRC="/textsearch/logo50.gif" height=50 width=50 align=middle border=0 ALT="UniSa"&gt;&lt;/A&gt;
+&lt;span style="vertical-align:-25%"&gt;&lt;INPUT <a href="cpl.html#TYPE">TYPE</a>=text name=q size=48 maxlength=255 value="
+FORM1
+form2 = &lt;&lt;FORM2
+"&gt;&lt;INPUT type=submit VALUE="Cerca nella biblioteca"&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;td width=10% align=left&gt;
+&lt;A href="?#istruzioni"&gt;&lt;small&gt;ISTRUZIONI&lt;/small&gt;&lt;/A&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/TABLE&gt;&lt;/FORM&gt;
+FORM2
+
+istruzioni = &lt;&lt;ISTRUZIONI
+&lt;H3&gt;&lt;A name=istruzioni&gt;ISTRUZIONI&lt;/A&gt;&lt;/H3&gt;
+&lt;P&gt;Indicare una o pi&amp;uacute parole da ricercare, usando se necessario le
+congiunzioni logiche "&lt;B&gt;e&lt;/B&gt;", "&lt;B&gt;o&lt;/B&gt;", "&lt;B&gt;e non&lt;/B&gt;". "&lt;B&gt;e&lt;/B&gt;" ha
+precedenza su "&lt;B&gt;o&lt;/B&gt;"; la precedenza pu&amp;oacute essere modificata tramite
+parentesi. L'assenza di congiunzioni sottintende "&lt;B&gt;e&lt;/B&gt;". Si puo' ricercare
+una sequenza di parole adiacenti racchiudendola tra virgolette.&lt;/P&gt;
+&lt;P&gt;La ricerca specificata in lettere minuscole si estende automaticamente alle
+varianti maiuscole e/o accentate di ciascuna lettera. Lettere maiuscole e/o
+accentate espressamente incluse nella ricerca, invece, corrispondono solo a se
+stesse. Il simbolo &lt;B&gt;?&lt;/B&gt; indica un singolo carattere non specificato, e il
+simbolo &lt;B&gt;&lowast;&lt;/B&gt; una sequenza di zero o pi&amp;uacute caratteri inspecificati.&lt;/P&gt;
+&lt;P&gt;Il sistema propone una lista di parole simili a quelle date, che differiscono
+per la sostituzione, omissione o aggiunta di un singolo carattere. Per includere
+nella ricerca anche le parole contenenti uno o pi&amp;uacute errori, premettere una
+o pi&amp;uacute volte il simbolo &lt;B&gt;+&lt;/B&gt;.&lt;/P&gt;
+&lt;P&gt;Qualora la ricerca risulti in un numero eccessivo di risultati, o in una
+catena troppo lunga di operazioni (tipicamente, uso di &lt;B&gt;&lowast;&lt;/B&gt; all'inizio di
+parola o troppi &lt;B&gt;+&lt;/B&gt;), verr&amp;agrave visualizzata una lista vuota o incompleta
+con il messaggio &lt;B&gt;Richiesta troppo generica&lt;/B&gt;. Specificare meglio la
+richiesta.&lt;/P&gt;
+&lt;P&gt;Per esempio: &amp;nbsp &lt;A href="?q=%2Bwave&lowast;+fluid%3F+e+non+water"&gt; +wave&lowast; fluid?
+e non water&lt;/A&gt;&lt;/P&gt;
+ISTRUZIONI
+
+segnala1 = &lt;&lt;segnala1
+&lt;form action="/~luchini/segnala.cgi" name="f" method="post"&gt;
+&lt;input type=hidden name=email value="luchini@localhost"&gt;
+&lt;input type="hidden" name="scheda" value="
+segnala1
+segnala2 = '"&gt;Ho trovato &lt;input type="input" name="Correggi" size=30 maxlength=255 value="'
+segnala3 = &lt;&lt;segnala3
+"&gt; al posto di
+&lt;input type="input" id="q" name="in" size=30 maxlength=255&gt;
+&lt;input type="submit" value="Invia"&gt;
+&lt;BR&gt;Eventuali commenti:&lt;BR&gt;
+&lt;textarea rows="3" cols="80" name="Note"&gt; &lt;/textarea&gt;
+&lt;/form&gt;
+segnala3
+
+text=fopen(database,"r")
+
+fmt="FMT"
+ldr="LDR"
+title="200"
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> writetitle(<a href="cpl.html#INTEGER">INTEGER</a> rec; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING pattern; <a href="cpl.html#INTEGER">INTEGER</a> wrcount^)
+<a href="cpl.html#CHAR">CHAR</a> fullrecord(100000)
+<a href="cpl.html#POINTER">POINTER</a> INTO fullrecord line=0,descrline
+<a href="cpl.html#POSITION">POSITION</a>(text,rec)
+<a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text line(0..<a href="cpl.html#HI">HI</a>); line=line+9
+<a href="cpl.html#DO">DO</a>
+  <a href="cpl.html#IF">IF</a> strncmp(line,title,<a href="cpl.html#TYPE">SIZEOF</a>(title))=0 <a href="cpl.html#IF">THEN</a>
+    descrline=strstr(line,"L|")
+    <a href="cpl.html#IF">IF</a> descrline^=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> descrline=line
+    descrline=descrline+3
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> line(0)=0 <a href="cpl.html#OR">OR</a> line=fullrecord.<a href="cpl.html#HI">HI</a>: <a href="cpl.html#INC">INC</a> line; <a href="cpl.html#LOOP">REPEAT</a>
+  line(0)=\n; <a href="cpl.html#INC">INC</a> line
+  <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text line(0..<a href="cpl.html#HI">HI</a>); line=line+9
+<a href="cpl.html#UNTIL">UNTIL</a> EOF(text) <a href="cpl.html#OR">OR</a> strncmp(line,fmt,<a href="cpl.html#TYPE">SIZEOF</a>(fmt))=0
+line(-9)=0
+<a href="cpl.html#IF">IF</a> Pmatch(fullrecord,pattern) <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#WRITE">WRITE</a> '&lt;A HREF="?w=' rec '&amp;q=' ./.
+  asc2uri pattern
+  <a href="cpl.html#WRITE">WRITE</a> '"&gt;&lt;LI&gt;'
+  strchr(descrline,\n)=0
+  htmlwr descrline,NO
+  <a href="cpl.html#WRITE">WRITE</a> '&lt;/LI&gt;&lt;/A&gt;'
+  <a href="cpl.html#INC">INC</a> wrcount
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#END">END</a> writetitle
+
+sysno="001"
+isbn="010"
+lingua="101"
+publ="210"
+formato="215"
+editor="702"
+author="70"
+origin="7"
+collana="410"
+titorig="454"
+subject="606"
+subject1="610"
+contiene="327"
+descr="3"
+area="BAS"
+colloc="95"
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> wrfield(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING line, name; <a href="cpl.html#BOOLEAN">BOOLEAN</a> onefield)
+  <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING l=strstr(line,"|a")
+  <a href="cpl.html#IF">IF</a> l^=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> l=strstr(line," L")
+  <a href="cpl.html#IF">IF</a> l^=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> l=strchr(line,"|")
+  <a href="cpl.html#IF">IF</a> l^=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> wrfield
+  l=l+2
+  <a href="cpl.html#IF">IF</a> onefield <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#CHAR">CHAR</a> ll=strchr(l,"|"); <a href="cpl.html#IF">IF</a> ll^#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> ll^=0
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#WRITE">WRITE</a> "&lt;TR&gt;&lt;TH align=right valign=top nowrap&gt;" name ":&lt;/TH&gt;&lt;TD&gt;"
+  htmlwr l,NO
+  <a href="cpl.html#WRITE">WRITE</a> "&lt;/TD&gt;&lt;/TR&gt;"
+<a href="cpl.html#END">END</a> wrfield
+
+<a href="cpl.html#STRING">STRING</a> sysnum="senza numero"
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING tipo
+<a href="cpl.html#CHAR">CHAR</a> linebuf(1000); <a href="cpl.html#POINTER">POINTER</a> INTO linebuf line=9
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> prettyprint1(<a href="cpl.html#INTEGER">INTEGER</a> rec)
+<a href="cpl.html#POSITION">POSITION</a>(text,rec)
+<a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text linebuf
+<a href="cpl.html#IF">IF</a> strncmp(line,fmt,<a href="cpl.html#TYPE">SIZEOF</a>(fmt))=0 <a href="cpl.html#OR">OR</a> strncmp(line,ldr,<a href="cpl.html#TYPE">SIZEOF</a>(ldr))=0 <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> strstr(line,"LBK")#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a>
+    tipo="Monografia"
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strstr(line,"LSE")#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a>
+    tipo="Periodico"
+  <a href="cpl.html#ELSE">ELSE</a> tipo="Non classificato"
+  <a href="cpl.html#WRITE">WRITE</a> "&lt;center&gt;&lt;H2&gt;" tipo "&lt;/H2&gt;&lt;/center&gt;" \
+  "&lt;table class=card align=center width=95% border=4 rules=rows&gt;"
+  <a href="cpl.html#DO">DO</a>
+    <a href="cpl.html#IF">IF</a> strncmp(line,sysno,<a href="cpl.html#TYPE">SIZEOF</a>(sysno))=0 <a href="cpl.html#IF">THEN</a>
+      <a href="cpl.html#TYPE">TYPEOF</a>(line) l=strchr(line,"L")
+      <a href="cpl.html#IF">IF</a> l^#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> sysnum=(l+1)(0..<a href="cpl.html#HI">HI</a>)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,title,<a href="cpl.html#TYPE">SIZEOF</a>(title))=0 <a href="cpl.html#IF">THEN</a>
+      <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#CHAR">CHAR</a> ll=strstr(line,"|f"); <a href="cpl.html#IF">IF</a> ll^#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> ll^=0
+      wrfield(line,"TITOLO",NO)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,isbn,<a href="cpl.html#TYPE">SIZEOF</a>(isbn))=0 <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"ISBN",NO)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,publ,<a href="cpl.html#TYPE">SIZEOF</a>(publ))=0 <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"STAMPATO&amp;nbsp;A",NO)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,formato,<a href="cpl.html#TYPE">SIZEOF</a>(formato))=0 <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"FORMATO",NO)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,editor,<a href="cpl.html#TYPE">SIZEOF</a>(editor))=0 <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"A&amp;nbsp;CURA&amp;nbsp;DI",NO)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,author,<a href="cpl.html#TYPE">SIZEOF</a>(author))=0 <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"AUTORE",NO)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> line(0)=origin <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"FONTE",NO)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,collana,<a href="cpl.html#TYPE">SIZEOF</a>(collana))=0 <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"COLLANA",NO)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,subject,<a href="cpl.html#TYPE">SIZEOF</a>(subject))=0 <a href="cpl.html#OR">OR</a>
+                strncmp(line,subject1,<a href="cpl.html#TYPE">SIZEOF</a>(subject1))=0 <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"ARGOMENTO",NO)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,titorig,<a href="cpl.html#TYPE">SIZEOF</a>(titorig))=0 <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"TITOLO&amp;nbsp;ORIGINALE",NO)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,contiene,<a href="cpl.html#TYPE">SIZEOF</a>(contiene))=0 <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"CONTIENE",NO)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> line(0)=descr <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"DESCRIZIONE",NO)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,lingua,<a href="cpl.html#TYPE">SIZEOF</a>(lingua))=0 <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"LINGUA",NO)
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text linebuf
+  <a href="cpl.html#UNTIL">UNTIL</a> EOF(text) <a href="cpl.html#OR">OR</a> strncmp(line,fmt,<a href="cpl.html#TYPE">SIZEOF</a>(fmt))=0 <a href="cpl.html#OR">OR</a> strncmp(line,colloc,<a href="cpl.html#TYPE">SIZEOF</a>(colloc))=0
+  <a href="cpl.html#WRITE">WRITE</a> '&lt;/TABLE&gt;'
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#END">END</a> prettyprint1
+  
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> prettyprint2(<a href="cpl.html#INTEGER">INTEGER</a> rec; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING query)
+  <a href="cpl.html#WRITE">WRITE</a> '&lt;table class=coll border=0 align=center width=95%&gt;' \
+        '&lt;colgroup span=2 width=50%&gt;&lt;TR&gt;&lt;TD&gt;&lt;P&gt;&lt;A href="?s='rec'&amp;q=' ./.
+  asc2uri query
+  <a href="cpl.html#WRITE">WRITE</a> '"&gt;&lt;small&gt;Se noti un errore&lt;/small&gt;&lt;/A&gt;&lt;/TD&gt;' \
+        '&lt;TD align=right&gt;&lt;A href="?r='rec'"&gt;&lt;small&gt;'sysnum'&lt;/small&gt;&lt;/A&gt;&lt;/TD&gt;&lt;/TR&gt;'
+  <a href="cpl.html#IF">IF</a> strncmp(line,colloc,<a href="cpl.html#TYPE">SIZEOF</a>(colloc))=0 <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#IF">IF</a> tipo(0)="P" <a href="cpl.html#IF">THEN</a> wrfield(line,"POSSEDUTO",NO) <a href="cpl.html#ELSE">ELSE</a> wrfield(line,"COLLOCAZIONE",YES)
+    <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text linebuf
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>    
+  <a href="cpl.html#DO">DO</a>
+    <a href="cpl.html#IF">IF</a> strncmp(line,colloc,<a href="cpl.html#TYPE">SIZEOF</a>(colloc))=0 <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"",tipo(0)="M")
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,area,<a href="cpl.html#TYPE">SIZEOF</a>(area))=0 <a href="cpl.html#IF">THEN</a>
+      wrfield(line,"AREA",NO)
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text linebuf
+  <a href="cpl.html#UNTIL">UNTIL</a> EOF(text) <a href="cpl.html#OR">OR</a> strncmp(line,fmt,<a href="cpl.html#TYPE">SIZEOF</a>(fmt))=0 <a href="cpl.html#OR">OR</a> strncmp(line,ldr,<a href="cpl.html#TYPE">SIZEOF</a>(ldr))=0
+  <a href="cpl.html#WRITE">WRITE</a> '&lt;/TABLE&gt;'
+<a href="cpl.html#END">END</a> prettyprint2
+
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> writefull(<a href="cpl.html#INTEGER">INTEGER</a> rec)
+<a href="cpl.html#POSITION">POSITION</a>(text,rec)
+<a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text linebuf
+<a href="cpl.html#IF">IF</a> strncmp(line,fmt,<a href="cpl.html#TYPE">SIZEOF</a>(fmt))=0 <a href="cpl.html#OR">OR</a> strncmp(line,ldr,<a href="cpl.html#TYPE">SIZEOF</a>(ldr))=0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#DO">DO</a>
+  htmlwr line,YES
+  <a href="cpl.html#WRITE">WRITE</a> "&lt;BR&gt;"
+  <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text linebuf
+<a href="cpl.html#UNTIL">UNTIL</a> EOF(text) <a href="cpl.html#OR">OR</a> strncmp(line,fmt,<a href="cpl.html#TYPE">SIZEOF</a>(fmt))=0
+<a href="cpl.html#END">END</a> writefull
+
+<a href="cpl.html#WRITE">WRITE</a> htmlheader
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING query=getenv("QUERY_STRING")
+<a href="cpl.html#IF">IF</a> query^#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#AND">AND</a> query(0)#0 <a href="cpl.html#IF">THEN</a> uri2asc(query); <a href="cpl.html#CASE">CASE</a> query(0) <a href="cpl.html#OF">OF</a>
+"q": &lt;&lowast;    setitimer(ITIMER_VIRTUAL,&amp;allowedtime_,<a href="cpl.html#POINTER">NULL</a>);  &lowast;&gt;
+     expired=NO
+     fws=0
+     PatternString=query+2
+     MWS=Pattern(PatternString)
+ &lt;&lowast;    setitimer(ITIMER_VIRTUAL,&amp;allowedtime_,<a href="cpl.html#POINTER">NULL</a>);  &lowast;&gt;
+     expired=NO
+     <a href="cpl.html#IF">IF</a> foundwords#"" <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> "&lt;B&gt;Parole simili:&lt;/B&gt; " foundwords "&lt;BR&gt;"
+     <a href="cpl.html#WRITE">WRITE</a> form1 query+2 form2
+     <a href="cpl.html#INTEGER">INTEGER</a> wrcount=0
+     <a href="cpl.html#WRITE">WRITE</a> '&lt;OL&gt;'
+     <a href="cpl.html#INTEGER">INTEGER</a> record
+     <a href="cpl.html#LOOP">LOOP</a> p
+       record=Next(MWS)
+       <a href="cpl.html#IF">IF</a> record&gt;=INT_MAX-1 <a href="cpl.html#OR">OR</a> expired <a href="cpl.html#OR">OR</a> wrcount&gt;=maxout <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> p
+       writetitle(record,query+2,wrcount)
+     <a href="cpl.html#LOOP">REPEAT</a> p
+     <a href="cpl.html#WRITE">WRITE</a> '&lt;/OL&gt;'
+     <a href="cpl.html#IF">IF</a> record#INT_MAX <a href="cpl.html#IF">THEN</a>
+       <a href="cpl.html#WRITE">WRITE</a> "&lt;B&gt;Precisare meglio la richiesta&lt;/B&gt;&lt;BR&gt;"
+     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> wrcount=0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> "&lt;B&gt;Nessun riscontro&lt;/B&gt;&lt;BR&gt;"
+     <a href="cpl.html#IF">IF</a> wrcount&gt;20 <a href="cpl.html#IF">THEN</a>
+       <a href="cpl.html#WRITE">WRITE</a> form1 query+2 form2
+     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+"w": record=atoi(query+2)
+     query=strchr(query,"&amp;")
+     <a href="cpl.html#IF">IF</a> query^=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> query="" <a href="cpl.html#ELSE">ELSE</a> query=query+3
+     prettyprint1(record)
+     prettyprint2(record,query)
+     <a href="cpl.html#WRITE">WRITE</a> form1 query form2
+"s": record=atoi(query+2)
+     query=strchr(query,"&amp;")
+     <a href="cpl.html#IF">IF</a> query^=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> query="" <a href="cpl.html#ELSE">ELSE</a> query=query+3
+     prettyprint1(record)
+     <a href="cpl.html#WRITE">WRITE</a> '&lt;table class=coll border=0 align=center width=95%&gt;' \
+       '&lt;TR&gt;&lt;TD&gt;&lt;small&gt;Se noti un errore segnalalo qui:&lt;/small&gt;&lt;/TD&gt;&lt;/TR&gt;' \
+       '&lt;TR&gt;&lt;TH&gt;' segnala1 sysnum segnala2 query segnala3 '&lt;/TH&gt;&lt;/TR&gt;&lt;/table&gt;'
+"r": record=atoi(query+2)
+     writefull(record)
+<a href="cpl.html#END">END</a> <a href="cpl.html#CASE">CASE</a> <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#WRITE">WRITE</a> benvenuti form1 form2 istruzioni
+</pre></body></html>

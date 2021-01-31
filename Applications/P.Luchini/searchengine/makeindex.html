@@ -1,0 +1,238 @@
+<!DOCTYPE html><html lang="en"><head><title>P.Luchini/searchengine/makeindex.cpl</title><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style></head><body><pre>
+<span class=comment>! USE rtchecks</span>
+
+<a href="cpl.html#CHAR">CHAR</a> alpha(0..255)=0
+<a href="cpl.html#DO">DO</a> alpha(i)=i <a href="cpl.html#FOR">FOR</a> i="0" <a href="cpl.html#TO">TO</a> "9"
+<a href="cpl.html#DO">DO</a> alpha(i)=i-"A"+"a" <a href="cpl.html#FOR">FOR</a> i="A" <a href="cpl.html#TO">TO</a> "Z"
+<a href="cpl.html#DO">DO</a> alpha(i)=i <a href="cpl.html#FOR">FOR</a> i="a" <a href="cpl.html#TO">TO</a> "z"
+<span class=comment>! alpha(".")="."</span>
+alpha("'")="'"
+<a href="cpl.html#DO">DO</a> alpha(i)="a" <a href="cpl.html#FOR">FOR</a> i=192 <a href="cpl.html#TO">TO</a> 197
+alpha(199)="c"
+<a href="cpl.html#DO">DO</a> alpha(i)="e" <a href="cpl.html#FOR">FOR</a> i=200 <a href="cpl.html#TO">TO</a> 203
+<a href="cpl.html#DO">DO</a> alpha(i)="i" <a href="cpl.html#FOR">FOR</a> i=204 <a href="cpl.html#TO">TO</a> 207
+<a href="cpl.html#DO">DO</a> alpha(i)="o" <a href="cpl.html#FOR">FOR</a> i=210 <a href="cpl.html#TO">TO</a> 214
+alpha(216)="o"
+<a href="cpl.html#DO">DO</a> alpha(i)="u" <a href="cpl.html#FOR">FOR</a> i=217 <a href="cpl.html#TO">TO</a> 220
+<a href="cpl.html#DO">DO</a> alpha(i)="a" <a href="cpl.html#FOR">FOR</a> i=224 <a href="cpl.html#TO">TO</a> 229
+alpha(231)="c"
+<a href="cpl.html#DO">DO</a> alpha(i)="e" <a href="cpl.html#FOR">FOR</a> i=232 <a href="cpl.html#TO">TO</a> 235
+<a href="cpl.html#DO">DO</a> alpha(i)="i" <a href="cpl.html#FOR">FOR</a> i=236 <a href="cpl.html#TO">TO</a> 239
+<a href="cpl.html#DO">DO</a> alpha(i)="o" <a href="cpl.html#FOR">FOR</a> i=242 <a href="cpl.html#TO">TO</a> 246
+alpha(248)="o"
+<a href="cpl.html#DO">DO</a> alpha(i)="u" <a href="cpl.html#FOR">FOR</a> i=249 <a href="cpl.html#TO">TO</a> 252
+
+<a href="cpl.html#FRI%20SECTION">FRI SECTION</a>
+function "<a href="cpl.html#INTEGER">INTEGER</a>"]= cut argument <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> type &lowast; value =[ &lowast;]= cut =[function <a href="cpl.html#INTEGER">INTEGER</a> value "(int)" #1
+function "ITEM"]= cut argument <a href="cpl.html#INTEGER">INTEGER</a> value =[ &lowast;]= cut =[function <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> type "item" value "(void &lowast;)" #1
+<a href="cpl.html#END">END</a> <a href="cpl.html#FRI%20SECTION">FRI SECTION</a>
+
+<a href="cpl.html#TYPE">TYPE</a> item=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item brother,son
+                    <a href="cpl.html#CHAR">CHAR</a> c(0..3)
+                    )
+item NIL; <a href="cpl.html#WITH">WITH</a> NIL: brother=NIL; son=NIL; c(0)=255
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item root=NIL
+
+replim=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(2))
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> SortIn(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item <a href="cpl.html#VARIABLE">VARIABLE</a> prev; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#CHAR">CHAR</a> buf; <a href="cpl.html#INTEGER">INTEGER</a> ref)
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item loc=prev
+<a href="cpl.html#POINTER">POINTER</a> INTO buf pos=0
+<a href="cpl.html#LOOP">LOOP</a> sort
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> loc=NIL <a href="cpl.html#OR">OR</a> loc.c(0)&lt;=buf(pos): prev=loc.brother; loc=prev
+  <a href="cpl.html#IF">IF</a> loc=NIL <a href="cpl.html#OR">OR</a> loc.c(0)&lt;buf(pos) <a href="cpl.html#IF">THEN</a>
+    prev^=<a href="cpl.html#NEW">NEW</a> item
+    prev.brother=loc
+    loc=prev
+    loc.son=NIL
+    loc.c=0
+    loc.c(0)=buf(pos)
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> 3
+      <a href="cpl.html#IF">IF</a> pos+i&gt;buf.<a href="cpl.html#HI">HI</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> sort
+      loc.c(i)=buf(pos+i)
+    <a href="cpl.html#LOOP">REPEAT</a>
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#INC">INC</a> pos
+  <a href="cpl.html#LOOP">LOOP</a> l2 <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> 3
+    <a href="cpl.html#IF">IF</a> loc.c(i)=0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> l2
+    <a href="cpl.html#IF">IF</a> pos&gt;buf.<a href="cpl.html#HI">HI</a> <a href="cpl.html#OR">OR</a> loc.c(i)#buf(pos) <a href="cpl.html#IF">THEN</a>
+      new=<a href="cpl.html#NEW">NEW</a> item
+      new.son=loc.son
+      new.brother=NIL
+      loc.son=new
+      new.c=0
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> j=i <a href="cpl.html#TO">TO</a> 3: new.c(j-i)=loc.c(j); loc.c(j)=0
+      <a href="cpl.html#EXIT">EXIT</a> l2
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#INC">INC</a> pos
+  <a href="cpl.html#LOOP">REPEAT</a> l2
+  <a href="cpl.html#IF">IF</a> pos&gt;buf.<a href="cpl.html#HI">HI</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> sort
+  prev=loc.son
+  loc=prev
+<a href="cpl.html#LOOP">REPEAT</a> sort
+prev=loc.son
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> prev#NIL <a href="cpl.html#AND">AND</a> prev.c(0)#0
+  prev=prev.brother
+<a href="cpl.html#LOOP">REPEAT</a>
+loc=prev
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> prev#NIL
+  <a href="cpl.html#IF">IF</a> prev.son=ITEM(ref) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> SortIn
+  prev=prev.brother
+<a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#IF">IF</a> loc#NIL <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT loc.c=(<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT loc.c)+256
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT loc.c&gt;256&lowast;replim <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> SortIn
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#NEW">NEW</a> prev^
+prev.brother=NIL
+prev.son=ITEM(ref)
+<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT prev.c=256
+<a href="cpl.html#END">END</a> SortIn
+
+text=<a href="cpl.html#OPEN">OPEN</a>(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1))
+<a href="cpl.html#INTEGER">INTEGER</a> record=0,cnt=0
+<a href="cpl.html#ARRAY">ARRAY</a>(0..100) <a href="cpl.html#OF">OF</a> <a href="cpl.html#CHAR">CHAR</a> buf
+<a href="cpl.html#INTEGER">INTEGER</a> c=0
+<a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(3)="unimarc" <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#BOOLEAN">BOOLEAN</a> passed=NO
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> EOF(text)
+    c=getc(text)
+    <a href="cpl.html#IF">IF</a> alpha(c)#0 <a href="cpl.html#IF">THEN</a>
+      <a href="cpl.html#INTEGER">INTEGER</a> i=0
+      <a href="cpl.html#DO">DO</a> buf(i)=alpha(c); <a href="cpl.html#INC">INC</a>(i); c=getc(text) <a href="cpl.html#UNTIL">UNTIL</a> alpha(c)=0 <a href="cpl.html#OR">OR</a> i&gt;buf.<a href="cpl.html#HI">HI</a>
+      <a href="cpl.html#IF">IF</a> buf(0)="l" <a href="cpl.html#AND">AND</a> [strncmp(buf,"l01000010fmt",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010fmt"))=0 <a href="cpl.html#OR">OR</a>
+         passed <a href="cpl.html#AND">AND</a> [strncmp(buf,"l01000010ldr",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010ldr"))=0 <a href="cpl.html#OR">OR</a>
+         strncmp(buf,"l01000010001",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010001"))=0]] <a href="cpl.html#IF">THEN</a>
+        passed=NO
+        record=<a href="cpl.html#INTEGER">INTEGER</a>(<a href="cpl.html#POSITION">POSITION</a>(text))-<a href="cpl.html#TYPE">SIZEOF</a>("l01000010fmt")-1
+        <a href="cpl.html#INC">INC</a> cnt; <a href="cpl.html#IF">IF</a> cnt <a href="cpl.html#MOD">MOD</a> 100 = 0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> \r cnt, record ./.
+      <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> buf(0)="l" <a href="cpl.html#AND">AND</a> [strncmp(buf,"l01000010200",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010200"))=0 <a href="cpl.html#OR">OR</a>
+        strncmp(buf,"l01000010sys",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010sys"))=0] <a href="cpl.html#IF">THEN</a>
+        passed=YES
+      <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> i&gt;2 <a href="cpl.html#IF">THEN</a> SortIn(root,buf(0..i-1),record)
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> EOF(text)
+  <a href="cpl.html#IF">IF</a> alpha(c)#0 <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#INTEGER">INTEGER</a> i=0
+    <a href="cpl.html#DO">DO</a> buf(i)=alpha(c); <a href="cpl.html#INC">INC</a>(i); c=getc(text) <a href="cpl.html#UNTIL">UNTIL</a> alpha(c)=0 <a href="cpl.html#OR">OR</a> i&gt;buf.<a href="cpl.html#HI">HI</a>
+    <a href="cpl.html#IF">IF</a> i&gt;2 <a href="cpl.html#IF">THEN</a> SortIn(root,buf(0..i-1),record)
+  <a href="cpl.html#ELSE">ELSE</a> c=getc(text)
+  <a href="cpl.html#IF">IF</a> c=\n <a href="cpl.html#IF">THEN</a> record=<a href="cpl.html#INTEGER">INTEGER</a>(<a href="cpl.html#POSITION">POSITION</a>(text))
+<a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#CLOSE">CLOSE</a> text
+
+<span class=comment>!(
+CHAR foundbuf(100)
+SUBROUTINE traverse(POINTER TO POINTER TO item VARIABLE oldroot,newroot; POINTER INTO foundbuf schar,fchar)
+POINTER TO item cur=newroot
+multi=(cur#NIL AND cur.c(0)#0 AND cur.brother#NIL AND cur.brother.c(0)#0)
+LOOP WHILE cur#NIL AND cur.c(0)#0
+  INTEGER sub=0
+  DO fchar(sub)=cur.c(sub); INC sub UNTIL sub&gt;3 OR cur.c(sub)=0
+  IF newroot#oldroot THEN traverse(oldroot,cur.son,schar,fchar+sub)
+  IF multi AND fchar&lt;3 THEN
+    fchar(0)="|"
+    traverse(newroot,cur.son,fchar,fchar+sub)
+  END IF
+  cur=cur.brother
+REPEAT
+IF cur#NIL AND newroot#oldroot AND fchar-schar&gt;2 THEN
+  SortIn(oldroot,schar(0..fchar-schar-1),INTEGER(cur))
+END IF
+END traverse
+
+traverse(root,root,0,0)
+!)</span>
+
+indexsize=0x10000000
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..indexsize-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> index=<a href="cpl.html#CREATE">CREATE</a>(""<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1)".idx")
+<span class=comment>! index=MMAP(indexstor)</span>
+
+<span class=comment>!(
+recindex=CREATE(""COMMANDLINE(1)".rcx")
+
+SUBROUTINE WrTree(POINTER TO POINTER TO item head; BOOLEAN synth)
+  POINTER TO item cur=head
+  BOOLEAN bar=NO
+  IF cur.c(0)="|" THEN bar=YES; cur=cur.brother
+  LOOP WHILE cur#NIL AND cur.c(0)#0
+    WrTree(cur.son,synth)
+    cur=cur.brother
+  REPEAT
+  IF bar THEN WrTree(head.son,YES)
+  cur=head
+  head=ITEM(INTEGER(POSITION(index)) DIV SIZEOF(INTEGER))
+  LOOP WHILE cur#NIL AND cur.c(0)#0
+    WRITE BINARY TO index cur.c,INTEGER(cur.son)
+    cur=cur.brother
+  REPEAT
+  IF cur=NIL THEN
+    WRITE BINARY TO index 0
+  ELSE
+    cur1=BINARY INTEGER AT cur.c; BINARY INTEGER AT cur.c = INTEGER(POSITION(index))
+    WRITE BINARY TO index cur1
+    IF synth THEN
+      LOOP WHILE cur#NIL
+        WRITE BINARY TO recindex cur.son.c
+        cur=cur.brother
+      REPEAT
+    ELSE IF cur1=256 THEN
+      WRITE BINARY TO index INTEGER(cur.son)
+    ELSE IF cur1&lt;=256&lowast;replim THEN
+      WRITE BINARY TO index INTEGER(POSITION(recindex))
+      LOOP WHILE cur#NIL
+        WRITE BINARY TO recindex INTEGER(cur.son)
+        cur=cur.brother
+      REPEAT
+    END IF
+  END IF
+END WrTree
+
+WRITE BINARY TO index 0,0
+WrTree(root,NO)
+POSITION index,0
+WRITE BINARY TO index INTEGER(root),replim
+!)</span>
+
+index(0)="r"
+index(1)=<a href="cpl.html#INTEGER">INTEGER</a>(root)
+<a href="cpl.html#INTEGER">INTEGER</a> newnewloc=0, newloc=2
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> newloc=newnewloc
+  oldnewloc=newnewloc
+  newnewloc=newloc
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> oldloc=oldnewloc <a href="cpl.html#TO">TO</a> newnewloc-2 <a href="cpl.html#BY">BY</a> 2
+    <a href="cpl.html#IF">IF</a> index(oldloc) <a href="cpl.html#Bitwise">BITAND</a> 0xff # 0 <a href="cpl.html#IF">THEN</a>
+      <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item cur=ITEM(index(oldloc+1))
+      index(oldloc+1)=newloc
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> cur#NIL <a href="cpl.html#AND">AND</a> cur.c(0)#0
+        index(newloc)=<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT cur.c
+        index(newloc+1)=<a href="cpl.html#INTEGER">INTEGER</a>(cur.son)
+        <a href="cpl.html#INC">INC</a> newloc,2
+        cur=cur.brother
+      <a href="cpl.html#LOOP">REPEAT</a>
+      <a href="cpl.html#IF">IF</a> cur=NIL <a href="cpl.html#IF">THEN</a> index(newloc)=0 <a href="cpl.html#ELSE">ELSE</a>
+        index(newloc)=<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT cur.c
+        <a href="cpl.html#IF">IF</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT cur.c=256 <a href="cpl.html#IF">THEN</a>
+          index(newloc+1)=<a href="cpl.html#INTEGER">INTEGER</a>(cur.son)
+        <a href="cpl.html#ELSE">ELSE</a> index(newloc+1)=<a href="cpl.html#INTEGER">INTEGER</a>(cur)
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      <a href="cpl.html#INC">INC</a> newloc,2
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#LOOP">REPEAT</a>
+newnewloc=newloc
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> oldloc=2 <a href="cpl.html#TO">TO</a> newnewloc-2 <a href="cpl.html#BY">BY</a> 2
+  <a href="cpl.html#IF">IF</a> index(oldloc) <a href="cpl.html#Bitwise">BITAND</a> 0xff = 0 <a href="cpl.html#AND">AND</a> index(oldloc)&gt;256 <a href="cpl.html#AND">AND</a> index(oldloc)&lt;=256&lowast;replim <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item cur=ITEM(index(oldloc+1))
+    index(oldloc+1)=newloc
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> cur#NIL
+      index(newloc)=<a href="cpl.html#INTEGER">INTEGER</a>(cur.son)
+      <a href="cpl.html#INC">INC</a> newloc
+      cur=cur.brother
+    <a href="cpl.html#LOOP">REPEAT</a>
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#LOOP">REPEAT</a>
+index(0)=2
+index(1)=replim
+</pre></body></html>
