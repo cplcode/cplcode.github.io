@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><title>P.Luchini/searchengine/segnala.cpl</title><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style></head><body><pre>
-LOGFILE="/var/www/textsearch/log"
+LOGFILE<a href="cpl.html#Assignment">=</a>"/var/www/textsearch/log"
 
 <a href="cpl.html#C%20interface">#include</a> &lt;time.h&gt;
 <a href="cpl.html#C%20interface">#include</a> &lt;netdb.h&gt;
@@ -7,36 +7,36 @@ LOGFILE="/var/www/textsearch/log"
 <span class=comment>! USE rtchecks</span>
 
 <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#FUNCTION">FUNCTION</a> uriget()
-  c=getchar()
+  c<a href="cpl.html#Assignment">=</a>getchar()
   <a href="cpl.html#CASE">CASE</a> c <a href="cpl.html#OF">OF</a>
-  "%": c1=getchar()
-       <a href="cpl.html#RESULT">RESULT</a>=(<a href="cpl.html#IF">IF</a> c1-"0"&lt;=9 <a href="cpl.html#IF">THEN</a> c1-"0" <a href="cpl.html#ELSE">ELSE</a> c1-"A"+10)<a href="cpl.html#Bitwise">LSHIFTED</a> 4
-       c2=getchar()
-       <a href="cpl.html#RESULT">RESULT</a>=~<a href="cpl.html#Bitwise">BITOR</a> (<a href="cpl.html#IF">IF</a> c2-"0"&lt;=9 <a href="cpl.html#IF">THEN</a> c2-"0" <a href="cpl.html#ELSE">ELSE</a> c2-"A"+10)
-  "+": <a href="cpl.html#RESULT">RESULT</a>=" "
-  "&amp;": <a href="cpl.html#RESULT">RESULT</a>=\n
-  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#RESULT">RESULT</a>=c
+  "%": c1<a href="cpl.html#Assignment">=</a>getchar()
+       <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>(<a href="cpl.html#IF">IF</a> c1-"0"&lt;<a href="cpl.html#Assignment">=</a>9 <a href="cpl.html#IF">THEN</a> c1-"0" <a href="cpl.html#ELSE">ELSE</a> c1-"A"+10)<a href="cpl.html#Bitwise">LSHIFTED</a> 4
+       c2<a href="cpl.html#Assignment">=</a>getchar()
+       <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a><a href="cpl.html#Bitwise">BITOR</a> (<a href="cpl.html#IF">IF</a> c2-"0"&lt;<a href="cpl.html#Assignment">=</a>9 <a href="cpl.html#IF">THEN</a> c2-"0" <a href="cpl.html#ELSE">ELSE</a> c2-"A"+10)
+  "+": <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>" "
+  "&amp;": <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>\n
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>c
   <a href="cpl.html#END">END</a> <a href="cpl.html#CASE">CASE</a>
 <a href="cpl.html#END">END</a> uriget
 
-senderip=getenv("REMOTE_ADDR")
+senderip<a href="cpl.html#Assignment">=</a>getenv("REMOTE_ADDR")
 struct in_addr addr; inet_aton(senderip,addr)
-senderhn=gethostbyaddr(addr,<a href="cpl.html#TYPE">SIZEOF</a>(addr),AF_INET)
+senderhn<a href="cpl.html#Assignment">=</a>gethostbyaddr(addr,<a href="cpl.html#TYPE">SIZEOF</a>(addr),AF_INET)
 <a href="cpl.html#CHAR">CHAR</a> email(1000)
 <a href="cpl.html#FILE">FILE</a> log
-<a href="cpl.html#POINTER">POINTER</a> INTO email i=0
-<a href="cpl.html#DO">DO</a> u=uriget(); email(i)=u; <a href="cpl.html#INC">INC</a> i; <a href="cpl.html#UNTIL">UNTIL</a> i&gt;email.<a href="cpl.html#HI">HI</a> <a href="cpl.html#OR">OR</a> u=\n <a href="cpl.html#OR">OR</a> u&lt;0
+<a href="cpl.html#POINTER">POINTER</a> INTO email i<a href="cpl.html#Assignment">=</a>0
+<a href="cpl.html#DO">DO</a> u<a href="cpl.html#Assignment">=</a>uriget(); email(i)<a href="cpl.html#Assignment">=</a>u; <a href="cpl.html#INC">INC</a> i; <a href="cpl.html#UNTIL">UNTIL</a> i&gt;email.<a href="cpl.html#HI">HI</a> <a href="cpl.html#OR">OR</a> u<a href="cpl.html#Assignment">=</a>\n <a href="cpl.html#OR">OR</a> u&lt;0
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> stderr email
-<a href="cpl.html#IF">IF</a> strstr(email(0..5),"email=")=email(0) <a href="cpl.html#IF">THEN</a>
-  log=popen("/usr/bin/tee -a "LOGFILE" | /usr/bin/mail -s 'Catalogo' "email(6..<a href="cpl.html#HI">HI</a>),"w")
-<a href="cpl.html#ELSE">ELSE</a> log=fopen(LOGFILE,"a"); <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> log \n\n email
+<a href="cpl.html#IF">IF</a> strstr(email(0..5),"email<a href="cpl.html#Assignment">=</a>")<a href="cpl.html#Assignment">=</a>email(0) <a href="cpl.html#IF">THEN</a>
+  log<a href="cpl.html#Assignment">=</a>popen("/usr/bin/tee -a "LOGFILE" | /usr/bin/mail -s 'Catalogo' "email(6..<a href="cpl.html#HI">HI</a>),"w")
+<a href="cpl.html#ELSE">ELSE</a> log<a href="cpl.html#Assignment">=</a>fopen(LOGFILE,"a"); <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> log \n\n email
 
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> log "Segnalazione da " <a href="cpl.html#IF">IF</a> senderhn#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#AND">AND</a> senderhn.h_name #<a href="cpl.html#POINTER">NULL</a>
  <a href="cpl.html#IF">THEN</a> senderhn.h_name <a href="cpl.html#ELSE">ELSE</a> senderip
-time_t t=time(<a href="cpl.html#POINTER">NULL</a>)
+time_t t<a href="cpl.html#Assignment">=</a>time(<a href="cpl.html#POINTER">NULL</a>)
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> log ctime(t) ./.
 <a href="cpl.html#LOOP">LOOP</a> l <a href="cpl.html#FOR">FOR</a> 10000 <a href="cpl.html#TIMES">TIMES</a>
-  c=uriget()
+  c<a href="cpl.html#Assignment">=</a>uriget()
   <a href="cpl.html#IF">IF</a> c&lt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> l
   putc(c,log)
 <a href="cpl.html#LOOP">REPEAT</a> l
@@ -48,6 +48,6 @@ Content-type: text/html
 &lt;CENTER&gt;&lt;H1&gt;Segnalazione inviata.
 &lt;H2&gt;Si ringrazia per l'aiuto&lt;BR&gt;
 e si provveder&amp;agrave al pi&amp;uacute presto possibile
-&lt;H2&gt;&lt;A href="javascript:history.go(-2)"&gt;OK&lt;/A&gt;&lt;/CENTER&gt;
+&lt;H2&gt;&lt;A href<a href="cpl.html#Assignment">=</a>"javascript:history.go(-2)"&gt;OK&lt;/A&gt;&lt;/CENTER&gt;
 REPLY
 </pre></body></html>
