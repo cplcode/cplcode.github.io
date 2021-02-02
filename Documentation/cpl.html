@@ -97,6 +97,8 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#ABS">ABS</a>:</td><td>absolute value</td></tr>
 <tr><td><a href="#ALL">ALL</a>:</td><td>loop specifier</td></tr>
 <tr><td><a href="#AND">AND</a>:</td><td>boolean AND</td></tr>
+<tr><td><a href="#MAX:		argument%20for%20maximum,%20function%20or%20looping%20operator">ARGMAX:MAX:		argument for maximum, function or looping operator</a>:</td><td></td></tr>
+<tr><td><a href="#MIN:		argument%20for%20minimum,%20function%20or%20looping%20operator">ARGMIN:MIN:		argument for minimum, function or looping operator</a>:</td><td></td></tr>
 <tr><td><a href="#ARRAY">ARRAY</a>:</td><td>subscripted arrays</td></tr>
 <tr><td><a href="#ASK">ASK</a>:</td><td>console prompting and reading</td></tr>
 <tr><td><a href="#Builtin">ATAN:Builtin</a>:</td><td>arctangent</td></tr>
@@ -1195,7 +1197,7 @@ Page: (cpl)Expressions, Next: <a href="#Assignment">Assignment</a>, Prev: <a hre
 <tr><td><a href="#Conditional%20expressions">Conditional expressions</a>:</td><td>embedded IF...THEN...ELSE</td></tr>
 <tr><td><a href="#Bitwise">Bitwise</a>:</td><td>bitwise boolean operators</td></tr>
 <tr><td><a href="#String">String</a>:</td><td>concatenation and conversion</td></tr>
-<tr><td><a href="#Looping%20operator">Looping operator</a>:</td><td>SUM  PRODUCT  MIN  MAX</td></tr>
+<tr><td><a href="#Looping%20operator">Looping operator</a>:</td><td>SUM  PRODUCT  MIN  MAX ARGMIN ARGMAX</td></tr>
 <tr><td><a href="#Builtin">Builtin</a>:</td><td>built-in functions</td></tr>
 <tr><td><a href="#subarray">subarray</a>:</td><td>subarray selection</td></tr>
 <tr><td><a href="#compound%20index">compound index</a>:</td><td>sequential access to a multidimensional array</td></tr>
@@ -1281,7 +1283,7 @@ When a string literal is defined in &lt;&lt; DELIMITER notation (<a href="#STRIN
 </div><div class=page id="Looping%20operator">
 Page: (cpl)Looping operator, Next: <a href="#Builtin">Builtin</a>, Prev: <a href="#String">String</a>, Up: <a href="#Expressions">Expressions</a>
 <hr> <h3>Looping operators</h3>
-The four operators  SUM  PRODUCT  MAX  MIN  embody a loop to denote respectively the sum, product, maximum and minimum of an expression over a running index. They are constructed as
+The four operators SUM  PRODUCT  MAX  MIN embody a loop to denote respectively the sum, product, maximum and minimum of an expression over a running index. ARGMAX and ARGMIN act like MAX and MIN but return the value of the index. They are constructed as
 
 	SUM &lt;expression&gt; FOR &lt;for clause&gt;
 
@@ -1300,6 +1302,8 @@ Page: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Loop
 <tr><td colspan="2"><h3>Builtin INTEGER functions</h3>
 </td></tr>
 <tr><td><a href="#ABS">ABS</a>:</td><td>absolute value</td></tr>
+<tr><td><a href="#MAX:			argument%20for%20maximum">ARGMAX:MAX:			argument for maximum</a>:</td><td></td></tr>
+<tr><td><a href="#MIN:			argument%20for%20minimum">ARGMIN:MIN:			argument for minimum</a>:</td><td></td></tr>
 <tr><td><a href="#CEILING">CEILING</a>:</td><td>larger or equal integer</td></tr>
 <tr><td><a href="#FLOOR">FLOOR</a>:</td><td>lesser or equal integer</td></tr>
 <tr><td><a href="#MAX">MAX</a>:</td><td>maximum</td></tr>
@@ -1387,7 +1391,13 @@ The function
 
 returns the maximum of the elements of the array.
 
-MAX without a following bracket is a <a href="#Looping%20operator">Looping operator</a>. 
+The function
+
+	ARGMAX(array)
+
+returns the first index where the maximum is found.
+
+MAX or ARGMAX without a following bracket is a <a href="#Looping%20operator">Looping operator</a>. 
 </div><div class=page id="MAXABS">
 Page: (cpl)MAXABS,  Next: <a href="#MIN">MIN</a>,  Prev: <a href="#MAX">MAX</a>,  Up: <a href="#Builtin">Builtin</a>
 <hr> MAXABS:		maximum absolute value
@@ -1413,7 +1423,13 @@ The function
 
 returns the minimum of the elements of the array.
 
-MIN without a following bracket is a <a href="#Looping%20operator">Looping operator</a>. 
+The function
+
+	ARGMIN(array)
+
+returns the first index where the minimum is found.
+
+MIN or ARGMIN without a following bracket is a <a href="#Looping%20operator">Looping operator</a>. 
 </div><div class=page id="NORM">
 Page: (cpl)NORM,  Next: <a href="#RAND">RAND</a>,  Prev: <a href="#MIN">MIN</a>,  Up: <a href="#Builtin">Builtin</a>
 <hr> NORM:		squared absolute value

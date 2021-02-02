@@ -11,3 +11,4 @@ LOOP FOR n TIMES     ! the simplest of several LOOP forms available
   Fib(0)=Fib(1)+Fib(2)   ! Fibonacci's recursive formula
   WRITE Fib(0)   ! write each new number in turn to standard output
 REPEAT LOOP
+IF n>45 THEN WRITE "Warning: Fibonacci numbers beyond the 45th exceed the range of 32-bit INTEGERs"  ! provide warning about unsafe input data
