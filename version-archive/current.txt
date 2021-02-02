@@ -1,2 +1,2 @@
 2021-02-01
-Removed incorrect use of C "extern" incompatible with new gcc 10, and mixed minor bugs.
+Removed incorrect use of C "extern" that created incompatibility with new gcc 10, and mixed minor bugs.
