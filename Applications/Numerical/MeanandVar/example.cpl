@@ -1,0 +1,33 @@
+USE meanandvar
+USE gnuplot
+! This example generates a plot of the evolving estimates of the variance
+! of the estimate of the mean for a simple prescribed process
+
+#include <time.h>
+srand[INTEGER(time(NULL))] ! select different initial seed every time the program is run
+
+REAL procstate=0.5
+REAL FUNCTION process() ! simple first-order dynamical system with lorentzian spectrum
+  procstate=0.9*~+0.1*RAND()
+  RESULT=procstate
+END process
+
+MEANANDVAR accum
+mvinit(accum) ! initialize mean and variance accumulator
+
+DO dum=process() FOR 1000 TIMES ! skip initial transient
+
+RANGE 1E3,1E6,0,0.14 ! prepare to plot results
+set logscale x
+STARTLINE
+DRAW 1E6,0.0834 ! the exact variance is 0.0834/nt
+DRAW 1E3,0.0834
+LOOP FOR 1000 TIMES
+  DO meanandvar[accum,process()] FOR 1000 TIMES ! accumulate samples
+  DRAW accum.nt,accum.nt*accum.var
+REPEAT
+SHOWGRAPH
+READ ! keep plot displayed until key is pressed
+
+
+

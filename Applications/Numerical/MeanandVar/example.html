@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="en"><head><title>Numerical/MeanandVar/example.cpl</title><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style></head><body><pre>
+<a href="cpl.html#USE">USE</a> meanandvar
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
+<span class=comment>! This example generates a plot of the evolving estimates of the variance</span>
+<span class=comment>! of the estimate of the mean for a simple prescribed process</span>
+
+<a href="cpl.html#C%20interface">#include</a> &lt;time.h&gt;
+srand[<a href="cpl.html#INTEGER">INTEGER</a>(time(<a href="cpl.html#POINTER">NULL</a>))] <span class=comment>! select different initial seed every time the program is run</span>
+
+<a href="cpl.html#REAL">REAL</a> procstate<a href="cpl.html#Assignment">=</a>0.5
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> process() <span class=comment>! simple first-order dynamical system with lorentzian spectrum</span>
+  procstate<a href="cpl.html#Assignment">=</a>0.9&lowast;<a href="cpl.html#Assignment">~</a>+0.1&lowast;RAND()
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>procstate
+<a href="cpl.html#END">END</a> process
+
+MEANANDVAR accum
+mvinit(accum) <span class=comment>! initialize mean and variance accumulator</span>
+
+<a href="cpl.html#DO">DO</a> dum<a href="cpl.html#Assignment">=</a>process() <a href="cpl.html#FOR">FOR</a> 1000 <a href="cpl.html#TIMES">TIMES</a> <span class=comment>! skip initial transient</span>
+
+<a href="graphics.html#RANGE">RANGE</a> 1E3,1E6,0,0.14 <span class=comment>! prepare to plot results</span>
+<a href="graphics.html#gnuplot">set</a> logscale x
+<a href="graphics.html#STARTLINE">STARTLINE</a>
+<a href="graphics.html#DRAW">DRAW</a> 1E6,0.0834 <span class=comment>! the exact variance is 0.0834/nt</span>
+<a href="graphics.html#DRAW">DRAW</a> 1E3,0.0834
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> 1000 <a href="cpl.html#TIMES">TIMES</a>
+  <a href="cpl.html#DO">DO</a> meanandvar[accum,process()] <a href="cpl.html#FOR">FOR</a> 1000 <a href="cpl.html#TIMES">TIMES</a> <span class=comment>! accumulate samples</span>
+  <a href="graphics.html#DRAW">DRAW</a> accum.nt,accum.nt&lowast;accum.var
+<a href="cpl.html#LOOP">REPEAT</a>
+<a href="graphics.html#SHOWGRAPH">SHOWGRAPH</a>
+<a href="cpl.html#READ">READ</a> <span class=comment>! keep plot displayed until key is pressed</span>
+
+
+
+</pre></body></html>

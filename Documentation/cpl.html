@@ -1208,13 +1208,15 @@ Page: (cpl)Expressions, Next: <a href="#Assignment">Assignment</a>, Prev: <a hre
 </div><div class=page id="INTEGER%20operator">
 Page: (cpl)INTEGER operator, Next: <a href="#REAL%20operator">REAL operator</a>, Prev: <a href="#Expressions">Expressions</a>, Up: <a href="#Expressions">Expressions</a>
 <hr> <h3>INTEGER operators:	+  -  &lowast;  DIV  MOD</h3>
-DIV is the INTEGER division operator, and produces a truncated INTEGER quotient. <q>/</q> is reserved for REALs, and produces a REAL result even when the operands are INTEGERs.
+DIV is the INTEGER division operator, and produces a rounded-down INTEGER quotient. <q>/</q> is reserved for REALs, and produces a REAL result even when the operands are INTEGERs.
 
 MOD is the <q>modulo</q> infix operator. If a and b are INTEGERs,
 
 	a MOD b
 
-represents the remainder of the integer division of a by b. 
+represents the remainder of the integer division of a by b.
+
+Notice on the truncation of integer division: CPL requires that a MOD b must always be a positive number, regardless of the sign of a/b. This is so that modular arithmetics can be applied to negative as well as to positive numbers, for example in array index manipulations. Since b&lowast;(a DIV b) + a MOD b = a, consistently a DIV b must be rounded towards minus infinity, or a DIV b = FLOOR(a/b). Care should be taken when porting programs from FORTRAN or C, which unfortunately adopt the opposite convention of rounding integer division towards zero. 
 </div><div class=page id="REAL%20operator">
 Page: (cpl)REAL operator, Next: <a href="#Comparison">Comparison</a>, Prev: <a href="#INTEGER%20operator">INTEGER operator</a>, Up: <a href="#Expressions">Expressions</a>
 <hr> <h3>REAL operators:		+  -  &lowast;  /  ^ (or &lowast;&lowast;)</h3>
@@ -1275,7 +1277,7 @@ Page: (cpl)String, Next: <a href="#Looping%20operator">Looping operator</a>, Pre
 STRINGs written one after the other with no intervening operator (whitespace is allowed, but newlines must be escaped), either in literal (quoted) form or through their names, are concatenated into a single <a href="#STRING">STRING</a>. If all of the STRINGs are literals (i.e., known at compile time), the result will also be a literal, otherwise it will be a dynamically allocated ARRAY(&lowast;) OF CHAR which is transparently freed at the end of the enclosing code block.
 
 <h3>String conversion</h3>
-In addition to STRINGs, values of different type may also appear in a concatenation, provided the first item is an actual STRING (possibly <q></q>); they are then implicitly converted to strings just as if they appeared in a <a href="#WRITE">WRITE</a> statement. Conversion of a string into a numeric value must be handled explicitly through <a href="/usr/share/info/libc.html#%20String%20and%20Array%20Utilities">(/usr/share/info/libc) String and Array Utilities</a>.
+In addition to STRINGs, values of different type may appear in a concatenation, provided the first item is an actual STRING (possibly <q></q>); they are then implicitly converted to strings just as if they appeared in a <a href="#WRITE">WRITE</a> statement. Please pay attention that a numeric parenthesis that is concatenated after a string will be interpreted as an ARRAY subscript, since the STRING is a legitimate ARRAY OF CHAR, unless space is placed between the string and the parenthesis. Conversion of a string into a numeric value must be handled explicitly through <a href="/usr/share/info/libc.html#String">(/usr/share/info/libc)String</a>.
 
 When a string literal is defined in &lt;&lt; DELIMITER notation (<a href="#STRING">STRING</a>), a variable included as DELIMITER &lt;variable&gt; DELIMITER is concatenated within the string being defined just as above (whereas DELIMITER &lt;newline&gt; ends the definition).
 
@@ -1668,7 +1670,7 @@ The default format is initially the C library's default, but may be changed (dow
 
 	DEFAULTFORMAT 1.15
 
-A <q>,</q> in the sequence of &lt;outputexpr&gt;'s is printed as a tab. &lt;outputexpr&gt;'s may also be written one after the other without any comma, in  which case they are just adjoined without any intervening space.
+A <q>,</q> in the sequence of &lt;outputexpr&gt;'s is printed as a tab. &lt;outputexpr&gt;'s may also be written one after the other without any comma, in  which case they are just adjoined without any intervening space. Please pay attention that a numeric parenthesis that immediately follows a string will be interpreted as an ARRAY subscript, since the STRING is a legitimate ARRAY OF CHAR, unless space is placed between the string and the parenthesis.
 
 By default WRITE prints a newline at the end of its sequence of &lt;outputexpr&gt;'s. The optional symbol ./. suppresses this newline and FLUSHes the output instead. WRITE with no &lt;outputexpr&gt; and no ./. prints just a newline.
 
