@@ -5,7 +5,7 @@ maxout<a href="cpl.html#Assignment">=</a>200
 <span class=comment>! USE rtchecks</span>
 
 <a href="cpl.html#BOOLEAN">BOOLEAN</a> expired
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> setexpired(<a href="cpl.html#INTEGER">INTEGER</a> signum) <a href="cpl.html#Assignment">=</a> expired<a href="cpl.html#Assignment">=</a>YES
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> setexpired(<a href="cpl.html#INTEGER">INTEGER</a> signum) <a href="cpl.html#Assignment">=</a> expired<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">YES</a>
 signal(SIGVTALRM,setexpired)
 
 <a href="cpl.html#C%20interface">#include</a> &lt;sys/time.h&gt;
@@ -17,7 +17,7 @@ And<a href="cpl.html#Assignment">=</a>"e "; Or<a href="cpl.html#Assignment">=</a
 
 <a href="cpl.html#USE">USE</a> search
 
-htmlheader <a href="cpl.html#Assignment">=</a> &lt;&lt;HEADEND
+htmlheader <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>HEADEND
 Content-type: text/html
 
 &lt;title&gt;Catalogo della biblioteca UniSa&lt;/title&gt;
@@ -26,26 +26,26 @@ Content-type: text/html
 &lt;body onload<a href="cpl.html#Assignment">=</a>"javascript:document.f.q.focus()"&gt;
 HEADEND
 
-benvenuti <a href="cpl.html#Assignment">=</a> &lt;&lt;BENVENUTI
+benvenuti <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>BENVENUTI
 &lt;center&gt;&lt;big&gt;&lt;big&gt;
 Benvenuti al catalogo della biblioteca UniSa: &lt;B&gt;questa &amp;egrave; una versione di prova&lt;/B&gt;
 &lt;/big&gt;&lt;/big&gt;&lt;/center&gt;&lt;BR&gt;
 BENVENUTI
 
-form1 <a href="cpl.html#Assignment">=</a> &lt;&lt;FORM1
+form1 <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>FORM1
 &lt;FORM name<a href="cpl.html#Assignment">=</a>f&gt;&lt;TABLE class<a href="cpl.html#Assignment">=</a>query align<a href="cpl.html#Assignment">=</a>center width<a href="cpl.html#Assignment">=</a>95%&gt;&lt;tr&gt;&lt;td width<a href="cpl.html#Assignment">=</a>10% align<a href="cpl.html#Assignment">=</a>right&gt;
 &lt;A HREF<a href="cpl.html#Assignment">=</a>http://www.csab.unisa.it class<a href="cpl.html#Assignment">=</a>csab&gt;CSAB&lt;/A&gt;&lt;BR&gt;&lt;A HREF<a href="cpl.html#Assignment">=</a>http://www.csab.unisa.it/proposte/&gt;&lt;small&gt;PROPOSTE&lt;/small&gt;&lt;/A&gt;
 &lt;/td&gt;&lt;td width<a href="cpl.html#Assignment">=</a>80% align<a href="cpl.html#Assignment">=</a>center&gt;&lt;A HREF<a href="cpl.html#Assignment">=</a>"http://www.unisa.it"&gt;
 &lt;IMG SRC<a href="cpl.html#Assignment">=</a>"/textsearch/logo50.gif" height<a href="cpl.html#Assignment">=</a>50 width<a href="cpl.html#Assignment">=</a>50 align<a href="cpl.html#Assignment">=</a>middle border<a href="cpl.html#Assignment">=</a>0 ALT<a href="cpl.html#Assignment">=</a>"UniSa"&gt;&lt;/A&gt;
 &lt;span style<a href="cpl.html#Assignment">=</a>"vertical-align:-25%"&gt;&lt;INPUT <a href="cpl.html#TYPE">TYPE</a><a href="cpl.html#Assignment">=</a>text name<a href="cpl.html#Assignment">=</a>q size<a href="cpl.html#Assignment">=</a>48 maxlength<a href="cpl.html#Assignment">=</a>255 value<a href="cpl.html#Assignment">=</a>"
 FORM1
-form2 <a href="cpl.html#Assignment">=</a> &lt;&lt;FORM2
+form2 <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>FORM2
 "&gt;&lt;INPUT type<a href="cpl.html#Assignment">=</a>submit VALUE<a href="cpl.html#Assignment">=</a>"Cerca nella biblioteca"&gt;&lt;/span&gt;&lt;/td&gt;
 &lt;td width<a href="cpl.html#Assignment">=</a>10% align<a href="cpl.html#Assignment">=</a>left&gt;
 &lt;A href<a href="cpl.html#Assignment">=</a>"?#istruzioni"&gt;&lt;small&gt;ISTRUZIONI&lt;/small&gt;&lt;/A&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/TABLE&gt;&lt;/FORM&gt;
 FORM2
 
-istruzioni <a href="cpl.html#Assignment">=</a> &lt;&lt;ISTRUZIONI
+istruzioni <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>ISTRUZIONI
 &lt;H3&gt;&lt;A name<a href="cpl.html#Assignment">=</a>istruzioni&gt;ISTRUZIONI&lt;/A&gt;&lt;/H3&gt;
 &lt;P&gt;Indicare una o pi&amp;uacute parole da ricercare, usando se necessario le
 congiunzioni logiche "&lt;B&gt;e&lt;/B&gt;", "&lt;B&gt;o&lt;/B&gt;", "&lt;B&gt;e non&lt;/B&gt;". "&lt;B&gt;e&lt;/B&gt;" ha
@@ -70,13 +70,13 @@ richiesta.&lt;/P&gt;
 e non water&lt;/A&gt;&lt;/P&gt;
 ISTRUZIONI
 
-segnala1 <a href="cpl.html#Assignment">=</a> &lt;&lt;segnala1
+segnala1 <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>segnala1
 &lt;form action<a href="cpl.html#Assignment">=</a>"/<a href="cpl.html#Assignment">~</a>luchini/segnala.cgi" name<a href="cpl.html#Assignment">=</a>"f" method<a href="cpl.html#Assignment">=</a>"post"&gt;
 &lt;input type<a href="cpl.html#Assignment">=</a>hidden name<a href="cpl.html#Assignment">=</a>email value<a href="cpl.html#Assignment">=</a>"luchini@localhost"&gt;
 &lt;input type<a href="cpl.html#Assignment">=</a>"hidden" name<a href="cpl.html#Assignment">=</a>"scheda" value<a href="cpl.html#Assignment">=</a>"
 segnala1
 segnala2 <a href="cpl.html#Assignment">=</a> '"&gt;Ho trovato &lt;input type<a href="cpl.html#Assignment">=</a>"input" name<a href="cpl.html#Assignment">=</a>"Correggi" size<a href="cpl.html#Assignment">=</a>30 maxlength<a href="cpl.html#Assignment">=</a>255 value<a href="cpl.html#Assignment">=</a>"'
-segnala3 <a href="cpl.html#Assignment">=</a> &lt;&lt;segnala3
+segnala3 <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>segnala3
 "&gt; al posto di
 &lt;input type<a href="cpl.html#Assignment">=</a>"input" id<a href="cpl.html#Assignment">=</a>"q" name<a href="cpl.html#Assignment">=</a>"in" size<a href="cpl.html#Assignment">=</a>30 maxlength<a href="cpl.html#Assignment">=</a>255&gt;
 &lt;input type<a href="cpl.html#Assignment">=</a>"submit" value<a href="cpl.html#Assignment">=</a>"Invia"&gt;
@@ -112,7 +112,7 @@ line(-9)<a href="cpl.html#Assignment">=</a>0
   asc2uri pattern
   <a href="cpl.html#WRITE">WRITE</a> '"&gt;&lt;LI&gt;'
   strchr(descrline,\n)<a href="cpl.html#Assignment">=</a>0
-  htmlwr descrline,NO
+  htmlwr descrline,<a href="cpl.html#BOOLEAN">NO</a>
   <a href="cpl.html#WRITE">WRITE</a> '&lt;/LI&gt;&lt;/A&gt;'
   <a href="cpl.html#INC">INC</a> wrcount
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -145,7 +145,7 @@ colloc<a href="cpl.html#Assignment">=</a>"95"
     <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#CHAR">CHAR</a> ll<a href="cpl.html#Assignment">=</a>strchr(l,"|"); <a href="cpl.html#IF">IF</a> ll^#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> ll^<a href="cpl.html#Assignment">=</a>0
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#WRITE">WRITE</a> "&lt;TR&gt;&lt;TH align<a href="cpl.html#Assignment">=</a>right valign<a href="cpl.html#Assignment">=</a>top nowrap&gt;" name ":&lt;/TH&gt;&lt;TD&gt;"
-  htmlwr l,NO
+  htmlwr l,<a href="cpl.html#BOOLEAN">NO</a>
   <a href="cpl.html#WRITE">WRITE</a> "&lt;/TD&gt;&lt;/TR&gt;"
 <a href="cpl.html#END">END</a> wrfield
 
@@ -170,32 +170,32 @@ colloc<a href="cpl.html#Assignment">=</a>"95"
       <a href="cpl.html#IF">IF</a> l^#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> sysnum<a href="cpl.html#Assignment">=</a>(l+1)(0..<a href="cpl.html#HI">HI</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,title,<a href="cpl.html#TYPE">SIZEOF</a>(title))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#CHAR">CHAR</a> ll<a href="cpl.html#Assignment">=</a>strstr(line,"|f"); <a href="cpl.html#IF">IF</a> ll^#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> ll^<a href="cpl.html#Assignment">=</a>0
-      wrfield(line,"TITOLO",NO)
+      wrfield(line,"TITOLO",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,isbn,<a href="cpl.html#TYPE">SIZEOF</a>(isbn))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"ISBN",NO)
+      wrfield(line,"ISBN",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,publ,<a href="cpl.html#TYPE">SIZEOF</a>(publ))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"STAMPATO&amp;nbsp;A",NO)
+      wrfield(line,"STAMPATO&amp;nbsp;A",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,formato,<a href="cpl.html#TYPE">SIZEOF</a>(formato))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"FORMATO",NO)
+      wrfield(line,"FORMATO",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,editor,<a href="cpl.html#TYPE">SIZEOF</a>(editor))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"A&amp;nbsp;CURA&amp;nbsp;DI",NO)
+      wrfield(line,"A&amp;nbsp;CURA&amp;nbsp;DI",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,author,<a href="cpl.html#TYPE">SIZEOF</a>(author))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"AUTORE",NO)
+      wrfield(line,"AUTORE",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> line(0)<a href="cpl.html#Assignment">=</a>origin <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"FONTE",NO)
+      wrfield(line,"FONTE",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,collana,<a href="cpl.html#TYPE">SIZEOF</a>(collana))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"COLLANA",NO)
+      wrfield(line,"COLLANA",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,subject,<a href="cpl.html#TYPE">SIZEOF</a>(subject))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a>
                 strncmp(line,subject1,<a href="cpl.html#TYPE">SIZEOF</a>(subject1))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"ARGOMENTO",NO)
+      wrfield(line,"ARGOMENTO",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,titorig,<a href="cpl.html#TYPE">SIZEOF</a>(titorig))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"TITOLO&amp;nbsp;ORIGINALE",NO)
+      wrfield(line,"TITOLO&amp;nbsp;ORIGINALE",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,contiene,<a href="cpl.html#TYPE">SIZEOF</a>(contiene))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"CONTIENE",NO)
+      wrfield(line,"CONTIENE",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> line(0)<a href="cpl.html#Assignment">=</a>descr <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"DESCRIZIONE",NO)
+      wrfield(line,"DESCRIZIONE",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,lingua,<a href="cpl.html#TYPE">SIZEOF</a>(lingua))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"LINGUA",NO)
+      wrfield(line,"LINGUA",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text linebuf
   <a href="cpl.html#UNTIL">UNTIL</a> EOF(text) <a href="cpl.html#OR">OR</a> strncmp(line,fmt,<a href="cpl.html#TYPE">SIZEOF</a>(fmt))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> strncmp(line,colloc,<a href="cpl.html#TYPE">SIZEOF</a>(colloc))<a href="cpl.html#Assignment">=</a>0
@@ -210,14 +210,14 @@ colloc<a href="cpl.html#Assignment">=</a>"95"
   <a href="cpl.html#WRITE">WRITE</a> '"&gt;&lt;small&gt;Se noti un errore&lt;/small&gt;&lt;/A&gt;&lt;/TD&gt;' \
         '&lt;TD align<a href="cpl.html#Assignment">=</a>right&gt;&lt;A href<a href="cpl.html#Assignment">=</a>"?r<a href="cpl.html#Assignment">=</a>'rec'"&gt;&lt;small&gt;'sysnum'&lt;/small&gt;&lt;/A&gt;&lt;/TD&gt;&lt;/TR&gt;'
   <a href="cpl.html#IF">IF</a> strncmp(line,colloc,<a href="cpl.html#TYPE">SIZEOF</a>(colloc))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-    <a href="cpl.html#IF">IF</a> tipo(0)<a href="cpl.html#Assignment">=</a>"P" <a href="cpl.html#IF">THEN</a> wrfield(line,"POSSEDUTO",NO) <a href="cpl.html#ELSE">ELSE</a> wrfield(line,"COLLOCAZIONE",YES)
+    <a href="cpl.html#IF">IF</a> tipo(0)<a href="cpl.html#Assignment">=</a>"P" <a href="cpl.html#IF">THEN</a> wrfield(line,"POSSEDUTO",<a href="cpl.html#BOOLEAN">NO</a>) <a href="cpl.html#ELSE">ELSE</a> wrfield(line,"COLLOCAZIONE",<a href="cpl.html#BOOLEAN">YES</a>)
     <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text linebuf
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>    
   <a href="cpl.html#DO">DO</a>
     <a href="cpl.html#IF">IF</a> strncmp(line,colloc,<a href="cpl.html#TYPE">SIZEOF</a>(colloc))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
       wrfield(line,"",tipo(0)<a href="cpl.html#Assignment">=</a>"M")
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> strncmp(line,area,<a href="cpl.html#TYPE">SIZEOF</a>(area))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-      wrfield(line,"AREA",NO)
+      wrfield(line,"AREA",<a href="cpl.html#BOOLEAN">NO</a>)
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text linebuf
   <a href="cpl.html#UNTIL">UNTIL</a> EOF(text) <a href="cpl.html#OR">OR</a> strncmp(line,fmt,<a href="cpl.html#TYPE">SIZEOF</a>(fmt))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> strncmp(line,ldr,<a href="cpl.html#TYPE">SIZEOF</a>(ldr))<a href="cpl.html#Assignment">=</a>0
@@ -228,7 +228,7 @@ colloc<a href="cpl.html#Assignment">=</a>"95"
 <a href="cpl.html#POSITION">POSITION</a>(text,rec)
 <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text linebuf
 <a href="cpl.html#IF">IF</a> strncmp(line,fmt,<a href="cpl.html#TYPE">SIZEOF</a>(fmt))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> strncmp(line,ldr,<a href="cpl.html#TYPE">SIZEOF</a>(ldr))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#DO">DO</a>
-  htmlwr line,YES
+  htmlwr line,<a href="cpl.html#BOOLEAN">YES</a>
   <a href="cpl.html#WRITE">WRITE</a> "&lt;BR&gt;"
   <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text linebuf
 <a href="cpl.html#UNTIL">UNTIL</a> EOF(text) <a href="cpl.html#OR">OR</a> strncmp(line,fmt,<a href="cpl.html#TYPE">SIZEOF</a>(fmt))<a href="cpl.html#Assignment">=</a>0
@@ -238,12 +238,12 @@ colloc<a href="cpl.html#Assignment">=</a>"95"
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING query<a href="cpl.html#Assignment">=</a>getenv("QUERY_STRING")
 <a href="cpl.html#IF">IF</a> query^#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#AND">AND</a> query(0)#0 <a href="cpl.html#IF">THEN</a> uri2asc(query); <a href="cpl.html#CASE">CASE</a> query(0) <a href="cpl.html#OF">OF</a>
 "q": &lt;&lowast;    setitimer(ITIMER_VIRTUAL,&amp;allowedtime_,<a href="cpl.html#POINTER">NULL</a>);  &lowast;&gt;
-     expired<a href="cpl.html#Assignment">=</a>NO
+     expired<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
      fws<a href="cpl.html#Assignment">=</a>0
      PatternString<a href="cpl.html#Assignment">=</a>query+2
      MWS<a href="cpl.html#Assignment">=</a>Pattern(PatternString)
  &lt;&lowast;    setitimer(ITIMER_VIRTUAL,&amp;allowedtime_,<a href="cpl.html#POINTER">NULL</a>);  &lowast;&gt;
-     expired<a href="cpl.html#Assignment">=</a>NO
+     expired<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
      <a href="cpl.html#IF">IF</a> foundwords#"" <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> "&lt;B&gt;Parole simili:&lt;/B&gt; " foundwords "&lt;BR&gt;"
      <a href="cpl.html#WRITE">WRITE</a> form1 query+2 form2
      <a href="cpl.html#INTEGER">INTEGER</a> wrcount<a href="cpl.html#Assignment">=</a>0

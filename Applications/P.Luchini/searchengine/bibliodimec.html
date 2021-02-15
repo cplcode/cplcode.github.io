@@ -5,7 +5,7 @@ maxout<a href="cpl.html#Assignment">=</a>200
 <span class=comment>! USE rtchecks</span>
 
 <a href="cpl.html#BOOLEAN">BOOLEAN</a> expired
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> setexpired(<a href="cpl.html#INTEGER">INTEGER</a> signum) <a href="cpl.html#Assignment">=</a> expired<a href="cpl.html#Assignment">=</a>YES
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> setexpired(<a href="cpl.html#INTEGER">INTEGER</a> signum) <a href="cpl.html#Assignment">=</a> expired<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">YES</a>
 signal(SIGVTALRM,setexpired)
 
 <a href="cpl.html#C%20interface">#include</a> &lt;sys/time.h&gt;
@@ -17,7 +17,7 @@ And<a href="cpl.html#Assignment">=</a>"e "; Or<a href="cpl.html#Assignment">=</a
 
 <a href="cpl.html#USE">USE</a> search
 
-htmlheader <a href="cpl.html#Assignment">=</a> &lt;&lt;HEADEND
+htmlheader <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>HEADEND
 Content-type: text/html
 
 &lt;title&gt;Catalogo della biblioteca DIMEC&lt;/title&gt;
@@ -26,12 +26,12 @@ Content-type: text/html
 &lt;body onload<a href="cpl.html#Assignment">=</a>"javascript:document.f.q.focus()"&gt;
 HEADEND
 
-benvenuti <a href="cpl.html#Assignment">=</a> &lt;&lt;BENVENUTI
+benvenuti <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>BENVENUTI
 &lt;H1 align<a href="cpl.html#Assignment">=</a>center&gt;Benvenuti al catalogo della biblioteca 
 &lt;IMG SRC<a href="cpl.html#Assignment">=</a>"/textsearch/logodimec.gif" align<a href="cpl.html#Assignment">=</a>middle border<a href="cpl.html#Assignment">=</a>0 ALT<a href="cpl.html#Assignment">=</a>"DIMEC"&gt;&lt;/H1&gt;
 BENVENUTI
 
-form1 <a href="cpl.html#Assignment">=</a> &lt;&lt;FORM1
+form1 <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>FORM1
 &lt;FORM name<a href="cpl.html#Assignment">=</a>f&gt;&lt;TABLE class<a href="cpl.html#Assignment">=</a>query align<a href="cpl.html#Assignment">=</a>center width<a href="cpl.html#Assignment">=</a>95%&gt;&lt;tr&gt;&lt;td width<a href="cpl.html#Assignment">=</a>50
 align<a href="cpl.html#Assignment">=</a>left&gt;&lt;A HREF<a href="cpl.html#Assignment">=</a>"http://www.unisa.it"&gt;
 &lt;IMG SRC<a href="cpl.html#Assignment">=</a>"/textsearch/logo50.gif" height<a href="cpl.html#Assignment">=</a>50 width<a href="cpl.html#Assignment">=</a>50 align<a href="cpl.html#Assignment">=</a>middle border<a href="cpl.html#Assignment">=</a>0
@@ -44,13 +44,13 @@ Biblioteca&lt;BR&gt;di Ateneo&lt;/font&gt;&lt;/A&gt;&lt;/td&gt;
 ALT<a href="cpl.html#Assignment">=</a>"DIMEC"&gt;&lt;/A&gt;
 &lt;span style<a href="cpl.html#Assignment">=</a>"vertical-align:-22%"&gt;&lt;INPUT <a href="cpl.html#TYPE">TYPE</a><a href="cpl.html#Assignment">=</a>text name<a href="cpl.html#Assignment">=</a>q size<a href="cpl.html#Assignment">=</a>48 maxlength<a href="cpl.html#Assignment">=</a>255 value<a href="cpl.html#Assignment">=</a>"
 FORM1
-form2 <a href="cpl.html#Assignment">=</a> &lt;&lt;FORM2
+form2 <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>FORM2
 "&gt;&lt;INPUT type<a href="cpl.html#Assignment">=</a>submit VALUE<a href="cpl.html#Assignment">=</a>"Cerca nella biblioteca"&gt;&lt;/span&gt;&lt;/td&gt;
 &lt;td width<a href="cpl.html#Assignment">=</a>10% align<a href="cpl.html#Assignment">=</a>left&gt;
 &lt;A href<a href="cpl.html#Assignment">=</a>"?#istruzioni"&gt;&lt;small&gt;ISTRUZIONI&lt;/small&gt;&lt;/A&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/TABLE&gt;&lt;/FORM&gt;
 FORM2
 
-istruzioni <a href="cpl.html#Assignment">=</a> &lt;&lt;fineistruzioni
+istruzioni <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>fineistruzioni
 &lt;H3&gt;&lt;A name<a href="cpl.html#Assignment">=</a>istruzioni&gt;ISTRUZIONI&lt;/A&gt;&lt;/H3&gt;
 &lt;P&gt;Indicare una o pi&amp;uacute parole da ricercare, usando se necessario le
 congiunzioni logiche "&lt;B&gt;e&lt;/B&gt;", "&lt;B&gt;o&lt;/B&gt;", "&lt;B&gt;e non&lt;/B&gt;". "&lt;B&gt;e&lt;/B&gt;" ha
@@ -72,13 +72,13 @@ parola o troppi &lt;B&gt;+&lt;/B&gt;), verr&amp;agrave visualizzata una lista vu
 con il messaggio "Precisare meglio la richiesta".&lt;/P&gt;
 fineistruzioni
 
-segnala1 <a href="cpl.html#Assignment">=</a> &lt;&lt;segnala1
+segnala1 <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>segnala1
 &lt;form action<a href="cpl.html#Assignment">=</a>"/cgi-bin/segnala" name<a href="cpl.html#Assignment">=</a>f method<a href="cpl.html#Assignment">=</a>post&gt;
 &lt;input type<a href="cpl.html#Assignment">=</a>hidden name<a href="cpl.html#Assignment">=</a>email value<a href="cpl.html#Assignment">=</a>"luchini@localhost"&gt;
 &lt;input type<a href="cpl.html#Assignment">=</a>hidden name<a href="cpl.html#Assignment">=</a>record value<a href="cpl.html#Assignment">=</a>"
 segnala1
 segnala2 <a href="cpl.html#Assignment">=</a> '"&gt;Ho trovato &lt;input type<a href="cpl.html#Assignment">=</a>"input" name<a href="cpl.html#Assignment">=</a>"Correggi" size<a href="cpl.html#Assignment">=</a>30 maxlength<a href="cpl.html#Assignment">=</a>255 value<a href="cpl.html#Assignment">=</a>"'
-segnala3 <a href="cpl.html#Assignment">=</a> &lt;&lt;segnala3
+segnala3 <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>segnala3
 "&gt; al posto di
 &lt;input type<a href="cpl.html#Assignment">=</a>"input" id<a href="cpl.html#Assignment">=</a>"q" name<a href="cpl.html#Assignment">=</a>"in" size<a href="cpl.html#Assignment">=</a>30 maxlength<a href="cpl.html#Assignment">=</a>255&gt;
 &lt;input type<a href="cpl.html#Assignment">=</a>"submit" value<a href="cpl.html#Assignment">=</a>"Invia"&gt;
@@ -101,7 +101,7 @@ text<a href="cpl.html#Assignment">=</a>fopen(database,"r")
   <a href="cpl.html#DO">DO</a> descrline<a href="cpl.html#Assignment">=</a>strchr(descrline,\t); <a href="cpl.html#INC">INC</a> descrline <a href="cpl.html#FOR">FOR</a> 3 <a href="cpl.html#TIMES">TIMES</a>
   strchr(descrline,\t)<a href="cpl.html#Assignment">=</a>":"
   strchr(descrline,\t)<a href="cpl.html#Assignment">=</a>0
-  htmlwr descrline(0),NO
+  htmlwr descrline(0),<a href="cpl.html#BOOLEAN">NO</a>
   <a href="cpl.html#WRITE">WRITE</a> '&lt;/LI&gt;&lt;/A&gt;'
   <a href="cpl.html#INC">INC</a> wrcount
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -109,7 +109,7 @@ text<a href="cpl.html#Assignment">=</a>fopen(database,"r")
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> wrfield(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING line, name)
   <a href="cpl.html#WRITE">WRITE</a> "&lt;TR&gt;&lt;TH align<a href="cpl.html#Assignment">=</a>right valign<a href="cpl.html#Assignment">=</a>top nowrap&gt;" name ":&lt;/TH&gt;&lt;TD&gt;"
-  htmlwr line,NO
+  htmlwr line,<a href="cpl.html#BOOLEAN">NO</a>
   <a href="cpl.html#WRITE">WRITE</a> "&lt;/TD&gt;&lt;/TR&gt;"
 <a href="cpl.html#END">END</a> wrfield
 
@@ -165,19 +165,19 @@ sysnum<a href="cpl.html#Assignment">=</a>field(0..<a href="cpl.html#HI">HI</a>)
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> writefull(<a href="cpl.html#INTEGER">INTEGER</a> rec)
 <a href="cpl.html#POSITION">POSITION</a>(text,rec)
 <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> text linebuf
-htmlwr linebuf,NO
+htmlwr linebuf,<a href="cpl.html#BOOLEAN">NO</a>
 <a href="cpl.html#END">END</a> writefull
 
 <a href="cpl.html#WRITE">WRITE</a> htmlheader
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING query<a href="cpl.html#Assignment">=</a>getenv("QUERY_STRING")
 <a href="cpl.html#IF">IF</a> query^#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#AND">AND</a> query(0)#0 <a href="cpl.html#IF">THEN</a> uri2asc(query); <a href="cpl.html#CASE">CASE</a> query(0) <a href="cpl.html#OF">OF</a>
 "q": &lt;&lowast;    setitimer(ITIMER_VIRTUAL,&amp;allowedtime_,<a href="cpl.html#POINTER">NULL</a>);  &lowast;&gt;
-     expired<a href="cpl.html#Assignment">=</a>NO
+     expired<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
      fws<a href="cpl.html#Assignment">=</a>0
      PatternString<a href="cpl.html#Assignment">=</a>query+2
      MWS<a href="cpl.html#Assignment">=</a>Pattern(PatternString)
  &lt;&lowast;    setitimer(ITIMER_VIRTUAL,&amp;allowedtime_,<a href="cpl.html#POINTER">NULL</a>);  &lowast;&gt;
-     expired<a href="cpl.html#Assignment">=</a>NO
+     expired<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
      <a href="cpl.html#IF">IF</a> foundwords#"" <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> "&lt;B&gt;Parole simili:&lt;/B&gt; " foundwords "&lt;BR&gt;"
      <a href="cpl.html#WRITE">WRITE</a> form1 query+2 form2
      <a href="cpl.html#INTEGER">INTEGER</a> wrcount<a href="cpl.html#Assignment">=</a>0

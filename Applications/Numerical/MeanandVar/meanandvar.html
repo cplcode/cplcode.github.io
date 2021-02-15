@@ -22,8 +22,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. !)</span>
 
-TEST<a href="cpl.html#Assignment">=</a>NO
-<a href="cpl.html#BOOLEAN">BOOLEAN</a> autots<a href="cpl.html#Assignment">=</a>YES
+TEST<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> autots<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">YES</a>
 
 MEANANDVAR<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#REAL">REAL</a> mean, bm(0..1), bt(0..1)
   <a href="cpl.html#INTEGER">INTEGER</a> nt, bs, ts]
@@ -64,7 +64,7 @@ MEANANDVAR<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCT
 <a href="cpl.html#INTEGER">INTEGER</a> startcolumn<a href="cpl.html#Assignment">=</a>1, numcolumn<a href="cpl.html#Assignment">=</a>1
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>&gt;<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1)<a href="cpl.html#Assignment">=</a>"-h" <a href="cpl.html#IF">THEN</a>
-    <a href="cpl.html#WRITE">WRITE</a> &lt;&lt;helpends
+    <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#STRING">&lt;&lt;</a>helpends
     
 Usage: meanandvar [-h] [col[-tocol]] [skip] [bsize]
 
@@ -97,7 +97,7 @@ helpends
 skip<a href="cpl.html#Assignment">=</a><a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>&gt;<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a> atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(2)) <a href="cpl.html#ELSE">ELSE</a> 0
 MEANANDVAR mv(1..numcolumn)<a href="cpl.html#Assignment">=</a>0
 <a href="cpl.html#DO">DO</a> mvinit(mv(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
-<a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>&gt;<a href="cpl.html#Assignment">=</a>3 <a href="cpl.html#IF">THEN</a> mv(1).ts<a href="cpl.html#Assignment">=</a>atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(3)); autots<a href="cpl.html#Assignment">=</a>NO
+<a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>&gt;<a href="cpl.html#Assignment">=</a>3 <a href="cpl.html#IF">THEN</a> mv(1).ts<a href="cpl.html#Assignment">=</a>atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(3)); autots<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
 <a href="cpl.html#REAL">REAL</a> xx
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> ungetc(getc(stdin),stdin)<a href="cpl.html#Assignment">=</a>"#": <a href="cpl.html#READ">READ</a>
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> skip: <a href="cpl.html#READ">READ</a>

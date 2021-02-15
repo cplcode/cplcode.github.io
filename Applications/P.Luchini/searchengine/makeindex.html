@@ -94,7 +94,7 @@ text<a href="cpl.html#Assignment">=</a><a href="cpl.html#OPEN">OPEN</a>(<a href=
 <a href="cpl.html#ARRAY">ARRAY</a>(0..100) <a href="cpl.html#OF">OF</a> <a href="cpl.html#CHAR">CHAR</a> buf
 <a href="cpl.html#INTEGER">INTEGER</a> c<a href="cpl.html#Assignment">=</a>0
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(3)<a href="cpl.html#Assignment">=</a>"unimarc" <a href="cpl.html#IF">THEN</a>
-  <a href="cpl.html#BOOLEAN">BOOLEAN</a> passed<a href="cpl.html#Assignment">=</a>NO
+  <a href="cpl.html#BOOLEAN">BOOLEAN</a> passed<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> EOF(text)
     c<a href="cpl.html#Assignment">=</a>getc(text)
     <a href="cpl.html#IF">IF</a> alpha(c)#0 <a href="cpl.html#IF">THEN</a>
@@ -103,12 +103,12 @@ text<a href="cpl.html#Assignment">=</a><a href="cpl.html#OPEN">OPEN</a>(<a href=
       <a href="cpl.html#IF">IF</a> buf(0)<a href="cpl.html#Assignment">=</a>"l" <a href="cpl.html#AND">AND</a> [strncmp(buf,"l01000010fmt",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010fmt"))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a>
          passed <a href="cpl.html#AND">AND</a> [strncmp(buf,"l01000010ldr",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010ldr"))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a>
          strncmp(buf,"l01000010001",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010001"))<a href="cpl.html#Assignment">=</a>0]] <a href="cpl.html#IF">THEN</a>
-        passed<a href="cpl.html#Assignment">=</a>NO
+        passed<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
         record<a href="cpl.html#Assignment">=</a><a href="cpl.html#INTEGER">INTEGER</a>(<a href="cpl.html#POSITION">POSITION</a>(text))-<a href="cpl.html#TYPE">SIZEOF</a>("l01000010fmt")-1
         <a href="cpl.html#INC">INC</a> cnt; <a href="cpl.html#IF">IF</a> cnt <a href="cpl.html#MOD">MOD</a> 100 <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> \r cnt, record ./.
       <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> buf(0)<a href="cpl.html#Assignment">=</a>"l" <a href="cpl.html#AND">AND</a> [strncmp(buf,"l01000010200",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010200"))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a>
         strncmp(buf,"l01000010sys",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010sys"))<a href="cpl.html#Assignment">=</a>0] <a href="cpl.html#IF">THEN</a>
-        passed<a href="cpl.html#Assignment">=</a>YES
+        passed<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">YES</a>
       <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> i&gt;2 <a href="cpl.html#IF">THEN</a> SortIn(root,buf(0..i-1),record)
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#LOOP">REPEAT</a>

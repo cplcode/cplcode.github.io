@@ -158,7 +158,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
     <a href="cpl.html#INC">INC</a> word; <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>Pattern(word)
     start<a href="cpl.html#Assignment">=</a>word+1; <a href="cpl.html#EXIT">EXIT</a> Match
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> word(0)<a href="cpl.html#Assignment">=</a>"+": <a href="cpl.html#INC">INC</a> nerr; printfws<a href="cpl.html#Assignment">=</a>NO; <a href="cpl.html#INC">INC</a> word
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> word(0)<a href="cpl.html#Assignment">=</a>"+": <a href="cpl.html#INC">INC</a> nerr; printfws<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>; <a href="cpl.html#INC">INC</a> word
   <a href="cpl.html#ARRAY">ARRAY</a>(0..3) <a href="cpl.html#OF">OF</a> <a href="cpl.html#CHAR">CHAR</a> locchr
   <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT locchr<a href="cpl.html#Assignment">=</a>index(loc)
   WS<a href="cpl.html#Assignment">=</a><a href="cpl.html#NEW">NEW</a> Match_WS
@@ -177,7 +177,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
         <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> locchr(0)<a href="cpl.html#Assignment">=</a>0
           word1<a href="cpl.html#Assignment">=</a>word+1
           fw(0)<a href="cpl.html#Assignment">=</a>locchr(0)
-          <a href="cpl.html#IF">IF</a> locchr(1)<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> locchr(1)<a href="cpl.html#Assignment">=</a>alpha(word1(0)) <a href="cpl.html#OR">OR</a> nerr&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>condjoin(<a href="cpl.html#RESULT">RESULT</a>,Match(word1,loc,1,nerr,fw+1,NO))
+          <a href="cpl.html#IF">IF</a> locchr(1)<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> locchr(1)<a href="cpl.html#Assignment">=</a>alpha(word1(0)) <a href="cpl.html#OR">OR</a> nerr&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>condjoin(<a href="cpl.html#RESULT">RESULT</a>,Match(word1,loc,1,nerr,fw+1,<a href="cpl.html#BOOLEAN">NO</a>))
           loc<a href="cpl.html#Assignment">=</a>loc+2; <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT locchr<a href="cpl.html#Assignment">=</a>index(loc)
         <a href="cpl.html#LOOP">REPEAT</a>
         <a href="cpl.html#EXIT">EXIT</a> match
@@ -194,11 +194,11 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
         saveloc<a href="cpl.html#Assignment">=</a>loc
         <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> locchr(0)#0
           fw(0)<a href="cpl.html#Assignment">=</a>locchr(0)
-          word1<a href="cpl.html#Assignment">=</a>word; <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>condjoin(<a href="cpl.html#RESULT">RESULT</a>,Match(word1,loc,1,nerr,fw+1,NO))
+          word1<a href="cpl.html#Assignment">=</a>word; <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>condjoin(<a href="cpl.html#RESULT">RESULT</a>,Match(word1,loc,1,nerr,fw+1,<a href="cpl.html#BOOLEAN">NO</a>))
           loc<a href="cpl.html#Assignment">=</a>loc+2; <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT locchr<a href="cpl.html#Assignment">=</a>index(loc)
         <a href="cpl.html#LOOP">REPEAT</a>
         loc<a href="cpl.html#Assignment">=</a>saveloc; <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT locchr<a href="cpl.html#Assignment">=</a>index(loc)
-      <a href="cpl.html#ELSE">ELSE</a> word1<a href="cpl.html#Assignment">=</a>word; fw(0)<a href="cpl.html#Assignment">=</a>locchr(sub); <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>condjoin(<a href="cpl.html#RESULT">RESULT</a>,Match(word1,loc,sub+1,nerr,fw+1,NO))
+      <a href="cpl.html#ELSE">ELSE</a> word1<a href="cpl.html#Assignment">=</a>word; fw(0)<a href="cpl.html#Assignment">=</a>locchr(sub); <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>condjoin(<a href="cpl.html#RESULT">RESULT</a>,Match(word1,loc,sub+1,nerr,fw+1,<a href="cpl.html#BOOLEAN">NO</a>))
       <a href="cpl.html#DEC">DEC</a> sub
     <a href="cpl.html#ELSE">ELSE</a>
       <a href="cpl.html#IF">IF</a> nerr&gt;0 <a href="cpl.html#AND">AND</a> w#0 <a href="cpl.html#AND">AND</a> w#alpha(word(1)) <span class=comment>![ AND (locchr(sub)=0 OR locchr(sub)=alpha(word(1)) OR nerr&gt;1) !]</span> <a href="cpl.html#IF">THEN</a> word1<a href="cpl.html#Assignment">=</a>word+1; <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>condjoin(<a href="cpl.html#RESULT">RESULT</a>,Match(word1,loc,sub,nerr-1,fw,printfws))
@@ -231,7 +231,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
           <a href="cpl.html#IF">IF</a> nerr<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
             <a href="cpl.html#IF">IF</a> printfws <a href="cpl.html#IF">THEN</a>
               <a href="cpl.html#IF">IF</a> fws&gt;wordstart+1000 <a href="cpl.html#OR">OR</a> fws&gt;fws.<a href="cpl.html#HI">HI</a>-100 <a href="cpl.html#IF">THEN</a>
-                printfws<a href="cpl.html#Assignment">=</a>NO
+                printfws<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
                 <a href="cpl.html#IF">IF</a> fws(-1)#"." <a href="cpl.html#IF">THEN</a> fws(0..<a href="cpl.html#HI">HI</a>)<a href="cpl.html#Assignment">=</a>" ..."
               <a href="cpl.html#ELSE">ELSE</a>
                 <span class=comment>!              POINTER TO CSTRING sw=start-1</span>
@@ -270,7 +270,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
   <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>EMPTY WS_type
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> cur(0)<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> cur(0)<a href="cpl.html#Assignment">=</a>")"
     wordstart<a href="cpl.html#Assignment">=</a>fws
-    DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_type ARESULT<a href="cpl.html#Assignment">=</a>Match(cur,root,0,1,0,YES)
+    DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_type ARESULT<a href="cpl.html#Assignment">=</a>Match(cur,root,0,1,0,<a href="cpl.html#BOOLEAN">YES</a>)
     skipfw(cur)
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> cur(0)<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> cur(0)<a href="cpl.html#Assignment">=</a>")" <a href="cpl.html#OR">OR</a> strncmp(cur,Or,<a href="cpl.html#TYPE">SIZEOF</a>(Or))<a href="cpl.html#Assignment">=</a>0
       <a href="cpl.html#IF">IF</a> strncmp(cur,And,<a href="cpl.html#TYPE">SIZEOF</a>(And))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#INC">INC</a> cur,<a href="cpl.html#TYPE">SIZEOF</a>(And); skipfw(cur)
@@ -288,11 +288,11 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
             WS<a href="cpl.html#Assignment">=</a><a href="cpl.html#NEW">NEW</a> AndNot_WS
             WS.n1<a href="cpl.html#Assignment">=</a>0; WS.n2<a href="cpl.html#Assignment">=</a>0
             WS.W1<a href="cpl.html#Assignment">=</a>ARESULT
-            WS.W2<a href="cpl.html#Assignment">=</a>Match(cur,root,0,1,0,NO)
+            WS.W2<a href="cpl.html#Assignment">=</a>Match(cur,root,0,1,0,<a href="cpl.html#BOOLEAN">NO</a>)
             ARESULT<a href="cpl.html#Assignment">=</a>WS
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-      <a href="cpl.html#ELSE">ELSE</a> wordstart<a href="cpl.html#Assignment">=</a>fws; ARESULT<a href="cpl.html#Assignment">=</a>chain(ARESULT,Match(cur,root,0,1,0,YES))
+      <a href="cpl.html#ELSE">ELSE</a> wordstart<a href="cpl.html#Assignment">=</a>fws; ARESULT<a href="cpl.html#Assignment">=</a>chain(ARESULT,Match(cur,root,0,1,0,<a href="cpl.html#BOOLEAN">YES</a>))
       skipfw(cur)
     <a href="cpl.html#LOOP">REPEAT</a>
     <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>EMPTY WS_type <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>ARESULT <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>join(<a href="cpl.html#RESULT">RESULT</a>,ARESULT)
