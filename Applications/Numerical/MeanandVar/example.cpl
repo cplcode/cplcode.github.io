@@ -27,7 +27,4 @@ LOOP FOR 1000 TIMES
   DRAW accum.nt,accum.nt*accum.var
 REPEAT
 SHOWGRAPH
-READ ! keep plot displayed until key is pressed
-
-
-
+READ ! keep plot displayed until Enter is pressed

@@ -14,6 +14,7 @@ LOOP FOR 100 TIMES   ! main iteration loop
 REPEAT LOOP
 
 SPLOT var
+READ ! keep plot displayed until Enter is pressed
 
 !(
   A single LOOP instruction can loop over several indices. Indices are

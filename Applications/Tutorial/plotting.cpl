@@ -10,3 +10,4 @@ LOOP FOR i=2 TO n   ! fill up array of Fibonacci values
   Fib(i)=Fib(i-1)+Fib(i-2)
 REPEAT LOOP
 PLOT Fib            ! plot the array against its index.
+READ ! keep plot displayed until Enter is pressed
