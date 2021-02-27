@@ -1,9 +1,7 @@
 ! BoostConv -- Copyright 2010 Paolo Luchini
-! http://CPLcode.net/Applications/BoostConv/
+! http://CPLcode.net/Applications/Numerical/BoostConv/
 
-!( MIT License
-  
-Permission is hereby granted, free of charge, to any person obtaining a copy
+!( Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -52,7 +50,7 @@ SUBROUTINE BoostConv[BoostConvWS ws^^; REAL r^(*); OPTIONAL INTEGER length=10]
   !
   ! length: only significant when ws points to a NULL BoostConvWS.
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  IF ws=NULL BoostConvWS THEN
+  IF ws=EMPTY BoostConvWS THEN
     ! allocate new workspace and exit
     ws=NEW BoostConvWS(length,r.LO,r.HI)
     WITH ws ! zero history, and set first vector equal to the current residual
@@ -101,6 +99,6 @@ SUBROUTINE BoostConv[BoostConvWS ws^^; REAL r^(*); OPTIONAL INTEGER length=10]
 END BoostConv
 
 POINTER TO BoostConvWS defaultBoostConvWS=NULL
-INLINE SUBROUTINE BoostConv[REAL r^(*); OPTIONAL INTEGER length=10]=BoostConv(defaultBoostConvWS,r,length=length)
+INLINE SUBROUTINE BoostConv[REAL r^(*); OPTIONAL INTEGER length1=10]=BoostConv(defaultBoostConvWS,r,length=length1)
 ! If you only use BoostConv in your program for a single iterative algorithm,
 ! this simplified interface hides the necessity to allocate a workspace.
