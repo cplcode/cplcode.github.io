@@ -148,7 +148,7 @@ Page: (graphics)SHOWGRAPH,  Next: <a href="#PLOT">PLOT</a>,  Prev: <a href="#LAB
 <hr> <h3>SUBROUTINE SHOWGRAPH()</h3>
 flushes the internal buffer, which could otherwise delay the graph from being shown on screen. 
 </div><div class=page id="PLOT">
-Page: (graphics)PLOT,  Next: <a href="#strlines">strlines</a>,  Prev: <a href="#SHOWGRAPH">SHOWGRAPH</a>,  Up: <a href="#Top">Top</a>
+Page: (graphics)PLOT,  Next: <a href="#nographics">nographics</a>,  Prev: <a href="#SHOWGRAPH">SHOWGRAPH</a>,  Up: <a href="#Top">Top</a>
 <hr> <h3>SUBROUTINE PLOT(REAL FUNCTION(REAL) f; REAL x1,x2)</h3>
 <h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER) f; INTEGER x1,x2)</h3>
 <h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER) f; ARRAY(&lowast;) OF REAL vecx)</h3>
@@ -174,11 +174,21 @@ In addition the following commands are available in gnuplot.cpl only:
 <tr><td colspan="2">          passes them to gnuplot using gnuplot syntax. Example:
 </td></tr>
 <tr><td colspan="2">          plot x:SIN[x(n)] w l, where x is an ARRAY OF REAL. </td></tr>
+<tr><td><a href="#SPLOT">SPLOT</a>:</td><td>plot a surface with default settings</td></tr>
 <tr><td><a href="#REALTABLE(POINTER%20TO%20FILE)">REALTABLE(POINTER TO FILE)</a>:</td><td>reads a matrix of REALs from a file in table</td></tr>
 <tr><td colspan="2">          format, with automatic dimensioning. </td></tr>
 <tr><td><a href="#WRITE%20TABLE%20[TO%20POINTER%20TO%20FILE]">WRITE TABLE [TO POINTER TO FILE]</a>:</td><td>accepts the same syntax as <q>plot</q>, but</td></tr>
 <tr><td colspan="2">          writes out the corresponding data in table format. </td></tr>
 </table></nav>
+
+</div><div class=page id="SPLOT">
+Page: (graphics)SPLOT,  Next: <a href="#strlines">strlines</a>,  Prev: <a href="#gnuplot">gnuplot</a>,  Up: <a href="#gnuplot">gnuplot</a>
+<hr> <h3>SUBROUTINE SPLOT(REAL FUNCTION(REAL x,y) f; REAL xmin..xmax,ymin..ymax)</h3>
+<h3>SUBROUTINE SPLOT(REAL FUNCTION(REAL x,y) f)</h3>
+<h3>SUBROUTINE SPLOT(REAL FUNCTION(INTEGER x,y) vec; INTEGER xmin..xmax,ymin..ymax)</h3>
+<h3>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF REAL vec)</h3>
+<h3>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF INTEGER vec)</h3>
+<h3>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF REAL vec; ARRAY(&lowast;) OF REAL x,y)</h3>
 
 </div><div class=page id="strlines">
 Page: (graphics)strlines,  Next: <a href="parallel.html#Top">(parallel)</a>,  Prev: <a href="#gnuplot">gnuplot</a>,  Up: <a href="#Top">Top</a>

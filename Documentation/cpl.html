@@ -64,7 +64,7 @@
 
 </div><div class=page id="Top">
 Page: (cpl)Top,  Next: <a href="#Keyword%20Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a>
-<hr>Documentation for the CPL programming language and its compiler, February 2021. Printable and citable version can be found at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
+<hr>Documentation for the CPL programming language and its compiler, March 2021. Printable and citable version can be found at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
 
   CPL = Concealed Pointer Lookup
   CPL = Custom Parameter Lists
@@ -184,6 +184,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#OR">OR</a>:</td><td>boolean OR</td></tr>
 <tr><td><a href="parallel.html#Top">PARALLEL MODULE:(parallel)</a>:</td><td>Forking a parallel process</td></tr>
 <tr><td><a href="parallel.html#Top">PARALLEL LOOP:(parallel)</a>:</td><td>Simultaneous multiple processes</td></tr>
+<tr><td><a href="graphics.html#PLOT">PLOT:(graphics)PLOT</a>:</td><td>plot a complete curve with default settings</td></tr>
 <tr><td><a href="#POINTER">POINTER</a>:</td><td>pointer to a memory address</td></tr>
 <tr><td><a href="#POSITION">POSITION</a>:</td><td>read or set a file's current position</td></tr>
 <tr><td><a href="#Looping%20operator">PRODUCT:Looping operator</a>:</td><td></td></tr>
@@ -200,6 +201,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#Builtin">SIN:Builtin</a>:</td><td>sine</td></tr>
 <tr><td><a href="#SINGLE">SINGLE</a>:</td><td>primitive type declarator</td></tr>
 <tr><td><a href="#TYPE">SIZEOF:TYPE</a>:</td><td>memory occupation</td></tr>
+<tr><td><a href="graphics.html#SPLOT">SPLOT:(graphics)SPLOT</a>:</td><td>plot a surface with default settings</td></tr>
 <tr><td><a href="#Builtin">SQRT:Builtin</a>:</td><td>square root</td></tr>
 <tr><td><a href="#STOP">STOP</a>:</td><td>stop the program</td></tr>
 <tr><td><a href="#STORED">STORED</a>:</td><td>random-access files as disk-resident variables</td></tr>
@@ -704,6 +706,8 @@ The special dimension &lowast; can be used to declare a POINTER TO ARRAY that im
 	REAL FUNCTION NORM[ARRAY(&lowast;) OF REAL v]=SUM v(i)^2 FOR ALL i
 
 (same as the builtin <a href="#NORM">NORM</a> function). When this notation is used, the index bounds of the actual parameter are accessible in the function's body by the <a href="#LO">LO</a> and <a href="#HI">HI</a> builtins (in the above example, these would be v.LO and v.HI), and its number of elements by the <a href="#LENGTH">LENGTH</a> function, just as for all ARRAYs.
+
+A formal parameter OF type ARRAY(&lowast;) also accepts a variable of its base type as the actual parameter, and transforms it into an ARRAY with dimension (0..0).
 
 For more elaborate needs, for instance when two arrays must have equal dimensions, CPL allows INTEGER formal parameters to be used in the declaration of subsequent compound parameters. An example would be
 
@@ -1216,7 +1220,9 @@ MOD is the <q>modulo</q> infix operator. If a and b are INTEGERs,
 
 represents the remainder of the integer division of a by b.
 
-Notice on the truncation of integer division: CPL requires that a MOD b must always be a positive number, regardless of the sign of a/b. This is so that modular arithmetics can be applied to negative as well as to positive numbers, for example in array index manipulations. Since b&lowast;(a DIV b) + a MOD b = a, consistently a DIV b must be rounded towards minus infinity, or a DIV b = FLOOR(a/b). Care should be taken when porting programs from FORTRAN or C, which unfortunately adopt the opposite convention of rounding integer division towards zero. 
+Notice on the truncation of integer division: CPL requires that a MOD b must always be a positive number, regardless of the sign of a/b. This is so that modular arithmetics can be applied to negative as well as to positive numbers, for example in array index manipulations. Since b&lowast;(a DIV b) + a MOD b = a, consistently a DIV b must be rounded towards minus infinity, or a DIV b = FLOOR(a/b). Care should be taken when porting programs from languages that truncate negative division, such as FORTRAN or C.
+
+Operators following the C convention of truncating integer division and signed modulo are available, if needed, as CDIV and CMOD respectively. 
 </div><div class=page id="REAL%20operator">
 Page: (cpl)REAL operator, Next: <a href="#Comparison">Comparison</a>, Prev: <a href="#INTEGER%20operator">INTEGER operator</a>, Up: <a href="#Expressions">Expressions</a>
 <hr> <h3>REAL operators:		+  -  &lowast;  /  ^ (or &lowast;&lowast;)</h3>

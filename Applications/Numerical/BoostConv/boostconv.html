@@ -1,10 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><title>Numerical/BoostConv/boostconv.cpl</title><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style></head><body><pre>
 <span class=comment>! BoostConv -- Copyright 2010 Paolo Luchini</span>
-<span class=comment>! http://CPLcode.net/Applications/BoostConv/</span>
+<span class=comment>! http://CPLcode.net/Applications/Numerical/BoostConv/</span>
 
-<span class=comment>!( MIT License
-  
-Permission is hereby granted, free of charge, to any person obtaining a copy
+<span class=comment>!( Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -34,8 +32,9 @@ BoostConvWS<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUC
   <a href="cpl.html#ARRAY">ARRAY</a>(0..N-1,lo..hi) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> in,out
   <span class=comment>! in and out base vectors of the boostconv algorithm</span>
 ]
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> BoostConvWS defaultBoostConvWS<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a>
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> BoostConv[BoostConvWS ws^^; <a href="cpl.html#REAL">REAL</a> r^(&lowast;); <a href="cpl.html#OPTIONAL">OPTIONAL</a> <a href="cpl.html#INTEGER">INTEGER</a> length<a href="cpl.html#Assignment">=</a>10]
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> BoostConv[<a href="cpl.html#REAL">REAL</a> r^(&lowast;); <a href="cpl.html#OPTIONAL">OPTIONAL</a> BoostConvWS ws^^<a href="cpl.html#Assignment">=</a>defaultBoostConvWS; <a href="cpl.html#INTEGER">INTEGER</a> length<a href="cpl.html#Assignment">=</a>10]
   <span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>
   <span class=comment>! Expedites the convergence of a pre-existing numerical iteration by</span>
   <span class=comment>! constructing a probable guess of the forthcoming next residual as a</span>
@@ -43,9 +42,9 @@ BoostConvWS<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUC
   <span class=comment>!</span>
   <span class=comment>! Calling parameters:</span>
   <span class=comment>!</span>
-  <span class=comment>! ws: pointer to internal workspace. If initially set to NULL, it will be</span>
-  <span class=comment>! internally allocated and initialized to a new buffer with size length.</span>
-  <span class=comment>! Can be deallocated with FREE when no longer needed.</span>
+  <span class=comment>! ws: pointer to internal workspace of type BoostConvWS. If initially set to</span>
+  <span class=comment>! NULL, it will be internally allocated and initialized to a new buffer with</span>
+  <span class=comment>! size length. Can be deallocated with FREE when no longer needed.</span>
   <span class=comment>!</span>
   <span class=comment>! r: on input, REAL ARRAY containing the residual vector of the iteration to</span>
   <span class=comment>! be accelerated; on output, substituted in place with the improved residual</span>
@@ -53,7 +52,7 @@ BoostConvWS<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUC
   <span class=comment>!</span>
   <span class=comment>! length: only significant when ws points to a NULL BoostConvWS.</span>
   <span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>
-  <a href="cpl.html#IF">IF</a> ws<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a> BoostConvWS <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> ws<a href="cpl.html#Assignment">=</a>EMPTY BoostConvWS <a href="cpl.html#IF">THEN</a>
     <span class=comment>! allocate new workspace and exit</span>
     ws<a href="cpl.html#Assignment">=</a><a href="cpl.html#NEW">NEW</a> BoostConvWS(length,r.<a href="cpl.html#LO">LO</a>,r.<a href="cpl.html#HI">HI</a>)
     <a href="cpl.html#WITH">WITH</a> ws <span class=comment>! zero history, and set first vector equal to the current residual</span>
@@ -79,14 +78,14 @@ BoostConvWS<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUC
     <a href="cpl.html#DO">DO</a> c(j)<a href="cpl.html#Assignment">=</a>in(j)|r <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <span class=comment>! Project the current residual onto the non-</span>
     c<a href="cpl.html#Assignment">=</a>PLU(dd)\<a href="cpl.html#Assignment">~</a> <span class=comment>! orthogonal "in" basis by solving an NxN linear system</span>
     <a href="cpl.html#IF">IF</a> rot<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-#ifdef DiscardOldest
-      rot<a href="cpl.html#Assignment">=</a>N-1
-#else
-      <a href="cpl.html#IF">IF</a> rot2<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> rot2<a href="cpl.html#Assignment">=</a>N
+      #ifdef DiscardOldest
+rot<a href="cpl.html#Assignment">=</a>N-1
+      #else
+<a href="cpl.html#IF">IF</a> rot2<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> rot2<a href="cpl.html#Assignment">=</a>N
       rot2<a href="cpl.html#Assignment">=</a>rot2-1
       rot<a href="cpl.html#Assignment">=</a>rot2
-#endif
-    <a href="cpl.html#ELSE">ELSE</a> rot<a href="cpl.html#Assignment">=</a>rot-1
+      #endif
+<a href="cpl.html#ELSE">ELSE</a> rot<a href="cpl.html#Assignment">=</a>rot-1
     <span class=comment>! Select the next basis vector to be worked upon: circulate by decreasing</span>
     <span class=comment>! rot by 1, and when the index hits zero reinitialize to rot2. rot2</span>
     <span class=comment>! in turn circulates at a lower rate. See description of the strategy.</span>
@@ -100,9 +99,4 @@ BoostConvWS<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUC
     <span class=comment>! into out(rot), in preparation for the next iteration.</span>
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a> BoostConv
-
-<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> BoostConvWS defaultBoostConvWS<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a>
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> BoostConv[<a href="cpl.html#REAL">REAL</a> r^(&lowast;); <a href="cpl.html#OPTIONAL">OPTIONAL</a> <a href="cpl.html#INTEGER">INTEGER</a> length<a href="cpl.html#Assignment">=</a>10]<a href="cpl.html#Assignment">=</a>BoostConv(defaultBoostConvWS,r,length<a href="cpl.html#Assignment">=</a>length)
-<span class=comment>! If you only use BoostConv in your program for a single iterative algorithm,</span>
-<span class=comment>! this simplified interface hides the necessity to allocate a workspace.</span>
 </pre></body></html>

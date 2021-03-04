@@ -31,8 +31,9 @@ BoostConvWS=STRUCTURE[INTEGER CONSTANT N,lo,hi;
   ARRAY(0..N-1,lo..hi) OF REAL in,out
   ! in and out base vectors of the boostconv algorithm
 ]
+POINTER TO BoostConvWS defaultBoostConvWS=NULL
 
-SUBROUTINE BoostConv[BoostConvWS ws^^; REAL r^(*); OPTIONAL INTEGER length=10]
+SUBROUTINE BoostConv[REAL r^(*); OPTIONAL BoostConvWS ws^^=defaultBoostConvWS; INTEGER length=10]
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ! Expedites the convergence of a pre-existing numerical iteration by
   ! constructing a probable guess of the forthcoming next residual as a
@@ -40,9 +41,9 @@ SUBROUTINE BoostConv[BoostConvWS ws^^; REAL r^(*); OPTIONAL INTEGER length=10]
   !
   ! Calling parameters:
   !
-  ! ws: pointer to internal workspace. If initially set to NULL, it will be
-  ! internally allocated and initialized to a new buffer with size length.
-  ! Can be deallocated with FREE when no longer needed.
+  ! ws: pointer to internal workspace of type BoostConvWS. If initially set to
+  ! NULL, it will be internally allocated and initialized to a new buffer with
+  ! size length. Can be deallocated with FREE when no longer needed.
   !
   ! r: on input, REAL ARRAY containing the residual vector of the iteration to
   ! be accelerated; on output, substituted in place with the improved residual
@@ -76,14 +77,14 @@ SUBROUTINE BoostConv[BoostConvWS ws^^; REAL r^(*); OPTIONAL INTEGER length=10]
     DO c(j)=in(j)|r FOR ALL j ! Project the current residual onto the non-
     c=PLU(dd)\~ ! orthogonal "in" basis by solving an NxN linear system
     IF rot=0 THEN
-#ifdef DiscardOldest
-      rot=N-1
-#else
-      IF rot2=0 THEN rot2=N
+      #ifdef DiscardOldest
+rot=N-1
+      #else
+IF rot2=0 THEN rot2=N
       rot2=rot2-1
       rot=rot2
-#endif
-    ELSE rot=rot-1
+      #endif
+ELSE rot=rot-1
     ! Select the next basis vector to be worked upon: circulate by decreasing
     ! rot by 1, and when the index hits zero reinitialize to rot2. rot2
     ! in turn circulates at a lower rate. See description of the strategy.
@@ -97,8 +98,3 @@ SUBROUTINE BoostConv[BoostConvWS ws^^; REAL r^(*); OPTIONAL INTEGER length=10]
     ! into out(rot), in preparation for the next iteration.
   END IF
 END BoostConv
-
-POINTER TO BoostConvWS defaultBoostConvWS=NULL
-INLINE SUBROUTINE BoostConv[REAL r^(*); OPTIONAL INTEGER length1=10]=BoostConv(defaultBoostConvWS,r,length=length1)
-! If you only use BoostConv in your program for a single iterative algorithm,
-! this simplified interface hides the necessity to allocate a workspace.
