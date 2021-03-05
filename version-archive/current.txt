@@ -1,2 +1,2 @@
 2021-03-04
-Changed DIV truncation to "round down", as it already was for MOD. Faster SPLOT. Faster BINARY array reads and writes.
+Changed DIV truncation to "floor", as it already was for MOD. Faster SPLOT. Faster BINARY array reads and writes.
