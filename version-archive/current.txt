@@ -1,2 +1,2 @@
-2021-04-10
+2021-04-11
 Corrected ERROR malfunction and some editor bugs. gnuplot.cpl now continues with no graphics if gnuplot absent (previous behaviour was to halt the program).
