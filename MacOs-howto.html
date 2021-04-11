@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CPL on Macintosh</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="author" content="Paolo Luchini">
+    <meta name="copyright" content="Copyright 2020 Paolo Luchini">
+    <meta name="description" content="Step by step instructions to use CPL on Apple MacOs.">
+    <meta name="keywords" content="cpl CPL numerical computation computational code program programmer programming language compiler interpreter editor fri FRI makecpl icpl edit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://CPLcode.net/MacOs-howto.html">
+    <link rel="stylesheet" href="singlecol.css">
+</head>
+  <body>
+  <a href="./"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
+  <div class=page>
+    <h2>CPL-on-Macintosh howto</h2>
+    Step by step instructions to use CPL on Apple MacOs.
+    <dl>
+    <dt>1 - Get Command Line Tools.</dt>
+    <dd>To compile anything (not just CPL) on Macintosh you need the Apple Command Line Tools, a subset of the Xcode programming anvironment. You may already have them if for other reasons you installed Xcode. Otherwise you can use the following instructions, modelled after <a href="https://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">https://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/</a>. Open a terminal: if you do not already have the terminal app in your taskbar, write <q>terminal</q> in the search box and click <q>terminal.app</q>.</dd>
+    <dt>2 - Install Command Line Tools:</dt>
+    <dd>Enter <pre>xcode-select --install</pre> A dialog box will appear asking if you want to install the Command Line Developer Tools. Accept. If the box does not appear, you probably have them already. You do not need the (much larger) Xcode package unless you want it for other purposes.</dd>
+    <dt>3 - Install the Homebrew package manager:</dt>
+    <dd>Follow instructions on the <a href="brew.sh">brew.sh</a> website.</dd>
+    <dt>4 - Install original gcc (the one provided by Apple is an alias for their own clang):</dt>
+    <dd><pre>brew install gcc</pre>
+    </dd>
+    <dt>5 - Unpack the CPL archive you previously downloaded, with the <code>CC</code> environment variable pointing at your new C compiler:</dt>
+    <dd><pre>CC=gcc-10 sh Downloads/*cpl.sh</em></pre>
+    </dd>
+    <dt>6 - For graphics, install gnuplot:</dt>
+    <dd><pre>brew install gnuplot</pre>
+    </dd>
+    </dl>
+    <p>You are all set!</p>
+<footer>
+      <p><a href="./Download.html">Back</a></p>
+    </footer>
+  </div>
+  </body> 
+</html>
