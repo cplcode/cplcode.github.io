@@ -6,7 +6,7 @@
     <meta name="author" content="Paolo Luchini">
     <meta name="copyright" content="Copyright 2020 Paolo Luchini">
     <meta name="description" content="Step by step instructions to use CPL on Apple MacOS.">
-    <meta name="keywords" content="cpl CPL numerical computation computational code program programmer programming language compiler interpreter editor fri FRI makecpl icpl edit">
+    <meta name="keywords" content="cpl CPL numerical computation computational code program programmer programming language compiler interpreter editor fri FRI makecpl icpl edit Apple Macintosh macOS OSX">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="https://CPLcode.net/MacOS-howto.html">
     <link rel="stylesheet" href="singlecol.css">
@@ -25,17 +25,17 @@
     <dd>Enter <pre>xcode-select --install</pre> A dialog box will pop up asking if you want to install the Command Line Developer Tools. Accept. If the box does not appear, you probably have them already. Alternately you can install the full Xcode development environment from the App Store, but only do so if you want this much larger package for other purposes.</dd>
     <dt>3 - Install the Homebrew package manager:</dt>
     <dd>Follow instructions on the <a href="brew.sh">brew.sh</a> website.</dd>
-    <dt>4 - Install original gcc (the one provided by Apple is an alias for their own clang):</dt>
+    <dt>4 - Install original <code>gcc</code> (the one provided by Apple is an alias for their own <code>clang</code>):</dt>
     <dd><pre>brew install gcc</pre>
     </dd>
-    <dt>5 - Unpack the CPL archive you previously downloaded, with the <code>CC</code> environment variable pointing at the brew-installed C compiler (currently named <code>gcc-10</code>):</dt>
+    <dt>5 - Unpack the CPL archive you previously downloaded, with the <code>CC</code> environment variable pointing at the brew-installed C compiler (currently named <code>gcc-10</code>). Enter:</dt>
     <dd><pre>CC=gcc-10 sh Downloads/*cpl.sh</pre>
-    </dd>
-    <dt>6 - To activate CPL graphics, install gnuplot:</dt>
+    all on a single line.</dd>
+    <dt>6 - To activate CPL graphics, install gnuplot. As you already have Homebrew, enter:</dt>
     <dd><pre>brew install gnuplot</pre>
-    </dd>
+    or alternately you can choose one of the contributed OS X binaries on <a href="http://gnuplot.info">gnuplot.info</a>.</dd>
     </dl>
-    <p>You are all set! Please notice that you only need the above steps if you want to edit, compile or interpret a CPL program. A MacOS-compiled CPL executable runs on bare MacOS (with the possible addition of gnuplot).</p>
+    <p>You are all set! Please notice that you only need the above steps if you want to edit, compile or interpret a CPL program. A MacOS-compiled CPL executable runs on bare MacOS (with the addition of gnuplot if wanted).</p>
 <footer>
       <p><a href="./Download.html">Back</a></p>
     </footer>
