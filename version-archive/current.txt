@@ -1,2 +1,2 @@
-2021-04-15
-Corrected ERROR malfunction, ASK instruction and some editor bugs. gnuplot.cpl now continues with no graphics if gnuplot absent (previous behaviour was to halt the program).
+2021-04-17
+Corrected ERROR malfunction, ASK instruction and mixed minor bugs. gnuplot.cpl now continues with no graphics if gnuplot absent (previous behaviour was to halt the program).
