@@ -73,6 +73,7 @@ The same programming interface is also shared by <a href="#nographics">nographic
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#OPENGRAPH">OPENGRAPH</a>:</td><td>start a new graph</td></tr>
+<tr><td><a href="#MOUSEGRAPH">MOUSEGRAPH</a>:</td><td>start a new graph with mouse grabbing capability</td></tr>
 <tr><td><a href="#WINDOW">WINDOW</a>:</td><td>specify a drawing window within the current graph</td></tr>
 <tr><td><a href="#RANGE">RANGE</a>:</td><td>specify a range for the axes</td></tr>
 <tr><td><a href="#STARTLINE">STARTLINE</a>:</td><td>start a new line</td></tr>
@@ -96,8 +97,15 @@ A graphics window may be closed without opening a new one by the
 
 <h3>SUBROUTINE CLOSEGRAPH()</h3>
 
+</div><div class=page id="MOUSEGRAPH">
+Page: (graphics)MOUSEGRAPH,  Next: <a href="#WINDOW">WINDOW</a>,  Prev: <a href="#OPENGRAPH">OPENGRAPH</a>,  Up: <a href="#Top">Top</a>
+<hr> <h3>SUBROUTINE MOUSEGRAPH()</h3>
+starts a new graph with mouse grabbing capability,
+
+<h3>SUBROUTINE POLLMOUSE(REAL mx^,my^; INTEGER mb^)</h3>
+grabs mouse clicks in gnuplot window. 
 </div><div class=page id="WINDOW">
-Page: (graphics)WINDOW,  Next: <a href="#RANGE">RANGE</a>,  Prev: <a href="#OPENGRAPH">OPENGRAPH</a>,  Up: <a href="#Top">Top</a>
+Page: (graphics)WINDOW,  Next: <a href="#RANGE">RANGE</a>,  Prev: <a href="#MOUSEGRAPH">MOUSEGRAPH</a>,  Up: <a href="#Top">Top</a>
 <hr> <h3>SUBROUTINE WINDOW(REAL VARIABLE x1, x2, y1, y2)</h3>
 specifies a plotting window within the current graph, in a system of coordinates going from 0 to 1 along either axis.
 

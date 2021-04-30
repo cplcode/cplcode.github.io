@@ -24,10 +24,9 @@ SOFTWARE. !)</span>
 <span class=comment>!====TEMPORAL STABILITY OF POISEUILLE FLOW WITH PSEUDO-SPECTRAL DISCRETIZATION=======</span>
 <span class=comment>!====================================================================================</span>
 
-<span class=comment>!USE rbmat</span>
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
-<a href="cpl.html#USE">USE</a> <a href="cpl.html#rtchecks">rtchecks</a>
+<span class=comment>! USE rtchecks</span>
 <a href="cpl.html#C%20interface">#link</a> "-llapack"
 
 <span class=comment>!=========================== Chebyshev polinomial and derivative ================</span>
@@ -114,8 +113,8 @@ TC(T,y)                                   <span class=comment>! Evaluate Polynom
 <span class=comment>!ASK alpha</span>
 <a href="cpl.html#REAL">REAL</a> Re<a href="cpl.html#Assignment">=</a>5772;            <span class=comment>! Reynolds number </span>
 <a href="cpl.html#ASK">ASK</a> Re
-<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> NAME Re
-<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> NAME alpha
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> Re
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> alpha
 <a href="cpl.html#WRITE">WRITE</a>
 
 BuildMat(alpha,Re)        <span class=comment>! Build Matrix</span>
@@ -146,7 +145,7 @@ JOBVL<a href="cpl.html#Assignment">=</a>"V"
 <a href="cpl.html#WRITE">WRITE</a> "Computed eigenvalues:                      "
 <a href="cpl.html#WRITE">WRITE</a> "<a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Assignment">=</a>"
 <a href="cpl.html#WRITE">WRITE</a>
-<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> NAME c(k) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> k 
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> c(k) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> k 
 
 VL<a href="cpl.html#Assignment">=</a>CONJG(VL)
 
@@ -183,19 +182,19 @@ TC(TP,yp)
 <a href="cpl.html#WRITE">WRITE</a> "---------"
 <a href="cpl.html#WRITE">WRITE</a>
 <a href="cpl.html#WRITE">WRITE</a> "Select the eigenvalue with the mouse ..."
-MOUSEGRAPH
+<a href="graphics.html#MOUSEGRAPH">MOUSEGRAPH</a>
 <a href="cpl.html#LOOP">LOOP</a> loop
   <a href="graphics.html#OPENGRAPH">OPENGRAPH</a>(0)
   <a href="graphics.html#RANGE">RANGE</a>[0,1,-0.5,0.5]
   <a href="graphics.html#gnuplot">set</a> grid
-  plot c.<a href="cpl.html#REAL">REAL</a>:c.IMAG with points 
-  POLLMOUSE(mx,my,mb)
+  <a href="graphics.html#plot">plot</a> c.<a href="cpl.html#REAL">REAL</a>:c.IMAG with points 
+  <a href="graphics.html#MOUSEGRAPH">POLLMOUSE</a>(mx,my,mb)
   <a href="cpl.html#IF">IF</a> mb<a href="cpl.html#Assignment">=</a>3 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> loop
   PLOTVEC(mx,my)
 <span class=comment>!  ASK "Plot another eigenfunction? (y/n)  ":go</span>
 <span class=comment>!  IF NOT(go) THEN EXIT loop</span>
 <a href="cpl.html#LOOP">REPEAT</a> loop
-CLOSEGRAPH
+<a href="graphics.html#OPENGRAPH">CLOSEGRAPH</a>
 
 <span class=comment>!==============================================================================</span>
 <span class=comment>! Check Residual </span>
@@ -206,7 +205,7 @@ CLOSEGRAPH
 <a href="cpl.html#WRITE">WRITE</a>
 BuildMat(alpha,Re)    
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N
-  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> NAME i,c(i),,ABS(VR(i,&lowast;)&lowast;[A-(ALPHA(i)/BETA(i))&lowast;B])   <span class=comment>! Residual Adjoint Eiegenvectors </span>
-  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> NAME i,c(i),,ABS([A-(ALPHA(i)/BETA(i))&lowast;B]&lowast;VL(i,&lowast;))   <span class=comment>! Residual Direct  Eigenvectors </span>
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> i,c(i),,ABS(VR(i,&lowast;)&lowast;[A-(ALPHA(i)/BETA(i))&lowast;B])   <span class=comment>! Residual Adjoint Eiegenvectors </span>
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> i,c(i),,ABS([A-(ALPHA(i)/BETA(i))&lowast;B]&lowast;VL(i,&lowast;))   <span class=comment>! Residual Direct  Eigenvectors </span>
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 </pre></body></html>
