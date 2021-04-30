@@ -1,0 +1,210 @@
+! OSE.cpl -- Copyright 2021 Flavio Giannetti
+! http://CPLcode.net/Applications/Numerical/OSE/
+
+!( Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. !)
+
+!====================================================================================
+!====TEMPORAL STABILITY OF POISEUILLE FLOW WITH PSEUDO-SPECTRAL DISCRETIZATION=======
+!====================================================================================
+
+!USE rbmat
+USE cbmat
+USE gnuplot
+USE rtchecks
+#link "-llapack"
+
+!=========================== Chebyshev polinomial and derivative ================
+
+
+SUBROUTINE TC(ARRAY(*,*,*) OF REAL T^; ARRAY(*) OF REAL yp)
+  T=0
+  LOOP FOR np=LO2(T) TO HI2(T)
+    LOOP FOR n=0 TO HI1(T)
+      x=yp(np)
+      T(n,np,0)=cos(n*acos(x))
+    REPEAT LOOP
+  REPEAT LOOP
+  
+  LOOP FOR np=LO2(T) TO HI2(T)
+    LOOP FOR m=1 TO HI3(T)
+      T(0,np,m)=0
+      T(1,np,m)=T(0,np,m-1)
+      T(2,np,m)=4*T(1,np,m-1)
+      LOOP FOR n=3 TO HI1(T)
+        T(n,np,m)=2*n*T(n-1,np,m-1)+(n/(n-2))*T(n-2,np,m)     ! Note that formula A44 in Schmid & Henningson contains a typo
+      REPEAT LOOP
+    REPEAT LOOP
+  REPEAT LOOP
+END TC  
+
+
+!==========================================================================
+!                 BASE FLOW IS A SIMPLE POISEUILLE FLOW 
+!==========================================================================
+
+REAL FUNCTION U(REAL yy)=1-yy^2
+REAL FUNCTION UY(REAL yy)=-2*yy      ! Derivative of base flow
+REAL FUNCTION UYY(REAL yy)=-2       ! Second derivative of base flow
+
+!=======================================================================
+!                         ORR-SOMMERFELD EQUATION
+!=======================================================================
+
+
+INTEGER N                               ! Number of Polynomials 
+ASK N   
+
+ARRAY(0..N) OF COMPLEX coeff=0          ! Expansion Coefficients 
+ARRAY(0..N,0..N) OF COMPLEX A=0,B=0
+ARRAY(0..N,1..N-1,0..4) OF REAL T=0
+
+!--------------------------------------------------------------------------
+! Construction of linear system using collocation
+
+ARRAY(1..N-1) OF REAL y=0  
+! We use the Gaus-Lobatto grid (extrema of Polinomial of order N-2)
+DO y(i+1)=COS(i*PI/(N-2)) FOR i=0 TO N-2
+
+TC(T,y)                                   ! Evaluate Polynomials at Gass Lobatto Points 
+
+! Build of linear System  N-3 Equations + 4 bc = N+1 Equations for N+1 Coefficcients 
+
+SUBROUTINE BuildMat(REAL alpha,Re)
+  WRITE "Assembling Matrices"
+  A=0
+  B=0
+  
+  DO B(0,ng)=T(ng,1,0) FOR ng=0 TO N
+  DO B(1,ng)=T(ng,1,1) FOR ng=0 TO N
+  LOOP FOR np=2 TO N-2  
+    LOOP FOR ng=0 TO N
+      A(np,ng)=I*alpha*U(y(np))*[T(ng,np,2)-alpha^2*T(ng,np,0)]-
+               I*alpha*UYY(y(np))*T(ng,np,0)-1/Re*[T(ng,np,4)-2*alpha^2*T(ng,np,2)+alpha^4*T(ng,np,0)]
+      B(np,ng)=I*[T(ng,np,2)-alpha^2*T(ng,np,0)]
+    REPEAT LOOP
+  REPEAT LOOP
+  ! apply b.c.
+ 
+  DO B(N-1,ng)=T(ng,N-1,0) FOR ng=0 TO N 
+  DO B(N-0,ng)=T(ng,N-1,1) FOR ng=0 TO N
+  WRITE "Done .."
+END BuildMat
+
+!======================================================================
+!                               MAIN
+!======================================================================
+REAL alpha=1.020
+!ASK alpha
+REAL Re=5772;            ! Reynolds number 
+ASK Re
+WRITE BY NAME Re
+WRITE BY NAME alpha
+WRITE
+
+BuildMat(alpha,Re)        ! Build Matrix
+
+ARRAY(0..N) OF COMPLEX ALPHA,BETA,autoval,c
+ARRAY(0..N,0..N) OF COMPLEX VL,VR
+INTEGER INFO,LWORK=4*(N+1)
+COMPLEX WORK(1..LWORK)
+REAL RWORK[1..8*(N+1)]
+JOBVR="V"
+JOBVL="V"
+
+
+! Call Lapack subroutine for eigenvalue search
+WRITE "==========================================="
+WRITE "Computing eigenvalues and Eigenvectors     "
+WRITE "==========================================="
+WRITE
+
+FORTRANCALL zggev[JOBVL,JOBVR,LENGTH(A),A,STRIDEOF(A),B,STRIDEOF(B),ALPHA,BETA,VL,STRIDEOF(VL),VR,STRIDEOF(VR),WORK,LWORK,RWORK,INFO]
+IF INFO#0 THEN ERROR "zggev error "INFO
+!Evaluate the eigenvalues 
+DO autoval(i)=ALPHA(i)/BETA(i) FOR ALL i
+DO c(i)=autoval(i)/alpha FOR ALL i
+WRITE "Done..."
+WRITE
+WRITE "==========================================="
+WRITE "Computed eigenvalues:                      "
+WRITE "==========================================="
+WRITE
+DO WRITE BY NAME c(k) FOR ALL k 
+
+VL=CONJG(VL)
+
+!========================ARRAY FOR PLOTTING EIGENFUCTIONS======================
+
+INTEGER nplot=500
+ARRAY(0..nplot) OF REAL yp=0
+ARRAY(0..N,0..nplot,0..4) OF REAL TP=0
+DO yp(i)=-1+2/nplot*i FOR ALL i
+TC(TP,yp)
+ARRAY[0..nplot,0..N] OF COMPLEX psi=0,psi1=0
+LOOP FOR np=0 TO nplot AND k=0 TO N
+  coeff=VL(k,*)
+  psi(np,k)=[SUM coeff(n)*TP(n,np,0) FOR n=0 TO N] 
+  psi1(np,k)=[SUM coeff(n)*TP(n,np,1) FOR n=0 TO N] 
+REPEAT LOOP
+
+SUBROUTINE PLOTVEC(REAL mx,my)
+  k=ARGMIN ABS[c(i)-(mx+I*my)] FOR i=0 TO N
+  WRITE
+  WRITE "Plotting eigenfunction ",k," ---> eigenvalue c="c(k)
+  WRITE
+  OPENGRAPH(1)
+  set grid
+  PLOT(ABS(psi1(n,k)),yp)
+END PLOTVEC
+
+!==========================================================================
+! Plot eigenvalues and egenvectors with gnuplot 
+
+REAL mx,my
+INTEGER mb
+
+WRITE "---------"
+WRITE
+WRITE "Select the eigenvalue with the mouse ..."
+MOUSEGRAPH
+LOOP loop
+  OPENGRAPH(0)
+  RANGE[0,1,-0.5,0.5]
+  set grid
+  plot c.REAL:c.IMAG with points 
+  POLLMOUSE(mx,my,mb)
+  IF mb=3 THEN EXIT loop
+  PLOTVEC(mx,my)
+!  ASK "Plot another eigenfunction? (y/n)  ":go
+!  IF NOT(go) THEN EXIT loop
+REPEAT loop
+CLOSEGRAPH
+
+!==============================================================================
+! Check Residual 
+
+WRITE "========================================"
+WRITE "           Residuals:                   "
+WRITE "========================================"
+WRITE
+BuildMat(alpha,Re)    
+LOOP FOR i=0 TO N
+  WRITE BY NAME i,c(i),,ABS(VR(i,*)*[A-(ALPHA(i)/BETA(i))*B])   ! Residual Adjoint Eiegenvectors 
+  WRITE BY NAME i,c(i),,ABS([A-(ALPHA(i)/BETA(i))*B]*VL(i,*))   ! Residual Direct  Eigenvectors 
+REPEAT LOOP

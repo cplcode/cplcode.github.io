@@ -149,13 +149,34 @@ Page: (graphics)SHOWGRAPH,  Next: <a href="#PLOT">PLOT</a>,  Prev: <a href="#LAB
 flushes the internal buffer, which could otherwise delay the graph from being shown on screen. 
 </div><div class=page id="PLOT">
 Page: (graphics)PLOT,  Next: <a href="#nographics">nographics</a>,  Prev: <a href="#SHOWGRAPH">SHOWGRAPH</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE PLOT(REAL FUNCTION(REAL) f; REAL x1,x2)</h3>
-<h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER) f; INTEGER x1..x2)</h3>
-<h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER) fy,fx; INTEGER x1..x2)</h3>
-<h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER) f; ARRAY(&lowast;) OF REAL vecx)</h3>
+<hr> <h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER n) fy; INTEGER x1..x2)</h3>
+ plot real function over an interval of integers
+
+<h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER n) fy,fx; INTEGER x1..x2)</h3>
+ plot first versus second function over an array of points
+
+<h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER n) fy; ARRAY(&lowast;) OF REAL vecx)</h3>
+ plot real function over an array of points
+
+<h3>SUBROUTINE PLOT(REAL FUNCTION(REAL x) f; REAL x1..x2)</h3>
+ plot real function over real interval
+
+<h3>SUBROUTINE PLOT(REAL FUNCTION(REAL x) f)</h3>
+ plot real function over preset interval
+
 <h3>SUBROUTINE PLOT(ARRAY(&lowast;) OF REAL vec)</h3>
+ plot real array versus its index
+
+<h3>SUBROUTINE PLOT(ARRAY(&lowast;) OF INTEGER vec)</h3>
+ plot integer array versus its index
+
 <h3>SUBROUTINE PLOT(ARRAY(&lowast;) OF REAL vecy,vecx)</h3>
-These subroutines have the purpose of plotting an entire function or data array in a predefined format with a single command. If a <a href="#RANGE">RANGE</a> was not specified between <a href="#OPENGRAPH">OPENGRAPH</a> and the current <a href="#PLOT">PLOT</a>, it is automatically determined. 
+ plot first versus second array
+
+<h3>SUBROUTINE PLOT(ARRAY(&lowast;) OF REAL vecy; ARRAY(&lowast;) OF INTEGER vecx)</h3>
+ plot first versus second array
+
+ These subroutines have the purpose of plotting a function or data array in a predefined format with a single command. If a <a href="#RANGE">RANGE</a> was not specified between <a href="#OPENGRAPH">OPENGRAPH</a> and the current <a href="#PLOT">PLOT</a>, it is automatically determined. As a more flexible alternative the <a href="#plot">plot</a> command is also available which more directly mimics, and offers all the options of, gnuplot's <q>plot</q>. 
 </div><div class=page id="nographics">
 Page: (graphics)nographics,  Next: <a href="#gnuplot">gnuplot</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a>
 <hr> <h2>nographics.cpl</h2>
@@ -189,7 +210,7 @@ Page: (graphics)SPLOT,  Next: <a href="#strlines">strlines</a>,  Prev: <a href="
 <h3>SUBROUTINE SPLOT(REAL FUNCTION(INTEGER x,y) vec; INTEGER xmin..xmax,ymin..ymax)</h3>
 <h3>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF REAL vec)</h3>
 <h3>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF INTEGER vec)</h3>
-<h3>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF REAL vec; ARRAY(&lowast;) OF REAL x,y)</h3>
+<h3>SUBROUTINE SPLOT(ARRAY(&lowast;) OF REAL x,y; ARRAY(&lowast;,&lowast;) OF REAL vec)</h3>
 
 </div><div class=page id="strlines">
 Page: (graphics)strlines,  Next: <a href="parallel.html#Top">(parallel)</a>,  Prev: <a href="#gnuplot">gnuplot</a>,  Up: <a href="#Top">Top</a>

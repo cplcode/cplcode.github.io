@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="en"><head><title>Numerical/OSE/OSE.cpl</title><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style></head><body><pre>
+<span class=comment>! OSE.cpl -- Copyright 2021 Flavio Giannetti</span>
+<span class=comment>! http://CPLcode.net/Applications/Numerical/OSE/</span>
+
+<span class=comment>!( Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. !)</span>
+
+<span class=comment>!====================================================================================</span>
+<span class=comment>!====TEMPORAL STABILITY OF POISEUILLE FLOW WITH PSEUDO-SPECTRAL DISCRETIZATION=======</span>
+<span class=comment>!====================================================================================</span>
+
+<span class=comment>!USE rbmat</span>
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
+<a href="cpl.html#USE">USE</a> <a href="cpl.html#rtchecks">rtchecks</a>
+<a href="cpl.html#C%20interface">#link</a> "-llapack"
+
+<span class=comment>!=========================== Chebyshev polinomial and derivative ================</span>
+
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> TC(<a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> T^; <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> yp)
+  T<a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> np<a href="cpl.html#Assignment">=</a><a href="cpl.html#LO">LO2</a>(T) <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI2</a>(T)
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> n<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI1</a>(T)
+      x<a href="cpl.html#Assignment">=</a>yp(np)
+      T(n,np,0)<a href="cpl.html#Assignment">=</a>cos(n&lowast;acos(x))
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> np<a href="cpl.html#Assignment">=</a><a href="cpl.html#LO">LO2</a>(T) <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI2</a>(T)
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> m<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI3</a>(T)
+      T(0,np,m)<a href="cpl.html#Assignment">=</a>0
+      T(1,np,m)<a href="cpl.html#Assignment">=</a>T(0,np,m-1)
+      T(2,np,m)<a href="cpl.html#Assignment">=</a>4&lowast;T(1,np,m-1)
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> n<a href="cpl.html#Assignment">=</a>3 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI1</a>(T)
+        T(n,np,m)<a href="cpl.html#Assignment">=</a>2&lowast;n&lowast;T(n-1,np,m-1)+(n/(n-2))&lowast;T(n-2,np,m)     <span class=comment>! Note that formula A44 in Schmid &amp; Henningson contains a typo</span>
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> TC  
+
+
+<span class=comment>!==========================================================================</span>
+<span class=comment>!                 BASE FLOW IS A SIMPLE POISEUILLE FLOW </span>
+<span class=comment>!==========================================================================</span>
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> U(<a href="cpl.html#REAL">REAL</a> yy)<a href="cpl.html#Assignment">=</a>1-yy^2
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> UY(<a href="cpl.html#REAL">REAL</a> yy)<a href="cpl.html#Assignment">=</a>-2&lowast;yy      <span class=comment>! Derivative of base flow</span>
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> UYY(<a href="cpl.html#REAL">REAL</a> yy)<a href="cpl.html#Assignment">=</a>-2       <span class=comment>! Second derivative of base flow</span>
+
+<span class=comment>!=======================================================================</span>
+<span class=comment>!                         ORR-SOMMERFELD EQUATION</span>
+<span class=comment>!=======================================================================</span>
+
+
+<a href="cpl.html#INTEGER">INTEGER</a> N                               <span class=comment>! Number of Polynomials </span>
+<a href="cpl.html#ASK">ASK</a> N   
+
+<a href="cpl.html#ARRAY">ARRAY</a>(0..N) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> coeff<a href="cpl.html#Assignment">=</a>0          <span class=comment>! Expansion Coefficients </span>
+<a href="cpl.html#ARRAY">ARRAY</a>(0..N,0..N) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A<a href="cpl.html#Assignment">=</a>0,B<a href="cpl.html#Assignment">=</a>0
+<a href="cpl.html#ARRAY">ARRAY</a>(0..N,1..N-1,0..4) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> T<a href="cpl.html#Assignment">=</a>0
+
+<span class=comment>!--------------------------------------------------------------------------</span>
+<span class=comment>! Construction of linear system using collocation</span>
+
+<a href="cpl.html#ARRAY">ARRAY</a>(1..N-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> y<a href="cpl.html#Assignment">=</a>0  
+<span class=comment>! We use the Gaus-Lobatto grid (extrema of Polinomial of order N-2)</span>
+<a href="cpl.html#DO">DO</a> y(i+1)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">COS</a>(i&lowast;PI/(N-2)) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N-2
+
+TC(T,y)                                   <span class=comment>! Evaluate Polynomials at Gass Lobatto Points </span>
+
+<span class=comment>! Build of linear System  N-3 Equations + 4 bc = N+1 Equations for N+1 Coefficcients </span>
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> BuildMat(<a href="cpl.html#REAL">REAL</a> alpha,Re)
+  <a href="cpl.html#WRITE">WRITE</a> "Assembling Matrices"
+  A<a href="cpl.html#Assignment">=</a>0
+  B<a href="cpl.html#Assignment">=</a>0
+  
+  <a href="cpl.html#DO">DO</a> B(0,ng)<a href="cpl.html#Assignment">=</a>T(ng,1,0) <a href="cpl.html#FOR">FOR</a> ng<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N
+  <a href="cpl.html#DO">DO</a> B(1,ng)<a href="cpl.html#Assignment">=</a>T(ng,1,1) <a href="cpl.html#FOR">FOR</a> ng<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> np<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#TO">TO</a> N-2  
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ng<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N
+      A(np,ng)<a href="cpl.html#Assignment">=</a>I&lowast;alpha&lowast;U(y(np))&lowast;[T(ng,np,2)-alpha^2&lowast;T(ng,np,0)]-
+               I&lowast;alpha&lowast;UYY(y(np))&lowast;T(ng,np,0)-1/Re&lowast;[T(ng,np,4)-2&lowast;alpha^2&lowast;T(ng,np,2)+alpha^4&lowast;T(ng,np,0)]
+      B(np,ng)<a href="cpl.html#Assignment">=</a>I&lowast;[T(ng,np,2)-alpha^2&lowast;T(ng,np,0)]
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <span class=comment>! apply b.c.</span>
+ 
+  <a href="cpl.html#DO">DO</a> B(N-1,ng)<a href="cpl.html#Assignment">=</a>T(ng,N-1,0) <a href="cpl.html#FOR">FOR</a> ng<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N 
+  <a href="cpl.html#DO">DO</a> B(N-0,ng)<a href="cpl.html#Assignment">=</a>T(ng,N-1,1) <a href="cpl.html#FOR">FOR</a> ng<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N
+  <a href="cpl.html#WRITE">WRITE</a> "Done .."
+<a href="cpl.html#END">END</a> BuildMat
+
+<span class=comment>!======================================================================</span>
+<span class=comment>!                               MAIN</span>
+<span class=comment>!======================================================================</span>
+<a href="cpl.html#REAL">REAL</a> alpha<a href="cpl.html#Assignment">=</a>1.020
+<span class=comment>!ASK alpha</span>
+<a href="cpl.html#REAL">REAL</a> Re<a href="cpl.html#Assignment">=</a>5772;            <span class=comment>! Reynolds number </span>
+<a href="cpl.html#ASK">ASK</a> Re
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> NAME Re
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> NAME alpha
+<a href="cpl.html#WRITE">WRITE</a>
+
+BuildMat(alpha,Re)        <span class=comment>! Build Matrix</span>
+
+<a href="cpl.html#ARRAY">ARRAY</a>(0..N) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> ALPHA,BETA,autoval,c
+<a href="cpl.html#ARRAY">ARRAY</a>(0..N,0..N) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> VL,VR
+<a href="cpl.html#INTEGER">INTEGER</a> INFO,LWORK<a href="cpl.html#Assignment">=</a>4&lowast;(N+1)
+<a href="complex.html#Top">COMPLEX</a> WORK(1..LWORK)
+<a href="cpl.html#REAL">REAL</a> RWORK[1..8&lowast;(N+1)]
+JOBVR<a href="cpl.html#Assignment">=</a>"V"
+JOBVL<a href="cpl.html#Assignment">=</a>"V"
+
+
+<span class=comment>! Call Lapack subroutine for eigenvalue search</span>
+<a href="cpl.html#WRITE">WRITE</a> "<a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Assignment">=</a>"
+<a href="cpl.html#WRITE">WRITE</a> "Computing eigenvalues and Eigenvectors     "
+<a href="cpl.html#WRITE">WRITE</a> "<a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Assignment">=</a>"
+<a href="cpl.html#WRITE">WRITE</a>
+
+<a href="cpl.html#FORTRAN%20interface">FORTRANCALL</a> zggev[JOBVL,JOBVR,<a href="cpl.html#LENGTH">LENGTH</a>(A),A,<a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>(A),B,<a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>(B),ALPHA,BETA,VL,<a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>(VL),VR,<a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>(VR),WORK,LWORK,RWORK,INFO]
+<a href="cpl.html#IF">IF</a> INFO#0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zggev error "INFO
+<span class=comment>!Evaluate the eigenvalues </span>
+<a href="cpl.html#DO">DO</a> autoval(i)<a href="cpl.html#Assignment">=</a>ALPHA(i)/BETA(i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+<a href="cpl.html#DO">DO</a> c(i)<a href="cpl.html#Assignment">=</a>autoval(i)/alpha <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+<a href="cpl.html#WRITE">WRITE</a> "Done..."
+<a href="cpl.html#WRITE">WRITE</a>
+<a href="cpl.html#WRITE">WRITE</a> "<a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Assignment">=</a>"
+<a href="cpl.html#WRITE">WRITE</a> "Computed eigenvalues:                      "
+<a href="cpl.html#WRITE">WRITE</a> "<a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Assignment">=</a>"
+<a href="cpl.html#WRITE">WRITE</a>
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> NAME c(k) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> k 
+
+VL<a href="cpl.html#Assignment">=</a>CONJG(VL)
+
+<span class=comment>!========================ARRAY FOR PLOTTING EIGENFUCTIONS======================</span>
+
+<a href="cpl.html#INTEGER">INTEGER</a> nplot<a href="cpl.html#Assignment">=</a>500
+<a href="cpl.html#ARRAY">ARRAY</a>(0..nplot) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> yp<a href="cpl.html#Assignment">=</a>0
+<a href="cpl.html#ARRAY">ARRAY</a>(0..N,0..nplot,0..4) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> TP<a href="cpl.html#Assignment">=</a>0
+<a href="cpl.html#DO">DO</a> yp(i)<a href="cpl.html#Assignment">=</a>-1+2/nplot&lowast;i <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+TC(TP,yp)
+<a href="cpl.html#ARRAY">ARRAY</a>[0..nplot,0..N] <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> psi<a href="cpl.html#Assignment">=</a>0,psi1<a href="cpl.html#Assignment">=</a>0
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> np<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nplot <a href="cpl.html#AND">AND</a> k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N
+  coeff<a href="cpl.html#Assignment">=</a>VL(k,&lowast;)
+  psi(np,k)<a href="cpl.html#Assignment">=</a>[<a href="cpl.html#Looping%20operator">SUM</a> coeff(n)&lowast;TP(n,np,0) <a href="cpl.html#FOR">FOR</a> n<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N] 
+  psi1(np,k)<a href="cpl.html#Assignment">=</a>[<a href="cpl.html#Looping%20operator">SUM</a> coeff(n)&lowast;TP(n,np,1) <a href="cpl.html#FOR">FOR</a> n<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N] 
+<a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> PLOTVEC(<a href="cpl.html#REAL">REAL</a> mx,my)
+  k<a href="cpl.html#Assignment">=</a>ARGMIN ABS[c(i)-(mx+I&lowast;my)] <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N
+  <a href="cpl.html#WRITE">WRITE</a>
+  <a href="cpl.html#WRITE">WRITE</a> "Plotting eigenfunction ",k," ---&gt; eigenvalue c<a href="cpl.html#Assignment">=</a>"c(k)
+  <a href="cpl.html#WRITE">WRITE</a>
+  <a href="graphics.html#OPENGRAPH">OPENGRAPH</a>(1)
+  <a href="graphics.html#gnuplot">set</a> grid
+  <a href="graphics.html#PLOT">PLOT</a>(ABS(psi1(n,k)),yp)
+<a href="cpl.html#END">END</a> PLOTVEC
+
+<span class=comment>!==========================================================================</span>
+<span class=comment>! Plot eigenvalues and egenvectors with gnuplot </span>
+
+<a href="cpl.html#REAL">REAL</a> mx,my
+<a href="cpl.html#INTEGER">INTEGER</a> mb
+
+<a href="cpl.html#WRITE">WRITE</a> "---------"
+<a href="cpl.html#WRITE">WRITE</a>
+<a href="cpl.html#WRITE">WRITE</a> "Select the eigenvalue with the mouse ..."
+MOUSEGRAPH
+<a href="cpl.html#LOOP">LOOP</a> loop
+  <a href="graphics.html#OPENGRAPH">OPENGRAPH</a>(0)
+  <a href="graphics.html#RANGE">RANGE</a>[0,1,-0.5,0.5]
+  <a href="graphics.html#gnuplot">set</a> grid
+  plot c.<a href="cpl.html#REAL">REAL</a>:c.IMAG with points 
+  POLLMOUSE(mx,my,mb)
+  <a href="cpl.html#IF">IF</a> mb<a href="cpl.html#Assignment">=</a>3 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> loop
+  PLOTVEC(mx,my)
+<span class=comment>!  ASK "Plot another eigenfunction? (y/n)  ":go</span>
+<span class=comment>!  IF NOT(go) THEN EXIT loop</span>
+<a href="cpl.html#LOOP">REPEAT</a> loop
+CLOSEGRAPH
+
+<span class=comment>!==============================================================================</span>
+<span class=comment>! Check Residual </span>
+
+<a href="cpl.html#WRITE">WRITE</a> "<a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a>"
+<a href="cpl.html#WRITE">WRITE</a> "           Residuals:                   "
+<a href="cpl.html#WRITE">WRITE</a> "<a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a><a href="cpl.html#Deferred%20assignment">==</a>"
+<a href="cpl.html#WRITE">WRITE</a>
+BuildMat(alpha,Re)    
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> NAME i,c(i),,ABS(VR(i,&lowast;)&lowast;[A-(ALPHA(i)/BETA(i))&lowast;B])   <span class=comment>! Residual Adjoint Eiegenvectors </span>
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> NAME i,c(i),,ABS([A-(ALPHA(i)/BETA(i))&lowast;B]&lowast;VL(i,&lowast;))   <span class=comment>! Residual Direct  Eigenvectors </span>
+<a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+</pre></body></html>
