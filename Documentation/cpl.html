@@ -97,8 +97,8 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#ABS">ABS</a>:</td><td>absolute value</td></tr>
 <tr><td><a href="#ALL">ALL</a>:</td><td>loop specifier</td></tr>
 <tr><td><a href="#AND">AND</a>:</td><td>boolean AND</td></tr>
-<tr><td><a href="#MAX:		argument%20for%20maximum,%20function%20or%20looping%20operator">ARGMAX:MAX:		argument for maximum, function or looping operator</a>:</td><td></td></tr>
-<tr><td><a href="#MIN:		argument%20for%20minimum,%20function%20or%20looping%20operator">ARGMIN:MIN:		argument for minimum, function or looping operator</a>:</td><td></td></tr>
+<tr><td><a href="#MAX">ARGMAX:MAX</a>:</td><td>argument for maximum, function or looping operator</td></tr>
+<tr><td><a href="#MIN">ARGMIN:MIN</a>:</td><td>argument for minimum, function or looping operator</td></tr>
 <tr><td><a href="#ARRAY">ARRAY</a>:</td><td>subscripted arrays</td></tr>
 <tr><td><a href="#ASK">ASK</a>:</td><td>console prompting and reading</td></tr>
 <tr><td><a href="#Builtin">ATAN:Builtin</a>:</td><td>arctangent</td></tr>
@@ -858,7 +858,7 @@ Page: (cpl)REAL,  Next: <a href="#SINGLE">SINGLE</a>,  Prev: <a href="#INTEGER">
 <hr> <h2>REAL</h2>
 Primitive type declarator for real variables, translated into C type <q>double</q>.
 
-See also <a href="#REAL%20operator">REAL operator</a>, <a href="#Builtin">REAL:Builtin</a>. 
+See also <a href="#REAL%20operator">REAL operator</a>, <a href="#Builtin">REAL:Builtin</a>, <a href="complex.html#Top">REAL:(complex)</a>. 
 </div><div class=page id="SINGLE">
 Page: (cpl)SINGLE,  Next: <a href="#TYPE">TYPE</a>,  Prev: <a href="#REAL">REAL</a>,  Up: <a href="#Declarations">Declarations</a>
 <hr> <h2>SINGLE</h2>
@@ -2076,7 +2076,7 @@ Page: (cpl)IN,  Next: <a href="#EXCEPT">EXCEPT</a>,  Prev: <a href="#TIMES">TIME
 <hr>
 	LOOP FOR &lt;element&gt; IN &lt;array&gt;
 
-Here &lt;element&gt; is not an INTEGER, but rather a POINTER to elements of the ARRAY &lt;array&gt;. A LOOP is performed in which &lt;element&gt; runs in succession through all the elements of the array. As a particular case, a constant array can be constructed from a set of elements of the same TYPE enclosed in brackets, as in
+Here &lt;element&gt; is not an INTEGER, but rather a POINTER to elements of the ARRAY &lt;array&gt;. A LOOP is performed in which &lt;element&gt; runs in succession through all the elements of the array (or its subset specified through <a href="#subarray">subarray</a> selection). As a particular case, a constant array can be constructed from a set of elements of the same TYPE enclosed in brackets, as in
 
 	LOOP FOR n IN (2,5,11) 
 </div><div class=page id="EXCEPT">

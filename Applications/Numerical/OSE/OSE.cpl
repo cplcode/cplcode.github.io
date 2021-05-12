@@ -109,7 +109,7 @@ END BuildMat
 !                               MAIN
 !======================================================================
 REAL alpha=1.020
-!ASK alpha
+ASK alpha
 REAL Re=5772;            ! Reynolds number 
 ASK Re
 WRITE BY NAME Re

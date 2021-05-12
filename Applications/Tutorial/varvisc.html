@@ -26,7 +26,7 @@ J<a href="cpl.html#Deferred%20assignment">==</a>mu&lowast;mod
 <span class=comment>! (of yet undeclared array lu) to be minimized.</span>
 <a href="cpl.html#LOOP">LOOP</a> iter <a href="cpl.html#FOR">FOR</a> n<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> 100000
   <a href="cpl.html#REAL">REAL</a> maxrsd<a href="cpl.html#Assignment">=</a>0
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> ix<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#AND">AND</a> iy<a href="cpl.html#Assignment">=</a>2-(ix+parity) <a href="cpl.html#MOD">MOD</a> 2 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#BY">BY</a> 2 <a href="cpl.html#EXCEPT">EXCEPT</a> f(ix,iy)<a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> ix<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#AND">AND</a> iy<a href="cpl.html#Assignment">=</a>2-(ix+parity) <a href="cpl.html#Integer%20operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#BY">BY</a> 2 <a href="cpl.html#EXCEPT">EXCEPT</a> f(ix,iy)<a href="cpl.html#Assignment">=</a>0
   <span class=comment>!(this is the red-black iteration. Notice use of EXCEPT to exclude the region where f=0!)</span>
     lu<a href="cpl.html#Assignment">=</a>^u(ix+(-1..1),iy+(-1..1))   <span class=comment>!( define lu as a subarray of u centered
       in ix,iy. ^ specifies that this is not a copy but a pointer !)</span>
@@ -36,11 +36,11 @@ J<a href="cpl.html#Deferred%20assignment">==</a>mu&lowast;mod
       mu0<a href="cpl.html#Assignment">=</a><a href="cpl.html#Looping%20operator">SUM</a> mu <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#AND">AND</a> j<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> 0   <span class=comment>!( viscosity in 0,0. Here too,
       mu is expanded at compile time and contains i,j implicitly !)</span>    
     lu(0,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-dx&lowast;dx/2/mu0&lowast;rsd   <span class=comment>! under-relaxed Gauss-Seidel update</span>
-    maxrsd<a href="cpl.html#Assignment">=</a><a href="cpl.html#Looping%20operator">MAX</a>(maxrsd,ABS(rsd))   <span class=comment>! residual for convergence verification</span>
+    maxrsd<a href="cpl.html#Assignment">=</a><a href="cpl.html#MAX">MAX</a>(maxrsd,<a href="cpl.html#ABS">ABS</a>(rsd))   <span class=comment>! residual for convergence verification</span>
   <a href="cpl.html#LOOP">REPEAT</a>
   fr<a href="cpl.html#Assignment">=</a>dx^2&lowast;(<a href="cpl.html#Looping%20operator">SUM</a> u(ix,iy) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy)
   px<a href="cpl.html#Assignment">=</a>px&lowast;(0.8+0.2/fr)   <span class=comment>! feed back upon px so as to normalize the mean velocity</span>
-  <a href="cpl.html#IF">IF</a> n <a href="cpl.html#MOD">MOD</a> 10 <a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> maxrsd; <a href="graphics.html#SPLOT">SPLOT</a> u
+  <a href="cpl.html#IF">IF</a> n <a href="cpl.html#Integer%20operator">MOD</a> 10 <a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> maxrsd; <a href="graphics.html#SPLOT">SPLOT</a> u
   <a href="cpl.html#IF">IF</a> maxrsd&lt;1E-2 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> iter   <span class=comment>! loops can be exited by name</span>
 <a href="cpl.html#LOOP">REPEAT</a> iter
 </pre></body></html>

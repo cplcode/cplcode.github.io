@@ -45,7 +45,7 @@
   <a href="cpl.html#FORTRAN%20interface">FORTRANCALL</a> dgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,A,<a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>(A),SDIM,WR,WI,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,<a href="cpl.html#POINTER">NULL</a>,info)
   <span class=comment>! interface to FORTRAN call, applied without any prototype checking.</span>
   <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: " info
-  <a href="cpl.html#RESULT">RESULT</a>(&lowast;+<a href="cpl.html#LO">LO</a>-1).<a href="cpl.html#REAL">REAL</a><a href="cpl.html#Assignment">=</a>WR; <a href="cpl.html#RESULT">RESULT</a>(&lowast;+<a href="cpl.html#LO">LO</a>-1).IMAG<a href="cpl.html#Assignment">=</a>WI
+  <a href="cpl.html#RESULT">RESULT</a>(&lowast;+<a href="cpl.html#LO">LO</a>-1).<a href="cpl.html#REAL">REAL</a><a href="cpl.html#Assignment">=</a>WR; <a href="cpl.html#RESULT">RESULT</a>(&lowast;+<a href="cpl.html#LO">LO</a>-1).<a href="complex.html#Top">IMAG</a><a href="cpl.html#Assignment">=</a>WI
 <a href="cpl.html#END">END</a> eigv   <span class=comment>! encapsulating dgees inside eigv turns on CPL prototype checking.</span>
 
 <span class=comment>! Example: uncomment the text below, compile this file and execute.</span>

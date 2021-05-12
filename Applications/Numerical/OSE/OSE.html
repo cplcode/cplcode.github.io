@@ -110,7 +110,7 @@ TC(T,y)                                   <span class=comment>! Evaluate Polynom
 <span class=comment>!                               MAIN</span>
 <span class=comment>!======================================================================</span>
 <a href="cpl.html#REAL">REAL</a> alpha<a href="cpl.html#Assignment">=</a>1.020
-<span class=comment>!ASK alpha</span>
+<a href="cpl.html#ASK">ASK</a> alpha
 <a href="cpl.html#REAL">REAL</a> Re<a href="cpl.html#Assignment">=</a>5772;            <span class=comment>! Reynolds number </span>
 <a href="cpl.html#ASK">ASK</a> Re
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> Re
@@ -147,7 +147,7 @@ JOBVL<a href="cpl.html#Assignment">=</a>"V"
 <a href="cpl.html#WRITE">WRITE</a>
 <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> c(k) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> k 
 
-VL<a href="cpl.html#Assignment">=</a>CONJG(VL)
+VL<a href="cpl.html#Assignment">=</a><a href="complex.html#Top">CONJG</a>(VL)
 
 <span class=comment>!========================ARRAY FOR PLOTTING EIGENFUCTIONS======================</span>
 
@@ -164,13 +164,13 @@ TC(TP,yp)
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> PLOTVEC(<a href="cpl.html#REAL">REAL</a> mx,my)
-  k<a href="cpl.html#Assignment">=</a>ARGMIN ABS[c(i)-(mx+I&lowast;my)] <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N
+  k<a href="cpl.html#Assignment">=</a><a href="cpl.html#MIN">ARGMIN</a> <a href="cpl.html#ABS">ABS</a>[c(i)-(mx+I&lowast;my)] <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N
   <a href="cpl.html#WRITE">WRITE</a>
   <a href="cpl.html#WRITE">WRITE</a> "Plotting eigenfunction ",k," ---&gt; eigenvalue c<a href="cpl.html#Assignment">=</a>"c(k)
   <a href="cpl.html#WRITE">WRITE</a>
   <a href="graphics.html#OPENGRAPH">OPENGRAPH</a>(1)
   <a href="graphics.html#gnuplot">set</a> grid
-  <a href="graphics.html#PLOT">PLOT</a>(ABS(psi1(n,k)),yp)
+  <a href="graphics.html#PLOT">PLOT</a>(<a href="cpl.html#ABS">ABS</a>(psi1(n,k)),yp)
 <a href="cpl.html#END">END</a> PLOTVEC
 
 <span class=comment>!==========================================================================</span>
@@ -187,7 +187,7 @@ TC(TP,yp)
   <a href="graphics.html#OPENGRAPH">OPENGRAPH</a>(0)
   <a href="graphics.html#RANGE">RANGE</a>[0,1,-0.5,0.5]
   <a href="graphics.html#gnuplot">set</a> grid
-  <a href="graphics.html#plot">plot</a> c.<a href="cpl.html#REAL">REAL</a>:c.IMAG with points 
+  <a href="graphics.html#plot">plot</a> c.<a href="cpl.html#REAL">REAL</a>:c.<a href="complex.html#Top">IMAG</a> with points 
   <a href="graphics.html#MOUSEGRAPH">POLLMOUSE</a>(mx,my,mb)
   <a href="cpl.html#IF">IF</a> mb<a href="cpl.html#Assignment">=</a>3 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> loop
   PLOTVEC(mx,my)
@@ -205,7 +205,7 @@ TC(TP,yp)
 <a href="cpl.html#WRITE">WRITE</a>
 BuildMat(alpha,Re)    
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> N
-  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> i,c(i),,ABS(VR(i,&lowast;)&lowast;[A-(ALPHA(i)/BETA(i))&lowast;B])   <span class=comment>! Residual Adjoint Eiegenvectors </span>
-  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> i,c(i),,ABS([A-(ALPHA(i)/BETA(i))&lowast;B]&lowast;VL(i,&lowast;))   <span class=comment>! Residual Direct  Eigenvectors </span>
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> i,c(i),,<a href="cpl.html#ABS">ABS</a>(VR(i,&lowast;)&lowast;[A-(ALPHA(i)/BETA(i))&lowast;B])   <span class=comment>! Residual Adjoint Eiegenvectors </span>
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> i,c(i),,<a href="cpl.html#ABS">ABS</a>([A-(ALPHA(i)/BETA(i))&lowast;B]&lowast;VL(i,&lowast;))   <span class=comment>! Residual Direct  Eigenvectors </span>
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 </pre></body></html>
