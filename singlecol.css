@@ -34,6 +34,7 @@
       code,pre {
         font-size: 1em;
         font-family:monospace,monospace;
+        overflow:auto;
       }
       iframe.news {
         position:absolute;
