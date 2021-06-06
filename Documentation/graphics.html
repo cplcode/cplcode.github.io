@@ -223,5 +223,9 @@ Page: (graphics)SPLOT,  Next: <a href="#strlines">strlines</a>,  Prev: <a href="
 </div><div class=page id="strlines">
 Page: (graphics)strlines,  Next: <a href="parallel.html#Top">(parallel)</a>,  Prev: <a href="#gnuplot">gnuplot</a>,  Up: <a href="#Top">Top</a>
 <hr> <h2>strlines.cpl</h2>
-This separate library contains specialized routines to draw random streamline segments out of an array of velocity values. 
+<h3>SUBROUTINE ShowStr[INTEGER n; ARRAY(&lowast;,&lowast;) OF REAL umat,vmat]</h3>
+draws n randomly positioned streamline segments out of u and v staggered velocity components.
+
+<h3>SUBROUTINE ShowStr[INTEGER n; ARRAY(&lowast;,&lowast;) OF REAL umat,vmat; REAL FUNCTION(INTEGER i) xr,yr]</h3>
+adds the specification of possibly non-uniform x and y coordinates. 
 </div></body></html>
