@@ -1,0 +1,1 @@
+Older versions that lack a LICENSE file are provided for documentation only and for the benefit of users who already used them before this website was set up. gcc default options have changed over time: older makecpl versions may require explicit compiler options or a contemporary gcc. The most recent version is always linked as unpack-cpl.sh

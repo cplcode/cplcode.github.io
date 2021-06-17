@@ -341,7 +341,7 @@ Is . in your PATH? Many Linux distributions do not by default have your current 
  3) use <a href="#icpl">icpl</a> as your shell (either <q>icpl Helloworld</q> or just <q>icpl</q> and then <q>Helloworld</q>). icpl will automatically compile and execute &lt;yourprogram&gt; if a more recent &lt;yourprogram&gt;.cpl file is found in the same directory, or interpret &lt;yourprogram&gt;.cpl if the .cpl suffix is included.
 
 <h3>My program crashes without any error messages</h3>
-Always put <q>USE rtchecks</q> as the first line of your main program during development. <a href="#rtchecks">rtchecks</a> transparently adds a number of runtime checks and error messages at the expense of execution speed. You will remove it once your program is debugged.
+Always put <q>USE rtchecks</q> as the first line of your main program file during development. <a href="#rtchecks">rtchecks</a> transparently adds a number of runtime checks and error messages at the expense of execution speed. You will remove it once your program is debugged.
 
 <h3>I want to access icpl from my Desktop</h3>
 Drag and drop the <q>interactive CPL</q> icon from wherever your <q>fri</q> directory is (typically, /usr/local/fri or $HOME/fri) to your Desktop.
@@ -350,7 +350,7 @@ Drag and drop the <q>interactive CPL</q> icon from wherever your <q>fri</q> dire
 Starting with version 2020-12-16, makecpl will automatically offer updates when they become available (see <a href="#automatic%20updates">automatic updates</a>). If you see an update on the website for which you did not get a reminder while running makecpl, please check that the <q>curl</q> command is installed (on Debian, <q>apt install curl</q>) and that you have write access to the parent of the fri/ directory. In case you would rather disable this feature, edit the makecpl script and turn ENABLE_UPDATES to <q>NO</q>.
 
 <h3>I want to use icpl and/or edit remotely</h3>
-icpl is perfectly compatible with ssh. Just ssh into your remote system where CPL is installed, and give the <q>icpl</q> command there. Non-Linux ssh clients are ok too. All special and arrow keys have alphabetic equivalents for the case they may be missing or hard to combine on your keyboard. In a pinch, you can log in from your smartphone with ConnectBot or similar.
+icpl is perfectly compatible with ssh. Just ssh into your remote system where CPL is installed, and give the <q>icpl</q> command there. Non-Linux ssh clients are ok too. All special and arrow keys have alphabetic equivalents for the case they may be missing or hard to combine on your keyboard. In a pinch, you can log in from your smartphone using ConnectBot or similar.
 
 <h3>On my system, <q>edit</q> pops up a different editor</h3>
 The <q>edit</q> command is used as an alias by more than one editor, including vim and other vi derivatives. You can always access the icpl editor by its unaliased name <q>icpl -edit</q> (with a space), or as <q>edit</q> within icpl, or you can modify your PATH so the <q>edit</q> link to icpl takes precedence.
@@ -2307,7 +2307,7 @@ The compilation and linking of a cpl <a href="#Source%20file">Source file</a> is
 
 is all that is needed to compile and link the source file &lt;programtobecompiled&gt;.cpl into the executable file &lt;programtobecompiled&gt;
 
-The task of makecpl is achieved by first running <a href="#cpl">cpl</a>, the CPL-to-C compiler, which compiles the given source and all other files USEd by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;programtobecompiled&gt;.d, and then running make (<a href="make.html#Top">(make)</a>) on this makefile. Any options possibly present on the makecpl command line are passed on through make to the system C compiler and linker, or to the command-line designated compiler.
+The task of makecpl is achieved by first running <a href="#cpl">cpl</a>, the CPL-to-C compiler, which compiles the given source and all other files USEd by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;programtobecompiled&gt;.d, and then running make (<a href="make.html#Top">(make)</a>) on this makefile. Any options possibly present on the makecpl command line are passed on through make to the designated C compiler and linker.
 
 The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line.
 
