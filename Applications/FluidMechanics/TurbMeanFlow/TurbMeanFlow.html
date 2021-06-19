@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="en"><head><title>FluidMechanics/TurbMeanFlow/TurbMeanFlow.cpl</title><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style></head><body><pre>
+<span class=comment>! Toolbox to build a composite turbulent velocity profile</span>
+<span class=comment>! out of interpolations of the universal law of the wall</span>
+<span class=comment>! and of the particular laws of the wake of various parallel geometries.</span>
+<span class=comment>! Ref.: P. Luchini, Eur. J. Mech. B/Fluids 71, 15-34 (2018).</span>
+<span class=comment>! The wake functions exhibit a linear leading term with coefficient 0, 1, 2</span>
+<span class=comment>! which equals the dimensionless pressure gradient,</span>
+<span class=comment>! in accordance with P. Luchini, Phys. Rev. Letters 118, 224501 (2017).</span>
+<span class=comment>!</span>
+<span class=comment>! TurbMeanFlow.cpl -- Copyright 2018-2021 Paolo Luchini</span>
+<span class=comment>! http://CPLcode.net/Applications/FluidMechanics/TurbMeanFlow/</span>
+
+<span class=comment>!( Permission is hereby granted, free of charge, to use and copy this software
+  provided the above comments and citations are kept intact. !)</span>
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> wallaw(<a href="cpl.html#REAL">REAL</a> z)<a href="cpl.html#Assignment">=</a> <a href="cpl.html#Builtin">LOG</a>(z+3.109)/0.392+4.48-(7.3736+(0.4930-0.02450&lowast;z)&lowast;z)/(1+(0.05736+0.01101&lowast;z)&lowast;z)&lowast;<a href="cpl.html#Builtin">EXP</a>(-0.03385&lowast;z) <span class=comment>! Law of the wall</span>
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> cwake(<a href="cpl.html#REAL">REAL</a> Z)<a href="cpl.html#Assignment">=</a>(Z-0.5)/(<a href="cpl.html#Builtin">EXP</a>(-25&lowast;(Z-0.5))-1) <span class=comment>! planar Couette wake function</span>
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> dwake(<a href="cpl.html#REAL">REAL</a> Z)<a href="cpl.html#Assignment">=</a>Z-0.57&lowast;Z^7 <span class=comment>! planar duct wake function</span>
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> pwake(<a href="cpl.html#REAL">REAL</a> Z)<a href="cpl.html#Assignment">=</a>2&lowast;Z-0.67&lowast;Z^7 <span class=comment>! cylindrical pipe wake function</span>
+
+<span class=comment>!(
+  <span class=comment>! Example: plot pipe velocity profile in plus units at Retau=1000</span>
+  USE gnuplot
+  Retau=1000
+  plot [0:Retau] wallaw(x)+pwake(x/Retau) with lines
+!)</span>
+</pre></body></html>
