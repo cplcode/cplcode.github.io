@@ -76,7 +76,7 @@ BoostConvWS<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUC
     <span class=comment>! Update one row and one column only of dd with the new scalar products,</span>
     <span class=comment>! the other basis vectors being unchanged</span>
     <a href="cpl.html#DO">DO</a> c(j)<a href="cpl.html#Assignment">=</a>in(j)|r <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <span class=comment>! Project the current residual onto the non-</span>
-    c<a href="cpl.html#Assignment">=</a>PLU(dd)\<a href="cpl.html#Assignment">~</a> <span class=comment>! orthogonal "in" basis by solving an NxN linear system</span>
+    c<a href="cpl.html#Assignment">=</a>PLU(dd)\~ <span class=comment>! orthogonal "in" basis by solving an NxN linear system</span>
     <a href="cpl.html#IF">IF</a> rot<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
       #ifdef DiscardOldest
 rot<a href="cpl.html#Assignment">=</a>N-1

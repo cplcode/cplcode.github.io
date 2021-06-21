@@ -27,7 +27,7 @@ senderhn<a href="cpl.html#Assignment">=</a>gethostbyaddr(addr,<a href="cpl.html#
 <a href="cpl.html#POINTER">POINTER</a> INTO email i<a href="cpl.html#Assignment">=</a>0
 <a href="cpl.html#DO">DO</a> u<a href="cpl.html#Assignment">=</a>uriget(); email(i)<a href="cpl.html#Assignment">=</a>u; <a href="cpl.html#INC">INC</a> i; <a href="cpl.html#UNTIL">UNTIL</a> i&gt;email.<a href="cpl.html#HI">HI</a> <a href="cpl.html#OR">OR</a> u<a href="cpl.html#Assignment">=</a>\n <a href="cpl.html#OR">OR</a> u&lt;0
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> stderr email
-<a href="cpl.html#IF">IF</a> strstr(email(0..5),"email<a href="cpl.html#Assignment">=</a>")<a href="cpl.html#Assignment">=</a>email(0) <a href="cpl.html#IF">THEN</a>
+<a href="cpl.html#IF">IF</a> strstr(email(0..5),"email=")<a href="cpl.html#Assignment">=</a>email(0) <a href="cpl.html#IF">THEN</a>
   log<a href="cpl.html#Assignment">=</a>popen("/usr/bin/tee -a "LOGFILE" | /usr/bin/mail -s 'Catalogo' "email(6..<a href="cpl.html#HI">HI</a>),"w")
 <a href="cpl.html#ELSE">ELSE</a> log<a href="cpl.html#Assignment">=</a>fopen(LOGFILE,"a"); <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> log \n\n email
 
@@ -49,5 +49,4 @@ Content-type: text/html
 &lt;H2&gt;Si ringrazia per l'aiuto&lt;BR&gt;
 e si provveder&amp;agrave al pi&amp;uacute presto possibile
 &lt;H2&gt;&lt;A href<a href="cpl.html#Assignment">=</a>"javascript:history.go(-2)"&gt;OK&lt;/A&gt;&lt;/CENTER&gt;
-REPLY
-</pre></body></html>
+REPLY</pre></body></html>

@@ -238,7 +238,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
                 <span class=comment>!              LOOP WHILE alpha(sw(0))#0 AND sw&gt;=PatternString: DEC sw</span>
                 <span class=comment>!              fw(0)=0; fws(0..HI)=' &lt;A HREF="?q=' PatternString(0..sw-PatternString) wordbuf PatternString(word-PatternString..1024) '"&gt;' wordbuf '&lt;/A&gt;(' (BINARY INTEGER AT locchr) RSHIFTED 8 ')'</span>
                 <span class=comment>! nota: richiede conversione di "" in &amp;quot</span>
-                fw(0)<a href="cpl.html#Assignment">=</a>0; fws(0..<a href="cpl.html#HI">HI</a>)<a href="cpl.html#Assignment">=</a>' &lt;A HREF<a href="cpl.html#Assignment">=</a>"?q<a href="cpl.html#Assignment">=</a>' wordbuf '"&gt;' wordbuf '&lt;/A&gt;(' (<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT locchr) <a href="cpl.html#Bitwise">RSHIFTED</a> 8 ')'
+                fw(0)<a href="cpl.html#Assignment">=</a>0; fws(0..<a href="cpl.html#HI">HI</a>)<a href="cpl.html#Assignment">=</a>' &lt;A HREF="?q=' wordbuf '"&gt;' wordbuf '&lt;/A&gt;(' (<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT locchr) <a href="cpl.html#Bitwise">RSHIFTED</a> 8 ')'
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
               <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> fws(0)<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> fws&gt;fws.<a href="cpl.html#HI">HI</a>-5: <a href="cpl.html#INC">INC</a> fws; <a href="cpl.html#LOOP">REPEAT</a>
             <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
