@@ -13,15 +13,36 @@
 <span class=comment>!( Permission is hereby granted, free of charge, to use and copy this software
   provided the above comments and citations are kept intact. !)</span>
 
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> wallaw(<a href="cpl.html#REAL">REAL</a> z)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">LOG</a>(z+3.109)/0.392+4.48-(7.3736+(0.4930-0.02450&lowast;z)&lowast;z)/(1+(0.05736+0.01101&lowast;z)&lowast;z)&lowast;<a href="cpl.html#Builtin">EXP</a>(-0.03385&lowast;z) <span class=comment>! Law of the wall</span>
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> wall(<a href="cpl.html#REAL">REAL</a> z)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">LOG</a>(z+3.109)/0.392+4.48-(7.3736+(0.4930-0.02450&lowast;z)&lowast;z)/(1+(0.05736+0.01101&lowast;z)&lowast;z)&lowast;<a href="cpl.html#Builtin">EXP</a>(-0.03385&lowast;z) <span class=comment>! Law of the wall</span>
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> cwake(<a href="cpl.html#REAL">REAL</a> Z)<a href="cpl.html#Assignment">=</a>(Z-0.5)/(<a href="cpl.html#Builtin">EXP</a>(-25&lowast;(Z-0.5))-1) <span class=comment>! planar Couette wake function</span>
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> dwake(<a href="cpl.html#REAL">REAL</a> Z)<a href="cpl.html#Assignment">=</a>Z-0.57&lowast;Z^7 <span class=comment>! planar duct wake function</span>
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> pwake(<a href="cpl.html#REAL">REAL</a> Z)<a href="cpl.html#Assignment">=</a>2&lowast;Z-0.67&lowast;Z^7 <span class=comment>! cylindrical pipe wake function</span>
 
+<span class=comment>! Friction laws.</span>
+<span class=comment>! 2018 coefficients from Sec. 6 of P. Luchini, Eur. J. Mech. B/Fluids 71, 15-34</span>
+<span class=comment>! with Colebrook (1939) correction for relative roughness=k/D</span>
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> planeductfriction(<a href="cpl.html#REAL">REAL</a> Retau)<a href="cpl.html#Assignment">=</a>8/[2.55&lowast;<a href="cpl.html#Builtin">LOG</a>(Retau)+2.36]^2
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> pipefriction(<a href="cpl.html#REAL">REAL</a> Retau)<a href="cpl.html#Assignment">=</a>8/[2.55&lowast;<a href="cpl.html#Builtin">LOG</a>(Retau)+1.3]^2
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Prandtlpipefriction(<a href="cpl.html#REAL">REAL</a> Retau)<a href="cpl.html#Assignment">=</a>{2/<a href="cpl.html#Builtin">LOG</a>(10)&lowast;<a href="cpl.html#Builtin">LOG</a>[SQRT(32)&lowast;Retau]-0.8}^-2
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Moody[<a href="cpl.html#REAL">REAL</a> Re,roughness; <a href="cpl.html#OPTIONAL">OPTIONAL</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a>(<a href="cpl.html#REAL">REAL</a>) friction<a href="cpl.html#Assignment">=</a>pipefriction]
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>0.02
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>friction{1/[SQRT(32/<a href="cpl.html#RESULT">RESULT</a>)/Re+roughness/1.64]} <a href="cpl.html#FOR">FOR</a> 5 <a href="cpl.html#TIMES">TIMES</a>
+<a href="cpl.html#END">END</a> Moody
+
 <span class=comment>!(
   <span class=comment>! Example: plot pipe velocity profile in plus units at Retau=1000</span>
   USE gnuplot
+  USE TurbMeanFlow
   Retau=1000
-  plot [0:Retau] wallaw(x)+pwake(x/Retau) with lines
-!)</span>
+  plot [0:Retau] wall(x)+pwake(x/Retau) with lines
+  !)</span>
+
+<span class=comment>!(
+  <span class=comment>! Example: draw Moody's chart</span>
+  USE gnuplot
+  USE TurbMeanFlow
+  set logscale xy
+  set grid
+  plot [1000:1E6] Moody(logx,0) w l, Moody(logx,0.001) w l, Moody(logx,0.002) w l, Moody(logx,0.005) w l, Moody(logx,0.01) w l, Moody(logx,0.02) w l, Moody(logx,0.05) w l                                                                      
+  !)</span>
 </pre></body></html>

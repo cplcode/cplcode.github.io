@@ -1,2 +1,2 @@
-2021-06-21
-Minor corrections to plot instruction.
+2021-07-10
+Extension of plot instruction and other minor corrections.

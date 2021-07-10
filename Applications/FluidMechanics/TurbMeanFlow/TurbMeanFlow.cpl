@@ -12,14 +12,35 @@
 !( Permission is hereby granted, free of charge, to use and copy this software
   provided the above comments and citations are kept intact. !)
 
-REAL FUNCTION wallaw(REAL z)=LOG(z+3.109)/0.392+4.48-(7.3736+(0.4930-0.02450*z)*z)/(1+(0.05736+0.01101*z)*z)*EXP(-0.03385*z) ! Law of the wall
+REAL FUNCTION wall(REAL z)=LOG(z+3.109)/0.392+4.48-(7.3736+(0.4930-0.02450*z)*z)/(1+(0.05736+0.01101*z)*z)*EXP(-0.03385*z) ! Law of the wall
 REAL FUNCTION cwake(REAL Z)=(Z-0.5)/(EXP(-25*(Z-0.5))-1) ! planar Couette wake function
 REAL FUNCTION dwake(REAL Z)=Z-0.57*Z^7 ! planar duct wake function
 REAL FUNCTION pwake(REAL Z)=2*Z-0.67*Z^7 ! cylindrical pipe wake function
 
+! Friction laws.
+! 2018 coefficients from Sec. 6 of P. Luchini, Eur. J. Mech. B/Fluids 71, 15-34
+! with Colebrook (1939) correction for relative roughness=k/D
+REAL FUNCTION planeductfriction(REAL Retau)=8/[2.55*LOG(Retau)+2.36]^2
+REAL FUNCTION pipefriction(REAL Retau)=8/[2.55*LOG(Retau)+1.3]^2
+REAL FUNCTION Prandtlpipefriction(REAL Retau)={2/LOG(10)*LOG[SQRT(32)*Retau]-0.8}^-2
+REAL FUNCTION Moody[REAL Re,roughness; OPTIONAL REAL FUNCTION(REAL) friction=pipefriction]
+  RESULT=0.02
+  DO RESULT=friction{1/[SQRT(32/RESULT)/Re+roughness/1.64]} FOR 5 TIMES
+END Moody
+
 !(
   ! Example: plot pipe velocity profile in plus units at Retau=1000
   USE gnuplot
+  USE TurbMeanFlow
   Retau=1000
-  plot [0:Retau] wallaw(x)+pwake(x/Retau) with lines
-!)
+  plot [0:Retau] wall(x)+pwake(x/Retau) with lines
+  !)
+
+!(
+  ! Example: draw Moody's chart
+  USE gnuplot
+  USE TurbMeanFlow
+  set logscale xy
+  set grid
+  plot [1000:1E6] Moody(logx,0) w l, Moody(logx,0.001) w l, Moody(logx,0.002) w l, Moody(logx,0.005) w l, Moody(logx,0.01) w l, Moody(logx,0.02) w l, Moody(logx,0.05) w l                                                                      
+  !)

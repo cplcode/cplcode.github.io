@@ -64,7 +64,7 @@
 
 </div><div class=page id="Top">
 Page: (cpl)Top,  Next: <a href="#Keyword%20Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a>
-<hr>Documentation for the CPL programming language and its compiler, June 2021. Printable and citable version can be found at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
+<hr>Documentation for the CPL programming language and its compiler, July 2021. Printable and citable version can be found at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
 
   CPL = Concealed Pointer Lookup
   CPL = Custom Parameter Lists
@@ -1030,7 +1030,7 @@ Where appropriate, a single-character literal is implicitly converted to a CHAR 
 Standard C functions returning a char&lowast; (<a href="/usr/share/info/libc.html#%20String%20and%20Array%20Utilities">(/usr/share/info/libc) String and
 Array Utilities</a>) are also interpreted as generating a STRING value. Just as for all <a href="#C%20interface">C interface</a> calls, it is the programmer's responsibility to ensure that such C library functions are used consistently and to free any possible malloc-ated space where appropriate.
 
-As an experimental feature, and an exception to the general rule for ARRAY(&lowast;), STRING VARIABLEs may also be declared and assigned a value.
+As an experimental feature, and an exception to the general rule for ARRAY(&lowast;), STRING VARIABLEs may also be declared and assigned a value. In the present implementation STRINGs embedded as STRUCTURE fields or ARRAY elements may generate unwanted effects when the container is assigned as a whole.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>Predefined strings are:</th></tr>
