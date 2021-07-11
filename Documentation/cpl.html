@@ -349,6 +349,9 @@ Drag and drop the <q>interactive CPL</q> icon from wherever your <q>fri</q> dire
 <h3>I want to receive automatic updates</h3>
 Starting with version 2020-12-16, makecpl will automatically offer updates when they become available (see <a href="#automatic%20updates">automatic updates</a>). If you see an update on the website for which you did not get a reminder while running makecpl, please check that the <q>curl</q> command is installed (on Debian, <q>apt install curl</q>) and that you have write access to the parent of the fri/ directory. In case you would rather disable this feature, edit the makecpl script and turn ENABLE_UPDATES to <q>NO</q>.
 
+<h3>I want to go back to a previous CPL version</h3>
+During an update your present fri/ directory is copied to fri.bak/ . You can always run your previous makecpl version by its full pathname (e.g., ~/fri.bak/makecpl). You can also install historical CPL versions from the  <a href="https://CPLcode.net/version-archive">CPLcode.net/version-archive</a> . After you do so the just installed (historical) version will be in fri/, whereas your current version will be in fri.bak/ ; if this is confusing, you may want to rename (mv) fri/ or fri.bak/ or both to something else (say, their version date). Notice also that icpl and cpl are scripts executed by fri; if you want to run a non-default icpl located in directory dir/, you must do so as <q>dir/fri dir/cpl dir/icpl</q>.
+
 <h3>I want to use icpl and/or edit remotely</h3>
 icpl is perfectly compatible with ssh. Just ssh into your remote system where CPL is installed, and give the <q>icpl</q> command there. Non-Linux ssh clients are ok too. All special and arrow keys have alphabetic equivalents for the case they may be missing or hard to combine on your keyboard. In a pinch, you can log in from your smartphone using ConnectBot or similar.
 
