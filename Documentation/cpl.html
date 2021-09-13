@@ -2306,7 +2306,7 @@ Page: (cpl)makecpl,  Next: <a href="#cpl">cpl</a>,  Prev: <a href="#Control">Con
 <hr> <h1>Compilation tools and their usage</h1>
 The compilation and linking of a cpl <a href="#Source%20file">Source file</a> is managed by a shell script named makecpl. For most purposes the single command
 
-	makecpl [-a] [-r] [-o objdir] &lt;programtobecompiled&gt;[.cpl] [parameters]
+	makecpl [-a] [-o objdir] [-r] &lt;programtobecompiled&gt;[.cpl] [parameters]
 
 is all that is needed to compile and link the source file &lt;programtobecompiled&gt;.cpl into the executable file &lt;programtobecompiled&gt; .
 
@@ -2318,13 +2318,13 @@ The default C compiler is make's default; an alternate C compiler can be specifi
 
 The -D and -I options are interpreted by cpl, in addition to being passed to the C compiler, and provide pre#defined constants and include directories to both.
 
-C source and object files are kept in a local subdirectory usually named .cpl (and therefore hidden from listing under unix convention). An alternate name can be specified in the environment variable OBJDIR or on the command line.
+C source and object files are kept in a local subdirectory usually named .cpl (and therefore hidden from listing under unix convention). An alternate name can be specified through the environment variable OBJDIR or the -o option.
 
 Only those source files whose corresponding object file does not exist or is older than the source are actually recompiled. In exceptional cases where a full re-compilation may be necessary, the command
 
 	makecpl -a &lt;programtobecompiled&gt;
 
-achieves this by deleting the object files first. remakecpl is another alias for makecpl -a.
+achieves this by deleting the object files first. remakecpl is an alias for makecpl -a.
 
 If your system includes the curl command (on Debian you can install it as <q>apt
 install curl</q>), makecpl provides the functionality to poll the CPLcode.net website in the background. See <a href="#automatic%20updates">automatic updates</a>.
