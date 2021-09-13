@@ -353,7 +353,7 @@ Starting with version 2020-12-16, makecpl will automatically offer updates when 
 During an update your present fri/ directory is copied to fri.bak/ . You can always run your previous makecpl version by its full pathname (e.g., ~/fri.bak/makecpl). You can also install historical CPL versions from the  <a href="https://CPLcode.net/version-archive">CPLcode.net/version-archive</a> . After you do so the just installed (historical) version will be in fri/, whereas your current version will be in fri.bak/ ; if this is confusing, or if you need more than two simultaneous versions, you may want to rename (mv) fri/ or fri.bak/ or both to something else (say, their version date). Notice also that icpl and cpl are scripts executed by fri; if you want to run a non-default icpl located in directory dir/, you must do so as <q>dir/fri dir/cpl dir/icpl</q>.
 
 <h3>I want to use icpl and/or edit remotely</h3>
-icpl is perfectly compatible with ssh. Just ssh into your remote system where CPL is installed, and give the <q>icpl</q> command there. Non-Linux ssh clients are ok too. All special and arrow keys have alphabetic equivalents for the case they may be missing or hard to combine on your keyboard. In a pinch, you can log in from your smartphone using ConnectBot or similar.
+icpl is perfectly compatible with ssh. Just ssh into your remote system where CPL is installed, and give the <q>icpl</q> command there. Non-Linux ssh clients are ok too. All special and arrow keys have alphabetic equivalents for the case they may be missing or hard to combine on your keyboard. In a pinch, you can even log in from your smartphone using ConnectBot or similar.
 
 <h3>On my system, <q>edit</q> pops up a different editor</h3>
 The <q>edit</q> command is used as an alias by more than one editor, including vim and other vi derivatives. You can always access the icpl editor by its unaliased name <q>icpl -edit</q> (with a space), or as <q>edit</q> within icpl, or you can modify your PATH so the <q>edit</q> link to icpl takes precedence.
@@ -2306,11 +2306,13 @@ Page: (cpl)makecpl,  Next: <a href="#cpl">cpl</a>,  Prev: <a href="#Control">Con
 <hr> <h1>Compilation tools and their usage</h1>
 The compilation and linking of a cpl <a href="#Source%20file">Source file</a> is managed by a shell script named makecpl. For most purposes the single command
 
-	makecpl [-a] &lt;programtobecompiled&gt;[.cpl] [local dir] [options]
+	makecpl [-a] [-r] &lt;programtobecompiled&gt;[.cpl] [local dir] [options]
 
 is all that is needed to compile and link the source file &lt;programtobecompiled&gt;.cpl into the executable file &lt;programtobecompiled&gt;
 
-The task of makecpl is achieved by first running <a href="#cpl">cpl</a>, the CPL-to-C compiler, which compiles the given source and all other files USEd by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;programtobecompiled&gt;.d, and then running make (<a href="make.html#Top">(make)</a>) on this makefile. Any options possibly present on the makecpl command line are passed on through make to the designated C compiler and linker.
+If makecpl is given the -r option the program is run immediately after being compiled, or just run if an executable exists that is more recent than source code and its dependencies. Making use of the unix interpreter directive, a CPL program that contains #!/full/path/to/makecpl -r as its first line is directly executable and enjoys just-in-time compilation.
+
+The task of makecpl is achieved by first running <a href="#cpl">cpl</a>, the CPL-to-C compiler, which compiles the given source and all other files USEd by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;programtobecompiled&gt;.d, and then running make (<a href="make.html#Top">(make)</a>) on this makefile. Any additional options possibly present on the makecpl command line are passed on through make to the designated C compiler and linker.
 
 The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line.
 

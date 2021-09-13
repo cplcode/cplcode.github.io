@@ -1,2 +1,2 @@
-2021-07-15
-Extension of plot instruction and other minor corrections.
+2021-09-13
+-r (run) option added to makecpl provides just-in-time compilation.
