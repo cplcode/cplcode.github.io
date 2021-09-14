@@ -77,13 +77,13 @@ Page: (fri)Top, Next: <a href="#Opcodes">Opcodes</a>, Up: <a href="cpl.html#make
 </div><div class=page id="FRI%20architecture">
 Page: (fri)FRI architecture, Next: <a href="#Opcodes">Opcodes</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>FRI architecture</h3>
-FRI is a declarative language. The FRI virtual machine's workspace is composed of three items: an input character stream, an output character stream and a dictionary of rules. A rule is a sequence of bytes that can represent characters to be matched against the input stream, characters to be written to the output stream, or opcodes specifying general actions that can modify either stream, or the dictionary itself, or initiate a new rule. A rule <q>matches</q> if it runs to its end, or <q>fails</q> if an input character or an inner nested rule does not match.
+FRI is a declarative language. Much like a Turing machine, the FRI virtual machine's workspace is composed of three items: an input character stream, an output character stream and a dictionary of rules. A rule is a sequence of bytecodes that can represent characters to be matched against the input stream, characters to be written to the output stream, or opcodes specifying general actions that can modify either stream, or the dictionary itself, or initiate a new rule. A rule <q>matches</q> if it runs to its end, or <q>fails</q> if an input character or an inner nested rule does not match.
 
-FRI's alphabet is restricted to 7-bit ascii, and bytes with the 8th bit set, when they appear in the dictionary amidst the characters to be recognized, are given the meaning of opcodes specifying a variety of operations.
+FRI's alphabet is restricted to 7-bit ascii, and bytes with the 8th bit set, when they appear in a rule amidst the characters to be recognized, are given the meaning of opcodes specifying a variety of operations.
 
-The input stream is generally attached to an input file to be manipulated, but can also be modified by explicit instructions (opcodes). The output stream is not automatically attached to a file and must be written out explicitly when desired. It is internally subdivided into a stack of strings which can be individually recalled. Every time a rule matches, all but its top output strings are forgotten while its top string is returned to the calling rule (either appended to its output or prepended to its input).
+The input stream is generally attached to an input file to be manipulated, but can also be modified by explicit instructions (opcodes). The output stream is not automatically attached to a file and must be written out explicitly when desired. It is internally subdivided into a stack of strings which can be individually recalled. Every time a rule matches, all but its top output string are forgotten while its top string is returned to the calling rule (either appended to its output or prepended to its input). When a rule fails, all of its strings are erased.
 
-The dictionary of rules is alphabetically ordered and, with one exception, independent of the order in which the rules are entered. Each new rule inserted in the dictionary gets assigned to a progressively numbered <q>scope</q>. A new scope can be opened at any time by an explicit command and will contain subsequently generated rules, all of which disappear when the scope is eventually closed. A certain number of opcodes with no action are reserved as <q>strands</q>, markers of rules with related meaning. Each rule must start with a strand opcode, but strand opcodes can also appear elsewhere with a userassigned meaning. If a rule, or more accurately a strand of alternate rules, is viewed as a sort of subroutine, this subroutine can be <q>called</q> by inserting its strand byte in the input stream.
+The dictionary of rules is alphabetically ordered and, with one exception, independent of the order in which the rules are entered. Each new rule inserted in the dictionary gets assigned to a numbered <q>scope</q>. A new scope can be opened at any time by an explicit command and will contain subsequently generated rules, all of which disappear when the scope is eventually closed. A certain number of opcodes with no action are reserved as <q>strands</q>, markers of rules with related meaning. Each rule must start with a strand opcode, but strand opcodes can also appear elsewhere with a user assigned meaning. If a rule, or more accurately a strand of alternate rules, is viewed as a sort of subroutine, this subroutine can be <q>called</q> by inserting its strand byte in the input stream.
 
 When one rule fails, execution restarts with the next one in the dictionary. If two rules have a common root, only the part of the rule that failed undergoes a new attempt; side effects of the part that matched will not be repeated more than once. Execution terminates, as a match, when any one rule's byte sequence attains its end (or an explicit end opcode) or, as a failure, when the dictionary runs out of rules. For debugging purposes, it can also be terminated in an error message by suitable opcodes. 
 </div><div class=page id="Opcodes">
@@ -107,7 +107,7 @@ Symbol	pronounced  action
 		the input to the output stream.
  &lowast;   copy up to	copies zero or more characters or {}-enclosed blocks from
 		the input to the output stream until the following character
-		(or a cork) is encountered. The matching character is popped
+		(or a cork) is encountered. The terminating character is popped
 		from the input stream but not written out.
 
 Character writing
@@ -131,10 +131,11 @@ Character writing
 		a negative number, denoting a stack count backwards from the
 		first string of the present rule, or a symbolic label assigned
 		by the @ pseudocode.
- @	label	an assembler pseudo-opcode that assigns the following alpha		numeric string as a label to the current position in the output
+ @	label	an assembler pseudo-opcode that assigns the following
+		alphanumeric string as a label to the current position in the output
 		stack, so it can later be recalled (within the same rule only)
 		by name.
- ]	end	exits output mode or the current control sequence or the
+ ]	end	exits output mode, or the current control sequence, or the
 		current rule.
  ]=	cork	exits output mode and adjoins the top two output strings,
 		decreasing the stack count by one.
@@ -163,20 +164,20 @@ Flow control
 		times, reporting success to the containing rule.
  [	repeat	repeats the enclosed subrule (up to a matching <q>]</q>) 0 or more
 		times until it fails, reporting success to the containing rule
-		and adjoining each output to the output stream.
+		and appending each output to the top output string.
  r[	recur	repeats the enclosed subrule (up to a matching <q>]</q>) 0 or more
 		times until it fails, reporting success to the containing rule
-		and replacing the output stream by each output.
- ifnot[	if not	succeeds if the enclosed rule fails, and fails if the enclosed
+		and replacing the top output string by each output.
+ ifnot[	if not	succeeds if the enclosed subrule fails, and fails if the enclosed
 		subrule (up to a closing <q>]</q>) matches, discarding its output.
- until[	until	succeeds if the enclosed rule fails and fails if the enclosed
-		subrule (up to a closing <q>]</q>) matches, saving its output in the
+ unless[	unless	succeeds if the enclosed subrule fails and fails if the enclosed
+		subrule (up to a closing <q>]</q>) matches, appending its output to the
 		output stream.
  #	number	when used in input mode, recalls a string from the output stack
 		(by the same numbering scheme as in output mode), and executes
-		it as a string of bytecodes, as if they appeared at the current
-		position in the current	rule.
- cut	cut	like the Prolog ``cut'', asserts that failure beyond its
+		it as a string of bytecodes, as if they were inserted in the current rule
+		 at the current position.
+ cut	cut	like the Prolog <q>cut</q>, asserts that failure beyond its
 		position is not intended to occur. If the present rule fails
 		after a cut, an error will be reported rather than moving on to
 		the next rule. In addition, cut has lower priority than all
@@ -200,7 +201,7 @@ File handling
  open	open	opens a file for output, taking its name from the top output
 		string.
  close	close	closes the current output file, resuming output to the
-		previously open one.
+		previously opened one.
  ]-&gt;out write out  writes the top output string to the current output file and
 		pops it off the output stack.
  include	include  opens a file for input, taking its name from the top output
@@ -219,19 +220,17 @@ Shortcut opcodes
 		the output stream, reading but not copying the next cork.
 		Nearly equivalent to &lowast; ]=, but notice that the boundary of an
 		input extent is internally marked, so &lowast;]= will copy all of it
-		even if it contains an internal ]=} (cork).
+		even if it contains an internal ]= (cork).
  =[]  put end	opens an empty new string in the output stack and goes back to
 		input mode; single opcode equivalent to =[ ].
  do	do	starts execution of the rule that begins with the next bytecode
-		in a new virtual machine; replaces a single-byte -&gt; (pipe).
+		in a new virtual machine; functionally equivalent to a single-byte -&gt; (pipe).
  ]&gt;	append	appends the top output string to the rule that starts with the
-		following bytecode. Useful for the temporary storage of
-		arbitrary strings.
+		following bytecode. Useful for the temporary storage of multi-line strings.
  get	get	a do (do) replacement that only executes a rule composed of a
 		single =[ (put), presumably created by a sequence of ]&gt;
 		(append) operations, and deletes the rule at the same time. It
-		does its job by reference, which for long strings speeds up
-		execution.
+		operates by reference, which for long strings speeds up execution.
 
 Debugging
 
@@ -244,7 +243,7 @@ Debugging
 		stream.
  list-&gt;	list	extracts from the dictionary all the rules that start by the
 		byte sequence provided in the top output string, and prepends
-		them to the input one after the other, each one as a new input
+		them one after another to the input, each one as a new input
 		extent separated by a ]= (cork), with an empty input extent
 		terminating the whole list.
  wrsym write symbol  converts the opcode provided in the top output character to
@@ -268,7 +267,7 @@ Miscellaneous, less frequently used operations
  popNo pop number  pops the value of the Unique Number counter (as a binary
 		integer) from the output stream.
  writeimage write image  writes a binary image of the whole dictionary to the
-		output file (so it can later be quickly reloaded rather re		translated).
+		output file (so it can later be quickly reloaded rather retranslated).
  readimage read image  reads in a binary dictionary image prepared by
 		writeimage.
  younger	younger  matches if the current input file is younger (has a more
@@ -292,11 +291,11 @@ Usage:	      fri [rule file] [-e command] [-i] [data file] ...
 
 All arguments are optional. fri called with no arguments displays its copyright and version message and exits.
 
-The rule file contains a list of FRI definitions and optionally a -e clause. It can also redefine the syntax of the command line itself, as for instance the CPL compiler does, in which case no -e clause need appear. An initial line beginning with # is ignored, and allows the rule file to be made executable in a unix shell by declaring fri as its interpreter.
+The rule file contains a list of FRI rules and optionally a -e clause. It can also redefine the syntax of the command line itself, as for instance the CPL compiler does, in which case no -e clause need appear. An initial line beginning with # is ignored, and allows the rule file to be made executable in a unix shell by declaring fri as its interpreter.
 
 If the -e clause appears either inside the rule file or on the command line, the remaining parameters are interpreted as data files to act upon. A file name of - stands for stdin. If no data files are listed, input is taken from stdin.
 
-The command specified in FRI syntax by the -e clause is executed in a loop until the end of file, copying one character from input to output every time the command fails. The command that succeeds may consume one or more or even all characters.
+The command specified in FRI syntax by the -e clause is executed in a loop until the end of input, copying one character from input to output every time the command fails. This feature allows simple sed-like scripts to be specified on the command line itself. The command that succeeds may consume one or more or even all characters.
 
 If the -i option is present, each data file is overwritten in place; otherwise each file is acted upon in a sequence and its result catenated to stdout.
 
