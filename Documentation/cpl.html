@@ -2308,17 +2308,17 @@ The compilation and linking of a cpl <a href="#Source%20file">Source file</a> is
 
 	makecpl [-a] [-o objdir] [-r] &lt;programtobecompiled&gt;[.cpl] [parameters]
 
-is all that is needed to compile and link the source file &lt;programtobecompiled&gt;.cpl into the executable file &lt;programtobecompiled&gt; .
+is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; .
 
-If makecpl is given the -r option the program is run immediately after being compiled, or just run as is if an executable exists that is more recent than source code and its dependencies. Making use of the unix interpreter directive, a CPL program that contains #!/full/path/to/makecpl -r as its first line is directly executable and enjoys just-in-time compilation.
+If makecpl is given the -r option &lt;program&gt; is run immediately after being compiled, or just run as is if an executable exists that is more recent than source code and its dependencies. Making use of the unix interpreter directive, a CPL program that contains #!/full/path/to/makecpl -r as its first line is directly executable and enjoys just-in-time compilation.
 
-Makecpl's task is achieved by first running <a href="#cpl">cpl</a>, the CPL-to-C compiler, which compiles the given source and all other files USEd by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;programtobecompiled&gt;.d, and then running make (<a href="make.html#Top">(make)</a>) on this makefile. Any parameters possibly present after the program name are passed on through make to the designated C compiler and linker, or to the program itself if -r was specified.
+Makecpl's task is achieved by first running <a href="#cpl">cpl</a>, the CPL-to-C compiler, which compiles the given source and all other files USEd by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="make.html#Top">(make)</a>) on this makefile. Any parameters possibly present after the program name are passed on through make to the designated C compiler and linker, or to &lt;program&gt; itself if -r was specified.
 
 The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line.
 
-The -D and -I options are interpreted by cpl, in addition to being passed to the C compiler, and provide pre#defined constants and include directories to both.
+The -D and -I compiler options are interpreted by cpl, in addition to being passed on to the C compiler, and provide pre#defined constants and include directories to both.
 
-C source and object files are kept in a local subdirectory usually named .cpl (and therefore hidden from listing under unix convention). An alternate name can be specified through the environment variable OBJDIR or the -o option.
+C source and object files are kept in a local subdirectory usually named .cpl (and therefore hidden from listing under unix convention). An alternate directory can be specified through the environment variable OBJDIR or the -o option.
 
 Only those source files whose corresponding object file does not exist or is older than the source are actually recompiled. In exceptional cases where a full re-compilation may be necessary, the command
 
@@ -2327,7 +2327,7 @@ Only those source files whose corresponding object file does not exist or is old
 achieves this by deleting the object files first. remakecpl is an alias for makecpl -a.
 
 If your system includes the curl command (on Debian you can install it as <q>apt
-install curl</q>), makecpl provides the functionality to poll the CPLcode.net website in the background. See <a href="#automatic%20updates">automatic updates</a>.
+install curl</q>), makecpl provides the functionality to poll the CPLcode.net website in the background for updates. See <a href="#automatic%20updates">automatic updates</a>.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
