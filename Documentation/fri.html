@@ -65,17 +65,24 @@
 </div><div class=page id="Top">
 Page: (fri)Top, Next: <a href="#Opcodes">Opcodes</a>, Up: <a href="cpl.html#makecpl">(cpl)makecpl</a>
 <hr> <h2>The FRI interpreter</h2>
+The design of most compilers passes through a formal description of the language that is compiled by a parser generator like yacc into a C program. At the heart of CPL's extensibility there is a different structure, where a formal description of the language is never compiled to generate the compiler, but rather interpreted each time a compilation is run. The engine that does this is named fri, the Formal Rule Interpreter. If yacc is a compiler-compiler, fri may be called a compiler-interpreter.
+
+In fact, fri is a quite general pattern-matching engine with its own FRI meta-language, and only <q>learns</q> about CPL when it reads the cpl file every time the compiler is invoked. Translators for many other languages can in principle be written in it. The interpreted nature of the CPL compiler, in addition to having allowed a smooth continued development and fine-tuning over the years, has the effect that its syntax can be extended on the fly by the compiled program itself with a few lines of FRI code written in a <a href="#FRI%20SECTION">FRI SECTION</a>. This possibility is used by <a href="#Library">Library</a> modules in order to define, for instance, complex-number notation, matrix-algebra operations or symbolic manipulations.
+
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#FRI%20architecture">FRI architecture</a>:</td><td></td></tr>
+<tr><td><a href="#Assembler">Assembler</a>:</td><td></td></tr>
 <tr><td><a href="#Opcodes">Opcodes</a>:</td><td></td></tr>
 <tr><td><a href="#Command%20line">Command line</a>:</td><td></td></tr>
+<tr><td><a href="#Trace%20mode">Trace mode</a>:</td><td></td></tr>
+<tr><td><a href="#Arithmetic%20mode">Arithmetic mode</a>:</td><td></td></tr>
 <tr><td colspan="2"> </td></tr>
 </table></nav>
 
 </div><div class=page id="FRI%20architecture">
-Page: (fri)FRI architecture, Next: <a href="#Opcodes">Opcodes</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
+Page: (fri)FRI architecture, Next: <a href="#Assembler">Assembler</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>FRI architecture</h3>
 FRI is a declarative language. Much like a Turing machine, the FRI virtual machine's workspace is composed of three items: an input character stream, an output character stream and a dictionary of rules. A rule is a sequence of bytecodes that can represent characters to be matched against the input stream, characters to be written to the output stream, or opcodes specifying general actions that can modify either stream, or the dictionary itself, or initiate a new rule. A rule <q>matches</q> if it runs to its end, or <q>fails</q> if an input character or an inner nested rule does not match.
 
@@ -86,29 +93,40 @@ The input stream is generally attached to an input file to be manipulated, but c
 The dictionary of rules is alphabetically ordered and, with one exception, independent of the order in which the rules are entered. Each new rule inserted in the dictionary gets assigned to a numbered <q>scope</q>. A new scope can be opened at any time by an explicit command and will contain subsequently generated rules, all of which disappear when the scope is eventually closed. A certain number of opcodes with no action are reserved as <q>strands</q>, markers of rules with related meaning. Each rule must start with a strand opcode, but strand opcodes can also appear elsewhere with a user assigned meaning. If a rule, or more accurately a strand of alternate rules, is viewed as a sort of subroutine, this subroutine can be <q>called</q> by inserting its strand byte in the input stream.
 
 When one rule fails, execution restarts with the next one in the dictionary. If two rules have a common root, only the part of the rule that failed undergoes a new attempt; side effects of the part that matched will not be repeated more than once. Execution terminates, as a match, when any one rule's byte sequence attains its end (or an explicit end opcode) or, as a failure, when the dictionary runs out of rules. For debugging purposes, it can also be terminated in an error message by suitable opcodes. 
+</div><div class=page id="Assembler">
+Page: (fri)Assembler, Next: <a href="#Opcodes">Opcodes</a>, Prev: <a href="#FRI%20architecture">FRI architecture</a>, Up: <a href="#Top">Top</a>
+<hr> <h3>The FRI assembler</h3>
+Much like machine code of an actual CPU (into which fri might one day be implemented, perhaps), FRI bytecode is hard to type in by a human being. When fri boots up, the rule dictionary is initially filled with just enough rules to assemble symbolic FRI into FRI bytecode.
+
+The FRI assembler uses symbolic names for <a href="#Opcodes">Opcodes</a>, listed below, and user-assigned names for strands. Additionally it provides the @ pseudo-opcode by which a stack element can be assigned a label and later referred to by this label rather than by its position on the stack.
+
+A FRI assembler program is a text file with one FRI rule per line (and possible comments). The order of lines is largely irrelevant because they will be alphabetically sorted when they are inserted in the dictionary, except that modifications to the assembler itself (like the definition of strand names or of new shortcuts) must come before they are used, and that rules that branch at a =[ (put) opcode will be kept in last-to-first order. Branching makes so that rules with a common stem will be inserted as such in the dictionary tree, and the stem will be executed only once even if one rule fails and the next is tried. Branching cannot occur inside an output string even if the first few characters are coincident, and will always occur at the =[ that opens it. 
 </div><div class=page id="Opcodes">
-Page: (fri)Opcodes, Next: <a href="#Command%20line">Command line</a>, Prev: <a href="#FRI%20architecture">FRI architecture</a>, Up: <a href="#Top">Top</a>
+Page: (fri)Opcodes, Next: <a href="#Command%20line">Command line</a>, Prev: <a href="#Assembler">Assembler</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>Language opcodes</h3>
 Character matching
 
 Symbol	pronounced  action
  ascii char	any 7-bit ascii character matches itself.
- -- 	except	matches if the following character does not match the input.
- -      through  matches if the input is not alphabetically enclosed (in ascii
-	 	order) between the next two characters, excluded.
+ -- 	except	(followed by a single byte) matches if the following character
+		does not match the input.
+ -      through (followed by two bytes) matches if the input is not
+		alphabetically enclosed (in ascii order) between the next two
+		characters, excluded.
  ]=	cork	(coded as ascii char 127) automatically added to the input
-		stream every time new input is provided; like all ascii
-		characters, matches itself.
+		stream every time new input is inserted, to mark the end of the
+		new input extent; like all ascii characters, matches itself.
  {	{	(ascii code 18) if found in the input stream, groups a block of
 		zero or more characters up to the next } (ascii code 19) for
 		copying purposes. Can be nested. Like all ascii characters,
 		matches itself.
  copy	copy	copies one (non-cork) character or one {}-enclosed block from
 		the input to the output stream.
- &lowast;   copy up to	copies zero or more characters or {}-enclosed blocks from
-		the input to the output stream until the following character
-		(or a cork) is encountered. The terminating character is popped
-		from the input stream but not written out.
+ &lowast;   copy up to	(followed by a single byte) copies zero or more characters or
+		{}-enclosed blocks from the input to the output stream until
+		the following character (or a cork) is encountered. The
+		terminating character is popped from the input stream but not
+		written out.
 
 Character writing
 
@@ -120,21 +138,22 @@ Character writing
 		above output terminators, which restore input mode and are then
 		executed, and #, ^, delete, UniqueNo, LineNo which are executed
 		without leaving output mode.
- ^	escape	the character following an escape is written to the output
-		stream unconditionally, in either mode and even if it is an
-		opcode. A sequence of $n$ escapes is written as a sequence of
-		$n-1$ escapes plus the following character, except if the
-		following character is a null (ascii 0) which is not written.
- #	number	recalls an output string identified by the number that follows,
-		and appends it to the current output. It can be followed by a
-		positive number, denoting a stack count backwards from the top,
-		a negative number, denoting a stack count backwards from the
-		first string of the present rule, or a symbolic label assigned
-		by the @ pseudocode.
- @	label	an assembler pseudo-opcode that assigns the following
-		alphanumeric string as a label to the current position in the output
-		stack, so it can later be recalled (within the same rule only)
-		by name.
+ ^	escape	(followed by a single byte) the character following an escape
+		is written to the output stream unconditionally, in either mode
+		and even if it is an opcode. A sequence of $n$ escapes is
+		written as a sequence of $n-1$ escapes plus the following
+		character, except if the following character is a null
+		(ascii 0) which is not written.
+ #	number	(followed by a single byte) recalls an output string identified
+		by the number that follows, and appends it to the current
+		output. It can be followed by a positive number, denoting a
+		stack count backwards from the top, a negative number, denoting
+		a stack count backwards from the first string of the present
+		rule, or a symbolic label assigned by the @ pseudocode.
+ @	label	(followed by alphanumeric label) an assembler pseudo-opcode
+		that assigns the following alphanumeric string as a label to
+		the current position in the output stack, so it can later be
+		recalled (within the same rule only) by name.
  ]	end	exits output mode, or the current control sequence, or the
 		current rule.
  ]=	cork	exits output mode and adjoins the top two output strings,
@@ -151,12 +170,12 @@ Flow control
 		machine if it starts with an opcode. After the called-up rule
 		matches, its output becomes the new input and the calling rule
 		continues, but in case of a later failure the rule-matching
-		machine is invoked again and again until a match is obtained or
-		no more rules are available.
- convert	convert null opcode, matches itself and returns what follows in its
-		input extent. Typically used before another opcode in a -&gt;
-		(pipe into) operation, in order for its contents to get a
-		chance to be examined as input by the rest of the rule before
+		machine is invoked in a loop until a match is obtained
+		(success) or no more rules are available (failure).
+ convert	convert null opcode, matches itself and returns what follows
+		in its input extent. Typically used before another opcode in
+		a -&gt; (pipe into) operation, in order for its contents to get
+		a chance to be examined as input by the rest of the rule before
 		being ``converted'' by a new rule-matching passage.
  ]	end	successfully terminates the current rule, the output mode, or
 		any of the compound sub-rules described below.
@@ -168,15 +187,17 @@ Flow control
  r[	recur	repeats the enclosed subrule (up to a matching <q>]</q>) 0 or more
 		times until it fails, reporting success to the containing rule
 		and replacing the top output string by each output.
- ifnot[	if not	succeeds if the enclosed subrule fails, and fails if the enclosed
-		subrule (up to a closing <q>]</q>) matches, discarding its output.
- unless[	unless	succeeds if the enclosed subrule fails and fails if the enclosed
-		subrule (up to a closing <q>]</q>) matches, appending its output to the
-		output stream.
- #	number	when used in input mode, recalls a string from the output stack
-		(by the same numbering scheme as in output mode), and executes
-		it as a string of bytecodes, as if they were inserted in the current rule
-		 at the current position.
+ ifnot[	if not	succeeds if the enclosed subrule fails, and fails if the
+		enclosed subrule (up to a closing <q>]</q>) matches, discarding its
+		output.
+ unless[	unless	succeeds if the enclosed subrule fails and fails if the
+		enclosed subrule (up to a closing <q>]</q>) matches, appending its
+		output to the output stream.
+ #	number	(followed by a single byte) when used in input mode, recalls a
+		string from the output stack (by the same numbering scheme as
+		in output mode), and executes it as a string of bytecodes, as
+		if they were inserted in the current rule at the current
+		position.
  cut	cut	like the Prolog <q>cut</q>, asserts that failure beyond its
 		position is not intended to occur. If the present rule fails
 		after a cut, an error will be reported rather than moving on to
@@ -186,13 +207,16 @@ Flow control
 
  Dictionary manipulation
 
- ]-&gt;	save	saves the top output string to the dictionary as a new rule, in
-		the same scope as rules starting with the following opcode, or
-		in the current scope if the following character is null.
+ ]-&gt;	save	 (followed by a single byte) saves the top output string to the
+		dictionary as a new rule, in the same scope as rules starting
+		with the following opcode, or in the current scope if the
+		following byte is null.
  openscope open scope  opens a new scope.
  closescope close scope	closes the current scope and erases all rules generated
 		since the last openscope.
- delete	delete	deletes from the dictionary all rules that start with the byte
+ mergescope merge scope	closes the current scope and merges all rules generated
+		since the last openscope into the previous scope.
+ delete	delete	deletes from the dictionary all rules that begin with the byte
 		sequence contained in the top output string and belong in the
 		current scope.
 
@@ -204,13 +228,13 @@ File handling
 		previously opened one.
  ]-&gt;out write out  writes the top output string to the current output file and
 		pops it off the output stack.
- include	include  opens a file for input, taking its name from the top output
-		string, and includes it at the current position in the input
-		stream, followed by a ]= (cork). At the end of this file the
-		file will be closed and the previous input will resume
+ include	include  opens a file for input, taking its name from the top
+		output string, and includes it at the current position in the
+		input stream, followed by a ]= (cork). At the end of this file
+		the file will be closed and the previous input will resume
 		automatically.
- closein	close input  forces closing the current input file, resuming input from
-		where it was in the previously opened one.
+ closein	close input  forces closing the current input file, resuming
+		input from where it was in the previously opened one.
 
 Shortcut opcodes
 
@@ -224,13 +248,16 @@ Shortcut opcodes
  =[]  put end	opens an empty new string in the output stack and goes back to
 		input mode; single opcode equivalent to =[ ].
  do	do	starts execution of the rule that begins with the next bytecode
-		in a new virtual machine; functionally equivalent to a single-byte -&gt; (pipe).
+		in a new virtual machine; functionally equivalent to a
+		single-byte -&gt; (pipe).
  ]&gt;	append	appends the top output string to the rule that starts with the
-		following bytecode. Useful for the temporary storage of multi-line strings.
+		following bytecode. Useful for the temporary storage of
+		multi-line strings.
  get	get	a do (do) replacement that only executes a rule composed of a
 		single =[ (put), presumably created by a sequence of ]&gt;
 		(append) operations, and deletes the rule at the same time. It
-		operates by reference, which for long strings speeds up execution.
+		operates by reference, which for long strings speeds up
+		execution.
 
 Debugging
 
@@ -241,13 +268,13 @@ Debugging
 		controlling terminal.
  LineNo line number  writes the current input-file line number to the output
 		stream.
- list-&gt;	list	extracts from the dictionary all the rules that start by the
+ list-&gt;	list	extracts from the dictionary all the rules that begin with the
 		byte sequence provided in the top output string, and prepends
 		them one after another to the input, each one as a new input
 		extent separated by a ]= (cork), with an empty input extent
 		terminating the whole list.
- wrsym write symbol  converts the opcode provided in the top output character to
-		its symbolic name.
+ wrsym write symbol  disassembles the opcode provided in the top output
+		byte and replaces it by its symbolic name.
  display display  displays the top output string on the controlling terminal.
 
 Miscellaneous, less frequently used operations
@@ -257,8 +284,8 @@ Miscellaneous, less frequently used operations
  =&gt; force write  appends everything that follows to the output stream in an
 		8-bit safe way, including any opcodes that might terminate a
 		normal =[ (put).
- AssignStrand assign strand  decrements an internal counter and outputs the next
-		available still unused null opcode (deputed as a rule strand).
+ AssignStrand assign strand  decrements an internal counter and outputs the
+		next available rule strand (still unused null opcode).
  UniqueNo unique number  increments and outputs (in decimal ascii) the
 		internal Unique Number counter, made available in order to
 		assign unambiguous identifiers to variables.
@@ -267,14 +294,15 @@ Miscellaneous, less frequently used operations
  popNo pop number  pops the value of the Unique Number counter (as a binary
 		integer) from the output stream.
  writeimage write image  writes a binary image of the whole dictionary to the
-		output file (so it can later be quickly reloaded rather retranslated).
+		output file (so it can later be quickly reloaded rather
+		retranslated).
  readimage read image  reads in a binary dictionary image prepared by
 		writeimage.
- younger	younger  matches if the current input file is younger (has a more
-		recent modification time) than the file named in the top output
-		string, or the latter does not exist.
- wrinputpos write input position  writes the input-stream position pointer (as a
-		binary sequence of bytes) to the output stream.
+ younger	younger  matches if the current input file is younger (has a
+		more recent modification time) than the file named in the top
+		output string, or the latter does not exist.
+ wrinputpos write input position  writes the input-stream position pointer
+		(as a binary sequence of bytes) to the output stream.
  rdinputpos read input position  pops the input-stream position pointer (as a
 		binary sequence of bytes) from the output stream, effectively
 		resuming input from where it was when wrinputpos was invoked.
@@ -283,9 +311,10 @@ Miscellaneous, less frequently used operations
 		position.
  ascii	ascii	outputs the character whose ascii code appears in hexadecimal
 		notation in the next two input characters.
- shell command shell command  passes the top output string to the operating		system shell for execution as a command. 
+ shell command shell command  passes the top output string to the operating
+		system shell for execution as a command. 
 </div><div class=page id="Command%20line">
-Page: (fri)Command line, Prev: <a href="#Opcodes">Opcodes</a>, Up: <a href="#Top">Top</a>
+Page: (fri)Command line, Next: <a href="#Trace%20mode">Trace mode</a>, Prev: <a href="#Opcodes">Opcodes</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>The fri command line</h3>
 Usage:	      fri [rule file] [-e command] [-i] [data file] ...
 
@@ -307,7 +336,227 @@ cat replacement:
 tac replacement:
 	fri -e 'r[ =[ &lowast; \n =[\n #2]=]'
 
-substitute apples for oranges:
-	fri -e '<q>orange</q> =[<q>apple</q>]'
-  
+change oranges to apples:
+	fri -e '<q>orange</q> =[<q>apple</q>]' 
+</div><div class=page id="Trace%20mode">
+Page: (fri)Trace mode, Next: <a href="#Arithmetic%20mode">Arithmetic mode</a>, Prev: <a href="#Command%20line">Command line</a>, Up: <a href="#Top">Top</a>
+<hr> <h3>Trace mode</h3>
+When the fri compiler-interpreter runs in trace mode, which can be toggled by the trace bytecode, a screenful of information is displayed on the user's ANSI terminal, in a format where ascii characters are colored in yellow and FRI opcodes and strands are disassembled to their symbolic names colored in blue.
+
+The top two lines contain a running view of the input buffer, with an up arrow pointing at the current position of the input pointer, and the current input line number and file name displayed at its left.
+
+The next two lines contain a similar view of the output buffer, centered about the current position of the output pointer. The statistics collected at its left are: current scope depth in the dictionary, cut toggled, occupied number of bytes in the buffer, current depth of the output stack.
+
+The following lines contain a running view of the presently executing dictionary rule. Every time a -&gt; (pipe into) is executed a new line is started, so that the suspended calling lines remain visible above it. The green label on the left is the strand (first bytecode) of each rule. The next branching to follow the current instruction is also displayed, with alternatives vertically listed below the currently executing line.
+
+Tracing proceeds as an animation, with one instruction being executed every 0.7 seconds and the display being updated accordingly. The following single-key commands modify it interactively:
+
+ ? or /	help	display a list of these single-key commands.
+ q	quit	stop execution and quit the interpreter.
+ c	continue	exit trace mode and continue normally.
+ s	slow	toggle in and out of slow mode, which also traces single ascii
+		characters and other trivial bytecodes that are normally
+		skipped over. 
+ p or esc	pause	pause execution. Any key will resume.
+ &lt;- -&gt;		 horizontally scroll the input, output and current-instruction
+		lines.
+		Focus is re-centered on exit from pause.
+ l	list	followed by the stem of a dictionary rule in assembler
+		notation, displays all the dictionary rules that start
+		with that stem.
+ # or 3	number	followed by a number and Enter, displays the corresponding
+		output stack line. Followed by just Enter, displays the whole
+		stack.
+ b	backfiles  displays the stack of currently open input filenames USEing
+		each other.
+ tab	complete  run to the end of the current displayed line with tracing
+		suspended, and resume tracing upon return to the line above.
+ space 		fast-forward through tracing as long as the key is pressed, and
+		resume the normal 0.7-second rate once released. 
+</div><div class=page id="Arithmetic%20mode">
+Page: (fri)Arithmetic mode, Prev: <a href="#Trace%20mode">Trace mode</a>, Up: <a href="#Top">Top</a>
+<hr> <h3>Arithmetic mode</h3>
+For the purpose of a more traditional CPU emulation (used by <a href="cpl.html#icpl">(cpl)icpl</a>), fri provides an additional set of opcodes that specify arithmetic operations. These become active in an ad-hoc <q>arithmetic mode</q> that exists alongside input and output modes. Most arithmetic opcodes manipulate the fri output buffer as a stack, pushing and popping fixed-width objects (binary integers, machine addresses, floats) irrespective of its subdivision in strings. Nevertheless the subdivision remains in action, and output strings serve double use as stack frames. A <q>stack address</q> in what follows is a binary integer expressing a byte count relative to the frame.
+
+Symbol	pronounced  action
+ compute[ compute  activates arithmetic mode for the following bytecodes
+		up to a closing ] (end).
+ #	number	(followed by a single byte) when in arithmetic mode recalls the
+		stack address of the corresponding string as a binary integer
+		(instead of copying the string itself).
+ goto	(followed by a binary integer)  go to the indicated bytecode address,
+		relative to the current instruction.
+ bcall	(followed by a binary address)  call the machine-coded function at the
+		given machine address, obtained for instance from the dl
+		library.
+ bytecall (followed by a binary address)  interpret the bytecode function at
+		the given machine address.
+ spop		pop a binary integer len from the top of stack and further
+		shorten the stack by len bytes.
+ gres		pop a binary integer len from the top of stack, malloc a field
+		of len bytes, and return its address to the top of stack.
+ gdel		pop a binary address from the top of stack and free the
+		malloc'ed field at that address.
+ pushint (followed by a binary integer)  push that integer to the stack.
+ pushaddr (followed by a binary address)  push that address to the stack.
+ pushreal (followed by a binary real)  push that real to the stack.
+ pushshort (followed by a binary short integer)  push that short integer to
+		the stack.
+ pushbyte (followed by a single byte)  push that byte to the stack.
+ pushn	(followed by a binary integer count plus count bytes)  push count
+		bytes to the stack.
+ saddr	(followed by a binary integer)  convert the given stack address to
+		an absolute machine address and push it onto the stack.
+ sframe		open a new output string (similar to what =[ does) for use as
+		a stack frame.
+ sres		pop a binary integer len from the stack and advance the stack
+		counter by len (thus reserving space for stack variables).
+ sdel		close the present output string (delete stack frame).
+ sloadint (followed by a binary integer)  get a binary integer from the given
+		stack address, and push it onto the stack.
+ sload8	(followed by a binary integer)  get a binary 8-byte real from the given
+		stack address, and push it onto the stack.
+ sload	(followed by a binary integer len and a binary integer addr)  get len
+		bytes from stack address addr and push them onto the stack.
+ dload	(followed by a binary integer len and a machine address addr)  get len
+		bytes from machine address addr and push them onto the stack.
+ iloadint	pop a stack address from the stack, and push the integer found
+		at that address. 
+ iloadreal	pop a stack address from the stack, and push the real found at
+		that address. 
+ iloadaddr	pop a stack address from the stack, and push the binary address
+		found at that address.
+ iload	(followed by a binary integer len)  pop a stack address from the stack,
+		and push len bytes found at that address. 
+ nload		pop a machine address addr, pop a binary integer len, get len
+		bytes from machine address addr and push them onto the stack.
+ ssave4	(followed by a binary integer addr)  pop a binary integer from the
+		stack and save it to the stack address addr.
+ ssave8	(followed by a binary integer addr)  pop a binary real from the
+		stack and save it to the stack address addr.
+ ssave	(followed by a binary integer len and a binary integer addr)  pop
+		len bytes from the stack and save them to the stack address addr.
+ dsave4	(followed by a machine address addr)  pop a binary integer from the
+		stack and save it to the machine address addr.
+ dsave8	(followed by a machine address addr)  pop a binary real from the
+		stack and save it to the machine address addr.
+ dsave	(followed by a binary integer len and a machine address addr)  pop len
+		bytes from the stack and save them to machine address addr.
+ isave	(followed by a binary integer len)  pop a machine address addr from the
+		stack, then pop len bytes from the stack saving these bytes
+		to the machine address addr.
+ prs		pop a binary integer len and a machine address addr from the
+		stack, then save at most len-1 bytes of the current output
+		string to address addr.
+ iadd		pop the two topmost integers and replace them by their sum.
+ isub		pop the two topmost integers and replace them by their
+		difference.
+ imul		pop the two topmost integers and replace them by their product.
+ idiv		pop the two topmost integers and replace them by their
+		integer ratio.
+ imod		pop the two topmost integers and replace them by their integer
+		division remainder.
+ iand		pop the two topmost integers and replace them by their
+		boolean and.
+ ior		pop the two topmost integers and replace them by their
+		boolean or.
+ ixor		pop the two topmost integers and replace them by their
+		boolean xor.
+ irshift		pop the two topmost integers and replace them by the
+		first one shifted right according to the second.
+ ilshift		pop the two topmost integers and replace them by the
+		first one shifted left according to the second.
+ itoc		pop the topmost integer and convert it to a single-byte
+		character.
+ itoa		(followed by a null-terminated string f) pop the topmost
+		integer and convert it to a string according to printf format f.
+ addradd		pop a binary integer a, pop a machine address m, and
+		replace them by machine address m+a.
+ addrsub		pop two machine addresses m1, m2, and replace them by
+		their integer difference m2-m1.
+ imuladd	(followed by a binary integer mul)  pop two binary integers
+		i1, i2, and replace them by the integer i1&lowast;mul+i2.
+ imuladdaddr	(followed by a binary integer mul)  pop a binary integer i1,
+		a machine address a2, and replace them by the machine address
+		i1&lowast;mul+a2.
+ bytetoint	pop the topmost single byte and convert it to an integer.
+ seq		pop two machine addresses m1, m2, and replace them by the
+		integer boolean result of m2=m1.
+ sne		pop two machine addresses m1, m2, and replace them by the
+		integer boolean result of m2#m1.
+ sgt		pop two machine addresses m1, m2, and replace them by the
+		integer boolean result of m2&gt;m1.
+ sge		pop two machine addresses m1, m2, and replace them by the
+		integer boolean result of m2&gt;=m1.
+ slt		pop two machine addresses m1, m2, and replace them by the
+		integer boolean result of m2&lt;m1.
+ sle		pop two machine addresses m1, m2, and replace them by the
+		integer boolean value m2&lt;=m1.
+ ieq		pop two binary integers i1, i2, and replace them by the integer
+		boolean result of i2=i1.
+ ine		pop two binary integers i1, i2, and replace them by the integer
+		boolean result of i2#i1.
+ igt		pop two binary integers i1, i2, and replace them by the integer
+		boolean result of i2&gt;i1.
+ ige		pop two binary integers i1, i2, and replace them by the integer
+		boolean result of i2&gt;=i1.
+ ilt		pop two binary integers i1, i2, and replace them by the integer
+		boolean result of i2&lt;i1.
+ ile		pop two binary integers i1, i2, and replace them by the integer
+		boolean result of i2&lt;=i1.
+ dgt		pop two binary reals r1, r2, and replace them by the integer
+		boolean result of r2&gt;r1.
+ dge		pop two binary reals r1, r2, and replace them by the integer
+		boolean result of r2&gt;=r1.
+ dlt		pop two binary reals r1, r2, and replace them by the integer
+		boolean result of r2&lt;r1.
+ dle		pop two binary reals r1, r2, and replace them by the integer
+		boolean result of r2&lt;=r1.
+ dtoi		convert real to integer.
+ dadd		pop the two topmost reals and replace them by their sum.
+ dsub		pop the two topmost reals and replace them by their difference.
+ dmul		pop the two topmost reals and replace them by their product.
+ ddiv		pop the two topmost reals and replace them by their ratio.
+ dtoa		(followed by a null-terminated string f) pop the topmost real
+		and convert it to a string according to printf format f.
+ daddto		pop a machine address m, pop a binary real r, and increase
+		the real at address m by r.
+ dsubfrom	pop a machine address m, pop a binary real r, and decrease
+		the real at address m by r.
+ itod		convert integer to real.
+ inot		boolean not on integer value
+ ichs		sign change integer value
+ ineg		1-complement integer value
+ iabs		integer absolute value
+ dchs		sign change real value
+ dabs		real absolute value
+ iaddto		pop a machine address m, pop a binary integer i, and increase
+		the integer at address m by i.
+ isubfrom	pop a machine address m, pop a binary integer i, and decrease
+		the integer at address m by i.
+ if	(followed by a binary signed integer s)  pop a boolean integer t,
+		if t is true then continue else skip s instruction bytes.
+ nif	(followed by a binary signed integer s)  pop a boolean integer t,
+		if t is false then continue else skip s instruction bytes.
+ pushstr (followed by a null-terminated string s) push s to the stack.
+ iloadstr	pop a machine address, push the null-terminated string at that
+		address onto the stack.
+ nmove		pop machine addresses m1, m2 and integer n; copy n bytes from
+		address m2 to address m1.
+ smove	(followed by binary integers len,s)  push len bytes from stack
+		address s.
+ prf		pop FILE pointer, print current stack frame (or output string) to the given file descriptor.
+ popaddr	read machine address from the fri input stream and push it
+		onto the stack.
+ popint		read binary integer from the fri input stream and push it
+		onto the stack.
+ popbyte	read single byte from the fri input stream and push it onto
+		the stack.
+ popreal	read binary real from the fri input stream and push it onto
+		the stack.
+ sizetoint	convert machine address size (C ssize_t) to an integer.
+ inttosize	convert integer to machine address size (C ssize_t).
+ i8toint	convert 8-bit integer to machine integer.
+ inttoi8	convert machine integer to 8-bit integer.
+ savestr	pop machine address, save top output string to that address. 
 </div></body></html>
