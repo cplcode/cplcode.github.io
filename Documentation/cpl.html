@@ -241,7 +241,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="editor.html#full-screen">edit:(editor)full-screen</a>:</td><td>Open an existing or new file in full-screen editor</td></tr>
 <tr><td><a href="#icpl">exit:icpl</a>:</td><td>quit icpl</td></tr>
 <tr><td><a href="fft.html#Top">fft:(fft)</a>:</td><td>Fast Fourier Transforms</td></tr>
-<tr><td><a href="#fri">fri</a>:</td><td>The Formal Rule Interpreter</td></tr>
+<tr><td><a href="fri.html#Top">fri:(fri)</a>:</td><td>The Formal Rule Interpreter</td></tr>
 <tr><td><a href="graphics.html#gnuplot">gnuplot:(graphics)gnuplot</a>:</td><td>plotting primitives rendered through gnuplot</td></tr>
 <tr><td><a href="graphics.html#Top">graphics:(graphics)</a>:</td><td>plotting primitives using GNU plotutils</td></tr>
 <tr><td><a href="#icpl">icpl</a>:</td><td>Interactive CPL</td></tr>
@@ -1518,7 +1518,7 @@ Page: (cpl)ARRAY operations, Next: <a href="#Einstein%20convention">Einstein con
 <hr> <h3>Linear-space ARRAY operations</h3>
 Linear-space operations are supported on arrays. That is, congruent ARRAYs of any number of dimensions can be added to or subtracted from each other and multiplied or divided by a scalar inside an expression, as well as appear on the left side of an assignment.
 
-The scalar product of two congruent arrays is denoted by the infix operator | . This is defined as the sum over all dimensions of the products of corresponding elements. (Except for <a href="complex.html#Top">(complex)</a>)
+The scalar product of two congruent arrays is denoted by the infix operator | . This is defined as the sum over all dimensions of the products of corresponding elements. (Except for <a href="complex.html#Top">(complex)Top</a>)
 
 The constant <q>0</q> (but not any other constant) can be assigned as a value to a whole array.
 
@@ -1556,7 +1556,7 @@ When an assignment is performed by a double <q>==</q> sign, no statement is gene
 
 Deferred assignment permits the appearance on the r.h.s. of yet undefined variables and functions, provided these will be defined before the l.h.s. is actually used. It also allows compile-time constants to be given symbolic names and still be recognized as such.
 
-This construction is further extended in the <a href="symbolic.html#Top">(symbolic)</a> library. 
+This construction is further extended in the <a href="symbolic.html#Top">(symbolic)Top</a> library. 
 </div><div class=page id="Concealed%20Pointer%20Lookup">
 Page: (cpl)Concealed Pointer Lookup, Next: <a href="#WITH">WITH</a>, Prev: <a href="#Deferred%20assignment">Deferred assignment</a>, Up: <a href="#Statements">Statements</a>
 <hr> <h2>Implicit type conversion</h2>
@@ -2310,9 +2310,9 @@ The compilation and linking of a cpl <a href="#Source%20file">Source file</a> is
 
 is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; .
 
-If makecpl is given the -r option, &lt;program&gt; is run immediately after being compiled, or just run as is if an executable exists that is more recent than source code and its dependencies. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/makecpl -r</q> (with the appropriate full path) or <q>#!/usr/bin/env -S makecpl -r</q> as its first line is directly executable and enjoys automatic compilation when needed.
+If makecpl is given the -r option, &lt;program&gt; is run immediately after being compiled, or just run as is if an executable exists and is not older than source code and its dependencies. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/makecpl -r</q> (with the appropriate full path) or <q>#!/usr/bin/env -S makecpl -r</q> as its first line is directly executable and enjoys automatic compilation when needed.
 
-Makecpl's task is achieved by first running <a href="#cpl">cpl</a>, the CPL-to-C compiler, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="make.html#Top">(make)</a>) on this makefile. Any parameters possibly present after the program name are passed on through make to the designated C compiler and linker, or to &lt;program&gt; itself if -r was specified.
+makecpl's task is achieved by first running <a href="#cpl">cpl</a>, the CPL-to-C compiler, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="*manpages*.html#make">(&lowast;manpages&lowast;)make</a>) on this makefile. Any parameters possibly present after the program name are passed on through make to the designated C compiler and linker, or to &lt;program&gt; itself if -r was specified.
 
 The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line.
 
@@ -2333,16 +2333,16 @@ install curl</q>), makecpl provides the functionality to transparently poll the 
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#cpl">cpl</a>:</td><td>The CPL-to-C compiler</td></tr>
-<tr><td><a href="#fri">fri</a>:</td><td>The Formal Rule Interpreter</td></tr>
+<tr><td><a href="fri.html#		The%20Formal%20Rule%20Interpreter">fri:(fri)		The Formal Rule Interpreter</a>:</td><td></td></tr>
 <tr><td><a href="#FRI%20SECTION">FRI SECTION</a>:</td><td>Dynamic extension of the CPL language</td></tr>
 <tr><td><a href="#infocpl">infocpl</a>:</td><td>info reading script</td></tr>
 <tr><td><a href="#icpl">icpl</a>:</td><td>Interactive CPL</td></tr>
 </table></nav>
 
 </div><div class=page id="cpl">
-Page: (cpl)cpl,  Next: <a href="#fri">fri</a>,  Prev: <a href="#makecpl">makecpl</a>,  Up: <a href="#makecpl">makecpl</a>
+Page: (cpl)cpl,  Next: <a href="#FRI%20SECTION">FRI SECTION</a>,  Prev: <a href="#makecpl">makecpl</a>,  Up: <a href="#makecpl">makecpl</a>
 <hr> <h2>The CPL-to-C compiler</h2>
-The CPL compiler itself is not an executable file, but rather a formal description of the language that is interpreted by the Formal Rule Interpreter <a href="#fri">fri</a>. The cpl file is made executable by the shell convention of having #!/usr/bin/env fri as its first line. Where this convention is understood, the CPL-to-C compilation command is
+The CPL compiler itself is not an executable file, but rather a formal description of the language that is interpreted by the Formal Rule Interpreter <a href="fri.html#Top">(fri)Top</a>. The cpl file is made executable by the shell convention of having #!/usr/bin/env fri as its first line. Where this convention is understood, the CPL-to-C compilation command is
 
 	cpl &lt;source.cpl&gt;
 
@@ -2351,29 +2351,8 @@ On systems where the #! convention does not work as expected, this command must 
 	fri cpl &lt;source.cpl&gt;
 
 All this is normally handled inside the <a href="#makecpl">makecpl</a> driver script; direct use of the cpl command is not needed. 
-</div><div class=page id="fri">
-Page: (cpl)fri,  Next: <a href="#FRI%20SECTION">FRI SECTION</a>,  Prev: <a href="#cpl">cpl</a>,  Up: <a href="#makecpl">makecpl</a>
-<hr> <h2>The Formal Rule Interpreter</h2>
-The design of most compilers passes through a formal description of the language that is compiled by a parser generator like yacc into a C program. At the heart of CPL's extensibility there is a different structure, where a formal description of the language is never compiled to generate the compiler, but rather interpreted each time a compilation is run. The engine that does this is named fri, the Formal Rule Interpreter. If yacc is a compiler-compiler, fri may be called a compiler-interpreter.
-
-In fact, fri is a quite general pattern-matching engine with its own FRI meta-language, and only <q>learns</q> about CPL when it reads the cpl file every time the compiler is invoked. Translators for many other languages can in principle be written in it. The interpreted nature of the CPL compiler, in addition to having allowed a smooth continued development and fine-tuning over the years, has the effect that its syntax can be extended on the fly by the compiled program itself with a few lines of FRI code written in a <a href="#FRI%20SECTION">FRI SECTION</a>. This possibility is used by <a href="#Library">Library</a> modules in order to define, for instance, complex-number notation, matrix-algebra operations or symbolic manipulations.
-
-<nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
-<tr><td colspan="2"> </td></tr>
-<tr><td><a href="fri.html#FRI%20architecture">(fri)FRI architecture</a>:</td><td></td></tr>
-<tr><td><a href="fri.html#Assembler">(fri)Assembler</a>:</td><td></td></tr>
-<tr><td><a href="fri.html#Opcodes">(fri)Opcodes</a>:</td><td></td></tr>
-<tr><td><a href="fri.html#Command%20line">(fri)Command line</a>:</td><td></td></tr>
-<tr><td><a href="fri.html#Trace%20mode">(fri)Trace mode</a>:</td><td></td></tr>
-<tr><td><a href="fri.html#Arithmetic%20mode">(fri)Arithmetic mode</a>:</td><td></td></tr>
-<tr><td colspan="2"> </td></tr>
-<tr><td colspan="2">For the purpose of compiling a CPL program, fri is usually not invoked directly </td></tr>
-<tr><td colspan="2">but rather through <a href="#makecpl">makecpl</a>. </td></tr>
-</table></nav>
-
 </div><div class=page id="FRI%20SECTION">
-Page: (cpl)FRI SECTION,  Next: <a href="#infocpl">infocpl</a>,  Prev: <a href="#fri">fri</a>,  Up: <a href="#makecpl">makecpl</a>
+Page: (cpl)FRI SECTION,  Next: <a href="#infocpl">infocpl</a>,  Prev: <a href="#cpl">cpl</a>,  Up: <a href="#makecpl">makecpl</a>
 <hr> <h3>Dynamic extension of the CPL language</h3>
 FRI language excerpts may be inserted at any point of a CPL program block by the statement
 
@@ -2381,7 +2360,7 @@ FRI language excerpts may be inserted at any point of a CPL program block by the
 	&lt;FRI code&gt;
 	END FRI SECTION
 
-This has the effect of dynamically adding new statement constructions and for all purposes extending the syntax of the language. (See <a href="#fri">fri</a>) Like everything else in CPL, the new extensions are available from the point where the FRI SECTION appears through the end of the enclosing block. 
+This has the effect of dynamically adding new statement constructions and for all purposes extending the syntax of the language. (See <a href="fri.html#Top">(fri)Top</a>) Like everything else in CPL, the new extensions are available from the point where the FRI SECTION appears through the end of the enclosing block. 
 </div><div class=page id="infocpl">
 Page: (cpl)infocpl,  Next: <a href="#icpl">icpl</a>,  Prev: <a href="#FRI%20SECTION">FRI SECTION</a>,  Up: <a href="#Top">Top</a>
 <hr> <h2>info reading script</h2>
@@ -2419,14 +2398,14 @@ Page: (cpl)icpl commands,  Next: <a href="#Library">Library</a>,  Prev: <a href=
 <tr><td><a href="editor.html#full-screen">close:(editor)full-screen</a>:</td><td>close present full-screen window</td></tr>
 <tr><td><a href="#q">q</a>:</td><td>exit icpl (also :q, useful if q exists as a variable)</td></tr>
 <tr><td colspan="2"> </td></tr>
-<tr><td colspan="2">A powerful feature of icpl is its capability to transparently USE (<a href="#USE">USE</a>) </td></tr>
+<tr><td colspan="2">A powerful feature of icpl is its capability to transparently <a href="#USE">USE</a> </td></tr>
 <tr><td colspan="2">a compiled CPL program or #include (<a href="#C%20interface">C interface</a>) a compiled C program. </td></tr>
 <tr><td colspan="2">All functions and variables in such programs become accessible at the cpl&gt; </td></tr>
 <tr><td colspan="2">prompt as well as at the <a href="#?">?</a> request for info.
 
 </td></tr>
-<tr><td colspan="2">For icpl to work, the Formal Rule Interpreter (<a href="#fri">fri</a>) must have been </td></tr>
-<tr><td colspan="2">compiled with readline (<a href="editor.html#Top">(editor)</a>) and dynamic loading </td></tr>
+<tr><td colspan="2">For icpl to work, the Formal Rule Interpreter <a href="fri.html#Top">(fri)Top</a> must have been </td></tr>
+<tr><td colspan="2">compiled with readline (<a href="editor.html#Top">(editor)Top</a>) and dynamic loading </td></tr>
 <tr><td colspan="2">(<a href="*manpages*.html#dlopen">(&lowast;manpages&lowast;)dlopen</a>) support.
 
 </td></tr>
