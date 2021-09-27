@@ -100,7 +100,9 @@ Much like machine code of an actual CPU (into which fri might one day be impleme
 
 The FRI assembler uses symbolic names for <a href="#Opcodes">Opcodes</a>, listed below, and user-assigned names for strands. Additionally it provides the @ pseudo-opcode by which a stack element can be assigned a label and later referred to by this label rather than by its position on the stack.
 
-A FRI assembler program is a text file with one FRI rule per line (and possible comments). The order of lines is largely irrelevant because they will be alphabetically sorted when they are inserted in the dictionary, except that modifications to the assembler itself (like the definition of strand names or of new shortcuts) must come before they are used, and that rules that branch at a =[ (put) opcode will be kept in last-to-first order. Branching makes so that rules with a common stem will be inserted as such in the dictionary tree, and the stem will be executed only once even if one rule fails and the next is tried. Branching is not allowed inside an output string even if the first few characters are coincident, and will always occur at the =[ that opens it. 
+The two strands FRIsymbol and FRIdefinition contain code for the assembler itself: at the basics FRIsymbol translates a symbolic name to its corresponding bytecode, and FRIdefinition assembles a sequence of FRIsymbol's into a rule and adds it to the dictionary. The assembler, like everything FRI, can modify its own rules, and frills and whistles are added this way.
+
+A FRI assembler program is a text file with one FRI rule per line (and possible comments). The order of lines is largely irrelevant because they will be alphabetically sorted at the time they are inserted in the dictionary, except that new FRIsymbol's and FRIdefinition's (like the definitions of strand names or of shortcuts) must come before they are used, and that rules that branch at a =[ (put) opcode are kept in last-to-first order. The branching tree structure of the dictionary makes it so that, in rules having a common stem, the stem will be executed only once, even if one rule fails and the next one is tried. Branching is not allowed to split an output string even if the first few characters are coincident with another's, and will always occur at the =[ opcode that opens it. 
 </div><div class=page id="Opcodes">
 Page: (fri)Opcodes, Next: <a href="#Command%20line">Command line</a>, Prev: <a href="#Assembler">Assembler</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>Language opcodes</h3>
@@ -364,8 +366,8 @@ Tracing proceeds as an animation, with one instruction being executed every 0.7 
 		notation, displays all the dictionary rules that start
 		with that stem.
  # or 3	number	followed by a number and Enter, displays the corresponding
-		output stack line. Followed by just Enter, displays the last few
-		lines of the stack.
+		output stack line. Followed by just Enter, displays the last
+		few lines of the stack.
  b	backfiles  displays the stack of currently open input filenames.
  tab	complete  run to the end of the current displayed line with tracing
 		suspended, and resume tracing upon return to the line above it.
@@ -415,7 +417,7 @@ Symbol	pronounced  action
  sframe		open a new output string (similar to what =[ does) for use as
 		a stack frame.
  sres		pop a binary integer len from the stack and advance the stack
-		counter by len bytes (thus reserving space for stack variables).
+		counter by len bytes (reserving space for stack variables).
  sdel		pop the present output string (delete stack frame).
  sloadint (followed by a binary integer)  get a binary integer from the given
 		stack address, and push it onto the stack.
@@ -436,20 +438,20 @@ Symbol	pronounced  action
  nload		pop a machine address addr, pop a binary integer len, get len
 		bytes from machine address addr and push them onto the stack.
  ssave4	(followed by a binary integer addr)  pop a binary integer from the
-		stack and save it to the stack address addr.
+		stack and save it to stack address addr.
  ssave8	(followed by a binary integer addr)  pop a binary real from the
-		stack and save it to the stack address addr.
+		stack and save it to stack address addr.
  ssave	(followed by a binary integer len and a binary integer addr)  pop
-		len bytes from the stack and save them to the stack address addr.
+		len bytes from the stack and save them to stack address addr.
  dsave4	(followed by a machine address addr)  pop a binary integer from the
-		stack and save it to the machine address addr.
+		stack and save it to machine address addr.
  dsave8	(followed by a machine address addr)  pop a binary real from the
-		stack and save it to the machine address addr.
+		stack and save it to machine address addr.
  dsave	(followed by a binary integer len and a machine address addr)  pop len
 		bytes from the stack and save them to machine address addr.
  isave	(followed by a binary integer len)  pop a machine address addr from the
 		stack, then pop len bytes from the stack saving these bytes
-		to the machine address addr.
+		to machine address addr.
  prs		pop a binary integer len and a machine address addr from the
 		stack, then save at most len-1 bytes of the current output
 		string to address addr.
@@ -473,21 +475,21 @@ Symbol	pronounced  action
 		first one shifted left according to the second.
  itoc		pop the topmost integer and convert it to a single-byte
 		character.
- itoa		(followed by a null-terminated string f) pop the topmost
-		integer and convert it to a string according to printf format f.
- addradd		pop a binary integer a, pop a machine address m, and
+ itoa	(followed by a null-terminated string f) pop the topmost integer
+		and convert it to a string according to printf format f.
+ addradd	pop a binary integer a, pop a machine address m, and
 		replace them by machine address m+a.
- addrsub		pop two machine addresses m1, m2, and replace them by
+ addrsub	pop two machine addresses m1, m2, and replace them by
 		their integer difference m2-m1.
- imuladd	(followed by a binary integer mul)  pop two binary integers
+ imuladd (followed by a binary integer mul)  pop two binary integers
 		i1, i2, and replace them by the integer i1&lowast;mul+i2.
  imuladdaddr	(followed by a binary integer mul)  pop a binary integer i1,
 		a machine address m2, and replace them by the machine address
 		i1&lowast;mul+m2.
  bytetoint	pop the topmost single byte and convert it to an integer.
- seq (followed by a binary integer s)  pop two s-byte objects o1, o2,
+ seq	(followed by a binary integer s)  pop two s-byte objects o1, o2,
 		and replace them by the integer boolean result of o2=o1.
- sne(followed by a binary integer mul)	pop two s-byte objects o1, o2,
+ sne	(followed by a binary integer mul)	pop two s-byte objects o1, o2,
 		and replace them by the integer boolean result of o2#o1.
  sgt		pop two machine addresses m1, m2, and replace them by the
 		integer boolean result of m2&gt;m1.
@@ -522,7 +524,7 @@ Symbol	pronounced  action
  dsub		pop the two topmost reals and replace them by their difference.
  dmul		pop the two topmost reals and replace them by their product.
  ddiv		pop the two topmost reals and replace them by their ratio.
- dtoa		(followed by a null-terminated string f) pop the topmost real
+ dtoa	(followed by a null-terminated string f) pop the topmost real
 		and convert it to a string according to printf format f.
  daddto		pop a machine address m, pop a binary real r, and increase
 		the real at address m by r.
