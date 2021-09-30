@@ -30,7 +30,7 @@ p=&amp;(&lowast;&lowast;p).next;
 
 p.col=j
 p=p.next</span>
-    (but in fact even more similar to the once common Pascal and Modula-2, for those who remember them), with some unique features. It was born out of the effort to provide the pointer flexibility of C without the bookkeeping of &lowast;'s and &amp;'s, the function overloading of C++ without the verbosity of classes, and the function prototypes of Modula-2 (and most modern languages) without the need for dedicated header or interface files.</p>
+    (but in fact even more similar to the once common Pascal and Modula-2, for those who remember them), with some unique features. It was born out of the effort to provide the pointer flexibility of C without the bookkeeping of &lowast;'s and &amp;'s, the function overloading of C++ without the construction of classes, and the function prototypes of Modula-2 (and most modern languages) without the need for dedicated header or interface files.</p>
   <p>It also aims for the ease of use of interpreted languages like MATLAB or Python, without giving up the error-catching benefits of mandatorily declared variables and the sheer speed of compiled execution. CPL was thought out as a compiled language from the very beginning; when used for computationally intensive tasks, it inherits the speed of compiled C.
   <span class=rightinset>&gt; makecpl Helloworld
 &gt; ./Helloworld
@@ -41,7 +41,7 @@ Hello world!</span>
 A=[(1.,2.),(3.,4.)]
 WRITE eigenvalues(A)</span>
 can be seamlessly called inside a CPL program? (or from the <code>icpl</code> command line.) If the <a href="Documentation/cpl.html#Library">included libraries</a> are not enough, this feature gives easy access to a large number of public and proprietary libraries alike. And encapsulating a (e.g. <a href="http://www.netlib.org/lapack/">LAPACK</a>) call in a CPL wrapper, as exemplified in this <a href="Applications/Tutorial/lapack.html">lapack Tutorial</a>, simplifies syntax and exacts no performance penalty.</p>
-  <p>To cap this bird's-eye presentation, a hallmark aesthetic touch of CPL is the availability of all three kinds of brackets for grouping arithmetic (or other) expressions,
+  <p>To cap this bird's-eye presentation, a hallmark aesthetic touch of CPL is the availability of all three kinds of round, square, and curly brackets for grouping arithmetic (or other) expressions,
 <span class=rightinset>p(i)=EXP(-{[x(i)-mu]/sigma}^2/2)</span>
 just as you were taught in school. While to alternate brackets is optional and might be unessential to some, to do so much eases the human eye's reading and proofreading nested formulas. And it enhances automatic error catching too.</p> 
     <footer>
