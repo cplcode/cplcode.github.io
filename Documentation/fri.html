@@ -302,9 +302,9 @@ Miscellaneous, less frequently used operations
 		retranslated).
  readimage read image  reads in a binary dictionary image prepared by
 		writeimage.
- younger	younger  matches if the current input file is younger (has a
-		more recent modification time) than the file named in the top
-		output string, or the latter does not exist.
+ newer	newer  matches if the file named in the top output string exists
+		and is newer (has an equal or more recent modification time)
+		than the current input file.
  wrinputpos write input position  writes the input-stream position pointer
 		(as a binary sequence of bytes) to the output stream.
  rdinputpos read input position  pops the input-stream position pointer (as a

@@ -234,6 +234,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#WRITE">WRITE</a>:</td><td>output to character files and devices</td></tr>
 <tr><td><a href="graphics.html#gnuplot">WRITE TABLE:(graphics)gnuplot</a>:</td><td>write table to file using plot syntax</td></tr>
 <tr><td><a href="#BOOLEAN">YES:BOOLEAN</a>:</td><td>value</td></tr>
+<tr><td><a href="#Parentheses">brackets:Parentheses</a>:</td><td>Usage of round, square and curly brackets.</td></tr>
 <tr><td><a href="matrix.html#Top">cbmat:(matrix)</a>:</td><td>Complex square and Banded Matrix operations</td></tr>
 <tr><td><a href="#icpl">clear:icpl</a>:</td><td>remove variable and its associated storage</td></tr>
 <tr><td><a href="complex.html#Top">complex:(complex)</a>:</td><td>Complex numbers</td></tr>
@@ -2311,7 +2312,7 @@ The compilation and linking of a cpl <a href="#Source%20file">Source file</a> is
 
 is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; .
 
-If makecpl is given the -r option, &lt;program&gt; is run immediately after being compiled, or just run as is if an executable exists and is not older than source code and its dependencies. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/makecpl -r</q> (with the appropriate full path) or <q>#!/usr/bin/env -S makecpl -r</q> as its first line is directly executable and enjoys automatic compilation when needed.
+If makecpl is given the -r option, &lt;program&gt; is run immediately after being compiled, or just run as is if an executable exists and is not older than source code and its dependencies. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/makecpl -r</q> (with the appropriate full path) or <q>#!/usr/bin/env -S makecpl -r</q> as its first line is directly executable and enjoys automatic compilation when needed. runcpl is an alias for makecpl -r.
 
 makecpl's task is achieved by first running <a href="#cpl">cpl</a>, the CPL-to-C compiler, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="*manpages*.html#make">(&lowast;manpages&lowast;)make</a>) on this makefile. Any parameters possibly present after the program name are passed on through make to the designated C compiler and linker, or to &lt;program&gt; itself if -r was specified.
 
