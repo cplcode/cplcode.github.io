@@ -20,6 +20,10 @@
       #seal:hover {
         border-bottom: 2px solid #303030;
       }
+      .smallcpl:hover {
+        border-bottom: 2px solid #303030;
+        margin-bottom: -2px;
+      }
       .page {
         position:absolute;
         left:0; right:0;
