@@ -1,2 +1,2 @@
-2021-10-15
+2021-10-16
 Compilation now restarts automatically when modifications to an inner module require an outer one to be re-compiled; makecpl -a should be necessary no more as long as file dates are consistent. FRI info and online manual expanded, SINGLE type added to icpl, and miscellaneous corrections.
