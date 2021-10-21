@@ -83,7 +83,7 @@ Page: (cpl)Top,  Next: <a href="#Keyword%20Index">Keyword Index</a>, Up: <a href
 <tr><td><a href="#Control">Control</a>:</td><td>Program flow control statements</td></tr>
 <tr><td><a href="#makecpl">makecpl</a>:</td><td>Compilation tools and their usage</td></tr>
 <tr><td><a href="#icpl">icpl</a>:</td><td>Interactive CPL</td></tr>
-<tr><td><a href="editor.html#Top">(editor)</a>:</td><td>development text editor with CPL word and syntax completion</td></tr>
+<tr><td><a href="editor.html#Top">(editor)Top</a>:</td><td>development text editor with CPL word and syntax completion</td></tr>
 <tr><td><a href="#Library">Library</a>:</td><td>Ready to USE library of CPL modules</td></tr>
 <tr><td><a href="#Keyword%20Index">Keyword Index</a>:</td><td>Keyword Index</td></tr>
 </table></nav>
@@ -714,7 +714,7 @@ The special dimension &lowast; can be used to declare a POINTER TO ARRAY that im
 
 (same as the builtin <a href="#NORM">NORM</a> function). When this notation is used, the index bounds of the actual parameter are accessible in the function's body by the <a href="#LO">LO</a> and <a href="#HI">HI</a> builtins (in the above example, these would be v.LO and v.HI), and its number of elements by the <a href="#LENGTH">LENGTH</a> function, just as for all ARRAYs.
 
-A formal parameter OF type ARRAY(&lowast;) also accepts a variable of its base type as the actual parameter, and transforms it into an ARRAY with dimension (0..0).
+A formal parameter OF type ARRAY(&lowast;) also accepts a variable of its base type asthe actual parameter, and transforms it into an ARRAY with dimension (0..0).
 
 For more elaborate needs, for instance when two arrays must have equal dimensions, CPL allows INTEGER formal parameters to be used in the declaration of subsequent compound parameters. An example would be
 
@@ -972,8 +972,7 @@ Variable dimensions are allowed wherever constant dimensions are; the compiler a
 
 When an ARRAY is assigned in a single = statement to another of the same base type and number of elements, its lower bound is implicitly realigned. A similar realignment takes place for function arguments. Assigning to a different base type triggers a compilation error. Mismatch in the number of elements is flagged by <a href="#rtchecks">rtchecks</a>.
 
-The special dimension &lowast; can only appear in the declaration of an ARRAY formal parameter or of a POINTER TO ARRAY, and declares a special type of pointer that remembers the current dimensions of the array together with its address. A formal parameter or pointer of this type can be dynamically assigned arrays of different length and still provide runtime range checking and <a href="#FOR%20ALL">FOR
-ALL</a> looping when requested. The actual upper and lower bounds of an array index can always be recovered through the functions <a href="#HI">HI</a> and <a href="#LO">LO</a>, and the total number of elements through the function <a href="#LENGTH">LENGTH</a>. In the case of multidimensional arrays, these functions apply to the first index only; <a href="#subarray">subarray</a> selection can be used in order to extract the bounds of other indices. Alternatively, LO1, LO2, LO3 and HI1, HI2, HI3 can be used to refer to the first three indices.
+The special dimension &lowast; can only appear in the declaration of an ARRAY formal parameter (<a href="#array%20parameters">array parameters</a>) or of a POINTER TO ARRAY, and declares a special type of pointer that remembers the current dimensions of the array together with its address. A formal parameter or pointer of this type can be dynamically assigned arrays of different length and still provide runtime range checking and <a href="#FOR%20ALL">FOR ALL</a> looping when requested. The actual upper and lower bounds of an array index can always be recovered through functions <a href="#HI">HI</a> and <a href="#LO">LO</a>, and the total number of elements through function <a href="#LENGTH">LENGTH</a>. In the case of multidimensional arrays, these functions apply to the first index only; <a href="#subarray">subarray</a> selection can be used in order to extract the bounds of other indices. Alternatively, LO1, LO2, LO3 and HI1, HI2, HI3 can be used to refer to the first three indices.
 
 ARRAY elements are accessed through INTEGER indices in brackets as usual, e.g.:
 
@@ -2335,7 +2334,7 @@ install curl</q>), makecpl provides the functionality to transparently poll the 
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#cpl">cpl</a>:</td><td>The CPL-to-C compiler</td></tr>
-<tr><td><a href="fri.html#Top">fri:(fri)</a>:</td><td>The Formal Rule Interpreter</td></tr>
+<tr><td><a href="fri.html#Top">(fri)Top</a>:</td><td>The Formal Rule Interpreter</td></tr>
 <tr><td><a href="#FRI%20SECTION">FRI SECTION</a>:</td><td>Dynamic extension of the CPL language</td></tr>
 <tr><td><a href="#infocpl">infocpl</a>:</td><td>info reading script</td></tr>
 <tr><td><a href="#icpl">icpl</a>:</td><td>Interactive CPL</td></tr>
@@ -2344,7 +2343,7 @@ install curl</q>), makecpl provides the functionality to transparently poll the 
 </div><div class=page id="cpl">
 Page: (cpl)cpl,  Next: <a href="#FRI%20SECTION">FRI SECTION</a>,  Prev: <a href="#makecpl">makecpl</a>,  Up: <a href="#makecpl">makecpl</a>
 <hr> <h2>The CPL-to-C compiler</h2>
-The CPL compiler itself is not an executable file, but rather a formal description of the language that is interpreted by the Formal Rule Interpreter <a href="fri.html#Top">(fri)Top</a>. The cpl file is made executable by the shell convention of having #!/usr/bin/env fri as its first line. Where this convention is understood, the CPL-to-C compilation command is
+The CPL compiler itself is not an executable file, but rather a formal description of the language that is interpreted by the Formal Rule Interpreter <a href="fri.html#Top">(fri)Top</a>. The cpl file is made executable by the shell convention of having <q>#!/usr/bin/env fri</q> as its first line. Where this convention is understood, the CPL-to-C compilation command is
 
 	cpl &lt;source.cpl&gt;
 
