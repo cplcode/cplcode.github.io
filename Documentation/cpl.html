@@ -67,7 +67,7 @@ Page: (cpl)Top,  Next: <a href="#Keyword%20Index">Keyword Index</a>, Up: <a href
 <hr>Documentation for the CPL programming language and its compiler, October 2021. Printable and citable version can be found at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
 
   CPL = Concealed Pointer Lookup
-  CPL = Custom Parameter Lists
+  CPL = Coacting Parameter Lists
   CPL = Consistent Procedure Linkage
   CPL = Compiled Programming Language
   CPL = Created by Paolo Luchini
@@ -369,7 +369,7 @@ Some email servers automatically reject files with the .cpl extension because th
 Page: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a>
 <hr> <h1>The CPL programming language syntax</h1>
   CPL = Concealed Pointer Lookup
-  CPL = Custom Parameter Lists
+  CPL = Coacting Parameter Lists
   CPL = Consistent Procedure Linkage
   CPL = Computer Programming Language
   CPL = Created by Paolo Luchini
@@ -386,7 +386,7 @@ Round, square and curly brackets can be used interchangeably wherever a parenthe
 
 Subroutine and function declarations (<a href="#Functions">Functions</a>) are on the same footing as all other <a href="#VARIABLE">VARIABLE</a>, <a href="#CONSTANT">CONSTANT</a> and <a href="#TYPE">TYPE</a> declarations. Contrary to many other languages, declarations (<a href="#Declarations">Declarations</a>) and executable statements (<a href="#Statements">Statements</a>) may be freely intermixed in the program flow. The scope of a declaration extends from the position where the declaration appears down to the end of the containing block. It is recommended that declarations appear as close as possible to the position where the declared item is used for the first time, as this enables the compiler to catch a larger number of errors automatically. In most situations, a variable can be declared and initialized in a single statement.
 
-CPL has Custom Parameter Lists, meaning that not just commas but any non-ambiguous single character or character sequence may be used as parameter separators in function calls. (<a href="#Functions">Custom Parameter Lists:Functions</a>) Whereas commas will still be the commonest choice for short parameter lists, a remindful choice of separators can make long parameter lists both more understandable and more thoroughly checked by the compiler. Parameters may also be <a href="#OPTIONAL">OPTIONAL</a>, and be specified by name rather than by position.
+CPL has Coacting Parameter Lists, meaning that the type definition of a function's parameter list coacts with its name in identifying the function or subroutine. In other words, functions of the same name and different parameter types are allowed and considered distinct by the language. In addition, not just commas but any non-ambiguous single characters or character sequences may be used as parameter separators in function calls, and equally cooperate in disambiguating the function. (<a href="#Functions">Coacting Parameter Lists:Functions</a>) Whereas commas will still be the commonest choice for short parameter lists, a remindful choice of separators can make long parameter lists both more understandable and more thoroughly checked by the compiler. Parameters can also be <a href="#OPTIONAL">OPTIONAL</a>, and be specified by name rather than by position.
 
 Loops and all other flow control statements (<a href="#Control">Control</a>) implicitly define new blocks within them, just as subroutine declarations do. A block can also be explicitly delimited as a <a href="#MODULE">MODULE</a>. A block can contain every declaration that the outermost block can, including further subroutines and modules, but the declared items cease to exist on exit from the block.
 
@@ -588,7 +588,7 @@ A short syntax is also available for subroutines
 
 where &lt;single-line block&gt; is a sequence of statements separated by semicolons and terminating at the first newline.
 
-CPL has Custom Parameter lists, meaning that not just commas but any non-ambiguous single character or character sequence may be used as parameter separator. In parameter declarations non-alphanumeric separators can be specified verbatim, whereas separators that could be mistaken for identifiers are to be enclosed in (either single or double) quotes. In subroutine and function calls the quotes are omitted, and the compiler enforces conforming separators. Whereas commas will still be the commonest choice for short parameter lists, the adoption of remindful separators can make long parameter lists both more understandable and more thoroughly checked by the compiler.
+CPL has Coacting Parameter Lists, meaning that the type definition of a function's parameter list coacts with its name in identifying the function or subroutine. In other words, functions of the same name and different parameter types are allowed and considered distinct by the language. In addition, not just commas but any non-ambiguous single characters or character sequences may be used as parameter separators in function calls, and equally cooperate in disambiguating the function. Whereas commas will still be the commonest choice for short parameter lists, a remindful choice of separators can make long parameter lists both more understandable and more thoroughly checked by the compiler. Parameters can also be <a href="#OPTIONAL">OPTIONAL</a>, and be specified by name rather than by position.
 
 Formal parameter declarations otherwise follow the same syntax as normal variable declarations, and are distinguished both by their position within the parenthesis following the subroutine or function name and by separator matching. Round, square or curly brackets can be used, just as everywhere else (<a href="#Parentheses">Parentheses</a>). However an important difference exists: whereas general variables are by default <a href="#VARIABLE">VARIABLE</a>, i.e. can be assigned a value multiple times, and must be explicitly declared <a href="#CONSTANT">CONSTANT</a> to become inalterable, formal parameters are by default CONSTANT and only become VARIABLE if explicitly declared so. Parameters can be <a href="#OPTIONAL">OPTIONAL</a>, and be specified by name rather than by position.
 
@@ -702,7 +702,7 @@ Functions and subroutines exist on a par with variable <a href="#Declarations">D
 </div><div class=page id="overloading">
 Page: (cpl)overloading, Next: <a href="#array%20parameters">array parameters</a>, Prev: <a href="#nested%20functions">nested functions</a>, Up: <a href="#Functions">Functions</a>
 <hr> <h2>Function name overloading</h2>
-Function overloading is an inherent feature of CPL. Since type checking is enforced on function arguments, functions and subroutines of the same name but different (not <a href="#OPTIONAL">OPTIONAL</a>) arguments can be distinguished from each other, and are transparently handled. This also works for runtime specified types: see <a href="#DYNAMIC">DYNAMIC</a>. 
+Function overloading (aka Coacting Parameter Lists) is an inherent feature of CPL. Since type checking is enforced on function arguments, functions and subroutines of the same name but different (not <a href="#OPTIONAL">OPTIONAL</a>) arguments can be distinguished from each other, and are transparently handled. This also works for single or multiple runtime specified types: see <a href="#DYNAMIC">DYNAMIC</a>. 
 </div><div class=page id="array%20parameters">
 Page: (cpl)array parameters, Next: <a href="#RESULT">RESULT</a>, Prev: <a href="#overloading">overloading</a>, Up: <a href="#Functions">Functions</a>
 <hr> <h2>Passing array parameters and their dimensions</h2>
@@ -936,7 +936,7 @@ A structure declaration may also contain one or more anonymous fields. If a type
 
 var includes a field of type t1 of which var.a denotes the <q>a</q> field.
 
-Anonymous structure fields are the CPL way of defining objects that inherit the structure of other more general objects and add their own specific fields. When these objects are accessed as arguments to functions or subroutines, the appropriate function among those with the same name and different arguments is automatically selected. See also <a href="#overloading">overloading</a>, <a href="#DYNAMIC">DYNAMIC</a>.
+Anonymous structure fields are CPL's way to define objects that inherit the structure of other more general objects and add their own specific fields. When these objects are accessed as arguments to functions or subroutines, the appropriate function among those with the same name and different arguments is automatically selected. See also <a href="#overloading">overloading</a>, <a href="#DYNAMIC">DYNAMIC</a>.
 
 <nav><table>
 <tr><td><a href="#Menu%20*%20variable%20size">Menu
