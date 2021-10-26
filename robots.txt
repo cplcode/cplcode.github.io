@@ -1,4 +1,5 @@
 User-agent: *
 Disallow: /images/
+Allow: /images/CPL-logo.png
 Disallow: /version-archive/
 Allow: /version-archive/changelog.html
