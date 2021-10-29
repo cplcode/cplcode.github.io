@@ -342,8 +342,11 @@ Is . in your PATH? Many Linux distributions do not by default have your current 
  2) modify your PATH environment variable (look up instructions for your shell)
  3) use <a href="#icpl">icpl</a> as your shell (either <q>icpl Helloworld</q> or just <q>icpl</q> and then <q>Helloworld</q>). icpl will automatically compile and execute &lt;yourprogram&gt; if a more recent &lt;yourprogram&gt;.cpl file is found in the same directory, or interpret &lt;yourprogram&gt;.cpl if the .cpl suffix is included.
 
+<h3>Why should I be concerned with compilation, anyway?</h3>
+If you are more at ease using an interpreter, and executing your program with a single command, just use <q>makecpl -r</q> (or its alias runcpl) as you would your interpreter. Compilation will happen automatically in the background. You can even put <q>#!/usr/bin/env -S makecpl -r</q> as the first line of your program and make it immediately executable under the unix interpreter convention.
+
 <h3>My program crashes without any error messages</h3>
-Always put <q>USE rtchecks</q> as the first line of your main program file during development. <a href="#rtchecks">rtchecks</a> transparently adds a number of runtime checks and error messages at the expense of execution speed. You will remove it once your program is debugged.
+Always put <q>USE rtchecks</q> near the beginning of your main program file during development. <a href="#rtchecks">rtchecks</a> transparently adds a number of runtime checks and error messages at the expense of execution speed. You will remove it once your program is debugged.
 
 <h3>I want to access icpl from my Desktop</h3>
 Drag and drop the <q>interactive CPL</q> icon from wherever your <q>fri</q> directory is (typically, /usr/local/fri or $HOME/fri) to your Desktop.
