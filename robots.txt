@@ -1,7 +1,2 @@
 User-agent: *
-Disallow: /images/
-Allow: /images/CPL-logo.png
-Allow: /images/1944x1944.jpg
-Allow: /images/Author.jpg
 Disallow: /version-archive/
-Allow: /version-archive/changelog.html
