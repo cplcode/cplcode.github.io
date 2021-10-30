@@ -1,2 +1,7 @@
 User-agent: *
 Disallow: /version-archive/
+Disallow: /images/bugreports.png
+Disallow: /images/toauthor.png
+Disallow: /images/towebmaster.png
+Disallow: /images/Under-Construction.png
+Disallow: /images/Policastro.png
