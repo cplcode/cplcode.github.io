@@ -1,7 +1,6 @@
 User-agent: *
 Disallow: /version-archive/
-Disallow: /images/bugreports.png
-Disallow: /images/toauthor.png
-Disallow: /images/towebmaster.png
-Disallow: /images/Under-Construction.png
-Disallow: /images/Policastro.jpg
+Disallow: /images/
+Allow: /images/Paolo-Luchini-1944x1944.jpg
+Allow: /images/Paolo-Luchini-con-foglie.jpg
+Allow: /images/CPL-logo.png
