@@ -24,14 +24,14 @@
       <li>Compiled Programming Language</li>
       <li>Created by Paolo Luchini</li>
     </ul>
-    <p>This CPL, unrelated to the <em>Cambridge</em> or <em>Combined Programming Language</em>, is a general-purpose programming language akin to FORTRAN or C
+    <p>This CPL, unrelated to the <a href="https://en.wikipedia.org/wiki/CPL_(programming_language)"><em>Cambridge</em> or <em>Combined Programming Language</em></a>, is a general-purpose programming language akin to <a href="https://en.wikipedia.org/wiki/Fortran">FORTRAN</a> or <a href="https://en.wikipedia.org/wiki/C_(programming_language)">C</a>
     <span class=leftinset>(&lowast;&lowast;p).col=j;
 p=&amp;(&lowast;&lowast;p).next;
 
 p.col=j
 p=p.next</span>
-    (but in fact even more similar to the once common Pascal and Modula-2, for those who remember them), with some unique features. It was born out of the effort to provide the pointer flexibility of C without the bookkeeping of &lowast;'s and &amp;'s, the function overloading of C++ without the construction of classes, and the function prototypes of Modula-2 (and most modern languages) without the need for dedicated header or interface files.</p>
-  <p>It also aims for the ease of use of interpreted languages like MATLAB or Python, without giving up the error-catching benefits of mandatorily declared variables and the sheer speed of compiled execution. CPL was thought out as a compiled language from the very beginning; when used for computationally intensive tasks, it inherits the speed of compiled C.
+    (but in fact even more similar to the once common <a href="https://en.wikipedia.org/wiki/Pascal_(programming_language)">Pascal</a> and <a href="https://en.wikipedia.org/wiki/Modula-2">Modula-2</a>, for those who remember them), with some unique features. It was born out of the effort to provide the pointer flexibility of C without the bookkeeping of &lowast;'s and &amp;'s, the function overloading of C++ without the construction of classes, and the function prototypes of Modula-2 (and most modern languages) without the need for dedicated header or interface files.</p>
+  <p>It also aims for the ease of use of interpreted languages like <a href="https://www.mathworks.com/products/matlab.html">MATLAB</a> or <a href="https://www.python.org/">Python</a>, without giving up the error-catching benefits of mandatorily declared variables and the sheer speed of compiled execution. CPL was thought out as a compiled language from the very beginning; when used for computationally intensive tasks, it inherits the speed of compiled C.
   <span class=rightinset>&gt; makecpl Helloworld
 &gt; ./Helloworld
 Hello world!</span>
@@ -40,10 +40,10 @@ Hello world!</span>
   <span class=leftinset>USE lapack-eigenvalues
 A=[(1.,2.),(3.,4.)]
 WRITE eigenvalues(A)</span>
-can be seamlessly called inside a CPL program? (or from the <code>icpl</code> command line.) If the <a href="Documentation/cpl.html#Library">included libraries</a> are not enough, this feature gives easy access to a large number of public and proprietary libraries alike. And encapsulating a (e.g. <a href="http://www.netlib.org/lapack/">LAPACK</a>) call in a CPL wrapper, as exemplified in this <a href="Applications/Tutorial/lapack">lapack Tutorial</a>, simplifies syntax and exacts no performance penalty.</p>
+can be seamlessly called inside a CPL program? (or from the  <a href="Documentation/cpl.html#icpl"><code>icpl</code></a> command line.) If the <a href="Documentation/cpl.html#Library">included libraries</a> are not enough, this feature gives easy access to a large number of public and proprietary libraries alike. And encapsulating a (e.g. <a href="http://www.netlib.org/lapack/">LAPACK</a>) call in a CPL wrapper, as exemplified in this <a href="Applications/Tutorial/lapack">lapack Tutorial</a>, simplifies syntax and exacts no performance penalty.</p>
   <p>To cap this bird's-eye presentation, a hallmark aesthetic touch of CPL is the availability of all three kinds of round, square, and curly <a href="Documentation/cpl.html#brackets">brackets</a> for grouping arithmetic (or other) expressions,
 <span class=rightinset>p(i)=EXP(-{[x(i)-mu]/sigma}^2/2)</span>
-just as you were taught in school. While to alternate brackets is optional and might be unessential to some, to do so much eases the human eye's reading and proofreading nested formulas. And it enhances automatic error catching too.</p> 
+just as you were taught in school. While to alternate brackets is optional and might be unessential to some, to do so much eases the human eye's reading and proofreading nested formulas; and it enhances automatic error catching too. The enclosed <a href="Documentation/editor.html#full-screen">text editor</a> can automatically complete and alternate brackets for you.</p> 
     <footer>
       <p><a href="./">Back</a></p>
     </footer>
