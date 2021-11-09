@@ -5,8 +5,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="author" content="Paolo Luchini">
     <meta name="copyright" content="Copyright 2020 Paolo Luchini">
-    <meta name="description" content="CPL is a programming language designed and developed by Paolo Luchini during 1993-2021. Documentation and distribution offered for download includes a compiler, interpreter and text editor. Libraries provide matrix operations, graphics plotting and symbolic manipulation blended into the language syntax.">
-    <meta name="keywords" content="cpl CPL numerical computation computational code program programmer programming language compiler interpreter editor fri FRI makecpl icpl edit parentheses brackets braces matrix graphics symbolic">
+    <meta name="description" content="CPL is a programming language designed and developed by Paolo Luchini during 1993-2021. Documentation and distribution offered for download includes a compiler, interpreter and text editor. Arrays are fully bounds-checked. Libraries provide matrix operations, graphics plotting and symbolic manipulation blended into the language syntax.">
+    <meta name="keywords" content="cpl CPL numerical computation computational code program programmer programming language compiler interpreter editor fri FRI makecpl icpl edit bounds-checked array parenthesis bracket brace matrix plotting symbolic">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="https://CPLcode.net/What-is-CPL">
     <link rel="stylesheet" href="singlecol.css">
@@ -25,26 +25,36 @@
       <li>Created by Paolo Luchini</li>
     </ul>
     <p>This CPL, unrelated to the <a href="https://en.wikipedia.org/wiki/CPL_(programming_language)"><em>Cambridge</em> or <em>Combined Programming Language</em></a>, is a general-purpose programming language akin to <a href="https://en.wikipedia.org/wiki/Fortran">FORTRAN</a> or <a href="https://en.wikipedia.org/wiki/C_(programming_language)">C</a>
-    <span class=leftinset>(&lowast;&lowast;p).col=j;
+    <span class=rightinset>(&lowast;&lowast;p).col=j;
 p=&amp;(&lowast;&lowast;p).next;
 
 p.col=j
 p=p.next</span>
-    (but in fact even more similar to the once common <a href="https://en.wikipedia.org/wiki/Pascal_(programming_language)">Pascal</a> and <a href="https://en.wikipedia.org/wiki/Modula-2">Modula-2</a>, for those who remember them), with some unique features. It was born out of the effort to provide the pointer flexibility of C without the bookkeeping of &lowast;'s and &amp;'s, the function overloading of C++ without the scaffolding of classes, and the function prototypes of Modula-2 (and most modern languages) without the need for dedicated header or interface files.</p>
-  <p>It also aims for the ease of use of interpreted languages like <a href="https://www.mathworks.com/products/matlab.html">MATLAB</a> or <a href="https://www.python.org/">Python</a>, without giving up the error-catching benefits of mandatorily declared variables and the sheer speed of compiled execution. CPL was thought out as a compiled language from the very beginning; when used for computationally intensive tasks, it inherits the speed of compiled C.
-  <span class=rightinset>&gt; makecpl Helloworld
+    (but in fact even more similar to the once popular <a href="https://en.wikipedia.org/wiki/Pascal_(programming_language)">Pascal</a> and <a href="https://en.wikipedia.org/wiki/Modula-2">Modula-2</a>, for those who remember them), with some unique features. It was born out of the effort to provide the pointer flexibility of C without the bookkeeping of &lowast;'s and &amp;'s, the function overloading of C++ without the scaffolding of classes, and the function prototypes of Modula-2 (and most modern languages) without the need for dedicated header or interface files.</p>
+
+<p>It also aims for the ease of use of interpreted languages like <a href="https://www.mathworks.com/products/matlab.html">MATLAB</a> or <a href="https://www.python.org/">Python</a>, without giving up the error-catching benefits of mandatorily declared variables and the sheer speed of compiled execution. CPL was thought out as a compiled language from the very beginning; when used for computationally intensive tasks, it inherits the speed of compiled C.
+  <span class=leftinset>&gt; makecpl Helloworld
 &gt; ./Helloworld
 Hello world!</span>
-  In fact, its compiler is implemented as a nimble translator to C which then invokes the system C compiler; this action, as well as the re-making of any required modules that were modified in the meanwhile, occurs behind the scenes at a single <a href="Documentation/cpl.html#makecpl"><code>makecpl</code></a> command. Later the <a href="Documentation/cpl.html#icpl"><code>icpl</code></a> interpreter was also developed, with the ability to run a combination of interpreted and compiled CPL modules, as well as any function provided by an existing C library, interactively from its console.</p>
-  <p>One of the CPL compiler's distinctive features is that its syntax can be extended incrementally. The <a href="Documentation/cpl.html#Library">included libraries</a> thus provide <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">graphics plotting</a>, and <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>,
+  In fact, its  <a href="Documentation/cpl.html#cpl">compiler</a> is implemented as a nimble translator to C which then invokes the system C compiler; this action, as well as the re-making of any required modules that were modified in the meanwhile, occurs behind the scenes at a single <a href="Documentation/cpl.html#makecpl"><code>makecpl</code></a> command. Later the <a href="Documentation/cpl.html#icpl"><code>icpl</code></a> interpreter was also developed, with the ability to run a combination of interpreted and compiled CPL modules, as well as any function provided by an existing C library, interactively from its console.</p>
+
+<p>CPL's <a href="Documentation/cpl.html#ARRAY">arrays</a>
+<span class=rightinset>STRUCTURE(REAL a,b,c) s(-2..8)
+REAL v(-9..15,3)
+s(-1..5).a=2*v(-2..4,2)</span>
+allow variable as well as fixed dimensions, with user-specified lower and upper bounds,
+and are (on request) fully bounds-checked at run time. A wide range of subarray operations is provided.</p>
+
+<p>The CPL compiler's most distinctive feature is that its syntax can be extended incrementally. The <a href="Documentation/cpl.html#Library">included libraries</a> thus provide <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">graphics plotting</a>, and <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>,
   <span class=leftinset>USE lapack-eigenvalues
 A=[(1.,2.),(3.,4.)]
 WRITE eigenvalues(A)</span>
-just to name three examples, blended into the language syntax.
+just to name three examples, all blended into the language syntax.
 Additionally, any function provided by an external C or FORTRAN library can be seamlessly called inside a CPL program (or from the  <a href="Documentation/cpl.html#icpl"><code>icpl</code></a> command line), giving access to a large number of public and proprietary libraries alike. And to encapsulate a (e.g. <a href="http://www.netlib.org/lapack/">LAPACK</a>) call in a CPL wrapper, as exemplified in this <a href="Applications/Tutorial/lapack">lapack Tutorial</a>, simplifies syntax and exacts no performance penalty.</p>
+
   <p>To cap this bird's-eye presentation, a hallmark aesthetic touch of CPL is the availability of all three kinds of round, square, and curly <a href="Documentation/cpl.html#Parentheses">brackets</a> for grouping arithmetic (or other) expressions,
 <span class=rightinset>p(i)=EXP(-{[x(i)-mu]/sigma}^2/2)</span>
-just as you were taught in school. While to alternate parentheses, brackets and braces is optional and might be unessential to some, to do so much eases the human eye's reading and proofreading nested formulas; and it enhances automatic error catching too. The enclosed <a href="Documentation/editor.html#full-screen">text editor</a> can automatically complete parentheses and alternate brackets for you.</p> 
+just as you were taught in school. While to alternate parentheses, brackets and braces is optional and might be unessential to some, to do so much eases the human eye's reading and proofreading nested formulas; and it enhances automatic error catching too. The provided <a href="Documentation/editor.html#full-screen">text editor</a> can automatically complete parentheses and alternate bracket types for you.</p> 
     <footer>
       <p><a href="./">Back</a></p>
     </footer>
