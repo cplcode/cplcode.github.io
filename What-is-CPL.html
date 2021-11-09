@@ -38,12 +38,11 @@ p=p.next</span>
 Hello world!</span>
   In fact, its  <a href="Documentation/cpl.html#cpl">compiler</a> is implemented as a nimble translator to C which then invokes the system C compiler; this action, as well as the re-making of any required modules that were modified in the meanwhile, occurs behind the scenes at a single <a href="Documentation/cpl.html#makecpl"><code>makecpl</code></a> command. Later the <a href="Documentation/cpl.html#icpl"><code>icpl</code></a> interpreter was also developed, with the ability to run a combination of interpreted and compiled CPL modules, as well as any function provided by an existing C library, interactively from its console.</p>
 
-<p>CPL's <a href="Documentation/cpl.html#ARRAY">arrays</a>
+<p>CPL <a href="Documentation/cpl.html#ARRAY">arrays</a>
 <span class=rightinset>STRUCTURE(REAL a,b,c) s(-2..8)
 REAL v(-9..15,3)
 s(-1..5).a=2*v(-2..4,2)</span>
-allow variable as well as fixed dimensions, with user-specified lower and upper bounds,
-and are (on request) fully bounds-checked at run time. A wide range of subarray operations is provided.</p>
+allow variable as well as fixed dimensions, with specified lower and upper bounds of each index, and are (on request) fully bounds-checked at run time. A wide range of subarray operations is provided.</p>
 
 <p>The CPL compiler's most distinctive feature is that its syntax can be extended incrementally. The <a href="Documentation/cpl.html#Library">included libraries</a> thus provide <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">graphics plotting</a>, and <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>,
   <span class=leftinset>USE lapack-eigenvalues
