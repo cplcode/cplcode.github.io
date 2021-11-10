@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="author" content="Paolo Luchini">
     <meta name="copyright" content="Copyright 2020 Paolo Luchini">
-    <meta name="description" content="CPL is a programming language designed and developed by Paolo Luchini during 1993-2021. Documentation and distribution offered for download includes a compiler, interpreter and text editor. Arrays are fully bounds-checked. Libraries provide matrix operations, graphics plotting and symbolic manipulation blended into the language syntax.">
+    <meta name="description" content="CPL is a programming language designed and developed by Paolo Luchini during 1993-2021. Documentation and distribution offered for download includes a compiler, interpreter and text editor. Arrays are fully bounds-checked. Libraries provide matrix operations, gnuplot graphics and symbolic manipulation blended into the language syntax.">
     <meta name="keywords" content="cpl CPL numerical computation computational code program programmer programming language compiler interpreter editor fri FRI makecpl icpl edit bounds-checked array parenthesis bracket brace matrix plotting symbolic">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="canonical" href="https://CPLcode.net/What-is-CPL">
@@ -40,15 +40,15 @@ Hello world!</span>
 
 <p>CPL <a href="Documentation/cpl.html#ARRAY">arrays</a>
 <span class=rightinset>STRUCTURE(REAL a,b,c) s(-2..8)
-REAL v(-9..15,3)
-s(-1..5).a=2*v(-2..4,2)</span>
-allow variable as well as fixed dimensions, with specified lower and upper bounds of each index, and are (on request) fully bounds-checked at run time. A wide range of subarray operations is provided.</p>
+REAL v(-9..15,7)
+s(-1..5).a=2*v(-2..4,7)</span>
+allow variable as well as fixed dimensions, with specified lower and upper bounds of each index, and are (on request) fully bounds-checked. An ample set of subarray selections is efficiently supported.</p>
 
-<p>The CPL compiler's most distinctive feature is that its syntax can be extended incrementally. The <a href="Documentation/cpl.html#Library">included libraries</a> thus provide <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">graphics plotting</a>, and <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>,
+<p>The CPL compiler's most distinctive feature is that its syntax can be extended incrementally. The <a href="Documentation/cpl.html#Library">included libraries</a> do so to provide <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">gnuplot graphics</a>, and <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>,
   <span class=leftinset>USE lapack-eigenvalues
 A=[(1.,2.),(3.,4.)]
 WRITE eigenvalues(A)</span>
-just to name three examples, all blended into the language syntax.
+just to name three examples, all blended into the <a href="Documentation/cpl.html#Syntax">language syntax</a>.
 Additionally, any function provided by an external C or FORTRAN library can be seamlessly called inside a CPL program (or from the  <a href="Documentation/cpl.html#icpl"><code>icpl</code></a> command line), giving access to a large number of public and proprietary libraries alike. And to encapsulate a (e.g. <a href="http://www.netlib.org/lapack/">LAPACK</a>) call in a CPL wrapper, as exemplified in this <a href="Applications/Tutorial/lapack">lapack Tutorial</a>, simplifies syntax and exacts no performance penalty.</p>
 
   <p>To cap this bird's-eye presentation, a hallmark aesthetic touch of CPL is the availability of all three kinds of round, square, and curly <a href="Documentation/cpl.html#Parentheses">brackets</a> for grouping arithmetic (or other) expressions,
