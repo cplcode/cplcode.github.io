@@ -346,6 +346,22 @@ Is . in your PATH? Many Linux distributions do not by default have your current 
 <h3>Why should I be concerned with compilation, anyway?</h3>
 If you are more at ease using an interpreter, and executing your program with a single command, just use <q>makecpl -r</q> (or its alias runcpl) as you would your interpreter. Compilation will happen automatically in the background. You can even put <q>#!/usr/bin/env -S makecpl -r</q> as the first line of your program and make it immediately executable under the unix interpreter convention.
 
+<h3>I want to use a specialized C compiler</h3>
+In order to apply a non-default C compiler to your CPL program, define the CC environment variable, either for the duration of the session as in
+
+ 	export CC=&lt;myspecialCcompiler&gt;
+
+or of a single command:
+
+ 	CC=&lt;myspecialCcompiler&gt; makecpl &lt;myprogram&gt;
+
+With a compiler other than gcc, you may be unable to use <a href="#nested%20functions">nested
+functions</a>. If you also want some of the CPL provided libraries to be recompiled, include a symbolic link for each in your local working directory as in
+
+ 	ln -s ~/fri/rbmat.cpl .
+
+The original won't be affected.
+
 <h3>My program crashes without any error messages</h3>
 Always put <q>USE rtchecks</q> near the beginning of your main program file during development. <a href="#rtchecks">rtchecks</a> transparently adds a number of runtime checks and error messages at the expense of execution speed. You will remove it once your program is debugged.
 
