@@ -1,2 +1,2 @@
-2021-11-12
-Renewed strategy of parentheses autocompletion in the editor, use of for in generated C code, and various mixed corrections.
+2021-11-13
+Renewed strategy of parenthesis autocompletion and richer word autocompletion in the editor, use of "for" rather than "while" in generated C code, and various mixed corrections.

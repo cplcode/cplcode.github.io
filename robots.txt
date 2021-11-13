@@ -1,5 +1,4 @@
 User-agent: *
-Disallow: /version-archive/
 Disallow: /images/
 Allow: /images/Paolo-Luchini-1944x1944.jpg
 Allow: /images/Paolo-Luchini-con-foglie.jpg
