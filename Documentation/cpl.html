@@ -341,7 +341,7 @@ Is . in your PATH? Many Linux distributions do not by default have your current 
  3) use <a href="#icpl">icpl</a> as your shell (either <q>icpl Helloworld</q> or just <q>icpl</q> and then <q>Helloworld</q>). icpl will automatically compile and execute &lt;yourprogram&gt; if a more recent &lt;yourprogram&gt;.cpl file is found in the same directory, or interpret &lt;yourprogram&gt;.cpl if the .cpl suffix is included.
 
 <h3>Why should I be concerned with compilation, anyway?</h3>
-If you are more at ease using an interpreter, and executing your program with a single command, just use <q>makecpl -r</q> (or its alias runcpl) as you would your interpreter. Compilation will happen automatically in the background. You can even put <q>#!/usr/bin/env -S makecpl -r</q> as the first line of your program and make it immediately executable under the unix interpreter convention.
+If you are more at ease with the single-command execution usually provided by an interpreter, just use <q>makecpl -r</q> (or its alias <q>runcpl</q>, see <a href="#makecpl">makecpl</a>) as you would your interpreter. Compilation will happen automatically in the background. You can even put <q>#!/usr/bin/env -S makecpl -r</q> at the top of your program, and make it executable under the unix interpreter convention.
 
 <h3>I want to use a specialized C compiler</h3>
 In order to apply a non-default C compiler to your CPL program, define the CC environment variable, either for the duration of the session as in
@@ -353,7 +353,7 @@ or of a single command:
  	CC=&lt;myspecialCcompiler&gt; makecpl &lt;myprogram&gt;
 
 With a compiler other than gcc, you may be unable to use <a href="#nested-functions">nested
-functions</a>. If you also want some of the CPL provided libraries to be recompiled, include a symbolic link for each in your local working directory as in
+functions</a>. If you also want some of the CPL provided libraries to be recompiled, include a symbolic link for each in your local working directory as in the example
 
  	ln -s ~/fri/rbmat.cpl .
 

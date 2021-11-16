@@ -120,7 +120,8 @@ Most used editing keys:
  - Tab: autocomplete keyword or identifier. Successive tabs move forward along
    the list of available completions; Shift-Tab moves backwards.
  - Enter: Enter new line, and trigger possible autocompletion of CPL syntax
- - Esc =: Autoindent current line or selection (<a href="#Indentation">Indentation</a>)
+ - Esc =: Autoindent current line or selection (<a href="#Indentation-and-completion">Indentation and
+completion</a>)
  - F1, Esc Space: switch in and out of command-line mode.
  - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
  - Esc \, Ctrl-\: add next (special or control) character verbatim.
@@ -145,13 +146,13 @@ Most prompts and menus can be aborted by pressing Esc &lowast;twice&lowast;.
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#Select">Select</a>:</td><td>text selection, insertion and deletion</td></tr>
-<tr><td><a href="#Indentation">Indentation</a>:</td><td>CPL syntax-sensitive indentation and completion</td></tr>
+<tr><td><a href="#Indentation-and-completion">Indentation and completion</a>:</td><td>CPL syntax-sensitive indentation and completion</td></tr>
 <tr><td><a href="#Find">Find</a>:</td><td>find and replace functionality</td></tr>
 <tr><td><a href="#Undo">Undo</a>:</td><td>and redo</td></tr>
 </table></nav>
 
 </div><div class=page id="Select">
-Page: (editor)Select, Next: <a href="#Indentation">Indentation</a>, Prev: <a href="#full-screen">full-screen</a>, Up: <a href="#Top">Top</a>
+Page: (editor)Select, Next: <a href="#Indentation-and-completion">Indentation and completion</a>, Prev: <a href="#full-screen">full-screen</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>Select, Insert and Delete</h3>
 Selection of a text area is achieved either by keeping the left mouse button pressed or by pressing shift together with arrow keys. Selection can apply to the text enclosed between the starting and ending selected positions or to a rectangular area with the given corners (useful for column selection). Esc t toggles in and out of rectangle mode. Esc w or double-clicking the mouse selects the word under the cursor; if applied to an opening or closing bracket, Esc w or double clicking selects the entire parenthesis. Esc n or triple clicking selects the line under the cursor. Esc <q>S</q>, or clicking save with the right mouse button, saves the current selection to a file.
 
@@ -171,8 +172,8 @@ In the way of example, in order to:
 Esc !, respectively Esc @, turns the current selection to all uppercase or all lowercase letters.
 
 The copy-and-paste functionality of the underlying xterm-compatible terminal is also available, and necessary if you want to copy some text to/from the X clipboard. This is accessed by pressing Shift together with the corresponding xterm mouse button (left button to select, center button to paste). Ctrl-Insert and Shift-Insert also keep their function of copying to/from the X clipboard. 
-</div><div class=page id="Indentation">
-Page: (editor)Indentation, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a>
+</div><div class=page id="Indentation-and-completion">
+Page: (editor)Indentation and completion, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>CPL syntax-sensitive indentation and completion</h3>
 When a .cpl file is being edited, pressing Enter at the end of a freshly modified line automatically:
 
@@ -189,13 +190,15 @@ When a .cpl file is being edited, pressing Enter at the end of a freshly modifie
     mathematics (<a href="cpl.html#Parentheses">(cpl)Parentheses</a>), the editor automatically alternates
     the three kinds even if only one kind is typed in.
 
-In addition, word completion using the Tab key is available in full-screen just as in readline mode.
-
 Where needed, the following explicit indentation commands are available:
 
  Esc ) : indent the current selection one more space to the right,
  Esc ( : unindent the current selection by one space to the left,
- Esc = : even the margin of the current selection, or indent as to CPL syntax. 
+ Esc = : even the margin of the current selection, or indent as to CPL syntax.
+
+In addition, word completion using the Tab key is available in full-screen just as in readline mode. Successive tabs move forward along the list of available completions; Shift-Tab moves backwards. A hint is shown under the cursor at the end of the current line, foreshowing in faint characters what completion pressing Tab would currently produce.
+
+Parentheses and quote completion also operates, automatically adding closed parentheses and quotes at the time they are opened. 
 </div><div class=page id="Find">
 Page: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#Top">Top</a>
 <hr> <h3>Find and replace</h3>
