@@ -7,7 +7,7 @@
 ! in accordance with P. Luchini, Phys. Rev. Letters 118, 224501 (2017).
 !
 ! TurbMeanFlow.cpl -- Copyright 2018-2021 Paolo Luchini
-! http://CPLcode.net/Applications/FluidMechanics/TurbMeanFlow/
+! http://CPLcode.net/Applications/FluidMechanics/TurbMeanFlow
 
 !( Permission is hereby granted, free of charge, to use and copy this software
   provided the above comments and citations are kept intact. !)
