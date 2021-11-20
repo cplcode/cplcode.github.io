@@ -979,7 +979,7 @@ The prefix type declarator for arrays is
 
 	ARRAY(dimension[,dimension]) OF &lt;type&gt;
 
-The postfix declarator is just (dimension[,dimension]). Each dimension is specified either as &lt;lower bound&gt;..&lt;upper bound&gt; or as &lt;upper bound&gt; only, in which case the lower bound is taken to be zero. Specifying multiple dimensions, like in ARRAY(dimension1,dimension2) OF, is a shorthand for
+The postfix declarator is just (dimension[,dimension]). Each dimension is specified either as &lt;lower bound&gt;..&lt;upper bound&gt; or as &lt;upper bound&gt; only, in which case the lower bound is taken to be unity. Specifying multiple dimensions, like in ARRAY(dimension1,dimension2) OF, is a shorthand for
 
 	ARRAY(dimension1) OF ARRAY(dimension2) OF
 
@@ -1042,7 +1042,7 @@ The function LENGTH applied to an ARRAY returns its number of elements. LENGTH i
 </div><div class=page id="STRING">
 Page: (cpl)STRING, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#ARRAY">ARRAY</a>, Up: <a href="#Declarations">Declarations</a>
 <hr> <h2>STRINGs</h2>
-Type declaration STRING is a synonim for ARRAY(&lowast;) OF <a href="#CHAR">CHAR</a>, and can be used wherever the last can. In particular, a STRING can be subscripted or <a href="#subarray">subarray</a> extracted, and its bounds and length are available through functions <a href="#LO">LO</a>, <a href="#HI">HI</a>, and <a href="#LENGTH">LENGTH</a>. STRING valued constants (which are always indexed starting from 0) can be generated either at compile time, as quoted strings of characters, or dynamically through <a href="#String">String</a> concatenation, and can either be given a name through <a href="#CONSTANT">implicit:CONSTANT</a>. declaration or passed as actual parameters to function calls and further string concatenations.
+Type declaration STRING is a synonym for ARRAY(&lowast;) OF <a href="#CHAR">CHAR</a>, and can be used wherever the last can. In particular, a STRING can be subscripted or <a href="#subarray">subarray</a> extracted, and its bounds and length are available through functions <a href="#LO">LO</a>, <a href="#HI">HI</a>, and <a href="#LENGTH">LENGTH</a>. STRING valued constants (which are always indexed starting from 0) can be generated either at compile time, as quoted strings of characters, or dynamically through <a href="#String">String</a> concatenation, and can either be given a name through <a href="#CONSTANT">implicit:CONSTANT</a>. declaration or passed as actual parameters to function calls and further string concatenations.
 
 Quoted strings of characters, also known as literals, are delimited by either double or single quotes, in matching pairs. A single quote may appear inside a literal delimited by double quotes and vice versa. In addition, C escape sequences are literals, but contrary to C must be unquoted.  The empty string <q></q> is also a valid (zero-character-long) STRING value. Finally, in bash-like syntax, multi-line literals may be introduced by &lt;&lt; DELIMITER and ended by DELIMITER alone on a new line, where DELIMITER can be any word that is not to be part of the literal itself.
 
@@ -1117,7 +1117,7 @@ which defines a pointer that can be decremented or incremented provided it stays
 	ip=ip+2
 	WRITE R(ip)
 
-In other words, code is written just as if an INTEGER index were used, but the program is compiled to use a pointer instead. This can sometimes improve performance, especially in short loops that perform few repetitive operations. 
+In other words, code is written just as if an INTEGER index were used, but the program is compiled to use a pointer instead. This can sometimes improve performance, especially in short loops that perform few repeating operations. 
 </div><div class=page id="DYNAMIC">
 Page: (cpl)DYNAMIC, Next: <a href="#IS">IS</a>, Prev: <a href="#INTO">INTO</a>, Up: <a href="#Declarations">Declarations</a>
 <hr> <h2>Object-oriented features</h2>
@@ -1518,7 +1518,7 @@ Finally, a subarray can be extracted from an ARRAY of STRUCTUREs. If the declara
 
 then by a straightforward notation arr.r is the ARRAY(1..10) OF REAL composed of all the r fields of each element of arr. Thus, for instance, arr(5).r and arr.r(5) denote the same REAL field. arr.r is an ARRAY in its own right; it can be copied, passed as a parameter or subjected to further subarray selections.
 
-It should be noted that all subarray selections are just address manipulations: no element of the array is ever moved and the selected subarray can appear on the left as well as on the right side of an assignment and can be passed as a POINTER TO ARRAY(&lowast;) parameter to a function or subroutine. No computational penalty is incurred because of the sheer size of either the original or the selected array, but on the other hand any modifications of the subarray also affect the original.
+It should be noted that all subarray selections are just address manipulations: no element of the array is ever moved and the selected subarray can appear on the left as well as on the right side of an assignment, and can be passed as a POINTER TO ARRAY(&lowast;) parameter to a function or subroutine. No computational penalty is incurred because of the sheer size of either the original or the selected array, but on the other hand any modifications of the subarray also affect the original.
 
 All subarray selections can also be applied to <a href="#STORED">STORED</a> ARRAYs and <a href="#STRUCTURED">STRUCTURED</a> ARRAYs. 
 </div><div class=page id="compound-index">
@@ -1558,11 +1558,11 @@ Page: (cpl)Assignment, Next: <a href="#Deferred-assignment">Deferred assignment<
 <hr> <h2>Assignment</h2>
 Assignment is performed by a single <q>=</q> sign. The l.h.s. must be a POINTER, and the r.h.s. is required to be a value of the TYPE pointed to or to be implicitly convertible to it (<a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>). Compound variables can be assigned as a whole if types match.
 
-Owing to their omnicomprehensive role, assignment and equality/inequality tests are the only situations in which pointer dereferencing must be explicit. The left side of an assignment will never be implicitly dereferenced, and must be dereferenced by a postfix <q>^</q> if assignment of the value pointed to is desired. For increased clarity, the type of the object to be assigned may also be specified as in (after the declaration REAL a^,b)
+Owing to their all-encompassing role, assignment and equality/inequality tests are the only situations in which pointer dereferencing must be explicit. The left side of an assignment will never be implicitly dereferenced, and must be dereferenced by a postfix <q>^</q> if assignment of the value pointed to is desired. For increased clarity, the type of the object to be assigned may also be specified, as in the example (after the declaration REAL a^,b):
 
 	REAL a=b	equivalent to      a^=b.
 
-On the right-hand side of an assignment the symbol ~ can be used as a placeholder for the left hand. For example:
+At any position in the expression appearing on the right-hand side of an assignment the symbol ~ can be used as a placeholder for the left hand. For example:
 
 	counter = ~ + 2
 	listelement = ~.next
@@ -1634,7 +1634,7 @@ Page: (cpl)FREE,  Next: <a href="#Input/Output">Input/Output</a>,  Prev: <a href
 <hr> <h2>Freeing memory or file allocation</h2>
 	FREE &lt;pointer&gt; [,&lt;pointer&gt;]
 
-releases the memory space or file pointed to by each &lt;pointer&gt;, which must have been previously obtained from <a href="#NEW">NEW</a>, <a href="#OPEN">OPEN</a>, or <a href="#CREATE">CREATE</a>. &lt;pointer&gt; is subsequently zeroed, so that any subsequent dereferencing generates a visible runtime exception. If &lt;pointer&gt; is a file descriptor, FREEing it also writes out any previously buffered data. 
+releases the memory space or file pointed to by each &lt;pointer&gt;, which must have been previously obtained from <a href="#NEW">NEW</a>, <a href="#OPEN">OPEN</a>, or <a href="#CREATE">CREATE</a>. &lt;pointer&gt; is subsequently zeroed, so that any later dereferencing generates a visible runtime exception. If &lt;pointer&gt; is a file descriptor, FREEing it also writes out any previously buffered data. 
 </div><div class=page id="Input/Output">
 Page: (cpl)Input/Output, Next: <a href="#Control">Control</a>, Prev: <a href="#NEW">NEW</a>, Up: <a href="#Statements">Statements</a>
 <hr> <h2>Input/Output</h2>
@@ -1733,9 +1733,9 @@ In addition, the construction
 
 	&lt;type declarator&gt; FROM &lt;file&gt;
 
-represents a value of type &lt;type declarator&gt; read from the file descriptor &lt;file&gt;. This value can directly appear in an expression just as the value of a function can. As an example,
+represents a value of type &lt;type declarator&gt; read from the file descriptor &lt;file&gt;. This value can directly appear in an expression just as the value of a function can. As an example, the statement
 
-	WRITE TO stdout 3&lowast;(INTEGER FROM stdin)
+	WRITE 3&lowast;(INTEGER FROM stdin)
 
 can replace
 
@@ -1749,7 +1749,9 @@ Page: (cpl)ASK,  Next: <a href="#BINARY">BINARY</a>,  Prev: <a href="#FROM">FROM
 
 has the effect that a prompt is automatically written to stderr for each variable and the value of the variable is subsequently read from stdin. The prompt is the optional <q>literal</q> if present or the name of the variable followed by a <q>?</q> otherwise.
 
-Console prompting can be compounded with CONSTANT declaration. If &lt;type&gt; is present, each variable is declared as a <a href="#CONSTANT">CONSTANT</a> before being asked. 
+Console prompting can be compounded with CONSTANT declaration. If &lt;type&gt; is present, each variable is declared as a <a href="#CONSTANT">CONSTANT</a> before being asked.
+
+Under <a href="#icpl">icpl</a>, this console input functionality becomes extended: an icpl shell is opened whenever the program is waiting for input from its controlling terminal, and any number of icpl commands can be executed interactively before answering. The first expression given alone on the command line, which icpl would normally print, gets returned as input instead, and the waiting program resumes. This extension is available to either an interpreted or a compiled program, provided the latter is run under icpl. 
 </div><div class=page id="BINARY">
 Page: (cpl)BINARY,  Next: <a href="#STORED">STORED</a>,  Prev: <a href="#ASK">ASK</a>,  Up: <a href="#Input/Output">Input/Output</a>
 <hr> <h3>Binary (unformatted) Input/Output</h3>
