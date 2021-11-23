@@ -1,2 +1,2 @@
-2021-11-20
+2021-11-23
 Revised strategy of parenthesis autocompletion and richer word autocompletion in the editor; new features of editor hints and repeat last command; use of "for" rather than "while" in generated C code, and various mixed corrections.
