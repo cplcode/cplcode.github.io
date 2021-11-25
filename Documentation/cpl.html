@@ -188,6 +188,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#POINTER">POINTER</a>:</td><td>pointer to a memory address</td></tr>
 <tr><td><a href="#POSITION">POSITION</a>:</td><td>read or set a file's current position</td></tr>
 <tr><td><a href="#Looping-operator">PRODUCT:Looping operator</a>:</td><td></td></tr>
+<tr><td><a href="#Q&A">Q&amp;A</a>:</td><td>Common problems and their solutions</td></tr>
 <tr><td><a href="#RAND">RAND</a>:</td><td>uniformly distributed in (0,1) random REAL number</td></tr>
 <tr><td><a href="#READ">READ</a>:</td><td>input from character files and devices</td></tr>
 <tr><td><a href="#REAL">REAL</a>:</td><td>primitive type declarator</td></tr>
@@ -332,7 +333,7 @@ If you have no access to /usr/local/, or prefer to avoid root privileges even if
 Page: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#multi-user">multi-user</a>, Up: <a href="#Installation">Installation</a>
 <hr> <h2>Common problems and their solutions</h2>
 <h3>makecpl: command not found</h3>
-If the initial setup did not report any errors, and <q>$HOME/fri/makecpl</q> or <q>/usr/local/fri/makecpl</q> do work, this is a PATH problem. CPL setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may find it easier to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions for how to modify the PATH variable.
+If the initial setup did not report any errors, and <q>$HOME/fri/makecpl</q> or <q>/usr/local/fri/makecpl</q> do work, this is likely to be a PATH problem. CPL setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may find it easier to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions for how to modify the PATH variable.
 
 <h3>My program compiles but does not execute</h3>
 Is . in your PATH? Many Linux distributions do not by default have your current working directory in the set of automatically searched file paths. Solutions:
@@ -359,6 +360,9 @@ functions</a>. If you also want some of the CPL provided libraries to be recompi
 
 The original won't be affected.
 
+<h3>I want to compile my program (or my LateX text) from within the editor</h3>
+When you are in the full-screen editor (<a href="editor.html#full-screen">(editor)full-screen</a>), pressing &lt;F2&gt; or &lt;esc&gt; - repeats the last command. Therefore: the first time you need to compile, switch to the icpl command screen with &lt;F1&gt; or &lt;esc&gt; &lt;space&gt;, and give your command explicitly. When you later want to re-compile, just press &lt;F2&gt; or &lt;esc&gt; -.
+
 <h3>My program crashes without any error messages</h3>
 Always put <q>USE rtchecks</q> near the beginning of your main program file during development. <a href="#rtchecks">rtchecks</a> transparently adds a number of runtime checks and error messages at the expense of execution speed. You will remove it once your program is debugged.
 
@@ -381,7 +385,7 @@ The <q>edit</q> command is used as an alias by more than one editor, including v
 If having <q>edit</q> pop up a different editor is your preferred behaviour, just delete the bin/edit symbolic link. You will still be able to access the icpl editor by one of the other methods specified above.
 
 <h3>My .cpl source files get rejected when sent as email attachments</h3>
-Some email servers automatically reject files with the .cpl extension because this extension is shared with MS Windows Control PaneL files. This behaviour is unfortunate but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end. 
+gmail and other popular email servers automatically reject files with the .cpl extension (among a list of about 50 extensions, even when included in compressed archives) because this extension is shared with MS Windows Control PaneL files. This behaviour is unfortunate as far as it is based on extension only, but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end; or else upload your file(s) to a cloud service (like you would do for large attachments) and email its shareable link. 
 </div><div class=page id="Syntax">
 Page: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a>
 <hr> <h1>The CPL programming language syntax</h1>
