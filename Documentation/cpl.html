@@ -360,8 +360,8 @@ functions</a>. If you also want some of the CPL provided libraries to be recompi
 
 The original won't be affected.
 
-<h3>I want to compile my program (or my LateX text) from within the editor</h3>
-When you are in the full-screen editor (<a href="editor.html#full-screen">(editor)full-screen</a>), pressing &lt;F2&gt; or &lt;esc&gt; - repeats the last command. Therefore: the first time you need to compile, switch to the icpl command screen with &lt;F1&gt; or &lt;esc&gt; &lt;space&gt;, and give your command explicitly. When you later want to re-compile, just press &lt;F2&gt; or &lt;esc&gt; -.
+<h3>I want to compile my program (or my LaTeX text) from the editor screen</h3>
+When you are in the full-screen editor (<a href="editor.html#full-screen">(editor)full-screen</a>), pressing &lt;F2&gt; or &lt;esc&gt; - repeats the last command. Therefore: the first time you need to compile, switch to the icpl command screen with &lt;F1&gt; or &lt;esc&gt; &lt;space&gt;, and give your command explicitly. Toggle back to editing with the same &lt;F1&gt; or &lt;esc&gt; &lt;space&gt;. When you later want to re-compile, just press &lt;F2&gt; or &lt;esc&gt; -.
 
 <h3>My program crashes without any error messages</h3>
 Always put <q>USE rtchecks</q> near the beginning of your main program file during development. <a href="#rtchecks">rtchecks</a> transparently adds a number of runtime checks and error messages at the expense of execution speed. You will remove it once your program is debugged.
@@ -382,10 +382,10 @@ icpl is perfectly compatible with ssh. Just ssh into your remote system where CP
 The <q>edit</q> command is used as an alias by more than one editor, including vim and other vi derivatives. You can always access the icpl editor by its unaliased name <q>icpl -edit</q> (with a space), or as <q>edit</q> within icpl, or you can modify your PATH so the <q>edit</q> link to icpl takes precedence.
 
 <h3>On my system, <q>edit</q> used to pop up a different editor</h3>
-If having <q>edit</q> pop up a different editor is your preferred behaviour, just delete the bin/edit symbolic link. You will still be able to access the icpl editor by one of the other methods specified above.
+If to have <q>edit</q> pop up a different editor is your preferred behaviour, just delete the bin/edit symbolic link. You will still be able to access the icpl editor by one of the other methods specified above.
 
 <h3>My .cpl source files get rejected when sent as email attachments</h3>
-gmail and other popular email servers automatically reject files with the .cpl extension (among a list of about 50 extensions, even when included in compressed archives) because this extension is shared with MS Windows Control PaneL files. This behaviour is unfortunate as far as it is based on extension only, but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end; or else upload your file(s) to a cloud service (like you would do for large attachments) and email its shareable link. 
+gmail and other popular email servers automatically reject files with the .cpl extension (among a list of about 50 extensions, even when included in compressed archives) because this extension is shared with MS Windows Control PaneL files. This precaution is overkilling insofar as it is based on extension only, but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end; or else do as you would for large attachments: upload your file(s) to a cloud service and email its shareable link. 
 </div><div class=page id="Syntax">
 Page: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a>
 <hr> <h1>The CPL programming language syntax</h1>
