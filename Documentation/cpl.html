@@ -83,7 +83,7 @@ Page: (cpl)Top,  Next: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="
 <tr><td><a href="editor.html#Top">(editor)Top</a>:</td><td>development text editor with word and syntax completion</td></tr>
 <tr><td><a href="#Library">Library</a>:</td><td>Ready to USE library of CPL modules</td></tr>
 <tr><td><a href="#Keyword-Index">Keyword Index</a>:</td><td>Keyword Index</td></tr>
-<tr><td><a href="#Q&A">Q&amp;A</a>:</td><td>Common problems and their solutions</td></tr>
+<tr><td><a href="#Q&A">Q&amp;A</a>:</td><td>Common installation problems and their solution</td></tr>
 </table></nav>
 
 </div><div class=page id="Keyword-Index">
@@ -188,7 +188,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#POINTER">POINTER</a>:</td><td>pointer to a memory address</td></tr>
 <tr><td><a href="#POSITION">POSITION</a>:</td><td>read or set a file's current position</td></tr>
 <tr><td><a href="#Looping-operator">PRODUCT:Looping operator</a>:</td><td></td></tr>
-<tr><td><a href="#Q&A">Q&amp;A</a>:</td><td>Common problems and their solutions</td></tr>
+<tr><td><a href="#Q&A">Q&amp;A</a>:</td><td>Common installation problems and their solution</td></tr>
 <tr><td><a href="#RAND">RAND</a>:</td><td>uniformly distributed in (0,1) random REAL number</td></tr>
 <tr><td><a href="#READ">READ</a>:</td><td>input from character files and devices</td></tr>
 <tr><td><a href="#REAL">REAL</a>:</td><td>primitive type declarator</td></tr>
@@ -312,7 +312,7 @@ The interactive CPL interpreter (if installed) accepts any CPL expression, state
 <tr><td><a href="#automatic-updates">automatic updates</a>:</td><td>Automatic updates</td></tr>
 <tr><td><a href="#multi-user">multi-user</a>:</td><td>Installation for multiple users</td></tr>
 <tr><td><a href="#makecpl">makecpl</a>:</td><td>Compilation tools and their usage</td></tr>
-<tr><td><a href="#Q&A">Q&amp;A</a>:</td><td>Common problems and their solutions</td></tr>
+<tr><td><a href="#Q&A">Q&amp;A</a>:</td><td>Common installation problems and their solution</td></tr>
 </table></nav>
 
 </div><div class=page id="automatic-updates">
@@ -331,7 +331,7 @@ If you unpack the CPL archive while you have write access to the /usr/local/ dir
 If you have no access to /usr/local/, or prefer to avoid root privileges even if you can have them, a slightly more complex alternative is to go through the normal single-user installation, make sure that your fri directory and all files in it have read permission for the interested group, and then have every other interested user create their own symbolic links by cd-ing to your fri directory and running ./linksetup.  
 </div><div class=page id="Q&A">
 Page: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#multi-user">multi-user</a>, Up: <a href="#Installation">Installation</a>
-<hr> <h2>Common problems and their solutions</h2>
+<hr> <h2>Common installation problems and their solution</h2>
 <h3>makecpl: command not found</h3>
 If the initial setup did not report any errors, and <q>$HOME/fri/makecpl</q> or <q>/usr/local/fri/makecpl</q> do work, this is likely to be a PATH problem. CPL setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may find it easier to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions for how to modify the PATH variable.
 
@@ -361,16 +361,16 @@ functions</a>. If you also want some of the CPL provided libraries to be recompi
 The original won't be affected.
 
 <h3>I want to compile my program (or my LaTeX text) from the editor screen</h3>
-When you are in the full-screen editor (<a href="editor.html#full-screen">(editor)full-screen</a>), pressing &lt;F2&gt; or &lt;esc&gt; - repeats the last command. Therefore: the first time you need to compile, switch to the icpl command screen with &lt;F1&gt; or &lt;esc&gt; &lt;space&gt;, and give your command explicitly. Toggle back to editing with the same &lt;F1&gt; or &lt;esc&gt; &lt;space&gt;. When you later want to re-compile, just press &lt;F2&gt; or &lt;esc&gt; -.
+When you are in the full-screen editor (see <a href="editor.html#full-screen">(editor)full-screen</a>), pressing &lt;F2&gt; or &lt;esc&gt; - repeats the last command. Therefore: the first time you need to compile, switch to the icpl command screen with &lt;F1&gt; or &lt;esc&gt; &lt;space&gt;, and give your compilation command explicitly. Revert to editing with the same &lt;F1&gt; or &lt;esc&gt; &lt;space&gt;. When you later want to re-compile, just press &lt;F2&gt; or &lt;esc&gt; -.
 
 <h3>My program crashes without any error messages</h3>
 Always put <q>USE rtchecks</q> near the beginning of your main program file during development. <a href="#rtchecks">rtchecks</a> transparently adds a number of runtime checks and error messages at the expense of execution speed. You will remove it once your program is debugged.
 
-<h3>I want to access icpl from my Desktop</h3>
+<h3>I want to access icpl from a desktop icon</h3>
 Drag and drop the <q>interactive CPL</q> icon from wherever your <q>fri</q> directory is (typically, /usr/local/fri or $HOME/fri) to your Desktop.
 
 <h3>I want to receive automatic updates</h3>
-Starting with version 2020-12-16, makecpl will automatically offer updates when they become available (see <a href="#automatic-updates">automatic updates</a>). If you see an update on the website for which you did not get a reminder while running makecpl, please check that the <q>curl</q> command is installed (on Debian, <q>apt install curl</q>) and that you have write access to the parent of the fri/ directory. In case you would rather disable this feature, edit the makecpl script and turn ENABLE_UPDATES to <q>NO</q>.
+Starting with version 2020-12-16, makecpl will automatically offer updates when they become available (see <a href="#automatic-updates">automatic updates</a>). If you see an update on the website for which you did not get a reminder while running makecpl, please check that the <q>curl</q> command is installed (on Debian, <q>apt install curl</q>) and that you have write access to the parent of the fri/ directory. In case you would rather disable this feature, edit the makecpl script and turn ENABLE_UPDATES from <q>YES</q> to <q>NO</q>.
 
 <h3>I want to go back to a previous CPL version</h3>
 During an update your present fri/ directory is copied to fri.bak/ . You can always run your previous makecpl version by its full pathname (e.g., ~/fri.bak/makecpl). You can also install historical CPL versions from the  <a href="https://CPLcode.net/version-archive">CPLcode.net/version-archive</a> . After you do so the just installed (historical) version will be in fri/, whereas your current version will be in fri.bak/ ; if this is confusing, or if you need more than two simultaneous versions, you may want to rename (mv) fri/ or fri.bak/ or both to something else (say, their version date). Notice also that icpl and cpl are scripts executed by fri; if you want to run a non-default icpl located in directory dir/, you must do so as <q>dir/fri dir/cpl dir/icpl</q>.
@@ -385,7 +385,7 @@ The <q>edit</q> command is used as an alias by more than one editor, including v
 If to have <q>edit</q> pop up a different editor is your preferred behaviour, just delete the bin/edit symbolic link. You will still be able to access the icpl editor by one of the other methods specified above.
 
 <h3>My .cpl source files get rejected when sent as email attachments</h3>
-gmail and other popular email servers automatically reject files with the .cpl extension (among a list of about 50 extensions, even when included in compressed archives) because this extension is shared with MS Windows Control PaneL files. This precaution is overkilling insofar as it is based on extension only, but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end; or else do as you would for large attachments: upload your file(s) to a cloud service and email its shareable link. 
+gmail and other popular email servers automatically reject files with the .cpl extension (amid a list of about 50 extensions, even when included in compressed archives) because this extension is shared with MS Windows Control PaneL files. This precaution is overkilling insofar as it is based on extension only, but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end; or else do as you would for a large attachment: upload your file(s) to a cloud service and email its shareable link. 
 </div><div class=page id="Syntax">
 Page: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a>
 <hr> <h1>The CPL programming language syntax</h1>
