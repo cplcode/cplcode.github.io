@@ -1,2 +1,2 @@
-2021-11-29
-Revised strategy of parenthesis autocompletion and richer word autocompletion in the editor; new features of editor hints and repeat last command; use of "for" rather than "while" in generated C code, subarray assignment better checked by rtchecks, modified tar options in unpack-cpl.sh, and various mixed corrections.
+2021-11-30
+Improved error checking.
