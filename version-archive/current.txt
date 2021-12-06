@@ -1,2 +1,2 @@
-2021-12-04
-Improved error checking. Corrections to the editor.
+2021-12-06
+Improved error checking. Better usability to the editor.

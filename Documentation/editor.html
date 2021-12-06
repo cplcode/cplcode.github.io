@@ -119,6 +119,7 @@ Most used editing keys:
  - Up arrow (Esc j), down arrow (Esc k): previous, next line.
  - PgUp (Esc p), PgDn (Esc n): move to prev or next paragraph of the same or
    lesser indentation.
+ - Esc f (Ctrl-f, Esc /), Esc F (Esc ?): Find forwards, respectively backwards.
  - Tab: autocomplete keyword or identifier. Successive tabs move forward along
    the list of available completions; Shift-Tab moves backwards.
  - Enter: Enter new line, and trigger possible autocompletion of CPL syntax
@@ -205,11 +206,11 @@ Parentheses and quote completion also operates, automatically adding closed pare
 </div><div class=page id="Find">
 Page: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#Top">Top</a>
 <hr> <h3>Find and replace</h3>
-<q>find</q> (Esc /) and <q>goto</q> (Esc g or Esc +) seek the cursor to a given string or to a given line number. Esc ? (or clicking <q>find</q> with the right mouse button) seeks backwards. The search is case-insensitive if the first character of the search string is a lowercase letter, case-sensitive otherwise. The found string is automatically selected. If some text is selected when Esc / or Esc ? are pressed, the selected text will appear as a proposed search string.
+<q>find</q> (Esc f or Ctrl-f or Esc /) and <q>goto</q> (Esc g or Esc +) seek the cursor to a given string or to a given line number. Esc F (or Esc ?, or clicking <q>find</q> with the right mouse button) seeks backwards. The search is caseinsensitive if the first character of the search string is a lowercase letter, case-sensitive otherwise. The found string is automatically selected. If some text is selected when one of this keys is pressed, the selected text will appear as a proposed search string.
 
-In order to find and replace, find a given text, exit Esc mode, and start typing the replacement. Esc , (lowercase &lt;) repeats the last find backwards. Esc . (lowercase &gt;) repeats the last find forwards. Esc / and Esc ? with an empty argument also repeat the last find, possibly changing its direction.
+Esc , (lowercase &lt;) repeats the last find backwards. Esc . (lowercase &gt;) repeats the last find forwards. Finding with an empty argument also repeats the last find, possibly changing its direction.
 
-Esc &gt; is a shortcut for pressing Insert and Esc . one after the other, and thus serves as replace-and-find-again. Keeping  Esc &gt; pressed is a means to perform multiple replacements, possibly to the end of file. Esc &lt; likewise replacesand-finds backwards.
+In order to find and replace, find a given text, exit Esc mode, and start typing the replacement. Esc &gt; is a shortcut for pressing Insert and Esc . one after the other, and thus serves as replace-and-find-again. Keeping  Esc &gt; pressed is a means to perform multiple replacements, possibly to the end of file. Esc &lt; likewise replaces-and-finds backwards.
 
 Esc Enter repeats whatever the last command was, possibly the last (forward or backward) find or the last replace-and-find-again. 
 </div><div class=page id="Undo">
