@@ -1,0 +1,2305 @@
+<!DOCTYPE html><html lang="en"><head><title>mixCPLcodes/stok3d/stok3d.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style></head><body translate="no"><pre>
+<a href="cpl.html#USE">USE</a> mg3d.cpl
+<span class=comment>!  USE rtchecks.cpl</span>
+<span class=comment>! stok3d</span>
+<a href="cpl.html#FILE">FILE</a> ALTEZZE
+ALTEZZE<a href="cpl.html#Assignment">=</a><a href="cpl.html#CREATE">CREATE</a>('sto')
+nx<a href="cpl.html#Assignment">=</a>2&lowast;8
+ny<a href="cpl.html#Assignment">=</a>nx&lowast;6
+<span class=comment>!     nz=nx&lowast;3 DIV 2 </span>
+nz<a href="cpl.html#Assignment">=</a>2&lowast;nx
+
+hmax<a href="cpl.html#Assignment">=</a>1.
+<span class=comment>! valore massimo di h compatibile con la memoria prevista</span>
+
+<a href="cpl.html#INTEGER">INTEGER</a> ny0
+ny0<a href="cpl.html#Assignment">=</a>ROUND(2&lowast;nx&lowast;hmax) +5
+<span class=comment>!   ny0=nx&lowast;2</span>
+
+pi<a href="cpl.html#Assignment">=</a>ATAN(1)&lowast;4 
+pfo<a href="cpl.html#Assignment">=</a>0.5
+<span class=comment>! parametro formula</span>
+pbc<a href="cpl.html#Assignment">=</a>2
+protra <a href="cpl.html#Assignment">=</a> 2
+<span class=comment>! protra1 =lamina; protra2 = e5; protra3 = profilo a v;protra4=coseno </span>
+prolo <a href="cpl.html#Assignment">=</a> 3
+<span class=comment>! prolo1 =2d;  prolo2 = profilo iperbolico; prolo3=BE </span>
+
+inco<a href="cpl.html#Assignment">=</a>1
+<span class=comment>! inco0 =senza correzione; inco1 = con correzione</span>
+
+<a href="cpl.html#REAL">REAL</a> fx0
+
+<a href="cpl.html#IF">IF</a> protra<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+  fx0 <a href="cpl.html#Assignment">=</a>0
+<a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+  fx0<a href="cpl.html#Assignment">=</a> 0.05
+<a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra<a href="cpl.html#Assignment">=</a>3 <a href="cpl.html#IF">THEN</a>
+  fx0<a href="cpl.html#Assignment">=</a> 0.25
+<a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra<a href="cpl.html#Assignment">=</a>4 <a href="cpl.html#IF">THEN</a>
+  fx0<a href="cpl.html#Assignment">=</a> pi/2
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a> 
+
+<a href="cpl.html#INTEGER">INTEGER</a> it,js,wp,btm(-1..nx+1,-1..nz+1),btf(0..nx,0..nz)
+<a href="cpl.html#REAL">REAL</a> ad(0..nx,0..ny0,0..nz),al(0..nx,0..ny0,0..nz),ar(0..nx,0..ny0,0..nz), \
+ab(0..nx,0..ny0,0..nz),af(0..nx,0..ny0,0..nz),rhs(0..nx,0..ny,0..nz)
+<a href="cpl.html#REAL">REAL</a> up(0..nx,0..ny0,0..nz),right(0..nx,0..ny0,0..nz),down(0..nx,0..ny0,0..nz),\
+left(0..nx,0..ny0,0..nz),back(0..nx,0..ny0,0..nz),forw(0..nx,0..ny0,0..nz)
+<a href="cpl.html#REAL">REAL</a> bcu(0..nx,0..ny0,0..nz),bcr(0..nx,0..ny0,0..nz),bcd(0..nx,0..ny0,0..nz), \
+bcl(0..nx,0..ny0,0..nz),bcb(0..nx,0..ny0,0..nz),bcf(0..nx,0..ny0,0..nz)
+<a href="cpl.html#REAL">REAL</a> coenoto(0..nx,0..ny0,0..nz)
+<a href="cpl.html#REAL">REAL</a> m1(-1..nx+1,0..ny,-1..nz+1),m2(-1..nx+1,0..ny,-1..nz+1), \
+m3(-1..nx+1,0..ny,-1..nz+1),fi(-1..nx+1,0..ny,-1..nz+1)
+
+
+<a href="cpl.html#REAL">REAL</a> vzn(1..1500),vsalfa(1..1500),vcalfa(1..1500),vdel(1..1500),vk1(1..1500),vk2(1..1500)
+<a href="cpl.html#REAL">REAL</a>  zn,salfa,calfa,del,k1,k2,c2,c4,c6,c2l
+<a href="cpl.html#INTEGER">INTEGER</a> nid(0..nx,0..ny0,0..nz)
+<a href="cpl.html#REAL">REAL</a> fill,fillm,fils,deno,rapp,hlon,htra,dh,prec,ka 
+<a href="cpl.html#REAL">REAL</a> denx,deny,denz,ris(1..50,1..50)
+<a href="cpl.html#REAL">REAL</a> ax0,axl,axr,ay0,ayd,ayu,az0,azf,azb
+<a href="cpl.html#INTEGER">INTEGER</a> datof    <span class=comment>! datofalso per interrompere con READ</span>
+jsta<a href="cpl.html#Assignment">=</a>9
+numh<a href="cpl.html#Assignment">=</a>1
+numk<a href="cpl.html#Assignment">=</a>1
+numf<a href="cpl.html#Assignment">=</a>16
+k0<a href="cpl.html#Assignment">=</a>1
+delth<a href="cpl.html#Assignment">=</a>0.200
+deltf<a href="cpl.html#Assignment">=</a>0.050
+fil0<a href="cpl.html#Assignment">=</a>0.10-deltf
+rap0<a href="cpl.html#Assignment">=</a>0.300- delth
+lx<a href="cpl.html#Assignment">=</a>1.
+
+h<a href="cpl.html#Assignment">=</a>lx/nx/2
+ly<a href="cpl.html#Assignment">=</a>ny&lowast;h
+lz<a href="cpl.html#Assignment">=</a>nz&lowast;h&lowast;4.
+eps<a href="cpl.html#Assignment">=</a>h/100
+dcor<a href="cpl.html#Assignment">=</a>2.05&lowast;h
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> tanh( <a href="cpl.html#REAL">REAL</a> xx)
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>(<a href="cpl.html#Builtin">EXP</a>(xx)-<a href="cpl.html#Builtin">EXP</a>(-xx))/(<a href="cpl.html#Builtin">EXP</a>(xx)+<a href="cpl.html#Builtin">EXP</a>(-xx))
+<a href="cpl.html#END">END</a> tanh 
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> fx( <a href="cpl.html#REAL">REAL</a> xx)
+  <a href="cpl.html#REAL">REAL</a> xs
+  xs<a href="cpl.html#Assignment">=</a>0.
+  <a href="cpl.html#IF">IF</a> protra <a href="cpl.html#Assignment">=</a> 1 <a href="cpl.html#IF">THEN</a>
+    <span class=comment>!   Lamina</span>
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>1
+    <a href="cpl.html#IF">IF</a> xx &gt; xs  <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra <a href="cpl.html#Assignment">=</a> 2 <a href="cpl.html#IF">THEN</a> 
+    <span class=comment>!   e5</span>
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>(1-xx&lowast;4)&lowast;&lowast;5
+    <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a> 0
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra <a href="cpl.html#Assignment">=</a> 3 <a href="cpl.html#IF">THEN</a> 
+    <span class=comment>!   v</span>
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>1-xx&lowast;4
+    <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a> 0
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra <a href="cpl.html#Assignment">=</a> 4 <a href="cpl.html#IF">THEN</a> 
+    <span class=comment>!   coseno</span>
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">COS</a>(2&lowast;pi&lowast;xx)
+    <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a> 0
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a> 
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a> &lt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>0
+<a href="cpl.html#END">END</a> fx
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> gz(<a href="cpl.html#REAL">REAL</a> zz)
+  <a href="cpl.html#REAL">REAL</a> l1,l2,l3,l4,zr,a1,a2,a3,b1,b2,y1
+  nr<a href="cpl.html#Assignment">=</a>4
+  <a href="cpl.html#IF">IF</a> prolo <a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+    <span class=comment>!  2d</span>
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>rapp
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> prolo<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+    <span class=comment>!  Profilo iperbolico</span>
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>rapp&lowast;(1.+tanh(ka&lowast;2./rapp&lowast;(fill&lowast;lz/2.-zz)))/2
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> prolo<a href="cpl.html#Assignment">=</a>3 <a href="cpl.html#IF">THEN</a>
+    
+    <span class=comment>!  BE </span>
+    
+    tal<a href="cpl.html#Assignment">=</a>1
+    cal<a href="cpl.html#Assignment">=</a>1/(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5
+    sal<a href="cpl.html#Assignment">=</a>tal&lowast;cal
+    r0<a href="cpl.html#Assignment">=</a>0.347826
+    <span class=comment>!   r0=0.7</span>
+    <span class=comment>!     l0=0.5108695 </span>
+    l0<a href="cpl.html#Assignment">=</a>fill
+    l2<a href="cpl.html#Assignment">=</a>(rapp-r0+tal&lowast;l0+r0&lowast;(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5)/tal
+    l1<a href="cpl.html#Assignment">=</a>l2-(rapp-r0+r0/(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5)/tal
+    y1<a href="cpl.html#Assignment">=</a>rapp-r0+r0&lowast;cal
+    l1<a href="cpl.html#Assignment">=</a>r0&lowast;sal+l0
+    l2<a href="cpl.html#Assignment">=</a>l1+y1/tal
+    <span class=comment>!     WRITE 'z,y1,l0,l1,l2',zz,y1,l0,l1,l2 </span>
+    l3<a href="cpl.html#Assignment">=</a>l1+(rapp-2&lowast;r0&lowast;(1-cal))/tal
+    l4<a href="cpl.html#Assignment">=</a>l3+r0&lowast;sal
+    b1<a href="cpl.html#Assignment">=</a>(l2-fill+0.125-(nr+1)&lowast;rapp)/(l2-fill+0.125)&lowast;&lowast;nr
+    b2<a href="cpl.html#Assignment">=</a>(nr&lowast;rapp-l2+fill-0.125)/(l2-fill+0.125)&lowast;&lowast;(nr+1)
+    
+    <a href="cpl.html#IF">IF</a> zz &lt;l0 <a href="cpl.html#IF">THEN</a>
+      <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#Assignment">=</a>rapp
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz &lt;l1 <a href="cpl.html#IF">THEN</a> 
+      <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>rapp-r0+(r0&lowast;&lowast;2-(zz-l0)&lowast;&lowast;2)&lowast;&lowast;0.5
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;l2  <a href="cpl.html#IF">THEN</a> 
+      <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#Assignment">=</a> y1+tal&lowast;(l1-zz)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l2  <a href="cpl.html#IF">THEN</a> 
+      <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>0
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l1  <a href="cpl.html#IF">THEN</a> 
+      <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#Assignment">=</a> y1+tal&lowast;(zz-lz+l1)
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l0  <a href="cpl.html#IF">THEN</a> 
+      <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>rapp-r0+(r0&lowast;&lowast;2-(zz-lz+l0)&lowast;&lowast;2)&lowast;&lowast;0.5
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz &lt;lz  <a href="cpl.html#IF">THEN</a>
+      <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#Assignment">=</a>rapp
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a> 
+    
+    <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a>&lt;0  <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a> 
+  
+  <span class=comment>!(
+    <span class=comment>! Profilo arrotondato superiormente e con retta</span>
+    IF zz&lt; l0 THEN
+      RESULT=rapp
+    ELSE IF zz&lt;l1 THEN
+      zr=(zz-l0)/(l1-l0)
+      a1=(rapp-y1)&lowast;nr/(l1-l0) -tal
+      a2=nr&lowast;(nr-1)&lowast;(rapp-y1)/2/(l1-l0)&lowast;&lowast;2 -a1&lowast;nr/(l1-l0)
+      RESULT= rapp + zr&lowast;&lowast;nr&lowast;(y1-rapp+a1&lowast;(zz-l1)+ a2&lowast;(zz-l1)&lowast;&lowast;2)
+    ELSE IF zz &lt; l2 THENJ    RESULT=tal&lowast;(l2-zz)
+  ELSE IF zz&gt; l2 THEN
+    RESULT=0
+  END IF   
+  !)</span> 
+
+<span class=comment>!(    profilo continuo
+  
+  IF zz&lt;= fill-.125  THEN RESULT=rapp
+  IF zz&gt;fill-.125  THEN 
+    zr=(zz-fill+0.125)
+    RESULT=rapp+b1&lowast;zr&lowast;&lowast;nr+b2&lowast;zr&lowast;&lowast;(nr+1)
+  END IF
+  !)</span>
+<span class=comment>!(   Raccordo inferiore o
+  IF zz&gt;l1 THEN
+    a3=(-y1+l2-l1-a2&lowast;(l2-l1)&lowast;&lowast;2)/(l2-l1)&lowast;&lowast;3
+    RESULT=y1-(zz-l1)+a2&lowast;(zz-l1)&lowast;&lowast;2+a3&lowast;(zz-l1)&lowast;&lowast;3
+  END IF
+  !)</span> 
+<span class=comment>!     IF zz&gt;l3 THEN RESULT=r0-(r0&lowast;&lowast;2-(zz-l4)&lowast;&lowast;2)&lowast;&lowast;.5</span>
+<span class=comment>!     IF zz&gt;l4 THEN RESULT =0</span>
+
+<a href="cpl.html#END">END</a>    gz
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> fondo(<a href="cpl.html#REAL">REAL</a> xx,zz)
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>fx(xx)&lowast;gz(zz)+fx(0.5-xx)&lowast;gz(lz/2.-zz)
+<a href="cpl.html#END">END</a> fondo
+
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> vert(<a href="cpl.html#REAL">REAL</a> yy,x1,x2,zz)
+  <a href="cpl.html#REAL">REAL</a> f1,f2,xm,fm,x1c,x2c
+  f1<a href="cpl.html#Assignment">=</a>fondo(x1,zz)-yy
+  f2<a href="cpl.html#Assignment">=</a>fondo(x2,zz)-yy
+  <a href="cpl.html#IF">IF</a> f1&lowast;f2 &gt; 0 <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(f1)  &lt;  <a href="cpl.html#ABS">ABS</a>(f2)  <a href="cpl.html#IF">THEN</a>
+      <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>x1
+    <a href="cpl.html#ELSE">ELSE</a>
+      <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>x2
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#EXIT">EXIT</a> vert
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  x1c<a href="cpl.html#Assignment">=</a>x1
+  x2c<a href="cpl.html#Assignment">=</a>x2
+  <a href="cpl.html#DO">DO</a>
+    xm<a href="cpl.html#Assignment">=</a>(f2&lowast;x1c-f1&lowast;x2c)/(f2-f1)   
+    fm<a href="cpl.html#Assignment">=</a>fondo(xm,zz)-yy
+    <a href="cpl.html#IF">IF</a> fm&lowast;f1 &gt; 0 <a href="cpl.html#IF">THEN</a>
+      x1c<a href="cpl.html#Assignment">=</a>xm
+      f1<a href="cpl.html#Assignment">=</a>fm
+    <a href="cpl.html#ELSE">ELSE</a>
+      x2c<a href="cpl.html#Assignment">=</a>xm
+      f2<a href="cpl.html#Assignment">=</a>fm
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#UNTIL">UNTIL</a>  (<a href="cpl.html#ABS">ABS</a>(fm) &lt; 0.0001) <a href="cpl.html#OR">OR</a> (<a href="cpl.html#ABS">ABS</a>(x2c-x1c)) &lt; 0.00005 
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>xm
+<a href="cpl.html#END">END</a> vert
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> vertz(<a href="cpl.html#REAL">REAL</a>  yy,z1,z2,xx)
+  <a href="cpl.html#REAL">REAL</a> f1,f2,zm,fm,z1c,z2c
+  f1<a href="cpl.html#Assignment">=</a>fondo(xx,z1)-yy
+  f2<a href="cpl.html#Assignment">=</a>fondo(xx,z2)-yy
+  <a href="cpl.html#IF">IF</a>(f1&lowast;f2 &gt; 0) <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#IF">IF</a>(<a href="cpl.html#ABS">ABS</a>(f1) &lt; <a href="cpl.html#ABS">ABS</a>(f2)) <a href="cpl.html#IF">THEN</a>
+      <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#Assignment">=</a>z1
+    <a href="cpl.html#ELSE">ELSE</a>
+      <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#Assignment">=</a>z2
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#EXIT">EXIT</a> vertz
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  z1c<a href="cpl.html#Assignment">=</a>z1
+  z2c<a href="cpl.html#Assignment">=</a>z2
+  <a href="cpl.html#DO">DO</a>
+    zm<a href="cpl.html#Assignment">=</a>(f2&lowast;z1c-f1&lowast;z2c)/(f2-f1)   
+    fm<a href="cpl.html#Assignment">=</a>fondo(xx,zm)-yy
+    <a href="cpl.html#IF">IF</a> (fm&lowast;f1 &gt; 0) <a href="cpl.html#IF">THEN</a>
+      z1c<a href="cpl.html#Assignment">=</a>zm
+      f1<a href="cpl.html#Assignment">=</a>fm
+    <a href="cpl.html#ELSE">ELSE</a>
+      z2c<a href="cpl.html#Assignment">=</a>zm
+      f2<a href="cpl.html#Assignment">=</a>fm
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#UNTIL">UNTIL</a> (<a href="cpl.html#ABS">ABS</a>(fm) &lt; 0.0001) <a href="cpl.html#OR">OR</a> (<a href="cpl.html#ABS">ABS</a>(z2c-z1c)) &lt;0.00005 
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>zm
+<a href="cpl.html#END">END</a> vertz
+
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> delta(<a href="cpl.html#REAL">REAL</a> xx,zz,calf,salf)
+  <a href="cpl.html#REAL">REAL</a> dz,dzp,xv,talfa,fp,gp,pv
+  <a href="cpl.html#IF">IF</a> xx &lt;0.25 <a href="cpl.html#IF">THEN</a>
+    xv<a href="cpl.html#Assignment">=</a>0
+    pv<a href="cpl.html#Assignment">=</a>1
+  <a href="cpl.html#ELSE">ELSE</a> 
+    xv<a href="cpl.html#Assignment">=</a>0.5
+    pv<a href="cpl.html#Assignment">=</a>-1
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#IF">IF</a> calf <a href="cpl.html#Assignment">=</a> 0   <a href="cpl.html#IF">THEN</a>
+    talfa<a href="cpl.html#Assignment">=</a>100000000000000.
+  <a href="cpl.html#ELSE">ELSE</a>
+    talfa<a href="cpl.html#Assignment">=</a>salf/calf
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  fp<a href="cpl.html#Assignment">=</a>(fondo(xv,zz)-fondo(xv+pv&lowast;eps,zz))/eps
+  <a href="cpl.html#IF">IF</a> xx<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
+    gp<a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#ELSE">ELSE</a>
+    gp<a href="cpl.html#Assignment">=</a>(fondo(xv,zz+eps)-fondo(xv,zz))/eps
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#IF">IF</a> rapp<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>pi/2
+  <a href="cpl.html#ELSE">ELSE</a>
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>ATAN(fx0/rapp&lowast;(1-gp&lowast;talfa)&lowast;&lowast;0.5)
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <span class=comment>!(   caso lamina     
+    RESULT=0.
+    !)</span> 
+<a href="cpl.html#END">END</a> delta
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> kappa(<a href="cpl.html#REAL">REAL</a> xx, zz,calf,salf) 
+  <a href="cpl.html#REAL">REAL</a> cot,s,e,kv,kn
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(delta(xx,zz,calf,salf))  <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>0.5
+  <a href="cpl.html#ELSE">ELSE</a>
+    kn<a href="cpl.html#Assignment">=</a>0.5
+    s<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">SIN</a>(2.&lowast;delta(xx,zz,calf,salf))
+    <a href="cpl.html#DO">DO</a>
+      kv<a href="cpl.html#Assignment">=</a>kn
+      <a href="cpl.html#IF">IF</a> wp <a href="cpl.html#Assignment">=</a> 1 <a href="cpl.html#IF">THEN</a>
+        cot<a href="cpl.html#Assignment">=</a>((1.-s&lowast;&lowast;2&lowast;kv&lowast;&lowast;2)&lowast;&lowast;0.5-1.)/s/kv 
+        kn<a href="cpl.html#Assignment">=</a>(ATAN(1./cot)+pi)/(pi-delta(xx,zz,calf,salf))
+      <a href="cpl.html#ELSE">ELSE</a>
+        cot<a href="cpl.html#Assignment">=</a>(1-(1.-s&lowast;&lowast;2&lowast;kv&lowast;&lowast;2)&lowast;&lowast;0.5)/s/kv 
+        kn<a href="cpl.html#Assignment">=</a>ATAN(1./cot)/(pi-delta(xx,zz,calf,salf))
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#WHILE">WHILE</a>  <a href="cpl.html#ABS">ABS</a>(kv-kn) &gt; 0.0001 
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>kn
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#END">END</a> kappa
+
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> catalogo
+  
+  <a href="cpl.html#REAL">REAL</a> xx,yy,zz,dis,zve,znu,zno,z1,z2,d1,d2,dm,xv,yv,calf,salf,dpm,z3,norma
+  <a href="cpl.html#INTEGER">INTEGER</a> kv,kvm,kid
+  kid<a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  ica<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nid.<a href="cpl.html#HI">HI</a>
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jca<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nid(0).<a href="cpl.html#HI">HI</a>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  kca<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nid(0,0).<a href="cpl.html#HI">HI</a>
+        nid(ica,jca,kca)<a href="cpl.html#Assignment">=</a>0
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  ica<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  kca<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a>  nz
+      
+      <a href="cpl.html#IF">IF</a> ica &lt; 2   <a href="cpl.html#OR">OR</a>  ica &gt; nx-2   <a href="cpl.html#IF">THEN</a>
+        <span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast; btm(0,0) max btm &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+        
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jca<a href="cpl.html#Assignment">=</a>btm(ica,kca) <a href="cpl.html#TO">TO</a>  btm(0,0)+2
+          
+          xx<a href="cpl.html#Assignment">=</a>ica&lowast;h
+          yy<a href="cpl.html#Assignment">=</a>jca&lowast;h
+          zz<a href="cpl.html#Assignment">=</a>kca&lowast;h
+          <a href="cpl.html#IF">IF</a> ica&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+            xv<a href="cpl.html#Assignment">=</a>0.
+          <a href="cpl.html#ELSE">ELSE</a>
+            xv<a href="cpl.html#Assignment">=</a>0.5
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#IF">IF</a> kca &gt; 0   <a href="cpl.html#IF">THEN</a>
+            z1<a href="cpl.html#Assignment">=</a>0.
+            z2<a href="cpl.html#Assignment">=</a>2.&lowast;nz&lowast;h
+            d1<a href="cpl.html#Assignment">=</a>(xx-xv)&lowast;&lowast;2+(yy-fondo(xv,z1))&lowast;&lowast;2+(zz-z1)&lowast;&lowast;2
+            d2<a href="cpl.html#Assignment">=</a>(xx-xv)&lowast;&lowast;2+(yy-fondo(xv,z2))&lowast;&lowast;2+(zz-z2)&lowast;&lowast;2
+            <a href="cpl.html#DO">DO</a>
+              <span class=comment>!   WRITE 'z1,z2',z1,z2</span>
+              zno<a href="cpl.html#Assignment">=</a>0.5&lowast;z1+0.5&lowast;z2
+              dm<a href="cpl.html#Assignment">=</a>(xx-xv)&lowast;&lowast;2+(yy-fondo(xv,zno))&lowast;&lowast;2+(zz-zno)&lowast;&lowast;2
+              dpm<a href="cpl.html#Assignment">=</a>(xx-xv)&lowast;&lowast;2+(yy-fondo(xv,zno+eps))&lowast;&lowast;2+(zz-zno-eps)&lowast;&lowast;2-
+      ((xx-xv)&lowast;&lowast;2+(yy-fondo(xv,zno-eps))&lowast;&lowast;2+(zz-zno+eps)&lowast;&lowast;2)
+              <span class=comment>!   WRITE 'xx,yy,zz,d1,d2,dm,zno,dpm',xx,yy,zz,d1,d2,dm,zno,dpm</span>
+              <a href="cpl.html#IF">IF</a> dpm &gt; 0 <a href="cpl.html#IF">THEN</a>
+                z2<a href="cpl.html#Assignment">=</a>zno 
+                d2<a href="cpl.html#Assignment">=</a>dm
+              <a href="cpl.html#ELSE">ELSE</a>
+                z1<a href="cpl.html#Assignment">=</a>zno 
+                d1<a href="cpl.html#Assignment">=</a>dm
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <span class=comment>!  WRITE 'z1,z2,d1,d2',z1,z2,d1,d2</span>
+            <a href="cpl.html#WHILE">WHILE</a>  <a href="cpl.html#ABS">ABS</a>(z1-z2) &gt; h/1000000
+          <a href="cpl.html#ELSE">ELSE</a>
+            
+            zno<a href="cpl.html#Assignment">=</a>0.
+            calf<a href="cpl.html#Assignment">=</a>1.0
+            salf<a href="cpl.html#Assignment">=</a>0.
+            dis<a href="cpl.html#Assignment">=</a>((xx-xv)&lowast;&lowast;2+(yy-fondo(xv,0.))&lowast;&lowast;2)&lowast;&lowast;0.5
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          yv<a href="cpl.html#Assignment">=</a>fondo(xv,zno)
+          dis<a href="cpl.html#Assignment">=</a>((xx-xv)&lowast;&lowast;2+(yy-yv)&lowast;&lowast;2+(zz-zno)&lowast;&lowast;2)&lowast;&lowast;0.5
+          
+          <a href="cpl.html#IF">IF</a> yv &gt; 1.05&lowast;h <a href="cpl.html#AND">AND</a> jca&gt;1 <a href="cpl.html#IF">THEN</a> 
+            <span class=comment>!    IF  dis &lt; dcor    THEN</span>
+            <a href="cpl.html#IF">IF</a>  dis &lt; dcor    <a href="cpl.html#IF">THEN</a>
+              norma<a href="cpl.html#Assignment">=</a>((yy-yv)&lowast;&lowast;2+(zz-zno)&lowast;&lowast;2)&lowast;&lowast;0.5
+              <a href="cpl.html#IF">IF</a> yy &lt; yv <a href="cpl.html#IF">THEN</a> norma<a href="cpl.html#Assignment">=</a>-norma
+              <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(norma) &lt; 0.001 <a href="cpl.html#IF">THEN</a>
+                calf<a href="cpl.html#Assignment">=</a>1.
+                salf<a href="cpl.html#Assignment">=</a>0.
+              <a href="cpl.html#ELSE">ELSE</a>
+                calf<a href="cpl.html#Assignment">=</a><a href="cpl.html#ABS">ABS</a>((yy-yv)/norma)
+                salf<a href="cpl.html#Assignment">=</a>(zz-zno)/norma
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              z3<a href="cpl.html#Assignment">=</a>(zz-zno)&lowast;calf-(yy-yv)&lowast;salf 
+              <span class=comment>!   IF ABS(z3) &lt;  0.9&lowast;h  THEN  </span>
+              kid<a href="cpl.html#Assignment">=</a>kid+1
+              vzn(kid)<a href="cpl.html#Assignment">=</a>zno
+              vsalfa(kid)<a href="cpl.html#Assignment">=</a>salf
+              vcalfa(kid)<a href="cpl.html#Assignment">=</a>calf
+              nid(ica,jca,kca)<a href="cpl.html#Assignment">=</a>kid
+              vdel(kid)<a href="cpl.html#Assignment">=</a>delta(xx,zno,calf,salf)
+              vk1(kid)<a href="cpl.html#Assignment">=</a>kappa(xx,zno,calf,salf)
+              vk2(kid)<a href="cpl.html#Assignment">=</a>pi/(pi-vdel(kid))&lowast;(5.+wp)/4.
+              
+              <span class=comment>!   END IF</span>
+            <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#WRITE">WRITE</a> 'punti da correggere',kid                     
+<a href="cpl.html#END">END</a> catalogo
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> derc(<a href="cpl.html#REAL">REAL</a> fc,fs,fd,ds,dd,den)
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>(fd&lowast;ds&lowast;&lowast;2-fs&lowast;dd&lowast;&lowast;2+fc&lowast;(dd&lowast;&lowast;2-ds&lowast;&lowast;2))/den/h
+<a href="cpl.html#END">END</a> derc
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> ders(<a href="cpl.html#REAL">REAL</a> f0,f1,f2,d1,d2,den)
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>(f1&lowast;d2&lowast;&lowast;2-f2&lowast;d1&lowast;&lowast;2-f0&lowast;(d2&lowast;&lowast;2-d1&lowast;&lowast;2))/den/h
+<a href="cpl.html#END">END</a> ders
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> des(<a href="cpl.html#REAL">REAL</a> fl,fc,fr,frr,le,ri,rr)
+  <a href="cpl.html#REAL">REAL</a> den,alr,alrr
+  alr<a href="cpl.html#Assignment">=</a>le+ri
+  alrr<a href="cpl.html#Assignment">=</a>alr+rr
+  <a href="cpl.html#IF">IF</a> le&lt; pfo <a href="cpl.html#AND">AND</a> rr&gt;0  <a href="cpl.html#IF">THEN</a>
+    den <a href="cpl.html#Assignment">=</a>alr&lowast;alrr&lowast;rr
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>(fr&lowast;alrr&lowast;&lowast;2-frr&lowast;alr&lowast;&lowast;2-fl&lowast;(alrr&lowast;&lowast;2-alr&lowast;&lowast;2))/h/den
+  <a href="cpl.html#ELSE">ELSE</a>
+    den<a href="cpl.html#Assignment">=</a>le&lowast;ri&lowast;alr
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>(fc&lowast;alr&lowast;&lowast;2-fr&lowast;le&lowast;&lowast;2-fl&lowast;(alr&lowast;&lowast;2-le&lowast;&lowast;2))/h/den
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#END">END</a> des
+
+
+
+<span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+
+
+
+<span class=comment>!     funzioni locali</span>
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> teta(<a href="cpl.html#REAL">REAL</a> xx,yy)
+  <a href="cpl.html#REAL">REAL</a> tet,rq
+  <a href="cpl.html#INTEGER">INTEGER</a> si
+  <a href="cpl.html#IF">IF</a>  xx <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#IF">THEN</a> si<a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#IF">IF</a> xx &lt; 0  <a href="cpl.html#IF">THEN</a> si<a href="cpl.html#Assignment">=</a>-1
+  <a href="cpl.html#IF">IF</a> xx &gt; 0  <a href="cpl.html#IF">THEN</a> si<a href="cpl.html#Assignment">=</a>1
+  rq<a href="cpl.html#Assignment">=</a>xx&lowast;xx+yy&lowast;yy     
+  <a href="cpl.html#IF">IF</a>  yy <a href="cpl.html#Assignment">=</a> 0   <a href="cpl.html#IF">THEN</a>
+    tet<a href="cpl.html#Assignment">=</a>pi/2&lowast;si
+  <a href="cpl.html#ELSE">ELSE</a>
+    tet<a href="cpl.html#Assignment">=</a>ATAN(xx/yy)
+    <a href="cpl.html#IF">IF</a> yy &lt; 0 <a href="cpl.html#IF">THEN</a> tet<a href="cpl.html#Assignment">=</a>tet+pi&lowast;si
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>tet
+<a href="cpl.html#END">END</a> teta
+
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> fun1(<a href="cpl.html#REAL">REAL</a> fi1^,m11^,m21^,xx,yy)
+  <a href="cpl.html#REAL">REAL</a> tet,e,a,d,b,fil,fis,k3,es,cot,s,c,r
+  r<a href="cpl.html#Assignment">=</a>(xx&lowast;xx+yy&lowast;yy)&lowast;&lowast;0.5
+  tet<a href="cpl.html#Assignment">=</a>teta(xx,yy)
+  <a href="cpl.html#IF">IF</a> del &gt; 0 <a href="cpl.html#IF">THEN</a>
+    s<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">SIN</a>(2&lowast;del)
+    c<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">COS</a>(2&lowast;del)
+    k3<a href="cpl.html#Assignment">=</a>(pi-del)&lowast;k1
+    <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(pi/2-k3)  &lt; 0.005  <a href="cpl.html#IF">THEN</a>
+      cot<a href="cpl.html#Assignment">=</a>0
+    <a href="cpl.html#ELSE">ELSE</a>
+      cot<a href="cpl.html#Assignment">=</a>1/<a href="cpl.html#Builtin">TAN</a>(k3)
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#IF">IF</a> wp <a href="cpl.html#Assignment">=</a> 1  <a href="cpl.html#IF">THEN</a>
+      e<a href="cpl.html#Assignment">=</a>1-2&lowast;cot/(cot+<a href="cpl.html#Builtin">TAN</a>(del))
+      <span class=comment>!    d=1./(1.-e&lowast;(1.+k1)-k1&lowast;(s&lowast;cot+c)) </span>
+      d<a href="cpl.html#Assignment">=</a>cot/(cot&lowast;(1+e&lowast;(1+k1)+k1&lowast;c)-s&lowast;k1)
+      b<a href="cpl.html#Assignment">=</a>1
+      a<a href="cpl.html#Assignment">=</a>4&lowast;d-1
+    <a href="cpl.html#ELSE">ELSE</a>
+      e<a href="cpl.html#Assignment">=</a>2.&lowast;<a href="cpl.html#Builtin">TAN</a>(del)&lowast;cot/(1.-cot&lowast;<a href="cpl.html#Builtin">TAN</a>(del))+1.
+      d<a href="cpl.html#Assignment">=</a>cot/(cot&lowast;(1-k1&lowast;c+e&lowast;(1+k1))+k1&lowast;s)
+      a<a href="cpl.html#Assignment">=</a>1
+      b<a href="cpl.html#Assignment">=</a>1-4&lowast;d
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    es<a href="cpl.html#Assignment">=</a>1.+k1
+    <a href="cpl.html#IF">IF</a> (wp <a href="cpl.html#Assignment">=</a> 1) <a href="cpl.html#IF">THEN</a>
+      fis<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">COS</a>((1.-k1)&lowast;tet)
+      fil<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">COS</a>(es&lowast;tet)
+      fi1<a href="cpl.html#Assignment">=</a>d&lowast;(fis+e&lowast;fil)
+      m11<a href="cpl.html#Assignment">=</a>a&lowast;r&lowast;&lowast;k1&lowast;<a href="cpl.html#Builtin">SIN</a>(k1&lowast;tet)
+      m21<a href="cpl.html#Assignment">=</a>b&lowast;r&lowast;&lowast;k1&lowast;<a href="cpl.html#Builtin">COS</a>(k1&lowast;tet)
+    <a href="cpl.html#ELSE">ELSE</a>
+      fis<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">SIN</a>((1.-k1)&lowast;tet)
+      fil<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">SIN</a>(es&lowast;tet)
+      fi1<a href="cpl.html#Assignment">=</a>d&lowast;(fis+e&lowast;fil)
+      m11<a href="cpl.html#Assignment">=</a>a&lowast;r&lowast;&lowast;k1&lowast;<a href="cpl.html#Builtin">COS</a>(k1&lowast;tet)
+      m21<a href="cpl.html#Assignment">=</a>b&lowast;r&lowast;&lowast;k1&lowast;<a href="cpl.html#Builtin">SIN</a>(k1&lowast;tet)
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#ELSE">ELSE</a>
+    <span class=comment>! Lamina</span>
+    <a href="cpl.html#IF">IF</a> wp <a href="cpl.html#Assignment">=</a> -1 <a href="cpl.html#IF">THEN</a>
+      m11<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;0.5&lowast;<a href="cpl.html#Builtin">COS</a>(tet/2.)
+      m21<a href="cpl.html#Assignment">=</a>0.
+      fis<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;1.5&lowast;<a href="cpl.html#Builtin">SIN</a>(tet&lowast;0.5)
+      fil<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;1.5&lowast;<a href="cpl.html#Builtin">SIN</a>(tet&lowast;1.5)
+      fi1<a href="cpl.html#Assignment">=</a>0.25&lowast;(fis+fil)
+    <a href="cpl.html#ELSE">ELSE</a>
+      <span class=comment>!    m11=0.</span>
+      m11<a href="cpl.html#Assignment">=</a>-r&lowast;&lowast;0.5&lowast;<a href="cpl.html#Builtin">SIN</a>(0.5&lowast;tet)/2
+      m21<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;0.5&lowast;<a href="cpl.html#Builtin">COS</a>(0.5&lowast;tet)
+      fis<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;1.5&lowast;<a href="cpl.html#Builtin">COS</a>(tet&lowast;0.5)
+      fil<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;1.5&lowast;<a href="cpl.html#Builtin">COS</a>(tet&lowast;1.5)
+      <span class=comment>!    fi1=.25&lowast;(fis+fil/3)</span>
+      fi1<a href="cpl.html#Assignment">=</a>(fis+fil&lowast;3)/8
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#END">END</a>  fun1 
+
+
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> fun2(<a href="cpl.html#REAL">REAL</a> fi2^,m12^,m22^,m32^,xx,yy)
+  <a href="cpl.html#REAL">REAL</a> tet,es,k23,r
+  k23<a href="cpl.html#Assignment">=</a>pi/2./(pi-del)
+  r<a href="cpl.html#Assignment">=</a>(xx&lowast;xx+yy&lowast;yy)&lowast;&lowast;0.5
+  tet<a href="cpl.html#Assignment">=</a>teta(xx,yy)
+  <a href="cpl.html#IF">IF</a> del &gt; 0 <a href="cpl.html#IF">THEN</a>
+    es<a href="cpl.html#Assignment">=</a>k2-1.
+    <a href="cpl.html#IF">IF</a> (wp <a href="cpl.html#Assignment">=</a> 1) <a href="cpl.html#IF">THEN</a>
+      fi2<a href="cpl.html#Assignment">=</a>-r&lowast;&lowast;k2&lowast;<a href="cpl.html#Builtin">COS</a>(k2&lowast;tet)/k2 
+      m12<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">SIN</a>(es&lowast;tet)
+      m22<a href="cpl.html#Assignment">=</a>-r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">COS</a>(es&lowast;tet)
+      m32<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;k23&lowast;<a href="cpl.html#Builtin">COS</a>(k23&lowast;tet)
+    <a href="cpl.html#ELSE">ELSE</a>
+      fi2<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;k2&lowast;<a href="cpl.html#Builtin">SIN</a>(k2&lowast;tet)/k2 
+      m12<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">COS</a>(es&lowast;tet)
+      m22<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">SIN</a>(es&lowast;tet)
+      m32<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;k2&lowast;<a href="cpl.html#Builtin">SIN</a>(k2&lowast;tet)
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <span class=comment>! Caso lamina</span>
+  <a href="cpl.html#ELSE">ELSE</a>
+    <a href="cpl.html#IF">IF</a>  wp <a href="cpl.html#Assignment">=</a> -1  <a href="cpl.html#IF">THEN</a>
+      fi2<a href="cpl.html#Assignment">=</a>xx
+      m12<a href="cpl.html#Assignment">=</a>1.
+      m22<a href="cpl.html#Assignment">=</a>xx
+      m32<a href="cpl.html#Assignment">=</a>xx
+    <a href="cpl.html#ELSE">ELSE</a>
+      fi2<a href="cpl.html#Assignment">=</a>-2./3.&lowast;r&lowast;&lowast;1.5&lowast;<a href="cpl.html#Builtin">COS</a>(1.5&lowast;tet)
+      m12<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;0.5&lowast;<a href="cpl.html#Builtin">SIN</a>(0.5&lowast;tet)
+      m22<a href="cpl.html#Assignment">=</a>-r&lowast;&lowast;0.5&lowast;<a href="cpl.html#Builtin">COS</a>(0.5&lowast;tet)
+      m32<a href="cpl.html#Assignment">=</a>r&lowast;&lowast;0.5&lowast;<a href="cpl.html#Builtin">COS</a>(0.5&lowast;tet)
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#END">END</a> fun2
+
+
+
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> costanti( <a href="cpl.html#INTEGER">INTEGER</a> icor,jcor,kcor)
+  <a href="cpl.html#INTEGER">INTEGER</a> ne,ive,kve,ke,n6,k6
+  neq<a href="cpl.html#Assignment">=</a>120
+  <a href="cpl.html#REAL">REAL</a> xv,yv,den1,den2,denc6,dc6
+  <a href="cpl.html#REAL">REAL</a> m1a,m2a,m3a,den,xc,yc,zc,lun,er
+  <a href="cpl.html#REAL">REAL</a> fia,fib,fic,m11,m12,m21,m22,m32,fi1,fi2
+  <a href="cpl.html#REAL">REAL</a> b1,b2,b3,ai(1..neq,1..2),a6(1..neq),bi(1..neq)
+  <a href="cpl.html#REAL">REAL</a> b6(1..neq),bl(1..neq),ail(1..neq),a11,a12,a21,a22
+  <a href="cpl.html#REAL">REAL</a> f1l,f2l,fl,fip,fip1,fip2,xp,yp,erv
+  <a href="cpl.html#IF">IF</a> icor&lowast;h &lt; 0.25  <a href="cpl.html#IF">THEN</a>
+    xv<a href="cpl.html#Assignment">=</a>0
+    ive<a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#ELSE">ELSE</a>
+    xv<a href="cpl.html#Assignment">=</a>0.5
+    ive<a href="cpl.html#Assignment">=</a>nx
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  yv<a href="cpl.html#Assignment">=</a>fondo(xv,zn)
+  jve<a href="cpl.html#Assignment">=</a>btm(ive,kcor)
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  iv<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a>  neq
+    bi(iv)<a href="cpl.html#Assignment">=</a>0.
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jv<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> 2
+      ai(iv,jv)<a href="cpl.html#Assignment">=</a>0.
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  iv<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> neq
+    a6(iv)<a href="cpl.html#Assignment">=</a>0.
+    ail(iv)<a href="cpl.html#Assignment">=</a>0.
+    b6(iv)<a href="cpl.html#Assignment">=</a>0.
+    bl(iv)<a href="cpl.html#Assignment">=</a>0.
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  ke<a href="cpl.html#Assignment">=</a>0
+  k6<a href="cpl.html#Assignment">=</a>0
+  
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  iv<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> 1
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  kv<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a>  1
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jv<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> 1
+        
+        <a href="cpl.html#IF">IF</a>  icor+iv &gt; -1 <a href="cpl.html#AND">AND</a> icor+iv &lt; nx+1     <a href="cpl.html#IF">THEN</a>
+          <a href="cpl.html#IF">IF</a>   kcor+kv &lt; nz+1 <a href="cpl.html#AND">AND</a>  kcor+kv &gt; -1    <a href="cpl.html#IF">THEN</a>
+            <a href="cpl.html#IF">IF</a>   jcor+jv &gt; btm(icor+iv,kcor+kv) -1 <a href="cpl.html#IF">THEN</a>
+              xc<a href="cpl.html#Assignment">=</a>(icor+iv)&lowast;h-xv
+              yc<a href="cpl.html#Assignment">=</a>((jcor+jv)&lowast;h-yv)&lowast;calfa+(h&lowast;kcor+kv&lowast;h-zn)&lowast;salfa
+              zc<a href="cpl.html#Assignment">=</a>-((jcor+jv)&lowast;h-yv)&lowast;salfa+(h&lowast;kcor+kv&lowast;h-zn)&lowast;calfa
+              lun<a href="cpl.html#Assignment">=</a>1
+              m1a<a href="cpl.html#Assignment">=</a>m1(icor+iv,jcor+jv,kcor+kv)
+              m2a<a href="cpl.html#Assignment">=</a>m2(icor+iv,jcor+jv,kcor+kv)
+              m3a<a href="cpl.html#Assignment">=</a>m3(icor+iv,jcor+jv,kcor+kv)
+              fic<a href="cpl.html#Assignment">=</a>fi(icor+iv,jcor+jv,kcor+kv)
+              fun1(fi1,m11,m21,xc,yc)
+              fun2(fi2,m12,m22,m32,xc,yc)
+              ke<a href="cpl.html#Assignment">=</a>ke+1
+              k6<a href="cpl.html#Assignment">=</a>k6+1
+              ai(ke,1)<a href="cpl.html#Assignment">=</a>m11
+              ai(ke,2)<a href="cpl.html#Assignment">=</a>m12
+              bi(ke)<a href="cpl.html#Assignment">=</a>m1a
+              ail(k6)<a href="cpl.html#Assignment">=</a>m22
+              a6(k6)<a href="cpl.html#Assignment">=</a>m32
+              b6(k6)<a href="cpl.html#Assignment">=</a>m3a&lowast;calfa-m2a&lowast;salfa
+              bl(k6)<a href="cpl.html#Assignment">=</a>m2a&lowast;calfa+m3a&lowast;salfa
+              ke<a href="cpl.html#Assignment">=</a>ke+1
+              ai(ke,1)<a href="cpl.html#Assignment">=</a>fi1/lun
+              ai(ke,2)<a href="cpl.html#Assignment">=</a>fi2/lun
+              bi(ke)<a href="cpl.html#Assignment">=</a>fic/lun
+              ke<a href="cpl.html#Assignment">=</a>ke+1
+              ai(ke,1)<a href="cpl.html#Assignment">=</a>m21
+              ai(ke,2)<a href="cpl.html#Assignment">=</a>m22
+              bi(ke)<a href="cpl.html#Assignment">=</a>m2a&lowast;calfa+m3a&lowast;salfa
+            <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  ne<a href="cpl.html#Assignment">=</a>ke
+  n6<a href="cpl.html#Assignment">=</a>k6
+  a11<a href="cpl.html#Assignment">=</a>0.
+  a12<a href="cpl.html#Assignment">=</a>0.
+  a21<a href="cpl.html#Assignment">=</a>0.
+  a22<a href="cpl.html#Assignment">=</a>0.
+  b1<a href="cpl.html#Assignment">=</a>0.
+  b2<a href="cpl.html#Assignment">=</a>0.
+  c6<a href="cpl.html#Assignment">=</a>0.
+  denc6<a href="cpl.html#Assignment">=</a>0.
+  dc6<a href="cpl.html#Assignment">=</a>0.
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  ke<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> n6
+    denc6<a href="cpl.html#Assignment">=</a>denc6+a6(ke)&lowast;&lowast;2
+    dc6<a href="cpl.html#Assignment">=</a>dc6+a6(ke)&lowast;b6(ke)
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  c6<a href="cpl.html#Assignment">=</a>dc6/denc6
+  
+  denc6<a href="cpl.html#Assignment">=</a>0.
+  dc6<a href="cpl.html#Assignment">=</a>0.
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  ke<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> n6
+    denc6<a href="cpl.html#Assignment">=</a>denc6+ail(ke)&lowast;&lowast;2
+    dc6<a href="cpl.html#Assignment">=</a>dc6+ail(ke)&lowast;bl(ke)
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  c2l<a href="cpl.html#Assignment">=</a>dc6/denc6
+  
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  iv<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a>  ne
+    a11<a href="cpl.html#Assignment">=</a>ai(iv,1)&lowast;ai(iv,1)+a11
+    a12<a href="cpl.html#Assignment">=</a>ai(iv,2)&lowast;ai(iv,1)+a12
+    a21<a href="cpl.html#Assignment">=</a>ai(iv,1)&lowast;ai(iv,2)+a21
+    a22<a href="cpl.html#Assignment">=</a>ai(iv,2)&lowast;ai(iv,2)+a22
+    b1<a href="cpl.html#Assignment">=</a>bi(iv)&lowast;ai(iv,1)+b1
+    b2<a href="cpl.html#Assignment">=</a>bi(iv)&lowast;ai(iv,2)+b2
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  den<a href="cpl.html#Assignment">=</a>a11&lowast;a22-a12&lowast;a21
+  den1<a href="cpl.html#Assignment">=</a>b1&lowast;a22-b2&lowast;a12
+  den2<a href="cpl.html#Assignment">=</a>a11&lowast;b2-b1&lowast;a21
+  c2<a href="cpl.html#Assignment">=</a>den1/den
+  c4<a href="cpl.html#Assignment">=</a>den2/den
+<a href="cpl.html#END">END</a> costanti
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> m1loc(<a href="cpl.html#REAL">REAL</a> xx,yy)
+  <a href="cpl.html#REAL">REAL</a> fi1,fi2,m11,m12,m21,m22,m32
+  fun1(fi1,m11,m21,xx,yy)
+  fun2(fi2,m12,m22,m32,xx,yy)
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>c2&lowast;m11+c4&lowast;m12
+<a href="cpl.html#END">END</a> m1loc
+
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> m2loc(<a href="cpl.html#REAL">REAL</a> xx,yy)
+  <a href="cpl.html#REAL">REAL</a> fi1,fi2,m11,m12,m21,m22,m32
+  fun1(fi1,m11,m21,xx,yy)
+  fun2(fi2,m12,m22,m32,xx,yy)
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>c2&lowast;m21+c4&lowast;m22
+<a href="cpl.html#END">END</a> m2loc
+
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> m3loc(<a href="cpl.html#REAL">REAL</a> xx,yy)
+  <a href="cpl.html#REAL">REAL</a> fi2,m12,m22,m32
+  fun2(fi2,m12,m22,m32,xx,yy)
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>c6&lowast;m32
+<a href="cpl.html#END">END</a> m3loc
+
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> filoc(<a href="cpl.html#REAL">REAL</a> xx,yy)
+  <a href="cpl.html#REAL">REAL</a> fi1,fi2,m11,m12,m21,m22,m32
+  fun1(fi1,m11,m21,xx,yy)
+  fun2(fi2,m12,m22,m32,xx,yy)
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>c2&lowast;fi1+c4&lowast;fi2
+<a href="cpl.html#END">END</a> filoc
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> fico(<a href="cpl.html#INTEGER">INTEGER</a> ic,jc,kc)
+  <a href="cpl.html#REAL">REAL</a> xx,yy,xv
+  <a href="cpl.html#IF">IF</a> ic&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+    xv<a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#ELSE">ELSE</a>
+    xv<a href="cpl.html#Assignment">=</a>0.5
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  xx<a href="cpl.html#Assignment">=</a>ic&lowast;h-xv
+  yy<a href="cpl.html#Assignment">=</a>(jc&lowast;h-fondo(xv,zn))&lowast;calfa+(kc&lowast;h-zn)&lowast;salfa
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>filoc(xx,yy)
+<a href="cpl.html#END">END</a> fico
+
+
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> m1co(<a href="cpl.html#INTEGER">INTEGER</a> ic,jc,kc)
+  <a href="cpl.html#REAL">REAL</a> xx,yy,xv
+  <a href="cpl.html#IF">IF</a> ic&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+    xv<a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#ELSE">ELSE</a>
+    xv<a href="cpl.html#Assignment">=</a>0.5
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  xx<a href="cpl.html#Assignment">=</a>ic&lowast;h-xv
+  yy<a href="cpl.html#Assignment">=</a>(jc&lowast;h-fondo(xv,zn))&lowast;calfa+(kc&lowast;h-zn)&lowast;salfa
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>m1loc(xx,yy)
+<a href="cpl.html#END">END</a> m1co
+
+
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> m2co(<a href="cpl.html#INTEGER">INTEGER</a> ic,jc,kc)
+  <a href="cpl.html#REAL">REAL</a> xx,yy,xv
+  <a href="cpl.html#IF">IF</a> ic&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+    xv<a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#ELSE">ELSE</a>
+    xv<a href="cpl.html#Assignment">=</a>0.5
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  xx<a href="cpl.html#Assignment">=</a>ic&lowast;h-xv
+  yy<a href="cpl.html#Assignment">=</a>(jc&lowast;h-fondo(xv,zn))&lowast;calfa+(kc&lowast;h-zn)&lowast;salfa
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>m2loc(xx,yy)&lowast;calfa-m3loc(xx,yy)&lowast;salfa
+<a href="cpl.html#END">END</a> m2co
+
+
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> m3co( <a href="cpl.html#INTEGER">INTEGER</a> ic,jc,kc)
+  <a href="cpl.html#REAL">REAL</a> xx,yy,xv
+  <a href="cpl.html#IF">IF</a> ic&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+    xv<a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#ELSE">ELSE</a>
+    xv<a href="cpl.html#Assignment">=</a>0.5
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  xx<a href="cpl.html#Assignment">=</a>ic&lowast;h-xv
+  yy<a href="cpl.html#Assignment">=</a>(jc&lowast;h-fondo(xv,zn))&lowast;calfa+(kc&lowast;h-zn)&lowast;salfa
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>m2loc(xx,yy)&lowast;salfa+m3loc(xx,yy)&lowast;calfa
+  
+<a href="cpl.html#END">END</a> m3co
+
+
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> fxd(<a href="cpl.html#REAL">REAL</a> tang; <a href="cpl.html#INTEGER">INTEGER</a> i,j,k,tra,co)
+  <a href="cpl.html#INTEGER">INTEGER</a> ile,ifu,kfu
+  <a href="cpl.html#REAL">REAL</a> fr,fd,fu,fuu,ld
+  <a href="cpl.html#IF">IF</a> tang&gt;0 <a href="cpl.html#IF">THEN</a>
+    ile<a href="cpl.html#Assignment">=</a>1
+  <a href="cpl.html#ELSE">ELSE</a>
+    ile<a href="cpl.html#Assignment">=</a>-1
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  ifu<a href="cpl.html#Assignment">=</a>i+tra&lowast;ile
+  kfu<a href="cpl.html#Assignment">=</a>k+(1-tra)&lowast;ile
+  ld<a href="cpl.html#Assignment">=</a>ad(ifu,j,kfu)-ad(i,j,k)
+  <a href="cpl.html#IF">IF</a> co<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
+    fr<a href="cpl.html#Assignment">=</a>fi(ifu,j,kfu)
+    <a href="cpl.html#IF">IF</a> btm(ifu,kfu)&gt; j <a href="cpl.html#IF">THEN</a> fr<a href="cpl.html#Assignment">=</a>0
+    fd<a href="cpl.html#Assignment">=</a>fi(ifu,j-1,kfu)
+    <a href="cpl.html#IF">IF</a> btm(ifu,kfu)&gt; j-1  <a href="cpl.html#IF">THEN</a> fd<a href="cpl.html#Assignment">=</a>0
+    fu<a href="cpl.html#Assignment">=</a>fi(ifu,j+1,kfu)
+    fuu<a href="cpl.html#Assignment">=</a>fi(ifu,j+2,kfu)
+  <a href="cpl.html#ELSE">ELSE</a>
+    fr<a href="cpl.html#Assignment">=</a>fico(ifu,j,kfu)
+    <a href="cpl.html#IF">IF</a> btm(ifu,kfu)&gt; j <a href="cpl.html#IF">THEN</a> fr<a href="cpl.html#Assignment">=</a>0
+    fd<a href="cpl.html#Assignment">=</a>fico(ifu,j-1,kfu)
+    <a href="cpl.html#IF">IF</a> btm(ifu,kfu)&gt; j-1  <a href="cpl.html#IF">THEN</a> fd<a href="cpl.html#Assignment">=</a>0
+    fu<a href="cpl.html#Assignment">=</a>fico(ifu,j+1,kfu)
+    fuu<a href="cpl.html#Assignment">=</a>fico(ifu,j+2,kfu)
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#Assignment">=</a>(fd/h+des(fd,fr,fu,fuu,ad(ifu,j,kfu),1,1)&lowast;ld)&lowast;ile
+<a href="cpl.html#END">END</a> fxd
+
+
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> fyl( <a href="cpl.html#INTEGER">INTEGER</a> i,j,k,tra,co,leftside)
+  <a href="cpl.html#INTEGER">INTEGER</a> ile,ifu,kfu
+  <a href="cpl.html#REAL">REAL</a> fl,fc,fr,frr,ld,lrd
+  ile<a href="cpl.html#Assignment">=</a>leftside
+  <a href="cpl.html#IF">IF</a> ile<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+    ld<a href="cpl.html#Assignment">=</a>al(i,j+1,k)
+    lrd<a href="cpl.html#Assignment">=</a>ld-al(i,j,k)
+  <a href="cpl.html#ELSE">ELSE</a>
+    ld<a href="cpl.html#Assignment">=</a>ar(i,j+1,k)
+    lrd<a href="cpl.html#Assignment">=</a>ld-ar(i,j,k)
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  ifu<a href="cpl.html#Assignment">=</a>i-tra&lowast;ile
+  kfu<a href="cpl.html#Assignment">=</a>k-(1-tra)&lowast;ile
+  <a href="cpl.html#IF">IF</a> co<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
+    fr<a href="cpl.html#Assignment">=</a>fi(i+tra&lowast;ile,j+1,k+(1-tra)&lowast;ile)
+    <a href="cpl.html#IF">IF</a> btm(i+tra&lowast;ile,k+(1-tra&lowast;ile))&gt; j+1 <a href="cpl.html#IF">THEN</a> fr<a href="cpl.html#Assignment">=</a>0
+    frr<a href="cpl.html#Assignment">=</a>fi(i+2&lowast;tra&lowast;ile,j+1,k+2&lowast;(1-tra)&lowast;ile)
+    <a href="cpl.html#IF">IF</a> btm(i+2&lowast;tra&lowast;ile,k+2&lowast;(1-tra&lowast;ile))&gt; j+1 <a href="cpl.html#IF">THEN</a> frr<a href="cpl.html#Assignment">=</a>0
+    fl<a href="cpl.html#Assignment">=</a>fi(ifu,j+1,kfu)
+    <a href="cpl.html#IF">IF</a> btm(ifu,kfu)&gt; j+1  <a href="cpl.html#IF">THEN</a> fl<a href="cpl.html#Assignment">=</a>0
+    fc<a href="cpl.html#Assignment">=</a>fi(i,j+1,k)
+  <a href="cpl.html#ELSE">ELSE</a>
+    fr<a href="cpl.html#Assignment">=</a>fico(i+tra&lowast;ile,j+1,k+(1-tra)&lowast;ile)
+    <a href="cpl.html#IF">IF</a> btm(i+tra&lowast;ile,k+(1-tra&lowast;ile))&gt; j+1 <a href="cpl.html#IF">THEN</a> fr<a href="cpl.html#Assignment">=</a>0
+    frr<a href="cpl.html#Assignment">=</a>fico(i+2&lowast;tra&lowast;ile,j+1,k+2&lowast;(1-tra)&lowast;ile)
+    <a href="cpl.html#IF">IF</a> btm(i+2&lowast;tra&lowast;ile,k+2&lowast;(1-tra&lowast;ile))&gt; j+1 <a href="cpl.html#IF">THEN</a> frr<a href="cpl.html#Assignment">=</a>0
+    fl<a href="cpl.html#Assignment">=</a>fico(ifu,j+1,kfu)
+    <a href="cpl.html#IF">IF</a> btm(ifu,kfu)&gt; j+1  <a href="cpl.html#IF">THEN</a> fl<a href="cpl.html#Assignment">=</a>0
+    fc<a href="cpl.html#Assignment">=</a>fico(i,j+1,k)
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#Assignment">=</a>fl/h+des(fl,fc,fr,frr,ld,1,1)&lowast;lrd
+<a href="cpl.html#END">END</a> fyl
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> notom1
+  <a href="cpl.html#REAL">REAL</a> den,cl,cr,cd,cf,cb,ml,mr,md,mf,mb,fix,alr,rr,ll,
+  tang,ficen,fl,fll,fr,frr,fb,fff,fd,fu,flad
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  kno<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno<a href="cpl.html#Assignment">=</a>btm(ino,kno) <a href="cpl.html#TO">TO</a>  btf(ino,kno)-1
+        alr<a href="cpl.html#Assignment">=</a>al(ino,jno,kno)+ar(ino,jno,kno)
+        den<a href="cpl.html#Assignment">=</a>al(ino,jno,kno)&lowast;ar(ino,jno,kno)&lowast;alr
+        cl<a href="cpl.html#Assignment">=</a>0.
+        cd<a href="cpl.html#Assignment">=</a>0.
+        cr<a href="cpl.html#Assignment">=</a>0.
+        cb<a href="cpl.html#Assignment">=</a>0.
+        cf<a href="cpl.html#Assignment">=</a>0.
+        mr<a href="cpl.html#Assignment">=</a>0.
+        md<a href="cpl.html#Assignment">=</a>0.
+        ml<a href="cpl.html#Assignment">=</a>0.
+        mf<a href="cpl.html#Assignment">=</a>0.
+        mb<a href="cpl.html#Assignment">=</a>0.
+        fu<a href="cpl.html#Assignment">=</a>fi(ino,jno+1,kno)
+        ficen<a href="cpl.html#Assignment">=</a>fi(ino,jno,kno)
+        
+        <a href="cpl.html#IF">IF</a> btm(ino-1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fl<a href="cpl.html#Assignment">=</a>0
+          rr<a href="cpl.html#Assignment">=</a>0 
+        <a href="cpl.html#ELSE">ELSE</a>
+          fl<a href="cpl.html#Assignment">=</a>fi(ino-1,jno,kno)
+          rr<a href="cpl.html#Assignment">=</a>al(ino-1,jno,kno)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        
+        <a href="cpl.html#IF">IF</a> ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
+          fll<a href="cpl.html#Assignment">=</a>wp&lowast;fi(ino+2,jno,kno)
+          <a href="cpl.html#IF">IF</a> btm(ino+2,kno)&gt; jno <a href="cpl.html#IF">THEN</a> fll<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fll<a href="cpl.html#Assignment">=</a>fi(ino-2,jno,kno)
+          <a href="cpl.html#IF">IF</a> btm(ino-2,kno)&gt; jno <a href="cpl.html#IF">THEN</a> fll<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino+1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fr<a href="cpl.html#Assignment">=</a>0
+          ll<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fr<a href="cpl.html#Assignment">=</a>fi(ino+1,jno,kno)
+          ll<a href="cpl.html#Assignment">=</a>ar(ino+1,jno,kno)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> ino<a href="cpl.html#Assignment">=</a>nx <a href="cpl.html#IF">THEN</a>
+          frr<a href="cpl.html#Assignment">=</a>wp&lowast;fi(ino-2,jno,kno)
+          <a href="cpl.html#IF">IF</a> btm(ino-2,kno)&gt; jno <a href="cpl.html#IF">THEN</a> frr<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          frr<a href="cpl.html#Assignment">=</a>fi(ino+2,jno,kno)
+          <a href="cpl.html#IF">IF</a> btm(ino+2,kno)&gt; jno <a href="cpl.html#IF">THEN</a> frr<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino,kno-1) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fb<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fb<a href="cpl.html#Assignment">=</a>fi(ino,jno,kno-1)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino,kno+1) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fff<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fff<a href="cpl.html#Assignment">=</a>fi(ino,jno,kno+1)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a>  al(ino,jno,kno) &lt; pfo   <a href="cpl.html#IF">THEN</a>
+          fix<a href="cpl.html#Assignment">=</a>ders(ficen,fr,frr,1,2,2)
+        <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a>  ar(ino,jno,kno) &lt; pfo   <a href="cpl.html#IF">THEN</a>
+          fix<a href="cpl.html#Assignment">=</a>-ders(ficen,fl,fll,1,2,2)
+        <a href="cpl.html#ELSE">ELSE</a>
+          fix<a href="cpl.html#Assignment">=</a>derc(ficen,fl,fr,al(ino,jno,kno),ar(ino,jno,kno),den) 
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino-1,kno) &gt; jno <a href="cpl.html#IF">THEN</a>
+          cl<a href="cpl.html#Assignment">=</a>bcl(ino,jno,kno)
+          <a href="cpl.html#IF">IF</a>  al(ino,jno,kno) &lt; pfo   <a href="cpl.html#IF">THEN</a>
+            ml<a href="cpl.html#Assignment">=</a>ders(0,fr,frr,alr,alr+1,alr&lowast;(alr+1))
+          <a href="cpl.html#ELSE">ELSE</a>
+            ml<a href="cpl.html#Assignment">=</a>ders(0,ficen,fr,al(ino,jno,kno),alr,den)
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <span class=comment>!    ml=des(fl,ficen,fr,frr,al(ino,jno,kno),ar(ino,jno,kno),rr)</span>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a>  btm(ino+1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          cr<a href="cpl.html#Assignment">=</a>bcr(ino,jno,kno)
+          <a href="cpl.html#IF">IF</a>  ar(ino,jno,kno) &lt; pfo   <a href="cpl.html#IF">THEN</a>
+            mr<a href="cpl.html#Assignment">=</a>-ders(0,fl,fll,alr,alr+1,alr&lowast;(alr+1))
+          <a href="cpl.html#ELSE">ELSE</a>
+            mr<a href="cpl.html#Assignment">=</a>-ders(0,ficen,fl,ar(ino,jno,kno),alr,den)
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <span class=comment>! calcolo md</span>
+        <a href="cpl.html#IF">IF</a> jno <a href="cpl.html#Assignment">=</a> btm(ino,kno)  <a href="cpl.html#IF">THEN</a>
+          cd<a href="cpl.html#Assignment">=</a>bcd(ino,jno,kno)
+          tang<a href="cpl.html#Assignment">=</a>(fondo(ino&lowast;h-eps,kno&lowast;h)-fondo(ino&lowast;h+eps,h&lowast;kno))/2/eps
+          <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+            md<a href="cpl.html#Assignment">=</a>fix
+          <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+            <a href="cpl.html#IF">IF</a> ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> ino<a href="cpl.html#Assignment">=</a> nx <a href="cpl.html#IF">THEN</a>
+              md<a href="cpl.html#Assignment">=</a>fix
+            <a href="cpl.html#ELSE">ELSE</a>
+              <a href="cpl.html#IF">IF</a> tang<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> 
+                md<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                md<a href="cpl.html#Assignment">=</a>fxd(tang,ino,jno,kno,1,0)    
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+            <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <span class=comment>! fine calcolo md</span>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino,kno-1) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          cb<a href="cpl.html#Assignment">=</a>bcb(ino,jno,kno)
+          
+          mb<a href="cpl.html#Assignment">=</a>fix        
+          
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino,kno+1) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          cf<a href="cpl.html#Assignment">=</a>bcf(ino,jno,kno)
+          mf<a href="cpl.html#Assignment">=</a>fix        
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        rhs(ino,jno,kno)<a href="cpl.html#Assignment">=</a>cl&lowast;ml+cr&lowast;mr+cd&lowast;md+cf&lowast;mf+cb&lowast;mb
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno<a href="cpl.html#Assignment">=</a>btf(ino,kno) <a href="cpl.html#TO">TO</a>  ny-1
+        rhs(ino,jno,kno)<a href="cpl.html#Assignment">=</a>0.
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      rhs(ino,ny,kno)<a href="cpl.html#Assignment">=</a>h/3&lowast;(1-wp)/2
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> notom1
+
+
+
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> notom2
+  <a href="cpl.html#REAL">REAL</a> cl,cr,cf,cd,cb,ml,mr,md,mb,mf,den,fiy,fd,ad1,tang
+  <a href="cpl.html#REAL">REAL</a> fir,ficen,fu,fl,fr,fb,fff
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  kno<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno<a href="cpl.html#Assignment">=</a>btm(ino,kno) <a href="cpl.html#TO">TO</a>  btf(ino,kno)-1
+        cl<a href="cpl.html#Assignment">=</a>0.
+        cd<a href="cpl.html#Assignment">=</a>0.
+        cr<a href="cpl.html#Assignment">=</a>0.
+        cf<a href="cpl.html#Assignment">=</a>0.
+        cb<a href="cpl.html#Assignment">=</a>0.
+        ml<a href="cpl.html#Assignment">=</a>0.
+        md<a href="cpl.html#Assignment">=</a>0.
+        mr<a href="cpl.html#Assignment">=</a>0.
+        mf<a href="cpl.html#Assignment">=</a>0.
+        mb<a href="cpl.html#Assignment">=</a>0.
+        fu<a href="cpl.html#Assignment">=</a>fi(ino,jno+1,kno)
+        ficen<a href="cpl.html#Assignment">=</a>fi(ino,jno,kno)
+        
+        <a href="cpl.html#IF">IF</a> btm(ino-1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fl<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fl<a href="cpl.html#Assignment">=</a>fi(ino-1,jno,kno)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino+1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fr<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fr<a href="cpl.html#Assignment">=</a>fi(ino+1,jno,kno)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino,kno-1) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fb<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fb<a href="cpl.html#Assignment">=</a>fi(ino,jno,kno-1)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino,kno+1) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fff<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fff<a href="cpl.html#Assignment">=</a>fi(ino,jno,kno+1)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        ad1<a href="cpl.html#Assignment">=</a>ad(ino,jno,kno)+1.
+        den<a href="cpl.html#Assignment">=</a>ad(ino,jno,kno)&lowast;ad1
+        <a href="cpl.html#IF">IF</a> ad(ino,jno,kno) &lt; pfo <a href="cpl.html#IF">THEN</a>
+          fiy<a href="cpl.html#Assignment">=</a>ders(ficen,fu,fi(ino,jno+2,kno),1,2,2)
+        <a href="cpl.html#ELSE">ELSE</a>
+          fd<a href="cpl.html#Assignment">=</a>fi(ino,jno-1,kno)
+          <a href="cpl.html#IF">IF</a> jno <a href="cpl.html#Assignment">=</a> btm(ino,kno) <a href="cpl.html#IF">THEN</a> fd<a href="cpl.html#Assignment">=</a>0.
+          fiy<a href="cpl.html#Assignment">=</a>derc(ficen,fd,fu,ad(ino,jno,kno),1,den)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        tang<a href="cpl.html#Assignment">=</a>(fondo(ino&lowast;h-eps,kno&lowast;h)-fondo(ino&lowast;h+eps,h&lowast;kno))/2/eps
+        <a href="cpl.html#IF">IF</a>  btm(ino-1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          cl<a href="cpl.html#Assignment">=</a>bcl(ino,jno,kno)
+          <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+            ml <a href="cpl.html#Assignment">=</a>fiy
+          <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+            <a href="cpl.html#IF">IF</a> ino <a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#AND">AND</a> jno <a href="cpl.html#Assignment">=</a> btm(ino-1,kno) <a href="cpl.html#IF">THEN</a>
+              <span class=comment>!   ml =fiy</span>
+              ml<a href="cpl.html#Assignment">=</a>0
+              
+            <a href="cpl.html#ELSE">ELSE</a>
+              ml <a href="cpl.html#Assignment">=</a>fyl(ino,jno,kno,1,0,1)
+            <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a>  btm(ino+1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          cr<a href="cpl.html#Assignment">=</a>bcr(ino,jno,kno)
+          <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+            mr <a href="cpl.html#Assignment">=</a>fiy
+          <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+            <a href="cpl.html#IF">IF</a> ino <a href="cpl.html#Assignment">=</a>nx-1 <a href="cpl.html#AND">AND</a> jno <a href="cpl.html#Assignment">=</a> btm(ino+1,kno) <a href="cpl.html#IF">THEN</a>
+              <span class=comment>!   mr =fiy</span>
+              mr<a href="cpl.html#Assignment">=</a>0
+            <a href="cpl.html#ELSE">ELSE</a>
+              mr <a href="cpl.html#Assignment">=</a>fyl(ino,jno,kno,1,0,-1)
+            <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a>  jno <a href="cpl.html#Assignment">=</a> btm(ino,kno)  <a href="cpl.html#IF">THEN</a>
+          cd<a href="cpl.html#Assignment">=</a>bcd(ino,jno,kno)
+          <a href="cpl.html#IF">IF</a>( ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> ino<a href="cpl.html#Assignment">=</a>nx) <a href="cpl.html#AND">AND</a> jno &gt;1 <a href="cpl.html#IF">THEN</a>
+            md<a href="cpl.html#Assignment">=</a>0
+          <a href="cpl.html#ELSE">ELSE</a> 
+            <a href="cpl.html#IF">IF</a> ad(ino,jno,kno) &lt; pfo <a href="cpl.html#IF">THEN</a>
+              md<a href="cpl.html#Assignment">=</a>ders(0,fu,fi(ino,jno+2,kno),ad1,ad1+1,ad1&lowast;(ad1+1))
+            <a href="cpl.html#ELSE">ELSE</a>
+              md<a href="cpl.html#Assignment">=</a>ders(0,ficen,fu,ad(ino,jno,kno),ad1,den)
+            <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino,kno-1) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          cb<a href="cpl.html#Assignment">=</a>bcb(ino,jno,kno)
+          <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+            mb<a href="cpl.html#Assignment">=</a>fiy
+          <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+            <span class=comment>!  mb=fiy</span>
+            mb <a href="cpl.html#Assignment">=</a>fyl(ino,jno,kno,0,0,1)
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino,kno+1) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          cf<a href="cpl.html#Assignment">=</a>bcf(ino,jno,kno)
+          <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+            mf<a href="cpl.html#Assignment">=</a>fiy
+          <a href="cpl.html#ELSE">ELSE</a>  <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+            <span class=comment>!  mf=fiy</span>
+            mf <a href="cpl.html#Assignment">=</a>fyl(ino,jno,kno,0,0,-1)
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        rhs(ino,jno,kno)<a href="cpl.html#Assignment">=</a>cl&lowast;ml+cr&lowast;mr+cd&lowast;md+mb&lowast;cb+mf&lowast;cf
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno<a href="cpl.html#Assignment">=</a>btf(ino,kno) <a href="cpl.html#TO">TO</a>  ny-1
+        rhs(ino,jno,kno)<a href="cpl.html#Assignment">=</a>0.
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      rhs(ino,ny,kno)<a href="cpl.html#Assignment">=</a>0
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> notom2
+
+
+
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> notom3
+  <a href="cpl.html#REAL">REAL</a> den,fiz,cf,cb,cl,cr,cd,ml,mr,md,mf,mb,abf,fiq,fit,
+  tangz,fu,ficen,fl,fr,fb,fff,ffff,fbb
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  kno<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno<a href="cpl.html#Assignment">=</a>btm(ino,kno) <a href="cpl.html#TO">TO</a> btf(ino,kno)-1
+        abf<a href="cpl.html#Assignment">=</a>ab(ino,jno,kno)+af(ino,jno,kno)
+        den<a href="cpl.html#Assignment">=</a>ab(ino,jno,kno)&lowast;af(ino,jno,kno)&lowast;abf
+        cb<a href="cpl.html#Assignment">=</a>0.
+        cf<a href="cpl.html#Assignment">=</a>0.
+        cl<a href="cpl.html#Assignment">=</a>0.
+        cr<a href="cpl.html#Assignment">=</a>0.
+        mf<a href="cpl.html#Assignment">=</a>0.
+        mb<a href="cpl.html#Assignment">=</a>0.
+        cd<a href="cpl.html#Assignment">=</a>0.
+        md<a href="cpl.html#Assignment">=</a>0.
+        ml<a href="cpl.html#Assignment">=</a>0.
+        mr<a href="cpl.html#Assignment">=</a>0.
+        fu<a href="cpl.html#Assignment">=</a>fi(ino,jno+1,kno)
+        ficen<a href="cpl.html#Assignment">=</a>fi(ino,jno,kno)
+        
+        <a href="cpl.html#IF">IF</a> btm(ino-1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fl<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fl<a href="cpl.html#Assignment">=</a>fi(ino-1,jno,kno)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino+1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fr<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fr<a href="cpl.html#Assignment">=</a>fi(ino+1,jno,kno)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino,kno-1) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fb<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fb<a href="cpl.html#Assignment">=</a>fi(ino,jno,kno-1)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino,kno+1) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fff<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fff<a href="cpl.html#Assignment">=</a>fi(ino,jno,kno+1)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        ad1<a href="cpl.html#Assignment">=</a>ad(ino,jno,kno)+1.
+        <a href="cpl.html#IF">IF</a>  ab(ino,jno,kno) &lt; pfo  <a href="cpl.html#AND">AND</a>  kno &lt;  nz  <a href="cpl.html#IF">THEN</a>
+          fiz<a href="cpl.html#Assignment">=</a>ders(ficen,fff,fi(ino,jno,kno+2),1,2,2)
+        <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a>  af(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno &gt; 0  <a href="cpl.html#IF">THEN</a>
+          fiz<a href="cpl.html#Assignment">=</a>-ders(ficen,fb,fi(ino,jno,kno-2),1,2,2)
+        <a href="cpl.html#ELSE">ELSE</a>
+          fiz<a href="cpl.html#Assignment">=</a>derc(ficen,fb,fff,ab(ino,jno,kno),af(ino,jno,kno),den)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a> (ab(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a> kno<a href="cpl.html#Assignment">=</a>nz) <a href="cpl.html#OR">OR</a> (af(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a> kno <a href="cpl.html#Assignment">=</a>0) <a href="cpl.html#IF">THEN</a> \
+        fiz<a href="cpl.html#Assignment">=</a>(fff- fb)/abf/h
+        
+        <a href="cpl.html#IF">IF</a> btm(ino,kno-1)   &gt; jno <a href="cpl.html#IF">THEN</a>
+          cb<a href="cpl.html#Assignment">=</a>bcb(ino,jno,kno)
+          <a href="cpl.html#IF">IF</a>  ab(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno &lt; nz <a href="cpl.html#IF">THEN</a>
+            mb<a href="cpl.html#Assignment">=</a>ders(0,fff,fi(ino,jno,kno+2),abf,abf+1,abf&lowast;(abf+1))
+          <a href="cpl.html#ELSE">ELSE</a>
+            mb<a href="cpl.html#Assignment">=</a>ders(0,ficen,fff,ab(ino,jno,kno),abf,den)
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#IF">IF</a>    ab(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>   kno<a href="cpl.html#Assignment">=</a>nz <a href="cpl.html#IF">THEN</a> mb<a href="cpl.html#Assignment">=</a>fiz 
+          <a href="cpl.html#IF">IF</a> ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> ino<a href="cpl.html#Assignment">=</a>nx <a href="cpl.html#IF">THEN</a> mb<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino,kno+1)   &gt; jno <a href="cpl.html#IF">THEN</a>
+          cf<a href="cpl.html#Assignment">=</a>bcf(ino,jno,kno)
+          <a href="cpl.html#IF">IF</a>  af(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno &gt; 0  <a href="cpl.html#IF">THEN</a>
+            mf<a href="cpl.html#Assignment">=</a>-ders(0,fb,fi(ino,jno,kno-2),abf,abf+1,abf&lowast;(abf+1))
+          <a href="cpl.html#ELSE">ELSE</a>
+            mf<a href="cpl.html#Assignment">=</a>-ders(0,ficen,fb,af(ino,jno,kno),abf,den)
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#IF">IF</a> ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> ino<a href="cpl.html#Assignment">=</a>nx <a href="cpl.html#IF">THEN</a> mf<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a>    af(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>   kno<a href="cpl.html#Assignment">=</a>0  <a href="cpl.html#IF">THEN</a> mf<a href="cpl.html#Assignment">=</a>fiz 
+        
+        
+        <a href="cpl.html#IF">IF</a>  jno <a href="cpl.html#Assignment">=</a> btm(ino,kno)  <a href="cpl.html#IF">THEN</a>
+          cd<a href="cpl.html#Assignment">=</a>bcd(ino,jno,kno)
+          tangz<a href="cpl.html#Assignment">=</a>(fondo(ino&lowast;h,kno&lowast;h-eps)-fondo(ino&lowast;h,h&lowast;kno+eps))/2/eps
+          <a href="cpl.html#IF">IF</a> pbc <a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+            md<a href="cpl.html#Assignment">=</a>fiz
+          <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc <a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+            <span class=comment>!  md=fiz</span>
+            md<a href="cpl.html#Assignment">=</a>fxd(tangz,ino,jno,kno,0,0)
+            <a href="cpl.html#IF">IF</a> ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> ino<a href="cpl.html#Assignment">=</a>nx <a href="cpl.html#IF">THEN</a> md<a href="cpl.html#Assignment">=</a>0
+            <span class=comment>!(   IF ino=0 OR ino=nx THEN
+                IF tangz&gt;0 THEN
+                  md=(tangz/ad(ino,jno,kno+1))&lowast;&lowast;1.5/h&lowast;fff
+                ELSE IF tangz&lt;0 THEN
+                  md=-(-tangz/ad(ino,jno,kno-1))&lowast;&lowast;1.5/h&lowast;fb
+                ELSE
+                  md=0
+                END IF
+              END IF
+              !)</span>
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#IF">IF</a> tangz<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> md<a href="cpl.html#Assignment">=</a>0
+          <a href="cpl.html#IF">IF</a> kno<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#AND">AND</a> wp<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#IF">THEN</a> md<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <span class=comment>! fine calcolo md</span>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino-1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          cl<a href="cpl.html#Assignment">=</a>bcl(ino,jno,kno)
+          <a href="cpl.html#IF">IF</a> pbc <a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+            ml<a href="cpl.html#Assignment">=</a>fiz
+            <span class=comment>!   ml=0</span>
+          <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc <a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+            <span class=comment>!  ml=fiz</span>
+            ml<a href="cpl.html#Assignment">=</a>0
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino+1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          cr<a href="cpl.html#Assignment">=</a>bcr(ino,jno,kno)
+          <a href="cpl.html#IF">IF</a> pbc <a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+            mr<a href="cpl.html#Assignment">=</a>fiz
+            <span class=comment>!    mr=0</span>
+          <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc <a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+            <span class=comment>!  mr=fiz</span>
+            mr<a href="cpl.html#Assignment">=</a>0
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        rhs(ino,jno,kno)<a href="cpl.html#Assignment">=</a>cd&lowast;md+cb&lowast;mb+cf&lowast;mf+cl&lowast;ml+cr&lowast;mr
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno<a href="cpl.html#Assignment">=</a>btf(ino,kno) <a href="cpl.html#TO">TO</a> ny-1
+        rhs(ino,jno,kno)<a href="cpl.html#Assignment">=</a>0.
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      rhs(ino,ny,kno)<a href="cpl.html#Assignment">=</a>h/3&lowast;(wp+1)/2
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> notom3
+
+
+
+
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> notofia
+  <a href="cpl.html#REAL">REAL</a> den1,den2,den3,m1x,m2y,m3z,alr,abf,fff,fb,md,ml,mr,mb,mf,ad1
+  <a href="cpl.html#REAL">REAL</a> ficen,fu,fl,fr,fll,frr
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  kno<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno<a href="cpl.html#Assignment">=</a>btm(ino,kno) <a href="cpl.html#TO">TO</a> btf(ino,kno)-1
+        alr<a href="cpl.html#Assignment">=</a>al(ino,jno,kno)+ar(ino,jno,kno)
+        abf<a href="cpl.html#Assignment">=</a>ab(ino,jno,kno)+af(ino,jno,kno)
+        ad1<a href="cpl.html#Assignment">=</a>ad(ino,jno,kno)+1.
+        den1<a href="cpl.html#Assignment">=</a>al(ino,jno,kno)&lowast;ar(ino,jno,kno)&lowast;alr
+        den2<a href="cpl.html#Assignment">=</a>ad(ino,jno,kno)&lowast;ad1
+        den3<a href="cpl.html#Assignment">=</a>af(ino,jno,kno)&lowast;ab(ino,jno,kno)&lowast;abf
+        ficen<a href="cpl.html#Assignment">=</a>fi(ino,jno,kno)
+        fu<a href="cpl.html#Assignment">=</a>fi(ino,jno+1,kno)
+        ml<a href="cpl.html#Assignment">=</a>m1(ino-1,jno,kno)
+        mr<a href="cpl.html#Assignment">=</a>m1(ino+1,jno,kno)
+        md<a href="cpl.html#Assignment">=</a>m2(ino,jno-1,kno)
+        mb<a href="cpl.html#Assignment">=</a>m3(ino,jno,kno-1)
+        mf<a href="cpl.html#Assignment">=</a>m3(ino,jno,kno+1)
+        fb<a href="cpl.html#Assignment">=</a>fi(ino,jno,kno-1)
+        fff<a href="cpl.html#Assignment">=</a>fi(ino,jno,kno+1)
+        <a href="cpl.html#IF">IF</a> btm(ino,kno-1) &gt; jno  <a href="cpl.html#IF">THEN</a> fb<a href="cpl.html#Assignment">=</a>0. 
+        <a href="cpl.html#IF">IF</a> btm(ino,kno+1) &gt; jno  <a href="cpl.html#IF">THEN</a> fff<a href="cpl.html#Assignment">=</a>0. 
+        
+        <a href="cpl.html#IF">IF</a> btm(ino-1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fl<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fl<a href="cpl.html#Assignment">=</a>fi(ino-1,jno,kno)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        
+        <a href="cpl.html#IF">IF</a> ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
+          fll<a href="cpl.html#Assignment">=</a>wp&lowast;fi(ino+2,jno,kno)
+          <a href="cpl.html#IF">IF</a> btm(ino+2,kno)&gt; jno <a href="cpl.html#IF">THEN</a> fll<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fll<a href="cpl.html#Assignment">=</a>fi(ino-2,jno,kno)
+          <a href="cpl.html#IF">IF</a> btm(ino-2,kno)&gt; jno <a href="cpl.html#IF">THEN</a> fll<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> btm(ino+1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a> 
+          fr<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          fr<a href="cpl.html#Assignment">=</a>fi(ino+1,jno,kno)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a> ino<a href="cpl.html#Assignment">=</a>nx <a href="cpl.html#IF">THEN</a>
+          frr<a href="cpl.html#Assignment">=</a>wp&lowast;fi(ino-2,jno,kno)
+          <a href="cpl.html#IF">IF</a> btm(ino-2,kno)&gt; jno <a href="cpl.html#IF">THEN</a> frr<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#ELSE">ELSE</a>
+          frr<a href="cpl.html#Assignment">=</a>fi(ino+2,jno,kno)
+          <a href="cpl.html#IF">IF</a> btm(ino+2,kno)&gt; jno <a href="cpl.html#IF">THEN</a> frr<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a>   jno <a href="cpl.html#Assignment">=</a> btm(ino,kno) <a href="cpl.html#IF">THEN</a>    
+          <a href="cpl.html#IF">IF</a> ad(ino,jno,kno) &lt; pfo <a href="cpl.html#IF">THEN</a>
+            md<a href="cpl.html#Assignment">=</a>ders(0,fu,fi(ino,jno+2,kno),ad1,ad1+1,ad1&lowast;(ad1+1))
+          <a href="cpl.html#ELSE">ELSE</a>
+            md<a href="cpl.html#Assignment">=</a>ders(0,ficen,fu,ad(ino,jno,kno),ad1,den2)
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#IF">IF</a> (ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> ino<a href="cpl.html#Assignment">=</a> nx) <a href="cpl.html#AND">AND</a> jno &gt;1 <a href="cpl.html#IF">THEN</a> md<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a>  btm(ino+1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          <a href="cpl.html#IF">IF</a>  ar(ino,jno,kno) &lt; pfo    <a href="cpl.html#IF">THEN</a>
+            mr<a href="cpl.html#Assignment">=</a>-ders(0,fl,fll,alr,alr+1,alr&lowast;(alr+1))
+          <a href="cpl.html#ELSE">ELSE</a>
+            mr<a href="cpl.html#Assignment">=</a>-ders(0,ficen,fl,ar(ino,jno,kno),alr,den1)
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a>  btm(ino-1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          <a href="cpl.html#IF">IF</a> al(ino,jno,kno) &lt; pfo   <a href="cpl.html#IF">THEN</a>
+            ml<a href="cpl.html#Assignment">=</a>ders(0,fr,frr,alr,alr+1,alr&lowast;(alr+1))
+          <a href="cpl.html#ELSE">ELSE</a>
+            ml<a href="cpl.html#Assignment">=</a>ders(0,ficen,fr,al(ino,jno,kno),alr,den1)
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a>  btm(ino,kno+1) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          <a href="cpl.html#IF">IF</a>  af(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno &gt; 0  <a href="cpl.html#IF">THEN</a>
+            mf<a href="cpl.html#Assignment">=</a>-ders(0,fi(ino,jno,kno-1),fi(ino,jno,kno-2),abf,abf+1,abf&lowast;(abf+1))
+          <a href="cpl.html#ELSE">ELSE</a>
+            mf<a href="cpl.html#Assignment">=</a>-ders(0,fi(ino,jno,kno),fi(ino,jno,kno-1),af(ino,jno,kno),abf,den3)
+            <a href="cpl.html#IF">IF</a> af(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno<a href="cpl.html#Assignment">=</a>0  <a href="cpl.html#IF">THEN</a> mf<a href="cpl.html#Assignment">=</a>(fff-fb)/abf/h
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#IF">IF</a> ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> ino<a href="cpl.html#Assignment">=</a> nx  <a href="cpl.html#IF">THEN</a> mf<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a>  btm(ino,kno-1) &gt; jno  <a href="cpl.html#IF">THEN</a>
+          <a href="cpl.html#IF">IF</a>  ab(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno &lt;  nz  <a href="cpl.html#IF">THEN</a>
+            mb<a href="cpl.html#Assignment">=</a>ders(0,fi(ino,jno,kno+1),fi(ino,jno,kno+2),abf,abf+1,abf&lowast;(abf+1))
+          <a href="cpl.html#ELSE">ELSE</a>
+            mb<a href="cpl.html#Assignment">=</a>ders(0,fi(ino,jno,kno),fi(ino,jno,kno+1),ab(ino,jno,kno),abf,den3)
+            <a href="cpl.html#IF">IF</a>  ab(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno <a href="cpl.html#Assignment">=</a>nz  <a href="cpl.html#IF">THEN</a> mb<a href="cpl.html#Assignment">=</a>(fff-fb)/abf/h
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#IF">IF</a> ino<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> ino<a href="cpl.html#Assignment">=</a> nx  <a href="cpl.html#IF">THEN</a> mb<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a>  al(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  ino &lt;  nx  <a href="cpl.html#IF">THEN</a>
+          m1x<a href="cpl.html#Assignment">=</a>ders(m1(ino,jno,kno),mr,m1(ino+2,jno,kno),1,2,2)
+        <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a>  ar(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  ino &gt; 0  <a href="cpl.html#IF">THEN</a>
+          m1x<a href="cpl.html#Assignment">=</a>-ders(m1(ino,jno,kno),ml,m1(ino-2,jno,kno),1,2,2)
+        <a href="cpl.html#ELSE">ELSE</a>
+          m1x<a href="cpl.html#Assignment">=</a>derc(m1(ino,jno,kno),ml,mr,al(ino,jno,kno),ar(ino,jno,kno),den1)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a> ad(ino,jno,kno) &lt; pfo <a href="cpl.html#IF">THEN</a> 
+          m2y<a href="cpl.html#Assignment">=</a>ders(m2(ino,jno,kno),m2(ino,jno+1,kno),m2(ino,jno+2,kno),1,2,2)
+        <a href="cpl.html#ELSE">ELSE</a>
+          m2y<a href="cpl.html#Assignment">=</a>derc(m2(ino,jno,kno),md,m2(ino,jno+1,kno),ad(ino,jno,kno),1,den2)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a>  ab(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno &lt;  nz  <a href="cpl.html#IF">THEN</a>
+          m3z<a href="cpl.html#Assignment">=</a>ders(m3(ino,jno,kno),mf,m3(ino,jno,kno+2),1,2,2)
+        <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a>  af(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno &gt; 0  <a href="cpl.html#IF">THEN</a>
+          m3z<a href="cpl.html#Assignment">=</a>-ders(m3(ino,jno,kno),mb,m3(ino,jno,kno-2),1,2,2)
+        <a href="cpl.html#ELSE">ELSE</a>
+          m3z<a href="cpl.html#Assignment">=</a>derc(m3(ino,jno,kno),mb,mf,ab(ino,jno,kno),af(ino,jno,kno),den3)
+          <a href="cpl.html#IF">IF</a>(af(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a> kno<a href="cpl.html#Assignment">=</a>0) <a href="cpl.html#OR">OR</a> (ab(ino,jno,kno) &lt; pfo  <a href="cpl.html#AND">AND</a> kno<a href="cpl.html#Assignment">=</a>nz ) <a href="cpl.html#IF">THEN</a>  m3z<a href="cpl.html#Assignment">=</a>(mf-mb)/abf/h  
+          
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        rhs(ino,jno,kno)<a href="cpl.html#Assignment">=</a>-(m1x+m2y+m3z)&lowast;coenoto(ino,jno,kno)&lowast;h&lowast;h
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno<a href="cpl.html#Assignment">=</a>btf(ino,kno) <a href="cpl.html#TO">TO</a>  ny-1
+        rhs(ino,jno,kno)<a href="cpl.html#Assignment">=</a>-(m1(ino+1,jno,kno)-m1(ino-1,jno,kno)+m2(ino,jno+1,kno)-m2(ino,jno-1,kno)+m3(ino,jno,kno+1)-m3(ino,jno,kno-1))&lowast;h/12
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      rhs(ino,ny,kno)<a href="cpl.html#Assignment">=</a>-(m1(ino+1,ny,kno)-m1(ino-1,ny,kno)-2.&lowast;m2(ino,ny-1,kno)+m3(ino,ny,kno+1)-m3(ino,ny,kno-1))&lowast;h/12
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a>  notofia
+
+<span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+
+
+
+
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> corm1
+  <a href="cpl.html#REAL">REAL</a> ficen,ml,mr,md,mf,mb,fix,alr,rhs1,cen,lef,rig,u,d,ba,fo,xv
+  <a href="cpl.html#REAL">REAL</a> den,cl,cr,cd,cf,cb,fl,fll,fr,fb,fff,fu,fd,frr,tang,ll,rr
+  <a href="cpl.html#INTEGER">INTEGER</a> ndis
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+      <a href="cpl.html#IF">IF</a>  i &lt; 2  <a href="cpl.html#OR">OR</a>  i &gt; nx-2 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#IF">IF</a> i&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+          xv<a href="cpl.html#Assignment">=</a>0.
+        <a href="cpl.html#ELSE">ELSE</a>
+          xv<a href="cpl.html#Assignment">=</a>0.5
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        
+        <a href="cpl.html#IF">IF</a>  fondo(xv,k&lowast;h)&gt;2&lowast;h <a href="cpl.html#IF">THEN</a>  
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  j<a href="cpl.html#Assignment">=</a>btm(i,k) <a href="cpl.html#TO">TO</a> btm(0,0)+2
+            ndis<a href="cpl.html#Assignment">=</a>nid(i,j,k)
+            <a href="cpl.html#IF">IF</a>  ndis &gt; 0  <a href="cpl.html#IF">THEN</a> 
+              del<a href="cpl.html#Assignment">=</a>vdel(ndis)
+              k1<a href="cpl.html#Assignment">=</a>vk1(ndis)
+              k2<a href="cpl.html#Assignment">=</a>vk2(ndis)
+              zn<a href="cpl.html#Assignment">=</a>vzn(ndis)
+              calfa<a href="cpl.html#Assignment">=</a>vcalfa(ndis)
+              salfa<a href="cpl.html#Assignment">=</a>vsalfa(ndis)
+              costanti(i,j,k)
+              alr<a href="cpl.html#Assignment">=</a>al(i,j,k)+ar(i,j,k)
+              den<a href="cpl.html#Assignment">=</a>al(i,j,k)&lowast;ar(i,j,k)&lowast;alr
+              u<a href="cpl.html#Assignment">=</a>m1co(i,j+1,k)
+              cen<a href="cpl.html#Assignment">=</a>m1co(i,j,k)
+              ba<a href="cpl.html#Assignment">=</a>0.
+              fo<a href="cpl.html#Assignment">=</a>0.
+              lef<a href="cpl.html#Assignment">=</a>0.
+              rig<a href="cpl.html#Assignment">=</a>0.
+              mr<a href="cpl.html#Assignment">=</a>0.
+              md<a href="cpl.html#Assignment">=</a>0.
+              ml<a href="cpl.html#Assignment">=</a>0.
+              mf<a href="cpl.html#Assignment">=</a>0.
+              mb<a href="cpl.html#Assignment">=</a>0.
+              cr<a href="cpl.html#Assignment">=</a>0.
+              cl<a href="cpl.html#Assignment">=</a>0.
+              cd<a href="cpl.html#Assignment">=</a>0.
+              cb<a href="cpl.html#Assignment">=</a>0.
+              cf<a href="cpl.html#Assignment">=</a>0.
+              d<a href="cpl.html#Assignment">=</a>0
+              ficen<a href="cpl.html#Assignment">=</a>fico(i,j,k)
+              fu<a href="cpl.html#Assignment">=</a>fico(i,j+1,k)
+              <a href="cpl.html#IF">IF</a> btm(i-1,k) &gt; j <a href="cpl.html#IF">THEN</a>
+                fl<a href="cpl.html#Assignment">=</a>0
+                rr<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fl<a href="cpl.html#Assignment">=</a>fico(i-1,j,k)
+                rr<a href="cpl.html#Assignment">=</a>al(i-1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
+                fll<a href="cpl.html#Assignment">=</a>wp&lowast;fico(i+2,j,k)
+                <a href="cpl.html#IF">IF</a> btm(i+2,k)&gt; j <a href="cpl.html#IF">THEN</a> fll<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fll<a href="cpl.html#Assignment">=</a>fico(i-2,j,k)
+                <a href="cpl.html#IF">IF</a> btm(i-2,k)&gt; j <a href="cpl.html#IF">THEN</a> fll<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> btm(i+1,k) &gt; j <a href="cpl.html#IF">THEN</a>
+                fr<a href="cpl.html#Assignment">=</a>0
+                ll<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fr<a href="cpl.html#Assignment">=</a>fico(i+1,j,k)
+                ll<a href="cpl.html#Assignment">=</a>al(i+1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> i<a href="cpl.html#Assignment">=</a>nx <a href="cpl.html#IF">THEN</a>
+                frr<a href="cpl.html#Assignment">=</a>wp&lowast;fico(i-2,j,k)
+                <a href="cpl.html#IF">IF</a> btm(i-2,k)&gt; j <a href="cpl.html#IF">THEN</a> frr<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                frr<a href="cpl.html#Assignment">=</a>fico(i+2,j,k)
+                <a href="cpl.html#IF">IF</a> btm(i+2,k)&gt; j <a href="cpl.html#IF">THEN</a> frr<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> btm(i,k-1) &gt; j <a href="cpl.html#IF">THEN</a>
+                fb<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fb<a href="cpl.html#Assignment">=</a>fico(i,j,k-1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a> btm(i,k+1) &gt; j <a href="cpl.html#IF">THEN</a>
+                fff<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fff<a href="cpl.html#Assignment">=</a>fico(i,j,k+1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a> btm(i,k)<a href="cpl.html#Assignment">=</a>j <a href="cpl.html#IF">THEN</a>
+                fd<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fd<a href="cpl.html#Assignment">=</a>fico(i,j-1,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a>  al(i,j,k) &lt; pfo   <a href="cpl.html#IF">THEN</a>
+                fix<a href="cpl.html#Assignment">=</a>ders(ficen,fr,frr,1,2,2)
+              <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a>  ar(i,j,k) &lt; pfo   <a href="cpl.html#IF">THEN</a>
+                fix<a href="cpl.html#Assignment">=</a>-ders(ficen,fl,fll,1,2,2)
+              <a href="cpl.html#ELSE">ELSE</a>
+                fix<a href="cpl.html#Assignment">=</a>derc(ficen,fl,fr,al(i,j,k),ar(i,j,k),den) 
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a>  btm(i-1,k) &gt;  j  <a href="cpl.html#IF">THEN</a>
+                cl<a href="cpl.html#Assignment">=</a>bcl(i,j,k)
+                lef<a href="cpl.html#Assignment">=</a>0.
+                <a href="cpl.html#IF">IF</a>  al(i,j,k)  &lt; pfo   <a href="cpl.html#IF">THEN</a>
+                  ml<a href="cpl.html#Assignment">=</a>ders(0,fr,frr,alr,alr+1,alr&lowast;(alr+1))
+                <a href="cpl.html#ELSE">ELSE</a>
+                  ml<a href="cpl.html#Assignment">=</a>ders(0,ficen,fr,al(i,j,k),alr,den)
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#ELSE">ELSE</a>
+                lef<a href="cpl.html#Assignment">=</a>m1co(i-1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a>  btm(i+1,k) &gt;  j  <a href="cpl.html#IF">THEN</a>
+                cr<a href="cpl.html#Assignment">=</a>bcr(i,j,k)
+                rig<a href="cpl.html#Assignment">=</a>0.
+                <a href="cpl.html#IF">IF</a>  ar(i,j,k) &lt; pfo   <a href="cpl.html#IF">THEN</a>
+                  mr<a href="cpl.html#Assignment">=</a>-ders(0,fl,fll,alr,alr+1.,alr&lowast;(alr+1.))
+                <a href="cpl.html#ELSE">ELSE</a>
+                  mr<a href="cpl.html#Assignment">=</a>-ders(0,ficen,fl,ar(i,j,k),alr,den)
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#ELSE">ELSE</a>
+                rig<a href="cpl.html#Assignment">=</a>m1co(i+1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> j &gt; btm(i,k)  <a href="cpl.html#IF">THEN</a>
+                d<a href="cpl.html#Assignment">=</a>m1co(i,j-1,k)
+              <a href="cpl.html#ELSE">ELSE</a>
+                <span class=comment>! calcolo md  &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+                cd<a href="cpl.html#Assignment">=</a>bcd(i,j,k)
+                d<a href="cpl.html#Assignment">=</a>0.
+                tang<a href="cpl.html#Assignment">=</a>(fondo(i&lowast;h-eps,k&lowast;h)-fondo(i&lowast;h+eps,h&lowast;k))/2/eps
+                <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+                  md<a href="cpl.html#Assignment">=</a>fix
+                <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+                  <a href="cpl.html#IF">IF</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> i<a href="cpl.html#Assignment">=</a> nx <a href="cpl.html#IF">THEN</a>
+                    md<a href="cpl.html#Assignment">=</a>fix
+                  <a href="cpl.html#ELSE">ELSE</a>
+                    <a href="cpl.html#IF">IF</a> tang<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> 
+                      md<a href="cpl.html#Assignment">=</a>0
+                    <a href="cpl.html#ELSE">ELSE</a>
+                      md<a href="cpl.html#Assignment">=</a>fxd(tang,i,j,k,1,1)    
+                    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+                  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> btm(i,k-1) &gt; j  <a href="cpl.html#IF">THEN</a>
+                cb<a href="cpl.html#Assignment">=</a>bcb(i,j,k)
+                ba<a href="cpl.html#Assignment">=</a>0.
+                <a href="cpl.html#IF">IF</a> pbc <a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+                  mb<a href="cpl.html#Assignment">=</a>fix
+                <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc <a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+                  mb<a href="cpl.html#Assignment">=</a>fix
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#ELSE">ELSE</a>
+                ba<a href="cpl.html#Assignment">=</a>m1co(i,j,k-1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> btm(i,k+1) &gt; j  <a href="cpl.html#IF">THEN</a>
+                cf<a href="cpl.html#Assignment">=</a>bcf(i,j,k)
+                fo<a href="cpl.html#Assignment">=</a>0
+                <a href="cpl.html#IF">IF</a> pbc <a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+                  mf<a href="cpl.html#Assignment">=</a>fix
+                <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc <a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+                  mf<a href="cpl.html#Assignment">=</a>fix
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+                
+              <a href="cpl.html#ELSE">ELSE</a>
+                fo<a href="cpl.html#Assignment">=</a>m1co(i,j,k+1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              rhs1<a href="cpl.html#Assignment">=</a>cl&lowast;ml+cd&lowast;md+cb&lowast;mb+cf&lowast;mf+cr&lowast;mr
+              rhs(i,j,k)<a href="cpl.html#Assignment">=</a>rhs(i,j,k)-left(i,j,k)&lowast;lef-right(i,j,k)&lowast;rig-
+      down(i,j,k)&lowast;d-up(i,j,k)&lowast;u-back(i,j,k)&lowast;ba-forw(i,j,k)&lowast;fo+cen-rhs1
+            <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> corm1
+
+
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> corm2
+  <a href="cpl.html#REAL">REAL</a> ficen,ml,mr,md,mf,mb,fiy,fd,rhs1,cen,lef,rig,u,d,ba,fo,xv
+  <a href="cpl.html#REAL">REAL</a> den,cl,cr,cd,cf,cb,tang,fiy0,fir,fu,fl,fr,fb,fff
+  <a href="cpl.html#INTEGER">INTEGER</a> ndis
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+      <a href="cpl.html#IF">IF</a>  i &lt; 2  <a href="cpl.html#OR">OR</a>  i &gt; nx-2 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#IF">IF</a> i&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+          xv<a href="cpl.html#Assignment">=</a>0.
+        <a href="cpl.html#ELSE">ELSE</a>
+          xv<a href="cpl.html#Assignment">=</a>0.5
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a> fondo(xv,k&lowast;h)&gt;2&lowast;h <a href="cpl.html#IF">THEN</a> 
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  j<a href="cpl.html#Assignment">=</a>btm(i,k) <a href="cpl.html#TO">TO</a> btm(0,0)+2
+            ndis<a href="cpl.html#Assignment">=</a>nid(i,j,k)
+            <a href="cpl.html#IF">IF</a>  ndis &gt; 0  <a href="cpl.html#IF">THEN</a> 
+              del<a href="cpl.html#Assignment">=</a>vdel(ndis)
+              k1<a href="cpl.html#Assignment">=</a>vk1(ndis)
+              k2<a href="cpl.html#Assignment">=</a>vk2(ndis)
+              zn<a href="cpl.html#Assignment">=</a>vzn(ndis)
+              calfa<a href="cpl.html#Assignment">=</a>vcalfa(ndis)
+              salfa<a href="cpl.html#Assignment">=</a>vsalfa(ndis)
+              costanti(i,j,k)
+              ad1<a href="cpl.html#Assignment">=</a>ad(i,j,k)+1.
+              den<a href="cpl.html#Assignment">=</a>ad(i,j,k)&lowast;ad1
+              cl<a href="cpl.html#Assignment">=</a>0.
+              cd<a href="cpl.html#Assignment">=</a>0.
+              cr<a href="cpl.html#Assignment">=</a>0.
+              cf<a href="cpl.html#Assignment">=</a>0.
+              cb<a href="cpl.html#Assignment">=</a>0.
+              ml<a href="cpl.html#Assignment">=</a>0.
+              md<a href="cpl.html#Assignment">=</a>0.
+              mr<a href="cpl.html#Assignment">=</a>0.
+              mf<a href="cpl.html#Assignment">=</a>0.
+              mb<a href="cpl.html#Assignment">=</a>0.
+              ba<a href="cpl.html#Assignment">=</a>0
+              fo<a href="cpl.html#Assignment">=</a>0
+              lef<a href="cpl.html#Assignment">=</a>0
+              rig<a href="cpl.html#Assignment">=</a>0
+              d<a href="cpl.html#Assignment">=</a>0
+              u<a href="cpl.html#Assignment">=</a>m2co(i,j+1,k)
+              cen<a href="cpl.html#Assignment">=</a>m2co(i,j,k)
+              ficen<a href="cpl.html#Assignment">=</a>fico(i,j,k)
+              fu<a href="cpl.html#Assignment">=</a>fico(i,j+1,k)
+              <a href="cpl.html#IF">IF</a> btm(i-1,k) &gt; j <a href="cpl.html#IF">THEN</a>
+                fl<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fl<a href="cpl.html#Assignment">=</a>fico(i-1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a> btm(i+1,k) &gt; j <a href="cpl.html#IF">THEN</a>
+                fr<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fr<a href="cpl.html#Assignment">=</a>fico(i+1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> btm(i,k-1) &gt; j <a href="cpl.html#IF">THEN</a>
+                fb<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fb<a href="cpl.html#Assignment">=</a>fico(i,j,k-1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a> btm(i,k+1) &gt; j <a href="cpl.html#IF">THEN</a>
+                fff<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fff<a href="cpl.html#Assignment">=</a>fico(i,j,k+1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a> btm(i,k)<a href="cpl.html#Assignment">=</a>j <a href="cpl.html#IF">THEN</a>
+                fd<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fd<a href="cpl.html#Assignment">=</a>fico(i,j-1,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> ad(i,j,k) &lt; pfo <a href="cpl.html#IF">THEN</a>
+                fiy<a href="cpl.html#Assignment">=</a>ders(ficen,fu,fico(i,j+2,k),1,2,2)
+              <a href="cpl.html#ELSE">ELSE</a>
+                fiy<a href="cpl.html#Assignment">=</a>derc(ficen,fd,fu,ad(i,j,k),1,den)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> j<a href="cpl.html#Assignment">=</a>btm(i,k) <a href="cpl.html#IF">THEN</a>
+                <a href="cpl.html#IF">IF</a> ad(i,j,k) &lt; pfo <a href="cpl.html#IF">THEN</a>
+                  fiy0<a href="cpl.html#Assignment">=</a>ders(0,fu,fico(i,j+2,k),ad1,ad1+1,ad1&lowast;(ad1+1))
+                <a href="cpl.html#ELSE">ELSE</a>
+                  fiy0<a href="cpl.html#Assignment">=</a>ders(0,ficen,fu,ad(i,j,k),ad1,den)
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              tang<a href="cpl.html#Assignment">=</a>(fondo(i&lowast;h-eps,k&lowast;h)-fondo(i&lowast;h+eps,h&lowast;k))/2/eps
+              
+              <a href="cpl.html#IF">IF</a>  btm(i-1,k) &gt; j  <a href="cpl.html#IF">THEN</a>
+                cl<a href="cpl.html#Assignment">=</a>bcl(i,j,k)
+                lef<a href="cpl.html#Assignment">=</a>0.
+                <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+                  ml<a href="cpl.html#Assignment">=</a>fiy
+                <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+                  <a href="cpl.html#IF">IF</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#AND">AND</a> j<a href="cpl.html#Assignment">=</a> btm(i-1,k) <a href="cpl.html#IF">THEN</a>
+                    <span class=comment>!   ml=fiy</span>
+                    ml<a href="cpl.html#Assignment">=</a>0
+                  <a href="cpl.html#ELSE">ELSE</a>
+                    ml<a href="cpl.html#Assignment">=</a>fyl(i,j,k,1,1,1)
+                  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#ELSE">ELSE</a>
+                lef<a href="cpl.html#Assignment">=</a>m2co(i-1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a>  btm(i+1,k) &gt;  j  <a href="cpl.html#IF">THEN</a>
+                cr<a href="cpl.html#Assignment">=</a>bcr(i,j,k)
+                rig<a href="cpl.html#Assignment">=</a>0.
+                <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+                  mr<a href="cpl.html#Assignment">=</a>fiy
+                <a href="cpl.html#ELSE">ELSE</a>  <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+                  <a href="cpl.html#IF">IF</a> i<a href="cpl.html#Assignment">=</a>nx-1 <a href="cpl.html#AND">AND</a> j<a href="cpl.html#Assignment">=</a> btm(i+1,k) <a href="cpl.html#IF">THEN</a>
+                    <span class=comment>!   mr=fiy</span>
+                    mr<a href="cpl.html#Assignment">=</a>0
+                  <a href="cpl.html#ELSE">ELSE</a>
+                    mr<a href="cpl.html#Assignment">=</a>fyl(i,j,k,1,1,-1)
+                  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#ELSE">ELSE</a>
+                rig<a href="cpl.html#Assignment">=</a>m2co(i+1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a>  j &gt; btm(i,k)  <a href="cpl.html#IF">THEN</a>
+                d<a href="cpl.html#Assignment">=</a>m2co(i,j-1,k)
+              <a href="cpl.html#ELSE">ELSE</a>
+                cd<a href="cpl.html#Assignment">=</a>bcd(i,j,k)
+                d<a href="cpl.html#Assignment">=</a>0.
+                <a href="cpl.html#IF">IF</a> (i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> i<a href="cpl.html#Assignment">=</a>nx) <a href="cpl.html#AND">AND</a> j &gt;1 <a href="cpl.html#IF">THEN</a>
+                  md<a href="cpl.html#Assignment">=</a>0
+                <a href="cpl.html#ELSE">ELSE</a>
+                  md<a href="cpl.html#Assignment">=</a>fiy0
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> btm(i,k-1) &gt;  j  <a href="cpl.html#IF">THEN</a>
+                cb<a href="cpl.html#Assignment">=</a>bcb(i,j,k)
+                ba<a href="cpl.html#Assignment">=</a>0
+                <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+                  mb<a href="cpl.html#Assignment">=</a>fiy
+                <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+                  <span class=comment>!  mb=fiy</span>
+                  mb<a href="cpl.html#Assignment">=</a>fyl(i,j,k,0,1,1)
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#ELSE">ELSE</a>
+                ba<a href="cpl.html#Assignment">=</a>m2co(i,j,k-1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a> btm(i,k+1) &gt;  j  <a href="cpl.html#IF">THEN</a>
+                cf<a href="cpl.html#Assignment">=</a>bcf(i,j,k)
+                fo<a href="cpl.html#Assignment">=</a>0
+                <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+                  mf<a href="cpl.html#Assignment">=</a>fiy
+                <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+                  <span class=comment>!  mf=fiy</span>
+                  mf<a href="cpl.html#Assignment">=</a>fyl(i,j,k,0,1,-1)
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#ELSE">ELSE</a>
+                fo<a href="cpl.html#Assignment">=</a>m2co(i,j,k+1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              rhs1<a href="cpl.html#Assignment">=</a>cl&lowast;ml+cd&lowast;md+cb&lowast;mb+cf&lowast;mf+cr&lowast;mr
+              rhs(i,j,k)<a href="cpl.html#Assignment">=</a>rhs(i,j,k)-left(i,j,k)&lowast;lef-right(i,j,k)&lowast;rig-down(i,j,k) \
+              &lowast;d-up(i,j,k)&lowast;u-back(i,j,k)&lowast;ba-forw(i,j,k)&lowast;fo+cen-rhs1
+            <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> corm2
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> corm3
+  <a href="cpl.html#REAL">REAL</a> ficen,ml,mr,md,mf,mb,fiz,rhs1,cen,lef,rig,u,d,ba,fo,abf,xv
+  <a href="cpl.html#REAL">REAL</a> den,cl,cr,cd,cf,cb,fiq,fit,tangz,fl,fr,fb,fff,fu,ffff,fbb
+  <a href="cpl.html#INTEGER">INTEGER</a> ndis
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+      <a href="cpl.html#IF">IF</a>  i &lt; 2  <a href="cpl.html#OR">OR</a>  i &gt; nx-2 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#IF">IF</a> i&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+          xv<a href="cpl.html#Assignment">=</a>0.
+        <a href="cpl.html#ELSE">ELSE</a>
+          xv<a href="cpl.html#Assignment">=</a>0.5
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a> fondo(xv,h&lowast;k)&gt;2&lowast;h <a href="cpl.html#IF">THEN</a>  
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  j<a href="cpl.html#Assignment">=</a>btm(i,k) <a href="cpl.html#TO">TO</a> btm(0,0)+2
+            ndis<a href="cpl.html#Assignment">=</a>nid(i,j,k)
+            
+            <a href="cpl.html#IF">IF</a>  ndis &gt; 0  <a href="cpl.html#IF">THEN</a> 
+              del<a href="cpl.html#Assignment">=</a>vdel(ndis)
+              k1<a href="cpl.html#Assignment">=</a>vk1(ndis)
+              k2<a href="cpl.html#Assignment">=</a>vk2(ndis)
+              zn<a href="cpl.html#Assignment">=</a>vzn(ndis)
+              calfa<a href="cpl.html#Assignment">=</a>vcalfa(ndis)
+              salfa<a href="cpl.html#Assignment">=</a>vsalfa(ndis)
+              costanti(i,j,k)
+              <span class=comment>!   WRITE 'c6,i,j,k',c6,i,j,k</span>
+              <span class=comment>!    IF (i=0 AND j=btm(0,0)) OR (i=nx AND j=btm(nx,0))THEN WRITE i,j,c6</span>
+              abf<a href="cpl.html#Assignment">=</a>ab(i,j,k)+af(i,j,k)
+              den<a href="cpl.html#Assignment">=</a>ab(i,j,k)&lowast;af(i,j,k)&lowast;abf
+              ad1<a href="cpl.html#Assignment">=</a>ad(i,j,k)+1
+              cb<a href="cpl.html#Assignment">=</a>0.
+              cf<a href="cpl.html#Assignment">=</a>0.
+              cl<a href="cpl.html#Assignment">=</a>0.
+              cr<a href="cpl.html#Assignment">=</a>0.
+              cd<a href="cpl.html#Assignment">=</a>0.
+              mf<a href="cpl.html#Assignment">=</a>0.
+              mb<a href="cpl.html#Assignment">=</a>0.
+              md<a href="cpl.html#Assignment">=</a>0.
+              ml<a href="cpl.html#Assignment">=</a>0.
+              mr<a href="cpl.html#Assignment">=</a>0.
+              u<a href="cpl.html#Assignment">=</a>m3co(i,j+1,k)
+              cen<a href="cpl.html#Assignment">=</a>m3co(i,j,k)
+              ficen<a href="cpl.html#Assignment">=</a>fico(i,j,k)
+              fu<a href="cpl.html#Assignment">=</a>fico(i,j+1,k)
+              <a href="cpl.html#IF">IF</a> btm(i-1,k) &gt; j <a href="cpl.html#IF">THEN</a>
+                fl<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fl<a href="cpl.html#Assignment">=</a>fico(i-1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a> btm(i+1,k) &gt; j <a href="cpl.html#IF">THEN</a>
+                fr<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fr<a href="cpl.html#Assignment">=</a>fico(i+1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> btm(i,k-1) &gt; j <a href="cpl.html#IF">THEN</a>
+                fb<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fb<a href="cpl.html#Assignment">=</a>fico(i,j,k-1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a> btm(i,k+1) &gt; j <a href="cpl.html#IF">THEN</a>
+                fff<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fff<a href="cpl.html#Assignment">=</a>fico(i,j,k+1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <span class=comment>! calcolo fiz</span>
+              <a href="cpl.html#IF">IF</a>  ab(i,j,k) &lt; pfo  <a href="cpl.html#AND">AND</a>  k &lt;  nz  <a href="cpl.html#IF">THEN</a>
+                fiz<a href="cpl.html#Assignment">=</a>ders(ficen,fff,fico(i,j,k+2),1,2,2)
+              <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a>  af(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a>  k &gt; 0  <a href="cpl.html#IF">THEN</a>
+                fiz<a href="cpl.html#Assignment">=</a>-ders(ficen,fb,fico(i,j,k-2),1,2,2)
+              <a href="cpl.html#ELSE">ELSE</a>
+                fiz<a href="cpl.html#Assignment">=</a>derc(ficen,fb,fff,ab(i,j,k),af(i,j,k),den)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <span class=comment>! fine calcolo fiz</span>
+              <a href="cpl.html#IF">IF</a>(ab(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a> k<a href="cpl.html#Assignment">=</a>nz) <a href="cpl.html#OR">OR</a> (af(i,j,k)&lt;pfo <a href="cpl.html#AND">AND</a> k<a href="cpl.html#Assignment">=</a>0) <a href="cpl.html#IF">THEN</a> fiz<a href="cpl.html#Assignment">=</a>(fff-fb)/abf/h
+              
+              <a href="cpl.html#IF">IF</a>  btm(i,k-1) &gt;  j  <a href="cpl.html#IF">THEN</a>
+                ba<a href="cpl.html#Assignment">=</a>0.
+                cb<a href="cpl.html#Assignment">=</a>bcb(i,j,k)
+                <a href="cpl.html#IF">IF</a>  ab(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a>  k &lt; nz  <a href="cpl.html#IF">THEN</a>
+                  mb<a href="cpl.html#Assignment">=</a>ders(0,fff,fico(i,j,k+2),abf,abf+1,abf&lowast;(abf+1))
+                <a href="cpl.html#ELSE">ELSE</a>
+                  mb<a href="cpl.html#Assignment">=</a>ders(0,ficen,fff,ab(i,j,k),abf,den)
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+                <a href="cpl.html#IF">IF</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> i<a href="cpl.html#Assignment">=</a>nx <a href="cpl.html#IF">THEN</a> mb<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                ba<a href="cpl.html#Assignment">=</a>m3co(i,j,k-1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <span class=comment>!   IF  ab(i,j,k) &lt; pfo  AND  k = nz  THEN  mb=fiz</span>
+              
+              <a href="cpl.html#IF">IF</a>  btm(i,k+1) &gt;  j  <a href="cpl.html#IF">THEN</a>
+                fo<a href="cpl.html#Assignment">=</a>0.
+                cf<a href="cpl.html#Assignment">=</a>bcf(i,j,k)
+                <a href="cpl.html#IF">IF</a>  af(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a>  k &gt; 0  <a href="cpl.html#IF">THEN</a>
+                  mf<a href="cpl.html#Assignment">=</a>-ders(0,fb,fico(i,j,k-2),abf,abf+1,abf&lowast;(abf+1))
+                <a href="cpl.html#ELSE">ELSE</a>
+                  mf<a href="cpl.html#Assignment">=</a>-ders(0,ficen,fb,af(i,j,k),abf,den)
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+                <a href="cpl.html#IF">IF</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> i<a href="cpl.html#Assignment">=</a>nx <a href="cpl.html#IF">THEN</a> mf<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fo<a href="cpl.html#Assignment">=</a>m3co(i,j,k+1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <span class=comment>!  IF      af(i,j,k) &lt; pfo AND   k=0  THEN mf=fiz</span>
+              
+              <span class=comment>! calcolo md  &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+              <a href="cpl.html#IF">IF</a> j &gt; btm(i,k)  <a href="cpl.html#IF">THEN</a>
+                d<a href="cpl.html#Assignment">=</a>m3co(i,j-1,k)
+              <a href="cpl.html#ELSE">ELSE</a>
+                d<a href="cpl.html#Assignment">=</a>0
+                cd<a href="cpl.html#Assignment">=</a>bcd(i,j,k)
+                tangz<a href="cpl.html#Assignment">=</a>(fondo(i&lowast;h,k&lowast;h-eps)-fondo(i&lowast;h,h&lowast;k+eps))/2/eps
+                <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+                  md<a href="cpl.html#Assignment">=</a>fiz
+                <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+                  <span class=comment>!   md=fiz</span>
+                  md<a href="cpl.html#Assignment">=</a>fxd(tangz,i,j,k,0,1)
+                  <a href="cpl.html#IF">IF</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> i<a href="cpl.html#Assignment">=</a>nx <a href="cpl.html#IF">THEN</a> md<a href="cpl.html#Assignment">=</a>0
+                  <span class=comment>!(    IF i=0 OR i=nx THEN
+                      IF tangz&gt;0 THEN
+                        md=(tangz/ad(i,j,k+1))&lowast;&lowast;1.5/h&lowast;fff
+                      ELSE IF tangz&lt;0 THEN
+                        md=-(-tangz/ad(i,j,k-1))&lowast;&lowast;1.5/h&lowast;fb
+                      ELSE
+                        md=0
+                      END IF
+                    END IF
+                    !)</span>
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+                <a href="cpl.html#IF">IF</a> tangz<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> md<a href="cpl.html#Assignment">=</a>0
+                <a href="cpl.html#IF">IF</a> k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#AND">AND</a> wp<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#IF">THEN</a> md<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <span class=comment>!   fine calcolo md &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+              
+              <a href="cpl.html#IF">IF</a> btm(i-1,k) &gt; j  <a href="cpl.html#IF">THEN</a>
+                cl<a href="cpl.html#Assignment">=</a>bcl(i,j,k)
+                lef<a href="cpl.html#Assignment">=</a>0
+                <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+                  ml<a href="cpl.html#Assignment">=</a>fiz
+                  <span class=comment>!   ml=0</span>
+                <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+                  <span class=comment>!   ml=fiz</span>
+                  ml<a href="cpl.html#Assignment">=</a>0
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#ELSE">ELSE</a>
+                lef<a href="cpl.html#Assignment">=</a>m3co(i-1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> btm(i+1,k) &gt; j  <a href="cpl.html#IF">THEN</a>
+                cr<a href="cpl.html#Assignment">=</a>bcr(i,j,k)
+                rig<a href="cpl.html#Assignment">=</a>0
+                <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+                  mr<a href="cpl.html#Assignment">=</a>fiz
+                  <span class=comment>!   mr=0</span>
+                <a href="cpl.html#ELSE">ELSE</a>  <a href="cpl.html#IF">IF</a> pbc<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+                  <span class=comment>!  mr=fiz</span>
+                  mr<a href="cpl.html#Assignment">=</a>0
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#ELSE">ELSE</a>
+                rig<a href="cpl.html#Assignment">=</a>m3co(i+1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              rhs1<a href="cpl.html#Assignment">=</a>cl&lowast;ml+cd&lowast;md+cb&lowast;mb+cf&lowast;mf+mr&lowast;cr
+              rhs(i,j,k)<a href="cpl.html#Assignment">=</a>rhs(i,j,k)-left(i,j,k)&lowast;lef-right(i,j,k)&lowast;rig-down(i,j,k) \
+              &lowast;d-up(i,j,k)&lowast;u-back(i,j,k)&lowast;ba-forw(i,j,k)&lowast;fo+cen-rhs1
+            <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a> 
+<a href="cpl.html#END">END</a> corm3
+
+
+
+
+<span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> corfi
+  
+  
+  <a href="cpl.html#REAL">REAL</a> den1,den2,den3
+  <a href="cpl.html#REAL">REAL</a> m1x,m2y,m3z,alr,abf,ml,mr,mb,mf,ad1,md,ficen,lef,rig,d,fu,ba,xv,fo
+  <a href="cpl.html#REAL">REAL</a> fl,fr,fb,fff,fll,frr
+  <a href="cpl.html#INTEGER">INTEGER</a> ndis
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+      <a href="cpl.html#IF">IF</a>  i &lt; 2  <a href="cpl.html#OR">OR</a>  i &gt; nx-2 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#IF">IF</a> i&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+          xv<a href="cpl.html#Assignment">=</a>0.
+        <a href="cpl.html#ELSE">ELSE</a>
+          xv<a href="cpl.html#Assignment">=</a>0.5
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a> fondo(xv,h&lowast;k)&gt;2&lowast;h <a href="cpl.html#IF">THEN</a>
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  j<a href="cpl.html#Assignment">=</a>btm(i,k) <a href="cpl.html#TO">TO</a> btm(0,0)+2
+            ndis<a href="cpl.html#Assignment">=</a>nid(i,j,k)
+            <a href="cpl.html#IF">IF</a>  ndis &gt; 0  <a href="cpl.html#IF">THEN</a> 
+              del<a href="cpl.html#Assignment">=</a>vdel(ndis)
+              k1<a href="cpl.html#Assignment">=</a>vk1(ndis)
+              k2<a href="cpl.html#Assignment">=</a>vk2(ndis)
+              zn<a href="cpl.html#Assignment">=</a>vzn(ndis)
+              calfa<a href="cpl.html#Assignment">=</a>vcalfa(ndis)
+              salfa<a href="cpl.html#Assignment">=</a>vsalfa(ndis)
+              costanti(i,j,k)
+              alr<a href="cpl.html#Assignment">=</a>al(i,j,k)+ar(i,j,k)
+              abf<a href="cpl.html#Assignment">=</a>ab(i,j,k)+af(i,j,k)
+              ad1<a href="cpl.html#Assignment">=</a>ad(i,j,k)+1.
+              den1<a href="cpl.html#Assignment">=</a>al(i,j,k)&lowast;ar(i,j,k)&lowast;alr
+              den2<a href="cpl.html#Assignment">=</a>ad(i,j,k)&lowast;ad1
+              den3<a href="cpl.html#Assignment">=</a>af(i,j,k)&lowast;ab(i,j,k)&lowast;abf
+              mr<a href="cpl.html#Assignment">=</a>m1co(i+1,j,k)
+              rig<a href="cpl.html#Assignment">=</a>fico(i+1,j,k)
+              fu<a href="cpl.html#Assignment">=</a>fico(i,j+1,k)
+              fff<a href="cpl.html#Assignment">=</a>fico(i,j,k+1)
+              <a href="cpl.html#IF">IF</a> btm(i,k+1) &gt; j  <a href="cpl.html#IF">THEN</a>  fff<a href="cpl.html#Assignment">=</a>0.
+              fb<a href="cpl.html#Assignment">=</a>fico(i,j,k-1)
+              <a href="cpl.html#IF">IF</a> btm(i,k-1) &gt; j  <a href="cpl.html#IF">THEN</a>  fb<a href="cpl.html#Assignment">=</a>0.
+              ficen<a href="cpl.html#Assignment">=</a>fico(i,j,k)
+              <a href="cpl.html#IF">IF</a> btm(i-1,k) &gt; j <a href="cpl.html#IF">THEN</a>
+                fl<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fl<a href="cpl.html#Assignment">=</a>fico(i-1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
+                fll<a href="cpl.html#Assignment">=</a>wp&lowast;fico(i+2,j,k)
+                <a href="cpl.html#IF">IF</a> btm(i+2,k)&gt; j <a href="cpl.html#IF">THEN</a> fll<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fll<a href="cpl.html#Assignment">=</a>fico(i-2,j,k)
+                <a href="cpl.html#IF">IF</a> btm(i-2,k)&gt; j <a href="cpl.html#IF">THEN</a> fll<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> btm(i+1,k) &gt; j <a href="cpl.html#IF">THEN</a>
+                fr<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fr<a href="cpl.html#Assignment">=</a>fico(i+1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a> i<a href="cpl.html#Assignment">=</a>nx <a href="cpl.html#IF">THEN</a>
+                frr<a href="cpl.html#Assignment">=</a>wp&lowast;fico(i-2,j,k)
+                <a href="cpl.html#IF">IF</a> btm(i-2,k)&gt; j <a href="cpl.html#IF">THEN</a> frr<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                frr<a href="cpl.html#Assignment">=</a>fico(i+2,j,k)
+                <a href="cpl.html#IF">IF</a> btm(i+2,k)&gt; j <a href="cpl.html#IF">THEN</a> frr<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              
+              <a href="cpl.html#IF">IF</a>   j &gt; btm(i,k)  <a href="cpl.html#IF">THEN</a>    
+                d<a href="cpl.html#Assignment">=</a>fico(i,j-1,k)
+                md<a href="cpl.html#Assignment">=</a>m2co(i,j-1,k)
+              <a href="cpl.html#ELSE">ELSE</a>
+                d<a href="cpl.html#Assignment">=</a>0.
+                <a href="cpl.html#IF">IF</a> ad(i,j,k) &lt; pfo <a href="cpl.html#IF">THEN</a>
+                  md<a href="cpl.html#Assignment">=</a>ders(0,fu,fico(i,j+2,k),ad1,ad1+1,ad1&lowast;(ad1+1))
+                <a href="cpl.html#ELSE">ELSE</a>
+                  md<a href="cpl.html#Assignment">=</a>ders(0,ficen,fu,ad(i,j,k),ad1,den2)
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+                <a href="cpl.html#IF">IF</a> (i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> i<a href="cpl.html#Assignment">=</a>nx) <a href="cpl.html#AND">AND</a> j&gt;1 <a href="cpl.html#IF">THEN</a> md<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a>  btm(i+1,k) &gt; j  <a href="cpl.html#IF">THEN</a>
+                rig<a href="cpl.html#Assignment">=</a>0.
+                <a href="cpl.html#IF">IF</a> ar(i,j,k) &lt; pfo <a href="cpl.html#IF">THEN</a>
+                  mr<a href="cpl.html#Assignment">=</a>-ders(0,fl,fll,alr,alr+1,alr&lowast;(alr+1))
+                <a href="cpl.html#ELSE">ELSE</a>
+                  mr<a href="cpl.html#Assignment">=</a>-ders(0,ficen,fl,ar(i,j,k),alr,den1)
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#ELSE">ELSE</a>
+                rig<a href="cpl.html#Assignment">=</a>fico(i+1,j,k)
+                mr<a href="cpl.html#Assignment">=</a>m1co(i+1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a>  btm(i-1,k) &gt; j <a href="cpl.html#IF">THEN</a>
+                lef<a href="cpl.html#Assignment">=</a>0.
+                <a href="cpl.html#IF">IF</a>  al(i,j,k) &lt; pfo   <a href="cpl.html#IF">THEN</a>
+                  ml<a href="cpl.html#Assignment">=</a>ders(0,fr,frr,alr,alr+1,alr&lowast;(alr+1))
+                <a href="cpl.html#ELSE">ELSE</a>
+                  ml<a href="cpl.html#Assignment">=</a>ders(0,ficen,fr,al(i,j,k),alr,den1)
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#ELSE">ELSE</a>
+                lef<a href="cpl.html#Assignment">=</a>fico(i-1,j,k)
+                ml<a href="cpl.html#Assignment">=</a>m1co(i-1,j,k)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a>  btm(i,k+1) &gt; j <a href="cpl.html#IF">THEN</a>
+                fo<a href="cpl.html#Assignment">=</a>0.
+                <a href="cpl.html#IF">IF</a>  af(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a>  k &gt; 0  <a href="cpl.html#IF">THEN</a>
+                  mf<a href="cpl.html#Assignment">=</a>-ders(0.,fico(i,j,k-1),fico(i,j,k-2),abf,abf+1,abf&lowast;(abf+1))
+                <a href="cpl.html#ELSE">ELSE</a>
+                  mf<a href="cpl.html#Assignment">=</a>-ders(0.,fico(i,j,k),fico(i,j,k-1),af(i,j,k),abf,den3)
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+                <a href="cpl.html#IF">IF</a>  (af(i,j,k) &lt; pfo <a href="cpl.html#OR">OR</a>  ab(i,j,k) &lt; pfo)  <a href="cpl.html#AND">AND</a> (k<a href="cpl.html#Assignment">=</a>nz <a href="cpl.html#OR">OR</a> k<a href="cpl.html#Assignment">=</a>0)  <a href="cpl.html#IF">THEN</a>   mf<a href="cpl.html#Assignment">=</a>(fff-fb)/abf/h
+                <a href="cpl.html#IF">IF</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> i<a href="cpl.html#Assignment">=</a>nx  <a href="cpl.html#IF">THEN</a> mf<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                fo<a href="cpl.html#Assignment">=</a>fico(i,j,k+1)
+                mf<a href="cpl.html#Assignment">=</a>m3co(i,j,k+1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a> btm(i,k-1) &gt;  j  <a href="cpl.html#IF">THEN</a>
+                ba<a href="cpl.html#Assignment">=</a>0.
+                <a href="cpl.html#IF">IF</a>  ab(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a>  k &lt; nz  <a href="cpl.html#IF">THEN</a>
+                  mb<a href="cpl.html#Assignment">=</a>ders(0.,fico(i,j,k+1),fico(i,j,k+2),abf,abf+1,abf&lowast;(abf+1))
+                <a href="cpl.html#ELSE">ELSE</a>
+                  mb<a href="cpl.html#Assignment">=</a>ders(0.,fico(i,j,k),fico(i,j,k+1),ab(i,j,k),abf,den3)
+                <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+                <a href="cpl.html#IF">IF</a>(af(i,j,k) &lt; pfo <a href="cpl.html#OR">OR</a>  ab(i,j,k) &lt; pfo)  <a href="cpl.html#AND">AND</a> (k<a href="cpl.html#Assignment">=</a>nz <a href="cpl.html#OR">OR</a> k<a href="cpl.html#Assignment">=</a>0 ) <a href="cpl.html#IF">THEN</a> mb<a href="cpl.html#Assignment">=</a>(fff-fb)/abf/h
+                <a href="cpl.html#IF">IF</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> i<a href="cpl.html#Assignment">=</a>nx  <a href="cpl.html#IF">THEN</a> mb<a href="cpl.html#Assignment">=</a>0
+              <a href="cpl.html#ELSE">ELSE</a>
+                ba<a href="cpl.html#Assignment">=</a>fico(i,j,k-1)
+                mb<a href="cpl.html#Assignment">=</a>m3co(i,j,k-1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a>  al(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a>  i &lt;  nx  <a href="cpl.html#IF">THEN</a>
+                m1x<a href="cpl.html#Assignment">=</a>ders(m1co(i,j,k),mr,m1co(i+2,j,k),1.,2.,2.)
+              <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a>  ar(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a>  i &gt; 0  <a href="cpl.html#IF">THEN</a>
+                m1x<a href="cpl.html#Assignment">=</a>-ders(m1co(i,j,k),ml,m1co(i-2,j,k),1.,2.,2.)
+              <a href="cpl.html#ELSE">ELSE</a>
+                m1x<a href="cpl.html#Assignment">=</a>derc(m1co(i,j,k),ml,mr,al(i,j,k),ar(i,j,k),den1)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a> ad(i,j,k) &lt; pfo <a href="cpl.html#IF">THEN</a> 
+                m2y<a href="cpl.html#Assignment">=</a>ders(m2co(i,j,k),m2co(i,j+1,k),m2co(i,j+2,k),1,2,2)
+              <a href="cpl.html#ELSE">ELSE</a>
+                m2y<a href="cpl.html#Assignment">=</a>derc(m2co(i,j,k),md,m2co(i,j+1,k),ad(i,j,k),1,den2)
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              <a href="cpl.html#IF">IF</a>  ab(i,j,k) &lt; pfo  <a href="cpl.html#AND">AND</a>  k  &lt; nz  <a href="cpl.html#IF">THEN</a>
+                m3z<a href="cpl.html#Assignment">=</a>ders(m3co(i,j,k),mf,m3co(i,j,k+2),1.,2.,2.)
+              <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a>  af(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a>  k &gt; 0  <a href="cpl.html#IF">THEN</a>
+                m3z<a href="cpl.html#Assignment">=</a>-ders(m3co(i,j,k),mb,m3co(i,j,k-2),1.,2.,2.)
+              <a href="cpl.html#ELSE">ELSE</a>
+                m3z<a href="cpl.html#Assignment">=</a>derc(m3co(i,j,k),mb,mf,ab(i,j,k),af(i,j,k),den3)
+                <a href="cpl.html#IF">IF</a>  ( af(i,j,k) &lt; pfo <a href="cpl.html#OR">OR</a> ab(i,j,k) &lt; pfo)  <a href="cpl.html#AND">AND</a> (k <a href="cpl.html#Assignment">=</a> nz <a href="cpl.html#OR">OR</a> k<a href="cpl.html#Assignment">=</a>0) <a href="cpl.html#IF">THEN</a> m3z<a href="cpl.html#Assignment">=</a>(mf-mb)/abf/h
+              <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+              rhs(i,j,k)<a href="cpl.html#Assignment">=</a>rhs(i,j,k)+(m1x+m2y+m3z)&lowast;coenoto(i,j,k)&lowast;h&lowast;h+ficen-lef&lowast; \
+              left(i,j,k)-rig&lowast;right(i,j,k)-d&lowast;down(i,j,k)-fu&lowast;up(i,j,k)-fo&lowast; \
+              forw(i,j,k)-ba&lowast;back(i,j,k)
+            <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+            
+          <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> corfi
+
+<span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;  FINE  SUBROUTINES  &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+
+<a href="cpl.html#LOOP">LOOP</a> kapp <a href="cpl.html#FOR">FOR</a>  fk<a href="cpl.html#Assignment">=</a>k0 <a href="cpl.html#TO">TO</a> numk 
+  ka<a href="cpl.html#Assignment">=</a>fk
+  rapp<a href="cpl.html#Assignment">=</a>rap0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  fr<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> numh
+    rapp<a href="cpl.html#Assignment">=</a>rapp+delth
+    <a href="cpl.html#LOOP">LOOP</a>  <a href="cpl.html#FOR">FOR</a>   ff<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> numf
+      fill<a href="cpl.html#Assignment">=</a>fil0+deltf&lowast;ff
+      
+      <a href="cpl.html#WRITE">WRITE</a> 'ly,lz.fill,rapp,rapp/h',ly,lz,fill,rapp,rapp/h
+      <a href="cpl.html#WRITE">WRITE</a>'kappa',ka
+      
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   i<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> nx+1
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> nz+1
+          btm(i,k)<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+          btf(i,k)<a href="cpl.html#Assignment">=</a>0
+        <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   i<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> nx+1
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   j<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> ny
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> nz+1
+            fi(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            m1(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            m2(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            m3(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+          <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+        <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   j<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> ny0  
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+            ad(i,j,k)<a href="cpl.html#Assignment">=</a>1.
+            al(i,j,k)<a href="cpl.html#Assignment">=</a>1.
+            ar(i,j,k)<a href="cpl.html#Assignment">=</a>1.
+            af(i,j,k)<a href="cpl.html#Assignment">=</a>1.
+            ab(i,j,k)<a href="cpl.html#Assignment">=</a>1.
+            left(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            right(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            up(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            down(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            back(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            forw(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            bcl(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            bcr(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            bcd(i,j,k)<a href="cpl.html#Assignment">=</a>0. 
+            bcu(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            bcb(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            bcf(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            coenoto(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+          <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+        <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   j<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> ny  
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+            rhs(i,j,k)<a href="cpl.html#Assignment">=</a>0
+          <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+        <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+        x<a href="cpl.html#Assignment">=</a>i&lowast;h
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+          z<a href="cpl.html#Assignment">=</a>k&lowast;h
+          btm(i,k)<a href="cpl.html#Assignment">=</a>1+ROUND(fondo(x,z)/h)
+          
+          <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(1+fondo(x,z)/h- btm(i,k))&gt; 1-h/100 <a href="cpl.html#IF">THEN</a> btm(i,k)<a href="cpl.html#Assignment">=</a>btm(i,k)+1
+          
+        <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> nz+1
+        btm(nx+1,k)<a href="cpl.html#Assignment">=</a>btm(nx-1,k) 
+        btm(-1,k)<a href="cpl.html#Assignment">=</a>btm(1,k)
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  i<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> nx+1
+        btm(i,-1)<a href="cpl.html#Assignment">=</a>btm(i,1)
+        btm(i,nz+1)<a href="cpl.html#Assignment">=</a>btm(nx-i,nz-1)
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <span class=comment>!      calcolo di btf                       </span>
+      <span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;o&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;     </span>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+          btf(i,k)<a href="cpl.html#Assignment">=</a><a href="cpl.html#MAX">MAX</a>(btm(i,k)+1,btm(i-1,k),btm(i+1,k))
+          btf(i,k)<a href="cpl.html#Assignment">=</a><a href="cpl.html#MAX">MAX</a>(btf(i,k),btm(i,k-1),btm(i,k+1))
+        <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+        
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a> 
+      <a href="cpl.html#WRITE">WRITE</a> 'fine calcolo btf '  
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+        z<a href="cpl.html#Assignment">=</a>k&lowast;h
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+          x<a href="cpl.html#Assignment">=</a>h&lowast;i
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   j<a href="cpl.html#Assignment">=</a>btm(i,k) <a href="cpl.html#TO">TO</a> btf(i,k)-1
+            y<a href="cpl.html#Assignment">=</a>h&lowast;j
+            <a href="cpl.html#IF">IF</a> j <a href="cpl.html#Assignment">=</a>btm(i,k) <a href="cpl.html#IF">THEN</a>  ad(i,j,k)<a href="cpl.html#Assignment">=</a>j-fondo(x,z)/h
+            <a href="cpl.html#IF">IF</a> btm(i-1,k) &gt; j <a href="cpl.html#IF">THEN</a> al(i,j,k)<a href="cpl.html#Assignment">=</a>(x-vert(y,x,x-h,z))/h
+            <a href="cpl.html#IF">IF</a> btm(i+1,k)  &gt; j <a href="cpl.html#IF">THEN</a> ar(i,j,k)<a href="cpl.html#Assignment">=</a>(vert(y,x,x+h,z)-x)/h
+            <a href="cpl.html#IF">IF</a>  i <a href="cpl.html#Assignment">=</a> nx  <a href="cpl.html#IF">THEN</a> ar(i,j,k)<a href="cpl.html#Assignment">=</a>al(i,j,k)
+            <span class=comment>!       WRITE'condizione di simmmetria rispetto ad x',i,j,k</span>
+            <a href="cpl.html#IF">IF</a>  btm(i,k-1) &gt; j  <a href="cpl.html#IF">THEN</a> ab(i,j,k)<a href="cpl.html#Assignment">=</a>(z-vertz(y,z,z-h,x))/h
+            <a href="cpl.html#IF">IF</a> btm(i,k+1) &gt; j <a href="cpl.html#IF">THEN</a> af(i,j,k)<a href="cpl.html#Assignment">=</a>(vertz(y,z,z+h,x)-z)/h
+            <span class=comment>! condizione di simmetria rispetto all'asse x</span>
+            <a href="cpl.html#IF">IF</a> z<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> ab(i,j,k)<a href="cpl.html#Assignment">=</a>af(i,j,k)
+            
+            deny<a href="cpl.html#Assignment">=</a>ad(i,j,k)&lowast;(1.+ad(i,j,k))
+            denx<a href="cpl.html#Assignment">=</a>al(i,j,k)&lowast;ar(i,j,k)&lowast;(al(i,j,k)+ar(i,j,k))
+            denz<a href="cpl.html#Assignment">=</a>af(i,j,k)&lowast;ab(i,j,k)&lowast;(af(i,j,k)+ab(i,j,k))
+            dud<a href="cpl.html#Assignment">=</a>deny/2.
+            dlr<a href="cpl.html#Assignment">=</a>denx/2.
+            dbf<a href="cpl.html#Assignment">=</a>denz/2.
+            axr<a href="cpl.html#Assignment">=</a>al(i,j,k)
+            axl<a href="cpl.html#Assignment">=</a>ar(i,j,k)
+            ax0<a href="cpl.html#Assignment">=</a>axl+axr
+            ayu<a href="cpl.html#Assignment">=</a>ad(i,j,k)
+            ayd<a href="cpl.html#Assignment">=</a>1.
+            ay0<a href="cpl.html#Assignment">=</a>ayu+ayd 
+            azf<a href="cpl.html#Assignment">=</a>ab(i,j,k)
+            azb<a href="cpl.html#Assignment">=</a>af(i,j,k)
+            az0<a href="cpl.html#Assignment">=</a>azf+azb
+            deno<a href="cpl.html#Assignment">=</a>ax0&lowast;dbf&lowast;dud+ay0&lowast;dbf&lowast;dlr+az0&lowast;dlr&lowast;dud
+            bcl(i,j,k)<a href="cpl.html#Assignment">=</a>axl&lowast;dud&lowast;dbf/deno
+            bcd(i,j,k)<a href="cpl.html#Assignment">=</a>ayd&lowast;dlr&lowast;dbf/deno
+            bcr(i,j,k)<a href="cpl.html#Assignment">=</a>axr&lowast;dud&lowast;dbf/deno
+            bcu(i,j,k)<a href="cpl.html#Assignment">=</a>ayu&lowast;dlr&lowast;dbf/deno
+            bcb(i,j,k)<a href="cpl.html#Assignment">=</a>azb&lowast;dud&lowast;dlr/deno
+            bcf(i,j,k)<a href="cpl.html#Assignment">=</a>azf&lowast;dlr&lowast;dud/deno
+            coenoto(i,j,k)<a href="cpl.html#Assignment">=</a>dud&lowast;dlr&lowast;dbf/deno
+          <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  j<a href="cpl.html#Assignment">=</a> btf(i,k) <a href="cpl.html#TO">TO</a> ny0
+            bcl(i,j,k)<a href="cpl.html#Assignment">=</a>1./6.
+            bcd(i,j,k)<a href="cpl.html#Assignment">=</a>1./6.
+            bcr(i,j,k)<a href="cpl.html#Assignment">=</a>1./6.
+            bcu(i,j,k)<a href="cpl.html#Assignment">=</a>1./6.
+            bcf(i,j,k)<a href="cpl.html#Assignment">=</a>1./6.
+            bcb(i,j,k)<a href="cpl.html#Assignment">=</a>1./6.
+            coenoto(i,j,k)<a href="cpl.html#Assignment">=</a>1./6.
+          <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+        <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  j<a href="cpl.html#Assignment">=</a>btm(i,k) <a href="cpl.html#TO">TO</a> ny0
+            left(i,j,k)<a href="cpl.html#Assignment">=</a>bcl(i,j,k)
+            <a href="cpl.html#IF">IF</a> btm(i-1,k) &gt; j <a href="cpl.html#IF">THEN</a> left(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            right(i,j,k)<a href="cpl.html#Assignment">=</a>bcr(i,j,k)
+            <a href="cpl.html#IF">IF</a> btm(i+1,k) &gt; j <a href="cpl.html#IF">THEN</a> right(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            back(i,j,k)<a href="cpl.html#Assignment">=</a>bcb(i,j,k)
+            <a href="cpl.html#IF">IF</a> btm(i,k-1) &gt; j <a href="cpl.html#IF">THEN</a> back(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            forw(i,j,k)<a href="cpl.html#Assignment">=</a>bcf(i,j,k)
+            <a href="cpl.html#IF">IF</a> btm(i,k+1) &gt; j <a href="cpl.html#IF">THEN</a> forw(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            down(i,j,k)<a href="cpl.html#Assignment">=</a>bcd(i,j,k)
+            <a href="cpl.html#IF">IF</a> btm(i,k)<a href="cpl.html#Assignment">=</a> j <a href="cpl.html#IF">THEN</a> down(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            up(i,j,k)<a href="cpl.html#Assignment">=</a>bcu(i,j,k)
+            
+          <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+        <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <span class=comment>!   WRITE 'al1,ar,ad1,ad,,bcl,bcr',al(1,btm(0,0)-1,0),ar(nx-1,btm(nx,0)-1,0),ad(0,</span>
+      <span class=comment>!    btm(0,0),0),ad(nx,btm(nx,0),0),bcl(1,btm(0,0)-1,0),bcr(nx-1,btm(nx,0)-1,0)</span>
+      <span class=comment>!    READ datof</span>
+      
+      <span class=comment>!(        calcolo diagramma
+        LOOP FOR k=0 TO 32
+          <span class=comment>!    LOOP FOR k=0 TO 100</span>
+          <span class=comment>!   ALTEZZE k/100&lowast;lz/2&lowast;5/8, fondo(0,k/100&lowast;lz/2&lowast;5/8),btm(0,k).</span>
+          ALTEZZE k, fondo(0,k&lowast;h)/h,btm(0,k).
+        REPEAT LOOP
+        STOP
+        !)</span>
+      <span class=comment>!&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   fw<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> 1
+        wp<a href="cpl.html#Assignment">=</a>-1+fw&lowast;2 
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   i<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> nx+1
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   j<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> ny
+            <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> nz+1
+              fi(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+              m1(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+              m2(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+              m3(i,j,k)<a href="cpl.html#Assignment">=</a>0.
+            <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+          <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+        <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+        <span class=comment>!     calcolo di dati per correzioni</span>
+        <a href="cpl.html#IF">IF</a> inco<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>  catalogo
+        <span class=comment>!( 
+          LOOP FOR k=0 TO nz-3
+            it=nid(0,btm(0,k),k)
+            WRITE 'it,z,zn',it,k&lowast;h,vzn(it),
+            'sa,ca,de,k1,k2',vsalfa(it),vcalfa(it),vdel(it),vk1(it),vk2(it)
+            ALTEZZE k,vzn(it),vsalfa(it)
+          REPEAT LOOP
+          STOP
+          !)</span>
+        <a href="cpl.html#WRITE">WRITE</a>'inizio ciclo,btm(0,0),btm(0,1),btm(0,-1)',btm(0,0),btm(0,1),btm(0,-1)
+        js<a href="cpl.html#Assignment">=</a>0
+        it<a href="cpl.html#Assignment">=</a>1
+        <a href="cpl.html#DO">DO</a>
+          
+          <a href="cpl.html#IF">IF</a> js<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> prec<a href="cpl.html#Assignment">=</a>((wp+1)&lowast;m3(0,ny,0)+(1-wp)&lowast;m1(0,ny,0))/2
+          <a href="cpl.html#IF">IF</a> it&lt;jsta <a href="cpl.html#IF">THEN</a> prec<a href="cpl.html#Assignment">=</a> 1000
+          
+          notom1
+          <a href="cpl.html#IF">IF</a> it &gt;  10 <a href="cpl.html#AND">AND</a> inco<a href="cpl.html#Assignment">=</a>1  <a href="cpl.html#IF">THEN</a>    corm1
+          vbmg(m1,btm,btf,left,down,right,up,back,forw,rhs,nx,ny,nz,-wp,-wp)
+          
+          notofia
+          <a href="cpl.html#IF">IF</a> it &gt;  10 <a href="cpl.html#AND">AND</a> inco<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>   corfi
+          vbmg(fi,btm,btf,left,down,right,up,back,forw,rhs,nx,ny,nz,wp,-wp)
+          notom2
+          <a href="cpl.html#IF">IF</a> it &gt; 10 <a href="cpl.html#AND">AND</a> inco<a href="cpl.html#Assignment">=</a>1  <a href="cpl.html#IF">THEN</a>  corm2
+          vbmg(m2,btm,btf,left,down,right,up,back,forw,rhs,nx,ny,nz,wp,-wp)
+          
+          notom3
+          <a href="cpl.html#IF">IF</a> it &gt;  10 <a href="cpl.html#AND">AND</a> inco<a href="cpl.html#Assignment">=</a>1   <a href="cpl.html#IF">THEN</a>    corm3
+          vbmg(m3,btm,btf,left,down,right,up,back,forw,rhs,nx,ny,nz,wp,wp)
+          <span class=comment>!    vbrb(m3,btm,btf,left,down,right,up,back,forw,rhs,nx,ny,nz,wp,wp)</span>
+          
+          <a href="cpl.html#IF">IF</a>  js <a href="cpl.html#Assignment">=</a>jsta   <a href="cpl.html#IF">THEN</a>
+            <a href="cpl.html#WRITE">WRITE</a>'m1c,m2c,m3c,fi',m1(0,ny,0):9.9,m2(0,ny,0),m3(0,ny,0):9.11,fi(0,ny,0),it
+            js<a href="cpl.html#Assignment">=</a>0
+          <a href="cpl.html#ELSE">ELSE</a>
+            js<a href="cpl.html#Assignment">=</a>js+1
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+          it<a href="cpl.html#Assignment">=</a>it+1
+          <a href="cpl.html#IF">IF</a> wp  <a href="cpl.html#Assignment">=</a> 1 <a href="cpl.html#IF">THEN</a> hlon<a href="cpl.html#Assignment">=</a>m3(0,ny,0)-ny&lowast;h+fondo(0.,0.)
+          <a href="cpl.html#IF">IF</a> wp <a href="cpl.html#Assignment">=</a>  -1 <a href="cpl.html#IF">THEN</a> htra<a href="cpl.html#Assignment">=</a>m1(0,ny,0)-ny&lowast;h+fondo(0.,0.)
+        <a href="cpl.html#UNTIL">UNTIL</a> <a href="cpl.html#ABS">ABS</a>(prec-((wp+1)&lowast;m3(0,ny,0)+(1-wp)&lowast;m1(0,ny,0))/2) &lt; 0.000001
+      <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast; fine ciclo parita' &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+      
+      dh<a href="cpl.html#Assignment">=</a>hlon-htra
+      <a href="cpl.html#WRITE">WRITE</a> 'hlon,htra,dh',hlon,htra,dh
+      fillm<a href="cpl.html#Assignment">=</a>fill
+      fils<a href="cpl.html#Assignment">=</a>fill
+      <a href="cpl.html#IF">IF</a> prolo <a href="cpl.html#Assignment">=</a>3 <a href="cpl.html#IF">THEN</a> 
+        fillm<a href="cpl.html#Assignment">=</a>(fill +rapp/2 +0.144074)&lowast;2/lz
+        fils<a href="cpl.html#Assignment">=</a>(fill+0.144074)&lowast;2/lz 
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      
+      <span class=comment>! ALTEZZE rapp:15.10,fillm:15.10,dh:15.10,hlon:15.10,htra:15.10</span>
+      ALTEZZE rapp:10.6,fils:10.6,fillm:10.6,dh:15.10,hlon:15.10,htra:15.10
+      &lt;&lowast; fflush(ALTEZZE_); &lowast;&gt;
+      
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+    <span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;   fine ciclo fill  &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast; </span>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;  fine ciclo rapporto &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;      </span>
+<a href="cpl.html#LOOP">REPEAT</a> kapp 
+<span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;  fine ciclo kappa &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;      </span>
+
+
+
+
+
+</pre></body></html>

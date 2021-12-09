@@ -1,0 +1,174 @@
+TYPE STAR=STRUCTURE(REAL l,d,r,u,b,fo)
+INLINE SUBROUTINE sbc(REAL f^(*,*,*); POINTER TO ARRAY(*,*) OF INTEGER btm
+                      INTEGER nx,ny,nz,xparity,zparity,p)
+  LOOP FOR iz=0 TO nz AND iy = btm(1,iz)+(btm(1,iz)+iz+p) MOD 2 TO ny BY 2
+    f(-1,iy,iz) = xparity*f(1,iy,iz)
+  REPEAT LOOP
+  LOOP FOR ix=0 TO nx AND iy = btm(ix,1)+(btm(ix,1)+ix+p) MOD 2 TO ny BY 2
+    f(ix,iy,-1) = zparity*f(ix,iy,1)
+  REPEAT LOOP
+  LOOP FOR iz=0 TO nz AND iy = btm(nx-1,iz)+[nx+iz+btm(nx-1,iz)+p] MOD 2 TO ny BY 2
+    f(nx+1,iy,iz) = xparity*f(nx-1,iy,iz)
+  REPEAT LOOP
+  LOOP FOR ix=0 TO nx AND iy = btm(nx-ix,nz-1)+(nx-ix+nz+btm(nx-ix,nz-1)+p) MOD 2 TO ny BY 2
+    f(ix,iy,nz+1) = xparity*zparity*f(nx-ix,iy,nz-1)
+  REPEAT LOOP
+END sbc
+
+SUBROUTINE vbrb(REAL f^(*,*,*); POINTER TO ARRAY(*,*) OF INTEGER btm,btt
+           POINTER TO ARRAY(*,*,*) OF REAL l,d,r,u,b,fo,rhs
+           INTEGER nx,ny,nz,xparity,zparity)
+LOOP parity FOR p = 0 TO 1
+  sbc(f,btm,nx,ny,nz,xparity,zparity,p)
+  LOOP FOR iz = 0 TO nz AND ix = 0 TO nx
+    INTEGER iy = btm(ix,iz)+(ix+iz+btm(ix,iz)+p) MOD 2
+    LOOP WHILE iy<btt(ix,iz)
+      f(ix,iy,iz)=rhs(ix,iy,iz)+
+      l(ix,iy,iz)*f(ix-1,iy,iz)+r(ix,iy,iz)*f(ix+1,iy,iz)+
+      d(ix,iy,iz)*f(ix,iy-1,iz)+u(ix,iy,iz)*f(ix,iy+1,iz)+
+      b(ix,iy,iz)*f(ix,iy,iz-1)+fo(ix,iy,iz)*f(ix,iy,iz+1) 
+      iy=iy+2
+    REPEAT LOOP
+    LOOP WHILE iy<ny
+      f(ix,iy,iz)=rhs(ix,iy,iz)+1/6*[f(ix-1,iy,iz)+
+      f(ix+1,iy,iz)+f(ix,iy-1,iz)+f(ix,iy+1,iz)+
+      f(ix,iy,iz-1)+f(ix,iy,iz+1)]
+      iy=iy+2
+    REPEAT LOOP
+    IF iy=ny THEN
+      f(ix,ny,iz)=rhs(ix,ny,iz)+1/6*[f(ix-1,ny,iz)+
+      f(ix+1,ny,iz)+f(ix,ny,iz-1)+f(ix,ny,iz+1)+
+      2*f(ix,ny-1,iz)]
+    END IF  
+  REPEAT LOOP
+REPEAT parity 
+sbc(f,btm,nx,ny,nz,xparity,zparity,0)
+END vbrb
+
+SUBROUTINE vbmg(REAL ff^(*,*,*); POINTER TO ARRAY(*,*) OF INTEGER btmf,bttf
+           POINTER TO ARRAY(*,*,*) OF REAL lf,df,rf,uf,bf,fof,rhsf
+           INTEGER nxf,nyf,nzf,xparity,zparity)
+
+! *** smoother
+DO vbrb(ff,btmf,bttf,lf,df,rf,uf,bf,fof,rhsf,nxf,nyf,nzf,xparity,zparity) FOR 3 TIMES
+
+! *** restriction
+nxc=nxf DIV 2; nyc=nyf DIV 2; nzc=nzf DIV 2
+INTEGER btmc(-1..nxc+1,-1..nzc+1),bttc(0..nxc,0..nzc)
+INTEGER bmin=10000,bmax=-10000
+LOOP FOR ixc=0 TO nxc AND izc=0 TO nzc
+    btmc(ixc,izc) = (btmf(2*ixc,2*izc)+1) DIV 2
+    bmin=MIN(bmin,btmc(ixc,izc))
+REPEAT LOOP
+DO btmc(-1,izc)=btmc(1,izc);btmc(nxc+1,izc)=btmc(nxc-1,izc) FOR izc=0 TO nzc
+DO btmc(ixc,-1)=btmc(ixc,1);btmc(ixc,nzc+1)=btmc(nxc-ixc,nzc-1) FOR ixc=0 TO nxc
+LOOP FOR ixc = 0 TO nxc AND izc = 0 TO nzc
+    bttc(ixc,izc)=MAX(btmc(ixc,izc)+1,btmc(ixc-1,izc),btmc(ixc+1,izc),
+                      btmc(ixc,izc-1),btmc(ixc,izc+1))
+    bmax=MAX(bmax,bttc(ixc,izc))
+REPEAT LOOP
+REAL fc(-1..nxc+1,bmin-1..nyc,-1..nzc+1),rhsc(0..nxc,bmin..nyc,0..nzc)
+DO fc(ixc,iyc,izc)=0 FOR ixc=-1 TO nxc+1 AND iyc=bmin-1 TO nyc AND izc=-1 TO nzc+1
+STAR coarse(0..nxc,bmin..bmax-1,0..nzc)
+
+LOOP FOR ixc=0 TO nxc
+  ixf=ixc*2
+  LOOP FOR izc=0 TO nzc
+    izf = izc*2
+    INTEGER iyc=btmc(ixc,izc), iyf = 2 * iyc
+    LOOP WHILE iyf<bttf(ixf,izf)
+        c = 1/{4-3*[lf(ixf,iyf,izf)+df(ixf,iyf,izf)+rf(ixf,iyf,izf)+
+            uf(ixf,iyf,izf)+bf(ixf,iyf,izf)+fof(ixf,iyf,izf)]}
+        WITH coarse(ixc,iyc,izc)
+        IF iyc>=btmc(ixc,izc-1) THEN b = bf(ixf, iyf,izf) * c ELSE b = 0
+        IF (iyc>=btmc(ixc,izc+1)) THEN fo = fof(ixf, iyf,izf) * c ELSE fo = 0
+        IF (iyc>=btmc(ixc-1,izc)) THEN l = lf(ixf, iyf,izf) * c ELSE l = 0
+        IF (iyc>btmc(ixc,izc)) THEN d = df(ixf, iyf,izf) * c ELSE d = 0
+        IF (iyc>=btmc(ixc + 1,izc)) THEN r = rf(ixf, iyf,izf) * c ELSE r = 0
+        u = uf(ixf, iyf,izf) * c
+        rsdf=lf(ixf,iyf,izf)*ff(ixf-1,iyf,izf)+df(ixf,iyf,izf)*ff(ixf,iyf-1,izf)+
+             bf(ixf,iyf,izf)*ff(ixf,iyf,izf-1)+rf(ixf,iyf,izf)*ff(ixf+1,iyf,izf)+
+             uf(ixf,iyf,izf)*ff(ixf,iyf+1,izf)+fof(ixf,iyf,izf)*ff(ixf,iyf,izf+1)+
+             rhsf(ixf,iyf,izf)-ff(ixf,iyf,izf)
+        rhsc(ixc,iyc,izc) = 2 * rsdf
+        fc(ixc,iyc,izc) = rhsc(ixc,iyc,izc)
+        INC iyc;iyf = 2 * iyc
+    REPEAT LOOP
+    LOOP WHILE iyc<nyc
+        IF iyc<bttc(ixc,izc) THEN
+          WITH coarse(ixc,iyc,izc)
+          IF iyc>=btmc(ixc,izc-1) THEN b = 1/6 ELSE b = 0
+          IF (iyc>=btmc(ixc,izc+1)) THEN fo = 1/6 ELSE fo = 0
+          IF (iyc>=btmc(ixc-1,izc)) THEN l = 1/6 ELSE l = 0
+          IF (iyc>btmc(ixc,izc)) THEN d = 1/6 ELSE d = 0
+          IF (iyc>=btmc(ixc + 1,izc)) THEN r = 1/6 ELSE r = 0
+          u = 1/6
+        END IF
+        rsdf=1/6*[ff(ixf-1,iyf,izf)+ff(ixf,iyf-1,izf)+
+            ff(ixf+1,iyf,izf)+ff(ixf,iyf,izf-1)+ff(ixf,iyf,izf+1)+
+            ff(ixf,iyf+1,izf)]+rhsf(ixf,iyf,izf)-ff(ixf,iyf,izf)
+        rhsc(ixc,iyc,izc) = 2 * rsdf
+        fc(ixc,iyc,izc) = rhsc(ixc, iyc,izc)
+        INC iyc;iyf=2*iyc 
+    REPEAT LOOP
+    rsdf=1/6*[ff(ixf-1,nyf,izf)+ff(ixf+1,nyf,izf)+
+        ff(ixf,nyf,izf-1)+ff(ixf,nyf,izf+1)+2*ff(ixf,nyf-1,izf)]+
+        rhsf(ixf,nyf,izf)-ff(ixf,nyf,izf)
+    rhsc(ixc,nyc,izc) = 2 * rsdf
+    fc(ixc,nyc,izc) = rhsc(ixc,nyc,izc)
+  REPEAT LOOP
+REPEAT LOOP
+
+! *** recursion
+IF nxc MOD 2 = 0 AND nyc MOD 2 = 0 AND nzc MOD 2 = 0 AND 
+    nxc>2 AND nyc>bmax AND nzc>2 THEN
+    vbmg(fc,btmc,bttc,coarse.l,coarse.d,coarse.r,coarse.u,coarse.b,coarse.fo,rhsc,nxc,nyc,nzc,xparity,zparity)
+ELSE
+    DO vbrb(fc,btmc,bttc,coarse.l,coarse.d,coarse.r,coarse.u,coarse.b,coarse.fo,rhsc,nxc,nyc,nzc,xparity,zparity) FOR 100 TIMES
+END IF
+
+! *** interpolation
+LOOP FOR ixc = 0 TO nxc; ixf=2*ixc
+  LOOP FOR izc = 0 TO nzc; izf = 2 * izc
+    REAL d = 0
+    LOOP FOR iyc = bmin TO nyc; iyf = 2 * iyc
+        od=d; d=0; IF(iyc>=btmc(ixc,izc)) THEN d = fc(ixc,iyc,izc)
+        ff(ixf,iyf-1,izf)=~+(d+od)/2
+        REAL ld=0; IF(iyc>=btmc(ixc-1,izc)) THEN ld=fc(ixc-1,iyc,izc)
+        ff(ixf-1,iyf,izf)=~+(d+ld)/2
+        REAL bd=0; IF(iyc>=btmc(ixc,izc-1)) THEN bd=fc(ixc,iyc,izc-1)
+        ff(ixf,iyf,izf-1)=~+(d+bd)/2
+    REPEAT LOOP
+  REPEAT LOOP
+REPEAT LOOP
+
+! *** smoother
+DO vbrb(ff,btmf,bttf,lf,df,rf,uf,bf,fof,rhsf,nxf,nyf,nzf,xparity,zparity) FOR 3 TIMES
+END vbmg
+
+REAL FUNCTION mrsd(REAL f^(*,*,*); POINTER TO ARRAY(*,*) OF INTEGER btm,btt
+           POINTER TO ARRAY(*,*,*) OF REAL l,d,r,u,b,fo,rhs
+           INTEGER nx,ny,nz,xparity,zparity)
+RESULT=0
+LOOP FOR iz=0 TO nz AND ix = 0 TO nx
+  INTEGER iy=btm(ix,iz)
+  LOOP WHILE iy<btt(ix,iz)
+    RESULT=MAX(RESULT,ABS[-f(ix,iy,iz)+rhs(ix,iy,iz)+
+    l(ix,iy,iz)*f(ix-1,iy,iz)+r(ix,iy,iz)*f(ix+1,iy,iz)+
+    d(ix,iy,iz)*f(ix,iy-1,iz)+u(ix,iy,iz)*f(ix,iy+1,iz)+
+    b(ix,iy,iz)*f(ix,iy,iz-1)+fo(ix,iy,iz)*f(ix,iy,iz+1)])
+    iy=iy+1
+  REPEAT LOOP
+  LOOP WHILE iy<ny
+    RESULT=MAX(RESULT,ABS[-f(ix,iy,iz)+rhs(ix,iy,iz)+1/6*[f(ix-1,iy,iz)+
+    f(ix+1,iy,iz)+f(ix,iy-1,iz)+f(ix,iy+1,iz)+
+    f(ix,iy,iz-1)+f(ix,iy,iz+1)]])
+    iy=iy+1
+  REPEAT LOOP
+  IF iy=ny THEN
+    RESULT=MAX(RESULT,ABS[-f(ix,ny,iz)+rhs(ix,ny,iz)+1/6*[f(ix-1,ny,iz)+
+    f(ix+1,ny,iz)+f(ix,ny,iz-1)+f(ix,ny,iz+1)+
+    2*f(ix,ny-1,iz)]])
+  END IF  
+REPEAT LOOP
+END mrsd
