@@ -12,7 +12,7 @@ hmax=1.
 ! valore massimo di h compatibile con la memoria prevista
 
 INTEGER ny0
-ny0=ROUND(2*nx*hmax) +5
+ny0=FLOOR(2*nx*hmax) +5
 !   ny0=nx*2
 
 pi=ATAN(1)*4 
@@ -2110,7 +2110,7 @@ LOOP kapp FOR  fk=k0 TO numk
         x=i*h
         LOOP FOR  k=0 TO nz
           z=k*h
-          btm(i,k)=1+ROUND(fondo(x,z)/h)
+          btm(i,k)=1+FLOOR(fondo(x,z)/h)
           
           IF ABS(1+fondo(x,z)/h- btm(i,k))> 1-h/100 THEN btm(i,k)=btm(i,k)+1
           

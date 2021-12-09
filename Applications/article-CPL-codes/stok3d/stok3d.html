@@ -13,10 +13,10 @@ hmax<a href="cpl.html#Assignment">=</a>1.
 <span class=comment>! valore massimo di h compatibile con la memoria prevista</span>
 
 <a href="cpl.html#INTEGER">INTEGER</a> ny0
-ny0<a href="cpl.html#Assignment">=</a>ROUND(2&lowast;nx&lowast;hmax) +5
+ny0<a href="cpl.html#Assignment">=</a>FLOOR(2&lowast;nx&lowast;hmax) +5
 <span class=comment>!   ny0=nx&lowast;2</span>
 
-pi<a href="cpl.html#Assignment">=</a>ATAN(1)&lowast;4 
+pi<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">ATAN</a>(1)&lowast;4 
 pfo<a href="cpl.html#Assignment">=</a>0.5
 <span class=comment>! parametro formula</span>
 pbc<a href="cpl.html#Assignment">=</a>2
@@ -276,7 +276,7 @@ dcor<a href="cpl.html#Assignment">=</a>2.05&lowast;h
   <a href="cpl.html#IF">IF</a> rapp<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>pi/2
   <a href="cpl.html#ELSE">ELSE</a>
-    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>ATAN(fx0/rapp&lowast;(1-gp&lowast;talfa)&lowast;&lowast;0.5)
+    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">ATAN</a>(fx0/rapp&lowast;(1-gp&lowast;talfa)&lowast;&lowast;0.5)
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <span class=comment>!(   caso lamina     
     RESULT=0.
@@ -295,10 +295,10 @@ dcor<a href="cpl.html#Assignment">=</a>2.05&lowast;h
       kv<a href="cpl.html#Assignment">=</a>kn
       <a href="cpl.html#IF">IF</a> wp <a href="cpl.html#Assignment">=</a> 1 <a href="cpl.html#IF">THEN</a>
         cot<a href="cpl.html#Assignment">=</a>((1.-s&lowast;&lowast;2&lowast;kv&lowast;&lowast;2)&lowast;&lowast;0.5-1.)/s/kv 
-        kn<a href="cpl.html#Assignment">=</a>(ATAN(1./cot)+pi)/(pi-delta(xx,zz,calf,salf))
+        kn<a href="cpl.html#Assignment">=</a>(<a href="cpl.html#Builtin">ATAN</a>(1./cot)+pi)/(pi-delta(xx,zz,calf,salf))
       <a href="cpl.html#ELSE">ELSE</a>
         cot<a href="cpl.html#Assignment">=</a>(1-(1.-s&lowast;&lowast;2&lowast;kv&lowast;&lowast;2)&lowast;&lowast;0.5)/s/kv 
-        kn<a href="cpl.html#Assignment">=</a>ATAN(1./cot)/(pi-delta(xx,zz,calf,salf))
+        kn<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">ATAN</a>(1./cot)/(pi-delta(xx,zz,calf,salf))
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <a href="cpl.html#WHILE">WHILE</a>  <a href="cpl.html#ABS">ABS</a>(kv-kn) &gt; 0.0001 
     <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>kn
@@ -438,7 +438,7 @@ dcor<a href="cpl.html#Assignment">=</a>2.05&lowast;h
   <a href="cpl.html#IF">IF</a>  yy <a href="cpl.html#Assignment">=</a> 0   <a href="cpl.html#IF">THEN</a>
     tet<a href="cpl.html#Assignment">=</a>pi/2&lowast;si
   <a href="cpl.html#ELSE">ELSE</a>
-    tet<a href="cpl.html#Assignment">=</a>ATAN(xx/yy)
+    tet<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">ATAN</a>(xx/yy)
     <a href="cpl.html#IF">IF</a> yy &lt; 0 <a href="cpl.html#IF">THEN</a> tet<a href="cpl.html#Assignment">=</a>tet+pi&lowast;si
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>tet
@@ -2111,7 +2111,7 @@ dcor<a href="cpl.html#Assignment">=</a>2.05&lowast;h
         x<a href="cpl.html#Assignment">=</a>i&lowast;h
         <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz
           z<a href="cpl.html#Assignment">=</a>k&lowast;h
-          btm(i,k)<a href="cpl.html#Assignment">=</a>1+ROUND(fondo(x,z)/h)
+          btm(i,k)<a href="cpl.html#Assignment">=</a>1+FLOOR(fondo(x,z)/h)
           
           <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(1+fondo(x,z)/h- btm(i,k))&gt; 1-h/100 <a href="cpl.html#IF">THEN</a> btm(i,k)<a href="cpl.html#Assignment">=</a>btm(i,k)+1
           
