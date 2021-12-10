@@ -1,0 +1,133 @@
+ASK INTEGER prolo
+ASK INTEGER protra
+ASK REAL lz
+ASK REAL rapp
+ASK REAL fill
+ASK REAL ka
+!(
+  REAL FUNCTION tanh( REAL xx)
+    RESULT=(EXP(xx)-EXP(-xx))/(EXP(xx)+EXP(-xx))
+  END tanh 
+  !)
+REAL FUNCTION fx( REAL xx)
+  REAL xs
+  xs=0.
+  IF protra = 1 THEN
+    !   Lamina
+    RESULT=1
+    IF xx > xs  THEN RESULT=0
+  ELSE IF protra = 2 THEN 
+    !   e5
+    RESULT=(1-xx*4)**5
+    IF xx>0.25 THEN RESULT= 0
+  ELSE IF protra = 3 THEN 
+    !   v
+    RESULT=1-xx*4
+    IF xx>0.25 THEN RESULT= 0
+  ELSE IF protra = 4 THEN 
+    !   coseno
+    RESULT=COS(2*PI*xx)
+    IF xx>0.25 THEN RESULT= 0
+  END IF 
+  IF RESULT <0 THEN RESULT=0
+END fx
+
+REAL FUNCTION gz(REAL zz)
+  REAL l1,l2,l3,l4,zr,a1,a2,a3,b1,b2,y1
+  nr=4
+  IF prolo =1 THEN
+    !  2d
+    RESULT=rapp
+  ELSE IF prolo=2 THEN
+    !  Profilo iperbolico
+    RESULT=rapp*(1.+tanh(ka*2./rapp*(fill*lz/2.-zz)))/2
+  ELSE IF prolo=3 THEN
+    
+    !  BE 
+    
+    tal=1
+    cal=1/(1+tal**2)**0.5
+    sal=tal*cal
+    r0=0.347826
+    !   r0=.7
+    !     l0=0.5108695 
+    l0=fill
+    l2=(rapp-r0+tal*l0+r0*(1+tal**2)**0.5)/tal
+    l1=l2-(rapp-r0+r0/(1+tal**2)**0.5)/tal
+    y1=rapp-r0+r0*cal
+    l1=r0*sal+l0
+    l2=l1+y1/tal
+    !     WRITE 'z,y1,l0,l1,l2',zz,y1,l0,l1,l2 
+    l3=l1+(rapp-2*r0*(1-cal))/tal
+    l4=l3+r0*sal
+    b1=(l2-fill+0.125-(nr+1)*rapp)/(l2-fill+0.125)**nr
+    b2=(nr*rapp-l2+fill-0.125)/(l2-fill+0.125)**(nr+1)
+    
+    IF zz <l0 THEN
+      RESULT =rapp
+    ELSE IF zz <l1 THEN 
+      RESULT=rapp-r0+(r0**2-(zz-l0)**2)**0.5
+    ELSE IF zz<l2  THEN 
+      RESULT = y1+tal*(l1-zz)
+    ELSE IF zz<lz-l2  THEN 
+      RESULT=0
+    ELSE IF zz<lz-l1  THEN 
+      RESULT = y1+tal*(zz-lz+l1)
+    ELSE IF zz<lz-l0  THEN 
+      RESULT=rapp-r0+(r0**2-(zz-lz+l0)**2)**0.5
+    ELSE IF zz <lz  THEN
+      RESULT =rapp
+    END IF 
+    
+    IF RESULT<0  THEN RESULT=0
+  END IF 
+  
+  !(
+    ! Profilo arrotondato superiormente e con retta
+    IF zz< l0 THEN
+      RESULT=rapp
+    ELSE IF zz<l1 THEN
+      zr=(zz-l0)/(l1-l0)
+      a1=(rapp-y1)*nr/(l1-l0) -tal
+      a2=nr*(nr-1)*(rapp-y1)/2/(l1-l0)**2 -a1*nr/(l1-l0)
+      RESULT= rapp + zr**nr*(y1-rapp+a1*(zz-l1)+ a2*(zz-l1)**2)
+    ELSE IF zz < l2 THENJ    RESULT=tal*(l2-zz)
+  ELSE IF zz> l2 THEN
+    RESULT=0
+  END IF   
+  !) 
+
+!(    profilo continuo
+  
+  IF zz<= fill-0.125  THEN RESULT=rapp
+  IF zz>fill-0.125  THEN 
+    zr=(zz-fill+0.125)
+    RESULT=rapp+b1*zr**nr+b2*zr**(nr+1)
+  END IF
+  !)
+!(   Raccordo inferiore o
+  IF zz>l1 THEN
+    a3=(-y1+l2-l1-a2*(l2-l1)**2)/(l2-l1)**3
+    RESULT=y1-(zz-l1)+a2*(zz-l1)**2+a3*(zz-l1)**3
+  END IF
+  !) 
+!     IF zz>l3 THEN RESULT=r0-(r0**2-(zz-l4)**2)**0.5
+!     IF zz>l4 THEN RESULT =0
+
+END    gz
+
+
+REAL FUNCTION fondo(REAL xx,zz)
+  REAL x1=xx-FLOOR(xx), z1=zz-lz*FLOOR(zz/lz)
+  IF x1>0.5 THEN x1=1-x1
+  IF z1>lz/2 THEN z1=lz-z1 
+  RESULT=fx(x1)*gz(z1)+fx(0.5-x1)*gz(lz/2.-z1)
+END fondo
+
+FILE wrfile=CREATE("profiloz")
+REAL z=0
+LOOP WHILE z<2*lz
+  wrfile z,fondo(0,z)
+  z=z+0.1
+REPEAT LOOP
+
