@@ -1,0 +1,57 @@
+USE stokes1
+
+ASK alfa
+IF PlotOn THEN GRAPHICSMODE
+
+TYPEOF(zstar) zstarprev; COMPLEX scp1
+ DO zeta(i)=EXP(-10*y(i)) FOR i=zeta.LO TO zeta.HI
+ zetaold=zeta
+ MarchForward2
+
+! DO psi(i)=EXP(-y(i)) FOR i=psi.LO TO psi.HI
+
+REAL g=0
+DO
+  prevg=g
+  psi=psi/SQRT[Energy(psi)]
+  IF PlotOn THEN
+    REAL psimax=ABS(psi(1))
+    DO psimax=MAX(psimax,ABS(psi(i))) FOR i=2 TO ny-1
+    CLEARSCREEN
+    Plot(psi,8,psimax)
+  END IF  
+  WRITE "final psi (gain", g ")"
+  DO zstar(i)=CONJG[psi(i)]*[y(i+1)-y(i-1)]/2 FOR i= psi.LO TO psi.HI
+  zstar1=0
+  zstarprev=zstar
+  MarchBackward2
+  DO psi(i)=CONJG[zstar(i)]*2/[y(i+1)-y(i-1)] FOR i=psi.LO TO psi.HI
+  g=1/Energy(psi); psi=psi*SQRT(g)
+  zeta=B*psi
+  zetaold=zeta
+  IF PlotOn THEN  
+    CLEARSCREEN
+    REAL psimax=ABS(psi(1))
+    DO psimax=MAX(psimax,ABS(psi(i))) FOR i=2 TO ny-1
+    Plot(psi,8,psimax)
+  END IF
+  WRITE "initial psi (gain",g")"
+IF provacostante THEN  scp1=sclrprod()
+  MarchForward2
+  g=Energy(psi)
+IF provacostante THEN  zstar=zstarprev; zstar1=0; WRITE "scp1=" scp1, "scp2="sclrprod()
+UNTIL ABS(1-prevg/g)<1.E-3
+
+WRITE "maximum gain: " g
+
+FILE WriteProfile=CREATE("profile")
+WriteProfile 0,0,0
+DO WriteProfile y(i),ABS(I*alfa*psi(i)),ARG(I*alfa*psi(i)) FOR i=1 TO ny-1
+WriteProfile
+WriteProfile 0,0,0
+DO WriteProfile (y(i)+y(i-1))/2, ABS([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), ARG([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) FOR i=2 TO ny-1
+WriteProfile
+WriteProfile 0,0,0
+DO WriteProfile y(i),ABS(zstar(i)/(y(i+1)-y(i))*2),ARG(zstar(i)/(y(i+1)-y(i))*2) FOR i=1 TO ny-1
+IF PlotOn THEN TEXTMODE
+

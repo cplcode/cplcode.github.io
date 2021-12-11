@@ -1,0 +1,66 @@
+USE stokes1
+
+ASK alfa
+IF PlotOn THEN GRAPHICSMODE
+
+!(
+DO zeta(i)=EXP(-y(i)) FOR ALL i 
+)
+zeta=0
+
+zetaold=zeta
+
+TYPEOF(zeta) zeta2old
+t=tin; INTEGER it=0
+nexttime=time(NULL)+1
+FILE energy=CREATE("march-10")
+
+BOOLEAN nonancora=TRUE
+
+LOOP WHILE it<nt
+  it=it+1
+  dt=tin+(tfin-tin)*it*(0.5*it+nt0)/nt/(0.5*nt+nt0)-t
+  t=t+dt
+  zeta2old=zetaold; zetaold=zeta
+  BaseFlow(); BuildMats()
+  T=A+1.5/dt*B
+  DO zeta(i)=(2*zetaold(i)-0.5*zeta2old(i))/dt FOR ALL i
+
+  IF (t>0.1) AND nonancora THEN
+  zeta(1) = zeta(1) - T(1,-1)/dt
+  zeta(2) = zeta(2) - T(2,-2)/dt 
+  END IF
+
+  LUdecomp T
+
+  psi=T\zeta; zeta=B*psi
+  IF (t>0.1) AND nonancora THEN
+  nonancora=FALSE
+  zeta(1) = zeta(1) + B(1,-1)/dt 
+  zeta(2) = zeta(2) + B(2,-2)/dt 
+  END IF
+  sigma=SUM psi(i)|[1.5*zeta(i)-2*zetaold(i)+0.5*zeta2old(i)]*[y(i+1)-y(i-1)]/2 FOR ALL i
+  e=Energy(psi)
+  IF(e#0)THEN sigma=sigma/e/dt
+IF PlotOn THEN
+  IF time(NULL)>=nexttime THEN
+    REAL psimax=1.E-10
+    DO psimax=MAX(psimax,ABS(psi(i))) FOR i=1 TO ny-1
+    CLEARSCREEN
+    WRITE "time="t, "Energy="Energy(psi), "sigma="sigma
+    WRITE "ph.speed=" sigma/(I*alfa*Re)
+    Plot(psi,8,psimax)
+    nexttime=time(NULL)+1
+  END IF
+  WRITE TO energy Re*sqrt(t), alfa*sqrt(t), REAL(sigma/(I*alfa*Re)), -IMAG(sigma/(I*alfa*Re)) 
+END IF
+REPEAT LOOP
+
+FILE Profile=CREATE("profile")
+WRITE TO Profile 0,0,0
+DO WRITE TO Profile y(i),ABS(I*alfa*psi(i)),ARG(I*alfa*psi(i)) FOR i=1 TO ny-1
+WRITE TO Profile
+WRITE TO Profile 0,0,0
+DO WRITE TO Profile (y(i)+y(i-1))/2, ABS([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), ARG([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) FOR i=2 TO ny-1
+
+

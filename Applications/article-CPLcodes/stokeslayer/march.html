@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>article-CPLcodes/stokeslayer/march.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"article-CPLcodes/stokeslayer/march.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiled Programming Language Created by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<a href="cpl.html#USE">USE</a> stokes1
+
+<a href="cpl.html#ASK">ASK</a> alfa
+<a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a> GRAPHICSMODE
+
+<span class=comment>!(</span>
+<a href="cpl.html#DO">DO</a> zeta(i)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">EXP</a>(-y(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i 
+)
+zeta<a href="cpl.html#Assignment">=</a>0
+
+zetaold<a href="cpl.html#Assignment">=</a>zeta
+
+<a href="cpl.html#TYPE">TYPEOF</a>(zeta) zeta2old
+t<a href="cpl.html#Assignment">=</a>tin; <a href="cpl.html#INTEGER">INTEGER</a> it<a href="cpl.html#Assignment">=</a>0
+nexttime<a href="cpl.html#Assignment">=</a>time(<a href="cpl.html#POINTER">NULL</a>)+1
+<a href="cpl.html#FILE">FILE</a> energy<a href="cpl.html#Assignment">=</a><a href="cpl.html#CREATE">CREATE</a>("march-10")
+
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> nonancora<a href="cpl.html#Assignment">=</a>TRUE
+
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> it&lt;nt
+  it<a href="cpl.html#Assignment">=</a>it+1
+  dt<a href="cpl.html#Assignment">=</a>tin+(tfin-tin)&lowast;it&lowast;(0.5&lowast;it+nt0)/nt/(0.5&lowast;nt+nt0)-t
+  t<a href="cpl.html#Assignment">=</a>t+dt
+  zeta2old<a href="cpl.html#Assignment">=</a>zetaold; zetaold<a href="cpl.html#Assignment">=</a>zeta
+  BaseFlow(); BuildMats()
+  T<a href="cpl.html#Assignment">=</a>A+1.5/dt&lowast;B
+  <a href="cpl.html#DO">DO</a> zeta(i)<a href="cpl.html#Assignment">=</a>(2&lowast;zetaold(i)-0.5&lowast;zeta2old(i))/dt <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+
+  <a href="cpl.html#IF">IF</a> (t&gt;0.1) <a href="cpl.html#AND">AND</a> nonancora <a href="cpl.html#IF">THEN</a>
+  zeta(1) <a href="cpl.html#Assignment">=</a> zeta(1) - T(1,-1)/dt
+  zeta(2) <a href="cpl.html#Assignment">=</a> zeta(2) - T(2,-2)/dt 
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+
+  LUdecomp T
+
+  psi<a href="cpl.html#Assignment">=</a>T\zeta; zeta<a href="cpl.html#Assignment">=</a>B&lowast;psi
+  <a href="cpl.html#IF">IF</a> (t&gt;0.1) <a href="cpl.html#AND">AND</a> nonancora <a href="cpl.html#IF">THEN</a>
+  nonancora<a href="cpl.html#Assignment">=</a>FALSE
+  zeta(1) <a href="cpl.html#Assignment">=</a> zeta(1) + B(1,-1)/dt 
+  zeta(2) <a href="cpl.html#Assignment">=</a> zeta(2) + B(2,-2)/dt 
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  sigma<a href="cpl.html#Assignment">=</a><a href="cpl.html#Looping%20operator">SUM</a> psi(i)|[1.5&lowast;zeta(i)-2&lowast;zetaold(i)+0.5&lowast;zeta2old(i)]&lowast;[y(i+1)-y(i-1)]/2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  e<a href="cpl.html#Assignment">=</a>Energy(psi)
+  <a href="cpl.html#IF">IF</a>(e#0)<a href="cpl.html#IF">THEN</a> sigma<a href="cpl.html#Assignment">=</a>sigma/e/dt
+<a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> time(<a href="cpl.html#POINTER">NULL</a>)&gt;<a href="cpl.html#Assignment">=</a>nexttime <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#REAL">REAL</a> psimax<a href="cpl.html#Assignment">=</a>1.E-10
+    <a href="cpl.html#DO">DO</a> psimax<a href="cpl.html#Assignment">=</a><a href="cpl.html#MAX">MAX</a>(psimax,<a href="cpl.html#ABS">ABS</a>(psi(i))) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
+    CLEARSCREEN
+    <a href="cpl.html#WRITE">WRITE</a> "time="t, "Energy="Energy(psi), "sigma="sigma
+    <a href="cpl.html#WRITE">WRITE</a> "ph.speed=" sigma/(I&lowast;alfa&lowast;Re)
+    Plot(psi,8,psimax)
+    nexttime<a href="cpl.html#Assignment">=</a>time(<a href="cpl.html#POINTER">NULL</a>)+1
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> energy Re&lowast;sqrt(t), alfa&lowast;sqrt(t), <a href="cpl.html#REAL">REAL</a>(sigma/(I&lowast;alfa&lowast;Re)), -<a href="complex.html#Top">IMAG</a>(sigma/(I&lowast;alfa&lowast;Re)) 
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+
+<a href="cpl.html#FILE">FILE</a> Profile<a href="cpl.html#Assignment">=</a><a href="cpl.html#CREATE">CREATE</a>("profile")
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile 0,0,0
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile y(i),<a href="cpl.html#ABS">ABS</a>(I&lowast;alfa&lowast;psi(i)),ARG(I&lowast;alfa&lowast;psi(i)) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile 0,0,0
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile (y(i)+y(i-1))/2, <a href="cpl.html#ABS">ABS</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), ARG([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#TO">TO</a> ny-1
+
+
+</pre></body></html>

@@ -1,0 +1,196 @@
+#include <time.h>
+USE cbmat
+USE graphics ! requires running in xterm
+! USE nograph
+FILE INPUT=OPEN("stokes1.in")
+PlotOn=BOOLEAN FROM INPUT
+provacostante=FALSE
+Re=REAL FROM INPUT !  Re = Uref*sqrt(Tref/nu)
+                   !  u = u/Uref, v = v/Uref
+                   !  t = t/Tref
+                   !  y = y/sqrt(nu*Tref)
+                   !  alfa = alfa * sqrt(nu*Tref)
+REAL tin=REAL FROM INPUT; nt=INTEGER FROM INPUT; nt0=INTEGER FROM INPUT; REAL tfin=REAL FROM INPUT
+ny=INTEGER FROM INPUT; ny0=INTEGER FROM INPUT; ymax=REAL FROM INPUT
+long nexttime
+REAL t,dt
+REAL y(-1..ny+1)
+DO y(i)=ymax*i*(0.5*i+ny0)/ny/(0.5*ny+ny0) FOR i=-1 TO ny+1
+REAL alfa
+COMPLEX sigma
+
+REAL FUNCTION Energy(COMPLEX f^(*))
+  a2=alfa*alfa
+  RESULT=NORM(f(1))/y(1)+NORM(f(ny-1))/[y(ny)-y(ny-1)]
+  DO RESULT=RESULT+NORM(f(i)-f(i-1))/[y(i)-y(i-1)] FOR i=2 TO ny-1
+  DO RESULT=RESULT+a2*NORM(f(i))*[y(i+1)-y(i-1)]/2 FOR i=1 TO ny-1
+END Energy
+
+ARRAY(1..ny-1,-2..2) OF COMPLEX A,B,T
+ARRAY(1..ny-1) OF COMPLEX psi,zeta,zetaold,zstar,zstar1,zstarnorm
+ARRAY(0..ny) OF REAL U,U2
+
+COMPLEX FUNCTION sclrprod()=SUM zstar(i)*zeta(i)+zstar1(i)*(zeta(i)-zetaold(i)) FOR ALL i
+
+pi2=3.544907702
+SUBROUTINE BaseFlow()
+  DO U(i)=erfc(y(i)/2/SQRT(t)); U2(i)=y(i)*EXP[-y(i)*y(i)/4/t]/pi2/t**1.5 FOR ALL i
+END BaseFlow
+
+SUBROUTINE BuildMats()
+  a2=alfa*alfa
+  A=0; B=0
+  LOOP FOR i=1 TO ny-1
+    d1p=2/(y(i+2)-y(i)); d2pp1=d1p/(y(i+2)-y(i+1)); d2pm1=d1p/(y(i+1)-y(i)); d2p0=-d2pm1-d2pp1
+    d1m=2/(y(i)-y(i-2)); d2mp1=d1m/(y(i)-y(i-1)); d2mm1=d1m/(y(i-1)-y(i-2)); d2m0=-d2mm1-d2mp1
+    d1=2/(y(i+1)-y(i-1))
+    REAL d2p1=d1/(y(i+1)-y(i)), d2m1=d1/(y(i)-y(i-1)), d20=-d2m1-d2p1
+    d4p2=d2p1*d2pp1
+    d4p1=d2p1*d2p0+d20*d2p1
+    d40=d2p1*d2pm1+d20*d20+d2m1*d2mp1
+    d4m1=d2m1*d2m0+d20*d2m1
+    d4m2=d2m1*d2mm1
+    d00=2/3; d0p1=-d2p1/3/d20; d0m1=-d2m1/3/d20
+    d2p2=-d4p2/6/d20
+    d2p1=d2p1-d4p1/6/d20
+    d2m2=-d4m2/6/d20
+    d2m1=d2m1-d4m1/6/d20
+    d20=d20-d40/6/d20
+
+    B(i,2)=-d2p2
+    B(i,1)=-d2p1+a2*d0p1
+    B(i,0)=-d20+a2*d00
+    B(i,-1)=-d2m1+a2*d0m1
+    B(i,-2)=-d2m2
+    A(i,2)=I*alfa*Re*U(i)*d2p2+d4p2-2*a2*d2p2
+    A(i,1)=I*alfa*Re*[U(i)*(d2p1-a2*d0p1)-U2(i)*d0p1]+d4p1-2*a2*d2p1+a2*a2*d0p1
+    A(i,0)=I*alfa*Re*[U(i)*(d20-a2*d00)-U2(i)*d00]+d40-2*a2*d20+a2*a2*d00
+    A(i,-1)=I*alfa*Re*[U(i)*(d2m1-a2*d0m1)-U2(i)*d0m1]+d4m1-2*a2*d2m1+a2*a2*d0m1
+    A(i,-2)=I*alfa*Re*U(i)*d2m2+d4m2-2*a2*d2m2
+  REPEAT LOOP
+  A(1,0)=A(1,0)+A(1,-2)
+  B(1,0)=B(1,0)+B(1,-2)
+  A(ny-1,0)=A(ny-1,0)+A(ny-1,2)*EXP(-alfa*(y(ny+1)-y(ny-1)))+A(ny-1,1)*EXP(-alfa*(y(ny)-y(ny-1)))
+  B(ny-1,0)=B(ny-1,0)+B(ny-1,2)*EXP(-alfa*(y(ny+1)-y(ny-1)))+B(ny-1,1)*EXP(-alfa*(y(ny)-y(ny-1)))
+  A(ny-2,1)=A(ny-2,1)+A(ny-2,2)*EXP(-alfa*(y(ny)-y(ny-1)))
+  B(ny-2,1)=B(ny-2,1)+B(ny-2,2)*EXP(-alfa*(y(ny)-y(ny-1)))
+END BuildMats
+
+SUBROUTINE Plot(COMPLEX f^(*); REAL h,height)
+RANGE(0,h,0,height)
+DO LINE(i,0,i,height) FOR i=0 TO FLOOR(h)
+DO LINE(0,yy,h,yy) FOR yy=0 TO height+0.001 BY 0.2*height
+STARTLINE; DO DRAW(y(i),ABS(f(i))) FOR i=0 TO ny-1
+STARTLINE; DO DRAW(y(i),height*U(i)) FOR i=0 TO ny-1
+WRITE 
+END Plot
+
+SUBROUTINE MarchForward1
+t=tin; INTEGER it=0
+LOOP WHILE it<nt
+  it=it+1
+  dt=tin+(tfin-tin)*it*(0.5*it+nt0)/nt/(0.5*nt+nt0)-t
+  t=t+dt
+  BaseFlow(); BuildMats()
+  T=B+dt*A; LUdecomp T
+  psi=T\zeta; zeta=B*psi
+REPEAT LOOP
+END MarchForward1
+
+SUBROUTINE MarchForward2
+TYPEOF(zeta) zeta2old
+t=tin; INTEGER it=0
+nexttime=time(NULL)+2
+LOOP WHILE it<nt
+  it=it+1
+  dt=tin+(tfin-tin)*it*(0.5*it+nt0)/nt/(0.5*nt+nt0)-t
+  t=t+dt
+  zeta2old=zetaold; zetaold=zeta
+  BaseFlow(); BuildMats()
+  T=A+(1.5/dt)*B; LUdecomp T
+  DO zeta(i)=(2*zetaold(i)-0.5*zeta2old(i))/dt FOR i=zeta.LO TO zeta.HI
+  psi=T\zeta; zeta=B*psi
+IF PlotOn THEN
+  IF time(NULL)>=nexttime THEN
+    REAL psimax=ABS(psi(1))
+    DO psimax=MAX(psimax,ABS(psi(i))) FOR i=2 TO ny-1
+    CLEARSCREEN
+    sigma=0
+    DO sigma=sigma+CONJG[psi(i)]*[1.5*zeta(i)-2*zetaold(i)+0.5*zeta2old(i)]*[y(i+1)-y(i-1)]/2 FOR ALL i
+    sigma=sigma/Energy(psi)/dt
+    WRITE "time="t, "Energy="Energy(psi), "sigma="sigma
+    WRITE "ph.speed=" sigma/(I*alfa*Re)
+    Plot(psi,8,psimax)
+    nexttime=time(NULL)+2
+  END IF
+!(
+ELSE
+  sigma=0
+  DO sigma=sigma+CONJG[psi(i)]*[1.5*zeta(i)-2*zetaold(i)+0.5*zeta2old(i)]*[y(i+1)-y(i-1)]/2 FOR i=zeta.LO TO zeta.HI
+  sigma=sigma/Energy(psi)/dt
+  WRITE "time="t, "Energy="Energy(psi), "sigma="sigma, "ph.speed=" sigma/(I*alfa*Re)
+!)
+END IF
+REPEAT LOOP
+END MarchForward2
+
+SUBROUTINE MarchBackward1
+t=tfin; INTEGER it=nt
+LOOP WHILE it>0
+  dt=t-tin-(tfin-tin)*(it-1)*(0.5*(it-1)+nt0)/nt/(0.5*nt+nt0)
+  BaseFlow(); BuildMats()
+  T=B+dt*A; LUdecomp T
+  zstar=zstar*B; zstar=zstar/T
+  it=it-1
+  t=t-dt
+REPEAT LOOP
+END MarchBackward1
+
+SUBROUTINE MB2(INTEGER it)
+  t=tin+(tfin-tin)*(it)*(0.5*(it)+nt0)/nt/(0.5*nt+nt0)
+  dt=t-tin-(tfin-tin)*(it-1)*(0.5*(it-1)+nt0)/nt/(0.5*nt+nt0)
+  BaseFlow(); BuildMats()
+  T=A+(1.5/dt)*B; LUdecomp T
+  zstar1=zstar+zstar1
+  zstar=zstar1-zstar
+  zstar1=zstar1*B; zstar1=zstar1/T
+  zstar1=zstar1*1.5/dt
+  zstar=zstar1-zstar
+  zstar1=zstar1/3
+  DO zstarnorm(i)=zstar(i)/(y(i+1)-y(i-1)) FOR i=1 TO ny-1
+IF PlotOn THEN
+  IF time(NULL)>=nexttime THEN
+    REAL zstarmax=ABS(zstarnorm(1))
+    DO zstarmax=MAX(zstarmax,ABS(zstarnorm(i))) FOR i=2 TO ny-1
+    CLEARSCREEN
+    WRITE "alfa="alfa, "t="t, "direction: backward", "Norm="Energy(zstarnorm)
+    Plot(zstarnorm,8,zstarmax)
+    nexttime=time(NULL)+2
+  END IF
+END IF
+END MB2
+
+SUBROUTINE MarchBackward2
+nexttime=time(NULL)+2
+LOOP FOR it=nt DOWN TO 1
+  MB2(it)
+REPEAT LOOP
+END MarchBackward2
+
+SUBROUTINE eigenval()
+  TYPEOF(zeta) zeta1
+  BaseFlow; BuildMats
+  DO
+    T=A+sigma*B; LUdecomp T
+    psi=T\zeta; zeta1=B*psi
+    zstar=zstar*B; zstar=zstar/T
+    dsigma=-(zstar*zeta)/(zstar*zeta1)
+    sigma=sigma+dsigma
+    normfact=ABS[zeta1(1)]/zeta1(1)/SQRT[Energy(psi)]
+    zeta=zeta1*normfact
+    psi=psi*normfact
+    zstar=zstar/(zstar*zeta)
+    WRITE ":" ./.
+  WHILE ABS(dsigma)>1.E-8
+    WRITE "." ./.
+END eigenval

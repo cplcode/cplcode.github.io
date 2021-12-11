@@ -1,0 +1,54 @@
+USE stokes1
+
+TYPEOF(zeta) zeta2old
+IF PlotOn THEN GRAPHICSMODE
+nexttime=time(NULL)+2
+FILE risultati=CREATE("risultati")
+DO psi(i)=y(i)*EXP(-y(i)*y(i)/tin); zstar(i)=psi(i) FOR ALL i
+alfa=0.07; LOOP WHILE alfa<1.2-0.0000001
+alfa=alfa*1.1
+sigma=(0.1+0.7*I)*alfa*Re
+t=tin
+COMPLEX ampl=1
+BaseFlow(); BuildMats()
+T=A+sigma*B; LUdecomp T
+zeta=B*psi
+DO psi=T\zeta; zeta=B*psi; zstar=zstar*B; zstar=zstar/T FOR 5 TIMES
+zetaold=zeta
+dt=(tfin-tin)/nt
+LOOP WHILE t<tfin-0.000001
+  t=t+dt
+  zeta2old=zetaold; zetaold=zeta
+  eigenval
+  COMPLEX c1=0
+  DO c1=c1+zstar(i)*[1.5*zeta(i)-2*zetaold(i)+0.5*zeta2old(i)]/dt FOR i=zeta.LO TO zeta.HI
+!  DO c1=c1+zstar(i)*[zeta(i)-zetaold(i)]/dt FOR i=zeta.LO TO zeta.HI
+  ampl=ampl*EXP((sigma-c1)*dt)
+  IF t>tin+2.5*dt THEN risultati Re*sqrt(t), alfa*sqrt(t), REAL(sigma/(I*alfa*Re)), -IMAG(sigma/(I*alfa*Re)), REAL(sigma/(I*alfa*Re)-c1/(I*alfa*Re)), -IMAG(sigma/(I*alfa*Re)-c1/(I*alfa*Re)), ampl
+IF PlotOn THEN
+  IF time(NULL)>=nexttime THEN
+    REAL psimax=ABS[psi(1)]
+    DO psimax=MAX(psimax,ABS[psi(i)]) FOR i=2 TO ny-1
+    CLEARSCREEN; Plot(psi,8,psimax)
+    WRITE "time=" t, "alfa=" alfa
+    WRITE "ph.speed=" sigma/(I*alfa*Re) " (" (sigma-c1)/(I*alfa*Re) ")"
+    WRITE "amplitude=" ampl
+    nexttime=time(NULL)+2
+  END IF
+END IF
+REPEAT LOOP
+REPEAT LOOP
+
+!(
+STREAM WriteProfile=CREATE("profile")
+WriteProfile 0,0,0
+DO WriteProfile y(i),ABS(I*alfa*psi(i)),ARG(I*alfa*psi(i)) FOR i=1 TO ny-1
+WriteProfile
+WriteProfile 0,0,0
+DO WriteProfile (y(i)+y(i-1))/2, ABS([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), ARG([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) FOR i=2 TO ny-1
+WriteProfile
+WriteProfile 0,0,0
+DO WriteProfile y(i),ABS(zstar(i)/(y(i+1)-y(i))*2),ARG(zstar(i)/(y(i+1)-y(i))*2) FOR i=1 TO ny-1
+)
+IF PlotOn THEN TEXTMODE
+

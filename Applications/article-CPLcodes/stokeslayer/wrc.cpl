@@ -1,0 +1,52 @@
+USE stokes1
+! USE rtchecks
+FILE profile=CREATE("wrecept")
+FILE spectrum=CREATE("wspectr")
+ARRAY(0..nt) OF COMPLEX psiwstar,uwstar
+ARRAY(0..nt) OF REAL tt
+DO  tt(it)=tin+(tfin-tin)*(it)*(0.5*(it)+nt0)/nt/(0.5*nt+nt0) FOR ALL it
+no=200
+ARRAY(0..no) OF REAL omega
+TYPEOF(zstar) zstarold
+IF PlotOn THEN GRAPHICSMODE
+
+SUBROUTINE ft(COMPLEX f^(*),g^(*))
+LOOP FOR i=0 TO HI(omega)
+    g(i)={SUM EXP[I*omega(i)*tt(j)]*f(j)*(tt(j+1)-tt(j-1)) FOR j=LO(tt)+1 TO HI(tt)-1}/2
+REPEAT LOOP
+END ft
+
+DO zeta(i)=y(i)*EXP(-y(i)*y(i)/tfin) FOR ALL i
+LOOP FOR alfa=0.3 DOWN TO 0.05 BY 0.01
+  t=tfin
+  sigma=(0.8*I)*alfa*Re
+  zstar=zeta
+  eigenval
+  CLEARSCREEN
+  WRITE "Direct eigenfunction: ph. speed=" sigma/(I*alfa*Re)
+  Plot(psi,8,MAXABS(psi))
+  zstar1=0
+  nexttime=time(NULL)+5
+  LOOP FOR it=nt DOWN TO 1
+    zstarold=zstar
+    MB2(it)
+    psiwstar(it)={zstarold(1)*B(1,-1)+zstarold(2)*B(2,-2)-
+		 zstar(1)*[B(1,-1)+A(1,-1)*dt]-zstar(2)*[B(2,-2)+A(2,-2)*dt]}/dt
+    uwstar(it)=[zstarold(1)*B(1,-2)-zstar(1)*(B(1,-2)+dt*A(1,-2))]*(y(-1)-y(1))/dt
+    IF it MOD(nt DIV 100) = 0 THEN
+      WRITE TO profile alfa,t+dt,Energy(zstarnorm),ABS(psiwstar(it)),
+               ARG(psiwstar(it)),ABS(uwstar(it)),ARG(uwstar(it))
+    END IF
+  REPEAT LOOP
+  WRITE TO profile
+  COMPLEX psiwstarft(0..no),uwstarft(0..no)
+  DO omega(i)=(0.5+0.5*i/no)*alfa*Re FOR ALL i
+  ft(psiwstar,psiwstarft)
+  ft(uwstar,uwstarft)
+  DO WRITE TO spectrum alfa,omega(i),ABS(psiwstarft(i)),ARG(psiwstarft(i)),
+	      ABS(uwstarft(i)),ARG(uwstarft(i))
+  FOR ALL i
+  WRITE TO spectrum
+REPEAT LOOP
+
+IF PlotOn THEN TEXTMODE

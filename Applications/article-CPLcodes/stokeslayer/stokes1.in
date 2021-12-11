@@ -1,0 +1,10 @@
+y  5000
+0  20000   100   1
+400   10    20
+alfa=0.2
+
+plot(y/n)  Re
+tin  nt   nto  tfin
+ny    ny0    ymax
+
+

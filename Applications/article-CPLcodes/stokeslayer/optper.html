@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>article-CPLcodes/stokeslayer/optper.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"article-CPLcodes/stokeslayer/optper.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiled Programming Language Created by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<a href="cpl.html#USE">USE</a> stokes1
+
+<a href="cpl.html#ASK">ASK</a> alfa
+<a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a> GRAPHICSMODE
+
+<a href="cpl.html#TYPE">TYPEOF</a>(zstar) zstarprev; <a href="complex.html#Top">COMPLEX</a> scp1
+ <a href="cpl.html#DO">DO</a> zeta(i)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">EXP</a>(-10&lowast;y(i)) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>zeta.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> zeta.<a href="cpl.html#HI">HI</a>
+ zetaold<a href="cpl.html#Assignment">=</a>zeta
+ MarchForward2
+
+<span class=comment>! DO psi(i)=EXP(-y(i)) FOR i=psi.LO TO psi.HI</span>
+
+<a href="cpl.html#REAL">REAL</a> g<a href="cpl.html#Assignment">=</a>0
+<a href="cpl.html#DO">DO</a>
+  prevg<a href="cpl.html#Assignment">=</a>g
+  psi<a href="cpl.html#Assignment">=</a>psi/SQRT[Energy(psi)]
+  <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#REAL">REAL</a> psimax<a href="cpl.html#Assignment">=</a><a href="cpl.html#ABS">ABS</a>(psi(1))
+    <a href="cpl.html#DO">DO</a> psimax<a href="cpl.html#Assignment">=</a><a href="cpl.html#MAX">MAX</a>(psimax,<a href="cpl.html#ABS">ABS</a>(psi(i))) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#TO">TO</a> ny-1
+    CLEARSCREEN
+    Plot(psi,8,psimax)
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>  
+  <a href="cpl.html#WRITE">WRITE</a> "final psi (gain", g ")"
+  <a href="cpl.html#DO">DO</a> zstar(i)<a href="cpl.html#Assignment">=</a><a href="complex.html#Top">CONJG</a>[psi(i)]&lowast;[y(i+1)-y(i-1)]/2 <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a> psi.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> psi.<a href="cpl.html#HI">HI</a>
+  zstar1<a href="cpl.html#Assignment">=</a>0
+  zstarprev<a href="cpl.html#Assignment">=</a>zstar
+  MarchBackward2
+  <a href="cpl.html#DO">DO</a> psi(i)<a href="cpl.html#Assignment">=</a><a href="complex.html#Top">CONJG</a>[zstar(i)]&lowast;2/[y(i+1)-y(i-1)] <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>psi.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> psi.<a href="cpl.html#HI">HI</a>
+  g<a href="cpl.html#Assignment">=</a>1/Energy(psi); psi<a href="cpl.html#Assignment">=</a>psi&lowast;SQRT(g)
+  zeta<a href="cpl.html#Assignment">=</a>B&lowast;psi
+  zetaold<a href="cpl.html#Assignment">=</a>zeta
+  <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a>  
+    CLEARSCREEN
+    <a href="cpl.html#REAL">REAL</a> psimax<a href="cpl.html#Assignment">=</a><a href="cpl.html#ABS">ABS</a>(psi(1))
+    <a href="cpl.html#DO">DO</a> psimax<a href="cpl.html#Assignment">=</a><a href="cpl.html#MAX">MAX</a>(psimax,<a href="cpl.html#ABS">ABS</a>(psi(i))) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#TO">TO</a> ny-1
+    Plot(psi,8,psimax)
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#WRITE">WRITE</a> "initial psi (gain",g")"
+<a href="cpl.html#IF">IF</a> provacostante <a href="cpl.html#IF">THEN</a>  scp1<a href="cpl.html#Assignment">=</a>sclrprod()
+  MarchForward2
+  g<a href="cpl.html#Assignment">=</a>Energy(psi)
+<a href="cpl.html#IF">IF</a> provacostante <a href="cpl.html#IF">THEN</a>  zstar<a href="cpl.html#Assignment">=</a>zstarprev; zstar1<a href="cpl.html#Assignment">=</a>0; <a href="cpl.html#WRITE">WRITE</a> "scp1=" scp1, "scp2="sclrprod()
+<a href="cpl.html#UNTIL">UNTIL</a> <a href="cpl.html#ABS">ABS</a>(1-prevg/g)&lt;1.E-3
+
+<a href="cpl.html#WRITE">WRITE</a> "maximum gain: " g
+
+<a href="cpl.html#FILE">FILE</a> WriteProfile<a href="cpl.html#Assignment">=</a><a href="cpl.html#CREATE">CREATE</a>("profile")
+WriteProfile 0,0,0
+<a href="cpl.html#DO">DO</a> WriteProfile y(i),<a href="cpl.html#ABS">ABS</a>(I&lowast;alfa&lowast;psi(i)),ARG(I&lowast;alfa&lowast;psi(i)) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
+WriteProfile
+WriteProfile 0,0,0
+<a href="cpl.html#DO">DO</a> WriteProfile (y(i)+y(i-1))/2, <a href="cpl.html#ABS">ABS</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), ARG([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#TO">TO</a> ny-1
+WriteProfile
+WriteProfile 0,0,0
+<a href="cpl.html#DO">DO</a> WriteProfile y(i),<a href="cpl.html#ABS">ABS</a>(zstar(i)/(y(i+1)-y(i))&lowast;2),ARG(zstar(i)/(y(i+1)-y(i))&lowast;2) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a> TEXTMODE
+
+</pre></body></html>
