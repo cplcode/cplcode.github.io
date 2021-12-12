@@ -1,0 +1,12 @@
+<html><body>
+<ul>
+  <li><a href="https://www.facebook.com/sharer.php?u=https%3A%2F%2FCPLcode.net" target="blank" rel="noopener noreferrer" title="Share Page on Facebook"><img src="facebook-icon.png" alt="Share Page on Facebook" /></a></li>
+    <li><a href="https://twitter.com/intent/tweet?url=http%3A%2F%2FCPLcode.net&text=CPL+Compiler+and+Programming+Language.&hashtags=coding,programminglanguage,hpc" target="blank" rel="noopener noreferrer" title="Share Page on Twitter"><img src="twitter-icon.png" alt="Share Page on Twitter" /></a></li>
+      <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2FCPLcode.net&title=CPL&summary=Compiler and Programming Language.&source=CPLcode.net" target="blank" rel="noopener noreferrer" title="Share Page on LinkedIn"><img src="linkedin-icon.png" alt="Share Page on LinkedIn" /></a></li>
+<li>html on your own website:
+<a href="https://CPLcode.net" target="blank" rel="noopener noreferrer" title="CPL Compiler and Programming Language"><img src="https://CPLcode.net/images/CPL-logo.png" alt="CPL"></a>
+<pre>
+<a href="https://CPLcode.net" target="blank" rel="noopener noreferrer" title="CPL Compiler and Programming Language"><img src="https://CPLcode.net/images/CPL-logo.png" alt="CPL"></a>
+</pre></li>
+      </ul>
+</body></html>

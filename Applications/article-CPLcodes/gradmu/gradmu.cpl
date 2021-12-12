@@ -1,0 +1,198 @@
+#include <unistd.h>
+
+USE cbmat
+USE graphics
+! USE rtchecks
+
+char filename[100], tempstring[100];
+
+!DISCRETIZATION
+
+ny=400
+nif=3*ny DIV 8
+REAL y(-1..ny+1)
+! uncomment for uniform discretization
+! DO y(iy)=2*iy/ny FOR ALL iy
+! uncomment for nonuniform discretization with 0<y<2
+! DO y(iy)={0.05*iy/ny+((iy-nif)/ny)^3-(-nif/ny)^3}*2/{0.05+(1-nif/ny)^3-(-nif/ny)^3} FOR ALL iy
+! uncomment for nonuniform discretization with y(nif)=1
+DO y(iy)={0.05*iy/ny+((iy-nif)/ny)^3-(-nif/ny)^3}/{0.05*nif/ny-(-nif/ny)^3} FOR ALL iy
+
+STRUCTURE[ARRAY(-1..1) OF REAL d0,d1,d2] derivatives(0..ny) = 0
+LOOP FOR i=0 TO ny WITH derivatives(i)
+  d0(0)=1; d1(1)=1/[y(i+1)-y(i-1)]; d1(-1)=-d1(1)
+  d2(-1)=2/[y(i)-y(i-1)]/[y(i+1)-y(i-1)]; d2(1)=2/[y(i+1)-y(i)]/[y(i+1)-y(i-1)]
+  d2(0)=-(d2(1)+d2(-1))
+REPEAT
+INTEGER CONSTANT vpos=1,cpos=2,nvars=2
+ARRAY(1+nvars..ny*nvars,-(3*nvars-1)..3*nvars-1) OF COMPLEX A,B,T
+ARRAY(1+nvars..ny*nvars) OF COMPLEX f,f1
+v==f(vpos+(*)*nvars); c==f(cpos+(*)*nvars)
+INLINE FUNCTION AA(INTEGER pos1,pos2)=A(pos1+nvars*(*),pos2-pos1+nvars*(*))
+INLINE FUNCTION BB(INTEGER pos1,pos2)=B(pos1+nvars*(*),pos2-pos1+nvars*(*))
+ARRAY(0..ny) OF REAL U,Uy,Uyy,Mu,Muy,Muyy
+
+graph=BOOLEAN FROM PROMPT("Graphics (Y/N)?")
+alfa=REAL FROM PROMPT("alfa?")
+Mu2=REAL FROM PROMPT("Mu2 ?")
+rmu=REAL FROM PROMPT("viscosity ratio Mu1/Mu2 ?")
+! Mu0=REAL FROM PROMPT("Mu Wall?")
+
+
+startD=REAL FROM PROMPT("D : minimum value?")
+endD=REAL FROM PROMPT("D : max value?")
+stepD=REAL FROM PROMPT("D : step?")
+
+startp=REAL FROM PROMPT("slope of viscosity profile : minimum value?")
+endp=REAL FROM PROMPT("slope of viscosity profile : max value?")
+stepp=REAL FROM PROMPT("slope of viscosity profile : step?")
+
+a2=alfa*alfa
+COMPLEX sigma
+
+! Eigenvalues outfiles
+sprintf(filename, "results_%g_%g_%g-%g_%g_%g_%g-%g_%g-%g_evi.dat",alfa,Mu2,rmu,alfa,Mu2,rmu,startD,endD,startp,endp)
+FILE evifile=CREATE(filename)
+sprintf(filename, "results_%g_%g_%g-%g_%g_%g_%g-%g_%g-%g_evr.dat",alfa,Mu2,rmu,alfa,Mu2,rmu,startD,endD,startp,endp)
+FILE evrfile=CREATE(filename)
+
+WRITE
+LOOP FOR p=startp TO endp BY stepp
+  LOOP FOR D=startD TO endD BY stepD
+
+!SUBROUTINE baseflow()
+! uncomment for exponential profile
+!   DO Mu(iy)=Mu0*{0.9*EXP(-2*y(iy)*p)+0.1} FOR ALL iy
+! uncomment for tanh profile
+!   DO Mu(iy)=Mu0*[2.5-1.5*tanh(p*[y(iy)-y(nif)])]/4 FOR ALL iy
+  DO Mu(iy)=Mu2*[1 + (1 - tanh( p * [y(iy)-y(nif)] )) / 2 * (rmu - 1)] FOR ALL iy
+  DO Uy(iy)=1/Mu(iy) FOR ALL iy
+  U(0)=0; DO U(iy)=U(iy-1)+[Uy(iy)+Uy(iy-1)]/2*[y(iy)-y(iy-1)] FOR iy=1 TO ny   
+! uncomment for U(nif)=1; comment for Mu*Uy=1
+  Uy=Uy/U(nif); U=U/U(nif)
+  DO WITH derivatives(iy)
+    Uyy(iy)=d1(-1)*Uy(iy-1)+d1(1)*Uy(iy+1)
+    Muy(iy)=d1(-1)*Mu(iy-1)+d1(1)*Mu(iy+1)
+    Muyy(iy)=d2(-1)*Mu(iy-1)+d2(0)*Mu(iy)+d2(1)*Mu(iy+1)
+  FOR iy=1 TO ny-1
+!  DO Uyy(iy)=[Uy(iy+1)-Uy(iy-1)]/[y(iy+1)-y(iy-1)]
+!     Muy(iy)=[Mu(iy+1)-Mu(iy-1)]/[y(iy+1)-y(iy-1)] FOR iy=1 TO ny-1
+!END baseflow
+
+
+!SUBROUTINE buildmat()
+A=0; B=0
+LOOP FOR iy=1 TO ny-1 WITH derivatives(iy)
+  BB(vpos,vpos,iy,-1..1)=a2*d0-d2
+  AA(vpos,vpos,iy,-1..1)=I*alfa*[U(iy)*(d2-a2*d0)-Uyy(iy)*d0]
+  DO AA(vpos,vpos,iy,i+j)=~+d2(i)*Mu(iy+i)*derivatives(iy+i).d2(j) FOR i=-1 TO 1 AND j=-1 TO 1
+  AA(vpos,vpos,iy,-1..1)=~-2*a2*[Mu(iy)*d2+Muy(iy)*d1]+a2*a2*Mu(iy)*d0
+  DO AA(vpos,cpos,iy,i)=I*alfa*d2(i)*Uy(iy+i) FOR i=-1 TO 1
+!!! ajoute' 1-2-2001 !!!
+  AA(vpos,vpos,iy,-1..1)=~+a2*Muyy(iy)*d0
+  AA(vpos,cpos,iy,-1..1)=~-I*alfa*a2*Uy(iy)*d0
+!!!!!!!!!!!!!!!!!!!!!!!!
+  BB(cpos,cpos,iy,0)=-1
+  AA(cpos,cpos,iy,-1..1)=I*alfa*U(iy)*d0+D*(d2-a2*d0)
+  AA(cpos,vpos,iy,0)=-Muy(iy)
+REPEAT
+AA(vpos,vpos,1,0)=~+AA(vpos,vpos,1,-2)
+AA(vpos,vpos,ny-1,0)=~+AA(vpos,vpos,ny-1,2)
+!END buildmat
+
+!baseflow
+!buildmat
+
+IF graph THEN
+GRAPHICSMODE
+WRITE U(ny),MIN(Mu),MAX(Mu), D, p
+PLOT U,y
+PLOT Mu,y
+WRITE ./.
+sleep(1)
+ELSE
+
+WRITE "==========================="
+WRITE "alpha=", alfa
+WRITE "Mu2=", Mu2
+WRITE "rmu=", rmu
+WRITE "D=", D
+WRITE "p=", p
+WRITE
+END IF
+
+f=0; c=Uyy
+
+deltat=0.1/alfa
+REAL t=0
+LOOP timeloop
+  T=B+deltat/2*A
+  LUdecomp T
+  f1=T\(B*f-deltat/2*A*f)
+  t=~+deltat
+  sigma=(f1|f)/(f1|f1); sigma=(1-sigma)/(1+sigma)*2/deltat
+  f=f1
+  IF graph THEN
+   CLEARSCREEN
+   WRITE MAXABS(v(1..ny-1)),sigma/alfa/U(nif)-I
+   RANGE 0,y(ny),0,MAXABS(c(1..ny-1))
+   STARTLINE; DO DRAW y(iy),ABS(c(iy)) FOR iy=1 TO ny-1
+   RANGE 0,y(ny),0,MAXABS(v(1..ny-1))
+   STARTLINE; DO DRAW y(iy),ABS(v(iy)) FOR iy=1 TO ny-1
+  END IF
+REPEAT timeloop FOR 100 TIMES
+
+IF graph THEN CLEARSCREEN END IF
+
+!SUBROUTINE eigenval()
+DO
+  T=A+sigma*B; LUdecomp T
+  f1=T\B*f
+  norm=f1|f1
+  ds=-(f1|f)/norm
+  f=f1/SQRT(norm)
+  sigma=~+ds
+  WRITE sigma/alfa/U(nif)-I
+UNTIL ABS(ds)<1.E-5
+!END eigenval
+
+!eigenval
+!(
+RANGE y(nif-50),y(nif+50),0,MAXABS(v(nif-50..nif+50))
+STARTLINE; DO DRAW y(iy),ABS(v(iy)) FOR iy=nif-50 TO nif+50
+RANGE y(nif-50),y(nif+50),0,MAXABS(c(nif-50..nif+50))
+STARTLINE; DO DRAW y(iy),ABS(c(iy)) FOR iy=nif-50 TO nif+50
+!)
+IF graph THEN
+RANGE 0,y(ny),0,MAXABS(c(1..ny-1))
+STARTLINE; DO DRAW y(iy),ABS(c(iy)) FOR iy=1 TO ny-1
+RANGE 0,y(ny),0,MAXABS(v(1..ny-1))
+STARTLINE; DO DRAW y(iy),ABS(v(iy)) FOR iy=1 TO ny-1
+PLOT Mu,y
+END IF
+
+! Saving of the eigenfunctions 
+
+sprintf(filename, "results_%g_%g_%g-%g_%g_%g_%g_%g_efc.dat",alfa,Mu2,rmu,alfa,Mu2,rmu,D,p)
+FILE output=CREATE(filename)
+DO WRITE TO output y(iy),ABS(c(iy)) FOR iy=1 TO ny-1
+CLOSE(output)
+sprintf(filename, "results_%g_%g_%g-%g_%g_%g_%g_%g_efv.dat",alfa,Mu2,rmu,alfa,Mu2,rmu,D,p)
+FILE output=CREATE(filename)
+DO WRITE TO output y(iy),ABS(v(iy)) FOR iy=1 TO ny-1
+CLOSE(output)
+
+! Saving of the real and imaginary part of the eigenvalue
+
+WRITE TO evrfile D,p,(sigma/alfa/U(nif)-I).REAL
+WRITE TO evifile D,p,(sigma/alfa/U(nif)-I).IMAG
+
+IF graph THEN sleep(2) END IF
+
+    REPEAT
+REPEAT
+
+CLOSE(evrfile)
+CLOSE(evifile)
+
+WRITE "==========================="

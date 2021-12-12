@@ -1,0 +1,294 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>acrobaticmix.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"acrobaticmix.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiled Programming Language Created by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<span class=comment>! Acrobatic examples of pointer, structure and subarray flexibility</span>
+<span class=comment>! ====================================================================</span>
+<span class=comment>! The constructions below don't all make sense, but all compile correctly</span>
+<span class=comment>! Their original purpose was to test the compiler itself.</span>
+
+<a href="cpl.html#USE">USE</a> <a href="complex.html#Top">complex</a>
+<a href="cpl.html#USE">USE</a> <a href="cpl.html#rtchecks">rtchecks</a>
+<a href="cpl.html#INTEGER">INTEGER</a> common <span class=comment>! this is a global variable</span>
+INTEGERARRAY <a href="cpl.html#Assignment">=</a> <a href="cpl.html#ARRAY">ARRAY</a>(10) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> <span class=comment>! this is a type</span>
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> PRN(INTEGERARRAY AAA^)
+<a href="cpl.html#INTEGER">INTEGER</a> common <a href="cpl.html#Assignment">=</a> 3
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> 10
+  <a href="cpl.html#POINTER">POINTER</a> INTO AAA(<a href="cpl.html#ABS">ABS</a>(1)+&lowast;),AAA ii<a href="cpl.html#Assignment">=</a>i <span class=comment>! ii is in machine code a POINTER</span>
+                         <span class=comment>! (for efficiency), but can be used like an INTEGER</span>
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> AAA(i)AAA(ii+2),AAA(ii+<a href="cpl.html#ABS">ABS</a>(1)) <a href="cpl.html#FOR">FOR</a> ii<a href="cpl.html#Assignment">=</a>3 <a href="cpl.html#TO">TO</a> 5
+  AAA<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+AAA+<a href="cpl.html#Assignment">~</a> <span class=comment>! AAA = 3 times itself (for each loop). AAA is an ARRAY</span>
+  AAA(i)<a href="cpl.html#Assignment">=</a>AAA(i)+10
+  <a href="cpl.html#WRITE">WRITE</a> AAA(i) ./.
+  AAA(i)<a href="cpl.html#Assignment">=</a>3&lowast;<a href="cpl.html#Assignment">~</a>
+  <a href="cpl.html#WRITE">WRITE</a> ,AAA[<a href="cpl.html#ABS">ABS</a>(1)+ii] ./. <span class=comment>! same notation as in the definition of ii</span>
+                            <span class=comment>! triggers action of the pointer</span>
+  AAA(i)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>&lowast;3
+  <a href="cpl.html#WRITE">WRITE</a> ,AAA(i)
+<a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> PRN
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> PRN(<a href="cpl.html#INTEGER">INTEGER</a> x) <span class=comment>! this is a function with the same name but a</span>
+                             <span class=comment>! different argument type</span>
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> b
+<a href="cpl.html#CHAR">CHAR</a> s(20)
+s(1)<a href="cpl.html#Assignment">=</a>"c"
+<a href="cpl.html#READ">READ</a> b,s(0),s
+<a href="cpl.html#IF">IF</a> "a" IN s <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> x <span class=comment>! test for the presence of element in ARRAY</span>
+<a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>1^x + <a href="cpl.html#Builtin">EXP</a>(0)
+<a href="cpl.html#END">END</a> PRN
+
+<a href="cpl.html#TYPE">TYPEOF</a>(PRN) ff <span class=comment>! this is a FUNCTION variable with the same calling structure</span>
+               <span class=comment>! as (the last defined) PRN</span>
+ff<a href="cpl.html#Assignment">=</a>PRN         <span class=comment>! PRN can be assigned to it</span>
+
+<a href="cpl.html#INTEGER">INTEGER</a> ROW(10)
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> 10; ROW(i)<a href="cpl.html#Assignment">=</a>i; <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+b<a href="cpl.html#Assignment">=</a>PRN(ROW) <span class=comment>! ARRAY argument identifies the first PRN</span>
+a<a href="cpl.html#Assignment">=</a>PRN(3)   <span class=comment>! INTEGER argument identifies the second PRN</span>
+c<a href="cpl.html#Assignment">=</a>SQRT( PI &lowast; ROW(1) )
+bc<a href="cpl.html#Assignment">=</a>b
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> n IN (1,2,4); <a href="cpl.html#WRITE">WRITE</a> n; <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a> <span class=comment>! LOOP over constant ARRAY elements</span>
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> n <a href="cpl.html#FOR">FOR</a> n IN ROW <span class=comment>! LOOP over variable ARRAY</span>
+<span class=comment>! Looping operators at work</span>
+d<a href="cpl.html#Assignment">=</a>(<a href="cpl.html#Looping%20operator">SUM</a> n <a href="cpl.html#FOR">FOR</a> n IN ROW) + (<a href="cpl.html#Looping%20operator">PRODUCT</a> n <a href="cpl.html#FOR">FOR</a> n IN (1,2,3)) + (<a href="cpl.html#MAX">MAX</a> n <a href="cpl.html#FOR">FOR</a> n IN ROW)
+<a href="cpl.html#READ">READ</a> ROW <span class=comment>! read entire ARRAY</span>
+ROW(3)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+2+<a href="cpl.html#ABS">ABS</a>(<a href="cpl.html#Assignment">~</a>) <span class=comment>! ~ stands for the l.h.s.</span>
+
+<a href="cpl.html#INTEGER">INTEGER</a> MA(1..3,1..3)<a href="cpl.html#Assignment">=</a>((1,2,3),(4,5,6),(7,8,9)) <span class=comment>! assignment of a list of values</span>
+
+<span class=comment>! derived structure containing a SUBROUTINE variable and two implicit fields:</span>
+<span class=comment>! a substructure and an ARRAY of INTEGERs</span>
+<a href="cpl.html#TYPE">TYPE</a> substruct<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#INTEGER">INTEGER</a> i1<a href="cpl.html#Assignment">=</a>4,i2)
+object<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>(
+  substruct
+  <a href="cpl.html#FUNCTION">SUBROUTINE</a>(<a href="cpl.html#REAL">REAL</a> distance) move
+  <a href="cpl.html#INTEGER">INTEGER</a> i3<a href="cpl.html#Assignment">=</a>2
+  <a href="cpl.html#ARRAY">ARRAY</a>(3..4) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> a34
+  INTEGERARRAY
+)
+
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> object AA,BB
+object A,B
+substruct C(10) <span class=comment>! ARRAY of substruct</span>
+<a href="cpl.html#WRITE">WRITE</a> C <span class=comment>! WRITE can handle nested compound types</span>
+<a href="cpl.html#WRITE">WRITE</a> AA<a href="cpl.html#Assignment">=</a>B,A<a href="cpl.html#Assignment">=</a>B,A<a href="cpl.html#Assignment">=</a>BB,AA<a href="cpl.html#Assignment">=</a>BB <span class=comment>! notice implicit POINTER dereferencing</span>
+move(A,3) <span class=comment>! implicit WITH on the first argument</span>
+<a href="cpl.html#WITH">WITH</a> A: i1<a href="cpl.html#Assignment">=</a>i3 <span class=comment>! A contains its own fields and also those of its implicit types</span>
+
+<a href="cpl.html#REAL">REAL</a> xx
+SINGLE yy<a href="cpl.html#Assignment">=</a>SINGLE(953)
+A<a href="cpl.html#Assignment">=</a><a href="cpl.html#BINARY">BINARY</a> object <a href="cpl.html#FROM">FROM</a> stdin <span class=comment>! A can be read in one step</span>
+A.i1<a href="cpl.html#Assignment">=</a><a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#FROM">FROM</a> stdin    <span class=comment>! or a specific field can</span>
+A.a34<a href="cpl.html#Assignment">=</a>(3,4)
+<a href="cpl.html#WRITE">WRITE</a> A.a34
+<span class=comment>! various character operations</span>
+<a href="cpl.html#CHAR">CHAR</a> ch <a href="cpl.html#Assignment">=</a> <a href="cpl.html#CHAR">CHAR</a> <a href="cpl.html#FROM">FROM</a> stdin
+<a href="cpl.html#ARRAY">ARRAY</a>(20) <a href="cpl.html#OF">OF</a> <a href="cpl.html#CHAR">CHAR</a> nome <a href="cpl.html#Assignment">=</a> "ciao"
+<a href="cpl.html#ARRAY">ARRAY</a>(20) <a href="cpl.html#OF">OF</a> <a href="cpl.html#STRING">STRING</a> list
+cnome<a href="cpl.html#Assignment">=</a>"ciaociao" <span class=comment>! this is a literal (compilation-time constant string)</span>
+ccnome<a href="cpl.html#Assignment">=</a><a href="cpl.html#WRITE">WRITE</a>("ciaociao" ch) <span class=comment>! this is an implicitly allocated constant ARRAY</span>
+                            <span class=comment>! into which the given expression is written</span>
+cccnome<a href="cpl.html#Assignment">=</a>"ciaociao" ch  <span class=comment>! "WRITE" can be omitted</span>
+list(1)<a href="cpl.html#Assignment">=</a>cnome
+list(2)<a href="cpl.html#Assignment">=</a>ccnome
+list(3)<a href="cpl.html#Assignment">=</a><a href="cpl.html#WRITE">WRITE</a>("y=" yy)
+<a href="cpl.html#READ">READ</a> "y=" yy
+
+<a href="cpl.html#WRITE">WRITE</a> A.i1, A.i3, C.i1
+<a href="cpl.html#READ">READ</a> substruct AA, INTEGERARRAY B <span class=comment>! implicit fields can be recalled by</span>
+                                  <span class=comment>! their type</span>
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> stdout A, INTEGERARRAY BB, SINGLE(xx)
+<a href="cpl.html#READ">READ</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#FROM">FROM</a> stdin object A, ROW, yy
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> A.i3 <span class=comment>! BY NAME prepends "A.i3=" to its value</span>
+<a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> A.i1, yy <span class=comment>! and READs it back in the same format</span>
+
+<a href="cpl.html#FILE">FILE</a> <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> file <span class=comment>! random-access FILE can be accessed like an ARRAY</span>
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> opensub(<a href="cpl.html#CHAR">CHAR</a> fil(&lowast;))
+  <a href="cpl.html#CREATE">CREATE</a>(file,fil) <span class=comment>! filename is the SUBROUTINE's argument</span>
+<a href="cpl.html#END">END</a> opensub
+
+opensub(<a href="cpl.html#WRITE">WRITE</a>("randfile" A.i1 nome ch)) <span class=comment>! or can be constructed on the spot</span>
+file(3)<a href="cpl.html#Assignment">=</a>5 <span class=comment>! these are actually file records</span>
+file(2)<a href="cpl.html#Assignment">=</a>file(3)+1
+file(1)<a href="cpl.html#Assignment">=</a>xx
+fflush(file)
+
+<a href="cpl.html#FILE">FILE</a> <a href="cpl.html#OF">OF</a> <a href="cpl.html#ARRAY">ARRAY</a>(1..10) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> fa <span class=comment>! a more complicated random-access file</span>
+fa<a href="cpl.html#Assignment">=</a><a href="cpl.html#CREATE">CREATE</a>("farr") <span class=comment>! alternative syntax of CREATE</span>
+<a href="cpl.html#NEW">NEW</a> fa
+<a href="cpl.html#WRITE">WRITE</a> fa(2,4)+1
+fa(2,4)<a href="cpl.html#Assignment">=</a>10
+<a href="cpl.html#NEW">FREE</a> fa
+
+fb<a href="cpl.html#Assignment">=</a><a href="cpl.html#CREATE">CREATE</a>("fb") <span class=comment>! this is an ordinary character file</span>
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> fb fa(1) <span class=comment>! and REAL values can be written to it</span>
+FLUSH fb
+<a href="cpl.html#CLOSE">CLOSE</a> fb
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> do(<a href="cpl.html#REAL">REAL</a> mat^(&lowast;,&lowast;); <a href="cpl.html#FUNCTION">SUBROUTINE</a>(<a href="cpl.html#REAL">REAL</a> x^(&lowast;,&lowast;)) something)
+  something(mat) <span class=comment>! a SUBROUTINE argument can act upon a matrix argument</span>
+<a href="cpl.html#END">END</a> do  
+
+<span class=comment>! this is a POINTER of unspecified type that cannot be dereferenced but only</span>
+<span class=comment>! assigned to POINTERs of the same type</span>
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> sometype <a href="cpl.html#FUNCTION">FUNCTION</a> Copy(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> sometype sp^)
+  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>sp
+<a href="cpl.html#END">END</a> Copy
+
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#INTEGER">INTEGER</a> A1,B1
+A1<a href="cpl.html#Assignment">=</a>Copy(B1) <span class=comment>! type consistency is enforced</span>
+
+nx<a href="cpl.html#Assignment">=</a>4; <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> nz<a href="cpl.html#Assignment">=</a><a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#FROM">FROM</a> stdin
+<a href="cpl.html#ASK">ASK</a> <a href="cpl.html#INTEGER">INTEGER</a> ny
+T<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#ARRAY">ARRAY</a>(ny) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> x,y) <span class=comment>! this STRUCTURE TYPE contains a</span>
+                                   <span class=comment>! runtime-allocated ARRAY</span>
+T arrs          <span class=comment>! it can be used</span>
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> T q  <span class=comment>! to declare variables</span>
+q<a href="cpl.html#Assignment">=</a><a href="cpl.html#NEW">NEW</a> T         <span class=comment>! like any other TYPE</span>
+
+T <a href="cpl.html#FUNCTION">FUNCTION</a> prova(<a href="cpl.html#INTEGER">INTEGER</a> x) <span class=comment>! it can be the result of a FUNCTION </span>
+  <a href="cpl.html#RESULT">RESULT</a>.x(3)<a href="cpl.html#Assignment">=</a>x             <span class=comment>! STRUCTURE fields can share names with VARIABLEs</span>
+<a href="cpl.html#END">END</a> prova
+
+q^<a href="cpl.html#Assignment">=</a>prova(3)
+<a href="cpl.html#NEW">FREE</a> q
+q8<a href="cpl.html#Assignment">=</a>prova(3)
+
+<span class=comment>! this STRUCTURE TYPE contains a POINTER TO ARRAY and its dimension too</span>
+T1<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> ly; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(ly) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> x)
+T1(15) q1 <span class=comment>! the INTEGER CONSTANT is specified in the VARIABLE's declaration</span>
+<a href="cpl.html#NEW">NEW</a> q1.x <span class=comment>! the array must be allocated with NEW as with all POINTERs</span>
+y1<a href="cpl.html#Assignment">=</a>q1.x(3)&lowast;q1.x.<a href="cpl.html#HI">HI</a>
+<a href="cpl.html#NEW">FREE</a> q1.x
+
+<span class=comment>! this STRUCTURE TYPE contains a dynamic-size ARRAY directly</span>
+T2<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> ly; <a href="cpl.html#ARRAY">ARRAY</a>(ly) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> x)
+
+T2(15) q2 <span class=comment>! the whole STRUCTURE is allocated, ARRAY included</span>
+y2<a href="cpl.html#Assignment">=</a>q2.x(3)&lowast;q2.x.<a href="cpl.html#HI">HI</a>+q2.ly
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> T2 q3<a href="cpl.html#Assignment">=</a><a href="cpl.html#NEW">NEW</a> T2(21)
+q3.x(4)<a href="cpl.html#Assignment">=</a>q3.x(3)&lowast;q3.ly
+q3<a href="cpl.html#Assignment">=</a>q2
+q2<a href="cpl.html#Assignment">=</a>q3
+
+VELOCITY<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">COMPLEX</a> u,v,w)
+VELOCITY V(0..nx,-1..ny+1,-nz..nz)
+VEL_ARRAY<a href="cpl.html#Assignment">=</a><a href="cpl.html#ARRAY">ARRAY</a>(0..nx,1..ny-1,-nz..nz) <a href="cpl.html#OF">OF</a> VELOCITY
+<a href="cpl.html#FILE">FILE</a> <a href="cpl.html#OF">OF</a> VEL_ARRAY media<a href="cpl.html#Assignment">=</a><a href="cpl.html#CREATE">CREATE</a>("media")
+<span class=comment>! one more random-access file, accessed just like memory would be</span>
+VEL_ARRAY mediabuf<a href="cpl.html#Assignment">=</a>media(4)
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j,k <a href="cpl.html#WITH">WITH</a> mediabuf(i,j,k) <span class=comment>! WITH works with any type,</span>
+                                        <span class=comment>! not just STRUCTUREs</span>
+  u<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+V.u(i,j,k)
+<a href="cpl.html#LOOP">REPEAT</a>
+media(4)<a href="cpl.html#Assignment">=</a>mediabuf
+media(4).v<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+V.v
+<a href="cpl.html#WITH">WITH</a> media(4): w<a href="cpl.html#Assignment">=</a>V.w
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> Copy(<a href="complex.html#Top">COMPLEX</a> aa(&lowast;,&lowast;); <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> VELOCITY bb)
+  bb.u<a href="cpl.html#Assignment">=</a>aa
+<a href="cpl.html#END">END</a> Copy
+
+Copy(media(1,2,&lowast;+3,&lowast;).u,V(&lowast;,2,&lowast;)) <span class=comment>! a subarray of a STORED object can be passed</span>
+                                  <span class=comment>! to a memory argument</span>
+
+ST<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#INTEGER">INTEGER</a> i,j; <a href="complex.html#Top">COMPLEX</a> k; <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> VEL_ARRAY mm)
+ST med
+<a href="cpl.html#CREATE">CREATE</a>(med,"med")
+<a href="cpl.html#WRITE">WRITE</a> med.i, med.j
+<a href="cpl.html#WITH">WITH</a> med: k<a href="cpl.html#Assignment">=</a>1; mm(4,5,6,7).u<a href="cpl.html#Assignment">=</a>mm(6,7,8,9).v+1
+<span class=comment>! STORED and memory variables can be freely intermixed</span>
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> Copy(ST aa; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> VELOCITY bb)
+  bb.u<a href="cpl.html#Assignment">=</a>aa.mm(1,2).v
+<a href="cpl.html#END">END</a> Copy
+
+Copy(media(1,2,&lowast;,&lowast;).u,V(&lowast;,2,&lowast;)) <span class=comment>! and used as function parameters</span>
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> invert(<a href="cpl.html#FUNCTION">FUNCTION</a>(<a href="cpl.html#REAL">REAL</a> x)-&gt;<a href="cpl.html#REAL">REAL</a> f; <a href="cpl.html#REAL">REAL</a> y)
+<a href="cpl.html#END">END</a> invert
+
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sq(<a href="cpl.html#REAL">REAL</a> x)<a href="cpl.html#Assignment">=</a>x&lowast;x
+invert(<a href="cpl.html#Builtin">LOG</a>,6)
+invert(sq,3) <span class=comment>! INLINE FUNCTIONs can be passed as arguments</span>
+
+VECTOR<a href="cpl.html#Assignment">=</a><a href="cpl.html#ARRAY">ARRAY</a>(1..3) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a>
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> u(VECTOR VV^(&lowast;))<a href="cpl.html#Assignment">=</a>VV(&lowast;,1)
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> v(VECTOR VV^(&lowast;))<a href="cpl.html#Assignment">=</a>VV(&lowast;,2)
+<span class=comment>! ARRAY(&lowast;) FUNCTION results inherit dimensions of FUNCTION arguments</span>
+
+<span class=comment>! LOOP variations.</span>
+<a href="cpl.html#LOOP">LOOP</a> bla
+  <a href="cpl.html#WRITE">WRITE</a> "bla"
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#BOOLEAN">YES</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> bla <span class=comment>! EXIT can abort a LOOP</span>
+<a href="cpl.html#LOOP">REPEAT</a> bla
+
+<a href="cpl.html#LOOP">LOOP</a> bli
+<a href="cpl.html#LOOP">REPEAT</a> bli <a href="cpl.html#FOR">FOR</a> j<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> 10 <a href="cpl.html#AND">AND</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> j <span class=comment>! LOOPS can be combined using AND</span>
+
+<a href="cpl.html#LOOP">LOOP</a> ble
+  k<a href="cpl.html#Assignment">=</a>4
+<a href="cpl.html#LOOP">REPEAT</a> ble <a href="cpl.html#WHILE">WHILE</a> k&gt;5
+
+<a href="cpl.html#LOOP">LOOP</a> blo
+  <a href="cpl.html#WRITE">WRITE</a> "blo"
+<a href="cpl.html#LOOP">REPEAT</a> blo <a href="cpl.html#UNTIL">UNTIL</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> stdin common <span class=comment>! READ can be used as a test</span>
+
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i IN (3,5,7)
+  <a href="cpl.html#WRITE">WRITE</a> i
+<a href="cpl.html#LOOP">REPEAT</a> <span class=comment>! LOOP over compile-time-constant values can be expanded INLINE</span>
+
+<a href="cpl.html#C%20SECTION">C SECTION</a> <span class=comment>! sections of C code can be interspersed</span>
+int prova(double x1, int &lowast;x2, float x3[], char x4[]){
+}
+<a href="cpl.html#END">END</a> <a href="cpl.html#C%20SECTION">C SECTION</a>
+
+SINGLE a1
+<a href="cpl.html#INTEGER">INTEGER</a> b2
+SINGLE c3(10)
+<a href="cpl.html#CHAR">CHAR</a> d4(20,10-1)
+d4(1)<a href="cpl.html#Assignment">=</a>"ciao"
+prova(a1,b2,c3,d4(0)) <span class=comment>! the C function is called just as it were a CPL function</span>
+
+<a href="cpl.html#WRITE">WRITE</a> a1:1.4,b2:2.8 <span class=comment>! specify format of each printed value</span>
+DEFAULTFORMAT 1.10 <span class=comment>! specify default format</span>
+<a href="cpl.html#WRITE">WRITE</a> a1,b2
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> fff{<a href="cpl.html#FUNCTION">FUNCTION</a>()-&gt;<a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> ggg}
+  <span class=comment>! FUNCTION with ARRAY(&lowast;) result used as the type of an argument</span>
+<a href="cpl.html#REAL">REAL</a> t(3)
+t<a href="cpl.html#Assignment">=</a>ggg()
+<a href="cpl.html#END">END</a> fff
+
+<a href="cpl.html#STRING">STRING</a> st <span class=comment>! STRINGs are dynamically reallocated to fit</span>
+st<a href="cpl.html#Assignment">=</a>"abc"
+st<a href="cpl.html#Assignment">=</a>"" st a1
+<a href="cpl.html#WRITE">WRITE</a> st(15)
+
+<span class=comment>! ARRAY results can be declared to use the dimensions of arguments</span>
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(arg.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> provaarr(<a href="cpl.html#REAL">REAL</a> arg(&lowast;))
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#RESULT">RESULT</a>(i)<a href="cpl.html#Assignment">=</a>i&lowast;arg(i) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> arg.<a href="cpl.html#HI">HI</a>
+<a href="cpl.html#END">END</a> provaarr
+
+<a href="cpl.html#WRITE">WRITE</a> provaarr((1.2,3.4,5.6,7.8))
+
+<span class=comment>! example of OPTIONAL argument declaration with default values</span>
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> testopt[<a href="cpl.html#REAL">REAL</a> x; <a href="cpl.html#OPTIONAL">OPTIONAL</a> <a href="cpl.html#REAL">REAL</a> y<a href="cpl.html#Assignment">=</a>0,z<a href="cpl.html#Assignment">=</a>3&lowast;<a href="cpl.html#Builtin">SIN</a>(x)]
+  <a href="cpl.html#WRITE">WRITE</a> x+y+z
+<a href="cpl.html#END">END</a> testopt
+
+testopt(3) <span class=comment>! 1 argument</span>
+testopt(2,z<a href="cpl.html#Assignment">=</a>4) <span class=comment>! 2 arguments</span>
+testopt(1,z<a href="cpl.html#Assignment">=</a>4,y<a href="cpl.html#Assignment">=</a>3) <span class=comment>! 3 arguments</span>
+</pre></body></html>

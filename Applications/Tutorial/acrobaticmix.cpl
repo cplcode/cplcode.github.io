@@ -1,0 +1,281 @@
+! Acrobatic examples of pointer, structure and subarray flexibility
+! ====================================================================
+! The constructions below don't all make sense, but all compile correctly
+! Their original purpose was to test the compiler itself.
+
+USE complex
+USE rtchecks
+INTEGER common ! this is a global variable
+INTEGERARRAY = ARRAY(10) OF INTEGER ! this is a type
+
+REAL FUNCTION PRN(INTEGERARRAY AAA^)
+INTEGER common = 3
+LOOP FOR i=1 TO 10
+  POINTER INTO AAA(ABS(1)+*),AAA ii=i ! ii is in machine code a POINTER
+                         ! (for efficiency), but can be used like an INTEGER
+  DO WRITE AAA(i)AAA(ii+2),AAA(ii+ABS(1)) FOR ii=3 TO 5
+  AAA=~+AAA+~ ! AAA = 3 times itself (for each loop). AAA is an ARRAY
+  AAA(i)=AAA(i)+10
+  WRITE AAA(i) ./.
+  AAA(i)=3*~
+  WRITE ,AAA[ABS(1)+ii] ./. ! same notation as in the definition of ii
+                            ! triggers action of the pointer
+  AAA(i)=~*3
+  WRITE ,AAA(i)
+REPEAT LOOP
+END PRN
+
+REAL FUNCTION PRN(INTEGER x) ! this is a function with the same name but a
+                             ! different argument type
+BOOLEAN b
+CHAR s(20)
+s(1)="c"
+READ b,s(0),s
+IF "a" IN s THEN WRITE x ! test for the presence of element in ARRAY
+RESULT=1^x + EXP(0)
+END PRN
+
+TYPEOF(PRN) ff ! this is a FUNCTION variable with the same calling structure
+               ! as (the last defined) PRN
+ff=PRN         ! PRN can be assigned to it
+
+INTEGER ROW(10)
+LOOP FOR i=1 TO 10; ROW(i)=i; REPEAT LOOP
+b=PRN(ROW) ! ARRAY argument identifies the first PRN
+a=PRN(3)   ! INTEGER argument identifies the second PRN
+c=SQRT( PI * ROW(1) )
+bc=b
+LOOP FOR n IN (1,2,4); WRITE n; REPEAT LOOP ! LOOP over constant ARRAY elements
+DO WRITE n FOR n IN ROW ! LOOP over variable ARRAY
+! Looping operators at work
+d=(SUM n FOR n IN ROW) + (PRODUCT n FOR n IN (1,2,3)) + (MAX n FOR n IN ROW)
+READ ROW ! read entire ARRAY
+ROW(3)=~+2+ABS(~) ! ~ stands for the l.h.s.
+
+INTEGER MA(1..3,1..3)=((1,2,3),(4,5,6),(7,8,9)) ! assignment of a list of values
+
+! derived structure containing a SUBROUTINE variable and two implicit fields:
+! a substructure and an ARRAY of INTEGERs
+TYPE substruct=STRUCTURE(INTEGER i1=4,i2)
+object=STRUCTURE(
+  substruct
+  SUBROUTINE(REAL distance) move
+  INTEGER i3=2
+  ARRAY(3..4) OF REAL a34
+  INTEGERARRAY
+)
+
+POINTER TO object AA,BB
+object A,B
+substruct C(10) ! ARRAY of substruct
+WRITE C ! WRITE can handle nested compound types
+WRITE AA=B,A=B,A=BB,AA=BB ! notice implicit POINTER dereferencing
+move(A,3) ! implicit WITH on the first argument
+WITH A: i1=i3 ! A contains its own fields and also those of its implicit types
+
+REAL xx
+SINGLE yy=SINGLE(953)
+A=BINARY object FROM stdin ! A can be read in one step
+A.i1=INTEGER FROM stdin    ! or a specific field can
+A.a34=(3,4)
+WRITE A.a34
+! various character operations
+CHAR ch = CHAR FROM stdin
+ARRAY(20) OF CHAR nome = "ciao"
+ARRAY(20) OF STRING list
+cnome="ciaociao" ! this is a literal (compilation-time constant string)
+ccnome=WRITE("ciaociao" ch) ! this is an implicitly allocated constant ARRAY
+                            ! into which the given expression is written
+cccnome="ciaociao" ch  ! "WRITE" can be omitted
+list(1)=cnome
+list(2)=ccnome
+list(3)=WRITE("y=" yy)
+READ "y=" yy
+
+WRITE A.i1, A.i3, C.i1
+READ substruct AA, INTEGERARRAY B ! implicit fields can be recalled by
+                                  ! their type
+WRITE BINARY TO stdout A, INTEGERARRAY BB, SINGLE(xx)
+READ BINARY FROM stdin object A, ROW, yy
+WRITE BY NAME A.i3 ! BY NAME prepends "A.i3=" to its value
+READ BY NAME A.i1, yy ! and READs it back in the same format
+
+FILE OF REAL file ! random-access FILE can be accessed like an ARRAY
+
+SUBROUTINE opensub(CHAR fil(*))
+  CREATE(file,fil) ! filename is the SUBROUTINE's argument
+END opensub
+
+opensub(WRITE("randfile" A.i1 nome ch)) ! or can be constructed on the spot
+file(3)=5 ! these are actually file records
+file(2)=file(3)+1
+file(1)=xx
+fflush(file)
+
+FILE OF ARRAY(1..10) OF REAL fa ! a more complicated random-access file
+fa=CREATE("farr") ! alternative syntax of CREATE
+NEW fa
+WRITE fa(2,4)+1
+fa(2,4)=10
+FREE fa
+
+fb=CREATE("fb") ! this is an ordinary character file
+WRITE TO fb fa(1) ! and REAL values can be written to it
+FLUSH fb
+CLOSE fb
+
+SUBROUTINE do(REAL mat^(*,*); SUBROUTINE(REAL x^(*,*)) something)
+  something(mat) ! a SUBROUTINE argument can act upon a matrix argument
+END do  
+
+! this is a POINTER of unspecified type that cannot be dereferenced but only
+! assigned to POINTERs of the same type
+POINTER TO sometype FUNCTION Copy(POINTER TO sometype sp^)
+  RESULT=sp
+END Copy
+
+POINTER TO INTEGER A1,B1
+A1=Copy(B1) ! type consistency is enforced
+
+nx=4; INTEGER CONSTANT nz=BINARY INTEGER FROM stdin
+ASK INTEGER ny
+T=STRUCTURE(ARRAY(ny) OF REAL x,y) ! this STRUCTURE TYPE contains a
+                                   ! runtime-allocated ARRAY
+T arrs          ! it can be used
+POINTER TO T q  ! to declare variables
+q=NEW T         ! like any other TYPE
+
+T FUNCTION prova(INTEGER x) ! it can be the result of a FUNCTION 
+  RESULT.x(3)=x             ! STRUCTURE fields can share names with VARIABLEs
+END prova
+
+q^=prova(3)
+FREE q
+q8=prova(3)
+
+! this STRUCTURE TYPE contains a POINTER TO ARRAY and its dimension too
+T1=STRUCTURE(INTEGER CONSTANT ly; POINTER TO ARRAY(ly) OF REAL x)
+T1(15) q1 ! the INTEGER CONSTANT is specified in the VARIABLE's declaration
+NEW q1.x ! the array must be allocated with NEW as with all POINTERs
+y1=q1.x(3)*q1.x.HI
+FREE q1.x
+
+! this STRUCTURE TYPE contains a dynamic-size ARRAY directly
+T2=STRUCTURE(INTEGER CONSTANT ly; ARRAY(ly) OF REAL x)
+
+T2(15) q2 ! the whole STRUCTURE is allocated, ARRAY included
+y2=q2.x(3)*q2.x.HI+q2.ly
+POINTER TO T2 q3=NEW T2(21)
+q3.x(4)=q3.x(3)*q3.ly
+q3=q2
+q2=q3
+
+VELOCITY=STRUCTURE(COMPLEX u,v,w)
+VELOCITY V(0..nx,-1..ny+1,-nz..nz)
+VEL_ARRAY=ARRAY(0..nx,1..ny-1,-nz..nz) OF VELOCITY
+FILE OF VEL_ARRAY media=CREATE("media")
+! one more random-access file, accessed just like memory would be
+VEL_ARRAY mediabuf=media(4)
+LOOP FOR ALL i,j,k WITH mediabuf(i,j,k) ! WITH works with any type,
+                                        ! not just STRUCTUREs
+  u=~+V.u(i,j,k)
+REPEAT
+media(4)=mediabuf
+media(4).v=~+V.v
+WITH media(4): w=V.w
+
+SUBROUTINE Copy(COMPLEX aa(*,*); POINTER TO ARRAY(*,*) OF VELOCITY bb)
+  bb.u=aa
+END Copy
+
+Copy(media(1,2,*+3,*).u,V(*,2,*)) ! a subarray of a STORED object can be passed
+                                  ! to a memory argument
+
+ST=POINTER TO STORED STRUCTURE(INTEGER i,j; COMPLEX k; ARRAY(*) OF VEL_ARRAY mm)
+ST med
+CREATE(med,"med")
+WRITE med.i, med.j
+WITH med: k=1; mm(4,5,6,7).u=mm(6,7,8,9).v+1
+! STORED and memory variables can be freely intermixed
+
+SUBROUTINE Copy(ST aa; POINTER TO ARRAY(*,*) OF VELOCITY bb)
+  bb.u=aa.mm(1,2).v
+END Copy
+
+Copy(media(1,2,*,*).u,V(*,2,*)) ! and used as function parameters
+
+SUBROUTINE invert(FUNCTION(REAL x)->REAL f; REAL y)
+END invert
+
+INLINE REAL FUNCTION sq(REAL x)=x*x
+invert(LOG,6)
+invert(sq,3) ! INLINE FUNCTIONs can be passed as arguments
+
+VECTOR=ARRAY(1..3) OF COMPLEX
+POINTER TO ARRAY(*) OF COMPLEX FUNCTION u(VECTOR VV^(*))=VV(*,1)
+INLINE POINTER TO ARRAY(*) OF COMPLEX FUNCTION v(VECTOR VV^(*))=VV(*,2)
+! ARRAY(*) FUNCTION results inherit dimensions of FUNCTION arguments
+
+! LOOP variations.
+LOOP bla
+  WRITE "bla"
+  IF YES THEN EXIT bla ! EXIT can abort a LOOP
+REPEAT bla
+
+LOOP bli
+REPEAT bli FOR j=1 TO 10 AND i=1 TO j ! LOOPS can be combined using AND
+
+LOOP ble
+  k=4
+REPEAT ble WHILE k>5
+
+LOOP blo
+  WRITE "blo"
+REPEAT blo UNTIL READ FROM stdin common ! READ can be used as a test
+
+INLINE LOOP FOR i IN (3,5,7)
+  WRITE i
+REPEAT ! LOOP over compile-time-constant values can be expanded INLINE
+
+C SECTION ! sections of C code can be interspersed
+int prova(double x1, int *x2, float x3[], char x4[]){
+}
+END C SECTION
+
+SINGLE a1
+INTEGER b2
+SINGLE c3(10)
+CHAR d4(20,10-1)
+d4(1)="ciao"
+prova(a1,b2,c3,d4(0)) ! the C function is called just as it were a CPL function
+
+WRITE a1:1.4,b2:2.8 ! specify format of each printed value
+DEFAULTFORMAT 1.10 ! specify default format
+WRITE a1,b2
+
+SUBROUTINE fff{FUNCTION()->ARRAY(*) OF REAL ggg}
+  ! FUNCTION with ARRAY(*) result used as the type of an argument
+REAL t(3)
+t=ggg()
+END fff
+
+STRING st ! STRINGs are dynamically reallocated to fit
+st="abc"
+st="" st a1
+WRITE st(15)
+
+! ARRAY results can be declared to use the dimensions of arguments
+INLINE ARRAY(arg.HI) OF REAL FUNCTION provaarr(REAL arg(*))
+  DO RESULT(i)=i*arg(i) FOR i=0 TO arg.HI
+END provaarr
+
+WRITE provaarr((1.2,3.4,5.6,7.8))
+
+! example of OPTIONAL argument declaration with default values
+SUBROUTINE testopt[REAL x; OPTIONAL REAL y=0,z=3*SIN(x)]
+  WRITE x+y+z
+END testopt
+
+testopt(3) ! 1 argument
+testopt(2,z=4) ! 2 arguments
+testopt(1,z=4,y=3) ! 3 arguments
