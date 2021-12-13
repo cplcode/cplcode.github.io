@@ -26,7 +26,7 @@ x=M1\t ! division to the left, with no stored inverse
 WRITE ABS(t-M*x) ! and test
 x=t/M1 ! division to the right
 WRITE ABS(t-x*M) ! and test
-DO M2(i,*)=M(i,*)/inv FOR ALL i; WRITE M2 ! divide each row, equivalent to
+DO M2(i,*)=M(i,*)/plu FOR ALL i; WRITE M2 ! divide each row, equivalent to
                                    ! right multiplication with the inverse
 
 M1=INV(M) ! M1 is the inverse matrix

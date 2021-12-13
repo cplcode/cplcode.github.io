@@ -29,7 +29,7 @@ no<a href="cpl.html#Assignment">=</a>200
 <a href="cpl.html#END">END</a> ft
 
 <a href="cpl.html#DO">DO</a> zeta(i)<a href="cpl.html#Assignment">=</a>y(i)&lowast;<a href="cpl.html#Builtin">EXP</a>(-y(i)&lowast;y(i)/tfin) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
-<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> alfa<a href="cpl.html#Assignment">=</a>0.3 DOWN <a href="cpl.html#TO">TO</a> 0.05 <a href="cpl.html#BY">BY</a> 0.01
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> alfa<a href="cpl.html#Assignment">=</a>0.3 <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> 0.05 <a href="cpl.html#BY">BY</a> 0.01
   t<a href="cpl.html#Assignment">=</a>tfin
   sigma<a href="cpl.html#Assignment">=</a>(0.8&lowast;I)&lowast;alfa&lowast;Re
   zstar<a href="cpl.html#Assignment">=</a>zeta
@@ -39,7 +39,7 @@ no<a href="cpl.html#Assignment">=</a>200
   Plot(psi,8,MAXABS(psi))
   zstar1<a href="cpl.html#Assignment">=</a>0
   nexttime<a href="cpl.html#Assignment">=</a>time(<a href="cpl.html#POINTER">NULL</a>)+5
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> it<a href="cpl.html#Assignment">=</a>nt DOWN <a href="cpl.html#TO">TO</a> 1
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> it<a href="cpl.html#Assignment">=</a>nt <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> 1
     zstarold<a href="cpl.html#Assignment">=</a>zstar
     MB2(it)
     psiwstar(it)<a href="cpl.html#Assignment">=</a>{zstarold(1)&lowast;B(1,-1)+zstarold(2)&lowast;B(2,-2)-
@@ -47,7 +47,7 @@ no<a href="cpl.html#Assignment">=</a>200
     uwstar(it)<a href="cpl.html#Assignment">=</a>[zstarold(1)&lowast;B(1,-2)-zstar(1)&lowast;(B(1,-2)+dt&lowast;A(1,-2))]&lowast;(y(-1)-y(1))/dt
     <a href="cpl.html#IF">IF</a> it <a href="cpl.html#Integer%20operator">MOD</a>(nt <a href="cpl.html#DIV">DIV</a> 100) <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> profile alfa,t+dt,Energy(zstarnorm),<a href="cpl.html#ABS">ABS</a>(psiwstar(it)),
-               ARG(psiwstar(it)),<a href="cpl.html#ABS">ABS</a>(uwstar(it)),ARG(uwstar(it))
+               <a href="cpl.html#Builtin">ARG</a>(psiwstar(it)),<a href="cpl.html#ABS">ABS</a>(uwstar(it)),<a href="cpl.html#Builtin">ARG</a>(uwstar(it))
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> profile
@@ -55,8 +55,8 @@ no<a href="cpl.html#Assignment">=</a>200
   <a href="cpl.html#DO">DO</a> omega(i)<a href="cpl.html#Assignment">=</a>(0.5+0.5&lowast;i/no)&lowast;alfa&lowast;Re <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
   ft(psiwstar,psiwstarft)
   ft(uwstar,uwstarft)
-  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> spectrum alfa,omega(i),<a href="cpl.html#ABS">ABS</a>(psiwstarft(i)),ARG(psiwstarft(i)),
-              <a href="cpl.html#ABS">ABS</a>(uwstarft(i)),ARG(uwstarft(i))
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> spectrum alfa,omega(i),<a href="cpl.html#ABS">ABS</a>(psiwstarft(i)),<a href="cpl.html#Builtin">ARG</a>(psiwstarft(i)),
+              <a href="cpl.html#ABS">ABS</a>(uwstarft(i)),<a href="cpl.html#Builtin">ARG</a>(uwstarft(i))
   <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
   <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> spectrum
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>

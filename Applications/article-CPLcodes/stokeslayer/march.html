@@ -70,10 +70,10 @@ nexttime<a href="cpl.html#Assignment">=</a>time(<a href="cpl.html#POINTER">NULL<
 
 <a href="cpl.html#FILE">FILE</a> Profile<a href="cpl.html#Assignment">=</a><a href="cpl.html#CREATE">CREATE</a>("profile")
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile 0,0,0
-<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile y(i),<a href="cpl.html#ABS">ABS</a>(I&lowast;alfa&lowast;psi(i)),ARG(I&lowast;alfa&lowast;psi(i)) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile y(i),<a href="cpl.html#ABS">ABS</a>(I&lowast;alfa&lowast;psi(i)),<a href="cpl.html#Builtin">ARG</a>(I&lowast;alfa&lowast;psi(i)) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile 0,0,0
-<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile (y(i)+y(i-1))/2, <a href="cpl.html#ABS">ABS</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), ARG([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile (y(i)+y(i-1))/2, <a href="cpl.html#ABS">ABS</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), <a href="cpl.html#Builtin">ARG</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#TO">TO</a> ny-1
 
 
 </pre></body></html>

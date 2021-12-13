@@ -38,7 +38,7 @@ x<a href="cpl.html#Assignment">=</a>M1\t <span class=comment>! division to the l
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#ABS">ABS</a>(t-M&lowast;x) <span class=comment>! and test</span>
 x<a href="cpl.html#Assignment">=</a>t/M1 <span class=comment>! division to the right</span>
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#ABS">ABS</a>(t-x&lowast;M) <span class=comment>! and test</span>
-<a href="cpl.html#DO">DO</a> M2(i,&lowast;)<a href="cpl.html#Assignment">=</a>M(i,&lowast;)/inv <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i; <a href="cpl.html#WRITE">WRITE</a> M2 <span class=comment>! divide each row, equivalent to</span>
+<a href="cpl.html#DO">DO</a> M2(i,&lowast;)<a href="cpl.html#Assignment">=</a>M(i,&lowast;)/plu <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i; <a href="cpl.html#WRITE">WRITE</a> M2 <span class=comment>! divide each row, equivalent to</span>
                                    <span class=comment>! right multiplication with the inverse</span>
 
 M1<a href="cpl.html#Assignment">=</a>INV(M) <span class=comment>! M1 is the inverse matrix</span>

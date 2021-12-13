@@ -54,13 +54,13 @@ dt<a href="cpl.html#Assignment">=</a>(tfin-tin)/nt
 <span class=comment>!(</span>
 STREAM WriteProfile<a href="cpl.html#Assignment">=</a><a href="cpl.html#CREATE">CREATE</a>("profile")
 WriteProfile 0,0,0
-<a href="cpl.html#DO">DO</a> WriteProfile y(i),<a href="cpl.html#ABS">ABS</a>(I&lowast;alfa&lowast;psi(i)),ARG(I&lowast;alfa&lowast;psi(i)) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#DO">DO</a> WriteProfile y(i),<a href="cpl.html#ABS">ABS</a>(I&lowast;alfa&lowast;psi(i)),<a href="cpl.html#Builtin">ARG</a>(I&lowast;alfa&lowast;psi(i)) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
 WriteProfile
 WriteProfile 0,0,0
-<a href="cpl.html#DO">DO</a> WriteProfile (y(i)+y(i-1))/2, <a href="cpl.html#ABS">ABS</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), ARG([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#DO">DO</a> WriteProfile (y(i)+y(i-1))/2, <a href="cpl.html#ABS">ABS</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), <a href="cpl.html#Builtin">ARG</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#TO">TO</a> ny-1
 WriteProfile
 WriteProfile 0,0,0
-<a href="cpl.html#DO">DO</a> WriteProfile y(i),<a href="cpl.html#ABS">ABS</a>(zstar(i)/(y(i+1)-y(i))&lowast;2),ARG(zstar(i)/(y(i+1)-y(i))&lowast;2) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#DO">DO</a> WriteProfile y(i),<a href="cpl.html#ABS">ABS</a>(zstar(i)/(y(i+1)-y(i))&lowast;2),<a href="cpl.html#Builtin">ARG</a>(zstar(i)/(y(i+1)-y(i))&lowast;2) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
 )
 <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a> TEXTMODE
 
