@@ -26,11 +26,11 @@
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>!   allocate and initialize to zero the sparse-array structures</span>
   <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL p<a href="cpl.html#Assignment">=</a>RowStart(i)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> j<a href="cpl.html#Assignment">=</a>i <a href="cpl.html#TO">TO</a> i+20
-    p^<a href="cpl.html#Assignment">=</a><a href="cpl.html#NEW">NEW</a> CELL <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
+    p<a href="cpl.html#REAL-operator">^</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#NEW">NEW</a> CELL <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
     p.col<a href="cpl.html#Assignment">=</a>j; p.var<a href="cpl.html#Assignment">=</a>0; p.rhs<a href="cpl.html#Assignment">=</a>0
     p<a href="cpl.html#Assignment">=</a>p.next
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-  p^<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a> <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
+  p<a href="cpl.html#REAL-operator">^</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a> <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 
 <a href="cpl.html#DO">DO</a> p.var<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#FOR">FOR</a> p<a href="cpl.html#Assignment">=</a>RowStart(<a href="cpl.html#HI">HI</a>) <a href="cpl.html#UNTIL">UNTIL</a> p<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#BY">BY</a> p<a href="cpl.html#Assignment">=</a>p.next

@@ -33,10 +33,10 @@ alpha(231)<a href="cpl.html#Assignment">=</a>"c"
 alpha(248)<a href="cpl.html#Assignment">=</a>"o"
 <a href="cpl.html#DO">DO</a> alpha(i)<a href="cpl.html#Assignment">=</a>"u" <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>249 <a href="cpl.html#TO">TO</a> 252
 
-<a href="cpl.html#FRI%20SECTION">FRI SECTION</a>
+<a href="cpl.html#FRI-SECTION">FRI SECTION</a>
 function "INTEGER"]<a href="cpl.html#Assignment">=</a> cut argument <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> type &lowast; value <a href="cpl.html#Assignment">=</a>[ &lowast;]<a href="cpl.html#Assignment">=</a> cut <a href="cpl.html#Assignment">=</a>[function <a href="cpl.html#INTEGER">INTEGER</a> value "(int)" #1
 function "ITEM"]<a href="cpl.html#Assignment">=</a> cut argument <a href="cpl.html#INTEGER">INTEGER</a> value <a href="cpl.html#Assignment">=</a>[ &lowast;]<a href="cpl.html#Assignment">=</a> cut <a href="cpl.html#Assignment">=</a>[function <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> type "item" value "(void &lowast;)" #1
-<a href="cpl.html#END">END</a> <a href="cpl.html#FRI%20SECTION">FRI SECTION</a>
+<a href="cpl.html#END">END</a> <a href="cpl.html#FRI-SECTION">FRI SECTION</a>
 
 <a href="cpl.html#TYPE">TYPE</a> item<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item brother,son
                     <a href="cpl.html#CHAR">CHAR</a> c(0..3)
@@ -48,11 +48,11 @@ replim<a href="cpl.html#Assignment">=</a>atoi(<a href="cpl.html#COMMANDLINE">COM
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> SortIn(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item <a href="cpl.html#VARIABLE">VARIABLE</a> prev; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#CHAR">CHAR</a> buf; <a href="cpl.html#INTEGER">INTEGER</a> ref)
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item loc<a href="cpl.html#Assignment">=</a>prev
-<a href="cpl.html#POINTER">POINTER</a> INTO buf pos<a href="cpl.html#Assignment">=</a>0
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> buf pos<a href="cpl.html#Assignment">=</a>0
 <a href="cpl.html#LOOP">LOOP</a> sort
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> loc<a href="cpl.html#Assignment">=</a>NIL <a href="cpl.html#OR">OR</a> loc.c(0)&lt;<a href="cpl.html#Assignment">=</a>buf(pos): prev<a href="cpl.html#Assignment">=</a>loc.brother; loc<a href="cpl.html#Assignment">=</a>prev
   <a href="cpl.html#IF">IF</a> loc<a href="cpl.html#Assignment">=</a>NIL <a href="cpl.html#OR">OR</a> loc.c(0)&lt;buf(pos) <a href="cpl.html#IF">THEN</a>
-    prev^<a href="cpl.html#Assignment">=</a><a href="cpl.html#NEW">NEW</a> item
+    prev<a href="cpl.html#REAL-operator">^</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#NEW">NEW</a> item
     prev.brother<a href="cpl.html#Assignment">=</a>loc
     loc<a href="cpl.html#Assignment">=</a>prev
     loc.son<a href="cpl.html#Assignment">=</a>NIL
@@ -94,7 +94,7 @@ loc<a href="cpl.html#Assignment">=</a>prev
   <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT loc.c<a href="cpl.html#Assignment">=</a>(<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT loc.c)+256
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT loc.c&gt;256&lowast;replim <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> SortIn
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-<a href="cpl.html#NEW">NEW</a> prev^
+<a href="cpl.html#NEW">NEW</a> prev<a href="cpl.html#REAL-operator">^</a>
 prev.brother<a href="cpl.html#Assignment">=</a>NIL
 prev.son<a href="cpl.html#Assignment">=</a>ITEM(ref)
 <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT prev.c<a href="cpl.html#Assignment">=</a>256
@@ -116,7 +116,7 @@ text<a href="cpl.html#Assignment">=</a><a href="cpl.html#OPEN">OPEN</a>(<a href=
          strncmp(buf,"l01000010001",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010001"))<a href="cpl.html#Assignment">=</a>0]] <a href="cpl.html#IF">THEN</a>
         passed<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
         record<a href="cpl.html#Assignment">=</a><a href="cpl.html#INTEGER">INTEGER</a>(<a href="cpl.html#POSITION">POSITION</a>(text))-<a href="cpl.html#TYPE">SIZEOF</a>("l01000010fmt")-1
-        <a href="cpl.html#INC">INC</a> cnt; <a href="cpl.html#IF">IF</a> cnt <a href="cpl.html#Integer%20operator">MOD</a> 100 <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> \r cnt, record ./.
+        <a href="cpl.html#INC">INC</a> cnt; <a href="cpl.html#IF">IF</a> cnt <a href="cpl.html#Integer-operator">MOD</a> 100 <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> \r cnt, record ./.
       <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> buf(0)<a href="cpl.html#Assignment">=</a>"l" <a href="cpl.html#AND">AND</a> [strncmp(buf,"l01000010200",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010200"))<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a>
         strncmp(buf,"l01000010sys",<a href="cpl.html#TYPE">SIZEOF</a>("l01000010sys"))<a href="cpl.html#Assignment">=</a>0] <a href="cpl.html#IF">THEN</a>
         passed<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">YES</a>

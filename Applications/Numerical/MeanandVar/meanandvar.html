@@ -39,12 +39,12 @@ TEST<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
 MEANANDVAR<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#REAL">REAL</a> mean, bm(0..1), bt(0..1)
   <a href="cpl.html#INTEGER">INTEGER</a> nt, bs, ts]
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> mvinit(MEANANDVAR mvp^) <a href="cpl.html#WITH">WITH</a> mvp
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> mvinit(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>) <a href="cpl.html#WITH">WITH</a> mvp
   mean<a href="cpl.html#Assignment">=</a>0; bm<a href="cpl.html#Assignment">=</a>0; bt<a href="cpl.html#Assignment">=</a>0
   nt<a href="cpl.html#Assignment">=</a>0; bs<a href="cpl.html#Assignment">=</a>0; ts<a href="cpl.html#Assignment">=</a>1
 <a href="cpl.html#END">END</a> mvinit
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> meanandvar(MEANANDVAR mvp^;<a href="cpl.html#REAL">REAL</a> xx) <a href="cpl.html#WITH">WITH</a> mvp
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> meanandvar(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>;<a href="cpl.html#REAL">REAL</a> xx) <a href="cpl.html#WITH">WITH</a> mvp
   bm(0)<a href="cpl.html#Assignment">=</a>xx-mean+<a href="cpl.html#Assignment">~</a>
   <a href="cpl.html#INC">INC</a> bs
   <a href="cpl.html#IF">IF</a> bs&gt;<a href="cpl.html#Assignment">=</a>ts <a href="cpl.html#IF">THEN</a>
@@ -59,16 +59,16 @@ MEANANDVAR<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCT
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a> meanandvar
 
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> var(MEANANDVAR mvp^) <a href="cpl.html#WITH">WITH</a> mvp
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> var(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>) <a href="cpl.html#WITH">WITH</a> mvp
     <a href="cpl.html#IF">IF</a> nt-3&lowast;ts&lt;<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> RETURN 0
     <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>[bt(0)+2&lowast;bt(1)]/nt/(nt-3&lowast;ts)
-    <a href="cpl.html#IF">IF</a> bt(1)&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>&lowast;(1+0.234&lowast;[2&lowast;bt(1)/bt(0)]^3.17)
+    <a href="cpl.html#IF">IF</a> bt(1)&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>&lowast;(1+0.234&lowast;[2&lowast;bt(1)/bt(0)]<a href="cpl.html#REAL-operator">^</a>3.17)
 <a href="cpl.html#END">END</a> var
 
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> rms(MEANANDVAR mvp^)<a href="cpl.html#Assignment">=</a><a href="cpl.html#IF">IF</a> mvp.var&gt;0 <a href="cpl.html#IF">THEN</a> SQRT(mvp.var) <a href="cpl.html#ELSE">ELSE</a> 0
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sum(MEANANDVAR mvp^)<a href="cpl.html#Assignment">=</a>mvp.mean&lowast;mvp.nt
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sumvar(MEANANDVAR mvp^)<a href="cpl.html#Assignment">=</a>mvp.var&lowast;mvp.nt^2
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sumrms(MEANANDVAR mvp^)<a href="cpl.html#Assignment">=</a>mvp.rms&lowast;mvp.nt
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> rms(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)<a href="cpl.html#Assignment">=</a><a href="cpl.html#IF">IF</a> mvp.var&gt;0 <a href="cpl.html#IF">THEN</a> SQRT(mvp.var) <a href="cpl.html#ELSE">ELSE</a> 0
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sum(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)<a href="cpl.html#Assignment">=</a>mvp.mean&lowast;mvp.nt
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sumvar(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)<a href="cpl.html#Assignment">=</a>mvp.var&lowast;mvp.nt<a href="cpl.html#REAL-operator">^</a>2
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sumrms(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)<a href="cpl.html#Assignment">=</a>mvp.rms&lowast;mvp.nt
 
 #ifdef standalone
 

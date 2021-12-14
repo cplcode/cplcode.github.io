@@ -19,7 +19,7 @@ maxout<a href="cpl.html#Assignment">=</a>200
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> setexpired(<a href="cpl.html#INTEGER">INTEGER</a> signum) <a href="cpl.html#Assignment">=</a> expired<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">YES</a>
 signal(SIGVTALRM,setexpired)
 
-<a href="cpl.html#C%20interface">#include</a> &lt;sys/time.h&gt;
+<a href="cpl.html#C-interface">#include</a> &lt;sys/time.h&gt;
 struct itimerval allowedtime
 <a href="cpl.html#WITH">WITH</a> allowedtime.it_interval: tv_sec<a href="cpl.html#Assignment">=</a>0; tv_usec<a href="cpl.html#Assignment">=</a>0
 <a href="cpl.html#WITH">WITH</a> allowedtime.it_value: tv_sec<a href="cpl.html#Assignment">=</a>0; tv_usec<a href="cpl.html#Assignment">=</a>100000

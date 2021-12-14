@@ -21,7 +21,7 @@
 
 <a href="cpl.html#USE">USE</a> <a href="complex.html#Top">complex</a>
 
-<a href="cpl.html#C%20interface">#link</a> "-llapack -lblas"
+<a href="cpl.html#C-interface">#link</a> "-llapack -lblas"
 <span class=comment>! directive to the linker channeled through the C compiler.</span>
 <span class=comment>! On Debian the liblapack-dev package or one equivalent must have been installed</span>
 
@@ -30,12 +30,12 @@
   <a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
   LA<a href="cpl.html#Assignment">=</a><a href="cpl.html#LENGTH">LENGTH</a>(A)
   <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: matrix is not square"
-  <a href="cpl.html#IF">IF</a> <a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>[A(<a href="cpl.html#LO">LO</a>)]#1 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: matrix rows are not contiguous"
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#FORTRAN-interface">STRIDEOF</a>[A(<a href="cpl.html#LO">LO</a>)]#1 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: matrix rows are not contiguous"
   <span class=comment>! A CPL matrix is allowed to be not contiguous, but a FORTRAN matrix must be.</span>
   LWORK<a href="cpl.html#Assignment">=</a>3&lowast;LA
   <a href="complex.html#Top">COMPLEX</a> WORK(1..LWORK)
   <a href="cpl.html#REAL">REAL</a> RWORK(1..LA)
-  <a href="cpl.html#FORTRAN%20interface">FORTRANCALL</a> zgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,A,<a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>(A),SDIM,<a href="cpl.html#RESULT">RESULT</a>,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,RWORK,<a href="cpl.html#POINTER">NULL</a>,info)
+  <a href="cpl.html#FORTRAN-interface">FORTRANCALL</a> zgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,A,<a href="cpl.html#FORTRAN-interface">STRIDEOF</a>(A),SDIM,<a href="cpl.html#RESULT">RESULT</a>,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,RWORK,<a href="cpl.html#POINTER">NULL</a>,info)
   <span class=comment>! interface to FORTRAN call, applied without any prototype checking.</span>
   <span class=comment>! However, a prototype must be included if this file is to be USEd by icpl;</span>
   <span class=comment>! see lapack-eigenvalues.cpl for an example.</span>
@@ -48,12 +48,12 @@
   <a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
   LA<a href="cpl.html#Assignment">=</a><a href="cpl.html#LENGTH">LENGTH</a>(A)
   <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: matrix is not square"
-  <a href="cpl.html#IF">IF</a> <a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>[A(<a href="cpl.html#LO">LO</a>)]#1 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: matrix rows are not contiguous" 
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#FORTRAN-interface">STRIDEOF</a>[A(<a href="cpl.html#LO">LO</a>)]#1 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: matrix rows are not contiguous" 
   <span class=comment>! A CPL matrix is allowed to be not contiguous, but a FORTRAN matrix must be.</span>
   LWORK<a href="cpl.html#Assignment">=</a>3&lowast;LA
   <a href="cpl.html#REAL">REAL</a> WORK(1..LWORK)
   <a href="cpl.html#REAL">REAL</a> WR(1..LA),WI(1..LA)
-  <a href="cpl.html#FORTRAN%20interface">FORTRANCALL</a> dgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,A,<a href="cpl.html#FORTRAN%20interface">STRIDEOF</a>(A),SDIM,WR,WI,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,<a href="cpl.html#POINTER">NULL</a>,info)
+  <a href="cpl.html#FORTRAN-interface">FORTRANCALL</a> dgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,A,<a href="cpl.html#FORTRAN-interface">STRIDEOF</a>(A),SDIM,WR,WI,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,<a href="cpl.html#POINTER">NULL</a>,info)
   <span class=comment>! interface to FORTRAN call, applied without any prototype checking.</span>
   <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: " info
   <a href="cpl.html#RESULT">RESULT</a>(&lowast;+<a href="cpl.html#LO">LO</a>-1).<a href="cpl.html#REAL">REAL</a><a href="cpl.html#Assignment">=</a>WR; <a href="cpl.html#RESULT">RESULT</a>(&lowast;+<a href="cpl.html#LO">LO</a>-1).<a href="complex.html#Top">IMAG</a><a href="cpl.html#Assignment">=</a>WI

@@ -12,9 +12,9 @@
 <body translate="no"><pre>
 LOGFILE<a href="cpl.html#Assignment">=</a>"/var/www/textsearch/log"
 
-<a href="cpl.html#C%20interface">#include</a> &lt;time.h&gt;
-<a href="cpl.html#C%20interface">#include</a> &lt;netdb.h&gt;
-<a href="cpl.html#C%20interface">#include</a> &lt;arpa/inet.h&gt;
+<a href="cpl.html#C-interface">#include</a> &lt;time.h&gt;
+<a href="cpl.html#C-interface">#include</a> &lt;netdb.h&gt;
+<a href="cpl.html#C-interface">#include</a> &lt;arpa/inet.h&gt;
 <span class=comment>! USE rtchecks</span>
 
 <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#FUNCTION">FUNCTION</a> uriget()
@@ -35,7 +35,7 @@ struct in_addr addr; inet_aton(senderip,addr)
 senderhn<a href="cpl.html#Assignment">=</a>gethostbyaddr(addr,<a href="cpl.html#TYPE">SIZEOF</a>(addr),AF_INET)
 <a href="cpl.html#CHAR">CHAR</a> email(1000)
 <a href="cpl.html#FILE">FILE</a> log
-<a href="cpl.html#POINTER">POINTER</a> INTO email i<a href="cpl.html#Assignment">=</a>0
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> email i<a href="cpl.html#Assignment">=</a>0
 <a href="cpl.html#DO">DO</a> u<a href="cpl.html#Assignment">=</a>uriget(); email(i)<a href="cpl.html#Assignment">=</a>u; <a href="cpl.html#INC">INC</a> i; <a href="cpl.html#UNTIL">UNTIL</a> i&gt;email.<a href="cpl.html#HI">HI</a> <a href="cpl.html#OR">OR</a> u<a href="cpl.html#Assignment">=</a>\n <a href="cpl.html#OR">OR</a> u&lt;0
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> stderr email
 <a href="cpl.html#IF">IF</a> strstr(email(0..5),"email=")<a href="cpl.html#Assignment">=</a>email(0) <a href="cpl.html#IF">THEN</a>

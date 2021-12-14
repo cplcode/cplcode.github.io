@@ -10,7 +10,7 @@
 "url":"https://cplcode.net"}
 }</script></head>
 <body translate="no"><pre>
-<a href="cpl.html#C%20interface">#include</a> &lt;sys/mman.h&gt;
+<a href="cpl.html#C-interface">#include</a> &lt;sys/mman.h&gt;
 
 <a href="cpl.html#CHAR">CHAR</a> alpha(0..255)<a href="cpl.html#Assignment">=</a>0
 <a href="cpl.html#DO">DO</a> alpha(i)<a href="cpl.html#Assignment">=</a>i <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>"0" <a href="cpl.html#TO">TO</a> "9"
@@ -42,7 +42,7 @@ indexsize<a href="cpl.html#Assignment">=</a>0x10000000
 idx<a href="cpl.html#Assignment">=</a>open(""database".idx",O_RDONLY)
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..indexsize-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> index
 index<a href="cpl.html#Assignment">=</a>mmap64(<a href="cpl.html#POINTER">NULL</a>,indexsize,PROT_READ,MAP_SHARED,idx,0)
-root<a href="cpl.html#Deferred%20assignment">==</a>2
+root<a href="cpl.html#Deferred-assignment">==</a>2
 replim<a href="cpl.html#Assignment">=</a>index(1)
 
 WS_type<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>()
@@ -157,13 +157,13 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a> chain
 
-DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_type <a href="cpl.html#FUNCTION">FUNCTION</a> Pattern(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING start^) <a href="cpl.html#FOLLOWS">FOLLOWS</a>
+DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_type <a href="cpl.html#FUNCTION">FUNCTION</a> Pattern(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING start<a href="cpl.html#REAL-operator">^</a>) <a href="cpl.html#FOLLOWS">FOLLOWS</a>
 <a href="cpl.html#CHAR">CHAR</a> wordbuf(100),foundwords(10000)
-<a href="cpl.html#POINTER">POINTER</a> INTO foundwords fws,wordstart
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> foundwords fws,wordstart
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING PatternString
 
-DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_type <a href="cpl.html#FUNCTION">FUNCTION</a> Match(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING start^; <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#VARIABLE">VARIABLE</a> loc,sub,nerr
-    <a href="cpl.html#VARIABLE">VARIABLE</a> <a href="cpl.html#POINTER">POINTER</a> INTO wordbuf fw; <a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#VARIABLE">VARIABLE</a> printfws)
+DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_type <a href="cpl.html#FUNCTION">FUNCTION</a> Match(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING start<a href="cpl.html#REAL-operator">^</a>; <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#VARIABLE">VARIABLE</a> loc,sub,nerr
+    <a href="cpl.html#VARIABLE">VARIABLE</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> wordbuf fw; <a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#VARIABLE">VARIABLE</a> printfws)
   <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING word<a href="cpl.html#Assignment">=</a>start,word1
   <a href="cpl.html#IF">IF</a> word(0)<a href="cpl.html#Assignment">=</a>"(" <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#INC">INC</a> word; <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>Pattern(word)
@@ -271,11 +271,11 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
   start<a href="cpl.html#Assignment">=</a>word
 <a href="cpl.html#END">END</a> Match
 
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> skipfw(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING cur^)
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> skipfw(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING cur<a href="cpl.html#REAL-operator">^</a>)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> cur(0)<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> cur(0)<a href="cpl.html#Assignment">=</a>"(" <a href="cpl.html#OR">OR</a> cur(0)<a href="cpl.html#Assignment">=</a>")" <a href="cpl.html#OR">OR</a> alpha(cur(0))#0: <a href="cpl.html#INC">INC</a> cur
 <a href="cpl.html#END">END</a> skipfw
 
-DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_type <a href="cpl.html#FUNCTION">FUNCTION</a> Pattern(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING start^)
+DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_type <a href="cpl.html#FUNCTION">FUNCTION</a> Pattern(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING start<a href="cpl.html#REAL-operator">^</a>)
   <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING cur<a href="cpl.html#Assignment">=</a>start
   skipfw(cur)
   <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>EMPTY WS_type
@@ -312,7 +312,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
   start<a href="cpl.html#Assignment">=</a>cur
 <a href="cpl.html#END">END</a> Pattern
 
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> skipfwq(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING cur^)
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> skipfwq(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING cur<a href="cpl.html#REAL-operator">^</a>)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> cur(0)<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#OR">OR</a> cur(0)<a href="cpl.html#Assignment">=</a>"(" <a href="cpl.html#OR">OR</a> cur(0)<a href="cpl.html#Assignment">=</a>")" <a href="cpl.html#OR">OR</a> cur(0)<a href="cpl.html#Assignment">=</a>'"' <a href="cpl.html#OR">OR</a> alpha(cur(0))#0: <a href="cpl.html#INC">INC</a> cur
 <a href="cpl.html#END">END</a> skipfwq
 
@@ -350,7 +350,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
   <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#END">END</a> Wmatch
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> toend(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING cur^)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> toend(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING cur<a href="cpl.html#REAL-operator">^</a>)
   <a href="cpl.html#INTEGER">INTEGER</a> count<a href="cpl.html#Assignment">=</a>0; <a href="cpl.html#BOOLEAN">BOOLEAN</a> quot<a href="cpl.html#Assignment">=</a>FALSE
   <a href="cpl.html#DO">DO</a>
     <a href="cpl.html#CASE">CASE</a> cur(0) <a href="cpl.html#OF">OF</a>
@@ -392,7 +392,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
 <a href="cpl.html#END">END</a> Pmatch
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> htmlwr(<a href="cpl.html#VARIABLE">VARIABLE</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING s; <a href="cpl.html#BOOLEAN">BOOLEAN</a> unimarc)
-  here<a href="cpl.html#Deferred%20assignment">==</a>stdout
+  here<a href="cpl.html#Deferred-assignment">==</a>stdout
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> s(0)#0
     <a href="cpl.html#CASE">CASE</a> s(0) <a href="cpl.html#OF">OF</a>
     "|": <a href="cpl.html#IF">IF</a> unimarc <a href="cpl.html#IF">THEN</a> putc("|",here) <a href="cpl.html#ELSE">ELSE</a>

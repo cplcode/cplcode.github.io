@@ -10,7 +10,7 @@
 "url":"https://cplcode.net"}
 }</script></head>
 <body translate="no"><pre>
-<a href="cpl.html#C%20interface">#include</a> &lt;time.h&gt;
+<a href="cpl.html#C-interface">#include</a> &lt;time.h&gt;
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#Top">graphics</a> <span class=comment>! requires running in xterm</span>
 <span class=comment>! USE nograph</span>
@@ -31,7 +31,7 @@ long nexttime
 <a href="cpl.html#REAL">REAL</a> alfa
 <a href="complex.html#Top">COMPLEX</a> sigma
 
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Energy(<a href="complex.html#Top">COMPLEX</a> f^(&lowast;))
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Energy(<a href="complex.html#Top">COMPLEX</a> f<a href="cpl.html#REAL-operator">^</a>(&lowast;))
   a2<a href="cpl.html#Assignment">=</a>alfa&lowast;alfa
   <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>NORM(f(1))/y(1)+NORM(f(ny-1))/[y(ny)-y(ny-1)]
   <a href="cpl.html#DO">DO</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#RESULT">RESULT</a>+NORM(f(i)-f(i-1))/[y(i)-y(i-1)] <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#TO">TO</a> ny-1
@@ -42,7 +42,7 @@ long nexttime
 <a href="cpl.html#ARRAY">ARRAY</a>(1..ny-1) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> psi,zeta,zetaold,zstar,zstar1,zstarnorm
 <a href="cpl.html#ARRAY">ARRAY</a>(0..ny) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> U,U2
 
-<a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sclrprod()<a href="cpl.html#Assignment">=</a><a href="cpl.html#Looping%20operator">SUM</a> zstar(i)&lowast;zeta(i)+zstar1(i)&lowast;(zeta(i)-zetaold(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+<a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sclrprod()<a href="cpl.html#Assignment">=</a><a href="cpl.html#Looping-operator">SUM</a> zstar(i)&lowast;zeta(i)+zstar1(i)&lowast;(zeta(i)-zetaold(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
 
 pi2<a href="cpl.html#Assignment">=</a>3.544907702
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BaseFlow()
@@ -88,7 +88,7 @@ pi2<a href="cpl.html#Assignment">=</a>3.544907702
   B(ny-2,1)<a href="cpl.html#Assignment">=</a>B(ny-2,1)+B(ny-2,2)&lowast;<a href="cpl.html#Builtin">EXP</a>(-alfa&lowast;(y(ny)-y(ny-1)))
 <a href="cpl.html#END">END</a> BuildMats
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> Plot(<a href="complex.html#Top">COMPLEX</a> f^(&lowast;); <a href="cpl.html#REAL">REAL</a> h,height)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> Plot(<a href="complex.html#Top">COMPLEX</a> f<a href="cpl.html#REAL-operator">^</a>(&lowast;); <a href="cpl.html#REAL">REAL</a> h,height)
 <a href="graphics.html#RANGE">RANGE</a>(0,h,0,height)
 <a href="cpl.html#DO">DO</a> LINE(i,0,i,height) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> FLOOR(h)
 <a href="cpl.html#DO">DO</a> LINE(0,yy,h,yy) <a href="cpl.html#FOR">FOR</a> yy<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> height+0.001 <a href="cpl.html#BY">BY</a> 0.2&lowast;height

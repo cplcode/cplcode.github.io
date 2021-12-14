@@ -11,29 +11,29 @@
 }</script></head>
 <body translate="no"><pre>
 <a href="cpl.html#TYPE">TYPE</a> STAR<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#REAL">REAL</a> l,d,r,u,b,fo)
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> sbc(<a href="cpl.html#REAL">REAL</a> f^(&lowast;,&lowast;,&lowast;); <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> btm
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> sbc(<a href="cpl.html#REAL">REAL</a> f<a href="cpl.html#REAL-operator">^</a>(&lowast;,&lowast;,&lowast;); <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> btm
                       <a href="cpl.html#INTEGER">INTEGER</a> nx,ny,nz,xparity,zparity,p)
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz <a href="cpl.html#AND">AND</a> iy <a href="cpl.html#Assignment">=</a> btm(1,iz)+(btm(1,iz)+iz+p) <a href="cpl.html#Integer%20operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> ny <a href="cpl.html#BY">BY</a> 2
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz <a href="cpl.html#AND">AND</a> iy <a href="cpl.html#Assignment">=</a> btm(1,iz)+(btm(1,iz)+iz+p) <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> ny <a href="cpl.html#BY">BY</a> 2
     f(-1,iy,iz) <a href="cpl.html#Assignment">=</a> xparity&lowast;f(1,iy,iz)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy <a href="cpl.html#Assignment">=</a> btm(ix,1)+(btm(ix,1)+ix+p) <a href="cpl.html#Integer%20operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> ny <a href="cpl.html#BY">BY</a> 2
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy <a href="cpl.html#Assignment">=</a> btm(ix,1)+(btm(ix,1)+ix+p) <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> ny <a href="cpl.html#BY">BY</a> 2
     f(ix,iy,-1) <a href="cpl.html#Assignment">=</a> zparity&lowast;f(ix,iy,1)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz <a href="cpl.html#AND">AND</a> iy <a href="cpl.html#Assignment">=</a> btm(nx-1,iz)+[nx+iz+btm(nx-1,iz)+p] <a href="cpl.html#Integer%20operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> ny <a href="cpl.html#BY">BY</a> 2
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nz <a href="cpl.html#AND">AND</a> iy <a href="cpl.html#Assignment">=</a> btm(nx-1,iz)+[nx+iz+btm(nx-1,iz)+p] <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> ny <a href="cpl.html#BY">BY</a> 2
     f(nx+1,iy,iz) <a href="cpl.html#Assignment">=</a> xparity&lowast;f(nx-1,iy,iz)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy <a href="cpl.html#Assignment">=</a> btm(nx-ix,nz-1)+(nx-ix+nz+btm(nx-ix,nz-1)+p) <a href="cpl.html#Integer%20operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> ny <a href="cpl.html#BY">BY</a> 2
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy <a href="cpl.html#Assignment">=</a> btm(nx-ix,nz-1)+(nx-ix+nz+btm(nx-ix,nz-1)+p) <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> ny <a href="cpl.html#BY">BY</a> 2
     f(ix,iy,nz+1) <a href="cpl.html#Assignment">=</a> xparity&lowast;zparity&lowast;f(nx-ix,iy,nz-1)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#END">END</a> sbc
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> vbrb(<a href="cpl.html#REAL">REAL</a> f^(&lowast;,&lowast;,&lowast;); <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> btm,btt
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> vbrb(<a href="cpl.html#REAL">REAL</a> f<a href="cpl.html#REAL-operator">^</a>(&lowast;,&lowast;,&lowast;); <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> btm,btt
            <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> l,d,r,u,b,fo,rhs
            <a href="cpl.html#INTEGER">INTEGER</a> nx,ny,nz,xparity,zparity)
 <a href="cpl.html#LOOP">LOOP</a> parity <a href="cpl.html#FOR">FOR</a> p <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#TO">TO</a> 1
   sbc(f,btm,nx,ny,nz,xparity,zparity,p)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#TO">TO</a> nz <a href="cpl.html#AND">AND</a> ix <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#TO">TO</a> nx
-    <a href="cpl.html#INTEGER">INTEGER</a> iy <a href="cpl.html#Assignment">=</a> btm(ix,iz)+(ix+iz+btm(ix,iz)+p) <a href="cpl.html#Integer%20operator">MOD</a> 2
+    <a href="cpl.html#INTEGER">INTEGER</a> iy <a href="cpl.html#Assignment">=</a> btm(ix,iz)+(ix+iz+btm(ix,iz)+p) <a href="cpl.html#Integer-operator">MOD</a> 2
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> iy&lt;btt(ix,iz)
       f(ix,iy,iz)<a href="cpl.html#Assignment">=</a>rhs(ix,iy,iz)+
       l(ix,iy,iz)&lowast;f(ix-1,iy,iz)+r(ix,iy,iz)&lowast;f(ix+1,iy,iz)+
@@ -57,7 +57,7 @@
 sbc(f,btm,nx,ny,nz,xparity,zparity,0)
 <a href="cpl.html#END">END</a> vbrb
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> vbmg(<a href="cpl.html#REAL">REAL</a> ff^(&lowast;,&lowast;,&lowast;); <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> btmf,bttf
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> vbmg(<a href="cpl.html#REAL">REAL</a> ff<a href="cpl.html#REAL-operator">^</a>(&lowast;,&lowast;,&lowast;); <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> btmf,bttf
            <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> lf,df,rf,uf,bf,fof,rhsf
            <a href="cpl.html#INTEGER">INTEGER</a> nxf,nyf,nzf,xparity,zparity)
 
@@ -132,7 +132,7 @@ STAR coarse(0..nxc,bmin..bmax-1,0..nzc)
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 
 <span class=comment>! &lowast;&lowast;&lowast; recursion</span>
-<a href="cpl.html#IF">IF</a> nxc <a href="cpl.html#Integer%20operator">MOD</a> 2 <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#AND">AND</a> nyc <a href="cpl.html#Integer%20operator">MOD</a> 2 <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#AND">AND</a> nzc <a href="cpl.html#Integer%20operator">MOD</a> 2 <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#AND">AND</a> 
+<a href="cpl.html#IF">IF</a> nxc <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#AND">AND</a> nyc <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#AND">AND</a> nzc <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#AND">AND</a> 
     nxc&gt;2 <a href="cpl.html#AND">AND</a> nyc&gt;bmax <a href="cpl.html#AND">AND</a> nzc&gt;2 <a href="cpl.html#IF">THEN</a>
     vbmg(fc,btmc,bttc,coarse.l,coarse.d,coarse.r,coarse.u,coarse.b,coarse.fo,rhsc,nxc,nyc,nzc,xparity,zparity)
 <a href="cpl.html#ELSE">ELSE</a>
@@ -158,7 +158,7 @@ STAR coarse(0..nxc,bmin..bmax-1,0..nzc)
 <a href="cpl.html#DO">DO</a> vbrb(ff,btmf,bttf,lf,df,rf,uf,bf,fof,rhsf,nxf,nyf,nzf,xparity,zparity) <a href="cpl.html#FOR">FOR</a> 3 <a href="cpl.html#TIMES">TIMES</a>
 <a href="cpl.html#END">END</a> vbmg
 
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> mrsd(<a href="cpl.html#REAL">REAL</a> f^(&lowast;,&lowast;,&lowast;); <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> btm,btt
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> mrsd(<a href="cpl.html#REAL">REAL</a> f<a href="cpl.html#REAL-operator">^</a>(&lowast;,&lowast;,&lowast;); <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> btm,btt
            <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> l,d,r,u,b,fo,rhs
            <a href="cpl.html#INTEGER">INTEGER</a> nx,ny,nz,xparity,zparity)
 <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>0

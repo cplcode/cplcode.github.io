@@ -22,9 +22,9 @@ no<a href="cpl.html#Assignment">=</a>200
 <a href="cpl.html#TYPE">TYPEOF</a>(zstar) zstarold
 <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a> GRAPHICSMODE
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> ft(<a href="complex.html#Top">COMPLEX</a> f^(&lowast;),g^(&lowast;))
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> ft(<a href="complex.html#Top">COMPLEX</a> f<a href="cpl.html#REAL-operator">^</a>(&lowast;),g<a href="cpl.html#REAL-operator">^</a>(&lowast;))
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>(omega)
-    g(i)<a href="cpl.html#Assignment">=</a>{<a href="cpl.html#Looping%20operator">SUM</a> <a href="cpl.html#Builtin">EXP</a>[I&lowast;omega(i)&lowast;tt(j)]&lowast;f(j)&lowast;(tt(j+1)-tt(j-1)) <a href="cpl.html#FOR">FOR</a> j<a href="cpl.html#Assignment">=</a><a href="cpl.html#LO">LO</a>(tt)+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>(tt)-1}/2
+    g(i)<a href="cpl.html#Assignment">=</a>{<a href="cpl.html#Looping-operator">SUM</a> <a href="cpl.html#Builtin">EXP</a>[I&lowast;omega(i)&lowast;tt(j)]&lowast;f(j)&lowast;(tt(j+1)-tt(j-1)) <a href="cpl.html#FOR">FOR</a> j<a href="cpl.html#Assignment">=</a><a href="cpl.html#LO">LO</a>(tt)+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>(tt)-1}/2
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#END">END</a> ft
 
@@ -45,7 +45,7 @@ no<a href="cpl.html#Assignment">=</a>200
     psiwstar(it)<a href="cpl.html#Assignment">=</a>{zstarold(1)&lowast;B(1,-1)+zstarold(2)&lowast;B(2,-2)-
                  zstar(1)&lowast;[B(1,-1)+A(1,-1)&lowast;dt]-zstar(2)&lowast;[B(2,-2)+A(2,-2)&lowast;dt]}/dt
     uwstar(it)<a href="cpl.html#Assignment">=</a>[zstarold(1)&lowast;B(1,-2)-zstar(1)&lowast;(B(1,-2)+dt&lowast;A(1,-2))]&lowast;(y(-1)-y(1))/dt
-    <a href="cpl.html#IF">IF</a> it <a href="cpl.html#Integer%20operator">MOD</a>(nt <a href="cpl.html#DIV">DIV</a> 100) <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#IF">IF</a> it <a href="cpl.html#Integer-operator">MOD</a>(nt <a href="cpl.html#DIV">DIV</a> 100) <a href="cpl.html#Assignment">=</a> 0 <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> profile alfa,t+dt,Energy(zstarnorm),<a href="cpl.html#ABS">ABS</a>(psiwstar(it)),
                <a href="cpl.html#Builtin">ARG</a>(psiwstar(it)),<a href="cpl.html#ABS">ABS</a>(uwstar(it)),<a href="cpl.html#Builtin">ARG</a>(uwstar(it))
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>

@@ -10,7 +10,7 @@
 "url":"https://cplcode.net"}
 }</script></head>
 <body translate="no"><pre>
-<a href="cpl.html#C%20interface">#include</a> &lt;unistd.h&gt;
+<a href="cpl.html#C-interface">#include</a> &lt;unistd.h&gt;
 
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#Top">graphics</a>
@@ -28,7 +28,7 @@ nif<a href="cpl.html#Assignment">=</a>3&lowast;ny <a href="cpl.html#DIV">DIV</a>
 <span class=comment>! uncomment for nonuniform discretization with 0&lt;y&lt;2</span>
 <span class=comment>! DO y(iy)={0.05&lowast;iy/ny+((iy-nif)/ny)^3-(-nif/ny)^3}&lowast;2/{0.05+(1-nif/ny)^3-(-nif/ny)^3} FOR ALL iy</span>
 <span class=comment>! uncomment for nonuniform discretization with y(nif)=1</span>
-<a href="cpl.html#DO">DO</a> y(iy)<a href="cpl.html#Assignment">=</a>{0.05&lowast;iy/ny+((iy-nif)/ny)^3-(-nif/ny)^3}/{0.05&lowast;nif/ny-(-nif/ny)^3} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+<a href="cpl.html#DO">DO</a> y(iy)<a href="cpl.html#Assignment">=</a>{0.05&lowast;iy/ny+((iy-nif)/ny)<a href="cpl.html#REAL-operator">^</a>3-(-nif/ny)<a href="cpl.html#REAL-operator">^</a>3}/{0.05&lowast;nif/ny-(-nif/ny)<a href="cpl.html#REAL-operator">^</a>3} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
 
 <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#ARRAY">ARRAY</a>(-1..1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> d0,d1,d2] derivatives(0..ny) <a href="cpl.html#Assignment">=</a> 0
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> ny <a href="cpl.html#WITH">WITH</a> derivatives(i)
@@ -39,7 +39,7 @@ nif<a href="cpl.html#Assignment">=</a>3&lowast;ny <a href="cpl.html#DIV">DIV</a>
 <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> vpos<a href="cpl.html#Assignment">=</a>1,cpos<a href="cpl.html#Assignment">=</a>2,nvars<a href="cpl.html#Assignment">=</a>2
 <a href="cpl.html#ARRAY">ARRAY</a>(1+nvars..ny&lowast;nvars,-(3&lowast;nvars-1)..3&lowast;nvars-1) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A,B,T
 <a href="cpl.html#ARRAY">ARRAY</a>(1+nvars..ny&lowast;nvars) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> f,f1
-v<a href="cpl.html#Deferred%20assignment">==</a>f(vpos+(&lowast;)&lowast;nvars); c<a href="cpl.html#Deferred%20assignment">==</a>f(cpos+(&lowast;)&lowast;nvars)
+v<a href="cpl.html#Deferred-assignment">==</a>f(vpos+(&lowast;)&lowast;nvars); c<a href="cpl.html#Deferred-assignment">==</a>f(cpos+(&lowast;)&lowast;nvars)
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> AA(<a href="cpl.html#INTEGER">INTEGER</a> pos1,pos2)<a href="cpl.html#Assignment">=</a>A(pos1+nvars&lowast;(&lowast;),pos2-pos1+nvars&lowast;(&lowast;))
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> BB(<a href="cpl.html#INTEGER">INTEGER</a> pos1,pos2)<a href="cpl.html#Assignment">=</a>B(pos1+nvars&lowast;(&lowast;),pos2-pos1+nvars&lowast;(&lowast;))
 <a href="cpl.html#ARRAY">ARRAY</a>(0..ny) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> U,Uy,Uyy,Mu,Muy,Muyy
