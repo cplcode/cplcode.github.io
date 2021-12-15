@@ -14,8 +14,8 @@
     "@context" : "http://schema.org",
     "@type" : ["Organization","SoftwareApplication","ComputerLanguage","Product"],
     "name" : "CPL",
-    "description" : "Concealed Pointer Lookup Coactive Parameter Lists Consistent Procedure Linkage Compiled Programming Language Created by Paolo Luchini",
-    "disambiguatingDescription" : "Compiled Programming Language Created by Paolo Luchini",
+    "description" : "Concealed Pointer Lookup Coactive Parameter Lists Consistent Procedure Linkage Compiler and Programming Language Created by Paolo Luchini",
+    "disambiguatingDescription" : "Compiler and Programming Language Created by Paolo Luchini",
     "logo" : "https://cplcode.net/images/CPL-logo.png",
     "image" : "https://cplcode.net/images/CPL-logo.png",
     "url" : "https://cplcode.net",
@@ -137,7 +137,7 @@
     <br><br><br>
     <img src="images/CPL-logo.png" width=132 alt="CPL">
     <br>
-    <h1 class=banner>Compiled Programming Language</h1>
+    <h1 class=banner>Compiler and Programming Language</h1>
     <h1 class=banner>Created by Paolo Luchini</h1>
     <h1 class=banner>Concealed Pointer Lookup</h1>
     <h1 class=banner>Coactive Parameter Lists</h1>
@@ -173,13 +173,15 @@
     var i=0;
     var x = document.getElementsByClassName("banner");
     x[0].style.display="block";
-    var tid=setInterval(changebanner,4000);
+    var tid;
     function changebanner(){
       x[i].style.display="none";
       i++; if(i>=x.length){i=0;}
       x[i].style.display="block";
       if(i==0)clearInterval(tid);
     }
+    function startCircling(){tid=setInterval(changebanner,3000);}
+    setTimeout(startCircling,3000);
   </script>
 </body>
 </html>
