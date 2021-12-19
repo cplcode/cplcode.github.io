@@ -1,0 +1,114 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>article-CPLcodes/varviscOS/varviscOS.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"article-CPLcodes/varviscOS/varviscOS.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
+<a href="cpl.html#USE">USE</a> <a href="symbolic.html#Top">symbolic</a>
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
+<a href="graphics.html#OPENGRAPH">OPENGRAPH</a>
+<a href="cpl.html#USE">USE</a> <a href="cpl.html#rtchecks">rtchecks</a>
+nx<a href="cpl.html#Assignment">=</a>100; ny<a href="cpl.html#Assignment">=</a>790
+alphamin<a href="cpl.html#Assignment">=</a>1E-7
+alphamax<a href="cpl.html#Assignment">=</a>10
+<a href="cpl.html#REAL">REAL</a> Re<a href="cpl.html#Assignment">=</a>400
+confined<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
+external<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
+<a href="cpl.html#REAL">REAL</a> y(-1..ny+1),U(-1..ny+1),nu(0..ny+1)
+<a href="cpl.html#IF">IF</a> external <a href="cpl.html#IF">THEN</a>
+  bf<a href="cpl.html#Assignment">=</a><a href="cpl.html#OPEN">OPEN</a>(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1))
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> bf y(iy),U(iy) <a href="cpl.html#FOR">FOR</a> iy<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> ny
+  y(-1)<a href="cpl.html#Assignment">=</a>2&lowast;y(0)-y(1)
+  U(-1)<a href="cpl.html#Assignment">=</a>3&lowast;U(0)-3&lowast;U(1)+U(2)
+  y(ny+1)<a href="cpl.html#Assignment">=</a>2&lowast;y(ny)-y(ny-1)
+  U(ny+1)<a href="cpl.html#Assignment">=</a>3&lowast;U(ny)-3&lowast;U(ny-1)+U(ny-2)
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="complex.html#Top">COMPLEX</a> psi(-1..ny-1),A(-1..ny-1,-2..2)
+<a href="cpl.html#REAL">REAL</a> alp(0..nx); <a href="complex.html#Top">COMPLEX</a> up(0..nx)
+a0<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">LOG</a>(3.109)/0.392+4.48
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> f(<a href="cpl.html#REAL">REAL</a> z)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">LOG</a>(z+3.109)/0.392+4.48-(a0+(0.4930-0.02450&lowast;z)&lowast;z)/(1+(0.05736+0.01101&lowast;z)&lowast;z)&lowast;<a href="cpl.html#Builtin">EXP</a>(-0.03385&lowast;z)
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> fracc(<a href="cpl.html#REAL">REAL</a> z)<a href="cpl.html#Assignment">=</a><a href="cpl.html#IF">IF</a> z&gt;3 <a href="cpl.html#IF">THEN</a> f(z) <a href="cpl.html#ELSE">ELSE</a> z+[f(3)-3]&lowast;(z/3)<a href="cpl.html#REAL-operator">^</a>2
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> nx
+  alpha<a href="cpl.html#Assignment">=</a>alphamin&lowast;(alphamax/alphamin)<a href="cpl.html#REAL-operator">^</a>(ix/nx); alp(ix)<a href="cpl.html#Assignment">=</a>alpha
+<span class=comment>!  Re=0.5/alpha <span class=comment>! 2&lowast;PI/alpha</span></span>
+  Ly<a href="cpl.html#Assignment">=</a><a href="cpl.html#IF">IF</a> 40/alpha<a href="cpl.html#REAL-operator">^</a>0.5&lt;100 <a href="cpl.html#IF">THEN</a> 40/alpha<a href="cpl.html#REAL-operator">^</a>0.5 <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> confined <a href="cpl.html#IF">THEN</a> Re <a href="cpl.html#ELSE">ELSE</a> 1/alpha
+  psi<a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> external <a href="cpl.html#IF">THEN</a> <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy<a href="cpl.html#Assignment">=</a><a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
+<span class=comment>!     y(iy)=Re&lowast;iy/ny</span>
+    y(iy)<a href="cpl.html#Assignment">=</a>Ly&lowast;[<a href="cpl.html#Builtin">EXP</a>(<a href="cpl.html#Builtin">LOG</a>[Ly&lowast;10]&lowast;iy/ny)-1]/[Ly&lowast;10-1]
+<span class=comment>!     y(iy)=Ly&lowast;[0.01&lowast;iy/ny+0.99&lowast;(iy/ny)^2]</span>
+<span class=comment>!     U(iy)=IF y(iy)&lt;Re THEN y(iy)-y(iy)^2/2/Re ELSE Re/2</span>
+<span class=comment>!     U(iy)=Re/2&lowast;erf[y(iy)&lowast;SQRT(PI)/Re]</span>
+<span class=comment>!     U(iy)=IF y(iy)&lt;Re&lowast;PI/4 THEN Re/2&lowast;SIN(y(iy)&lowast;2/Re) ELSE Re/2</span>
+    U(iy)<a href="cpl.html#Assignment">=</a>fracc(y(iy)); <a href="cpl.html#IF">IF</a> confined <a href="cpl.html#IF">THEN</a> U(iy)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+y(iy)/Re-0.57&lowast;[y(iy)/Re]<a href="cpl.html#REAL-operator">^</a>7
+  <a href="cpl.html#LOOP">REPEAT</a>
+  <a href="cpl.html#DO">DO</a> nu(iy)<a href="cpl.html#Assignment">=</a>{<a href="cpl.html#IF">IF</a> confined <a href="cpl.html#IF">THEN</a> 1-y(iy)/Re <a href="cpl.html#ELSE">ELSE</a> 1}&lowast;[y(iy)-y(iy-1)]/[U(iy)-U(iy-1)]
+  <a href="cpl.html#FOR">FOR</a> iy<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> ny+1
+  #define D2(p,j) {[p(j+1)-p(j)]/[y(j+1)-y(j)]-[p(j)-p(j-1)]/[y(j)-y(j-1)]}&lowast;2/[y(j+1)-y(j-1)]
+  #define D1(p,j) [p(j+1)-p(j-1)]/[y(j+1)-y(j-1)]
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
+    #define omega(j) {D2(psi,j)-alpha<a href="cpl.html#REAL-operator">^</a>2&lowast;psi(j)}
+    #define nuomg(psi,n) {[nu(n)+nu(n+1)]/2&lowast;D2(psi,n)+[nu(n+1)-nu(n)]&lowast;2/[y(n+1)-y(n-1)]&lowast;D1(U,n)/[U(n)+1E-8]&lowast;psi(n)}
+    #define nuomega(n) nuomg(psi,n)-[nu(n)+nu(n+1)]/2&lowast;alpha<a href="cpl.html#REAL-operator">^</a>2&lowast;psi(n)
+    #define nuOmega(n) nuomg(U,n)
+<span class=comment>!(
+    #define nuomega(j) [nu(j)+nu(j+1)]/2&lowast;{omega(j)-D2(U,j)/[U(j)+1E-8]&lowast;psi(j)}+ \
+    {nu(j+1)&lowast;[U(j+1)-U(j)]/[y(j+1)-y(j)]-nu(j)&lowast;[U(j)-U(j-1)]/[y(j)-y(j-1)]}&lowast;2/[y(j+1)-y(j-1)]/[U(j)+1E-8]&lowast;psi(j)
+!)</span>
+    eq<a href="cpl.html#Deferred-assignment">==</a>I&lowast;alpha&lowast;[U(iy)&lowast;omega(iy)-D2(U,iy)&lowast;psi(iy)]+ \
+      D2(nuomega,iy)-alpha<a href="cpl.html#REAL-operator">^</a>2&lowast;nuomega(iy)
+    <a href="cpl.html#DO">DO</a> A(iy,j)<a href="cpl.html#Assignment">=</a>D[eq,psi(iy+j)] <a href="cpl.html#FOR">FOR</a> j<a href="cpl.html#Assignment">=</a>-2 <a href="cpl.html#TO">TO</a> 2
+<span class=comment>!(
+    #define nuOmega(j) [nu(j)+nu(j+1)]/2&lowast;D2(U,j)&lowast;1E-8/[U(j)+1E-8]+ \
+    {nu(j+1)&lowast;[U(j+1)-U(j)]/[y(j+1)-y(j)]-nu(j)&lowast;[U(j)-U(j-1)]/[y(j)-y(j-1)]}&lowast;2/[y(j+1)-y(j-1)]/[U(j)+1E-8]&lowast;U(j)
+!)</span>
+    psi(iy)<a href="cpl.html#Assignment">=</a>-D2(nuOmega,iy)
+  <a href="cpl.html#LOOP">REPEAT</a>
+  <a href="cpl.html#IF">IF</a> confined <a href="cpl.html#IF">THEN</a>
+    A(ny-1,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-A(ny-1,2)&lowast;[y(ny+1)-y(ny)]/[y(ny)-y(ny-1)]
+  <a href="cpl.html#ELSE">ELSE</a>
+    A(ny-1,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+A(ny-1,1)&lowast;<a href="cpl.html#Builtin">EXP</a>(-alpha&lowast;[y(ny)-y(ny-1)])+A(ny-1,2)&lowast;<a href="cpl.html#Builtin">EXP</a>(-alpha&lowast;[y(ny+1)-y(ny-1)])
+    A(ny-2,1)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+A(ny-2,2)&lowast;<a href="cpl.html#Builtin">EXP</a>(-alpha&lowast;[y(ny)-y(ny-1)])
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  A(0)<a href="cpl.html#Assignment">=</a>0; A(0,0)<a href="cpl.html#Assignment">=</a>1; psi(0)<a href="cpl.html#Assignment">=</a>-U(0)
+  A(-1)<a href="cpl.html#Assignment">=</a>0; A(-1,0)<a href="cpl.html#Assignment">=</a>1; A(-1,2)<a href="cpl.html#Assignment">=</a>-1; psi(-1)<a href="cpl.html#Assignment">=</a>U(1)-U(-1)
+  LUdecomp A
+  psi<a href="cpl.html#Assignment">=</a>A\~
+  up(ix)<a href="cpl.html#Assignment">=</a>nu(0)&lowast;[D2(psi,0)+D2(U,0)]&lowast;I/alpha
+<span class=comment>!(
+  COMPLEX phi(0..ny), psi1(0..ny); phi(0)=0
+  DO
+    alphainf=SQRT(alpha^2+[U(i)-U(i-1)]^2/[y(i)-y(i-1)]^2&lowast;4/[U(i)+U(i-1)]^2)
+    phi(i)=phi(i-1)+alphainf&lowast;[y(i)-y(i-1)]
+    psi1(i)=psi(i)&lowast;EXP(phi(i))&lowast;SQRT(alphainf)
+  FOR i=100 TO ny
+!)</span>
+<span class=comment>!  plot y(0..ny):psi1.REAL w l,y(0..ny):psi1.IMAG w l</span>
+<span class=comment>!  plot y(200..ny-2):[psi(n+1).REAL-psi(n-1).REAL+U(n+1)-U(n-1)]/[y(n+1)-y(n-1)] w l</span>
+<span class=comment>!  READ</span>
+<a href="cpl.html#LOOP">REPEAT</a>
+<a href="graphics.html#gnuplot">set</a> logscale xy
+GNUPLOT 'set format xy "10^{%L}"'
+<a href="graphics.html#gnuplot">set</a> grid
+<span class=comment>!set yr [0.1:&lowast;]</span>
+<a href="cpl.html#IF">IF</a> confined <a href="cpl.html#IF">THEN</a>
+  <a href="graphics.html#plot">plot</a> alp:<a href="cpl.html#ABS">ABS</a>(<a href="cpl.html#REAL">REAL</a>(up(n)))&lowast;alp(n)&lowast;Re w l, alp:<a href="cpl.html#ABS">ABS</a>(<a href="complex.html#Top">IMAG</a>(up(n)))&lowast;alp(n)&lowast;Re w l
+<a href="cpl.html#ELSE">ELSE</a> <a href="graphics.html#plot">plot</a> alp:<a href="cpl.html#ABS">ABS</a>(<a href="cpl.html#REAL">REAL</a>(up(n))) w l, alp:<a href="cpl.html#ABS">ABS</a>(<a href="complex.html#Top">IMAG</a>(up(n))) w l
+<span class=comment>!(
+plot alp:ABS(up(n)) w l
+READ
+set nologscale y
+set auto y
+set format y
+plot alp:ARG(up(n)) w l
+!)</span>
+<a href="cpl.html#READ">READ</a>
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> alp(i),up(i) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a><a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
+</pre></body></html>

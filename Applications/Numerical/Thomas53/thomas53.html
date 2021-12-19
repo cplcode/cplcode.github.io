@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Numerical/Thomas53/thomas53.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"Numerical/Thomas53/thomas53.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<span class=comment>! Thomas53 -- Copyright 2002 Paolo Luchini</span>
+<span class=comment>! http://CPLcode.net/Applications/Numerical/Thomas53/</span>
+<span class=comment>!</span>
+<span class=comment>! Calculates one direct and adjoint eigenfunction of the Orr-Sommerfeld problem</span>
+<span class=comment>! reproducing the Gauss-Jackson-Noumerov (compact-difference) discretization</span>
+<span class=comment>! proposed by L.H. Thomas, Phys. Rev. Letters 91, 780-783 (1953).</span>
+<span class=comment>!</span>
+<span class=comment>!( Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE. !)</span>
+
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
+
+<a href="cpl.html#REAL">REAL</a> alpha,Re
+<a href="complex.html#Top">COMPLEX</a> c
+<a href="cpl.html#ASK">ASK</a> alpha,Re
+a2<a href="cpl.html#Assignment">=</a>alpha&lowast;alpha
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> everything(<a href="cpl.html#INTEGER">INTEGER</a> N)
+  yinf<a href="cpl.html#Assignment">=</a>2
+  h<a href="cpl.html#Assignment">=</a>yinf/N
+  
+  <a href="cpl.html#ARRAY">ARRAY</a>(-2..2) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> d0,d1,d2,d4
+  d0(-2)<a href="cpl.html#Assignment">=</a>0; d0(-1)<a href="cpl.html#Assignment">=</a>1/6; d0(0)<a href="cpl.html#Assignment">=</a>2/3; d0(1)<a href="cpl.html#Assignment">=</a>1/6; d0(2)<a href="cpl.html#Assignment">=</a>0
+  d1(-2)<a href="cpl.html#Assignment">=</a>0; d1(-1)<a href="cpl.html#Assignment">=</a>-1/2/h; d1(0)<a href="cpl.html#Assignment">=</a>0; d1(1)<a href="cpl.html#Assignment">=</a>1/2/h; d1(2)<a href="cpl.html#Assignment">=</a>0
+  d2(-2)<a href="cpl.html#Assignment">=</a>1/12/h/h; d2(-1)<a href="cpl.html#Assignment">=</a>2/3/h/h; d2(0)<a href="cpl.html#Assignment">=</a>-3/2/h/h; d2(1)<a href="cpl.html#Assignment">=</a>2/3/h/h; d2(2)<a href="cpl.html#Assignment">=</a>1/12/h/h
+  d4(-2)<a href="cpl.html#Assignment">=</a>1/h/h/h/h; d4(-1)<a href="cpl.html#Assignment">=</a>-4/h/h/h/h; d4(0)<a href="cpl.html#Assignment">=</a>6/h/h/h/h; d4(1)<a href="cpl.html#Assignment">=</a>-4/h/h/h/h; d4(2)<a href="cpl.html#Assignment">=</a>1/h/h/h/h
+  
+  <a href="cpl.html#ARRAY">ARRAY</a>(-1..N+1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> y,U,Uyy
+  <a href="cpl.html#DO">DO</a> y(i)<a href="cpl.html#Assignment">=</a>h&lowast;i <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  
+  <a href="cpl.html#FUNCTION">SUBROUTINE</a> Poiseuille
+    <a href="cpl.html#DO">DO</a> U(i)<a href="cpl.html#Assignment">=</a>y(i)&lowast;[yinf-y(i)]; Uyy(i)<a href="cpl.html#Assignment">=</a>-2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  <a href="cpl.html#END">END</a> Poiseuille
+  
+  <a href="complex.html#Top">COMPLEX</a> A(1..N-1,-2..2), B(1..N-1,-2..2)
+  <a href="cpl.html#ARRAY">ARRAY</a>(1..N-1) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> psi,zetaold,psistar,zstar
+  
+  <a href="cpl.html#FUNCTION">SUBROUTINE</a> BuildMats
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> N-1 <a href="cpl.html#AND">AND</a> j<a href="cpl.html#Assignment">=</a>-2 <a href="cpl.html#TO">TO</a> 2
+      B(i,j)<a href="cpl.html#Assignment">=</a>d2(j)-a2&lowast;d0(j)
+      A(i,j)<a href="cpl.html#Assignment">=</a>(c-U(i))&lowast;B(i,j)+Uyy(i)&lowast;d0(j)+I/alpha/Re&lowast;[d4(j)-2&lowast;a2&lowast;d2(j)+a2&lowast;a2&lowast;d0(j)]
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+    B(1,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-B(1,-1)/2+B(1,-2)
+    A(1,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-A(1,-1)/2+A(1,-2)
+    B(2,-1)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-B(2,-2)/2
+    A(2,-1)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-A(2,-2)/2
+    B(N-1,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-B(N-1,1)/2+B(N-1,2)
+    A(N-1,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-A(N-1,1)/2+A(N-1,2)
+    B(N-2,1)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-B(N-2,2)/2
+    A(N-2,1)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-A(N-2,2)/2
+  <a href="cpl.html#END">END</a> BuildMats
+  
+  <a href="cpl.html#FUNCTION">SUBROUTINE</a> eigenval
+    c<a href="cpl.html#Assignment">=</a>0.3
+    <a href="cpl.html#DO">DO</a>
+      BuildMats; LUdecomp A
+      zetaold<a href="cpl.html#Assignment">=</a>B&lowast;psi; psi<a href="cpl.html#Assignment">=</a>A\zetaold
+      zstar<a href="cpl.html#Assignment">=</a>psistar/A; psistar<a href="cpl.html#Assignment">=</a>zstar&lowast;B
+      dc<a href="cpl.html#Assignment">=</a>-(zstar&lowast;zetaold)/(psistar&lowast;psi)
+      c<a href="cpl.html#Assignment">=</a>c+dc
+      psi<a href="cpl.html#Assignment">=</a>psi&lowast;<a href="cpl.html#ABS">ABS</a>[psi(1)]/psi(1)/<a href="cpl.html#Integer-operator">MOD</a>(psi)
+      zstar<a href="cpl.html#Assignment">=</a>zstar/(psistar&lowast;psi)
+      psistar<a href="cpl.html#Assignment">=</a>psistar/(psistar&lowast;psi)
+    <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#ABS">ABS</a>(dc)&gt;1.E-8
+  <a href="cpl.html#END">END</a> eigenval
+  
+  Poiseuille
+  <a href="cpl.html#DO">DO</a> psi(i)<a href="cpl.html#Assignment">=</a>U(i)&lowast;(1-U(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  psistar<a href="cpl.html#Assignment">=</a>psi
+  eigenval
+<a href="cpl.html#END">END</a> everything
+
+everything(2000)
+c_ref<a href="cpl.html#Assignment">=</a>c
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> "#",alpha,Re
+<a href="cpl.html#DO">DO</a>
+  everything(N)
+  <a href="cpl.html#WRITE">WRITE</a> N,<a href="cpl.html#ABS">ABS</a>(c-c_ref),c
+<a href="cpl.html#FOR">FOR</a> N <a href="cpl.html#IN">IN</a> (10,15,20,30,50,70,100,150,200,300,500,700,1000)
+</pre></body></html>

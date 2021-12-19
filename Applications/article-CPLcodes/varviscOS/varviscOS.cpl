@@ -1,0 +1,101 @@
+USE cbmat
+USE symbolic
+USE gnuplot
+OPENGRAPH
+USE rtchecks
+nx=100; ny=790
+alphamin=1E-7
+alphamax=10
+REAL Re=400
+confined=NO
+external=NO
+REAL y(-1..ny+1),U(-1..ny+1),nu(0..ny+1)
+IF external THEN
+  bf=OPEN(COMMANDLINE(1))
+  DO READ FROM bf y(iy),U(iy) FOR iy=0 TO ny
+  y(-1)=2*y(0)-y(1)
+  U(-1)=3*U(0)-3*U(1)+U(2)
+  y(ny+1)=2*y(ny)-y(ny-1)
+  U(ny+1)=3*U(ny)-3*U(ny-1)+U(ny-2)
+END IF
+COMPLEX psi(-1..ny-1),A(-1..ny-1,-2..2)
+REAL alp(0..nx); COMPLEX up(0..nx)
+a0=LOG(3.109)/0.392+4.48
+REAL FUNCTION f(REAL z)=LOG(z+3.109)/0.392+4.48-(a0+(0.4930-0.02450*z)*z)/(1+(0.05736+0.01101*z)*z)*EXP(-0.03385*z)
+REAL FUNCTION fracc(REAL z)=IF z>3 THEN f(z) ELSE z+[f(3)-3]*(z/3)^2
+LOOP FOR ix=0 TO nx
+  alpha=alphamin*(alphamax/alphamin)^(ix/nx); alp(ix)=alpha
+!  Re=0.5/alpha ! 2*PI/alpha
+  Ly=IF 40/alpha^0.5<100 THEN 40/alpha^0.5 ELSE IF confined THEN Re ELSE 1/alpha
+  psi=0
+  IF NOT external THEN LOOP FOR iy=LO TO HI
+!     y(iy)=Re*iy/ny
+    y(iy)=Ly*[EXP(LOG[Ly*10]*iy/ny)-1]/[Ly*10-1]
+!     y(iy)=Ly*[0.01*iy/ny+0.99*(iy/ny)^2]
+!     U(iy)=IF y(iy)<Re THEN y(iy)-y(iy)^2/2/Re ELSE Re/2
+!     U(iy)=Re/2*erf[y(iy)*SQRT(PI)/Re]
+!     U(iy)=IF y(iy)<Re*PI/4 THEN Re/2*SIN(y(iy)*2/Re) ELSE Re/2
+    U(iy)=fracc(y(iy)); IF confined THEN U(iy)=~+y(iy)/Re-0.57*[y(iy)/Re]^7
+  REPEAT
+  DO nu(iy)={IF confined THEN 1-y(iy)/Re ELSE 1}*[y(iy)-y(iy-1)]/[U(iy)-U(iy-1)]
+  FOR iy=0 TO ny+1
+  #define D2(p,j) {[p(j+1)-p(j)]/[y(j+1)-y(j)]-[p(j)-p(j-1)]/[y(j)-y(j-1)]}*2/[y(j+1)-y(j-1)]
+  #define D1(p,j) [p(j+1)-p(j-1)]/[y(j+1)-y(j-1)]
+  LOOP FOR iy=1 TO ny-1
+    #define omega(j) {D2(psi,j)-alpha^2*psi(j)}
+    #define nuomg(psi,n) {[nu(n)+nu(n+1)]/2*D2(psi,n)+[nu(n+1)-nu(n)]*2/[y(n+1)-y(n-1)]*D1(U,n)/[U(n)+1E-8]*psi(n)}
+    #define nuomega(n) nuomg(psi,n)-[nu(n)+nu(n+1)]/2*alpha^2*psi(n)
+    #define nuOmega(n) nuomg(U,n)
+!(
+    #define nuomega(j) [nu(j)+nu(j+1)]/2*{omega(j)-D2(U,j)/[U(j)+1E-8]*psi(j)}+ \
+    {nu(j+1)*[U(j+1)-U(j)]/[y(j+1)-y(j)]-nu(j)*[U(j)-U(j-1)]/[y(j)-y(j-1)]}*2/[y(j+1)-y(j-1)]/[U(j)+1E-8]*psi(j)
+!)
+    eq==I*alpha*[U(iy)*omega(iy)-D2(U,iy)*psi(iy)]+ \
+      D2(nuomega,iy)-alpha^2*nuomega(iy)
+    DO A(iy,j)=D[eq,psi(iy+j)] FOR j=-2 TO 2
+!(
+    #define nuOmega(j) [nu(j)+nu(j+1)]/2*D2(U,j)*1E-8/[U(j)+1E-8]+ \
+    {nu(j+1)*[U(j+1)-U(j)]/[y(j+1)-y(j)]-nu(j)*[U(j)-U(j-1)]/[y(j)-y(j-1)]}*2/[y(j+1)-y(j-1)]/[U(j)+1E-8]*U(j)
+!)
+    psi(iy)=-D2(nuOmega,iy)
+  REPEAT
+  IF confined THEN
+    A(ny-1,0)=~-A(ny-1,2)*[y(ny+1)-y(ny)]/[y(ny)-y(ny-1)]
+  ELSE
+    A(ny-1,0)=~+A(ny-1,1)*EXP(-alpha*[y(ny)-y(ny-1)])+A(ny-1,2)*EXP(-alpha*[y(ny+1)-y(ny-1)])
+    A(ny-2,1)=~+A(ny-2,2)*EXP(-alpha*[y(ny)-y(ny-1)])
+  END IF
+  A(0)=0; A(0,0)=1; psi(0)=-U(0)
+  A(-1)=0; A(-1,0)=1; A(-1,2)=-1; psi(-1)=U(1)-U(-1)
+  LUdecomp A
+  psi=A\~
+  up(ix)=nu(0)*[D2(psi,0)+D2(U,0)]*I/alpha
+!(
+  COMPLEX phi(0..ny), psi1(0..ny); phi(0)=0
+  DO
+    alphainf=SQRT(alpha^2+[U(i)-U(i-1)]^2/[y(i)-y(i-1)]^2*4/[U(i)+U(i-1)]^2)
+    phi(i)=phi(i-1)+alphainf*[y(i)-y(i-1)]
+    psi1(i)=psi(i)*EXP(phi(i))*SQRT(alphainf)
+  FOR i=100 TO ny
+!)
+!  plot y(0..ny):psi1.REAL w l,y(0..ny):psi1.IMAG w l
+!  plot y(200..ny-2):[psi(n+1).REAL-psi(n-1).REAL+U(n+1)-U(n-1)]/[y(n+1)-y(n-1)] w l
+!  READ
+REPEAT
+set logscale xy
+GNUPLOT 'set format xy "10^{%L}"'
+set grid
+!set yr [0.1:*]
+IF confined THEN
+  plot alp:ABS(REAL(up(n)))*alp(n)*Re w l, alp:ABS(IMAG(up(n)))*alp(n)*Re w l
+ELSE plot alp:ABS(REAL(up(n))) w l, alp:ABS(IMAG(up(n))) w l
+!(
+plot alp:ABS(up(n)) w l
+READ
+set nologscale y
+set auto y
+set format y
+plot alp:ARG(up(n)) w l
+!)
+READ
+DO WRITE alp(i),up(i) FOR i=LO TO HI

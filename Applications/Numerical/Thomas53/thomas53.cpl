@@ -1,0 +1,94 @@
+! Thomas53 -- Copyright 2002 Paolo Luchini
+! http://CPLcode.net/Applications/Numerical/Thomas53/
+!
+! Calculates one direct and adjoint eigenfunction of the Orr-Sommerfeld problem
+! reproducing the Gauss-Jackson-Noumerov (compact-difference) discretization
+! proposed by L.H. Thomas, Phys. Rev. Letters 91, 780-783 (1953).
+!
+!( Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE. !)
+
+USE cbmat
+
+REAL alpha,Re
+COMPLEX c
+ASK alpha,Re
+a2=alpha*alpha
+
+SUBROUTINE everything(INTEGER N)
+  yinf=2
+  h=yinf/N
+  
+  ARRAY(-2..2) OF REAL d0,d1,d2,d4
+  d0(-2)=0; d0(-1)=1/6; d0(0)=2/3; d0(1)=1/6; d0(2)=0
+  d1(-2)=0; d1(-1)=-1/2/h; d1(0)=0; d1(1)=1/2/h; d1(2)=0
+  d2(-2)=1/12/h/h; d2(-1)=2/3/h/h; d2(0)=-3/2/h/h; d2(1)=2/3/h/h; d2(2)=1/12/h/h
+  d4(-2)=1/h/h/h/h; d4(-1)=-4/h/h/h/h; d4(0)=6/h/h/h/h; d4(1)=-4/h/h/h/h; d4(2)=1/h/h/h/h
+  
+  ARRAY(-1..N+1) OF REAL y,U,Uyy
+  DO y(i)=h*i FOR ALL i
+  
+  SUBROUTINE Poiseuille
+    DO U(i)=y(i)*[yinf-y(i)]; Uyy(i)=-2 FOR ALL i
+  END Poiseuille
+  
+  COMPLEX A(1..N-1,-2..2), B(1..N-1,-2..2)
+  ARRAY(1..N-1) OF COMPLEX psi,zetaold,psistar,zstar
+  
+  SUBROUTINE BuildMats
+    LOOP FOR i=1 TO N-1 AND j=-2 TO 2
+      B(i,j)=d2(j)-a2*d0(j)
+      A(i,j)=(c-U(i))*B(i,j)+Uyy(i)*d0(j)+I/alpha/Re*[d4(j)-2*a2*d2(j)+a2*a2*d0(j)]
+    REPEAT LOOP
+    B(1,0)=~-B(1,-1)/2+B(1,-2)
+    A(1,0)=~-A(1,-1)/2+A(1,-2)
+    B(2,-1)=~-B(2,-2)/2
+    A(2,-1)=~-A(2,-2)/2
+    B(N-1,0)=~-B(N-1,1)/2+B(N-1,2)
+    A(N-1,0)=~-A(N-1,1)/2+A(N-1,2)
+    B(N-2,1)=~-B(N-2,2)/2
+    A(N-2,1)=~-A(N-2,2)/2
+  END BuildMats
+  
+  SUBROUTINE eigenval
+    c=0.3
+    DO
+      BuildMats; LUdecomp A
+      zetaold=B*psi; psi=A\zetaold
+      zstar=psistar/A; psistar=zstar*B
+      dc=-(zstar*zetaold)/(psistar*psi)
+      c=c+dc
+      psi=psi*ABS[psi(1)]/psi(1)/MOD(psi)
+      zstar=zstar/(psistar*psi)
+      psistar=psistar/(psistar*psi)
+    WHILE ABS(dc)>1.E-8
+  END eigenval
+  
+  Poiseuille
+  DO psi(i)=U(i)*(1-U(i)) FOR ALL i
+  psistar=psi
+  eigenval
+END everything
+
+everything(2000)
+c_ref=c
+WRITE BY NAME "#",alpha,Re
+DO
+  everything(N)
+  WRITE N,ABS(c-c_ref),c
+FOR N IN (10,15,20,30,50,70,100,150,200,300,500,700,1000)
