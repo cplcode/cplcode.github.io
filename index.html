@@ -107,12 +107,14 @@
       width:100%
     }
     div.tile a {
-      margin:auto;
-      font-size:x-large;
       text-decoration:none;
       color:Black;
     }
-    div.tile a:hover {
+    div.tile a.tool {
+      margin:auto;
+      font-size:x-large;
+    }
+    div.tile a.tool:hover {
       text-decoration:underline;
       color:Blue;
     }
@@ -146,16 +148,16 @@
   </div>
   <div class=container>
     <div class=tile>
-      <a href="Documentation/cpl.html#makecpl" title="One command to compile and make your CPL project">makecpl</a>
-      <p>Write your program using your favorite text editor, <em>compile</em> it with <code>makecpl &lt;yourprogram&gt;</code>, execute <code>&lt;yourprogram&gt;</code>.</p>
+      <a class=tool href="Documentation/cpl.html#makecpl" title="One command to compile and make your CPL project">makecpl</a>
+      <p><a href="Documentation/cpl.html#makecpl">Write your program using your favorite text editor, <em>compile</em> it with <code>makecpl &lt;yourprogram&gt;</code>, execute <code>&lt;yourprogram&gt;</code>.</a></p>
 <!--      <img src="images/makecpl.png" alt="makecpl usage example"> -->
     </div><div class=tile>
-      <a href="Documentation/cpl.html#icpl" title="Interactive CPL interpreter and program shell">icpl</a>
-      <p>Interactive cpl: evaluate any CPL expression, either on the command line as in <code>icpl &lt;expression&gt;</code>, or in the <code>icpl</code> interactive <em>interpreter</em>.</p>
+      <a class=tool href="Documentation/cpl.html#icpl" title="Interactive CPL interpreter and program shell">icpl</a>
+      <p><a href="Documentation/cpl.html#icpl">Interactive cpl: evaluate any CPL expression, either on the command line as in <code>icpl &lt;expression&gt;</code>, or in the <code>icpl</code> interactive <em>interpreter</em>.</a></p>
 <!--      <img src="images/icpl.png" alt="icpl usage example"> -->
     </div><div class=tile>
-      <a href="Documentation/editor.html#full-screen" title="Code editor embedded in the icpl environment">edit</a>
-      <p>When invoked under the <code>edit</code> alias, <code>icpl</code> turns into a terminal-screen <em>text editor</em> providing CPL syntax and parentheses completion.</p>
+      <a class=tool href="Documentation/editor.html#full-screen" title="Code editor embedded in the icpl environment">edit</a>
+      <p><a href="Documentation/editor.html#full-screen">When invoked under the <code>edit</code> alias, <code>icpl</code> turns into a terminal-screen <em>text editor</em> providing CPL syntax and parentheses completion.</a></p>
 <!--      <img src="images/edit.png" alt="edit usage example"> -->
     </div>
   </div>

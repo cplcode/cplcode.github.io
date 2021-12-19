@@ -356,7 +356,7 @@ or of a single command:
  	CC=&lt;myspecialCcompiler&gt; makecpl &lt;myprogram&gt;
 
 With a compiler other than gcc, you may be unable to use <a href="#nested-functions">nested
-functions</a>. If you also want some of the CPL provided libraries to be recompiled, include a symbolic link for each in your local working directory as in the example
+functions</a>. If you want some of the pre-packaged libraries to be recompiled, just include a symbolic link for each in your local working directory as in the example
 
  	ln -s ~/fri/rbmat.cpl .
 
@@ -387,7 +387,7 @@ The <q>edit</q> command is used as an alias by more than one editor, including v
 If to have <q>edit</q> pop up a different editor is your preferred behaviour, just delete the bin/edit symbolic link. You will still be able to access the icpl editor by one of the other methods specified above.
 
 <h3>My .cpl source files get rejected when sent as email attachments</h3>
-gmail and other popular email servers automatically reject files with the .cpl extension (amid a list of about 50 extensions, even when included in compressed archives) because this extension is shared with MS Windows Control PaneL files. This precaution is overkilling insofar as it is based on extension only, but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end; or else do as you would for a large attachment: upload your file(s) to a cloud service and email its shareable link. 
+gmail and other popular email servers automatically reject files with the .cpl extension (amid a list of about 50 extensions, even when included in compressed archives) because this extension is shared with MS Windows Control PaneL files. This precaution is overkill insofar as it is based on extension only, but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end; or else do as you would for a large attachment: upload your file(s) to a cloud service and email its shareable link. 
 </div><div class=page id="Syntax">
 Page: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a>
 <hr> <h1>The CPL programming language syntax</h1>
