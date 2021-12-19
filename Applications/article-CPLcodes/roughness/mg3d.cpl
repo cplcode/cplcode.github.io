@@ -1,0 +1,122 @@
+USE stagintrest3d
+
+SUBROUTINE mirrorbc(ARRAY(*,*,*) OF VARS field^)
+  dx=1/(field.HI1-1)
+  DO field(ix,iy,HI).u=field(ix,iy,HI-1).u+dx FOR ALL ix,iy
+  ! field(HI DIV 2,HI DIV 2,0).u=0.5/dx/dx; field(HI DIV 2-1,HI DIV 2,0).u=0.5/dx/dx
+  field(*,*,HI).v=field(*,*,HI-1).v
+  field(-1,*,*).u=field(HI-2,*,*).u; field(0,*,*)=field(HI-1,*,*); field(HI,*,*)=field(1,*,*)
+  field(*,-1,*).v=field(*,HI-2,*).v; field(*,0,*)=field(*,HI-1,*); field(*,HI,*)=field(*,1,*)
+END mirrorbc
+
+SUBROUTINE staircasebc(ARRAY(*,*,*) OF VARS field^; POINTER TO boundarypoint bcond(*,*,*))
+  LOOP FOR ix=1 TO field.HI1-1 AND iy=1 TO field.HI2-1 AND iz=1 TO field.HI3
+    IF bcond(ix,iy,iz)=NULL THEN
+      field(ix,iy,iz).u=0; field(ix,iy,iz).v=0; field(ix,iy,iz).w=0
+      field(ix-1,iy,iz).u=0; field(ix,iy-1,iz).v=0; field(ix,iy,iz-1).w=0
+    END IF
+  REPEAT
+  field(*,*,0).u=0; field(*,*,0).v=0; field(*,*,0).w=0
+  field(*,*,HI-1).w=0
+  mirrorbc(field)
+END staircasebc
+
+#define laplacian(f) f(1,0,0)+f(-1,0,0)+f(0,1,0)+f(0,-1,0)+f(0,0,1)+f(0,0,-1)-6*f(0,0,0)
+ueq==laplacian(u)/dx/dx-[p(1,0,0)-p(0,0,0)]/dx
+veq==laplacian(v)/dx/dx-[p(0,1,0)-p(0,0,0)]/dx
+weq==laplacian(w)/dx/dx-[p(0,0,1)-p(0,0,0)]/dx
+
+SUBROUTINE resids(ARRAY(*,*,*) OF VARS field,rhs^; POINTER TO boundarypoint bcond(*,*,*))
+  dx=1/(field.HI1-1)
+  LOOP FOR ix=1 TO field.HI1-1 AND iy=1 TO field.HI2-1 AND iz=1 TO field.HI3-1
+    EXCEPT bcond(ix,iy,iz)=NULL
+    WITH field(ix+*,iy+*,iz+*)
+    IF bcond(ix MOD HI +1,iy,iz)#NULL THEN rhs(ix,iy,iz).u=~+ueq
+    IF bcond(ix,iy MOD HI +1,iz)#NULL THEN rhs(ix,iy,iz).v=~+veq
+    IF bcond(ix,iy,iz+1)#NULL THEN rhs(ix,iy,iz).w=~+weq
+    rhs(ix,iy,iz).p=~+[u(0,0,0)-u(-1,0,0)+v(0,0,0)-v(0,-1,0)+w(0,0,0)-w(0,0,-1)]/dx
+  REPEAT
+  rhs(-1,*,*).u=rhs(HI-2,*,*).u; rhs(0,*,*)=rhs(HI-1,*,*); rhs(HI,*,*)=rhs(1,*,*)
+  rhs(*,-1,*).v=rhs(*,HI-2,*).v; rhs(*,0,*)=rhs(*,HI-1,*); rhs(*,HI,*)=rhs(*,1,*)
+END resids
+
+SUBROUTINE smooth(ARRAY(*,*,*) OF VARS field^,rhs; POINTER TO boundarypoint bcond(*,*,*))
+  dx=1/(field.HI1-1)
+  c0=6/dx/dx
+  LOOP FOR parity=0 TO 1
+    LOOP FOR ix=1 TO field.HI1-1 AND iy=1 TO field.HI2-1 AND iz=2-(ix+iy+parity) MOD 2 TO field.HI3-1 BY 2
+      EXCEPT bcond(ix,iy,iz)#^stdpoint
+      REAL ut(-1..0),dtu(-1..0),vt(-1..0),dtv(-1..0),wt(-1..0),dtw(-1..0)
+      LOOP FOR dix=-1 TO 0 WITH field(ix+dix+*,iy+*,iz+*)
+        IF bcond((ix+2*dix) MOD HI + 1,iy,iz)#^stdpoint THEN dtu(dix)=0 ELSE
+          dtu(dix)=1/c0
+          IF dix=0 THEN u(0,0,0)=u(0,0,0)+[ueq+rhs(ix+dix,iy,iz).u]*dtu(dix)
+        END IF
+      REPEAT
+      LOOP FOR diy=-1 TO 0 WITH field(ix+*,iy+diy+*,iz+*)
+        IF bcond(ix,(iy+2*diy) MOD HI +1,iz)#^stdpoint THEN dtv(diy)=0 ELSE
+          dtv(diy)=1/c0
+          IF diy=0 THEN v(0,0,0)=v(0,0,0)+[veq+rhs(ix,iy+diy,iz).v]*dtv(diy)
+        END IF
+      REPEAT
+      LOOP FOR diz=-1 TO 0 WITH field(ix+*,iy+*,iz+diz+*)
+        IF bcond(ix,iy,iz+2*diz+1)#^stdpoint THEN dtw(diz)=0 ELSE
+          dtw(diz)=1/c0
+          IF diz=0 THEN w(0,0,0)=w(0,0,0)+[weq+rhs(ix,iy,iz+diz).w]*dtw(diz)
+        END IF
+      REPEAT
+      WITH field(ix+*,iy+*,iz+*)
+      cont=[u(0,0,0)-u(-1,0,0)+v(0,0,0)-v(0,-1,0)+w(0,0,0)-w(0,0,-1)+dx*rhs(ix,iy,iz).p]/[dtu(0)+dtu(-1)+dtv(0)+dtv(-1)+dtw(0)+dtw(-1)]
+      p(0,0,0)=~-cont*dx
+      u(0,0,0)=~-dtu(0)*cont
+      u(-1,0,0)=~+dtu(-1)*cont
+      v(0,0,0)=~-dtv(0)*cont
+      v(0,-1,0)=~+dtv(-1)*cont
+      w(0,0,0)=~-dtw(0)*cont
+      w(0,0,-1)=~+dtw(-1)*cont
+    REPEAT
+    mirrorbc(field)
+  REPEAT
+END smooth
+
+SUBROUTINE mg(ARRAY(*,*,*) OF VARS ff^,frsd; POINTER TO boundarypoint bcond(*,*,*))
+  nxc=ff.HI1 DIV 2; nyc=ff.HI2 DIV 2; nzc=ff.HI3 DIV 2
+  ARRAY(-1..nxc+1,-1..nyc+1,0..nzc) OF VARS cf=0,crhs=0
+  cbcond=^bcond(2*(*),2*(*),2*(*))
+  LOOP FOR ixc=1 TO cf.HI1 AND iyc=1 TO cf.HI2 AND izc=1 TO cf.HI3
+    VARS fff(-1..0,-1..0,-1..0)=0
+    LOOP FOR i=-1 TO 0 AND j=-1 TO 0 AND k=-1 TO 0
+      EXCEPT 2*ixc+i>ff.HI1 OR 2*iyc+j>ff.HI2 OR 2*izc+k>ff.HI3
+      fff(i,j,k)=ff(2*ixc+i,2*iyc+j,2*izc+k)
+    REPEAT
+    restrict(fff,cf(ixc+(-1..0),iyc+(-1..0),izc+(-1..0)))
+  REPEAT LOOP
+  staircasebc(cf,cbcond)
+  TYPEOF(cf(*)) cf0=cf
+  resids(cf,crhs,cbcond)
+  crhs=-crhs
+  LOOP FOR ixc=1 TO cf.HI1 AND iyc=1 TO cf.HI2 AND izc=1 TO cf.HI3
+    VARS ffrsd(-1..0,-1..0,-1..0)=0
+    LOOP FOR i=-1 TO 0 AND j=-1 TO 0 AND k=-1 TO 0
+      EXCEPT 2*ixc+i>frsd.HI1 OR 2*iyc+j>frsd.HI2 OR 2*izc+k>frsd.HI3
+      ffrsd(i,j,k)=frsd(2*ixc+i,2*iyc+j,2*izc+k)
+    REPEAT
+    restrict(ffrsd,crhs(ixc+(-1..0),iyc+(-1..0),izc+(-1..0)))
+  REPEAT LOOP
+  crhs(-1,*,*).u=crhs(HI-2,*,*).u; crhs(0,*,*)=crhs(HI-1,*,*); crhs(HI,*,*)=crhs(1,*,*)
+  crhs(*,-1,*).v=crhs(*,HI-2,*).v; crhs(*,0,*)=crhs(*,HI-1,*); crhs(*,HI,*)=crhs(*,1,*)
+  IF nxc MOD 2 =0 AND nyc MOD 2 =0 AND nxc>5 AND nyc>5 THEN
+    LOOP FOR 2 TIMES
+      DO smooth(cf,crhs,cbcond) FOR 3 TIMES
+      TYPEOF(crhs(*)) crsd=crhs
+      resids(cf,crsd,cbcond)
+      mg(cf,crsd,cbcond)
+      DO smooth(cf,crhs,cbcond) FOR 3 TIMES
+    REPEAT
+  ELSE DO smooth(cf,crhs,cbcond) FOR 50 TIMES
+  cf(*)=~-cf0
+  LOOP FOR ixc=1 TO cf.HI1-1 AND iyc=1 TO cf.HI2-1 AND izc=1 TO cf.HI3
+    interp(cf(ixc+(-1..0),iyc+(-1..0),izc+(-1..0)),ff(2*ixc+(-1..0),2*iyc+(-1..0),2*izc+(-1..0)))
+  REPEAT LOOP
+  staircasebc(ff,bcond)
+END mg

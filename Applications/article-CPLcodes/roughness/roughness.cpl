@@ -1,0 +1,202 @@
+USE gnuplot
+! USE rtchecks
+
+INTEGER nx=16,ny=16,nz=16
+REAL a=0.1, rad=0.1
+LOOP FOR i=1 TO COMMANDLINE.HI
+  IF COMMANDLINE(i,0..2)="nx=" THEN
+    nx=atoi(COMMANDLINE(i,3+(0..HI-3))); ny=nx; nz=ny
+  ELSE IF COMMANDLINE(i,0..2)="ny=" THEN
+    ny=atoi(COMMANDLINE(i,3+(0..HI-3))); nz=ny
+  ELSE IF COMMANDLINE(i,0..2)="nz=" THEN
+    nz=atoi(COMMANDLINE(i,3+(0..HI-3)))
+  ELSE IF COMMANDLINE(i,0..1)="a=" THEN
+    a=atof(COMMANDLINE(i,2+(0..HI-2)))
+  ELSE IF COMMANDLINE(i,0..1)="rad=" THEN
+    rad=atof(COMMANDLINE(i,4+(0..HI-4)))
+  ELSE ERROR "unknown option"  
+REPEAT
+
+baseline=1E-12+1/8
+staircase=NO
+nshapes=ENUM(sinriblet,gaussian,smoothedcyl,cylinder,cone,spheroid,squarecyl,ellipsoid)
+shape=spheroid
+
+BOOLEAN FUNCTION InBody(REAL x,y,z)
+CASE shape OF
+sinriblet: ! sinusoidal riblet
+  RESULT=z<baseline+a*SIN(x*PI)^2
+gaussian:
+  RESULT=z<baseline+a*EXP{-160*[(x-0.5)^2+(y-0.5)^2]}
+smoothedcyl: ! smoothed cylinder
+  RESULT=IF (x-0.5)^2+(y-0.5)^2>4*rad^2 THEN z<baseline ELSE z<baseline+a/{1+EXP[10*(SQRT[(x-0.5)^2+(y-0.5)^2]/rad-1)]}
+cylinder:
+  RESULT=IF (x-0.5)^2+(y-0.5)^2<rad^2 THEN z<baseline+a ELSE z<baseline
+cone:
+  RESULT=IF SQRT[(x-0.5)^2+(y-0.5)^2]<rad THEN z<baseline+a*{1-SQRT[(x-0.5)^2+(y-0.5)^2]/rad} ELSE z<baseline
+spheroid:
+  RESULT=IF (x-0.5)^2+(y-0.5)^2<rad^2 THEN z<baseline+a*SQRT{1-[(x-0.5)^2+(y-0.5)^2]/rad^2} ELSE z<baseline
+squarecyl: ! square cylinder
+  RESULT=IF ABS(x-0.5)<rad AND ABS(y-0.5)<rad THEN z<baseline+a ELSE z<baseline
+ellipsoid: ! 3 to 1 ellipsoid
+  RESULT=IF [(x-0.5)/0.05]^2+[(y-0.5)/0.15]^2<1 THEN z<baseline+a*SQRT{1-[(x-0.5)/0.05]^2-[(y-0.5)/0.15]^2} ELSE z<baseline
+END CASE
+END InBody
+
+REAL FUNCTION Bisection[FUNCTION(REAL s)->BOOLEAN f; REAL VARIABLE s1, s2]
+f1 = f(s1); f2 = f(s2)
+IF f1 = f2 THEN ERROR "Bisection point not included in " s1 " " s2
+LOOP halve
+  RESULT=(s1+s2)/2
+  IF ABS(s2-s1)<1E-10 THEN EXIT Bisection
+  IF f(RESULT)=f1 THEN s1=RESULT ELSE s2=RESULT
+REPEAT halve
+END Bisection
+
+! laplstar=STRUCTURE(REAL c0,cn)
+laplstar=STRUCTURE(REAL c0)
+boundarypoint=STRUCTURED ARRAY(u,v,w) OF laplstar
+
+boundarypoint stdpoint
+
+USE mg3d
+
+POINTER TO boundarypoint bcond(0..nx,0..ny,0..nz)
+dx=1/nx; cn=1/dx
+WITH stdpoint.u: c0=dx*dx/6 ! ; cn=1/dx
+WITH stdpoint.v: c0=dx*dx/6 ! ; cn=1/dx
+WITH stdpoint.w: c0=dx*dx/6 ! ; cn=1/dx
+DO bcond(ix,iy,iz)=stdpoint FOR ALL ix,iy,iz
+DO bcond(ix,iy,0)=NULL; bcond(ix,iy,nz)=NULL FOR ALL ix,iy
+ARRAY(-1..nx+1,-1..ny+1,0..nz) OF VARS field=0,rhs=0
+
+#define imblapl(f) [f(1,0,0)+f(-1,0,0)+f(0,1,0)+f(0,-1,0)+f(0,0,1)+f(0,0,-1)]/dx/dx
+imbueq==imblapl(u)-cn*[p(1,0,0)-p(0,0,0)]
+imbveq==imblapl(v)-cn*[p(0,1,0)-p(0,0,0)]
+imbweq==imblapl(w)-cn*[p(0,0,1)-p(0,0,0)]
+
+SUBROUTINE imbresids
+LOOP FOR ix=1 TO field.HI1-1 AND iy=1 TO field.HI2-1 AND iz=1 TO field.HI3-1
+  EXCEPT bcond(ix,iy,iz)=NULL
+  REAL cont=0, dcont=0, dcont0=0
+  WITH field(ix+*,iy+*,iz+*)
+  IF bcond(ix MOD HI +1,iy,iz)#NULL THEN WITH bcond(ix,iy,iz).u rhs(ix,iy,iz).u=(c0*imbueq-u(0,0,0))*(6/dx/dx); cont=~+cn*u(0,0,0); dcont=~+cn*cn*c0; dcont0=~+1/6
+  IF bcond(ix,iy MOD HI +1,iz)#NULL THEN WITH bcond(ix,iy,iz).v rhs(ix,iy,iz).v=(c0*imbveq-v(0,0,0))*(6/dx/dx); cont=~+cn*v(0,0,0); dcont=~+cn*cn*c0; dcont0=~+1/6
+  IF bcond(ix,iy,iz+1)#NULL THEN WITH bcond(ix,iy,iz).w rhs(ix,iy,iz).w=(c0*imbweq-w(0,0,0))*(6/dx/dx); cont=~+cn*w(0,0,0); dcont=~+cn*cn*c0; dcont0=~+1/6
+  IF bcond(ix-1,iy,iz)#NULL THEN WITH bcond(ix-1,iy,iz).u cont=~-cn*u(-1,0,0); dcont=~+cn*cn*c0; dcont0=~+1/6
+  IF bcond(ix,iy-1,iz)#NULL THEN WITH bcond(ix,iy-1,iz).v cont=~-cn*v(0,-1,0); dcont=~+cn*cn*c0; dcont0=~+1/6
+  IF bcond(ix,iy,iz-1)#NULL THEN WITH bcond(ix,iy,iz-1).w cont=~-cn*w(0,0,-1); dcont=~+cn*cn*c0; dcont0=~+1/6
+  rhs(ix,iy,iz).p=cont*dcont0/dcont
+REPEAT
+rhs(0,*,*)=rhs(HI-1,*,*); rhs(HI,*,*)=rhs(1,*,*)
+rhs(*,0,*)=rhs(*,HI-1,*); rhs(*,HI,*)=rhs(*,1,*)
+END imbresids
+
+SUBROUTINE imbsmooth
+LOOP FOR parity=0 TO 1
+  LOOP FOR ix=1 TO field.HI1-1 AND iy=1 TO field.HI2-1 AND iz=2-(ix+iy+parity) MOD 2 TO field.HI3-1 BY 2
+    EXCEPT bcond(ix,iy,iz)=NULL
+    REAL ut(-1..0),dtu(-1..0),vt(-1..0),dtv(-1..0),wt(-1..0),dtw(-1..0)
+    REAL cont=0,dcont=0
+    LOOP FOR dix=-1 TO 0 WITH field(ix+dix+*,iy+*,iz+*)
+      IF bcond((ix+2*dix) MOD HI +1,iy,iz)=NULL THEN ut(dix)=u(0,0,0); dtu(dix)=0 ELSE
+        WITH bcond(ix+dix,iy,iz).u
+	dtu(dix)=cn*c0
+	u(0,0,0)=imbueq*c0
+	IF dix=0 THEN cont=~+cn*u(0,0,0) ELSE cont=~-cn*u(0,0,0)
+	dcont=~+cn*dtu(dix)
+      END IF
+    REPEAT
+    LOOP FOR diy=-1 TO 0 WITH field(ix+*,iy+diy+*,iz+*)
+      IF bcond(ix,(iy+2*diy) MOD HI +1,iz)=NULL THEN vt(diy)=v(0,0,0); dtv(diy)=0 ELSE
+        WITH bcond(ix,iy+diy,iz).v
+	dtv(diy)=cn*c0
+	v(0,0,0)=imbveq*c0
+	IF diy=0 THEN cont=~+cn*v(0,0,0) ELSE cont=~-cn*v(0,0,0)
+	dcont=~+cn*dtv(diy)
+      END IF
+    REPEAT
+    LOOP FOR diz=-1 TO 0 WITH field(ix+*,iy+*,iz+diz+*)
+      IF bcond(ix,iy,iz+2*diz+1)=NULL THEN wt(diz)=w(0,0,0); dtw(diz)=0 ELSE
+        WITH bcond(ix,iy,iz+diz).w
+	dtw(diz)=cn*c0
+	w(0,0,0)=imbweq*c0
+	IF diz=0 THEN cont=~+cn*w(0,0,0) ELSE cont=~-cn*w(0,0,0)
+	dcont=~+cn*dtw(diz)
+      END IF
+    REPEAT
+    WITH field(ix+*,iy+*,iz+*)
+    cont=cont/dcont
+    p(0,0,0)=~-cont
+    u(0,0,0)=~-dtu(0)*cont
+    u(-1,0,0)=~+dtu(-1)*cont
+    v(0,0,0)=~-dtv(0)*cont
+    v(0,-1,0)=~+dtv(-1)*cont
+    w(0,0,0)=~-dtw(0)*cont
+    w(0,0,-1)=~+dtw(-1)*cont
+  REPEAT
+  mirrorbc(field)
+REPEAT
+END imbsmooth
+
+SUBROUTINE updatebcond(POINTER TO POINTER TO boundarypoint bp; INTEGER vcomp; REAL d)
+  IF bp=^stdpoint THEN NEW bp; bp^=stdpoint
+  WITH bp(vcomp)
+  c0=c0*d/[c0/dx/dx*(dx-d)+d]
+!  cn=~*(d+dx/2)^2/2/d/dx  !  SQRT(1/c0/6)  !  0.5*(dx+d)/dx*cn
+END updatebcond
+
+SUBROUTINE calcbcond(POINTER TO POINTER TO boundarypoint bp; INTEGER vcomp; REAL x,y,z)
+IF InBody(x,y,z) THEN updatebcond(bp,vcomp,0) ELSE IF NOT staircase THEN
+  IF InBody(x-dx,y,z) THEN updatebcond(bp,vcomp,x-Bisection[InBody(*,y,z),x-dx,x])
+  IF InBody(x+dx,y,z) THEN updatebcond(bp,vcomp,Bisection[InBody(*,y,z),x,x+dx]-x)
+  IF InBody(x,y-dx,z) THEN updatebcond(bp,vcomp,y-Bisection[InBody(x,*,z),y-dx,y])
+  IF InBody(x,y+dx,z) THEN updatebcond(bp,vcomp,Bisection[InBody(x,*,z),y,y+dx]-y)
+  IF InBody(x,y,z-dx) THEN updatebcond(bp,vcomp,z-Bisection[InBody(x,y,*),z-dx,z])
+  IF InBody(x,y,z+dx) THEN updatebcond(bp,vcomp,Bisection[InBody(x,y,*),z,z+dx]-z)
+END IF
+END calcbcond
+
+REAL mh=0,mh2=0
+LOOP FOR ix=nx DOWN TO 1 AND iy=ny DOWN TO 1 AND iz=nz-1 DOWN TO 1
+  IF InBody[(ix+0.5)*dx,iy*dx,iz*dx] AND InBody[(ix-0.5)*dx,iy*dx,iz*dx] AND
+     InBody[ix*dx,(iy+0.5)*dx,iz*dx] AND InBody[ix*dx,(iy+0.5)*dx,iz*dx] AND
+     InBody[ix*dx,iy*dx,(iz+0.5)*dx] AND InBody[ix*dx,iy*dx,(iz-0.5)*dx] THEN
+    bcond(ix,iy,iz)=NULL
+  ELSE
+    IF InBody[ix*dx,iy*dx,(iz-1)*dx] AND NOT InBody(ix*dx,iy*dx,iz*dx) THEN
+      h=Bisection[InBody(ix*dx,iy*dx,*),(iz-1)*dx,iz*dx]-baseline
+      mh=~+h
+      mh2=~+h^2
+    END IF
+    calcbcond(bcond(ix,iy,iz),0,(ix+0.5)*dx,iy*dx,iz*dx)
+    calcbcond(bcond(ix,iy,iz),1,ix*dx,(iy+0.5)*dx,iz*dx)
+    calcbcond(bcond(ix,iy,iz),2,ix*dx,iy*dx,(iz+0.5)*dx)
+  END IF
+REPEAT
+bcond(0,*,*)=bcond(nx,*,*)
+bcond(*,0,*)=bcond(*,ny,*)
+mh=~/nx/ny
+mh2=~/nx/ny
+heff=mh2/mh; deff=SQRT(mh/heff*4/PI); ar=heff/deff
+! deffa=SQRT(mh/a*4/PI); ara=a/deffa=(a/heff)^1.5*ar  !  va peggio
+
+REAL r=0
+LOOP FOR it=1 TO 50
+  DO imbsmooth FOR 4 TIMES
+  imbresids
+  mg(field,rhs,bcond)
+  IF it MOD 1=0 THEN
+    ph=nz*dx-baseline-(SUM field(ix,iy,nz).u FOR ix=1 TO nx AND iy=1 TO ny)/nx/ny
+    oldr=r; r=MAXABS(rhs)
+    WRITE ar,ph/mh:1.7,ph,mh,ph/(1-2.1566*ph)/mh,a,heff,oldr/r
+  END IF
+  ! SPLOT rhs.p(*,ny DIV 2,*)
+REPEAT
+!(
+uyw=CREATE("uyw.dat")
+DO
+  DO WRITE TO uyw (ix+0.5)*dx, iy*dx, [field(ix,iy,1).u-field(ix,iy,0).u]/dx FOR iy=0 TO ny
+  WRITE TO uyw
+FOR ix=0 TO nx-1
+!)

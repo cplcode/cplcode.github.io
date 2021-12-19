@@ -1,0 +1,76 @@
+USE rbmat
+USE gnuplot
+! USE rtchecks
+
+ASK INTEGER nx,ny
+ASK REAL Reynolds
+ASK REAL gradp,waveampl,wavespeed
+gradph=gradp*4*nx/ny/ny
+Rh=Reynolds/ny/4
+! deltat=0.2/(1+Rh)
+deltat=0.1/(1+ABS(wavespeed))/(1+2*Rh)
+
+VFIELD=STRUCTURED ARRAY[u(0..nx+1,0..ny),
+			v(0..nx+1,1..ny),
+		        p(0..nx+1,0..ny)] OF REAL
+
+#define laplacian(f) f(1,0)+f(0,1)+f(-1,0)+f(0,-1)-(4+betah^2)*f(0,0)
+INLINE FUNCTION uconv(INTEGER ix,iy)=[u(ix+1,iy)+u(ix,iy)]^2-[u(ix,iy)+u(ix-1,iy)]^2+
+  [u(ix,iy+1)+u(ix,iy)]*[v(ix,iy+1)+v(ix-1,iy+1)]-[u(ix,iy-1)+u(ix,iy)]*[v(ix,iy)+v(ix-1,iy)]
+INLINE FUNCTION vconv(INTEGER ix,iy)=[v(ix,iy+1)+v(ix,iy)]^2-[v(ix,iy-1)+v(ix,iy)]^2+
+  [v(ix+1,iy)+v(ix,iy)]*[u(ix+1,iy)+u(ix+1,iy-1)]-[v(ix-1,iy)+v(ix,iy)]*[u(ix,iy)+u(ix,iy-1)]
+INLINE FUNCTION cont(INTEGER ix,iy)=u(ix+1,iy)-u(ix,iy)+v(ix,iy+1)-v(ix,iy)
+
+SUBROUTINE resid(VFIELD Vnew^, V) WITH V
+  betah=0
+  Vnew=0
+  DO Vnew.u(ix,iy)=laplacian(u(ix+*,iy+*))-Rh*uconv(ix,iy)-p(ix,iy)+p(ix-1,iy) FOR ix=1 TO nx AND iy=1 TO ny-1
+  DO Vnew.v(ix,iy)=laplacian(v(ix+*,iy+*))-Rh*vconv(ix,iy)-p(ix,iy)+p(ix,iy-1) FOR ix=1 TO nx AND iy=2 TO ny-1
+END resid
+
+REAL vwall(0..nx+1)
+SUBROUTINE pressit(VFIELD Vnew^; REAL betah) WITH Vnew
+  LOOP FOR parity=0 TO 1 AND ix=1 TO nx AND iy=1+(ix+parity)MOD 2 TO ny-1 BY 2
+    c=cont(ix,iy)/(4+betah^2)
+    p(ix,iy)=~-c
+    u(ix+1,iy)=~-c
+    u(ix,iy)=~+c
+    v(ix,iy+1)=~-c
+    v(ix,iy)=~+c
+  REPEAT  
+  DO p(ix,0)=p(ix,1)-v(ix,1)+vwall(ix); v(ix,1)=vwall(ix) FOR ix=1 TO nx
+  DO p(ix,ny)=p(ix,ny-1)+v(ix,ny); v(ix,ny)=0 FOR ix=1 TO nx
+  DO p(0,iy)=p(nx,iy)+gradph FOR ALL iy
+  DO p(nx+1,iy)=p(1,iy)-gradph FOR ALL iy
+  DO u(0,iy)=[~+u(nx,iy)]/2; u(nx,iy)=u(0,iy) FOR ALL iy
+  DO u(1,iy)=[~+u(nx+1,iy)]/2; u(nx+1,iy)=u(1,iy) FOR ALL iy
+  v(0)=v(nx); v(nx+1)=v(1)
+END pressit
+
+VFIELD Vb=0, Vbn
+DO Vb.u(ix,0)=wavespeed; Vb.u(ix,ny)=wavespeed FOR ALL ix
+DO vwall(ix) = waveampl*SIN(2*PI*ix/nx) FOR ALL ix
+LOOP main FOR count=1 TO 10000000
+resid(Vbn,Vb)
+Vb=~+Vbn*deltat
+Vb.u(0)=Vb.u(nx); Vb.u(nx+1)=Vb.u(1)
+Vb.v(0)=Vb.v(nx); Vb.v(nx+1)=Vb.v(1)
+DO pressit(Vb,0) FOR 4 TIMES
+IF count MOD 1000 =0 THEN
+  NEWGRAPH; SPLOT Vb.u
+  WRITE BY NAME count
+  WRITE BY NAME MAXABS(Vbn)
+  WRITE BY NAME [wavespeed+(SUM Vb.u(ix,iy) FOR ix=1 TO nx AND iy=1 TO ny-1)/nx]/ny-wavespeed
+END IF
+IF count>10 AND MAXABS(Vbn)<1E-8 THEN
+  pl=CREATE("plot.dat")
+  WRITE BY NAME TO pl "# nx=" nx,ny,Reynolds,gradp,waveampl,wavespeed
+  meanvel=[wavespeed+(SUM Vb.u(ix,iy) FOR ix=1 TO nx AND iy=1 TO ny-1)/nx]/ny-wavespeed
+  work=gradph*meanvel*ny+SUM Vb.p(ix,0)*vwall(ix) FOR ix=1 TO nx
+  WRITE BY NAME TO pl "# mean vel.=" meanvel,meanvel/(2/3),work,work/8/(2/3)/(meanvel/2/3)^2
+  DO WRITE TO pl 2*iy/ny,[SUM Vb.u(ix,iy) FOR ix=1 TO nx]/nx-wavespeed,2*iy/ny*(2-2*iy/ny) FOR iy=0 TO ny
+  CLOSE pl
+  system "head plot.dat"
+  STOP
+END IF
+REPEAT main
