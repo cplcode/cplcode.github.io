@@ -10,59 +10,59 @@
 "url":"https://cplcode.net"}
 }</script></head>
 <body translate="no"><pre>
-database<a href="cpl.html#Assignment">=</a>"/var/www/textsearch/Libridimec.txt"
-maxout<a href="cpl.html#Assignment">=</a>200
+database="/var/www/textsearch/Libridimec.txt"
+maxout=200
 
 <span class=comment>! USE rtchecks</span>
 
 <a href="cpl.html#BOOLEAN">BOOLEAN</a> expired
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> setexpired(<a href="cpl.html#INTEGER">INTEGER</a> signum) <a href="cpl.html#Assignment">=</a> expired<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">YES</a>
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> setexpired(<a href="cpl.html#INTEGER">INTEGER</a> signum) = expired=<a href="cpl.html#BOOLEAN">YES</a>
 signal(SIGVTALRM,setexpired)
 
 <a href="cpl.html#C-interface">#include</a> &lt;sys/time.h&gt;
 struct itimerval allowedtime
-<a href="cpl.html#WITH">WITH</a> allowedtime.it_interval: tv_sec<a href="cpl.html#Assignment">=</a>0; tv_usec<a href="cpl.html#Assignment">=</a>0
-<a href="cpl.html#WITH">WITH</a> allowedtime.it_value: tv_sec<a href="cpl.html#Assignment">=</a>0; tv_usec<a href="cpl.html#Assignment">=</a>100000
+<a href="cpl.html#WITH">WITH</a> allowedtime.it_interval: tv_sec=0; tv_usec=0
+<a href="cpl.html#WITH">WITH</a> allowedtime.it_value: tv_sec=0; tv_usec=100000
 
-And<a href="cpl.html#Assignment">=</a>"e "; Or<a href="cpl.html#Assignment">=</a>"o "; Not<a href="cpl.html#Assignment">=</a>"non "
+And="e "; Or="o "; Not="non "
 
 <a href="cpl.html#USE">USE</a> search
 
-htmlheader <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>HEADEND
+htmlheader = <a href="cpl.html#STRING">&lt;&lt;</a>HEADEND
 Content-type: text/html
 
 &lt;title&gt;Catalogo della biblioteca DIMEC&lt;/title&gt;
-&lt;meta <a href="cpl.html#NAME">NAME</a><a href="cpl.html#Assignment">=</a>author CONTENT<a href="cpl.html#Assignment">=</a>"Paolo Luchini - DIMEC - Universita` di Salerno, 2004. luchini@unisa.it"&gt;
-&lt;link rel<a href="cpl.html#Assignment">=</a>StyleSheet href<a href="cpl.html#Assignment">=</a>/textsearch/catalog.css&gt;
-&lt;body onload<a href="cpl.html#Assignment">=</a>"javascript:document.f.q.focus()"&gt;
+&lt;meta <a href="cpl.html#NAME">NAME</a>=author CONTENT="Paolo Luchini - DIMEC - Universita` di Salerno, 2004. luchini@unisa.it"&gt;
+&lt;link rel=StyleSheet href=/textsearch/catalog.css&gt;
+&lt;body onload="javascript:document.f.q.focus()"&gt;
 HEADEND
 
-benvenuti <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>BENVENUTI
-&lt;H1 align<a href="cpl.html#Assignment">=</a>center&gt;Benvenuti al catalogo della biblioteca 
-&lt;IMG SRC<a href="cpl.html#Assignment">=</a>"/textsearch/logodimec.gif" align<a href="cpl.html#Assignment">=</a>middle border<a href="cpl.html#Assignment">=</a>0 ALT<a href="cpl.html#Assignment">=</a>"DIMEC"&gt;&lt;/H1&gt;
+benvenuti = <a href="cpl.html#STRING">&lt;&lt;</a>BENVENUTI
+&lt;H1 align=center&gt;Benvenuti al catalogo della biblioteca 
+&lt;IMG SRC="/textsearch/logodimec.gif" align=middle border=0 ALT="DIMEC"&gt;&lt;/H1&gt;
 BENVENUTI
 
-form1 <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>FORM1
-&lt;FORM name<a href="cpl.html#Assignment">=</a>f&gt;&lt;TABLE class<a href="cpl.html#Assignment">=</a>query align<a href="cpl.html#Assignment">=</a>center width<a href="cpl.html#Assignment">=</a>95%&gt;&lt;tr&gt;&lt;td width<a href="cpl.html#Assignment">=</a>50
-align<a href="cpl.html#Assignment">=</a>left&gt;&lt;A HREF<a href="cpl.html#Assignment">=</a>"http://www.unisa.it"&gt;
-&lt;IMG SRC<a href="cpl.html#Assignment">=</a>"/textsearch/logo50.gif" height<a href="cpl.html#Assignment">=</a>50 width<a href="cpl.html#Assignment">=</a>50 align<a href="cpl.html#Assignment">=</a>middle border<a href="cpl.html#Assignment">=</a>0
-ALT<a href="cpl.html#Assignment">=</a>"UniSa"&gt;&lt;/A&gt;&lt;/td&gt;
-&lt;td width<a href="cpl.html#Assignment">=</a>60 align<a href="cpl.html#Assignment">=</a>left&gt;
-&lt;A HREF<a href="cpl.html#Assignment">=</a>"http://www.csab.unisa.it/catalogo.asp" class<a href="cpl.html#Assignment">=</a>csab&gt;&lt;font size<a href="cpl.html#Assignment">=</a>2&gt;
+form1 = <a href="cpl.html#STRING">&lt;&lt;</a>FORM1
+&lt;FORM name=f&gt;&lt;TABLE class=query align=center width=95%&gt;&lt;tr&gt;&lt;td width=50
+align=left&gt;&lt;A HREF="http://www.unisa.it"&gt;
+&lt;IMG SRC="/textsearch/logo50.gif" height=50 width=50 align=middle border=0
+ALT="UniSa"&gt;&lt;/A&gt;&lt;/td&gt;
+&lt;td width=60 align=left&gt;
+&lt;A HREF="http://www.csab.unisa.it/catalogo.asp" class=csab&gt;&lt;font size=2&gt;
 Biblioteca&lt;BR&gt;di Ateneo&lt;/font&gt;&lt;/A&gt;&lt;/td&gt;
-&lt;td align<a href="cpl.html#Assignment">=</a>center&gt;&lt;A HREF<a href="cpl.html#Assignment">=</a>"http://www.dimec.unisa.it"&gt;
-&lt;IMG SRC<a href="cpl.html#Assignment">=</a>"/textsearch/logodimec.gif" height<a href="cpl.html#Assignment">=</a>30 width<a href="cpl.html#Assignment">=</a>50 align<a href="cpl.html#Assignment">=</a>top border<a href="cpl.html#Assignment">=</a>0
-ALT<a href="cpl.html#Assignment">=</a>"DIMEC"&gt;&lt;/A&gt;
-&lt;span style<a href="cpl.html#Assignment">=</a>"vertical-align:-22%"&gt;&lt;INPUT <a href="cpl.html#TYPE">TYPE</a><a href="cpl.html#Assignment">=</a>text name<a href="cpl.html#Assignment">=</a>q size<a href="cpl.html#Assignment">=</a>48 maxlength<a href="cpl.html#Assignment">=</a>255 value<a href="cpl.html#Assignment">=</a>"
+&lt;td align=center&gt;&lt;A HREF="http://www.dimec.unisa.it"&gt;
+&lt;IMG SRC="/textsearch/logodimec.gif" height=30 width=50 align=top border=0
+ALT="DIMEC"&gt;&lt;/A&gt;
+&lt;span style="vertical-align:-22%"&gt;&lt;INPUT <a href="cpl.html#TYPE">TYPE</a>=text name=q size=48 maxlength=255 value="
 FORM1
 form2 = &lt;&lt;FORM2
-"&gt;&lt;INPUT type<a href="cpl.html#Assignment">=</a>submit VALUE<a href="cpl.html#Assignment">=</a>"Cerca nella biblioteca"&gt;&lt;/span&gt;&lt;/td&gt;
-&lt;td width<a href="cpl.html#Assignment">=</a>10% align<a href="cpl.html#Assignment">=</a>left&gt;
-&lt;A href<a href="cpl.html#Assignment">=</a>"?#istruzioni"&gt;&lt;small&gt;ISTRUZIONI&lt;/small&gt;&lt;/A&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/TABLE&gt;&lt;/FORM&gt;
+"&gt;&lt;INPUT type=submit VALUE="Cerca nella biblioteca"&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;td width=10% align=left&gt;
+&lt;A href="?#istruzioni"&gt;&lt;small&gt;ISTRUZIONI&lt;/small&gt;&lt;/A&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/TABLE&gt;&lt;/FORM&gt;
 FORM2
 
-istruzioni <a href="cpl.html#Assignment">=</a> <a href="cpl.html#STRING">&lt;&lt;</a>fineistruzioni
-&lt;H3&gt;&lt;A name<a href="cpl.html#Assignment">=</a>istruzioni&gt;ISTRUZIONI&lt;/A&gt;&lt;/H3&gt;
+istruzioni = <a href="cpl.html#STRING">&lt;&lt;</a>fineistruzioni
+&lt;H3&gt;&lt;A name=istruzioni&gt;ISTRUZIONI&lt;/A&gt;&lt;/H3&gt;
 &lt;P&gt;Indicare una o pi&amp;uacute parole da ricercare, usando se necessario le
 congiunzioni logiche "&lt;B&gt;e&lt;/B&gt;", "&lt;B&gt;o&lt;/B&gt;", "&lt;B&gt;e non&lt;/B&gt;". "&lt;B&gt;e&lt;/B&gt;" ha
 precedenza su "&lt;B&gt;o&lt;/B&gt;"; la precedenza pu&amp;oacute essere modificata tramite
@@ -106,7 +106,7 @@ POINTER INTO linebuf descrline=0
 POSITION(text,rec)
 READ FROM text linebuf
 IF Pmatch(linebuf,pattern) THEN
-  WRITE '&lt;A HREF<a href="cpl.html#Assignment">=</a>"?w=' rec '&amp;q=' ./.
+  WRITE '&lt;A HREF="?w=' rec '&amp;q=' ./.
   asc2uri pattern
   WRITE '"&gt;&lt;LI&gt;'
   DO descrline=strchr(descrline,\t); INC descrline FOR 3 TIMES
@@ -159,11 +159,11 @@ INLINE SUBROUTINE prettyprint2(INTEGER rec; POINTER TO CSTRING query)
   POSITION(text,rec)
   READ FROM text linebuf
   POINTER INTO linebuf field=0, fieldend=strchr(field,\t)
-  WRITE '&lt;TABLE class<a href="cpl.html#Assignment">=</a>coll border<a href="cpl.html#Assignment">=</a>0 align<a href="cpl.html#Assignment">=</a>center width<a href="cpl.html#Assignment">=</a>95%&gt;' \
-        '&lt;colgroup span<a href="cpl.html#Assignment">=</a>2 width<a href="cpl.html#Assignment">=</a>50%&gt;&lt;TR&gt;&lt;TD&gt;&lt;P&gt;&lt;A href<a href="cpl.html#Assignment">=</a>"?s='rec'&amp;q=' ./.
+  WRITE '&lt;TABLE class=coll border=0 align=center width=95%&gt;' \
+        '&lt;colgroup span=2 width=50%&gt;&lt;TR&gt;&lt;TD&gt;&lt;P&gt;&lt;A href="?s='rec'&amp;q=' ./.
   asc2uri query
   WRITE '"&gt;&lt;small&gt;Se noti un errore&lt;/small&gt;&lt;/A&gt;&lt;/TD&gt;' \
-        '&lt;TD align<a href="cpl.html#Assignment">=</a>right&gt;&lt;A href<a href="cpl.html#Assignment">=</a>"?r='rec'"&gt;&lt;small&gt;'sysnum'&lt;/small&gt;&lt;/A&gt;&lt;/TD&gt;&lt;/TR&gt;'
+        '&lt;TD align=right&gt;&lt;A href="?r='rec'"&gt;&lt;small&gt;'sysnum'&lt;/small&gt;&lt;/A&gt;&lt;/TD&gt;&lt;/TR&gt;'
   field=fieldend+1; fieldend=strchr(field,\t)
   IF fieldend^#NULL THEN fieldend(0)=0
   wrfield[field(0),"COLLOCAZIONE"]
@@ -216,9 +216,9 @@ IF query^#NULL AND query(0)#0 THEN uri2asc(query); CASE query(0) OF
      query=strchr(query,"&amp;")
      IF query^=NULL THEN query="" ELSE query=query+3
      prettyprint1(record)
-     WRITE '&lt;table class<a href="cpl.html#Assignment">=</a>coll border<a href="cpl.html#Assignment">=</a>0 align<a href="cpl.html#Assignment">=</a>center width<a href="cpl.html#Assignment">=</a>95%&gt;' \
+     WRITE '&lt;table class=coll border=0 align=center width=95%&gt;' \
        '&lt;TR&gt;&lt;TD&gt;&lt;small&gt;Se noti un errore segnalalo qui:&lt;/small&gt;&lt;/TD&gt;&lt;/TR&gt;' \
        '&lt;TR&gt;&lt;TH&gt;' segnala1 sysnum segnala2 query segnala3 '&lt;/TH&gt;&lt;/TR&gt;&lt;/table&gt;'
-"r": record<a href="cpl.html#Assignment">=</a>atoi(query+2)
+"r": record=atoi(query+2)
      writefull(record)
 <a href="cpl.html#END">END</a> <a href="cpl.html#CASE">CASE</a> <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#WRITE">WRITE</a> benvenuti form1 form2 istruzioni</pre></body></html>

@@ -1,0 +1,313 @@
+! PROGRAM BAFIT (Back And Forth In Time)
+USE cbmat
+USE graphics
+! USE rtchecks
+vsq_wsq=0; usq=1
+energyin=vsq_wsq
+Stewartson=FALSE
+fixedbeta=FALSE
+wrc=FALSE
+FILE INPUT=OPEN("bafit.in")
+plot=BOOLEAN FROM INPUT; G=REAL FROM INPUT; nmodes=INTEGER FROM INPUT
+xin=REAL FROM INPUT; dx=REAL FROM INPUT; xfin=REAL FROM INPUT
+ny=INTEGER FROM INPUT; n0=INTEGER FROM INPUT; ymax=REAL FROM INPUT
+IF plot THEN GRAPHICSMODE
+REAL y(-1..ny)
+DO y(i)=ymax*i*(0.5*i+n0)/ny/(0.5*ny+n0) FOR i=-1 TO ny
+wpos=0; ppos=1; upos=2; vpos=3;
+Uw=wpos; UvpVu=ppos; Uu=upos; u=vpos
+REAL omega=0, beta=0
+
+REAL FUNCTION Penergy(COMPLEX f^(*)) = SUM NORM[f(4*i+u)]*[y(i)-y(i-1)] FOR i=1 TO ny-1
+
+REAL FUNCTION Tenergy(COMPLEX f^(*))
+  RESULT=0 ! [f(4*(ny-2)+UvpVu).REAL*f(4*(ny-2)+UvpVu).REAL+f(4*(ny-2)+UvpVu).IMAG*f(4*(ny-2)+UvpVu).IMAG]/beta
+  DO RESULT=RESULT+NORM[f(4*i+Uw)]*[y(i)-y(i-1)]+
+            NORM[f(4*i+UvpVu)]*[y(i+1)-y(i-1)]/2 FOR i=1 TO ny-2
+END Tenergy
+
+ARRAY(0..4*ny-1,-7..7) OF COMPLEX A,B,T
+ARRAY(0..4*ny-1) OF COMPLEX f,fold,fstar,fstar1
+ARRAY(0..ny) OF REAL F,U,V
+
+COMPLEX FUNCTION sclrprod = SUM fstar(i)*f(i)+fstar1(i)*(f(i)-fold(i)) FOR ALL i
+
+SUBROUTINE BaseFlow(REAL x)
+  F(0)=0; U(0)=0; U(1)=0.332/SQRT(x)*y(1); U(ny)=1
+  DO
+    U(1)=U(1)*U(ny)**(-1.5)
+    LOOP FOR i=1 TO ny-1
+      d1=2/[y(i+1)-y(i-1)]; d2p=d1/[y(i+1)-y(i)]; d2m=d1/[y(i)-y(i-1)]; d20=d2p+d2m
+      F(i)=F(i-1)+[U(i-1)+U(i)]*[y(i)-y(i-1)]/2
+      U(i+1)={d20*U(i)-[d2m-d1*F(i)/4/x]*U(i-1)}/[d2p+d1*F(i)/4/x]
+    REPEAT LOOP
+    !    WRITE "blasius:" U(1)/y(1),U(ny)
+  FOR 2 TIMES
+  ! V=(y*U-F)/2./x
+  F(ny)=F(ny-1)+[U(ny-1)+U(ny)]*[y(ny)-y(ny-1)]/2
+  DO V(i)=MIN{[y(i)*U(i)-F(i)]/2/x,0.8605/SQRT(x)} FOR i=0 TO ny
+  !  NEWGRAPH; MOVE(0,0); DO DRAW(y(i),U(i)) FOR i=1 TO ny-1; SHOWGRAPH
+END BaseFlow
+
+SUBROUTINE BuildMats
+  b2=beta*beta
+  A=0; B=0
+  A(0+wpos,0)=(n0+0.25)/2/n0
+  A(0+wpos,4)=(n0-0.25)/2/n0
+  A(0+ppos,0)=1; A(0+ppos,4)=-1
+  A(0+upos,0)=1
+  A(0+vpos,0)=1
+  LOOP FOR i=1 TO ny-1
+    d1=2/[y(i+1)-y(i-1)]; d2p=d1/[y(i+1)-y(i)]; d2m=d1/[y(i)-y(i-1)]; d20=d2p+d2m
+    !    d1m=1/[y(i)-y(i-1)]; d2mp=2*d1/[y(i+1)-y(i-1)]; d2mm=2*d1/[y(i)-y(i-2)]; d2m0=d2mp+d2mm
+    !!!!!!! correzione del 18-10-97    
+    d1m=1/[y(i)-y(i-1)]; d2mp=d1m*d1; d2mm=2*d1m/[y(i)-y(i-2)]; d2m0=d2mp+d2mm
+    eq=4*i
+    !  i*omega*w+U*wx+V*wy-i*beta*p-wyy+b2*w=0
+    !  i*omega*w+(U*w)x+(V*w)y-i*beta*p-wyy+b2*w=0
+    A(eq+wpos,-4)=-d1m*V(i-1)/2-d2mm
+    A(eq+wpos,0)=d1m*(V(i)-V(i-1))/2+d2m0+b2+I*omega
+    A(eq+wpos,4)=d1m*V(i)/2-d2mp
+    A(eq+wpos,ppos-wpos)=-I*beta
+    B(eq+wpos,0)=(U(i)+U(i-1))/2
+    !  i*omega*v+U*vx+V*vy+Vx*u+Vy*v+2*G*G*U*u+py-vyy+b2*v=0
+    !  i*omega*v+(U*v+V*u)x+(2*V*v)y-i*beta*V*w+2*G*G*U*u+py-vyy+b2*v=0
+    A(eq+ppos,vpos-ppos-4)=-d1*V(i-1)-d2m
+    A(eq+ppos,vpos-ppos)=d20+b2+I*omega
+    A(eq+ppos,vpos-ppos+4)=d1*V(i+1)-d2p
+    A(eq+ppos,upos-ppos)=2*G*G*U(i)
+    A(eq+ppos,wpos-ppos)=-I*beta*V(i)/2
+    A(eq+ppos,wpos+4-ppos)=-I*beta*V(i)/2
+    A(eq+ppos,0)=-d1
+    A(eq+ppos,4)=d1
+    B(eq+ppos,vpos-ppos)=U(i)
+    B(eq+ppos,upos-ppos)=V(i)
+    !  i*omega*u+(U*u)x+V*uy+Uy*v-uyy+b2*u=0
+    A(eq+upos,-4)=-d1*V(i)/2-d2m
+    A(eq+upos,0)=d20+b2+I*omega
+    A(eq+upos,4)=d1*V(i)/2-d2p
+    A(eq+upos,vpos-upos)=d1*(U(i+1)-U(i-1))/2
+    B(eq+upos,0)=U(i)
+    !  ux+vy-i*beta*w=0
+    A(eq+vpos,wpos-vpos)=-I*beta
+    A(eq+vpos,-4)=-d1m
+    A(eq+vpos,0)=d1m
+    B(eq+vpos,upos-vpos)=0.5
+    B(eq+vpos,upos-vpos-4)=0.5
+  REPEAT LOOP
+END BuildMats
+
+SUBROUTINE WKB
+  TYPEOF(f) f2old,f1,v1
+  COMPLEX sigma=0
+  REAL x=xin
+  LOOP WHILE x<xfin-0.000001
+    x=x+dx
+    f2old=fold; fold=f
+    BaseFlow(x)
+    BuildMats
+    DO
+      T=A+sigma*B
+      LUdecomp T
+      f1=T\f; f1=B*f1
+      v1=fstar*B; v1=v1/T
+      dsigma=-(v1*f)/(v1*f1)
+      sigma=sigma+dsigma
+      f=f1*(f1*fold)/ABS(f1*fold)/SQRT[Penergy(f1)]
+      fstar=v1/(v1*f)
+      WRITE ":" ./.
+    WHILE ABS(dsigma)>1.E-5
+    c1=SUM fstar(i)*[1.5*f(i)-2*fold(i)+0.5*f2old(i)]/dx FOR ALL i
+    WRITE x,x*REAL(sigma),x*REAL(sigma-c1)
+  REPEAT LOOP
+END WKB
+
+SUBROUTINE Plot(INTEGER v; REAL h,stagger,height)
+  RANGE(0,8,0,height)
+  DO LINE(i,0,i,height) FOR i=0 TO 8
+  DO LINE(0,yy,8,yy) FOR yy=0 TO height+0.001 BY 0.2*height
+  MOVE 0,0
+  DO DRAW([y(i)+stagger*(y(i-1)-y(i))]/h,ABS(f(4*i+v))) FOR i=1 TO ny-1
+  SHOWGRAPH
+END Plot
+
+SUBROUTINE MarchForward
+  ARRAY(0..4*ny-1) OF COMPLEX f2old
+  REAL x=xin
+  LOOP WHILE x<xfin-0.000001
+    x=x+dx
+    f2old=fold; fold=f
+    BaseFlow(x)
+    BuildMats
+    T=A+1.5/dx*B
+    DO f(i)=(2*fold(i)-0.5*f2old(i))/dx FOR ALL i
+    LUdecomp T; f=T\f;
+    f=B*f
+    !  NEWGRAPH; Plot(u,sqrt(x),0.5,sqrt(Penergy(f)/sqrt(x)))
+    !  Plot(Uw,sqrt(x),0.5,sqrt(Penergy(f)/sqrt(x)))
+    !  sigma={1.5+[0.5*Penergy(f2old)-2*Penergy(fold)]/Penergy(f)}/2/dx
+    !  WRITE x,Penergy(f),x*REAL(sigma)
+  REPEAT LOOP
+END MarchForward
+
+SUBROUTINE MarchBackward
+  REAL x=xfin
+  LOOP WHILE x>xin+0.000001
+    BaseFlow(x)
+    BuildMats
+    T=A+1.5/dx*B
+    fstar1=fstar+fstar1
+    fstar=fstar1-fstar
+    fstar1=fstar1*B
+    LUdecomp T; fstar1=fstar1/T
+    fstar1=fstar1*1.5/dx
+    fstar=fstar1-fstar
+    fstar1=fstar1/3
+    x=x-dx
+    IF wrc THEN
+      DO f(4*i+u)=CONJG[fstar(4*i+u)+(fstar(4*i+Uu)+fstar(4*i+Uu+4))/2]/[y(i)-y(i-1)]
+        f(4*i+Uu)=CONJG[(fstar(4*i+u)+fstar(4*i+u-4))/2+fstar(4*i+Uu)]*2./[y(i+1)-y(i-1)]
+      FOR i=1 TO ny-1
+      WRITE x,Penergy(f)
+    END IF  
+    !  WRITE x,Tenergy(fstar)
+  REPEAT LOOP
+END MarchBackward
+
+COMPLEX Mode(1..nmodes,0..ny-1)
+
+REAL FUNCTION MaxGain(INTEGER mode)
+  TYPEOF(f) fprev
+  BaseFlow(xfin)
+  BuildMats
+  f=0; DO f(4*i+u)=[y(i)+y(i-1)]*[U(i)-U(i-1)]/[y(i)-y(i-1)] FOR i=1 TO ny-1
+  RESULT=0
+  DO
+    LOOP FOR nmode=1 TO mode-1 
+      COMPLEX pr=0; DO pr=pr+Mode(nmode,i)|f(4*i+u)*[y(i)-y(i-1)]  FOR i=1 TO ny-1
+      DO f(4*i+u)=f(4*i+u)-pr*Mode(nmode,i) FOR i=1 TO ny-1
+    REPEAT LOOP
+    prevRESULT=RESULT
+    f=f/sqrt(Penergy(f))
+    IF plot THEN  
+      NEWGRAPH
+      WRITE "final u (beta=" beta, "omega="omega, "gain: " RESULT ")"
+      Plot(u,1,0.5,1)
+      up==f(u+4*(*))
+      MOVE 0,0; DO DRAW y(i),ABS{[(up(i+1)-up(i))/(y(i+1)-y(i))-(up(i)-up(i-1))/(y(i)-y(i-1))]*2/(y(i+1)-y(i))} FOR i=2 TO ny-2
+      SHOWGRAPH
+    END IF  
+    fprev=f
+    fstar=0; fstar1=0; DO fstar(4*i+u)=CONJG[f(4*i+u)]*[y(i)-y(i-1)] FOR i=1 TO ny-1
+    MarchBackward
+    f=0
+    IF energyin=vsq_wsq THEN  
+      DO f(4*i+UvpVu)=CONJG[fstar(4*i+UvpVu)]*2/[y(i+1)-y(i-1)]
+        f(4*i+Uw)=-I*[f(4*i+UvpVu)-f(4*i+UvpVu-4)]/[y(i)-y(i-1)]/beta 
+      FOR i=1 TO ny-1
+      f=f/sqrt(Tenergy(f))
+      IF plot THEN  
+        NEWGRAPH
+        WRITE "initial v,w (beta=" beta ")"
+        Plot(UvpVu,1,0,1)
+        Plot(Uw,1,0.5,1)
+      END IF
+    ELSE IF energyin=usq THEN  
+      DO f(4*i+u)=CONJG[fstar(4*i+u)+(fstar(4*i+Uu)+fstar(4*i+Uu+4))/2]/[y(i)-y(i-1)]
+        f(4*i+Uu)=CONJG[(fstar(4*i+u)+fstar(4*i+u-4))/2+fstar(4*i+Uu)]*2./[y(i+1)-y(i-1)]
+      FOR i=1 TO ny-1
+      f=f/sqrt(Penergy(f))
+      IF plot THEN  
+        NEWGRAPH
+        WRITE "initial u"
+        Plot(Uu,1,0.5,1)
+      END IF
+    END IF
+    DO fold(i)=f(i) FOR ALL i
+    MarchForward
+    RESULT=Penergy(f)
+    !  RESULT=SUM REAL{f(4*i+u)|fprev(4*i+u)}*[y(i)-y(i-1)] FOR i=1 TO ny-1
+    !  WRITE RESULT ./.
+  UNTIL ABS(1-prevRESULT/RESULT)<1.E-5
+  f=f/sqrt(Penergy(f))
+  DO Mode(mode,i)=f(4*i+u) FOR i=0 TO ny-1
+END MaxGain
+
+IF wrc THEN
+  TYPEOF(f) f1,v1
+  COMPLEX sigma
+  beta=REAL FROM PROMPT("beta?")
+  omega=REAL FROM PROMPT("omega?")
+  BaseFlow(xfin)
+  BuildMats
+  f=0; DO f(4*i+u)=[y(i)+y(i-1)]*[U(i)-U(i-1)]/[y(i)-y(i-1)] FOR i=1 TO ny-1
+  fstar=0; fstar1=0; DO fstar(4*i+u)=CONJG[f(4*i+u)]*[y(i)-y(i-1)] FOR i=1 TO ny-1
+  sigma=I*omega/0.3
+  DO
+    T=A+sigma*B
+    LUdecomp T
+    f1=T\f; f1=B*f1
+    v1=fstar*B; v1=v1/T
+    dsigma=-(v1*f)/(v1*f1)
+    sigma=sigma+dsigma
+    f=f1/SQRT[Penergy(f1)]
+    fstar=v1/(v1*f)
+    WRITE TO stderr ":" ./.
+  WHILE ABS(dsigma)>1.E-5
+  MarchBackward
+  DO f(4*i+u)=CONJG[fstar(4*i+u)+(fstar(4*i+Uu)+fstar(4*i+Uu+4))/2]/[y(i)-y(i-1)]
+    f(4*i+Uu)=CONJG[(fstar(4*i+u)+fstar(4*i+u-4))/2+fstar(4*i+Uu)]*2./[y(i+1)-y(i-1)]
+  FOR i=1 TO ny-1
+  IF plot THEN  
+    NEWGRAPH
+    WRITE "initial u: gain", 1/Penergy(f)
+    f=f/sqrt(Penergy(f))
+    Plot(Uu,1,0.5,1)
+  END IF
+ELSE
+  
+  FILE Spectrum=CREATE("spectrum")
+  FILE Profile=CREATE("profile")
+  IF Stewartson THEN
+    BaseFlow(1)
+    f=0; DO f(4*i+u)=[y(i)+y(i-1)]*[U(i)-U(i-1)]/[y(i)-y(i-1)] FOR i=1 TO ny-1
+    f=f/sqrt(Penergy(f))
+    DO
+      WRITE TO Profile y(i),ABS([f(4*i+u)+f(4*i+4+u)]/2),
+      ABS[fstar(4*i+UvpVu)],ABS([fstar(4*i+Uw)+fstar(4*i+4+Uw)]/2)
+    FOR i=1 TO ny-2
+    STOP
+  END IF
+  omega=-1
+  beta=0.45
+  DO
+    omega=omega+1
+    DO
+      beta=beta+0.1
+      IF fixedbeta THEN
+        beta=REAL FROM PROMPT("beta?")
+        omega=REAL FROM PROMPT("omega?")
+      END IF
+      g1=MaxGain(1)
+      f=f/sqrt(Penergy(f))
+      DO fstar(4*i+UvpVu)=CONJG[fstar(4*i+UvpVu)]*2/[y(i+1)-y(i-1)]
+        fstar(4*i+Uw)=-I*[fstar(4*i+UvpVu)-fstar(4*i+UvpVu-4)]/[y(i)-y(i-1)]/beta
+      FOR i=1 TO ny-1
+      fstar=fstar/sqrt(Tenergy(fstar))
+      !(
+        WRITE TO Profile 0,0,0,0
+        DO
+          WRITE TO Profile y(i),ABS([f(4*i+u)+f(4*i+4+u)]/2),
+          ABS[fstar(4*i+UvpVu)],ABS([fstar(4*i+Uw)+fstar(4*i+4+Uw)]/2)
+        FOR i=1 TO ny-2
+        DO WRITE TO Profile y(i),0,0,0 FOR i=ny-1 TO ny
+        WRITE TO Profile
+        !)  
+      WRITE TO Spectrum omega:15.8, beta:15.8, g1:15.8 ./.
+      LOOP FOR i=2 TO nmodes; WRITE TO Spectrum ,MaxGain(i):15.8 ./.; REPEAT LOOP
+      WRITE TO Spectrum
+      IF fixedbeta THEN STOP
+    WHILE beta<1-1.E-6
+  WHILE omega<10-1.E-6
+  
+END IF

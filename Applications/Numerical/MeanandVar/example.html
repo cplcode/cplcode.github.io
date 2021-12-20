@@ -18,16 +18,16 @@
 <a href="cpl.html#C-interface">#include</a> &lt;time.h&gt;
 srand[<a href="cpl.html#INTEGER">INTEGER</a>(time(<a href="cpl.html#POINTER">NULL</a>))] <span class=comment>! select different initial seed every time the program is run</span>
 
-<a href="cpl.html#REAL">REAL</a> procstate<a href="cpl.html#Assignment">=</a>0.5
+<a href="cpl.html#REAL">REAL</a> procstate=0.5
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> process() <span class=comment>! simple first-order dynamical system with lorentzian spectrum</span>
-  procstate<a href="cpl.html#Assignment">=</a>0.9&lowast;<a href="cpl.html#Assignment">~</a>+0.1&lowast;RAND()
-  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>procstate
+  procstate=0.9&lowast;<a href="cpl.html#Assignment">~</a>+0.1&lowast;RAND()
+  <a href="cpl.html#RESULT">RESULT</a>=procstate
 <a href="cpl.html#END">END</a> process
 
 MEANANDVAR accum
 mvinit(accum) <span class=comment>! initialize mean and variance accumulator</span>
 
-<a href="cpl.html#DO">DO</a> dum<a href="cpl.html#Assignment">=</a>process() <a href="cpl.html#FOR">FOR</a> 1000 <a href="cpl.html#TIMES">TIMES</a> <span class=comment>! skip initial transient</span>
+<a href="cpl.html#DO">DO</a> dum=process() <a href="cpl.html#FOR">FOR</a> 1000 <a href="cpl.html#TIMES">TIMES</a> <span class=comment>! skip initial transient</span>
 
 <a href="graphics.html#RANGE">RANGE</a> 1E3,1E6,0,0.14 <span class=comment>! prepare to plot results</span>
 <a href="graphics.html#gnuplot">set</a> logscale x

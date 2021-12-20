@@ -1,0 +1,326 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>article-CPLcodes/bafit/bafit.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"article-CPLcodes/bafit/bafit.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<span class=comment>! PROGRAM BAFIT (Back And Forth In Time)</span>
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#Top">graphics</a>
+<span class=comment>! USE rtchecks</span>
+vsq_wsq=0; usq=1
+energyin=vsq_wsq
+Stewartson=FALSE
+fixedbeta=FALSE
+wrc=FALSE
+<a href="cpl.html#FILE">FILE</a> INPUT=<a href="cpl.html#OPEN">OPEN</a>("bafit.in")
+<a href="graphics.html#plot">plot</a>=<a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FROM">FROM</a> INPUT; G=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> INPUT; nmodes=<a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#FROM">FROM</a> INPUT
+xin=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> INPUT; dx=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> INPUT; xfin=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> INPUT
+ny=<a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#FROM">FROM</a> INPUT; n0=<a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#FROM">FROM</a> INPUT; ymax=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> INPUT
+<a href="cpl.html#IF">IF</a> <a href="graphics.html#plot">plot</a> <a href="cpl.html#IF">THEN</a> GRAPHICSMODE
+<a href="cpl.html#REAL">REAL</a> y(-1..ny)
+<a href="cpl.html#DO">DO</a> y(i)=ymax&lowast;i&lowast;(0.5&lowast;i+n0)/ny/(0.5&lowast;ny+n0) <a href="cpl.html#FOR">FOR</a> i=-1 <a href="cpl.html#TO">TO</a> ny
+wpos=0; ppos=1; upos=2; vpos=3;
+Uw=wpos; UvpVu=ppos; Uu=upos; u=vpos
+<a href="cpl.html#REAL">REAL</a> omega=0, beta=0
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Penergy(<a href="complex.html#Top">COMPLEX</a> f<a href="cpl.html#REAL-operator">^</a>(&lowast;)) = <a href="cpl.html#Looping-operator">SUM</a> NORM[f(4&lowast;i+u)]&lowast;[y(i)-y(i-1)] <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Tenergy(<a href="complex.html#Top">COMPLEX</a> f<a href="cpl.html#REAL-operator">^</a>(&lowast;))
+  <a href="cpl.html#RESULT">RESULT</a>=0 <span class=comment>! [f(4&lowast;(ny-2)+UvpVu).REAL&lowast;f(4&lowast;(ny-2)+UvpVu).REAL+f(4&lowast;(ny-2)+UvpVu).IMAG&lowast;f(4&lowast;(ny-2)+UvpVu).IMAG]/beta</span>
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#RESULT">RESULT</a>+NORM[f(4&lowast;i+Uw)]&lowast;[y(i)-y(i-1)]+
+            NORM[f(4&lowast;i+UvpVu)]&lowast;[y(i+1)-y(i-1)]/2 <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-2
+<a href="cpl.html#END">END</a> Tenergy
+
+<a href="cpl.html#ARRAY">ARRAY</a>(0..4&lowast;ny-1,-7..7) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A,B,T
+<a href="cpl.html#ARRAY">ARRAY</a>(0..4&lowast;ny-1) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> f,fold,fstar,fstar1
+<a href="cpl.html#ARRAY">ARRAY</a>(0..ny) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> F,U,V
+
+<a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sclrprod = <a href="cpl.html#Looping-operator">SUM</a> fstar(i)&lowast;f(i)+fstar1(i)&lowast;(f(i)-fold(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> BaseFlow(<a href="cpl.html#REAL">REAL</a> x)
+  F(0)=0; U(0)=0; U(1)=0.332/SQRT(x)&lowast;y(1); U(ny)=1
+  <a href="cpl.html#DO">DO</a>
+    U(1)=U(1)&lowast;U(ny)&lowast;&lowast;(-1.5)
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+      d1=2/[y(i+1)-y(i-1)]; d2p=d1/[y(i+1)-y(i)]; d2m=d1/[y(i)-y(i-1)]; d20=d2p+d2m
+      F(i)=F(i-1)+[U(i-1)+U(i)]&lowast;[y(i)-y(i-1)]/2
+      U(i+1)={d20&lowast;U(i)-[d2m-d1&lowast;F(i)/4/x]&lowast;U(i-1)}/[d2p+d1&lowast;F(i)/4/x]
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+    <span class=comment>!    WRITE "blasius:" U(1)/y(1),U(ny)</span>
+  <a href="cpl.html#FOR">FOR</a> 2 <a href="cpl.html#TIMES">TIMES</a>
+  <span class=comment>! V=(y&lowast;U-F)/2./x</span>
+  F(ny)=F(ny-1)+[U(ny-1)+U(ny)]&lowast;[y(ny)-y(ny-1)]/2
+  <a href="cpl.html#DO">DO</a> V(i)=<a href="cpl.html#MIN">MIN</a>{[y(i)&lowast;U(i)-F(i)]/2/x,0.8605/SQRT(x)} <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> ny
+  <span class=comment>!  NEWGRAPH; MOVE(0,0); DO DRAW(y(i),U(i)) FOR i=1 TO ny-1; SHOWGRAPH</span>
+<a href="cpl.html#END">END</a> BaseFlow
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> BuildMats
+  b2=beta&lowast;beta
+  A=0; B=0
+  A(0+wpos,0)=(n0+0.25)/2/n0
+  A(0+wpos,4)=(n0-0.25)/2/n0
+  A(0+ppos,0)=1; A(0+ppos,4)=-1
+  A(0+upos,0)=1
+  A(0+vpos,0)=1
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+    d1=2/[y(i+1)-y(i-1)]; d2p=d1/[y(i+1)-y(i)]; d2m=d1/[y(i)-y(i-1)]; d20=d2p+d2m
+    <span class=comment>!    d1m=1/[y(i)-y(i-1)]; d2mp=2&lowast;d1/[y(i+1)-y(i-1)]; d2mm=2&lowast;d1/[y(i)-y(i-2)]; d2m0=d2mp+d2mm</span>
+    <span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>! correzione del 18-10-97    </span></span></span></span></span></span></span>
+    d1m=1/[y(i)-y(i-1)]; d2mp=d1m&lowast;d1; d2mm=2&lowast;d1m/[y(i)-y(i-2)]; d2m0=d2mp+d2mm
+    eq=4&lowast;i
+    <span class=comment>!  i&lowast;omega&lowast;w+U&lowast;wx+V&lowast;wy-i&lowast;beta&lowast;p-wyy+b2&lowast;w=0</span>
+    <span class=comment>!  i&lowast;omega&lowast;w+(U&lowast;w)x+(V&lowast;w)y-i&lowast;beta&lowast;p-wyy+b2&lowast;w=0</span>
+    A(eq+wpos,-4)=-d1m&lowast;V(i-1)/2-d2mm
+    A(eq+wpos,0)=d1m&lowast;(V(i)-V(i-1))/2+d2m0+b2+I&lowast;omega
+    A(eq+wpos,4)=d1m&lowast;V(i)/2-d2mp
+    A(eq+wpos,ppos-wpos)=-I&lowast;beta
+    B(eq+wpos,0)=(U(i)+U(i-1))/2
+    <span class=comment>!  i&lowast;omega&lowast;v+U&lowast;vx+V&lowast;vy+Vx&lowast;u+Vy&lowast;v+2&lowast;G&lowast;G&lowast;U&lowast;u+py-vyy+b2&lowast;v=0</span>
+    <span class=comment>!  i&lowast;omega&lowast;v+(U&lowast;v+V&lowast;u)x+(2&lowast;V&lowast;v)y-i&lowast;beta&lowast;V&lowast;w+2&lowast;G&lowast;G&lowast;U&lowast;u+py-vyy+b2&lowast;v=0</span>
+    A(eq+ppos,vpos-ppos-4)=-d1&lowast;V(i-1)-d2m
+    A(eq+ppos,vpos-ppos)=d20+b2+I&lowast;omega
+    A(eq+ppos,vpos-ppos+4)=d1&lowast;V(i+1)-d2p
+    A(eq+ppos,upos-ppos)=2&lowast;G&lowast;G&lowast;U(i)
+    A(eq+ppos,wpos-ppos)=-I&lowast;beta&lowast;V(i)/2
+    A(eq+ppos,wpos+4-ppos)=-I&lowast;beta&lowast;V(i)/2
+    A(eq+ppos,0)=-d1
+    A(eq+ppos,4)=d1
+    B(eq+ppos,vpos-ppos)=U(i)
+    B(eq+ppos,upos-ppos)=V(i)
+    <span class=comment>!  i&lowast;omega&lowast;u+(U&lowast;u)x+V&lowast;uy+Uy&lowast;v-uyy+b2&lowast;u=0</span>
+    A(eq+upos,-4)=-d1&lowast;V(i)/2-d2m
+    A(eq+upos,0)=d20+b2+I&lowast;omega
+    A(eq+upos,4)=d1&lowast;V(i)/2-d2p
+    A(eq+upos,vpos-upos)=d1&lowast;(U(i+1)-U(i-1))/2
+    B(eq+upos,0)=U(i)
+    <span class=comment>!  ux+vy-i&lowast;beta&lowast;w=0</span>
+    A(eq+vpos,wpos-vpos)=-I&lowast;beta
+    A(eq+vpos,-4)=-d1m
+    A(eq+vpos,0)=d1m
+    B(eq+vpos,upos-vpos)=0.5
+    B(eq+vpos,upos-vpos-4)=0.5
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> BuildMats
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> WKB
+  <a href="cpl.html#TYPE">TYPEOF</a>(f) f2old,f1,v1
+  <a href="complex.html#Top">COMPLEX</a> sigma=0
+  <a href="cpl.html#REAL">REAL</a> x=xin
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> x&lt;xfin-0.000001
+    x=x+dx
+    f2old=fold; fold=f
+    BaseFlow(x)
+    BuildMats
+    <a href="cpl.html#DO">DO</a>
+      T=A+sigma&lowast;B
+      LUdecomp T
+      f1=T\f; f1=B&lowast;f1
+      v1=fstar&lowast;B; v1=v1/T
+      dsigma=-(v1&lowast;f)/(v1&lowast;f1)
+      sigma=sigma+dsigma
+      f=f1&lowast;(f1&lowast;fold)/<a href="cpl.html#ABS">ABS</a>(f1&lowast;fold)/SQRT[Penergy(f1)]
+      fstar=v1/(v1&lowast;f)
+      <a href="cpl.html#WRITE">WRITE</a> ":" ./.
+    <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#ABS">ABS</a>(dsigma)&gt;1.E-5
+    c1=<a href="cpl.html#Looping-operator">SUM</a> fstar(i)&lowast;[1.5&lowast;f(i)-2&lowast;fold(i)+0.5&lowast;f2old(i)]/dx <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+    <a href="cpl.html#WRITE">WRITE</a> x,x&lowast;<a href="cpl.html#REAL">REAL</a>(sigma),x&lowast;<a href="cpl.html#REAL">REAL</a>(sigma-c1)
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> WKB
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> Plot(<a href="cpl.html#INTEGER">INTEGER</a> v; <a href="cpl.html#REAL">REAL</a> h,stagger,height)
+  <a href="graphics.html#RANGE">RANGE</a>(0,8,0,height)
+  <a href="cpl.html#DO">DO</a> LINE(i,0,i,height) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 8
+  <a href="cpl.html#DO">DO</a> LINE(0,yy,8,yy) <a href="cpl.html#FOR">FOR</a> yy=0 <a href="cpl.html#TO">TO</a> height+0.001 <a href="cpl.html#BY">BY</a> 0.2&lowast;height
+  MOVE 0,0
+  <a href="cpl.html#DO">DO</a> <a href="graphics.html#DRAW">DRAW</a>([y(i)+stagger&lowast;(y(i-1)-y(i))]/h,<a href="cpl.html#ABS">ABS</a>(f(4&lowast;i+v))) <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+  <a href="graphics.html#SHOWGRAPH">SHOWGRAPH</a>
+<a href="cpl.html#END">END</a> Plot
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> MarchForward
+  <a href="cpl.html#ARRAY">ARRAY</a>(0..4&lowast;ny-1) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> f2old
+  <a href="cpl.html#REAL">REAL</a> x=xin
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> x&lt;xfin-0.000001
+    x=x+dx
+    f2old=fold; fold=f
+    BaseFlow(x)
+    BuildMats
+    T=A+1.5/dx&lowast;B
+    <a href="cpl.html#DO">DO</a> f(i)=(2&lowast;fold(i)-0.5&lowast;f2old(i))/dx <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+    LUdecomp T; f=T\f;
+    f=B&lowast;f
+    <span class=comment>!  NEWGRAPH; Plot(u,sqrt(x),0.5,sqrt(Penergy(f)/sqrt(x)))</span>
+    <span class=comment>!  Plot(Uw,sqrt(x),0.5,sqrt(Penergy(f)/sqrt(x)))</span>
+    <span class=comment>!  sigma={1.5+[0.5&lowast;Penergy(f2old)-2&lowast;Penergy(fold)]/Penergy(f)}/2/dx</span>
+    <span class=comment>!  WRITE x,Penergy(f),x&lowast;REAL(sigma)</span>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> MarchForward
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> MarchBackward
+  <a href="cpl.html#REAL">REAL</a> x=xfin
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> x&gt;xin+0.000001
+    BaseFlow(x)
+    BuildMats
+    T=A+1.5/dx&lowast;B
+    fstar1=fstar+fstar1
+    fstar=fstar1-fstar
+    fstar1=fstar1&lowast;B
+    LUdecomp T; fstar1=fstar1/T
+    fstar1=fstar1&lowast;1.5/dx
+    fstar=fstar1-fstar
+    fstar1=fstar1/3
+    x=x-dx
+    <a href="cpl.html#IF">IF</a> wrc <a href="cpl.html#IF">THEN</a>
+      <a href="cpl.html#DO">DO</a> f(4&lowast;i+u)=<a href="complex.html#Top">CONJG</a>[fstar(4&lowast;i+u)+(fstar(4&lowast;i+Uu)+fstar(4&lowast;i+Uu+4))/2]/[y(i)-y(i-1)]
+        f(4&lowast;i+Uu)=<a href="complex.html#Top">CONJG</a>[(fstar(4&lowast;i+u)+fstar(4&lowast;i+u-4))/2+fstar(4&lowast;i+Uu)]&lowast;2./[y(i+1)-y(i-1)]
+      <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+      <a href="cpl.html#WRITE">WRITE</a> x,Penergy(f)
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>  
+    <span class=comment>!  WRITE x,Tenergy(fstar)</span>
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> MarchBackward
+
+<a href="complex.html#Top">COMPLEX</a> Mode(1..nmodes,0..ny-1)
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> MaxGain(<a href="cpl.html#INTEGER">INTEGER</a> mode)
+  <a href="cpl.html#TYPE">TYPEOF</a>(f) fprev
+  BaseFlow(xfin)
+  BuildMats
+  f=0; <a href="cpl.html#DO">DO</a> f(4&lowast;i+u)=[y(i)+y(i-1)]&lowast;[U(i)-U(i-1)]/[y(i)-y(i-1)] <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+  <a href="cpl.html#RESULT">RESULT</a>=0
+  <a href="cpl.html#DO">DO</a>
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> nmode=1 <a href="cpl.html#TO">TO</a> mode-1 
+      <a href="complex.html#Top">COMPLEX</a> pr=0; <a href="cpl.html#DO">DO</a> pr=pr+Mode(nmode,i)|f(4&lowast;i+u)&lowast;[y(i)-y(i-1)]  <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+      <a href="cpl.html#DO">DO</a> f(4&lowast;i+u)=f(4&lowast;i+u)-pr&lowast;Mode(nmode,i) <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+    prevRESULT=<a href="cpl.html#RESULT">RESULT</a>
+    f=f/sqrt(Penergy(f))
+    <a href="cpl.html#IF">IF</a> <a href="graphics.html#plot">plot</a> <a href="cpl.html#IF">THEN</a>  
+      <a href="graphics.html#OPENGRAPH">NEWGRAPH</a>
+      <a href="cpl.html#WRITE">WRITE</a> "final u (beta=" beta, "omega="omega, "gain: " <a href="cpl.html#RESULT">RESULT</a> ")"
+      Plot(u,1,0.5,1)
+      up<a href="cpl.html#Deferred-assignment">==</a>f(u+4&lowast;(&lowast;))
+      MOVE 0,0; <a href="cpl.html#DO">DO</a> <a href="graphics.html#DRAW">DRAW</a> y(i),<a href="cpl.html#ABS">ABS</a>{[(up(i+1)-up(i))/(y(i+1)-y(i))-(up(i)-up(i-1))/(y(i)-y(i-1))]&lowast;2/(y(i+1)-y(i))} <a href="cpl.html#FOR">FOR</a> i=2 <a href="cpl.html#TO">TO</a> ny-2
+      <a href="graphics.html#SHOWGRAPH">SHOWGRAPH</a>
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>  
+    fprev=f
+    fstar=0; fstar1=0; <a href="cpl.html#DO">DO</a> fstar(4&lowast;i+u)=<a href="complex.html#Top">CONJG</a>[f(4&lowast;i+u)]&lowast;[y(i)-y(i-1)] <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+    MarchBackward
+    f=0
+    <a href="cpl.html#IF">IF</a> energyin=vsq_wsq <a href="cpl.html#IF">THEN</a>  
+      <a href="cpl.html#DO">DO</a> f(4&lowast;i+UvpVu)=<a href="complex.html#Top">CONJG</a>[fstar(4&lowast;i+UvpVu)]&lowast;2/[y(i+1)-y(i-1)]
+        f(4&lowast;i+Uw)=-I&lowast;[f(4&lowast;i+UvpVu)-f(4&lowast;i+UvpVu-4)]/[y(i)-y(i-1)]/beta 
+      <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+      f=f/sqrt(Tenergy(f))
+      <a href="cpl.html#IF">IF</a> <a href="graphics.html#plot">plot</a> <a href="cpl.html#IF">THEN</a>  
+        <a href="graphics.html#OPENGRAPH">NEWGRAPH</a>
+        <a href="cpl.html#WRITE">WRITE</a> "initial v,w (beta=" beta ")"
+        Plot(UvpVu,1,0,1)
+        Plot(Uw,1,0.5,1)
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> energyin=usq <a href="cpl.html#IF">THEN</a>  
+      <a href="cpl.html#DO">DO</a> f(4&lowast;i+u)=<a href="complex.html#Top">CONJG</a>[fstar(4&lowast;i+u)+(fstar(4&lowast;i+Uu)+fstar(4&lowast;i+Uu+4))/2]/[y(i)-y(i-1)]
+        f(4&lowast;i+Uu)=<a href="complex.html#Top">CONJG</a>[(fstar(4&lowast;i+u)+fstar(4&lowast;i+u-4))/2+fstar(4&lowast;i+Uu)]&lowast;2./[y(i+1)-y(i-1)]
+      <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+      f=f/sqrt(Penergy(f))
+      <a href="cpl.html#IF">IF</a> <a href="graphics.html#plot">plot</a> <a href="cpl.html#IF">THEN</a>  
+        <a href="graphics.html#OPENGRAPH">NEWGRAPH</a>
+        <a href="cpl.html#WRITE">WRITE</a> "initial u"
+        Plot(Uu,1,0.5,1)
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#DO">DO</a> fold(i)=f(i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+    MarchForward
+    <a href="cpl.html#RESULT">RESULT</a>=Penergy(f)
+    <span class=comment>!  RESULT=SUM REAL{f(4&lowast;i+u)|fprev(4&lowast;i+u)}&lowast;[y(i)-y(i-1)] FOR i=1 TO ny-1</span>
+    <span class=comment>!  WRITE RESULT ./.</span>
+  <a href="cpl.html#UNTIL">UNTIL</a> <a href="cpl.html#ABS">ABS</a>(1-prevRESULT/<a href="cpl.html#RESULT">RESULT</a>)&lt;1.E-5
+  f=f/sqrt(Penergy(f))
+  <a href="cpl.html#DO">DO</a> Mode(mode,i)=f(4&lowast;i+u) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#END">END</a> MaxGain
+
+<a href="cpl.html#IF">IF</a> wrc <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#TYPE">TYPEOF</a>(f) f1,v1
+  <a href="complex.html#Top">COMPLEX</a> sigma
+  beta=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> PROMPT("beta?")
+  omega=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> PROMPT("omega?")
+  BaseFlow(xfin)
+  BuildMats
+  f=0; <a href="cpl.html#DO">DO</a> f(4&lowast;i+u)=[y(i)+y(i-1)]&lowast;[U(i)-U(i-1)]/[y(i)-y(i-1)] <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+  fstar=0; fstar1=0; <a href="cpl.html#DO">DO</a> fstar(4&lowast;i+u)=<a href="complex.html#Top">CONJG</a>[f(4&lowast;i+u)]&lowast;[y(i)-y(i-1)] <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+  sigma=I&lowast;omega/0.3
+  <a href="cpl.html#DO">DO</a>
+    T=A+sigma&lowast;B
+    LUdecomp T
+    f1=T\f; f1=B&lowast;f1
+    v1=fstar&lowast;B; v1=v1/T
+    dsigma=-(v1&lowast;f)/(v1&lowast;f1)
+    sigma=sigma+dsigma
+    f=f1/SQRT[Penergy(f1)]
+    fstar=v1/(v1&lowast;f)
+    <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> stderr ":" ./.
+  <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#ABS">ABS</a>(dsigma)&gt;1.E-5
+  MarchBackward
+  <a href="cpl.html#DO">DO</a> f(4&lowast;i+u)=<a href="complex.html#Top">CONJG</a>[fstar(4&lowast;i+u)+(fstar(4&lowast;i+Uu)+fstar(4&lowast;i+Uu+4))/2]/[y(i)-y(i-1)]
+    f(4&lowast;i+Uu)=<a href="complex.html#Top">CONJG</a>[(fstar(4&lowast;i+u)+fstar(4&lowast;i+u-4))/2+fstar(4&lowast;i+Uu)]&lowast;2./[y(i+1)-y(i-1)]
+  <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+  <a href="cpl.html#IF">IF</a> <a href="graphics.html#plot">plot</a> <a href="cpl.html#IF">THEN</a>  
+    <a href="graphics.html#OPENGRAPH">NEWGRAPH</a>
+    <a href="cpl.html#WRITE">WRITE</a> "initial u: gain", 1/Penergy(f)
+    f=f/sqrt(Penergy(f))
+    Plot(Uu,1,0.5,1)
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#ELSE">ELSE</a>
+  
+  <a href="cpl.html#FILE">FILE</a> Spectrum=<a href="cpl.html#CREATE">CREATE</a>("spectrum")
+  <a href="cpl.html#FILE">FILE</a> Profile=<a href="cpl.html#CREATE">CREATE</a>("profile")
+  <a href="cpl.html#IF">IF</a> Stewartson <a href="cpl.html#IF">THEN</a>
+    BaseFlow(1)
+    f=0; <a href="cpl.html#DO">DO</a> f(4&lowast;i+u)=[y(i)+y(i-1)]&lowast;[U(i)-U(i-1)]/[y(i)-y(i-1)] <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+    f=f/sqrt(Penergy(f))
+    <a href="cpl.html#DO">DO</a>
+      <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Profile y(i),<a href="cpl.html#ABS">ABS</a>([f(4&lowast;i+u)+f(4&lowast;i+4+u)]/2),
+      <a href="cpl.html#ABS">ABS</a>[fstar(4&lowast;i+UvpVu)],<a href="cpl.html#ABS">ABS</a>([fstar(4&lowast;i+Uw)+fstar(4&lowast;i+4+Uw)]/2)
+    <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-2
+    STOP
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  omega=-1
+  beta=0.45
+  <a href="cpl.html#DO">DO</a>
+    omega=omega+1
+    <a href="cpl.html#DO">DO</a>
+      beta=beta+0.1
+      <a href="cpl.html#IF">IF</a> fixedbeta <a href="cpl.html#IF">THEN</a>
+        beta=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> PROMPT("beta?")
+        omega=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> PROMPT("omega?")
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      g1=MaxGain(1)
+      f=f/sqrt(Penergy(f))
+      <a href="cpl.html#DO">DO</a> fstar(4&lowast;i+UvpVu)=<a href="complex.html#Top">CONJG</a>[fstar(4&lowast;i+UvpVu)]&lowast;2/[y(i+1)-y(i-1)]
+        fstar(4&lowast;i+Uw)=-I&lowast;[fstar(4&lowast;i+UvpVu)-fstar(4&lowast;i+UvpVu-4)]/[y(i)-y(i-1)]/beta
+      <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+      fstar=fstar/sqrt(Tenergy(fstar))
+      <span class=comment>!(
+        WRITE TO Profile 0,0,0,0
+        DO
+          WRITE TO Profile y(i),ABS([f(4&lowast;i+u)+f(4&lowast;i+4+u)]/2),
+          ABS[fstar(4&lowast;i+UvpVu)],ABS([fstar(4&lowast;i+Uw)+fstar(4&lowast;i+4+Uw)]/2)
+        FOR i=1 TO ny-2
+        DO WRITE TO Profile y(i),0,0,0 FOR i=ny-1 TO ny
+        WRITE TO Profile
+        !)</span>  
+      <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Spectrum omega:15.8, beta:15.8, g1:15.8 ./.
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=2 <a href="cpl.html#TO">TO</a> nmodes; <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Spectrum ,MaxGain(i):15.8 ./.; <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+      <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Spectrum
+      <a href="cpl.html#IF">IF</a> fixedbeta <a href="cpl.html#IF">THEN</a> STOP
+    <a href="cpl.html#WHILE">WHILE</a> beta&lt;1-1.E-6
+  <a href="cpl.html#WHILE">WHILE</a> omega&lt;10-1.E-6
+  
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+</pre></body></html>

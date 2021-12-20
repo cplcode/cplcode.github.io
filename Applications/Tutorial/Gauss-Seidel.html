@@ -16,12 +16,12 @@
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>   <span class=comment>! prepare for plotting</span>
 <a href="cpl.html#ARRAY">ARRAY</a>(0..20,0..40) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var,rhs   <span class=comment>! declare and allocate ARRAY variables</span>
 
-var<a href="cpl.html#Assignment">=</a>0; rhs<a href="cpl.html#Assignment">=</a>0
-<a href="cpl.html#DO">DO</a> var(i,<a href="cpl.html#HI">HI</a>)<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i   <span class=comment>! assign some boundary conditions</span>
+var=0; rhs=0
+<a href="cpl.html#DO">DO</a> var(i,<a href="cpl.html#HI">HI</a>)=1 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i   <span class=comment>! assign some boundary conditions</span>
 
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> 100 <a href="cpl.html#TIMES">TIMES</a>   <span class=comment>! main iteration loop</span>
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a><a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> j<a href="cpl.html#Assignment">=</a><a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1
-    var(i,j)<a href="cpl.html#Assignment">=</a>[var(i,j+1)+var(i,j-1)+var(i+1,j)+var(i-1,j) + rhs(i,j)]/4
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> j=<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1
+    var(i,j)=[var(i,j+1)+var(i,j-1)+var(i+1,j)+var(i-1,j) + rhs(i,j)]/4
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>   <span class=comment>! these three lines are the core iteration</span>
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 

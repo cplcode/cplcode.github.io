@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>article-CPLcodes/ns3dlin/ns3dlin.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"article-CPLcodes/ns3dlin/ns3dlin.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a>
+<a href="cpl.html#USE">USE</a> lapack-eigenvalues
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
+<span class=comment>! USE rtchecks</span>
+<a href="cpl.html#USE">USE</a> nsmg3dlin
+neig=2
+Ntot=neig
+Reynolds=2100
+nx=64; ny=nx; nz=nx
+shift=210
+
+<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..Ntot,nxl(nx)..nxh(nx),0..ny,0..nz) <a href="cpl.html#OF">OF</a> VARS field=0,tn
+<a href="cpl.html#ARRAY">ARRAY</a>(1..Ntot,1..Ntot) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> sigma,invsigma
+
+bc(field(0),tn(0),1)
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> count=1 <a href="cpl.html#TO">TO</a> 100
+  cdresids(field(0),tn(0))
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> Ntot
+    field(i)=0
+<span class=comment>!    DO smooth(field(0),field(i),tn(0),nx); bc(field(i),tn(0),0) FOR 10 TIMES</span>
+    mg(field(0),field(i),tn(0),nx)
+    tn(i)=0; lincdresids(field(0),field(i),tn(i))
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> j=1 <a href="cpl.html#TO">TO</a> i-1
+      dd=scp(tn(i),tn(j))
+      tn(i)=<a href="cpl.html#Assignment">~</a>-dd&lowast;tn(j)
+      field(i)=<a href="cpl.html#Assignment">~</a>-dd&lowast;field(j)
+    <a href="cpl.html#LOOP">REPEAT</a>
+    nn=abs(tn(i))
+    tn(i)=<a href="cpl.html#Assignment">~</a>/nn
+    field(i)=<a href="cpl.html#Assignment">~</a>/nn
+    cc=scp(tn(0),tn(i))
+    tn(0)=<a href="cpl.html#Assignment">~</a>-cc&lowast;tn(i)
+    field(0)=<a href="cpl.html#Assignment">~</a>-cc&lowast;field(i)
+    perr=abs(tn(0).p); uerr=abs(tn(0).u); verr=abs(tn(0).v); werr=abs(tn(0).w)
+    <a href="cpl.html#IF">IF</a> has_terminal <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> count,i,perr,uerr,verr,werr \n ./.
+  <a href="cpl.html#LOOP">REPEAT</a>
+<span class=comment>!(
+  DO sigma(i,j)=field(i).u|tn(j).u+field(i).v|tn(j).v+field(i).w|tn(j).w FOR i=1 TO Ntot AND j=1 TO Ntot
+  invsigma=INV(sigma)
+  WRITE eigv(invsigma)
+!)</span>
+<span class=comment>!  WRITE MAXABS(field(0).w(&lowast;,&lowast;,nz DIV 2 -1)+field(0).w(&lowast;,&lowast;,nz DIV 2))</span>
+  <span class=comment>!IF count MOD 10 =0 THEN SPLOT field(0).p(LO..HI,&lowast;,nz DIV 2)</span>
+<span class=comment>!  tn(1..neig)=invsigma&lowast;field(1..neig); tn(1..neig).p=0</span>
+<a href="cpl.html#LOOP">REPEAT</a>
+<span class=comment>!(
+DO tn(i,j,h,k,l)=RAND() FOR ALL i,j,h,k,l
+LOOP FOR count=1 TO 100
+  cdresids(field(0),tn(0))
+  delta=0
+  mg(field(0),delta,tn(0))
+  field(0)=~-delta
+  LOOP FOR i=1 TO neig
+    LOOP FOR j=1 TO i-1
+      dd=tn(i)|tn(j)
+      tn(i)=~-dd&lowast;tn(j)
+      field(i)=~-dd&lowast;field(j)
+    REPEAT
+    nn=MOD(tn(i))
+    tn(i)=~/nn
+    field(i)=~/nn
+LOOP FOR 3 TIMES    
+    rhs=tn(i)
+    lincdresids(field(0),field(i),rhs)
+    delta=0
+    mg(field(0),delta,rhs)
+    field(i)=~-delta
+REPEAT
+  REPEAT
+  DO sigma(i,j)=field(i).u|tn(j).u+field(i).v|tn(j).v+field(i).w|tn(j).w FOR i=1 TO neig AND j=1 TO neig
+  invsigma=INV(sigma)
+  invsigma=invsigma+shift
+<span class=comment>!  WRITE invsigma</span>
+  WRITE eigv(invsigma)
+  WRITE count,MAXABS(tn(0).p),MAXABS(tn(0).u),MAXABS(tn(0).v),MAXABS(tn(0).w)
+<span class=comment>!  WRITE MAXABS(field(0).w(&lowast;,&lowast;,nz DIV 2 -1)+field(0).w(&lowast;,&lowast;,nz DIV 2))</span>
+  <span class=comment>!IF count MOD 10 =0 THEN SPLOT field(0).p(LO..HI,&lowast;,nz DIV 2)</span>
+  tn(1..neig)=field(1..neig); tn(1..neig).p=0
+  field(1..neig)=sigma&lowast;field(1..neig)
+REPEAT
+!)</span>
+</pre></body></html>

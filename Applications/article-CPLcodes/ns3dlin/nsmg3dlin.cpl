@@ -1,0 +1,497 @@
+USE parallel
+INTEGER iproc,nproc
+IF COMMANDLINE.HI=0 THEN iproc=1; nproc=1 ELSE
+  iproc=atoi(COMMANDLINE(1)); nproc=atoi(COMMANDLINE(2))
+END IF
+baseport=IPPORT_USERRESERVED+257
+FILE prev,next
+IF iproc<nproc THEN
+  next=TCPSERVER(baseport+iproc)
+  setvbuf(next,NULL,_IOFBF,8192)
+END IF
+IF iproc>1 THEN
+  prev=TCPCLIENT(COMMANDLINE(3),baseport+iproc-1)
+  setvbuf(prev,NULL,_IOFBF,8192)
+END IF
+first==(prev=NULL FILE); last==(next=NULL FILE); has_terminal==last
+nsmpmax=8
+REAL Reynolds,shift
+
+INTEGER FUNCTION nxl(INTEGER nx)=CEILING[(iproc-1)*(nx-1)/nproc]-1
+INTEGER FUNCTION nxh(INTEGER nx)=CEILING[iproc*(nx-1)/nproc]+1
+
+USE symbolic
+domsize=1
+
+VARS=STRUCTURED ARRAY(p,u,v,w) OF REAL
+VFIELD=ARRAY(*,*,*) OF VARS
+
+XPDIR=4; XNDIR=8
+
+SUBROUTINE updatenbrs(VFIELD f^; INTEGER parity)
+IF iproc BITAND 1 =0 OR f.LENGTH<=4 THEN
+  IF NOT first THEN READ BINARY FROM prev f.u(LO)
+  IF parity>1 THEN
+    IF NOT first AND parity BITAND XPDIR=0 THEN READ BINARY FROM prev f(LO+1)
+    IF NOT first AND parity BITAND XPDIR#0 THEN READ BINARY FROM prev f(LO+1).p,f(LO+1).v,f(LO+1).w
+  ELSE
+    IF NOT first THEN READ BINARY FROM prev f.v(LO+1),f.w(LO+1)
+    IF NOT first THEN DO READ BINARY FROM prev f.p(LO+1,iy,iz),f.u(LO+1,iy,iz)
+      FOR iy=1 TO f.HI2-1 AND iz=2-[(f.LO1+1+iy+parity) BITAND 1] TO f.HI3-1 BY 2
+  END IF
+  IF NOT last THEN WRITE BINARY TO next f.u(HI-2)
+  IF parity>1 THEN
+    IF NOT last AND parity BITAND XNDIR=0 THEN WRITE BINARY TO next f(HI-1); FLUSH next
+    IF NOT last AND parity BITAND XNDIR#0 THEN WRITE BINARY TO next f(HI-1).p,f(HI-1).v,f(HI-1).w; FLUSH next
+    IF NOT last AND parity BITAND XNDIR#0 THEN READ BINARY FROM next f(HI-1).u
+    IF NOT last THEN READ BINARY FROM next f(HI)
+    IF NOT first AND parity BITAND XPDIR#0 THEN WRITE BINARY TO prev f(LO+1).u
+    IF NOT first THEN WRITE BINARY TO prev f(LO+2); FLUSH prev
+  ELSE
+    IF NOT last THEN WRITE BINARY TO next f.v(HI-1),f.w(HI-1)
+    IF NOT last THEN DO WRITE BINARY TO next f.p(HI-1,iy,iz),f.u(HI-1,iy,iz)
+      FOR iy=1 TO f.HI2-1 AND iz=2-[(f.HI1-1+iy+parity) BITAND 1] TO f.HI3-1 BY 2; FLUSH next
+    IF NOT last THEN DO READ BINARY FROM next f.u(HI-1,iy,iz),f.p(HI,iy,iz)
+      FOR iy=1 TO f.HI2-1 AND iz=2-[(f.HI1+iy+parity) BITAND 1] TO f.HI3-1 BY 2
+    IF NOT last THEN READ BINARY FROM next f(HI,*,*,1..3)
+    IF NOT first THEN DO WRITE BINARY TO prev f.u(LO+1,iy,iz),f.p(LO+2,iy,iz)
+      FOR iy=1 TO f.HI2-1 AND iz=2-[(f.LO1+iy+parity) BITAND 1] TO f.HI3-1 BY 2
+    IF NOT first THEN WRITE BINARY TO prev f(LO+2,*,*,1..3); FLUSH prev
+  END IF
+ELSE
+  IF NOT last THEN WRITE BINARY TO next f.u(HI-2)
+  IF parity>1 THEN
+    IF NOT last AND parity BITAND XNDIR=0 THEN WRITE BINARY TO next f(HI-1); FLUSH next
+    IF NOT last AND parity BITAND XNDIR#0 THEN WRITE BINARY TO next f(HI-1).p,f(HI-1).v,f(HI-1).w; FLUSH next
+  ELSE
+    IF NOT last THEN WRITE BINARY TO next f.v(HI-1),f.w(HI-1)
+    IF NOT last THEN DO WRITE BINARY TO next f.p(HI-1,iy,iz),f.u(HI-1,iy,iz)
+      FOR iy=1 TO f.HI2-1 AND iz=2-[(f.HI1-1+iy+parity) BITAND 1] TO f.HI3-1 BY 2; FLUSH next
+  END IF
+  IF NOT first THEN READ BINARY FROM prev f.u(LO)
+  IF parity>1 THEN
+    IF NOT first AND parity BITAND XPDIR=0 THEN READ BINARY FROM prev f(LO+1)
+    IF NOT first AND parity BITAND XPDIR#0 THEN READ BINARY FROM prev f(LO+1).p,f(LO+1).v,f(LO+1).w
+    IF NOT first AND parity BITAND XPDIR#0 THEN WRITE BINARY TO prev f(LO+1).u
+    IF NOT first THEN WRITE BINARY TO prev f(LO+2); FLUSH prev
+    IF NOT last AND  parity BITAND XNDIR#0 THEN READ BINARY FROM next f(HI-1).u
+    IF NOT last THEN READ BINARY FROM next f(HI)
+  ELSE
+    IF NOT first THEN READ BINARY FROM prev f.v(LO+1),f.w(LO+1)
+    IF NOT first THEN DO READ BINARY FROM prev f.p(LO+1,iy,iz),f.u(LO+1,iy,iz)
+      FOR iy=1 TO f.HI2-1 AND iz=2-[(f.LO1+1+iy+parity) BITAND 1] TO f.HI3-1 BY 2
+    IF NOT first THEN DO WRITE BINARY TO prev f.u(LO+1,iy,iz),f.p(LO+2,iy,iz)
+      FOR iy=1 TO f.HI2-1 AND iz=2-[(f.LO1+iy+parity) BITAND 1] TO f.HI3-1 BY 2
+    IF NOT first THEN WRITE BINARY TO prev f(LO+2,*,*,1..3); FLUSH prev
+    IF NOT last THEN DO READ BINARY FROM next f.u(HI-1,iy,iz),f.p(HI,iy,iz)
+      FOR iy=1 TO f.HI2-1 AND iz=2-[(f.HI1+iy+parity) BITAND 1] TO f.HI3-1 BY 2
+    IF NOT last THEN READ BINARY FROM next f(HI,*,*,1..3)
+  END IF
+END IF
+END updatenbrs
+
+SUBROUTINE accumulate(REAL acc^; INTEGER nx,ny,nz)
+  REAL r
+  IF NOT first THEN READ BINARY FROM prev r; acc=~+r
+  IF last THEN acc=acc/nx/ny/nz ELSE
+    WRITE BINARY TO next acc; FLUSH next; READ BINARY FROM next acc
+  END IF  
+  IF NOT first THEN WRITE BINARY TO prev acc; FLUSH prev
+END accumulate
+
+REAL FUNCTION scp(VFIELD f1,f2)
+  IF f1.HI-1<f1.LO+2 THEN RESULT=0 ELSE
+  !  RESULT=f1(LO+2..HI-1,LO+2..HI-1,LO+2..HI-1,1..3)|f2(LO+2..HI-1,LO+2..HI-1,LO+2..HI-1,1..3)
+    nsmp=MIN(nsmpmax,CEILING(f1.HI2/8))
+    SHARED REAL sum(0..nsmp-1)=0
+    IF f1.HI-1>=f1.LO+2 THEN PARALLEL LOOP FOR ismp=0 TO nsmp-1
+      nyl=ROUND[ismp/nsmp*(f1.HI2-1)]+1; nyh=ROUND[(ismp+1)/nsmp*(f1.HI2-1)]
+      sum(ismp)=f1(LO+2..HI-1,nyl..nyh,LO+2..HI-1)|f2(LO+2..HI-1,nyl..nyh,LO+2..HI-1)
+    REPEAT
+    RESULT=SUM sum(ismp) FOR ALL ismp
+  END IF
+  accumulate(RESULT,f1.HI1,f1.HI2,f1.HI3)
+END scp
+
+REAL FUNCTION abs(VFIELD ff)=SQRT(scp(ff,ff))
+
+REAL FUNCTION abs(ARRAY(*,*,*) OF REAL ff) WITH ff
+  RESULT=NORM(ff(LO+2..HI-1,*,*))
+  accumulate(RESULT,ff.HI1,ff.HI2,ff.HI3)
+  RESULT=SQRT(RESULT)
+END abs
+
+relax2=1
+cnt==[u(-1,0,0)-u(0,0,0)+v(0,-1,0)-v(0,0,0)+w(0,0,-1)-w(0,0,0)]/dx
+! #define limiter(V) 1-V
+#define limiter(V) IF V>2 THEN 0 ELSE IF V<-2 THEN -2*V ELSE 1-V*(1-V/4)
+! #define limiter(V) IF V>1 THEN 0 ELSE IF V<-1 THEN -2*V ELSE 1-V
+! #define limiter(V) IF V>0 THEN 1 ELSE 1-2*V
+!(
+thr==0.5*shift/udxx
+#define limiter(V) IF V>1+thr THEN -thr ELSE IF V<-1-thr THEN -2*V-thr ELSE 1-V
+!)
+upu==Rdxq*[b.u(0,0,0)+b.u(1,0,0)]
+umu==-Rdxq*[b.u(-1,0,0)+b.u(0,0,0)]
+vpu==Rdxq*[b.v(0,0,0)+b.v(1,0,0)]
+vmu==-Rdxq*[b.v(0,-1,0)+b.v(1,-1,0)]
+wpu==Rdxq*[b.w(0,0,0)+b.w(1,0,0)]
+wmu==-Rdxq*[b.w(0,0,-1)+b.w(1,0,-1)]
+cupu==limiter(upu)*udxx
+cumu==limiter(umu)*udxx
+cvpu==limiter(vpu)*udxx
+cvmu==limiter(vmu)*udxx
+cwpu==limiter(wpu)*udxx
+cwmu==limiter(wmu)*udxx
+c0u==shift+cupu+cumu+cvpu+cvmu+cwpu+cwmu
+c0uabs==shift+relax2*[ABS(cupu)+ABS(cumu)+ABS(cvpu)+ABS(cvmu)+ABS(cwpu)+ABS(cwmu)]
+uupw==cupu*u(1,0,0)+cumu*u(-1,0,0)+cvpu*u(0,1,0)+cvmu*u(0,-1,0)+cwpu*u(0,0,1)+cwmu*u(0,0,-1)-c0u*u(0,0,0)-[p(1,0,0)-p(0,0,0)]/dx
+upv==Rdxq*[b.u(0,0,0)+b.u(0,1,0)]
+umv==-Rdxq*[b.u(-1,0,0)+b.u(-1,1,0)]
+vpv==Rdxq*[b.v(0,0,0)+b.v(0,1,0)]
+vmv==-Rdxq*[b.v(0,-1,0)+b.v(0,0,0)]
+wpv==Rdxq*[b.w(0,0,0)+b.w(0,1,0)]
+wmv==-Rdxq*[b.w(0,0,-1)+b.w(0,1,-1)]
+cupv==limiter(upv)*udxx
+cumv==limiter(umv)*udxx
+cvpv==limiter(vpv)*udxx
+cvmv==limiter(vmv)*udxx
+cwpv==limiter(wpv)*udxx
+cwmv==limiter(wmv)*udxx
+c0v==shift+cupv+cumv+cvpv+cvmv+cwpv+cwmv
+c0vabs==shift+relax2*[ABS(cupv)+ABS(cumv)+ABS(cvpv)+ABS(cvmv)+ABS(cwpv)+ABS(cwmv)]
+vupw==cupv*v(1,0,0)+cumv*v(-1,0,0)+cvpv*v(0,1,0)+cvmv*v(0,-1,0)+cwpv*v(0,0,1)+cwmv*v(0,0,-1)-c0v*v(0,0,0)-[p(0,1,0)-p(0,0,0)]/dx
+upw==Rdxq*[b.u(0,0,0)+b.u(0,0,1)]
+umw==-Rdxq*[b.u(-1,0,0)+b.u(-1,0,1)]
+vpw==Rdxq*[b.v(0,0,0)+b.v(0,0,1)]
+vmw==-Rdxq*[b.v(0,-1,0)+b.v(0,-1,1)]
+wpw==Rdxq*[b.w(0,0,0)+b.w(0,0,1)]
+wmw==-Rdxq*[b.w(0,0,-1)+b.w(0,0,0)]
+cupw==limiter(upw)*udxx
+cumw==limiter(umw)*udxx
+cvpw==limiter(vpw)*udxx
+cvmw==limiter(vmw)*udxx
+cwpw==limiter(wpw)*udxx
+cwmw==limiter(wmw)*udxx
+c0w==shift+cupw+cumw+cvpw+cvmw+cwpw+cwmw
+c0wabs==shift+relax2*[ABS(cupw)+ABS(cumw)+ABS(cvpw)+ABS(cvmw)+ABS(cwpw)+ABS(cwmw)]
+wupw==cupw*w(1,0,0)+cumw*w(-1,0,0)+cvpw*w(0,1,0)+cvmw*w(0,-1,0)+cwpw*w(0,0,1)+cwmw*w(0,0,-1)-c0w*w(0,0,0)-[p(0,0,1)-p(0,0,0)]/dx
+
+ucd=={(1-Rdxq*[u(0,0,0)+u(1,0,0)])*[u(1,0,0)-u(0,0,0)]+(1+Rdxq*[u(-1,0,0)+u(0,0,0)])*[u(-1,0,0)-u(0,0,0)]+
+  (1-Rdxq*[v(0,0,0)+v(1,0,0)])*[u(0,1,0)-u(0,0,0)]+(1+Rdxq*[v(0,-1,0)+v(1,-1,0)])*[u(0,-1,0)-u(0,0,0)]+
+  (1-Rdxq*[w(0,0,0)+w(1,0,0)])*[u(0,0,1)-u(0,0,0)]+(1+Rdxq*[w(0,0,-1)+w(1,0,-1)])*[u(0,0,-1)-u(0,0,0)]}*udxx-[p(1,0,0)-p(0,0,0)]/dx
+vcd=={(1-Rdxq*[u(0,0,0)+u(0,1,0)])*[v(1,0,0)-v(0,0,0)]+(1+Rdxq*[u(-1,0,0)+u(-1,1,0)])*[v(-1,0,0)-v(0,0,0)]+
+  (1-Rdxq*[v(0,0,0)+v(0,1,0)])*[v(0,1,0)-v(0,0,0)]+(1+Rdxq*[v(0,-1,0)+v(0,0,0)])*[v(0,-1,0)-v(0,0,0)]+
+  (1-Rdxq*[w(0,0,0)+w(0,1,0)])*[v(0,0,1)-v(0,0,0)]+(1+Rdxq*[w(0,0,-1)+w(0,1,-1)])*[v(0,0,-1)-v(0,0,0)]}*udxx-[p(0,1,0)-p(0,0,0)]/dx
+wcd=={(1-Rdxq*[u(0,0,0)+u(0,0,1)])*[w(1,0,0)-w(0,0,0)]+(1+Rdxq*[u(-1,0,0)+u(-1,0,1)])*[w(-1,0,0)-w(0,0,0)]+
+  (1-Rdxq*[v(0,0,0)+v(0,0,1)])*[w(0,1,0)-w(0,0,0)]+(1+Rdxq*[v(0,-1,0)+v(0,-1,1)])*[w(0,-1,0)-w(0,0,0)]+
+  (1-Rdxq*[w(0,0,0)+w(0,0,1)])*[w(0,0,1)-w(0,0,0)]+(1+Rdxq*[w(0,0,-1)+w(0,0,0)])*[w(0,0,-1)-w(0,0,0)]}*udxx-[p(0,0,1)-p(0,0,0)]/dx
+!(
+ucd=={u(1,0,0)+u(-1,0,0)+u(0,1,0)+u(0,-1,0)+u(0,0,1)+u(0,0,-1)-6*u(0,0,0)-
+  Rdxq*([u(1,0,0)+u(0,0,0)]*[u(1,0,0)+u(0,0,0)]-[u(-1,0,0)+u(0,0,0)]*[u(-1,0,0)+u(0,0,0)]+[u(0,1,0)+u(0,0,0)]*[v(0,0,0)+v(1,0,0)]-[u(0,-1,0)+u(0,0,0)]*[v(0,-1,0)+v(1,-1,0)]+
+        [u(0,0,1)+u(0,0,0)]*[w(0,0,0)+w(1,0,0)]-[u(0,0,-1)+u(0,0,0)]*[w(0,0,-1)+w(1,0,-1)])}*udxx-[p(1,0,0)-p(0,0,0)]/dx
+vcd=={v(1,0,0)+v(-1,0,0)+v(0,1,0)+v(0,-1,0)+v(0,0,1)+v(0,0,-1)-6*v(0,0,0)-
+  Rdxq*([v(1,0,0)+v(0,0,0)]*[u(0,0,0)+u(0,1,0)]-[v(-1,0,0)+v(0,0,0)]*[u(-1,0,0)+u(-1,1,0)]+[v(0,1,0)+v(0,0,0)]*[v(0,1,0)+v(0,0,0)]-[v(0,-1,0)+v(0,0,0)]*[v(0,-1,0)+v(0,0,0)]+
+        [v(0,0,1)+v(0,0,0)]*[w(0,0,0)+w(0,1,0)]-[v(0,0,-1)+v(0,0,0)]*[w(0,0,-1)+w(0,1,-1)])}*udxx-[p(0,1,0)-p(0,0,0)]/dx
+wcd=={w(1,0,0)+w(-1,0,0)+w(0,1,0)+w(0,-1,0)+w(0,0,1)+w(0,0,-1)-6*w(0,0,0)-
+  Rdxq*([w(1,0,0)+w(0,0,0)]*[u(0,0,0)+u(0,0,1)]-[w(-1,0,0)+w(0,0,0)]*[u(-1,0,0)+u(-1,0,1)]+[w(0,1,0)+w(0,0,0)]*[v(0,0,0)+v(0,0,1)]-[w(0,-1,0)+w(0,0,0)]*[v(0,-1,0)+v(0,-1,1)]+
+        [w(0,0,0)+w(0,0,1)]*[w(0,0,0)+w(0,0,1)]-[w(0,0,0)+w(0,0,-1)]*[w(0,0,0)+w(0,0,-1)])}*udxx-[p(0,0,1)-p(0,0,0)]/dx
+!)
+BOOLEAN FUNCTION InBody(REAL x,y,z)=NO
+
+SUBROUTINE bc(VFIELD field^,tn; REAL val) WITH field
+  IF first THEN u(0,*,*)=0
+  IF last THEN u(HI-1..HI,*,*)=0
+  u(*,0,*)=0; DO u(ix,HI,iz)=val FOR ALL ix,iz
+  u(*,*,0)=0; u(*,*,HI)=0
+  IF first THEN v(0,*,*)=0
+  IF last THEN v(HI,*,*)=0
+  v(*,0,*)=0; v(*,HI-1..HI,*)=0
+  v(*,*,0)=0; v(*,*,HI)=0
+  IF first THEN w(0,*,*)=0
+  IF last THEN w(HI,*,*)=0
+  w(*,0,*)=0; w(*,HI,*)=0
+  w(*,*,0)=0; w(*,*,HI-1..HI)=0
+  IF first THEN DO p(0,iy,iz)=p(1,iy,iz) FOR ALL iy,iz
+  IF last THEN DO p(HI,iy,iz)=p(HI-1,iy,iz) FOR ALL iy,iz
+  DO p(ix,0,iz)=p(ix,1,iz); p(ix,HI,iz)=p(ix,HI-1,iz) FOR ALL ix,iz
+  DO p(ix,iy,0)=p(ix,iy,1); p(ix,iy,HI)=p(ix,iy,HI-1) FOR ALL ix,iy
+END bc
+
+SUBROUTINE cdresids(VFIELD field^,tn^)
+  tn=0
+  dx=domsize/field.HI2; udxx=1/dx/dx; Rdxq=Reynolds*dx/4
+  nsmp=MIN(nsmpmax,CEILING(field.HI2/8))
+  PARALLEL LOOP FOR ismp=0 TO nsmp-1
+  LOOP FOR ix=MAX(1,field.LO1+1) TO field.HI1-1 AND iy=1+ROUND[ismp/nsmp*(field.HI2-1)] TO ROUND[(ismp+1)/nsmp*(field.HI2-1)] AND iz=1 TO field.HI3-1
+    WITH field(ix+*,iy+*,iz+*)
+    IF NOT last OR ix+1#field.HI1 THEN tn.u(ix,iy,iz)=ucd
+    IF ix#field.LO1+1 AND iy+1#field.HI2 THEN tn.v(ix,iy,iz)=vcd
+    IF ix#field.LO1+1 AND iz+1#field.HI3 THEN tn.w(ix,iy,iz)=wcd
+    tn.p(ix,iy,iz)=cnt
+  REPEAT; REPEAT
+END cdresids
+
+SUBROUTINE lincdresids(VFIELD base^,field^,tn^)
+  dx=domsize/field.HI2; udxx=1/dx/dx; Rdxq=Reynolds*dx/4
+!(
+  TYPEOF(tn) tn1,tn2
+  f=1E-7
+  cdresids(base,tn1)
+  base=base+f*field
+  cdresids(base,tn2)
+  base=base-f*field
+  tn=(tn2-tn1)/f-~
+!)  
+  nsmp=MIN(nsmpmax,CEILING(field.HI2/8))
+  PARALLEL LOOP FOR ismp=0 TO nsmp-1
+  LOOP FOR ix=MAX(1,field.LO1+1) TO field.HI1-1 AND iy=1+ROUND[ismp/nsmp*(field.HI2-1)] TO ROUND[(ismp+1)/nsmp*(field.HI2-1)] AND iz=1 TO field.HI3-1
+    b=^base(ix+*,iy+*,iz+*); f=^field(ix+*,iy+*,iz+*)
+    #define p(i,j,k) b.p(i,j,k)+eps*f.p(i,j,k)
+    #define u(i,j,k) b.u(i,j,k)+eps*f.u(i,j,k)
+    #define v(i,j,k) b.v(i,j,k)+eps*f.v(i,j,k)
+    #define w(i,j,k) b.w(i,j,k)+eps*f.w(i,j,k)
+    eps=0
+    tn.p(ix,iy,iz)=D(cnt,eps)
+    IF NOT last OR ix+1#field.HI1 THEN tn.u(ix,iy,iz)=D(ucd,eps)
+    IF ix#field.LO1+1 AND iy+1#field.HI2 THEN tn.v(ix,iy,iz)=D(vcd,eps)
+    IF ix#field.LO1+1 AND iz+1#field.HI3 THEN tn.w(ix,iy,iz)=D(wcd,eps)
+  REPEAT; REPEAT
+END lincdresids
+
+SUBROUTINE upwresids(VFIELD base^,field^,tn^)
+  dx=domsize/field.HI2; udxx=1/dx/dx; Rdxq=Reynolds*dx/4
+  LOOP FOR ix=MAX(1,field.LO1+1) TO field.HI1-1 AND iy=1 TO field.HI2-1 AND iz=1 TO field.HI3-1
+    b=^base(ix+*,iy+*,iz+*); WITH field(ix+*,iy+*,iz+*)
+    tn.p(ix,iy,iz)=cnt
+    IF NOT last OR ix+1#field.HI1 THEN tn.u(ix,iy,iz)=uupw+shift*u(0,0,0)
+    IF ix#field.LO1+1 AND iy+1#field.HI2 THEN tn.v(ix,iy,iz)=vupw+shift*v(0,0,0)
+    IF ix#field.LO1+1 AND iz+1#field.HI3 THEN tn.w(ix,iy,iz)=wupw+shift*w(0,0,0)
+  REPEAT
+END upwresids
+
+SUBROUTINE smooth(VFIELD base^,field^,tn; INTEGER nx)
+  dx=domsize/field.HI2; udxx=1/dx/dx; Rdxq=Reynolds*dx/4
+  relax=0.35; rel1=1
+  nsmp=MIN(nsmpmax,CEILING(field.HI2/8))
+  PARALLEL LOOP FOR ismp=0 TO nsmp-1
+  LOOP FOR 3 TIMES AND parity=0 TO 1
+    TYPEOF(field(*,MAX(0,ROUND[ismp/nsmp*(field.HI2-1)]-1)..ROUND[(ismp+1)/nsmp*(field.HI2-1)]+1)) jac=field(*,MAX(0,ROUND[ismp/nsmp*(field.HI2-1)]-1)..ROUND[(ismp+1)/nsmp*(field.HI2-1)]+1); SYNC(ismp,nsmp)
+!    POINTER TO VFIELD jac=^field
+    LOOP FOR ix=field.LO1+2 TO field.HI1-1 AND iy=1+ROUND[ismp/nsmp*(field.HI2-1)] TO ROUND[(ismp+1)/nsmp*(field.HI2-1)] AND iz=2-[(ix+iy+parity) BITAND 1] TO field.HI3-1 BY 2 EXCEPT InBody(ix*dx,iy*dx,iz*dx)
+!    LOOP FOR ix=field.LO1+2 TO field.HI1-1 AND iy=1+ismp TO field.HI2-1 BY nsmp AND iz=2-[(ix+iy+parity) BITAND 1] TO field.HI3-1 BY 2 EXCEPT InBody(ix*dx,iy*dx,iz*dx)
+     REAL dtu(-1..0),ut(-1..0),dtv(-1..0),vt(-1..0),dtw(-1..0),wt(-1..0)
+     IF ix-1=0 OR InBody[(ix-1)*dx,iy*dx,iz*dx]
+     THEN ut(-1)=jac.u(ix-1,iy,iz); dtu(-1)=0 ELSE
+       b=^base(ix-1+*,iy+*,iz+*)
+       WITH jac(ix-1+*,iy+*,iz+*)
+       dtu(-1)=1/c0uabs
+       ut(-1)=u(0,0,0)+[uupw-tn.u(ix-1,iy,iz)]*relax*dtu(-1)
+     END IF
+     IF ix+1=nx OR InBody[(ix+1)*dx,iy*dx,iz*dx]
+     THEN ut(0)=jac.u(ix,iy,iz); dtu(0)=0 ELSE
+       b=^base(ix+*,iy+*,iz+*)
+       WITH jac(ix+*,iy+*,iz+*)
+       dtu(0)=1/c0uabs
+       ut(0)=u(0,0,0)+[uupw-tn.u(ix,iy,iz)]*relax*dtu(0)
+     END IF
+     IF iy-1=0 OR InBody[ix*dx,(iy-1)*dx,iz*dx]
+     THEN vt(-1)=jac.v(ix,iy-1,iz); dtv(-1)=0 ELSE
+       b=^base(ix+*,iy-1+*,iz+*)
+       WITH jac(ix+*,iy-1+*,iz+*)
+       dtv(-1)=1/c0vabs
+       vt(-1)=v(0,0,0)+[vupw-tn.v(ix,iy-1,iz)]*relax*dtv(-1)
+     END IF
+     IF iy+1=field.HI2 OR InBody[ix*dx,(iy+1)*dx,iz*dx]
+     THEN vt(0)=jac.v(ix,iy,iz); dtv(0)=0 ELSE
+       b=^base(ix+*,iy+*,iz+*)
+       WITH jac(ix+*,iy+*,iz+*)
+       dtv(0)=1/c0vabs
+       vt(0)=v(0,0,0)+[vupw-tn.v(ix,iy,iz)]*relax*dtv(0)
+     END IF
+     IF iz-1=0 OR InBody[ix*dx,iy*dx,(iz-1)*dx]
+     THEN wt(-1)=jac.w(ix,iy,iz-1); dtw(-1)=0 ELSE
+       b=^base(ix+*,iy+*,iz-1+*)
+       WITH jac(ix+*,iy+*,iz-1+*)
+       dtw(-1)=1/c0wabs
+       wt(-1)=w(0,0,0)+[wupw-tn.w(ix,iy,iz-1)]*relax*dtw(-1)
+     END IF
+     IF iz+1=field.HI3 OR InBody[ix*dx,iy*dx,(iz+1)*dx]
+     THEN wt(0)=jac.w(ix,iy,iz); dtw(0)=0 ELSE
+       b=^base(ix+*,iy+*,iz+*)
+       WITH jac(ix+*,iy+*,iz+*)
+       dtw(0)=1/c0wabs
+       wt(0)=w(0,0,0)+[wupw-tn.w(ix,iy,iz)]*relax*dtw(0)
+     END IF
+     WITH field(ix+*,iy+*,iz+*)
+     cont=[ut(-1)-ut(0)+vt(-1)-vt(0)+wt(-1)-wt(0)-dx*tn.p(ix,iy,iz)]/[dtu(-1)+dtu(0)+dtv(-1)+dtv(0)+dtw(-1)+dtw(0)]
+     IF ix<nx-1 THEN u(0,0,0)=(1-rel1)*~+rel1*[ut(0)+dtu(0)*cont]
+     IF ix>1 THEN u(-1,0,0)=(1-rel1)*~+rel1*[ut(-1)-dtu(-1)*cont]
+     IF iy<field.HI2-1 THEN v(0,0,0)=(1-rel1)*~+rel1*[vt(0)+dtv(0)*cont]
+     IF iy>field.LO2+1 THEN v(0,-1,0)=(1-rel1)*~+rel1*[vt(-1)-dtv(-1)*cont]
+     IF iz<field.HI3-1 THEN w(0,0,0)=(1-rel1)*~+rel1*[wt(0)+dtw(0)*cont]
+     IF iz>field.LO3+1 THEN w(0,0,-1)=(1-rel1)*~+rel1*[wt(-1)-dtw(-1)*cont]
+     p(0,0,0)=~+cont*dx
+    REPEAT
+    SYNC(ismp,nsmp)
+    IF ismp=nsmp-1 THEN updatenbrs(field,parity)
+    SYNC(ismp,nsmp)
+  REPEAT
+  REPEAT
+END smooth
+
+SUBROUTINE oversmooth(VFIELD base^,field^,tn; INTEGER nx)
+DO
+  f0=field
+  smooth(base,field,tn,nx)
+  f1=field
+  smooth(base,field,tn,nx)
+  field=field+0.5*f0-0.5*f1
+FOR 2 TIMES
+END oversmooth
+
+#define uxav0(iy,iz) (0.75*u(0,iy,iz)+0.25*u(-1,iy,iz))
+#define uxav1(iy,iz) (0.25*u(0,iy,iz)+0.75*u(-1,iy,iz))
+#define vyav0(ix,iz) (0.75*v(ix,0,iz)+0.25*v(ix,-1,iz))
+#define vyav1(ix,iz) (0.25*v(ix,0,iz)+0.75*v(ix,-1,iz))
+#define wzav0(ix,iy) (0.75*w(ix,iy,0)+0.25*w(ix,iy,-1))
+#define wzav1(ix,iy) (0.25*w(ix,iy,0)+0.75*w(ix,iy,-1))
+SUBROUTINE interp(VFIELD c,f^) WITH c
+  f.u(0,0,0)=~+uxav0(0,0)
+  f.u(-1,0,0)=~+uxav1(0,0)
+  f.u(0,-1,0)=~+0.5*[uxav0(0,0)+uxav0(-1,0)]
+  f.u(-1,-1,0)=~+0.5*[uxav1(0,0)+uxav1(-1,0)]
+  f.u(0,0,-1)=~+0.5*[uxav0(0,0)+uxav0(0,-1)]
+  f.u(-1,0,-1)=~+0.5*[uxav1(0,0)+uxav1(0,-1)]
+  f.u(0,-1,-1)=~+0.25*[uxav0(0,0)+uxav0(0,-1)+uxav0(-1,0)+uxav0(-1,-1)]
+  f.u(-1,-1,-1)=~+0.25*[uxav1(0,0)+uxav1(0,-1)+uxav1(-1,0)+uxav1(-1,-1)]
+  f.v(0,0,0)=~+vyav0(0,0)
+  f.v(0,-1,0)=~+vyav1(0,0)
+  f.v(-1,0,0)=~+0.5*[vyav0(0,0)+vyav0(-1,0)]
+  f.v(-1,-1,0)=~+0.5*[vyav1(0,0)+vyav1(-1,0)]
+  f.v(0,0,-1)=~+0.5*[vyav0(0,0)+vyav0(0,-1)]
+  f.v(0,-1,-1)=~+0.5*[vyav1(0,0)+vyav1(0,-1)]
+  f.v(-1,0,-1)=~+0.25*[vyav0(0,0)+vyav0(0,-1)+vyav0(-1,0)+vyav0(-1,-1)]
+  f.v(-1,-1,-1)=~+0.25*[vyav1(0,0)+vyav1(0,-1)+vyav1(-1,0)+vyav1(-1,-1)]
+  f.w(0,0,0)=~+wzav0(0,0)
+  f.w(0,0,-1)=~+wzav1(0,0)
+  f.w(-1,0,0)=~+0.5*[wzav0(0,0)+wzav0(-1,0)]
+  f.w(-1,0,-1)=~+0.5*[wzav1(0,0)+wzav1(-1,0)]
+  f.w(0,-1,0)=~+0.5*[wzav0(0,0)+wzav0(0,-1)]
+  f.w(0,-1,-1)=~+0.5*[wzav1(0,0)+wzav1(0,-1)]
+  f.w(-1,-1,0)=~+0.25*[wzav0(0,0)+wzav0(0,-1)+wzav0(-1,0)+wzav0(-1,-1)]
+  f.w(-1,-1,-1)=~+0.25*[wzav1(0,0)+wzav1(0,-1)+wzav1(-1,0)+wzav1(-1,-1)]
+  f.p(0,0,0)=~+p(0,0,0)
+  f.p(-1,0,0)=~+0.5*[p(0,0,0)+p(-1,0,0)]
+  f.p(0,-1,0)=~+0.5*[p(0,0,0)+p(0,-1,0)]
+  f.p(-1,-1,0)=~+0.25*[p(0,0,0)+p(-1,0,0)+p(0,-1,0)+p(-1,-1,0)]
+  f.p(0,0,-1)=~+0.5*[p(0,0,0)+p(0,0,-1)]
+  f.p(-1,0,-1)=~+0.25*[p(0,0,0)+p(-1,0,0)+p(0,0,-1)+p(-1,0,-1)]
+  f.p(0,-1,-1)=~+0.25*[p(0,0,0)+p(0,-1,0)+p(0,0,-1)+p(0,-1,-1)]
+  f.p(-1,-1,-1)=~+0.125*[p(0,0,0)+p(-1,0,0)+p(0,-1,0)+p(-1,-1,0)+
+                         p(0,0,-1)+p(-1,0,-1)+p(0,-1,-1)+p(-1,-1,-1)]
+END interp
+
+SUBROUTINE restrict(VFIELD f,c^) WITH f
+  c.u(0,0,0)=~+0.125*[uxav0(0,0)+0.5*uxav0(-1,0)+0.5*uxav0(0,-1)+0.25*uxav0(-1,-1)]
+  c.u(-1,0,0)=~+0.125*[uxav1(0,0)+0.5*uxav1(-1,0)+0.5*uxav1(0,-1)+0.25*uxav1(-1,-1)]
+  c.u(0,-1,0)=~+0.125*[0.5*uxav0(-1,0)+0.25*uxav0(-1,-1)]
+  c.u(-1,-1,0)=~+0.125*[0.5*uxav1(-1,0)+0.25*uxav1(-1,-1)]
+  c.u(0,0,-1)=~+0.125*[0.5*uxav0(0,-1)+0.25*uxav0(-1,-1)]
+  c.u(-1,0,-1)=~+0.125*[0.5*uxav1(0,-1)+0.25*uxav1(-1,-1)]
+  c.u(0,-1,-1)=~+0.125*0.25*uxav0(-1,-1)
+  c.u(-1,-1,-1)=~+0.125*0.25*uxav1(-1,-1)
+  c.v(0,0,0)=~+0.125*[vyav0(0,0)+0.5*vyav0(-1,0)+0.5*vyav0(0,-1)+0.25*vyav0(-1,-1)]
+  c.v(0,-1,0)=~+0.125*[vyav1(0,0)+0.5*vyav1(-1,0)+0.5*vyav1(0,-1)+0.25*vyav1(-1,-1)]
+  c.v(-1,0,0)=~+0.125*[0.5*vyav0(-1,0)+0.25*vyav0(-1,-1)]
+  c.v(-1,-1,0)=~+0.125*[0.5*vyav1(-1,0)+0.25*vyav1(-1,-1)]
+  c.v(0,0,-1)=~+0.125*[0.5*vyav0(0,-1)+0.25*vyav0(-1,-1)]
+  c.v(0,-1,-1)=~+0.125*[0.5*vyav1(0,-1)+0.25*vyav1(-1,-1)]
+  c.v(-1,0,-1)=~+0.125*0.25*vyav0(-1,-1)
+  c.v(-1,-1,-1)=~+0.125*0.25*vyav1(-1,-1)
+  c.w(0,0,0)=~+0.125*[wzav0(0,0)+0.5*wzav0(-1,0)+0.5*wzav0(0,-1)+0.25*wzav0(-1,-1)]
+  c.w(0,0,-1)=~+0.125*[wzav1(0,0)+0.5*wzav1(-1,0)+0.5*wzav1(0,-1)+0.25*wzav1(-1,-1)]
+  c.w(-1,0,0)=~+0.125*[0.5*wzav0(-1,0)+0.25*wzav0(-1,-1)]
+  c.w(-1,0,-1)=~+0.125*[0.5*wzav1(-1,0)+0.25*wzav1(-1,-1)]
+  c.w(0,-1,0)=~+0.125*[0.5*wzav0(0,-1)+0.25*wzav0(-1,-1)]
+  c.w(0,-1,-1)=~+0.125*[0.5*wzav1(0,-1)+0.25*wzav1(-1,-1)]
+  c.w(-1,-1,0)=~+0.125*0.25*wzav0(-1,-1)
+  c.w(-1,-1,-1)=~+0.125*0.25*wzav1(-1,-1)
+  c.p(0,0,0)=~+0.125*[p(0,0,0)+0.5*p(-1,0,0)+0.5*p(0,-1,0)+0.25*p(-1,-1,0)+
+                         0.5*p(0,0,-1)+0.25*p(-1,0,-1)+0.25*p(0,-1,-1)+0.125*p(-1,-1,-1)]
+  c.p(-1,0,0)=~+0.125*[0.5*p(-1,0,0)+0.25*p(-1,-1,0)+0.25*p(-1,0,-1)+0.125*p(-1,-1,-1)]
+  c.p(0,-1,0)=~+0.125*[0.5*p(0,-1,0)+0.25*p(-1,-1,0)+0.25*p(0,-1,-1)+0.125*p(-1,-1,-1)]
+  c.p(-1,-1,0)=~+0.125*[0.25*p(-1,-1,0)+0.125*p(-1,-1,-1)]
+  c.p(0,0,-1)=~+0.125*[0.5*p(0,0,-1)+0.25*p(-1,0,-1)+0.25*p(0,-1,-1)+0.125*p(-1,-1,-1)]
+  c.p(-1,0,-1)=~+0.125*[0.25*p(-1,0,-1)+0.125*p(-1,-1,-1)]
+  c.p(0,-1,-1)=~+0.125*[0.25*p(0,-1,-1)+0.125*p(-1,-1,-1)]
+  c.p(-1,-1,-1)=~+0.125*0.125*p(-1,-1,-1)
+END restrict
+
+SUBROUTINE restrictloop(VFIELD fvar^,cvar^)
+ nsmp=MIN(nsmpmax,CEILING(fvar.HI2/8))
+ PARALLEL LOOP FOR ismp=0 TO nsmp-1
+  LOOP FOR ixc=MAX[cvar.LO1+1,fvar.LO1 DIV 2 +1] TO MIN[cvar.HI1,fvar.HI1 DIV 2] AND iyc=1+ROUND[ismp/nsmp*cvar.HI2] TO ROUND[(ismp+1)/nsmp*cvar.HI2] AND izc=1 TO cvar.HI3
+    restrict(fvar(2*ixc+(-1..0),2*iyc+(-1..0),2*izc+(-1..0)),cvar(ixc+(-1..0),iyc+(-1..0),izc+(-1..0)))
+  REPEAT
+  IF fvar.HI1<2*cvar.HI1 THEN LOOP FOR iyc=1+ROUND[ismp/nsmp*cvar.HI2] TO ROUND[(ismp+1)/nsmp*cvar.HI2] AND izc=cvar.LO3+1 TO cvar.HI3
+    VARS fext(-1..0,-1..0,-1..0)=0; fext(-1)=fvar(HI,2*iyc+(-1..0),2*izc+(-1..0))
+    restrict(fext,cvar(HI+(-1..0),iyc+(-1..0),izc+(-1..0)))
+  REPEAT
+ REPEAT
+END restrictloop
+
+SUBROUTINE mg(VFIELD fbase^,fvar^,ftn^; INTEGER nxf)
+IF nxf MOD 2 = 0 AND fvar.HI2 MOD 2 = 0 AND fvar.HI3 MOD 2 = 0 AND
+   nxf > 4 AND fvar.HI2 > 4 AND fvar.HI3 > 4 THEN
+  smooth(fbase,fvar,ftn,nxf)
+  bc(fvar,ftn,0)
+  nxc=nxf DIV 2
+  SHARED ARRAY[(fvar.LO1+1) DIV 2 - 1..(fvar.HI1+1) DIV 2, (fvar.LO2-1) DIV 2..(fvar.HI2+1) DIV 2, (fvar.LO3+1) DIV 2..(fvar.HI3+1) DIV 2] OF VARS cbase=0, cvar=0, ctn=0
+  SHARED ARRAY(fvar.LO1..fvar.HI1,fvar.LO2..fvar.HI2,fvar.LO3..fvar.HI3) OF VARS frsd=0
+  restrictloop(fbase,cbase)
+  bc(cbase,ctn,1)
+  updatenbrs(cbase,2+(fvar.LO1 BITAND 1)*XPDIR+(fvar.HI1 BITAND 1)*XNDIR)
+  nsmp=MIN(nsmpmax,CEILING(fvar.HI2/8))
+  PARALLEL LOOP FOR ismp=0 TO nsmp-1
+  LOOP FOR ixf=fvar.LO1+1 TO fvar.HI1-1 AND iyf=1+ROUND[ismp/nsmp*(fvar.HI2-1)] TO ROUND[(ismp+1)/nsmp*(fvar.HI2-1)] AND izf=fvar.LO3+1 TO fvar.HI3-1
+    dx=domsize/fvar.HI2; udxx=1/dx/dx; Rdxq=Reynolds*dx/4
+    b=^fbase(ixf+(-1..1),iyf+(-1..1),izf+(-1..1))
+    WITH fvar(ixf+(-1..1),iyf+(-1..1),izf+(-1..1))
+    IF ixf+1=nxf OR InBody[(ixf+1)*dx,iyf*dx,izf*dx] THEN frsd(ixf,iyf,izf).u=0 ELSE
+      frsd(ixf,iyf,izf).u=ftn.u(ixf,iyf,izf)-uupw
+    END IF
+    IF iyf+1=fvar.HI2 OR InBody[ixf*dx,(iyf+1)*dx,izf*dx] THEN frsd(ixf,iyf,izf).v=0 ELSE
+      frsd(ixf,iyf,izf).v=ftn.v(ixf,iyf,izf)-vupw
+    END IF
+    IF izf+1=fvar.HI3 OR InBody[ixf*dx,iyf*dx,(izf+1)*dx] THEN frsd(ixf,iyf,izf).w=0 ELSE
+      frsd(ixf,iyf,izf).w=ftn.w(ixf,iyf,izf)-wupw
+    END IF
+    frsd(ixf,iyf,izf).p=ftn.p(ixf,iyf,izf)-cnt
+  REPEAT; REPEAT
+  bc(frsd,frsd,0)
+  updatenbrs(frsd,2+(fvar.LO1 BITAND 1)*XPDIR+(fvar.HI1 BITAND 1)*XNDIR)
+  restrictloop(frsd,ctn)
+  updatenbrs(ctn,2+(fvar.LO1 BITAND 1)*XPDIR+(fvar.HI1 BITAND 1)*XNDIR)
+!(
+  REAL mcorr=0; INTEGER count=0
+  LOOP FOR ixc=LO+1 TO HI-1 AND iyc=LO+1 TO HI-1 AND izc=LO+1 TO HI-1
+    EXCEPT InBody(ixc*domsize/cvar.HI2,iyc*domsize/cvar.HI2,izc*domsize/cvar.HI2)
+    mcorr=~+ctn(ixc,iyc,izc).p
+    count=~+1
+  REPEAT
+  mcorr=mcorr/count
+  DO ctn(ixc,iyc).p=~-mcorr FOR ixc=LO+1 TO HI-1 AND iyc=LO+1 TO HI-1 AND izc=LO+1 TO HI-1
+!)
+  DO mg(cbase,cvar,ctn,nxc) FOR 2 TIMES
+  bc(cvar,ctn,0)
+!  nsmp=MIN(nsmpmax,CEILING(fvar.HI2/8))
+PARALLEL LOOP FOR ismp=0 TO nsmp-1
+  LOOP FOR ixc=MAX[cvar.LO1+1,fvar.LO1 DIV 2 +1] TO MIN[cvar.HI1,fvar.HI1 DIV 2] AND iyc=1+ROUND[ismp/nsmp*cvar.HI2] TO ROUND[(ismp+1)/nsmp*cvar.HI2] AND izc=cvar.LO3+1 TO cvar.HI3
+    interp(cvar(ixc+(-1..0),iyc+(-1..0),izc+(-1..0)),fvar(2*ixc+(-1..0),2*iyc+(-1..0),2*izc+(-1..0)))
+  REPEAT; REPEAT
+  bc(fvar,ftn,0)
+  updatenbrs(fvar,2+(fvar.LO1 BITAND 1)*XPDIR+(fvar.HI1 BITAND 1)*XNDIR)
+  smooth(fbase,fvar,ftn,nxf)
+ELSE DO smooth(fbase,fvar,ftn,nxf) FOR 20 TIMES
+END mg

@@ -16,52 +16,52 @@
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
 
 <a href="complex.html#Top">COMPLEX</a> M(0..4,0..4),t(0..4),x(0..4)
-<a href="cpl.html#DO">DO</a> M(i,j)<a href="cpl.html#Assignment">=</a>(1.+j&lowast;I)&lowast;&lowast;(i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j
-t<a href="cpl.html#Assignment">=</a>0; t(4)<a href="cpl.html#Assignment">=</a>24 <span class=comment>! initialize some arrays and matrices</span>
+<a href="cpl.html#DO">DO</a> M(i,j)=(1.+j&lowast;I)&lowast;&lowast;(i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j
+t=0; t(4)=24 <span class=comment>! initialize some arrays and matrices</span>
 
-<a href="cpl.html#TYPE">TYPEOF</a>(M(3,&lowast;)) temp<a href="cpl.html#Assignment">=</a>M(3,&lowast;)
-M(3,&lowast;)<a href="cpl.html#Assignment">=</a>M(0,&lowast;)
-M(0,&lowast;)<a href="cpl.html#Assignment">=</a>temp <span class=comment>! swap 0th and 3rd row</span>
+<a href="cpl.html#TYPE">TYPEOF</a>(M(3,&lowast;)) temp=M(3,&lowast;)
+M(3,&lowast;)=M(0,&lowast;)
+M(0,&lowast;)=temp <span class=comment>! swap 0th and 3rd row</span>
 
 Lanczos(x,M,t,1E-10) <span class=comment>! solve linear system by Lanczos method</span>
 <a href="cpl.html#WRITE">WRITE</a> x
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#ABS">ABS</a>(t-M&lowast;x) <span class=comment>! and test the result</span>
 
-plu<a href="cpl.html#Assignment">=</a>PLU(M) <span class=comment>! Perform LU decomposition with pivoting</span>
-x<a href="cpl.html#Assignment">=</a>plu\t    <span class=comment>! and apply it to solve a linear system</span>
+plu=PLU(M) <span class=comment>! Perform LU decomposition with pivoting</span>
+x=plu\t    <span class=comment>! and apply it to solve a linear system</span>
 <a href="cpl.html#WRITE">WRITE</a> x    <span class=comment>! This is faster than storing the inverse.</span>
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#ABS">ABS</a>(t-M&lowast;x) <span class=comment>! Test the result</span>
 
 <a href="cpl.html#TYPE">TYPEOF</a>(M) M1,M2  <span class=comment>! prepare for copies</span>
-M1<a href="cpl.html#Assignment">=</a>M;LUdecomp M1 <span class=comment>! LU decomposition (no pivoting) in place</span>
-x<a href="cpl.html#Assignment">=</a>M1\t <span class=comment>! division to the left, with no stored inverse</span>
+M1=M;LUdecomp M1 <span class=comment>! LU decomposition (no pivoting) in place</span>
+x=M1\t <span class=comment>! division to the left, with no stored inverse</span>
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#ABS">ABS</a>(t-M&lowast;x) <span class=comment>! and test</span>
-x<a href="cpl.html#Assignment">=</a>t/M1 <span class=comment>! division to the right</span>
+x=t/M1 <span class=comment>! division to the right</span>
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#ABS">ABS</a>(t-x&lowast;M) <span class=comment>! and test</span>
-<a href="cpl.html#DO">DO</a> M2(i,&lowast;)<a href="cpl.html#Assignment">=</a>M(i,&lowast;)/plu <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i; <a href="cpl.html#WRITE">WRITE</a> M2 <span class=comment>! divide each row, equivalent to</span>
+<a href="cpl.html#DO">DO</a> M2(i,&lowast;)=M(i,&lowast;)/plu <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i; <a href="cpl.html#WRITE">WRITE</a> M2 <span class=comment>! divide each row, equivalent to</span>
                                    <span class=comment>! right multiplication with the inverse</span>
 
-M1<a href="cpl.html#Assignment">=</a>INV(M) <span class=comment>! M1 is the inverse matrix</span>
+M1=INV(M) <span class=comment>! M1 is the inverse matrix</span>
 
-M2($i,$j)<a href="cpl.html#Assignment">=</a><a href="complex.html#Top">CONJG</a>(M1($i,$k))&lowast;M($k,$j); <a href="cpl.html#WRITE">WRITE</a> M2
+M2($i,$j)=<a href="complex.html#Top">CONJG</a>(M1($i,$k))&lowast;M($k,$j); <a href="cpl.html#WRITE">WRITE</a> M2
         <span class=comment>! matrix product in Einstein notation</span>
 
 <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..4,-2..2) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> Ms <span class=comment>! Same operations can be performed</span>
                                        <span class=comment>! on STORED arrays</span>
-Ms(&lowast;,&lowast;)<a href="cpl.html#Assignment">=</a>M(&lowast;,&lowast;+2);LUdecomp Ms <span class=comment>! LU decomposition on disk</span>
-x<a href="cpl.html#Assignment">=</a>Ms\t                       <span class=comment>! right division</span>
+Ms(&lowast;,&lowast;)=M(&lowast;,&lowast;+2);LUdecomp Ms <span class=comment>! LU decomposition on disk</span>
+x=Ms\t                       <span class=comment>! right division</span>
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#ABS">ABS</a>(t-M(&lowast;,&lowast;+2)&lowast;x)      <span class=comment>! test</span>
-x<a href="cpl.html#Assignment">=</a>t/Ms                       <span class=comment>! left division</span>
+x=t/Ms                       <span class=comment>! left division</span>
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#ABS">ABS</a>(t-x&lowast;M(&lowast;,&lowast;+2))      <span class=comment>! test</span>
-Ms(&lowast;,&lowast;)<a href="cpl.html#Assignment">=</a>M(&lowast;,&lowast;+2);LUdecomp M(&lowast;,&lowast;+2)
-x<a href="cpl.html#Assignment">=</a>M(&lowast;,&lowast;+2)\t      <span class=comment>! opposite roles</span>
+Ms(&lowast;,&lowast;)=M(&lowast;,&lowast;+2);LUdecomp M(&lowast;,&lowast;+2)
+x=M(&lowast;,&lowast;+2)\t      <span class=comment>! opposite roles</span>
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#ABS">ABS</a>(t-Ms&lowast;x)
-x<a href="cpl.html#Assignment">=</a>t/M(&lowast;,&lowast;+2)
+x=t/M(&lowast;,&lowast;+2)
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#ABS">ABS</a>(t-x&lowast;Ms)
 
-<a href="cpl.html#ARRAY">ARRAY</a>(1..5,1..5) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A<a href="cpl.html#Assignment">=</a>1,B<a href="cpl.html#Assignment">=</a>1,C
+<a href="cpl.html#ARRAY">ARRAY</a>(1..5,1..5) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A=1,B=1,C
 
-C<a href="cpl.html#Assignment">=</a>A&lowast;B <span class=comment>! direct matrix multiplication (use sparingly<span class=comment>!)</span></span>
+C=A&lowast;B <span class=comment>! direct matrix multiplication (use sparingly<span class=comment>!)</span></span>
 LUdecomp A
-B<a href="cpl.html#Assignment">=</a>A\C <span class=comment>! and division</span>
+B=A\C <span class=comment>! and division</span>
 </pre></body></html>

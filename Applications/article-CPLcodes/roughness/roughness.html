@@ -13,74 +13,74 @@
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
 <span class=comment>! USE rtchecks</span>
 
-<a href="cpl.html#INTEGER">INTEGER</a> nx<a href="cpl.html#Assignment">=</a>16,ny<a href="cpl.html#Assignment">=</a>16,nz<a href="cpl.html#Assignment">=</a>16
-<a href="cpl.html#REAL">REAL</a> a<a href="cpl.html#Assignment">=</a>0.1, rad<a href="cpl.html#Assignment">=</a>0.1
-<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>
-  <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,0..2)<a href="cpl.html#Assignment">=</a>"nx=" <a href="cpl.html#IF">THEN</a>
-    nx<a href="cpl.html#Assignment">=</a>atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,3+(0..<a href="cpl.html#HI">HI</a>-3))); ny<a href="cpl.html#Assignment">=</a>nx; nz<a href="cpl.html#Assignment">=</a>ny
-  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,0..2)<a href="cpl.html#Assignment">=</a>"ny=" <a href="cpl.html#IF">THEN</a>
-    ny<a href="cpl.html#Assignment">=</a>atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,3+(0..<a href="cpl.html#HI">HI</a>-3))); nz<a href="cpl.html#Assignment">=</a>ny
-  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,0..2)<a href="cpl.html#Assignment">=</a>"nz=" <a href="cpl.html#IF">THEN</a>
-    nz<a href="cpl.html#Assignment">=</a>atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,3+(0..<a href="cpl.html#HI">HI</a>-3)))
-  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,0..1)<a href="cpl.html#Assignment">=</a>"a=" <a href="cpl.html#IF">THEN</a>
-    a<a href="cpl.html#Assignment">=</a>atof(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,2+(0..<a href="cpl.html#HI">HI</a>-2)))
-  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,0..1)<a href="cpl.html#Assignment">=</a>"rad=" <a href="cpl.html#IF">THEN</a>
-    rad<a href="cpl.html#Assignment">=</a>atof(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,4+(0..<a href="cpl.html#HI">HI</a>-4)))
+<a href="cpl.html#INTEGER">INTEGER</a> nx=16,ny=16,nz=16
+<a href="cpl.html#REAL">REAL</a> a=0.1, rad=0.1
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,0..2)="nx=" <a href="cpl.html#IF">THEN</a>
+    nx=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,3+(0..<a href="cpl.html#HI">HI</a>-3))); ny=nx; nz=ny
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,0..2)="ny=" <a href="cpl.html#IF">THEN</a>
+    ny=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,3+(0..<a href="cpl.html#HI">HI</a>-3))); nz=ny
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,0..2)="nz=" <a href="cpl.html#IF">THEN</a>
+    nz=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,3+(0..<a href="cpl.html#HI">HI</a>-3)))
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,0..1)="a=" <a href="cpl.html#IF">THEN</a>
+    a=atof(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,2+(0..<a href="cpl.html#HI">HI</a>-2)))
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,0..1)="rad=" <a href="cpl.html#IF">THEN</a>
+    rad=atof(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(i,4+(0..<a href="cpl.html#HI">HI</a>-4)))
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#ERROR">ERROR</a> "unknown option"  
 <a href="cpl.html#LOOP">REPEAT</a>
 
-baseline<a href="cpl.html#Assignment">=</a>1E-12+1/8
-staircase<a href="cpl.html#Assignment">=</a><a href="cpl.html#BOOLEAN">NO</a>
-nshapes<a href="cpl.html#Assignment">=</a>ENUM(sinriblet,gaussian,smoothedcyl,cylinder,cone,spheroid,squarecyl,ellipsoid)
-shape<a href="cpl.html#Assignment">=</a>spheroid
+baseline=1E-12+1/8
+staircase=<a href="cpl.html#BOOLEAN">NO</a>
+nshapes=ENUM(sinriblet,gaussian,smoothedcyl,cylinder,cone,spheroid,squarecyl,ellipsoid)
+shape=spheroid
 
 <a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FUNCTION">FUNCTION</a> InBody(<a href="cpl.html#REAL">REAL</a> x,y,z)
 <a href="cpl.html#CASE">CASE</a> shape <a href="cpl.html#OF">OF</a>
 sinriblet: <span class=comment>! sinusoidal riblet</span>
-  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>z&lt;baseline+a&lowast;<a href="cpl.html#Builtin">SIN</a>(x&lowast;PI)<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#RESULT">RESULT</a>=z&lt;baseline+a&lowast;<a href="cpl.html#Builtin">SIN</a>(x&lowast;PI)<a href="cpl.html#REAL-operator">^</a>2
 gaussian:
-  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>z&lt;baseline+a&lowast;<a href="cpl.html#Builtin">EXP</a>{-160&lowast;[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]}
+  <a href="cpl.html#RESULT">RESULT</a>=z&lt;baseline+a&lowast;<a href="cpl.html#Builtin">EXP</a>{-160&lowast;[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]}
 smoothedcyl: <span class=comment>! smoothed cylinder</span>
-  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#IF">IF</a> (x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2&gt;4&lowast;rad<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> z&lt;baseline <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline+a/{1+<a href="cpl.html#Builtin">EXP</a>[10&lowast;(SQRT[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]/rad-1)]}
+  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> (x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2&gt;4&lowast;rad<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> z&lt;baseline <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline+a/{1+<a href="cpl.html#Builtin">EXP</a>[10&lowast;(SQRT[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]/rad-1)]}
 cylinder:
-  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#IF">IF</a> (x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2&lt;rad<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> z&lt;baseline+a <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
+  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> (x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2&lt;rad<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> z&lt;baseline+a <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
 cone:
-  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#IF">IF</a> SQRT[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]&lt;rad <a href="cpl.html#IF">THEN</a> z&lt;baseline+a&lowast;{1-SQRT[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]/rad} <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
+  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> SQRT[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]&lt;rad <a href="cpl.html#IF">THEN</a> z&lt;baseline+a&lowast;{1-SQRT[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]/rad} <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
 spheroid:
-  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#IF">IF</a> (x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2&lt;rad<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> z&lt;baseline+a&lowast;SQRT{1-[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]/rad<a href="cpl.html#REAL-operator">^</a>2} <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
+  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> (x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2&lt;rad<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> z&lt;baseline+a&lowast;SQRT{1-[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]/rad<a href="cpl.html#REAL-operator">^</a>2} <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
 squarecyl: <span class=comment>! square cylinder</span>
-  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(x-0.5)&lt;rad <a href="cpl.html#AND">AND</a> <a href="cpl.html#ABS">ABS</a>(y-0.5)&lt;rad <a href="cpl.html#IF">THEN</a> z&lt;baseline+a <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
+  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(x-0.5)&lt;rad <a href="cpl.html#AND">AND</a> <a href="cpl.html#ABS">ABS</a>(y-0.5)&lt;rad <a href="cpl.html#IF">THEN</a> z&lt;baseline+a <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
 ellipsoid: <span class=comment>! 3 to 1 ellipsoid</span>
-  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#IF">IF</a> [(x-0.5)/0.05]<a href="cpl.html#REAL-operator">^</a>2+[(y-0.5)/0.15]<a href="cpl.html#REAL-operator">^</a>2&lt;1 <a href="cpl.html#IF">THEN</a> z&lt;baseline+a&lowast;SQRT{1-[(x-0.5)/0.05]<a href="cpl.html#REAL-operator">^</a>2-[(y-0.5)/0.15]<a href="cpl.html#REAL-operator">^</a>2} <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
+  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> [(x-0.5)/0.05]<a href="cpl.html#REAL-operator">^</a>2+[(y-0.5)/0.15]<a href="cpl.html#REAL-operator">^</a>2&lt;1 <a href="cpl.html#IF">THEN</a> z&lt;baseline+a&lowast;SQRT{1-[(x-0.5)/0.05]<a href="cpl.html#REAL-operator">^</a>2-[(y-0.5)/0.15]<a href="cpl.html#REAL-operator">^</a>2} <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
 <a href="cpl.html#END">END</a> <a href="cpl.html#CASE">CASE</a>
 <a href="cpl.html#END">END</a> InBody
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Bisection[<a href="cpl.html#FUNCTION">FUNCTION</a>(<a href="cpl.html#REAL">REAL</a> s)-&gt;<a href="cpl.html#BOOLEAN">BOOLEAN</a> f; <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#VARIABLE">VARIABLE</a> s1, s2]
-f1 <a href="cpl.html#Assignment">=</a> f(s1); f2 <a href="cpl.html#Assignment">=</a> f(s2)
-<a href="cpl.html#IF">IF</a> f1 <a href="cpl.html#Assignment">=</a> f2 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "Bisection point not included in " s1 " " s2
+f1 = f(s1); f2 = f(s2)
+<a href="cpl.html#IF">IF</a> f1 = f2 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "Bisection point not included in " s1 " " s2
 <a href="cpl.html#LOOP">LOOP</a> halve
-  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>(s1+s2)/2
+  <a href="cpl.html#RESULT">RESULT</a>=(s1+s2)/2
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(s2-s1)&lt;1E-10 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> Bisection
-  <a href="cpl.html#IF">IF</a> f(<a href="cpl.html#RESULT">RESULT</a>)<a href="cpl.html#Assignment">=</a>f1 <a href="cpl.html#IF">THEN</a> s1<a href="cpl.html#Assignment">=</a><a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#ELSE">ELSE</a> s2<a href="cpl.html#Assignment">=</a><a href="cpl.html#RESULT">RESULT</a>
+  <a href="cpl.html#IF">IF</a> f(<a href="cpl.html#RESULT">RESULT</a>)=f1 <a href="cpl.html#IF">THEN</a> s1=<a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#ELSE">ELSE</a> s2=<a href="cpl.html#RESULT">RESULT</a>
 <a href="cpl.html#LOOP">REPEAT</a> halve
 <a href="cpl.html#END">END</a> Bisection
 
 <span class=comment>! laplstar=STRUCTURE(REAL c0,cn)</span>
-laplstar<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#REAL">REAL</a> c0)
-boundarypoint<a href="cpl.html#Assignment">=</a>STRUCTURED <a href="cpl.html#ARRAY">ARRAY</a>(u,v,w) <a href="cpl.html#OF">OF</a> laplstar
+laplstar=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#REAL">REAL</a> c0)
+boundarypoint=STRUCTURED <a href="cpl.html#ARRAY">ARRAY</a>(u,v,w) <a href="cpl.html#OF">OF</a> laplstar
 
 boundarypoint stdpoint
 
 <a href="cpl.html#USE">USE</a> mg3d
 
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> boundarypoint bcond(0..nx,0..ny,0..nz)
-dx<a href="cpl.html#Assignment">=</a>1/nx; cn<a href="cpl.html#Assignment">=</a>1/dx
-<a href="cpl.html#WITH">WITH</a> stdpoint.u: c0<a href="cpl.html#Assignment">=</a>dx&lowast;dx/6 <span class=comment>! ; cn=1/dx</span>
-<a href="cpl.html#WITH">WITH</a> stdpoint.v: c0<a href="cpl.html#Assignment">=</a>dx&lowast;dx/6 <span class=comment>! ; cn=1/dx</span>
-<a href="cpl.html#WITH">WITH</a> stdpoint.w: c0<a href="cpl.html#Assignment">=</a>dx&lowast;dx/6 <span class=comment>! ; cn=1/dx</span>
-<a href="cpl.html#DO">DO</a> bcond(ix,iy,iz)<a href="cpl.html#Assignment">=</a>stdpoint <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy,iz
-<a href="cpl.html#DO">DO</a> bcond(ix,iy,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a>; bcond(ix,iy,nz)<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy
-<a href="cpl.html#ARRAY">ARRAY</a>(-1..nx+1,-1..ny+1,0..nz) <a href="cpl.html#OF">OF</a> VARS field<a href="cpl.html#Assignment">=</a>0,rhs<a href="cpl.html#Assignment">=</a>0
+dx=1/nx; cn=1/dx
+<a href="cpl.html#WITH">WITH</a> stdpoint.u: c0=dx&lowast;dx/6 <span class=comment>! ; cn=1/dx</span>
+<a href="cpl.html#WITH">WITH</a> stdpoint.v: c0=dx&lowast;dx/6 <span class=comment>! ; cn=1/dx</span>
+<a href="cpl.html#WITH">WITH</a> stdpoint.w: c0=dx&lowast;dx/6 <span class=comment>! ; cn=1/dx</span>
+<a href="cpl.html#DO">DO</a> bcond(ix,iy,iz)=stdpoint <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy,iz
+<a href="cpl.html#DO">DO</a> bcond(ix,iy,0)=<a href="cpl.html#POINTER">NULL</a>; bcond(ix,iy,nz)=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy
+<a href="cpl.html#ARRAY">ARRAY</a>(-1..nx+1,-1..ny+1,0..nz) <a href="cpl.html#OF">OF</a> VARS field=0,rhs=0
 
 #define imblapl(f) [f(1,0,0)+f(-1,0,0)+f(0,1,0)+f(0,-1,0)+f(0,0,1)+f(0,0,-1)]/dx/dx
 imbueq<a href="cpl.html#Deferred-assignment">==</a>imblapl(u)-cn&lowast;[p(1,0,0)-p(0,0,0)]
@@ -88,73 +88,73 @@ imbveq<a href="cpl.html#Deferred-assignment">==</a>imblapl(v)-cn&lowast;[p(0,1,0
 imbweq<a href="cpl.html#Deferred-assignment">==</a>imblapl(w)-cn&lowast;[p(0,0,1)-p(0,0,0)]
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> imbresids
-<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI1</a>-1 <a href="cpl.html#AND">AND</a> iy<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI2</a>-1 <a href="cpl.html#AND">AND</a> iz<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI3</a>-1
-  <a href="cpl.html#EXCEPT">EXCEPT</a> bcond(ix,iy,iz)<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a>
-  <a href="cpl.html#REAL">REAL</a> cont<a href="cpl.html#Assignment">=</a>0, dcont<a href="cpl.html#Assignment">=</a>0, dcont0<a href="cpl.html#Assignment">=</a>0
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI1</a>-1 <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI2</a>-1 <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI3</a>-1
+  <a href="cpl.html#EXCEPT">EXCEPT</a> bcond(ix,iy,iz)=<a href="cpl.html#POINTER">NULL</a>
+  <a href="cpl.html#REAL">REAL</a> cont=0, dcont=0, dcont0=0
   <a href="cpl.html#WITH">WITH</a> field(ix+&lowast;,iy+&lowast;,iz+&lowast;)
-  <a href="cpl.html#IF">IF</a> bcond(ix <a href="cpl.html#Integer-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iy,iz)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WITH">WITH</a> bcond(ix,iy,iz).u rhs(ix,iy,iz).u<a href="cpl.html#Assignment">=</a>(c0&lowast;imbueq-u(0,0,0))&lowast;(6/dx/dx); cont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;u(0,0,0); dcont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;cn&lowast;c0; dcont0<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+1/6
-  <a href="cpl.html#IF">IF</a> bcond(ix,iy <a href="cpl.html#Integer-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iz)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WITH">WITH</a> bcond(ix,iy,iz).v rhs(ix,iy,iz).v<a href="cpl.html#Assignment">=</a>(c0&lowast;imbveq-v(0,0,0))&lowast;(6/dx/dx); cont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;v(0,0,0); dcont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;cn&lowast;c0; dcont0<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+1/6
-  <a href="cpl.html#IF">IF</a> bcond(ix,iy,iz+1)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WITH">WITH</a> bcond(ix,iy,iz).w rhs(ix,iy,iz).w<a href="cpl.html#Assignment">=</a>(c0&lowast;imbweq-w(0,0,0))&lowast;(6/dx/dx); cont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;w(0,0,0); dcont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;cn&lowast;c0; dcont0<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+1/6
-  <a href="cpl.html#IF">IF</a> bcond(ix-1,iy,iz)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WITH">WITH</a> bcond(ix-1,iy,iz).u cont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-cn&lowast;u(-1,0,0); dcont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;cn&lowast;c0; dcont0<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+1/6
-  <a href="cpl.html#IF">IF</a> bcond(ix,iy-1,iz)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WITH">WITH</a> bcond(ix,iy-1,iz).v cont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-cn&lowast;v(0,-1,0); dcont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;cn&lowast;c0; dcont0<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+1/6
-  <a href="cpl.html#IF">IF</a> bcond(ix,iy,iz-1)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WITH">WITH</a> bcond(ix,iy,iz-1).w cont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-cn&lowast;w(0,0,-1); dcont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;cn&lowast;c0; dcont0<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+1/6
-  rhs(ix,iy,iz).p<a href="cpl.html#Assignment">=</a>cont&lowast;dcont0/dcont
+  <a href="cpl.html#IF">IF</a> bcond(ix <a href="cpl.html#Integer-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iy,iz)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WITH">WITH</a> bcond(ix,iy,iz).u rhs(ix,iy,iz).u=(c0&lowast;imbueq-u(0,0,0))&lowast;(6/dx/dx); cont=<a href="cpl.html#Assignment">~</a>+cn&lowast;u(0,0,0); dcont=<a href="cpl.html#Assignment">~</a>+cn&lowast;cn&lowast;c0; dcont0=<a href="cpl.html#Assignment">~</a>+1/6
+  <a href="cpl.html#IF">IF</a> bcond(ix,iy <a href="cpl.html#Integer-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iz)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WITH">WITH</a> bcond(ix,iy,iz).v rhs(ix,iy,iz).v=(c0&lowast;imbveq-v(0,0,0))&lowast;(6/dx/dx); cont=<a href="cpl.html#Assignment">~</a>+cn&lowast;v(0,0,0); dcont=<a href="cpl.html#Assignment">~</a>+cn&lowast;cn&lowast;c0; dcont0=<a href="cpl.html#Assignment">~</a>+1/6
+  <a href="cpl.html#IF">IF</a> bcond(ix,iy,iz+1)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WITH">WITH</a> bcond(ix,iy,iz).w rhs(ix,iy,iz).w=(c0&lowast;imbweq-w(0,0,0))&lowast;(6/dx/dx); cont=<a href="cpl.html#Assignment">~</a>+cn&lowast;w(0,0,0); dcont=<a href="cpl.html#Assignment">~</a>+cn&lowast;cn&lowast;c0; dcont0=<a href="cpl.html#Assignment">~</a>+1/6
+  <a href="cpl.html#IF">IF</a> bcond(ix-1,iy,iz)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WITH">WITH</a> bcond(ix-1,iy,iz).u cont=<a href="cpl.html#Assignment">~</a>-cn&lowast;u(-1,0,0); dcont=<a href="cpl.html#Assignment">~</a>+cn&lowast;cn&lowast;c0; dcont0=<a href="cpl.html#Assignment">~</a>+1/6
+  <a href="cpl.html#IF">IF</a> bcond(ix,iy-1,iz)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WITH">WITH</a> bcond(ix,iy-1,iz).v cont=<a href="cpl.html#Assignment">~</a>-cn&lowast;v(0,-1,0); dcont=<a href="cpl.html#Assignment">~</a>+cn&lowast;cn&lowast;c0; dcont0=<a href="cpl.html#Assignment">~</a>+1/6
+  <a href="cpl.html#IF">IF</a> bcond(ix,iy,iz-1)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WITH">WITH</a> bcond(ix,iy,iz-1).w cont=<a href="cpl.html#Assignment">~</a>-cn&lowast;w(0,0,-1); dcont=<a href="cpl.html#Assignment">~</a>+cn&lowast;cn&lowast;c0; dcont0=<a href="cpl.html#Assignment">~</a>+1/6
+  rhs(ix,iy,iz).p=cont&lowast;dcont0/dcont
 <a href="cpl.html#LOOP">REPEAT</a>
-rhs(0,&lowast;,&lowast;)<a href="cpl.html#Assignment">=</a>rhs(<a href="cpl.html#HI">HI</a>-1,&lowast;,&lowast;); rhs(<a href="cpl.html#HI">HI</a>,&lowast;,&lowast;)<a href="cpl.html#Assignment">=</a>rhs(1,&lowast;,&lowast;)
-rhs(&lowast;,0,&lowast;)<a href="cpl.html#Assignment">=</a>rhs(&lowast;,<a href="cpl.html#HI">HI</a>-1,&lowast;); rhs(&lowast;,<a href="cpl.html#HI">HI</a>,&lowast;)<a href="cpl.html#Assignment">=</a>rhs(&lowast;,1,&lowast;)
+rhs(0,&lowast;,&lowast;)=rhs(<a href="cpl.html#HI">HI</a>-1,&lowast;,&lowast;); rhs(<a href="cpl.html#HI">HI</a>,&lowast;,&lowast;)=rhs(1,&lowast;,&lowast;)
+rhs(&lowast;,0,&lowast;)=rhs(&lowast;,<a href="cpl.html#HI">HI</a>-1,&lowast;); rhs(&lowast;,<a href="cpl.html#HI">HI</a>,&lowast;)=rhs(&lowast;,1,&lowast;)
 <a href="cpl.html#END">END</a> imbresids
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> imbsmooth
-<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> 1
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI1</a>-1 <a href="cpl.html#AND">AND</a> iy<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI2</a>-1 <a href="cpl.html#AND">AND</a> iz<a href="cpl.html#Assignment">=</a>2-(ix+iy+parity) <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI3</a>-1 <a href="cpl.html#BY">BY</a> 2
-    <a href="cpl.html#EXCEPT">EXCEPT</a> bcond(ix,iy,iz)<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a>
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI1</a>-1 <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI2</a>-1 <a href="cpl.html#AND">AND</a> iz=2-(ix+iy+parity) <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI3</a>-1 <a href="cpl.html#BY">BY</a> 2
+    <a href="cpl.html#EXCEPT">EXCEPT</a> bcond(ix,iy,iz)=<a href="cpl.html#POINTER">NULL</a>
     <a href="cpl.html#REAL">REAL</a> ut(-1..0),dtu(-1..0),vt(-1..0),dtv(-1..0),wt(-1..0),dtw(-1..0)
-    <a href="cpl.html#REAL">REAL</a> cont<a href="cpl.html#Assignment">=</a>0,dcont<a href="cpl.html#Assignment">=</a>0
-    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> dix<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#WITH">WITH</a> field(ix+dix+&lowast;,iy+&lowast;,iz+&lowast;)
-      <a href="cpl.html#IF">IF</a> bcond((ix+2&lowast;dix) <a href="cpl.html#Integer-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iy,iz)<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> ut(dix)<a href="cpl.html#Assignment">=</a>u(0,0,0); dtu(dix)<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#ELSE">ELSE</a>
+    <a href="cpl.html#REAL">REAL</a> cont=0,dcont=0
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> dix=-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#WITH">WITH</a> field(ix+dix+&lowast;,iy+&lowast;,iz+&lowast;)
+      <a href="cpl.html#IF">IF</a> bcond((ix+2&lowast;dix) <a href="cpl.html#Integer-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iy,iz)=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> ut(dix)=u(0,0,0); dtu(dix)=0 <a href="cpl.html#ELSE">ELSE</a>
         <a href="cpl.html#WITH">WITH</a> bcond(ix+dix,iy,iz).u
-        dtu(dix)<a href="cpl.html#Assignment">=</a>cn&lowast;c0
-        u(0,0,0)<a href="cpl.html#Assignment">=</a>imbueq&lowast;c0
-        <a href="cpl.html#IF">IF</a> dix<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> cont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;u(0,0,0) <a href="cpl.html#ELSE">ELSE</a> cont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-cn&lowast;u(0,0,0)
-        dcont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;dtu(dix)
+        dtu(dix)=cn&lowast;c0
+        u(0,0,0)=imbueq&lowast;c0
+        <a href="cpl.html#IF">IF</a> dix=0 <a href="cpl.html#IF">THEN</a> cont=<a href="cpl.html#Assignment">~</a>+cn&lowast;u(0,0,0) <a href="cpl.html#ELSE">ELSE</a> cont=<a href="cpl.html#Assignment">~</a>-cn&lowast;u(0,0,0)
+        dcont=<a href="cpl.html#Assignment">~</a>+cn&lowast;dtu(dix)
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <a href="cpl.html#LOOP">REPEAT</a>
-    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> diy<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#WITH">WITH</a> field(ix+&lowast;,iy+diy+&lowast;,iz+&lowast;)
-      <a href="cpl.html#IF">IF</a> bcond(ix,(iy+2&lowast;diy) <a href="cpl.html#Integer-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iz)<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> vt(diy)<a href="cpl.html#Assignment">=</a>v(0,0,0); dtv(diy)<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#ELSE">ELSE</a>
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> diy=-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#WITH">WITH</a> field(ix+&lowast;,iy+diy+&lowast;,iz+&lowast;)
+      <a href="cpl.html#IF">IF</a> bcond(ix,(iy+2&lowast;diy) <a href="cpl.html#Integer-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iz)=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> vt(diy)=v(0,0,0); dtv(diy)=0 <a href="cpl.html#ELSE">ELSE</a>
         <a href="cpl.html#WITH">WITH</a> bcond(ix,iy+diy,iz).v
-        dtv(diy)<a href="cpl.html#Assignment">=</a>cn&lowast;c0
-        v(0,0,0)<a href="cpl.html#Assignment">=</a>imbveq&lowast;c0
-        <a href="cpl.html#IF">IF</a> diy<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> cont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;v(0,0,0) <a href="cpl.html#ELSE">ELSE</a> cont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-cn&lowast;v(0,0,0)
-        dcont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;dtv(diy)
+        dtv(diy)=cn&lowast;c0
+        v(0,0,0)=imbveq&lowast;c0
+        <a href="cpl.html#IF">IF</a> diy=0 <a href="cpl.html#IF">THEN</a> cont=<a href="cpl.html#Assignment">~</a>+cn&lowast;v(0,0,0) <a href="cpl.html#ELSE">ELSE</a> cont=<a href="cpl.html#Assignment">~</a>-cn&lowast;v(0,0,0)
+        dcont=<a href="cpl.html#Assignment">~</a>+cn&lowast;dtv(diy)
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <a href="cpl.html#LOOP">REPEAT</a>
-    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> diz<a href="cpl.html#Assignment">=</a>-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#WITH">WITH</a> field(ix+&lowast;,iy+&lowast;,iz+diz+&lowast;)
-      <a href="cpl.html#IF">IF</a> bcond(ix,iy,iz+2&lowast;diz+1)<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> wt(diz)<a href="cpl.html#Assignment">=</a>w(0,0,0); dtw(diz)<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#ELSE">ELSE</a>
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> diz=-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#WITH">WITH</a> field(ix+&lowast;,iy+&lowast;,iz+diz+&lowast;)
+      <a href="cpl.html#IF">IF</a> bcond(ix,iy,iz+2&lowast;diz+1)=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> wt(diz)=w(0,0,0); dtw(diz)=0 <a href="cpl.html#ELSE">ELSE</a>
         <a href="cpl.html#WITH">WITH</a> bcond(ix,iy,iz+diz).w
-        dtw(diz)<a href="cpl.html#Assignment">=</a>cn&lowast;c0
-        w(0,0,0)<a href="cpl.html#Assignment">=</a>imbweq&lowast;c0
-        <a href="cpl.html#IF">IF</a> diz<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a> cont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;w(0,0,0) <a href="cpl.html#ELSE">ELSE</a> cont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-cn&lowast;w(0,0,0)
-        dcont<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+cn&lowast;dtw(diz)
+        dtw(diz)=cn&lowast;c0
+        w(0,0,0)=imbweq&lowast;c0
+        <a href="cpl.html#IF">IF</a> diz=0 <a href="cpl.html#IF">THEN</a> cont=<a href="cpl.html#Assignment">~</a>+cn&lowast;w(0,0,0) <a href="cpl.html#ELSE">ELSE</a> cont=<a href="cpl.html#Assignment">~</a>-cn&lowast;w(0,0,0)
+        dcont=<a href="cpl.html#Assignment">~</a>+cn&lowast;dtw(diz)
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <a href="cpl.html#LOOP">REPEAT</a>
     <a href="cpl.html#WITH">WITH</a> field(ix+&lowast;,iy+&lowast;,iz+&lowast;)
-    cont<a href="cpl.html#Assignment">=</a>cont/dcont
-    p(0,0,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-cont
-    u(0,0,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-dtu(0)&lowast;cont
-    u(-1,0,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+dtu(-1)&lowast;cont
-    v(0,0,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-dtv(0)&lowast;cont
-    v(0,-1,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+dtv(-1)&lowast;cont
-    w(0,0,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-dtw(0)&lowast;cont
-    w(0,0,-1)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+dtw(-1)&lowast;cont
+    cont=cont/dcont
+    p(0,0,0)=<a href="cpl.html#Assignment">~</a>-cont
+    u(0,0,0)=<a href="cpl.html#Assignment">~</a>-dtu(0)&lowast;cont
+    u(-1,0,0)=<a href="cpl.html#Assignment">~</a>+dtu(-1)&lowast;cont
+    v(0,0,0)=<a href="cpl.html#Assignment">~</a>-dtv(0)&lowast;cont
+    v(0,-1,0)=<a href="cpl.html#Assignment">~</a>+dtv(-1)&lowast;cont
+    w(0,0,0)=<a href="cpl.html#Assignment">~</a>-dtw(0)&lowast;cont
+    w(0,0,-1)=<a href="cpl.html#Assignment">~</a>+dtw(-1)&lowast;cont
   <a href="cpl.html#LOOP">REPEAT</a>
   mirrorbc(field)
 <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#END">END</a> imbsmooth
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> updatebcond(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> boundarypoint bp; <a href="cpl.html#INTEGER">INTEGER</a> vcomp; <a href="cpl.html#REAL">REAL</a> d)
-  <a href="cpl.html#IF">IF</a> bp<a href="cpl.html#Assignment">=</a><a href="cpl.html#REAL-operator">^</a>stdpoint <a href="cpl.html#IF">THEN</a> <a href="cpl.html#NEW">NEW</a> bp; bp<a href="cpl.html#REAL-operator">^</a><a href="cpl.html#Assignment">=</a>stdpoint
+  <a href="cpl.html#IF">IF</a> bp=<a href="cpl.html#REAL-operator">^</a>stdpoint <a href="cpl.html#IF">THEN</a> <a href="cpl.html#NEW">NEW</a> bp; bp<a href="cpl.html#REAL-operator">^</a>=stdpoint
   <a href="cpl.html#WITH">WITH</a> bp(vcomp)
-  c0<a href="cpl.html#Assignment">=</a>c0&lowast;d/[c0/dx/dx&lowast;(dx-d)+d]
+  c0=c0&lowast;d/[c0/dx/dx&lowast;(dx-d)+d]
 <span class=comment>!  cn=~&lowast;(d+dx/2)^2/2/d/dx  <span class=comment>!  SQRT(1/c0/6)  <span class=comment>!  0.5&lowast;(dx+d)/dx&lowast;cn</span></span></span>
 <a href="cpl.html#END">END</a> updatebcond
 
@@ -169,38 +169,38 @@ rhs(&lowast;,0,&lowast;)<a href="cpl.html#Assignment">=</a>rhs(&lowast;,<a href=
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a> calcbcond
 
-<a href="cpl.html#REAL">REAL</a> mh<a href="cpl.html#Assignment">=</a>0,mh2<a href="cpl.html#Assignment">=</a>0
-<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix<a href="cpl.html#Assignment">=</a>nx <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> iy<a href="cpl.html#Assignment">=</a>ny <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> iz<a href="cpl.html#Assignment">=</a>nz-1 <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> 1
+<a href="cpl.html#REAL">REAL</a> mh=0,mh2=0
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=nx <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> iy=ny <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> iz=nz-1 <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> 1
   <a href="cpl.html#IF">IF</a> InBody[(ix+0.5)&lowast;dx,iy&lowast;dx,iz&lowast;dx] <a href="cpl.html#AND">AND</a> InBody[(ix-0.5)&lowast;dx,iy&lowast;dx,iz&lowast;dx] <a href="cpl.html#AND">AND</a>
      InBody[ix&lowast;dx,(iy+0.5)&lowast;dx,iz&lowast;dx] <a href="cpl.html#AND">AND</a> InBody[ix&lowast;dx,(iy+0.5)&lowast;dx,iz&lowast;dx] <a href="cpl.html#AND">AND</a>
      InBody[ix&lowast;dx,iy&lowast;dx,(iz+0.5)&lowast;dx] <a href="cpl.html#AND">AND</a> InBody[ix&lowast;dx,iy&lowast;dx,(iz-0.5)&lowast;dx] <a href="cpl.html#IF">THEN</a>
-    bcond(ix,iy,iz)<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a>
+    bcond(ix,iy,iz)=<a href="cpl.html#POINTER">NULL</a>
   <a href="cpl.html#ELSE">ELSE</a>
     <a href="cpl.html#IF">IF</a> InBody[ix&lowast;dx,iy&lowast;dx,(iz-1)&lowast;dx] <a href="cpl.html#AND">AND</a> <a href="cpl.html#NOT">NOT</a> InBody(ix&lowast;dx,iy&lowast;dx,iz&lowast;dx) <a href="cpl.html#IF">THEN</a>
-      h<a href="cpl.html#Assignment">=</a>Bisection[InBody(ix&lowast;dx,iy&lowast;dx,&lowast;),(iz-1)&lowast;dx,iz&lowast;dx]-baseline
-      mh<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+h
-      mh2<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>+h<a href="cpl.html#REAL-operator">^</a>2
+      h=Bisection[InBody(ix&lowast;dx,iy&lowast;dx,&lowast;),(iz-1)&lowast;dx,iz&lowast;dx]-baseline
+      mh=<a href="cpl.html#Assignment">~</a>+h
+      mh2=<a href="cpl.html#Assignment">~</a>+h<a href="cpl.html#REAL-operator">^</a>2
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     calcbcond(bcond(ix,iy,iz),0,(ix+0.5)&lowast;dx,iy&lowast;dx,iz&lowast;dx)
     calcbcond(bcond(ix,iy,iz),1,ix&lowast;dx,(iy+0.5)&lowast;dx,iz&lowast;dx)
     calcbcond(bcond(ix,iy,iz),2,ix&lowast;dx,iy&lowast;dx,(iz+0.5)&lowast;dx)
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#LOOP">REPEAT</a>
-bcond(0,&lowast;,&lowast;)<a href="cpl.html#Assignment">=</a>bcond(nx,&lowast;,&lowast;)
-bcond(&lowast;,0,&lowast;)<a href="cpl.html#Assignment">=</a>bcond(&lowast;,ny,&lowast;)
-mh<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>/nx/ny
-mh2<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>/nx/ny
-heff<a href="cpl.html#Assignment">=</a>mh2/mh; deff<a href="cpl.html#Assignment">=</a>SQRT(mh/heff&lowast;4/PI); ar<a href="cpl.html#Assignment">=</a>heff/deff
+bcond(0,&lowast;,&lowast;)=bcond(nx,&lowast;,&lowast;)
+bcond(&lowast;,0,&lowast;)=bcond(&lowast;,ny,&lowast;)
+mh=<a href="cpl.html#Assignment">~</a>/nx/ny
+mh2=<a href="cpl.html#Assignment">~</a>/nx/ny
+heff=mh2/mh; deff=SQRT(mh/heff&lowast;4/PI); ar=heff/deff
 <span class=comment>! deffa=SQRT(mh/a&lowast;4/PI); ara=a/deffa=(a/heff)^1.5&lowast;ar  <span class=comment>!  va peggio</span></span>
 
-<a href="cpl.html#REAL">REAL</a> r<a href="cpl.html#Assignment">=</a>0
-<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> it<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> 50
+<a href="cpl.html#REAL">REAL</a> r=0
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> it=1 <a href="cpl.html#TO">TO</a> 50
   <a href="cpl.html#DO">DO</a> imbsmooth <a href="cpl.html#FOR">FOR</a> 4 <a href="cpl.html#TIMES">TIMES</a>
   imbresids
   mg(field,rhs,bcond)
-  <a href="cpl.html#IF">IF</a> it <a href="cpl.html#Integer-operator">MOD</a> 1<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#IF">THEN</a>
-    ph<a href="cpl.html#Assignment">=</a>nz&lowast;dx-baseline-(<a href="cpl.html#Looping-operator">SUM</a> field(ix,iy,nz).u <a href="cpl.html#FOR">FOR</a> ix<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny)/nx/ny
-    oldr<a href="cpl.html#Assignment">=</a>r; r<a href="cpl.html#Assignment">=</a>MAXABS(rhs)
+  <a href="cpl.html#IF">IF</a> it <a href="cpl.html#Integer-operator">MOD</a> 1=0 <a href="cpl.html#IF">THEN</a>
+    ph=nz&lowast;dx-baseline-(<a href="cpl.html#Looping-operator">SUM</a> field(ix,iy,nz).u <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> ny)/nx/ny
+    oldr=r; r=MAXABS(rhs)
     <a href="cpl.html#WRITE">WRITE</a> ar,ph/mh:1.7,ph,mh,ph/(1-2.1566&lowast;ph)/mh,a,heff,oldr/r
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <span class=comment>! SPLOT rhs.p(&lowast;,ny DIV 2,&lowast;)</span>

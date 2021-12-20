@@ -14,53 +14,53 @@
 
 <a href="cpl.html#TYPE">TYPEOF</a>(zeta) zeta2old
 <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a> GRAPHICSMODE
-nexttime<a href="cpl.html#Assignment">=</a>time(<a href="cpl.html#POINTER">NULL</a>)+2
-<a href="cpl.html#FILE">FILE</a> risultati<a href="cpl.html#Assignment">=</a><a href="cpl.html#CREATE">CREATE</a>("risultati")
-<a href="cpl.html#DO">DO</a> psi(i)<a href="cpl.html#Assignment">=</a>y(i)&lowast;<a href="cpl.html#Builtin">EXP</a>(-y(i)&lowast;y(i)/tin); zstar(i)<a href="cpl.html#Assignment">=</a>psi(i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
-alfa<a href="cpl.html#Assignment">=</a>0.07; <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> alfa&lt;1.2-0.0000001
-alfa<a href="cpl.html#Assignment">=</a>alfa&lowast;1.1
-sigma<a href="cpl.html#Assignment">=</a>(0.1+0.7&lowast;I)&lowast;alfa&lowast;Re
-t<a href="cpl.html#Assignment">=</a>tin
-<a href="complex.html#Top">COMPLEX</a> ampl<a href="cpl.html#Assignment">=</a>1
+nexttime=time(<a href="cpl.html#POINTER">NULL</a>)+2
+<a href="cpl.html#FILE">FILE</a> risultati=<a href="cpl.html#CREATE">CREATE</a>("risultati")
+<a href="cpl.html#DO">DO</a> psi(i)=y(i)&lowast;<a href="cpl.html#Builtin">EXP</a>(-y(i)&lowast;y(i)/tin); zstar(i)=psi(i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+alfa=0.07; <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> alfa&lt;1.2-0.0000001
+alfa=alfa&lowast;1.1
+sigma=(0.1+0.7&lowast;I)&lowast;alfa&lowast;Re
+t=tin
+<a href="complex.html#Top">COMPLEX</a> ampl=1
 BaseFlow(); BuildMats()
-T<a href="cpl.html#Assignment">=</a>A+sigma&lowast;B; LUdecomp T
-zeta<a href="cpl.html#Assignment">=</a>B&lowast;psi
-<a href="cpl.html#DO">DO</a> psi<a href="cpl.html#Assignment">=</a>T\zeta; zeta<a href="cpl.html#Assignment">=</a>B&lowast;psi; zstar<a href="cpl.html#Assignment">=</a>zstar&lowast;B; zstar<a href="cpl.html#Assignment">=</a>zstar/T <a href="cpl.html#FOR">FOR</a> 5 <a href="cpl.html#TIMES">TIMES</a>
-zetaold<a href="cpl.html#Assignment">=</a>zeta
-dt<a href="cpl.html#Assignment">=</a>(tfin-tin)/nt
+T=A+sigma&lowast;B; LUdecomp T
+zeta=B&lowast;psi
+<a href="cpl.html#DO">DO</a> psi=T\zeta; zeta=B&lowast;psi; zstar=zstar&lowast;B; zstar=zstar/T <a href="cpl.html#FOR">FOR</a> 5 <a href="cpl.html#TIMES">TIMES</a>
+zetaold=zeta
+dt=(tfin-tin)/nt
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> t&lt;tfin-0.000001
-  t<a href="cpl.html#Assignment">=</a>t+dt
-  zeta2old<a href="cpl.html#Assignment">=</a>zetaold; zetaold<a href="cpl.html#Assignment">=</a>zeta
+  t=t+dt
+  zeta2old=zetaold; zetaold=zeta
   eigenval
-  <a href="complex.html#Top">COMPLEX</a> c1<a href="cpl.html#Assignment">=</a>0
-  <a href="cpl.html#DO">DO</a> c1<a href="cpl.html#Assignment">=</a>c1+zstar(i)&lowast;[1.5&lowast;zeta(i)-2&lowast;zetaold(i)+0.5&lowast;zeta2old(i)]/dt <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>zeta.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> zeta.<a href="cpl.html#HI">HI</a>
+  <a href="complex.html#Top">COMPLEX</a> c1=0
+  <a href="cpl.html#DO">DO</a> c1=c1+zstar(i)&lowast;[1.5&lowast;zeta(i)-2&lowast;zetaold(i)+0.5&lowast;zeta2old(i)]/dt <a href="cpl.html#FOR">FOR</a> i=zeta.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> zeta.<a href="cpl.html#HI">HI</a>
 <span class=comment>!  DO c1=c1+zstar(i)&lowast;[zeta(i)-zetaold(i)]/dt FOR i=zeta.LO TO zeta.HI</span>
-  ampl<a href="cpl.html#Assignment">=</a>ampl&lowast;<a href="cpl.html#Builtin">EXP</a>((sigma-c1)&lowast;dt)
+  ampl=ampl&lowast;<a href="cpl.html#Builtin">EXP</a>((sigma-c1)&lowast;dt)
   <a href="cpl.html#IF">IF</a> t&gt;tin+2.5&lowast;dt <a href="cpl.html#IF">THEN</a> risultati Re&lowast;sqrt(t), alfa&lowast;sqrt(t), <a href="cpl.html#REAL">REAL</a>(sigma/(I&lowast;alfa&lowast;Re)), -<a href="complex.html#Top">IMAG</a>(sigma/(I&lowast;alfa&lowast;Re)), <a href="cpl.html#REAL">REAL</a>(sigma/(I&lowast;alfa&lowast;Re)-c1/(I&lowast;alfa&lowast;Re)), -<a href="complex.html#Top">IMAG</a>(sigma/(I&lowast;alfa&lowast;Re)-c1/(I&lowast;alfa&lowast;Re)), ampl
 <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a>
-  <a href="cpl.html#IF">IF</a> time(<a href="cpl.html#POINTER">NULL</a>)&gt;<a href="cpl.html#Assignment">=</a>nexttime <a href="cpl.html#IF">THEN</a>
-    <a href="cpl.html#REAL">REAL</a> psimax<a href="cpl.html#Assignment">=</a><a href="cpl.html#ABS">ABS</a>[psi(1)]
-    <a href="cpl.html#DO">DO</a> psimax<a href="cpl.html#Assignment">=</a><a href="cpl.html#MAX">MAX</a>(psimax,<a href="cpl.html#ABS">ABS</a>[psi(i)]) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#TO">TO</a> ny-1
+  <a href="cpl.html#IF">IF</a> time(<a href="cpl.html#POINTER">NULL</a>)&gt;=nexttime <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#REAL">REAL</a> psimax=<a href="cpl.html#ABS">ABS</a>[psi(1)]
+    <a href="cpl.html#DO">DO</a> psimax=<a href="cpl.html#MAX">MAX</a>(psimax,<a href="cpl.html#ABS">ABS</a>[psi(i)]) <a href="cpl.html#FOR">FOR</a> i=2 <a href="cpl.html#TO">TO</a> ny-1
     CLEARSCREEN; Plot(psi,8,psimax)
     <a href="cpl.html#WRITE">WRITE</a> "time=" t, "alfa=" alfa
     <a href="cpl.html#WRITE">WRITE</a> "ph.speed=" sigma/(I&lowast;alfa&lowast;Re) " (" (sigma-c1)/(I&lowast;alfa&lowast;Re) ")"
     <a href="cpl.html#WRITE">WRITE</a> "amplitude=" ampl
-    nexttime<a href="cpl.html#Assignment">=</a>time(<a href="cpl.html#POINTER">NULL</a>)+2
+    nexttime=time(<a href="cpl.html#POINTER">NULL</a>)+2
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 
 <span class=comment>!(</span>
-STREAM WriteProfile<a href="cpl.html#Assignment">=</a><a href="cpl.html#CREATE">CREATE</a>("profile")
+STREAM WriteProfile=<a href="cpl.html#CREATE">CREATE</a>("profile")
 WriteProfile 0,0,0
-<a href="cpl.html#DO">DO</a> WriteProfile y(i),<a href="cpl.html#ABS">ABS</a>(I&lowast;alfa&lowast;psi(i)),<a href="cpl.html#Builtin">ARG</a>(I&lowast;alfa&lowast;psi(i)) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#DO">DO</a> WriteProfile y(i),<a href="cpl.html#ABS">ABS</a>(I&lowast;alfa&lowast;psi(i)),<a href="cpl.html#Builtin">ARG</a>(I&lowast;alfa&lowast;psi(i)) <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
 WriteProfile
 WriteProfile 0,0,0
-<a href="cpl.html#DO">DO</a> WriteProfile (y(i)+y(i-1))/2, <a href="cpl.html#ABS">ABS</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), <a href="cpl.html#Builtin">ARG</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#DO">DO</a> WriteProfile (y(i)+y(i-1))/2, <a href="cpl.html#ABS">ABS</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), <a href="cpl.html#Builtin">ARG</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) <a href="cpl.html#FOR">FOR</a> i=2 <a href="cpl.html#TO">TO</a> ny-1
 WriteProfile
 WriteProfile 0,0,0
-<a href="cpl.html#DO">DO</a> WriteProfile y(i),<a href="cpl.html#ABS">ABS</a>(zstar(i)/(y(i+1)-y(i))&lowast;2),<a href="cpl.html#Builtin">ARG</a>(zstar(i)/(y(i+1)-y(i))&lowast;2) <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#DO">DO</a> WriteProfile y(i),<a href="cpl.html#ABS">ABS</a>(zstar(i)/(y(i+1)-y(i))&lowast;2),<a href="cpl.html#Builtin">ARG</a>(zstar(i)/(y(i+1)-y(i))&lowast;2) <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
 )
 <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a> TEXTMODE
 

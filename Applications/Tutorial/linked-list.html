@@ -19,41 +19,41 @@
 
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
 
-<a href="cpl.html#TYPE">TYPE</a> CELL<a href="cpl.html#Assignment">=</a><a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL next; <a href="cpl.html#INTEGER">INTEGER</a> col; <a href="cpl.html#REAL">REAL</a> var, rhs)
+<a href="cpl.html#TYPE">TYPE</a> CELL=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL next; <a href="cpl.html#INTEGER">INTEGER</a> col; <a href="cpl.html#REAL">REAL</a> var, rhs)
 <span class=comment>!   declare a new STRUCTURE type. Keyword "TYPE" is optional here</span>
 
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL RowStart(0..20) <span class=comment>!   declare row pointers</span>
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>!   allocate and initialize to zero the sparse-array structures</span>
-  <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL p<a href="cpl.html#Assignment">=</a>RowStart(i)
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> j<a href="cpl.html#Assignment">=</a>i <a href="cpl.html#TO">TO</a> i+20
-    p<a href="cpl.html#REAL-operator">^</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#NEW">NEW</a> CELL <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
-    p.col<a href="cpl.html#Assignment">=</a>j; p.var<a href="cpl.html#Assignment">=</a>0; p.rhs<a href="cpl.html#Assignment">=</a>0
-    p<a href="cpl.html#Assignment">=</a>p.next
+  <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL p=RowStart(i)
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> j=i <a href="cpl.html#TO">TO</a> i+20
+    p<a href="cpl.html#REAL-operator">^</a>=<a href="cpl.html#NEW">NEW</a> CELL <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
+    p.col=j; p.var=0; p.rhs=0
+    p=p.next
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-  p<a href="cpl.html#REAL-operator">^</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a> <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
+  p<a href="cpl.html#REAL-operator">^</a>=<a href="cpl.html#POINTER">NULL</a> <span class=comment>!   here explicit dereferencing is needed for = assignment</span>
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 
-<a href="cpl.html#DO">DO</a> p.var<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#FOR">FOR</a> p<a href="cpl.html#Assignment">=</a>RowStart(<a href="cpl.html#HI">HI</a>) <a href="cpl.html#UNTIL">UNTIL</a> p<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#BY">BY</a> p<a href="cpl.html#Assignment">=</a>p.next
+<a href="cpl.html#DO">DO</a> p.var=1 <a href="cpl.html#FOR">FOR</a> p=RowStart(<a href="cpl.html#HI">HI</a>) <a href="cpl.html#UNTIL">UNTIL</a> p=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#BY">BY</a> p=p.next
 <span class=comment>! assign some boundary condition</span>
 
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> val(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL p; <a href="cpl.html#INTEGER">INTEGER</a> c)
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> p.col&lt;c: p<a href="cpl.html#Assignment">=</a>p.next
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> p.col&lt;c: p=p.next
   <span class=comment>!   move pointer p until column c or end of row</span>
-  <a href="cpl.html#IF">IF</a> p.col<a href="cpl.html#Assignment">=</a>c <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>p.var <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>0 <span class=comment>!  return zero if element not found</span>
+  <a href="cpl.html#IF">IF</a> p.col=c <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=p.var <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#RESULT">RESULT</a>=0 <span class=comment>!  return zero if element not found</span>
 <a href="cpl.html#END">END</a> val <span class=comment>!   otherwise return element's "var" value</span>
 
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> 100 <a href="cpl.html#TIMES">TIMES</a>   <span class=comment>! main iteration loop</span>
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a><a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1   <span class=comment>! for each row</span>
-    <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL above<a href="cpl.html#Assignment">=</a>RowStart(i+1),
-    left<a href="cpl.html#Assignment">=</a>RowStart(i), center<a href="cpl.html#Assignment">=</a>left.next, right<a href="cpl.html#Assignment">=</a>center.next,
-    below<a href="cpl.html#Assignment">=</a>RowStart(i-1)   <span class=comment>! initialize pointers to surrounding cells</span>
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1   <span class=comment>! for each row</span>
+    <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL above=RowStart(i+1),
+    left=RowStart(i), center=left.next, right=center.next,
+    below=RowStart(i-1)   <span class=comment>! initialize pointers to surrounding cells</span>
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> right#<a href="cpl.html#POINTER">NULL</a>
-      j<a href="cpl.html#Assignment">=</a>center.col   <span class=comment>! read column index stored in central cell</span>
-      center.var<a href="cpl.html#Assignment">=</a>[val(above,j)+val(below,j)+val(left,j-1)+val(right,j+1)+
+      j=center.col   <span class=comment>! read column index stored in central cell</span>
+      center.var=[val(above,j)+val(below,j)+val(left,j-1)+val(right,j+1)+
         center.rhs]/4
       <span class=comment>! with the "val" function defined, notation is very similar to standard </span>
-      center<a href="cpl.html#Assignment">=</a>next(center)
-      <a href="cpl.html#IF">IF</a> right<a href="cpl.html#Assignment">=</a>center <a href="cpl.html#IF">THEN</a> right<a href="cpl.html#Assignment">=</a>right.next
+      center=next(center)
+      <a href="cpl.html#IF">IF</a> right=center <a href="cpl.html#IF">THEN</a> right=right.next
       <span class=comment>! notice that STRUCTURE elements can be indifferently accessed in either</span>
       <span class=comment>! dotted or function notation. Same is true for functions.</span>
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
@@ -62,8 +62,8 @@
 
 <span class=comment>! now plot something</span>
 <a href="graphics.html#RANGE">RANGE</a> 0,40,0,2
-<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>RowStart.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> RowStart.<a href="cpl.html#HI">HI</a>
-  <a href="graphics.html#STARTLINE">STARTLINE</a>; <a href="cpl.html#DO">DO</a> <a href="graphics.html#DRAW">DRAW</a> p.col,p.var+i/20 <a href="cpl.html#FOR">FOR</a> p<a href="cpl.html#Assignment">=</a>RowStart(i) <a href="cpl.html#UNTIL">UNTIL</a> p<a href="cpl.html#Assignment">=</a><a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#BY">BY</a> p<a href="cpl.html#Assignment">=</a>p.next
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=RowStart.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> RowStart.<a href="cpl.html#HI">HI</a>
+  <a href="graphics.html#STARTLINE">STARTLINE</a>; <a href="cpl.html#DO">DO</a> <a href="graphics.html#DRAW">DRAW</a> p.col,p.var+i/20 <a href="cpl.html#FOR">FOR</a> p=RowStart(i) <a href="cpl.html#UNTIL">UNTIL</a> p=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#BY">BY</a> p=p.next
 <a href="cpl.html#LOOP">REPEAT</a>
 <a href="graphics.html#SHOWGRAPH">SHOWGRAPH</a>
 <a href="cpl.html#READ">READ</a> <span class=comment>! keep plot displayed until Enter is pressed</span>

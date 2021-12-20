@@ -32,7 +32,7 @@
   <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> wallclock()
     struct timeval tim
     gettimeofday(tim,<a href="cpl.html#POINTER">NULL</a>)     <span class=comment>! libc function call</span>
-    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>(tim.tv_sec-startim.tv_sec)+1E-6&lowast;(tim.tv_usec-startim.tv_usec)
+    <a href="cpl.html#RESULT">RESULT</a>=(tim.tv_sec-startim.tv_sec)+1E-6&lowast;(tim.tv_usec-startim.tv_usec)
                                <span class=comment>! return time in seconds since program started</span>
   <a href="cpl.html#END">END</a> wallclock  <span class=comment>!(function!)</span>
 <a href="cpl.html#END">END</a> wallclock    <span class=comment>!(module!)</span>

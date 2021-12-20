@@ -40,65 +40,65 @@
 <a href="cpl.html#REAL">REAL</a> alpha,Re
 <a href="complex.html#Top">COMPLEX</a> c
 <a href="cpl.html#ASK">ASK</a> alpha,Re
-a2<a href="cpl.html#Assignment">=</a>alpha&lowast;alpha
+a2=alpha&lowast;alpha
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> everything(<a href="cpl.html#INTEGER">INTEGER</a> N)
-  yinf<a href="cpl.html#Assignment">=</a>2
-  h<a href="cpl.html#Assignment">=</a>yinf/N
+  yinf=2
+  h=yinf/N
   
   <a href="cpl.html#ARRAY">ARRAY</a>(-2..2) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> d0,d1,d2,d4
-  d0(-2)<a href="cpl.html#Assignment">=</a>0; d0(-1)<a href="cpl.html#Assignment">=</a>1/6; d0(0)<a href="cpl.html#Assignment">=</a>2/3; d0(1)<a href="cpl.html#Assignment">=</a>1/6; d0(2)<a href="cpl.html#Assignment">=</a>0
-  d1(-2)<a href="cpl.html#Assignment">=</a>0; d1(-1)<a href="cpl.html#Assignment">=</a>-1/2/h; d1(0)<a href="cpl.html#Assignment">=</a>0; d1(1)<a href="cpl.html#Assignment">=</a>1/2/h; d1(2)<a href="cpl.html#Assignment">=</a>0
-  d2(-2)<a href="cpl.html#Assignment">=</a>1/12/h/h; d2(-1)<a href="cpl.html#Assignment">=</a>2/3/h/h; d2(0)<a href="cpl.html#Assignment">=</a>-3/2/h/h; d2(1)<a href="cpl.html#Assignment">=</a>2/3/h/h; d2(2)<a href="cpl.html#Assignment">=</a>1/12/h/h
-  d4(-2)<a href="cpl.html#Assignment">=</a>1/h/h/h/h; d4(-1)<a href="cpl.html#Assignment">=</a>-4/h/h/h/h; d4(0)<a href="cpl.html#Assignment">=</a>6/h/h/h/h; d4(1)<a href="cpl.html#Assignment">=</a>-4/h/h/h/h; d4(2)<a href="cpl.html#Assignment">=</a>1/h/h/h/h
+  d0(-2)=0; d0(-1)=1/6; d0(0)=2/3; d0(1)=1/6; d0(2)=0
+  d1(-2)=0; d1(-1)=-1/2/h; d1(0)=0; d1(1)=1/2/h; d1(2)=0
+  d2(-2)=1/12/h/h; d2(-1)=2/3/h/h; d2(0)=-3/2/h/h; d2(1)=2/3/h/h; d2(2)=1/12/h/h
+  d4(-2)=1/h/h/h/h; d4(-1)=-4/h/h/h/h; d4(0)=6/h/h/h/h; d4(1)=-4/h/h/h/h; d4(2)=1/h/h/h/h
   
   <a href="cpl.html#ARRAY">ARRAY</a>(-1..N+1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> y,U,Uyy
-  <a href="cpl.html#DO">DO</a> y(i)<a href="cpl.html#Assignment">=</a>h&lowast;i <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  <a href="cpl.html#DO">DO</a> y(i)=h&lowast;i <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
   
   <a href="cpl.html#FUNCTION">SUBROUTINE</a> Poiseuille
-    <a href="cpl.html#DO">DO</a> U(i)<a href="cpl.html#Assignment">=</a>y(i)&lowast;[yinf-y(i)]; Uyy(i)<a href="cpl.html#Assignment">=</a>-2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+    <a href="cpl.html#DO">DO</a> U(i)=y(i)&lowast;[yinf-y(i)]; Uyy(i)=-2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
   <a href="cpl.html#END">END</a> Poiseuille
   
   <a href="complex.html#Top">COMPLEX</a> A(1..N-1,-2..2), B(1..N-1,-2..2)
   <a href="cpl.html#ARRAY">ARRAY</a>(1..N-1) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> psi,zetaold,psistar,zstar
   
   <a href="cpl.html#FUNCTION">SUBROUTINE</a> BuildMats
-    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#TO">TO</a> N-1 <a href="cpl.html#AND">AND</a> j<a href="cpl.html#Assignment">=</a>-2 <a href="cpl.html#TO">TO</a> 2
-      B(i,j)<a href="cpl.html#Assignment">=</a>d2(j)-a2&lowast;d0(j)
-      A(i,j)<a href="cpl.html#Assignment">=</a>(c-U(i))&lowast;B(i,j)+Uyy(i)&lowast;d0(j)+I/alpha/Re&lowast;[d4(j)-2&lowast;a2&lowast;d2(j)+a2&lowast;a2&lowast;d0(j)]
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> N-1 <a href="cpl.html#AND">AND</a> j=-2 <a href="cpl.html#TO">TO</a> 2
+      B(i,j)=d2(j)-a2&lowast;d0(j)
+      A(i,j)=(c-U(i))&lowast;B(i,j)+Uyy(i)&lowast;d0(j)+I/alpha/Re&lowast;[d4(j)-2&lowast;a2&lowast;d2(j)+a2&lowast;a2&lowast;d0(j)]
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-    B(1,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-B(1,-1)/2+B(1,-2)
-    A(1,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-A(1,-1)/2+A(1,-2)
-    B(2,-1)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-B(2,-2)/2
-    A(2,-1)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-A(2,-2)/2
-    B(N-1,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-B(N-1,1)/2+B(N-1,2)
-    A(N-1,0)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-A(N-1,1)/2+A(N-1,2)
-    B(N-2,1)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-B(N-2,2)/2
-    A(N-2,1)<a href="cpl.html#Assignment">=</a><a href="cpl.html#Assignment">~</a>-A(N-2,2)/2
+    B(1,0)=<a href="cpl.html#Assignment">~</a>-B(1,-1)/2+B(1,-2)
+    A(1,0)=<a href="cpl.html#Assignment">~</a>-A(1,-1)/2+A(1,-2)
+    B(2,-1)=<a href="cpl.html#Assignment">~</a>-B(2,-2)/2
+    A(2,-1)=<a href="cpl.html#Assignment">~</a>-A(2,-2)/2
+    B(N-1,0)=<a href="cpl.html#Assignment">~</a>-B(N-1,1)/2+B(N-1,2)
+    A(N-1,0)=<a href="cpl.html#Assignment">~</a>-A(N-1,1)/2+A(N-1,2)
+    B(N-2,1)=<a href="cpl.html#Assignment">~</a>-B(N-2,2)/2
+    A(N-2,1)=<a href="cpl.html#Assignment">~</a>-A(N-2,2)/2
   <a href="cpl.html#END">END</a> BuildMats
   
   <a href="cpl.html#FUNCTION">SUBROUTINE</a> eigenval
-    c<a href="cpl.html#Assignment">=</a>0.3
+    c=0.3
     <a href="cpl.html#DO">DO</a>
       BuildMats; LUdecomp A
-      zetaold<a href="cpl.html#Assignment">=</a>B&lowast;psi; psi<a href="cpl.html#Assignment">=</a>A\zetaold
-      zstar<a href="cpl.html#Assignment">=</a>psistar/A; psistar<a href="cpl.html#Assignment">=</a>zstar&lowast;B
-      dc<a href="cpl.html#Assignment">=</a>-(zstar&lowast;zetaold)/(psistar&lowast;psi)
-      c<a href="cpl.html#Assignment">=</a>c+dc
-      psi<a href="cpl.html#Assignment">=</a>psi&lowast;<a href="cpl.html#ABS">ABS</a>[psi(1)]/psi(1)/<a href="cpl.html#Integer-operator">MOD</a>(psi)
-      zstar<a href="cpl.html#Assignment">=</a>zstar/(psistar&lowast;psi)
-      psistar<a href="cpl.html#Assignment">=</a>psistar/(psistar&lowast;psi)
+      zetaold=B&lowast;psi; psi=A\zetaold
+      zstar=psistar/A; psistar=zstar&lowast;B
+      dc=-(zstar&lowast;zetaold)/(psistar&lowast;psi)
+      c=c+dc
+      psi=psi&lowast;<a href="cpl.html#ABS">ABS</a>[psi(1)]/psi(1)/<a href="cpl.html#Integer-operator">MOD</a>(psi)
+      zstar=zstar/(psistar&lowast;psi)
+      psistar=psistar/(psistar&lowast;psi)
     <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#ABS">ABS</a>(dc)&gt;1.E-8
   <a href="cpl.html#END">END</a> eigenval
   
   Poiseuille
-  <a href="cpl.html#DO">DO</a> psi(i)<a href="cpl.html#Assignment">=</a>U(i)&lowast;(1-U(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
-  psistar<a href="cpl.html#Assignment">=</a>psi
+  <a href="cpl.html#DO">DO</a> psi(i)=U(i)&lowast;(1-U(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  psistar=psi
   eigenval
 <a href="cpl.html#END">END</a> everything
 
 everything(2000)
-c_ref<a href="cpl.html#Assignment">=</a>c
+c_ref=c
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> "#",alpha,Re
 <a href="cpl.html#DO">DO</a>
   everything(N)

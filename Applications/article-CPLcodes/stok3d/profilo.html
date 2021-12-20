@@ -23,75 +23,75 @@
   !)</span>
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> fx( <a href="cpl.html#REAL">REAL</a> xx)
   <a href="cpl.html#REAL">REAL</a> xs
-  xs<a href="cpl.html#Assignment">=</a>0.
-  <a href="cpl.html#IF">IF</a> protra <a href="cpl.html#Assignment">=</a> 1 <a href="cpl.html#IF">THEN</a>
+  xs=0.
+  <a href="cpl.html#IF">IF</a> protra = 1 <a href="cpl.html#IF">THEN</a>
     <span class=comment>!   Lamina</span>
-    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>1
-    <a href="cpl.html#IF">IF</a> xx &gt; xs  <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>0
-  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra <a href="cpl.html#Assignment">=</a> 2 <a href="cpl.html#IF">THEN</a> 
+    <a href="cpl.html#RESULT">RESULT</a>=1
+    <a href="cpl.html#IF">IF</a> xx &gt; xs  <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=0
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 2 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   e5</span>
-    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>(1-xx&lowast;4)&lowast;&lowast;5
-    <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a> 0
-  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra <a href="cpl.html#Assignment">=</a> 3 <a href="cpl.html#IF">THEN</a> 
+    <a href="cpl.html#RESULT">RESULT</a>=(1-xx&lowast;4)&lowast;&lowast;5
+    <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>= 0
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 3 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   v</span>
-    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>1-xx&lowast;4
-    <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a> 0
-  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra <a href="cpl.html#Assignment">=</a> 4 <a href="cpl.html#IF">THEN</a> 
+    <a href="cpl.html#RESULT">RESULT</a>=1-xx&lowast;4
+    <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>= 0
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 4 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   coseno</span>
-    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a><a href="cpl.html#Builtin">COS</a>(2&lowast;PI&lowast;xx)
-    <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a> 0
+    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Builtin">COS</a>(2&lowast;PI&lowast;xx)
+    <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>= 0
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a> 
-  <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a> &lt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>0
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a> &lt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=0
 <a href="cpl.html#END">END</a> fx
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> gz(<a href="cpl.html#REAL">REAL</a> zz)
   <a href="cpl.html#REAL">REAL</a> l1,l2,l3,l4,zr,a1,a2,a3,b1,b2,y1
-  nr<a href="cpl.html#Assignment">=</a>4
-  <a href="cpl.html#IF">IF</a> prolo <a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#IF">THEN</a>
+  nr=4
+  <a href="cpl.html#IF">IF</a> prolo =1 <a href="cpl.html#IF">THEN</a>
     <span class=comment>!  2d</span>
-    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>rapp
-  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> prolo<a href="cpl.html#Assignment">=</a>2 <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#RESULT">RESULT</a>=rapp
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> prolo=2 <a href="cpl.html#IF">THEN</a>
     <span class=comment>!  Profilo iperbolico</span>
-    <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>rapp&lowast;(1.+tanh(ka&lowast;2./rapp&lowast;(fill&lowast;lz/2.-zz)))/2
-  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> prolo<a href="cpl.html#Assignment">=</a>3 <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#RESULT">RESULT</a>=rapp&lowast;(1.+tanh(ka&lowast;2./rapp&lowast;(fill&lowast;lz/2.-zz)))/2
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> prolo=3 <a href="cpl.html#IF">THEN</a>
     
     <span class=comment>!  BE </span>
     
-    tal<a href="cpl.html#Assignment">=</a>1
-    cal<a href="cpl.html#Assignment">=</a>1/(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5
-    sal<a href="cpl.html#Assignment">=</a>tal&lowast;cal
-    r0<a href="cpl.html#Assignment">=</a>0.347826
+    tal=1
+    cal=1/(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5
+    sal=tal&lowast;cal
+    r0=0.347826
     <span class=comment>!   r0=.7</span>
     <span class=comment>!     l0=0.5108695 </span>
-    l0<a href="cpl.html#Assignment">=</a>fill
-    l2<a href="cpl.html#Assignment">=</a>(rapp-r0+tal&lowast;l0+r0&lowast;(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5)/tal
-    l1<a href="cpl.html#Assignment">=</a>l2-(rapp-r0+r0/(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5)/tal
-    y1<a href="cpl.html#Assignment">=</a>rapp-r0+r0&lowast;cal
-    l1<a href="cpl.html#Assignment">=</a>r0&lowast;sal+l0
-    l2<a href="cpl.html#Assignment">=</a>l1+y1/tal
+    l0=fill
+    l2=(rapp-r0+tal&lowast;l0+r0&lowast;(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5)/tal
+    l1=l2-(rapp-r0+r0/(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5)/tal
+    y1=rapp-r0+r0&lowast;cal
+    l1=r0&lowast;sal+l0
+    l2=l1+y1/tal
     <span class=comment>!     WRITE 'z,y1,l0,l1,l2',zz,y1,l0,l1,l2 </span>
-    l3<a href="cpl.html#Assignment">=</a>l1+(rapp-2&lowast;r0&lowast;(1-cal))/tal
-    l4<a href="cpl.html#Assignment">=</a>l3+r0&lowast;sal
-    b1<a href="cpl.html#Assignment">=</a>(l2-fill+0.125-(nr+1)&lowast;rapp)/(l2-fill+0.125)&lowast;&lowast;nr
-    b2<a href="cpl.html#Assignment">=</a>(nr&lowast;rapp-l2+fill-0.125)/(l2-fill+0.125)&lowast;&lowast;(nr+1)
+    l3=l1+(rapp-2&lowast;r0&lowast;(1-cal))/tal
+    l4=l3+r0&lowast;sal
+    b1=(l2-fill+0.125-(nr+1)&lowast;rapp)/(l2-fill+0.125)&lowast;&lowast;nr
+    b2=(nr&lowast;rapp-l2+fill-0.125)/(l2-fill+0.125)&lowast;&lowast;(nr+1)
     
     <a href="cpl.html#IF">IF</a> zz &lt;l0 <a href="cpl.html#IF">THEN</a>
-      <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#Assignment">=</a>rapp
+      <a href="cpl.html#RESULT">RESULT</a> =rapp
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz &lt;l1 <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>rapp-r0+(r0&lowast;&lowast;2-(zz-l0)&lowast;&lowast;2)&lowast;&lowast;0.5
+      <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0&lowast;&lowast;2-(zz-l0)&lowast;&lowast;2)&lowast;&lowast;0.5
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;l2  <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#Assignment">=</a> y1+tal&lowast;(l1-zz)
+      <a href="cpl.html#RESULT">RESULT</a> = y1+tal&lowast;(l1-zz)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l2  <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>0
+      <a href="cpl.html#RESULT">RESULT</a>=0
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l1  <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#Assignment">=</a> y1+tal&lowast;(zz-lz+l1)
+      <a href="cpl.html#RESULT">RESULT</a> = y1+tal&lowast;(zz-lz+l1)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l0  <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>rapp-r0+(r0&lowast;&lowast;2-(zz-lz+l0)&lowast;&lowast;2)&lowast;&lowast;0.5
+      <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0&lowast;&lowast;2-(zz-lz+l0)&lowast;&lowast;2)&lowast;&lowast;0.5
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz &lt;lz  <a href="cpl.html#IF">THEN</a>
-      <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#Assignment">=</a>rapp
+      <a href="cpl.html#RESULT">RESULT</a> =rapp
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a> 
     
-    <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a>&lt;0  <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>0
+    <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a>&lt;0  <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=0
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a> 
   
   <span class=comment>!(
@@ -130,17 +130,17 @@
 
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> fondo(<a href="cpl.html#REAL">REAL</a> xx,zz)
-  <a href="cpl.html#REAL">REAL</a> x1<a href="cpl.html#Assignment">=</a>xx-FLOOR(xx), z1<a href="cpl.html#Assignment">=</a>zz-lz&lowast;FLOOR(zz/lz)
-  <a href="cpl.html#IF">IF</a> x1&gt;0.5 <a href="cpl.html#IF">THEN</a> x1<a href="cpl.html#Assignment">=</a>1-x1
-  <a href="cpl.html#IF">IF</a> z1&gt;lz/2 <a href="cpl.html#IF">THEN</a> z1<a href="cpl.html#Assignment">=</a>lz-z1 
-  <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#Assignment">=</a>fx(x1)&lowast;gz(z1)+fx(0.5-x1)&lowast;gz(lz/2.-z1)
+  <a href="cpl.html#REAL">REAL</a> x1=xx-<a href="cpl.html#FLOOR">FLOOR</a>(xx), z1=zz-lz&lowast;<a href="cpl.html#FLOOR">FLOOR</a>(zz/lz)
+  <a href="cpl.html#IF">IF</a> x1&gt;0.5 <a href="cpl.html#IF">THEN</a> x1=1-x1
+  <a href="cpl.html#IF">IF</a> z1&gt;lz/2 <a href="cpl.html#IF">THEN</a> z1=lz-z1 
+  <a href="cpl.html#RESULT">RESULT</a>=fx(x1)&lowast;gz(z1)+fx(0.5-x1)&lowast;gz(lz/2.-z1)
 <a href="cpl.html#END">END</a> fondo
 
-<a href="cpl.html#FILE">FILE</a> wrfile<a href="cpl.html#Assignment">=</a><a href="cpl.html#CREATE">CREATE</a>("profiloz")
-<a href="cpl.html#REAL">REAL</a> z<a href="cpl.html#Assignment">=</a>0
+<a href="cpl.html#FILE">FILE</a> wrfile=<a href="cpl.html#CREATE">CREATE</a>("profiloz")
+<a href="cpl.html#REAL">REAL</a> z=0
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> z&lt;2&lowast;lz
   wrfile z,fondo(0,z)
-  z<a href="cpl.html#Assignment">=</a>z+0.1
+  z=z+0.1
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 
 </pre></body></html>

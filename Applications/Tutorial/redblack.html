@@ -18,14 +18,14 @@
 <a href="cpl.html#ASK">ASK</a> nx,ny   <span class=comment>! ask array dimensions from the console user</span>
 <a href="cpl.html#ARRAY">ARRAY</a>(1..nx,1..ny) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var,rhs   <span class=comment>! variable ARRAY dimensions are allowed</span>
 
-var<a href="cpl.html#Assignment">=</a>0; rhs<a href="cpl.html#Assignment">=</a>0
-<a href="cpl.html#DO">DO</a> var(i,<a href="cpl.html#HI">HI</a>)<a href="cpl.html#Assignment">=</a>1 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i   <span class=comment>! assign some boundary condition</span>
+var=0; rhs=0
+<a href="cpl.html#DO">DO</a> var(i,<a href="cpl.html#HI">HI</a>)=1 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i   <span class=comment>! assign some boundary condition</span>
 
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> 100 <a href="cpl.html#TIMES">TIMES</a>   <span class=comment>! main iteration loop</span>
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity<a href="cpl.html#Assignment">=</a>0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> i<a href="cpl.html#Assignment">=</a><a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> j<a href="cpl.html#Assignment">=</a><a href="cpl.html#LO">LO</a>+1 +
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> i=<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> j=<a href="cpl.html#LO">LO</a>+1 +
     (i+<a href="cpl.html#LO">LO</a>+1+parity) <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#BY">BY</a> 2
     <span class=comment>! this traverses the array in checkerboard fashion</span>
-    var(i,j)<a href="cpl.html#Assignment">=</a>[var(i,j+1)+var(i,j-1)+var(i+1,j)+var(i-1,j)+rhs(i,j)]/4
+    var(i,j)=[var(i,j+1)+var(i,j-1)+var(i+1,j)+var(i-1,j)+rhs(i,j)]/4
     <span class=comment>! this statement is unchanged from Gauss-Seidel</span>
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#LOOP">REPEAT</a>   <span class=comment>! "LOOP" is optional here</span>

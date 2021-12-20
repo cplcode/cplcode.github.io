@@ -1,0 +1,9 @@
+yes    0          1
+0      0.005      1
+200     20      20
+0.45
+
+plot(y/n)  G  n.modes
+xin    xstep    xfin
+ny      n0      ymax
+beta

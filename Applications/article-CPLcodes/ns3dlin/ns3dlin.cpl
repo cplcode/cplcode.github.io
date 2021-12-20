@@ -1,0 +1,81 @@
+USE rbmat
+USE lapack-eigenvalues
+USE gnuplot
+! USE rtchecks
+USE nsmg3dlin
+neig=2
+Ntot=neig
+Reynolds=2100
+nx=64; ny=nx; nz=nx
+shift=210
+
+SHARED ARRAY(0..Ntot,nxl(nx)..nxh(nx),0..ny,0..nz) OF VARS field=0,tn
+ARRAY(1..Ntot,1..Ntot) OF REAL sigma,invsigma
+
+bc(field(0),tn(0),1)
+LOOP FOR count=1 TO 100
+  cdresids(field(0),tn(0))
+  LOOP FOR i=1 TO Ntot
+    field(i)=0
+!    DO smooth(field(0),field(i),tn(0),nx); bc(field(i),tn(0),0) FOR 10 TIMES
+    mg(field(0),field(i),tn(0),nx)
+    tn(i)=0; lincdresids(field(0),field(i),tn(i))
+    LOOP FOR j=1 TO i-1
+      dd=scp(tn(i),tn(j))
+      tn(i)=~-dd*tn(j)
+      field(i)=~-dd*field(j)
+    REPEAT
+    nn=abs(tn(i))
+    tn(i)=~/nn
+    field(i)=~/nn
+    cc=scp(tn(0),tn(i))
+    tn(0)=~-cc*tn(i)
+    field(0)=~-cc*field(i)
+    perr=abs(tn(0).p); uerr=abs(tn(0).u); verr=abs(tn(0).v); werr=abs(tn(0).w)
+    IF has_terminal THEN WRITE count,i,perr,uerr,verr,werr \n ./.
+  REPEAT
+!(
+  DO sigma(i,j)=field(i).u|tn(j).u+field(i).v|tn(j).v+field(i).w|tn(j).w FOR i=1 TO Ntot AND j=1 TO Ntot
+  invsigma=INV(sigma)
+  WRITE eigv(invsigma)
+!)
+!  WRITE MAXABS(field(0).w(*,*,nz DIV 2 -1)+field(0).w(*,*,nz DIV 2))
+  !IF count MOD 10 =0 THEN SPLOT field(0).p(LO..HI,*,nz DIV 2)
+!  tn(1..neig)=invsigma*field(1..neig); tn(1..neig).p=0
+REPEAT
+!(
+DO tn(i,j,h,k,l)=RAND() FOR ALL i,j,h,k,l
+LOOP FOR count=1 TO 100
+  cdresids(field(0),tn(0))
+  delta=0
+  mg(field(0),delta,tn(0))
+  field(0)=~-delta
+  LOOP FOR i=1 TO neig
+    LOOP FOR j=1 TO i-1
+      dd=tn(i)|tn(j)
+      tn(i)=~-dd*tn(j)
+      field(i)=~-dd*field(j)
+    REPEAT
+    nn=MOD(tn(i))
+    tn(i)=~/nn
+    field(i)=~/nn
+LOOP FOR 3 TIMES    
+    rhs=tn(i)
+    lincdresids(field(0),field(i),rhs)
+    delta=0
+    mg(field(0),delta,rhs)
+    field(i)=~-delta
+REPEAT
+  REPEAT
+  DO sigma(i,j)=field(i).u|tn(j).u+field(i).v|tn(j).v+field(i).w|tn(j).w FOR i=1 TO neig AND j=1 TO neig
+  invsigma=INV(sigma)
+  invsigma=invsigma+shift
+!  WRITE invsigma
+  WRITE eigv(invsigma)
+  WRITE count,MAXABS(tn(0).p),MAXABS(tn(0).u),MAXABS(tn(0).v),MAXABS(tn(0).w)
+!  WRITE MAXABS(field(0).w(*,*,nz DIV 2 -1)+field(0).w(*,*,nz DIV 2))
+  !IF count MOD 10 =0 THEN SPLOT field(0).p(LO..HI,*,nz DIV 2)
+  tn(1..neig)=field(1..neig); tn(1..neig).p=0
+  field(1..neig)=sigma*field(1..neig)
+REPEAT
+!)
