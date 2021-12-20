@@ -1,0 +1,279 @@
+USE rbmat
+USE cbmat
+USE gnuplot
+! USE rtchecks
+!(  k_B=1.3806503E-23 m^2 kg s^-2 K^-1
+    T= 300 K
+    rho=1.1174 kg/m^3
+    ni=1.568E-5 m^2/s
+    kTrho^-1ni^-2=1.508E-11 m
+!)
+kTsurhoni2d=1.508E-8
+INTEGER Re
+! Re=1600
+ni==1/Re
+ymax=50; ny=300
+xmin=0.05; xmax=1; nx=50
+omin=0.03; omax=0.065; nomg=20
+!omin=0.03; omax=0.1; nomg=20
+bmax=0.12; nbeta=10
+UseContinuousAdjoint=NO
+
+dx=(xmax-xmin)/nx
+domega=(omax-omin)/nomg
+!domega=omax/(nomg+0.5); omin=0.5*domega
+dbeta=bmax/(nbeta+0.5); bmin=0.5*dbeta
+
+ARRAY(-1..ny+1) OF REAL y
+DO y(i)=ymax*i/ny*(0.8*i/ny+0.2) FOR ALL i
+
+STRUCTURE[ARRAY(-2..2) OF REAL d0,d1,d2,d3,d4] derivatives(1..ny-1)
+MODULE setup_derivatives
+REAL M(0..4,0..4),t(0..4)
+LOOP FOR iy=1 TO ny-1 WITH derivatives(iy)
+  DO M(i,j)=(y(iy-2+j)-y(iy))**(4-i) FOR ALL i AND j=0 TO 4; LUdecomp M
+  t=0; t(0)=24
+  d4(-2+(*))=M\t
+  DO M(i,j)=(5-i)*(6-i)*(7-i)*(8-i)*(y(iy-2+j)-y(iy))**(4-i) FOR ALL i AND j=0 TO 4; LUdecomp M
+  DO t(i)=SUM {d4(j)*(y(iy+j)-y(iy))**(8-i)} FOR j=-2 TO 2 FOR ALL i
+  d0(-2+(*))=M\t
+  DO M(i,j)=(y(iy-2+j)-y(iy))**(4-i) FOR ALL i AND j=0 TO 4; LUdecomp M
+  t=0; DO t(i)=SUM d0(j)*(4-i)*(3-i)*(2-i)*(y(iy+j)-y(iy))**(1-i) FOR j=-2 TO 2 FOR i=0 TO 1
+  d3(-2+(*))=M\t
+  t=0; DO t(i)=SUM d0(j)*(4-i)*(3-i)*(y(iy+j)-y(iy))**(2-i) FOR j=-2 TO 2 FOR i=0 TO 2
+  d2(-2+(*))=M\t
+  t=0; DO t(i)=SUM d0(j)*(4-i)*(y(iy+j)-y(iy))**(3-i) FOR j=-2 TO 2 FOR i=0 TO 3
+  d1(-2+(*))=M\t
+REPEAT
+END setup_derivatives
+
+REAL x
+ARRAY(0..ny) OF REAL U0,U1,U2,V
+SUBROUTINE BaseFlow()
+  REAL F(0..ny)
+  F(0)=0; U0(0)=0; U0(1)=0.332/SQRT(x)*y(1); U0(ny)=1
+  DO
+    U0(1)=U0(1)*U0(ny)**(-1.5)
+    LOOP FOR i=1 TO ny-1
+      d1=2/[y(i+1)-y(i-1)]; d2p=d1/[y(i+1)-y(i)]; d2m=d1/[y(i)-y(i-1)]; d20=d2p+d2m
+      F(i)=F(i-1)+[U0(i-1)+U0(i)]*[y(i)-y(i-1)]/2
+      U0(i+1)={d20*U0(i)-[d2m-d1*F(i)/4/x]*U0(i-1)}/[d2p+d1*F(i)/4/x]
+      U1(i)=d1*[U0(i+1)-U0(i-1)]/2
+      U2(i)=d2p*U0(i+1)-d20*U0(i)+d2m*U0(i-1)
+    REPEAT LOOP
+!    WRITE "blasius:" U0(1)/y(1),U0(ny)
+  FOR 2 TIMES
+  U2(0)=0; U2(ny)=0; F(ny)=F(ny-1)+[U0(ny-1)+U0(ny)]*[y(ny)-y(ny-1)]/2
+  DO V(i)=(y(i)*U0(i)-F(i))/2/SQRT(x)/Re FOR i=0 TO ny
+END BaseFlow
+
+REAL omega,beta; COMPLEX alpha
+ARRAY(1..ny-1,-2..2) OF COMPLEX A,dA
+SUBROUTINE BuildMats()
+  k2=alpha*alpha+beta*beta; k=SQRT(k2)
+  LOOP FOR i=1 TO ny-1 WITH derivatives(i)
+IF UseContinuousAdjoint THEN
+    A(i)=[y(i+1)-y(i-1)]/2*{[I*omega-I*alpha*U0(i)]*(k2*d0-d2)+2*I*alpha*U1(i)*d1+ni*(d4-2*k2*d2+k2*k2*d0)}
+    dA(i)=[y(i+1)-y(i-1)]/2*{-I*U0(i)*(k2*d0-d2)+2*I*U1(i)*d1+
+      [I*omega-I*alpha*U0(i)]*2*alpha*d0+ni*(-4*alpha*d2+4*alpha*k2*d0)}
+ELSE
+    A(i)=[y(i+1)-y(i-1)]/2*{[I*omega-I*alpha*U0(i)]*(k2*d0-d2)-I*alpha*U2(i)*d0+ni*(d4-2*k2*d2+k2*k2*d0)}
+    dA(i)=[y(i+1)-y(i-1)]/2*{-I*U0(i)*(k2*d0-d2)-I*U2(i)*d0+
+      [I*omega-I*alpha*U0(i)]*2*alpha*d0+ni*(-4*alpha*d2+4*alpha*k2*d0)}
+END IF
+  REPEAT LOOP
+  A(1,0)=A(1,0)+A(1,-2)
+  dA(1,0)=dA(1,0)+dA(1,-2)
+IF FALSE THEN
+  A(ny-1,0)=A(ny-1,0)+A(ny-1,2)
+  dA(ny-1,0)=dA(ny-1,0)+dA(ny-1,2)
+ELSE
+  A(ny-1,0)=A(ny-1,0)+A(ny-1,2)*EXP(-k*(y(ny+1)-y(ny-1)))+A(ny-1,1)*EXP(-k*(y(ny)-y(ny-1)))
+  dA(ny-1,0)=dA(ny-1,0)+dA(ny-1,2)*EXP(-k*(y(ny+1)-y(ny-1)))+dA(ny-1,1)*EXP(-k*(y(ny)-y(ny-1)))
+  A(ny-2,1)=A(ny-2,1)+A(ny-2,2)*EXP(-k*(y(ny)-y(ny-1)))
+  dA(ny-2,1)=dA(ny-2,1)+dA(ny-2,2)*EXP(-k*(y(ny)-y(ny-1)))
+END IF
+  LUdecomp A
+END BuildMats
+
+ARRAY(-1..ny+1) OF COMPLEX zst=0,ps=0
+zstar==zst(1..ny-1)
+psi==ps(1..ny-1)
+ARRAY(1..ny-1) OF COMPLEX zeta
+SUBROUTINE eigenval()
+  TYPEOF(zeta) zetanew
+  DO
+    BuildMats
+IF UseContinuousAdjoint THEN
+    psi=zeta/A; zetanew=psi*dA
+    zstar=dA*zstar; zstar=A\zstar
+ELSE
+    psi=A\zeta; zetanew=dA*psi
+    zstar=zstar*dA; zstar=zstar/A
+END IF
+    dalpha=-(zstar*zeta)/(zstar*zetanew)
+    alpha=alpha+dalpha
+    normfact=1/psi(1)
+    psi=psi*normfact
+    zeta=zetanew*normfact
+    zstar=zstar/(zstar*zeta)
+    WRITE ":" ./.
+  WHILE ABS(dalpha)>1.E-8
+  ps(-1)=ps(1); zst(-1)=zst(1)
+  WRITE "." ./.
+END eigenval
+
+!(
+v_y-I*alpha*u-I*beta*w=0
+(sigma-I*alpha*U0)*u+U0_y*v-I*alpha*p-ni*lapl(u)=-I*alpha*T11+T21_y-I*beta*T31
+(sigma-I*alpha*U0)*v+p_y-ni*lapl(v)=-I*alpha*T12+T22_y-I*beta*T32
+(sigma-I*alpha*U0)*w-I*beta*p-ni*lapl(w)=-I*alpha*T13+T23_y-I*beta*T33
+
+va_y=-I*alpha*ua-I*beta*wa
+(sigma_0-I*alpha*U0)*ua-I*alpha*ca-ni*lapl(ua)=0
+(sigma_0-I*alpha*U0)*va+U0_y*ua-ca_y-ni*lapl(va)=0
+(sigma_0-I*alpha*U0)*wa-I*beta*ca-ni*lapl(wa)=0
+
+(sigma-sigma_0)(ua*u+va*v+wa*w)=
+=ua*(-I*alpha*T11+T21_y-I*beta*T31)+va*(-I*alpha*T12+T22_y-I*beta*T32)+wa*(-I*alpha*T12+T22_y-I*beta*T32)=
+-I*alpha*ua*T11-ua_y*T21-I*beta*ua*T31+
+-I*alpha*va*T12-va_y*T22-I*beta*va*T32+
+-I*alpha*wa*T13-wa_y*T23-I*beta*wa*T33
+
+A^2=kTmu*[4*|alpha|^2*|ua|^2+4*|va_y|^2+4*beta^2*|wa|^2+
++|ua_y+I*alpha*va|^2+|beta*ua+alpha*wa|^2+|wa_y+I*beta*va|^2]
+
+etaa=I*beta*ua-I*alpha*wa
+(alpha^2+beta^2)*ua=-I*beta*etaa+I*alpha*va_y
+(alpha^2+beta^2)*wa=I*alpha*etaa+I*beta*va_y
+(sigma_0-I*alpha*U0)*etaa-ni*lapl(etaa)=0
+(sigma_0-I*alpha*U0)*va_y-(alpha^2+beta^2)*ca-ni*lapl(va_y)=0
+(sigma_0-I*alpha*U0)*[va_yy-k^2*va]-2*I*alpha*U0_y*va_y-ni*lapl(lapl(va))=-U0_y*I*beta*etaa
+
+A^2=kTmu*[4*|alpha|^4/|k|^4*|va_y|^2+4*|va_y|^2+4*beta^4/|k|^4*|va_y|^2+
++|alpha|^2*|va_yy/k^2+va|^2+4*beta^2*alpha^2/|k|^4*|va_y|^2+beta^2*|va_yy/k^2+va|^2]=
+=kTmu*[|va_yy+k^2*va|^2*(|alpha|^2+beta^2)+4*|va_y|^2*(|alpha|^4+beta^4+|k|^4+beta^2*|alpha|^2)]/|k|^4=
+=kTmu*{|va_yy|^2*(|alpha|^2+beta^2)/|k|^4+|va|^2*(|alpha|^2+beta^2)+|va_y|^2*[4*|alpha|^4+4*beta^4+4*|k|^4+4*beta^2*|alpha|^2-2*Re(k^2)*(|alpha|^2+beta^2)]/|k|^4}
+!)
+REAL FUNCTION SpectRec(INTEGER iy)
+k2=NORM(alpha)+beta*beta
+k4=NORM(alpha^2+beta^2)
+WITH derivatives(iy) RESULT=NORM[SUM d2(j)*zst(iy+j) FOR j=d2.LO TO d2.HI]*k2/k4+
+   k2*NORM[SUM d0(j)*zst(iy+j) FOR j=d0.LO TO d0.HI]+
+   NORM[SUM d1(j)*zst(iy+j) FOR j=d1.LO TO d1.HI]*2*k2*[([IMAG(alpha)]^2+k2)/k4+4]
+END SpectRec
+
+SUBROUTINE initef
+  alpha=omega/0.3
+  DO zeta(i)=CRAND(); zstar(i)=CRAND() FOR  ALL i
+  BaseFlow
+  BuildMats
+IF UseContinuousAdjoint THEN
+  DO zeta=zeta/A; zstar=A\zstar FOR 2 TIMES
+ELSE
+  DO zeta=A\zeta; zstar=zstar/A FOR 2 TIMES
+END IF
+  eigenval()
+END initef
+
+!(
+omega=0.05; beta=0
+x=xmax
+initef
+COMPLEX fact
+REAL N=0
+WRITE x,alpha
+LOOP WHILE IMAG(alpha)>0
+  zstarold=zstar; alphaold=alpha
+  x=x-dx
+  BaseFlow(); eigenval()
+  WRITE x,alpha
+  fact=(zstarold*zeta)/(zstar*zetaold)*EXP[-I*(alpha+alphaold)/2/ni*dx]
+  N=N+[IMAG(alpha)+IMAG(alphaold)]/2*Re*dx
+  zstar=fact*zstar
+REPEAT LOOP
+WRITE N,LOG[ABS(fact)],0.5*LOG[0.01*0.05*0.3*Re*SUM SpectRec(iy)*[y(iy+1)-y(iy-1)]/2 FOR iy=1 TO ny-1],
+      0.5*LOG(kTsurhoni2d/Re/Re)
+STOP
+!)
+!(
+Re=2100
+beta=0
+Nfile=CREATE("Nfile.out")
+LOOP FOR omega=omin TO omax+domega/2 BY domega
+  x=xmin
+  initef
+  REAL N=0
+  LOOP WHILE x<xmax-dx/2
+    alphaold=alpha
+    x=x+dx
+    BaseFlow(); eigenval()
+    IF IMAG(alpha)>0 THEN
+      IF IMAG(alphaold)<0 THEN WRITE TO Nfile SQRT(x-dx)*Re,N
+      N=N+[IMAG(alpha)+IMAG(alphaold)]/2*Re*dx
+      WRITE TO Nfile SQRT(x)*Re,N
+    END IF
+  REPEAT
+  WRITE TO Nfile
+REPEAT
+
+!! N=5+6.8*(Re-1200)/1000
+
+STOP
+!)
+
+TYPEOF(zstar) zstarold; TYPEOF(zeta) zetaold
+COMPLEX FUNCTION firstappr()
+  RESULT=(zstarold*zeta)/(zstar*zetaold)
+END firstappr
+
+Refile=CREATE("Refile.out")
+LOOP FOR Re=1600 TO 2200 BY 100
+  FILE outfile
+  IF Re=1900 THEN outfile=CREATE("thermalrec.out")
+  REAL vsqfin(1..ny-1),vprofile(0..ny)=0
+  LOOP FOR omega=omin TO omax+domega/2 BY domega
+   LOOP FOR beta=bmin TO bmax+dbeta/2 BY dbeta
+    WRITE BY NAME omega,beta
+    FILE xprofile
+    IF Re=1900 AND ABS(omega-0.044)<1E-6 AND beta=bmin THEN xprofile=CREATE('xprofile.out')
+    REAL ampl=0
+    x=xmax
+    initef
+    WRITE x,alpha
+    DO WITH derivatives(iy)
+      vsqfin(iy)=NORM{[SUM d1(j)*ps(iy+j) FOR j=d1.LO TO d1.HI]/alpha}
+       ! dovrebbe essere *alpha/k2
+    FOR iy=1 TO ny-1
+    LOOP WHILE x>xmin+dx/2
+      zstarold=zstar; zetaold=zeta; alphaold=alpha
+      x=x-dx
+      BaseFlow(); eigenval()
+      WRITE x,alpha
+      fact=firstappr()*EXP[-I*(alpha+alphaold)/2/ni*dx]
+      zstar=fact*zstar
+      DO WITH derivatives(iy)
+        IF Re=1900 AND ABS(omega-0.044)<1E-6 AND beta=bmin THEN WRITE TO xprofile x, SpectRec(10)
+	ampl=ampl+SpectRec(iy)*[y(iy+1)-y(iy-1)]*dx
+      FOR iy=1 TO ny-1
+    REPEAT LOOP
+  !  PLOT ABS(zstar(*)),zstar.LO,zstar.HI
+  !  WRITE ampl
+  !  READ
+    DO vprofile(iy)=~+ampl*vsqfin(iy)*kTsurhoni2d/(PI*PI)/(Re*Re)*domega*dbeta FOR iy=1 TO ny-1
+    IF Re=1900 THEN WRITE TO outfile omega,beta,ampl
+   REPEAT LOOP
+   IF Re=1900 THEN WRITE TO outfile
+  REPEAT LOOP
+  IF Re=1900 THEN CLOSE outfile
+  WRITE TO Refile Re,MAX SQRT[vprofile(iy)] FOR iy=0 TO ny,Re*Re
+  IF Re=1900 THEN
+    profile=CREATE('yprofile.out')
+    DO WRITE TO profile y(iy),SQRT(vprofile(iy)) FOR iy=0 TO ny
+  END IF
+  RANGE 0..10,0..MAX SQRT(vprofile(iy)) FOR iy=0 TO ny
+  STARTLINE
+  DO DRAW y(iy),SQRT(vprofile(iy)) FOR iy=0 TO ny
+  SHOWGRAPH
+  ! READ
+REPEAT
