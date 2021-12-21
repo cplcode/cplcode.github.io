@@ -1,7 +1,7 @@
 ! Acrobatic examples of pointer, structure and subarray flexibility
-! ====================================================================
+! =======================================================================
 ! The constructions below don't all make practical sense, but all compile
-! correctly. Their original purpose was to test the compiler.
+! successfully. Their original purpose was to stress-test the compiler.
 
 USE complex
 USE rtchecks
