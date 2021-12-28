@@ -34,10 +34,10 @@
 <span class=comment>! with Colebrook (1939) correction for relative roughness=k/D</span>
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> planeductfriction(<a href="cpl.html#REAL">REAL</a> Retau)=8/[2.55&lowast;<a href="cpl.html#Builtin">LOG</a>(Retau)+2.36]<a href="cpl.html#REAL-operator">^</a>2
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> pipefriction(<a href="cpl.html#REAL">REAL</a> Retau)=8/[2.55&lowast;<a href="cpl.html#Builtin">LOG</a>(Retau)+1.3]<a href="cpl.html#REAL-operator">^</a>2
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Prandtlpipefriction(<a href="cpl.html#REAL">REAL</a> Retau)={2/<a href="cpl.html#Builtin">LOG</a>(10)&lowast;<a href="cpl.html#Builtin">LOG</a>[SQRT(32)&lowast;Retau]-0.8}<a href="cpl.html#REAL-operator">^</a>-2
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Prandtlpipefriction(<a href="cpl.html#REAL">REAL</a> Retau)={2/<a href="cpl.html#Builtin">LOG</a>(10)&lowast;<a href="cpl.html#Builtin">LOG</a>[<a href="cpl.html#Builtin">SQRT</a>(32)&lowast;Retau]-0.8}<a href="cpl.html#REAL-operator">^</a>-2
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Moody[<a href="cpl.html#REAL">REAL</a> Re,roughness; <a href="cpl.html#OPTIONAL">OPTIONAL</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a>(<a href="cpl.html#REAL">REAL</a>) friction=pipefriction]
   <a href="cpl.html#RESULT">RESULT</a>=0.02
-  <a href="cpl.html#DO">DO</a> <a href="cpl.html#RESULT">RESULT</a>=friction{1/[SQRT(32/<a href="cpl.html#RESULT">RESULT</a>)/Re+roughness/1.64]} <a href="cpl.html#FOR">FOR</a> 5 <a href="cpl.html#TIMES">TIMES</a>
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#RESULT">RESULT</a>=friction{1/[<a href="cpl.html#Builtin">SQRT</a>(32/<a href="cpl.html#RESULT">RESULT</a>)/Re+roughness/1.64]} <a href="cpl.html#FOR">FOR</a> 5 <a href="cpl.html#TIMES">TIMES</a>
 <a href="cpl.html#END">END</a> Moody
 
 <span class=comment>!(

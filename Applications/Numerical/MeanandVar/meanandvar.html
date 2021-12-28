@@ -65,7 +65,7 @@ MEANANDVAR=<a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#REAL">RE
     <a href="cpl.html#IF">IF</a> bt(1)&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Assignment">~</a>&lowast;(1+0.234&lowast;[2&lowast;bt(1)/bt(0)]<a href="cpl.html#REAL-operator">^</a>3.17)
 <a href="cpl.html#END">END</a> var
 
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> rms(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)=<a href="cpl.html#IF">IF</a> mvp.var&gt;0 <a href="cpl.html#IF">THEN</a> SQRT(mvp.var) <a href="cpl.html#ELSE">ELSE</a> 0
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> rms(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)=<a href="cpl.html#IF">IF</a> mvp.var&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">SQRT</a>(mvp.var) <a href="cpl.html#ELSE">ELSE</a> 0
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sum(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)=mvp.mean&lowast;mvp.nt
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sumvar(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)=mvp.var&lowast;mvp.nt<a href="cpl.html#REAL-operator">^</a>2
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sumrms(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)=mvp.rms&lowast;mvp.nt
@@ -125,14 +125,14 @@ MEANANDVAR mv(1..numcolumn)=0
       sigma=var
       sigma10=[bt(0)+bt(1)]/nt/(nt-2&lowast;ts)
       sigma0=bt(0)/nt/(nt-ts)
-      <a href="cpl.html#WRITE">WRITE</a> nt,mean,sigma&lowast;nt,sigma10&lowast;nt,sigma0&lowast;nt,ts, <a href="cpl.html#IF">IF</a> sigma&gt;0 <a href="cpl.html#IF">THEN</a> SQRT(sigma) <a href="cpl.html#ELSE">ELSE</a> 0, <a href="cpl.html#IF">IF</a> sigma10&gt;0 <a href="cpl.html#IF">THEN</a> SQRT(sigma10) <a href="cpl.html#ELSE">ELSE</a> 0, <a href="cpl.html#IF">IF</a> bt(0)&gt;0 <a href="cpl.html#IF">THEN</a> bt(1)/bt(0) <a href="cpl.html#ELSE">ELSE</a> 0
+      <a href="cpl.html#WRITE">WRITE</a> nt,mean,sigma&lowast;nt,sigma10&lowast;nt,sigma0&lowast;nt,ts, <a href="cpl.html#IF">IF</a> sigma&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">SQRT</a>(sigma) <a href="cpl.html#ELSE">ELSE</a> 0, <a href="cpl.html#IF">IF</a> sigma10&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">SQRT</a>(sigma10) <a href="cpl.html#ELSE">ELSE</a> 0, <a href="cpl.html#IF">IF</a> bt(0)&gt;0 <a href="cpl.html#IF">THEN</a> bt(1)/bt(0) <a href="cpl.html#ELSE">ELSE</a> 0
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> TEST <a href="cpl.html#IF">THEN</a>
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> col=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
     sigma=mv(col).var
-    <a href="cpl.html#WRITE">WRITE</a> mv(col).mean, <a href="cpl.html#IF">IF</a> sigma&gt;0 <a href="cpl.html#IF">THEN</a> SQRT(sigma) <a href="cpl.html#ELSE">ELSE</a> sigma, ./.
+    <a href="cpl.html#WRITE">WRITE</a> mv(col).mean, <a href="cpl.html#IF">IF</a> sigma&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">SQRT</a>(sigma) <a href="cpl.html#ELSE">ELSE</a> sigma, ./.
   <a href="cpl.html#LOOP">REPEAT</a>; <a href="cpl.html#WRITE">WRITE</a>
   <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> stderr mv(1).nt,mv(1).ts
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>

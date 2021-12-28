@@ -125,12 +125,12 @@ XPDIR=4; XNDIR=8
   accumulate(<a href="cpl.html#RESULT">RESULT</a>,f1.<a href="cpl.html#HI">HI1</a>,f1.<a href="cpl.html#HI">HI2</a>,f1.<a href="cpl.html#HI">HI3</a>)
 <a href="cpl.html#END">END</a> scp
 
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> abs(VFIELD ff)=SQRT(scp(ff,ff))
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> abs(VFIELD ff)=<a href="cpl.html#Builtin">SQRT</a>(scp(ff,ff))
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> abs(<a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> ff) <a href="cpl.html#WITH">WITH</a> ff
   <a href="cpl.html#RESULT">RESULT</a>=NORM(ff(<a href="cpl.html#LO">LO</a>+2..<a href="cpl.html#HI">HI</a>-1,&lowast;,&lowast;))
   accumulate(<a href="cpl.html#RESULT">RESULT</a>,ff.<a href="cpl.html#HI">HI1</a>,ff.<a href="cpl.html#HI">HI2</a>,ff.<a href="cpl.html#HI">HI3</a>)
-  <a href="cpl.html#RESULT">RESULT</a>=SQRT(<a href="cpl.html#RESULT">RESULT</a>)
+  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Builtin">SQRT</a>(<a href="cpl.html#RESULT">RESULT</a>)
 <a href="cpl.html#END">END</a> abs
 
 relax2=1

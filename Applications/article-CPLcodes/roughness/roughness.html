@@ -41,17 +41,17 @@ sinriblet: <span class=comment>! sinusoidal riblet</span>
 gaussian:
   <a href="cpl.html#RESULT">RESULT</a>=z&lt;baseline+a&lowast;<a href="cpl.html#Builtin">EXP</a>{-160&lowast;[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]}
 smoothedcyl: <span class=comment>! smoothed cylinder</span>
-  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> (x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2&gt;4&lowast;rad<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> z&lt;baseline <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline+a/{1+<a href="cpl.html#Builtin">EXP</a>[10&lowast;(SQRT[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]/rad-1)]}
+  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> (x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2&gt;4&lowast;rad<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> z&lt;baseline <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline+a/{1+<a href="cpl.html#Builtin">EXP</a>[10&lowast;(<a href="cpl.html#Builtin">SQRT</a>[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]/rad-1)]}
 cylinder:
   <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> (x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2&lt;rad<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> z&lt;baseline+a <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
 cone:
-  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> SQRT[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]&lt;rad <a href="cpl.html#IF">THEN</a> z&lt;baseline+a&lowast;{1-SQRT[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]/rad} <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
+  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> <a href="cpl.html#Builtin">SQRT</a>[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]&lt;rad <a href="cpl.html#IF">THEN</a> z&lt;baseline+a&lowast;{1-<a href="cpl.html#Builtin">SQRT</a>[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]/rad} <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
 spheroid:
-  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> (x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2&lt;rad<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> z&lt;baseline+a&lowast;SQRT{1-[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]/rad<a href="cpl.html#REAL-operator">^</a>2} <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
+  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> (x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2&lt;rad<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> z&lt;baseline+a&lowast;<a href="cpl.html#Builtin">SQRT</a>{1-[(x-0.5)<a href="cpl.html#REAL-operator">^</a>2+(y-0.5)<a href="cpl.html#REAL-operator">^</a>2]/rad<a href="cpl.html#REAL-operator">^</a>2} <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
 squarecyl: <span class=comment>! square cylinder</span>
   <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(x-0.5)&lt;rad <a href="cpl.html#AND">AND</a> <a href="cpl.html#ABS">ABS</a>(y-0.5)&lt;rad <a href="cpl.html#IF">THEN</a> z&lt;baseline+a <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
 ellipsoid: <span class=comment>! 3 to 1 ellipsoid</span>
-  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> [(x-0.5)/0.05]<a href="cpl.html#REAL-operator">^</a>2+[(y-0.5)/0.15]<a href="cpl.html#REAL-operator">^</a>2&lt;1 <a href="cpl.html#IF">THEN</a> z&lt;baseline+a&lowast;SQRT{1-[(x-0.5)/0.05]<a href="cpl.html#REAL-operator">^</a>2-[(y-0.5)/0.15]<a href="cpl.html#REAL-operator">^</a>2} <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
+  <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#IF">IF</a> [(x-0.5)/0.05]<a href="cpl.html#REAL-operator">^</a>2+[(y-0.5)/0.15]<a href="cpl.html#REAL-operator">^</a>2&lt;1 <a href="cpl.html#IF">THEN</a> z&lt;baseline+a&lowast;<a href="cpl.html#Builtin">SQRT</a>{1-[(x-0.5)/0.05]<a href="cpl.html#REAL-operator">^</a>2-[(y-0.5)/0.15]<a href="cpl.html#REAL-operator">^</a>2} <a href="cpl.html#ELSE">ELSE</a> z&lt;baseline
 <a href="cpl.html#END">END</a> <a href="cpl.html#CASE">CASE</a>
 <a href="cpl.html#END">END</a> InBody
 
@@ -190,7 +190,7 @@ bcond(0,&lowast;,&lowast;)=bcond(nx,&lowast;,&lowast;)
 bcond(&lowast;,0,&lowast;)=bcond(&lowast;,ny,&lowast;)
 mh=<a href="cpl.html#Assignment">~</a>/nx/ny
 mh2=<a href="cpl.html#Assignment">~</a>/nx/ny
-heff=mh2/mh; deff=SQRT(mh/heff&lowast;4/PI); ar=heff/deff
+heff=mh2/mh; deff=<a href="cpl.html#Builtin">SQRT</a>(mh/heff&lowast;4/PI); ar=heff/deff
 <span class=comment>! deffa=SQRT(mh/a&lowast;4/PI); ara=a/deffa=(a/heff)^1.5&lowast;ar  <span class=comment>!  va peggio</span></span>
 
 <a href="cpl.html#REAL">REAL</a> r=0

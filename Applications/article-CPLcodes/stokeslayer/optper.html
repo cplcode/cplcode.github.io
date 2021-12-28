@@ -25,7 +25,7 @@
 <a href="cpl.html#REAL">REAL</a> g=0
 <a href="cpl.html#DO">DO</a>
   prevg=g
-  psi=psi/SQRT[Energy(psi)]
+  psi=psi/<a href="cpl.html#Builtin">SQRT</a>[Energy(psi)]
   <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#REAL">REAL</a> psimax=<a href="cpl.html#ABS">ABS</a>(psi(1))
     <a href="cpl.html#DO">DO</a> psimax=<a href="cpl.html#MAX">MAX</a>(psimax,<a href="cpl.html#ABS">ABS</a>(psi(i))) <a href="cpl.html#FOR">FOR</a> i=2 <a href="cpl.html#TO">TO</a> ny-1
@@ -38,7 +38,7 @@
   zstarprev=zstar
   MarchBackward2
   <a href="cpl.html#DO">DO</a> psi(i)=<a href="complex.html#Top">CONJG</a>[zstar(i)]&lowast;2/[y(i+1)-y(i-1)] <a href="cpl.html#FOR">FOR</a> i=psi.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> psi.<a href="cpl.html#HI">HI</a>
-  g=1/Energy(psi); psi=psi&lowast;SQRT(g)
+  g=1/Energy(psi); psi=psi&lowast;<a href="cpl.html#Builtin">SQRT</a>(g)
   zeta=B&lowast;psi
   zetaold=zeta
   <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a>  

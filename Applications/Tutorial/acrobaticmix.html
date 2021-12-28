@@ -11,9 +11,9 @@
 }</script></head>
 <body translate="no"><pre>
 <span class=comment>! Acrobatic examples of pointer, structure and subarray flexibility</span>
-<span class=comment>! ====================================================================</span>
+<span class=comment>! =======================================================================</span>
 <span class=comment>! The constructions below don't all make practical sense, but all compile</span>
-<span class=comment>! correctly. Their original purpose was to test the compiler.</span>
+<span class=comment>! successfully. Their original purpose was to stress-test the compiler.</span>
 
 <a href="cpl.html#USE">USE</a> <a href="complex.html#Top">complex</a>
 <a href="cpl.html#USE">USE</a> <a href="cpl.html#rtchecks">rtchecks</a>
@@ -55,7 +55,7 @@ ff=PRN         <span class=comment>! PRN can be assigned to it</span>
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> 10; ROW(i)=i; <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 b=PRN(ROW) <span class=comment>! ARRAY argument identifies the first PRN</span>
 a=PRN(3)   <span class=comment>! INTEGER argument identifies the second PRN</span>
-c=SQRT( PI &lowast; ROW(1) )
+c=<a href="cpl.html#Builtin">SQRT</a>( PI &lowast; ROW(1) )
 bc=b       <span class=comment>! a,b,c,bc are CONSTANTs, can only be assigned once and</span>
            <span class=comment>! inherit the type of their r.h.s.</span>
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> n <a href="cpl.html#IN">IN</a> (1,2,4); <a href="cpl.html#WRITE">WRITE</a> n; <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a> <span class=comment>! LOOP over constant ARRAY elements</span>

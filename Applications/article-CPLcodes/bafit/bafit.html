@@ -45,7 +45,7 @@ Uw=wpos; UvpVu=ppos; Uu=upos; u=vpos
 <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sclrprod = <a href="cpl.html#Looping-operator">SUM</a> fstar(i)&lowast;f(i)+fstar1(i)&lowast;(f(i)-fold(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BaseFlow(<a href="cpl.html#REAL">REAL</a> x)
-  F(0)=0; U(0)=0; U(1)=0.332/SQRT(x)&lowast;y(1); U(ny)=1
+  F(0)=0; U(0)=0; U(1)=0.332/<a href="cpl.html#Builtin">SQRT</a>(x)&lowast;y(1); U(ny)=1
   <a href="cpl.html#DO">DO</a>
     U(1)=U(1)&lowast;U(ny)&lowast;&lowast;(-1.5)
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
@@ -57,7 +57,7 @@ Uw=wpos; UvpVu=ppos; Uu=upos; u=vpos
   <a href="cpl.html#FOR">FOR</a> 2 <a href="cpl.html#TIMES">TIMES</a>
   <span class=comment>! V=(y&lowast;U-F)/2./x</span>
   F(ny)=F(ny-1)+[U(ny-1)+U(ny)]&lowast;[y(ny)-y(ny-1)]/2
-  <a href="cpl.html#DO">DO</a> V(i)=<a href="cpl.html#MIN">MIN</a>{[y(i)&lowast;U(i)-F(i)]/2/x,0.8605/SQRT(x)} <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> ny
+  <a href="cpl.html#DO">DO</a> V(i)=<a href="cpl.html#MIN">MIN</a>{[y(i)&lowast;U(i)-F(i)]/2/x,0.8605/<a href="cpl.html#Builtin">SQRT</a>(x)} <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> ny
   <span class=comment>!  NEWGRAPH; MOVE(0,0); DO DRAW(y(i),U(i)) FOR i=1 TO ny-1; SHOWGRAPH</span>
 <a href="cpl.html#END">END</a> BaseFlow
 
@@ -125,7 +125,7 @@ Uw=wpos; UvpVu=ppos; Uu=upos; u=vpos
       v1=fstar&lowast;B; v1=v1/T
       dsigma=-(v1&lowast;f)/(v1&lowast;f1)
       sigma=sigma+dsigma
-      f=f1&lowast;(f1&lowast;fold)/<a href="cpl.html#ABS">ABS</a>(f1&lowast;fold)/SQRT[Penergy(f1)]
+      f=f1&lowast;(f1&lowast;fold)/<a href="cpl.html#ABS">ABS</a>(f1&lowast;fold)/<a href="cpl.html#Builtin">SQRT</a>[Penergy(f1)]
       fstar=v1/(v1&lowast;f)
       <a href="cpl.html#WRITE">WRITE</a> ":" ./.
     <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#ABS">ABS</a>(dsigma)&gt;1.E-5
@@ -262,7 +262,7 @@ Uw=wpos; UvpVu=ppos; Uu=upos; u=vpos
     v1=fstar&lowast;B; v1=v1/T
     dsigma=-(v1&lowast;f)/(v1&lowast;f1)
     sigma=sigma+dsigma
-    f=f1/SQRT[Penergy(f1)]
+    f=f1/<a href="cpl.html#Builtin">SQRT</a>[Penergy(f1)]
     fstar=v1/(v1&lowast;f)
     <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> stderr ":" ./.
   <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#ABS">ABS</a>(dsigma)&gt;1.E-5

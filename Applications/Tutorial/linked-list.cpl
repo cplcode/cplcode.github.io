@@ -27,7 +27,7 @@ DO p.var=1 FOR p=RowStart(HI) UNTIL p=NULL BY p=p.next
 INLINE REAL FUNCTION val(POINTER TO POINTER TO CELL p; INTEGER c)
   LOOP WHILE p.col<c: p=p.next
   !   move pointer p until column c or end of row
-  IF p.col=c THEN RESULT=p.var ELSE RESULT=0 !  return zero if element not found
+  IF p.col=c THEN RESULT=p.var ELSE RESULT=0 ! return zero if element not found
 END val !   otherwise return element's "var" value
 
 LOOP FOR 100 TIMES   ! main iteration loop
@@ -51,7 +51,8 @@ REPEAT LOOP
 ! now plot something
 RANGE 0,40,0,2
 LOOP FOR i=RowStart.LO TO RowStart.HI
-  STARTLINE; DO DRAW p.col,p.var+i/20 FOR p=RowStart(i) UNTIL p=NULL BY p=p.next
+  STARTLINE
+  DO DRAW p.col,p.var+i/20 FOR p=RowStart(i) UNTIL p=NULL BY p=p.next
 REPEAT
 SHOWGRAPH
 READ ! keep plot displayed until Enter is pressed
@@ -60,4 +61,4 @@ READ ! keep plot displayed until Enter is pressed
   C-like (or Pascal-like) structures and pointers are a standard part of
   CPL, but dereferencing is implicit. Only three ^'s need appear in the above
   program, all at the side of = or # operators.
-!)
+  !)

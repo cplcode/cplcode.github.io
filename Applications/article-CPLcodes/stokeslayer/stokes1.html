@@ -46,7 +46,7 @@ long nexttime
 
 pi2=3.544907702
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BaseFlow()
-  <a href="cpl.html#DO">DO</a> U(i)=erfc(y(i)/2/SQRT(t)); U2(i)=y(i)&lowast;<a href="cpl.html#Builtin">EXP</a>[-y(i)&lowast;y(i)/4/t]/pi2/t&lowast;&lowast;1.5 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  <a href="cpl.html#DO">DO</a> U(i)=erfc(y(i)/2/<a href="cpl.html#Builtin">SQRT</a>(t)); U2(i)=y(i)&lowast;<a href="cpl.html#Builtin">EXP</a>[-y(i)&lowast;y(i)/4/t]/pi2/t&lowast;&lowast;1.5 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
 <a href="cpl.html#END">END</a> BaseFlow
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BuildMats()
@@ -198,7 +198,7 @@ nexttime=time(<a href="cpl.html#POINTER">NULL</a>)+2
     zstar=zstar&lowast;B; zstar=zstar/T
     dsigma=-(zstar&lowast;zeta)/(zstar&lowast;zeta1)
     sigma=sigma+dsigma
-    normfact=<a href="cpl.html#ABS">ABS</a>[zeta1(1)]/zeta1(1)/SQRT[Energy(psi)]
+    normfact=<a href="cpl.html#ABS">ABS</a>[zeta1(1)]/zeta1(1)/<a href="cpl.html#Builtin">SQRT</a>[Energy(psi)]
     zeta=zeta1&lowast;normfact
     psi=psi&lowast;normfact
     zstar=zstar/(zstar&lowast;zeta)

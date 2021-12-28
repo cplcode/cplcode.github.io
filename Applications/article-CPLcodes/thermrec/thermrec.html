@@ -63,7 +63,7 @@ dbeta=bmax/(nbeta+0.5); bmin=0.5&lowast;dbeta
 <a href="cpl.html#ARRAY">ARRAY</a>(0..ny) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> U0,U1,U2,V
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BaseFlow()
   <a href="cpl.html#REAL">REAL</a> F(0..ny)
-  F(0)=0; U0(0)=0; U0(1)=0.332/SQRT(x)&lowast;y(1); U0(ny)=1
+  F(0)=0; U0(0)=0; U0(1)=0.332/<a href="cpl.html#Builtin">SQRT</a>(x)&lowast;y(1); U0(ny)=1
   <a href="cpl.html#DO">DO</a>
     U0(1)=U0(1)&lowast;U0(ny)&lowast;&lowast;(-1.5)
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
@@ -76,13 +76,13 @@ dbeta=bmax/(nbeta+0.5); bmin=0.5&lowast;dbeta
 <span class=comment>!    WRITE "blasius:" U0(1)/y(1),U0(ny)</span>
   <a href="cpl.html#FOR">FOR</a> 2 <a href="cpl.html#TIMES">TIMES</a>
   U2(0)=0; U2(ny)=0; F(ny)=F(ny-1)+[U0(ny-1)+U0(ny)]&lowast;[y(ny)-y(ny-1)]/2
-  <a href="cpl.html#DO">DO</a> V(i)=(y(i)&lowast;U0(i)-F(i))/2/SQRT(x)/Re <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> ny
+  <a href="cpl.html#DO">DO</a> V(i)=(y(i)&lowast;U0(i)-F(i))/2/<a href="cpl.html#Builtin">SQRT</a>(x)/Re <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> ny
 <a href="cpl.html#END">END</a> BaseFlow
 
 <a href="cpl.html#REAL">REAL</a> omega,beta; <a href="complex.html#Top">COMPLEX</a> alpha
 <a href="cpl.html#ARRAY">ARRAY</a>(1..ny-1,-2..2) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A,dA
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BuildMats()
-  k2=alpha&lowast;alpha+beta&lowast;beta; k=SQRT(k2)
+  k2=alpha&lowast;alpha+beta&lowast;beta; k=<a href="cpl.html#Builtin">SQRT</a>(k2)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#WITH">WITH</a> derivatives(i)
 <a href="cpl.html#IF">IF</a> UseContinuousAdjoint <a href="cpl.html#IF">THEN</a>
     A(i)=[y(i+1)-y(i-1)]/2&lowast;{[I&lowast;omega-I&lowast;alpha&lowast;U0(i)]&lowast;(k2&lowast;d0-d2)+2&lowast;I&lowast;alpha&lowast;U1(i)&lowast;d1+ni&lowast;(d4-2&lowast;k2&lowast;d2+k2&lowast;k2&lowast;d0)}
@@ -278,14 +278,14 @@ Refile=<a href="cpl.html#CREATE">CREATE</a>("Refile.out")
    <a href="cpl.html#IF">IF</a> Re=1900 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> outfile
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#IF">IF</a> Re=1900 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#CLOSE">CLOSE</a> outfile
-  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Refile Re,<a href="cpl.html#MAX">MAX</a> SQRT[vprofile(iy)] <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny,Re&lowast;Re
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Refile Re,<a href="cpl.html#MAX">MAX</a> <a href="cpl.html#Builtin">SQRT</a>[vprofile(iy)] <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny,Re&lowast;Re
   <a href="cpl.html#IF">IF</a> Re=1900 <a href="cpl.html#IF">THEN</a>
     profile=<a href="cpl.html#CREATE">CREATE</a>('yprofile.out')
-    <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> profile y(iy),SQRT(vprofile(iy)) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny
+    <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> profile y(iy),<a href="cpl.html#Builtin">SQRT</a>(vprofile(iy)) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-  <a href="graphics.html#RANGE">RANGE</a> 0..10,0..<a href="cpl.html#MAX">MAX</a> SQRT(vprofile(iy)) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny
+  <a href="graphics.html#RANGE">RANGE</a> 0..10,0..<a href="cpl.html#MAX">MAX</a> <a href="cpl.html#Builtin">SQRT</a>(vprofile(iy)) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny
   <a href="graphics.html#STARTLINE">STARTLINE</a>
-  <a href="cpl.html#DO">DO</a> <a href="graphics.html#DRAW">DRAW</a> y(iy),SQRT(vprofile(iy)) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny
+  <a href="cpl.html#DO">DO</a> <a href="graphics.html#DRAW">DRAW</a> y(iy),<a href="cpl.html#Builtin">SQRT</a>(vprofile(iy)) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny
   <a href="graphics.html#SHOWGRAPH">SHOWGRAPH</a>
   <span class=comment>! READ</span>
 <a href="cpl.html#LOOP">REPEAT</a>
