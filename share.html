@@ -37,6 +37,7 @@
 <script>
 function applysize(val) {
   var thickness=val*2/61;
+  thickness=Math.max(thickness.toFixed(1),1);
   var minimcpl=document.getElementById("minimcpl");
   minimcpl.width=val;
   minimcpl.style.paddingBottom=thickness+"px";
