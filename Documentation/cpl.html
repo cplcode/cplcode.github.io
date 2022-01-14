@@ -562,7 +562,7 @@ For (e.g. LAPACK) library calls that require the number of elements used in actu
 
 provides the argument to be passed.
 
-Note that argument type checking is suppressed during a FORTRANCALL (as the necessary information is not available). Type checking can be restored, however, by wrapping every FORTRANCALL in a suitable INLINE SUBROUTINE.
+Note that argument type checking is suppressed during a FORTRANCALL (as the necessary information is not available). Type checking can be restored, however, by wrapping every FORTRANCALL in a suitable &lowast; note INLINE:: SUBROUTINE.
 
 The name of the object file containing the FORTRAN compiled subroutines must be transmitted to the linker with
 
@@ -694,7 +694,7 @@ Page: (cpl)INLINE,  Next: <a href="#FOLLOWS">FOLLOWS</a>,  Prev: <a href="#FUNCT
 <hr> <h2>Inline functions and subroutines</h2>
 The keyword INLINE prefixed to a <a href="#SUBROUTINE">SUBROUTINE</a> or <a href="#FUNCTION">FUNCTION</a> declaration (in either long or short form) generates a compile-time macro that is inserted in place of each call to the subroutine.
 
-See also <a href="#INLINE-LOOP">INLINE LOOP</a>. 
+See also <a href="#INLINE-LOOP">INLINE LOOP</a>, <a href="symbolic.html#Top">INLINE:(symbolic)</a>. 
 </div><div class=page id="FOLLOWS">
 Page: (cpl)FOLLOWS,  Next: <a href="#OPTIONAL">OPTIONAL</a>,  Prev: <a href="#INLINE">INLINE</a>,  Up: <a href="#Functions">Functions</a>
 <hr> <h2>Function prototypes</h2>
