@@ -46,7 +46,7 @@ long nexttime
 
 pi2=3.544907702
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BaseFlow()
-  <a href="cpl.html#DO">DO</a> U(i)=erfc(y(i)/2/<a href="cpl.html#Builtin">SQRT</a>(t)); U2(i)=y(i)&lowast;<a href="cpl.html#Builtin">EXP</a>[-y(i)&lowast;y(i)/4/t]/pi2/t&lowast;&lowast;1.5 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  <a href="cpl.html#DO">DO</a> U(i)=erfc(y(i)/2/<a href="cpl.html#Builtin">SQRT</a>(t)); U2(i)=y(i)&lowast;<a href="cpl.html#Builtin">EXP</a>[-y(i)&lowast;y(i)/4/t]/pi2/t<a href="cpl.html#compound-index">**</a>1.5 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
 <a href="cpl.html#END">END</a> BaseFlow
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BuildMats()

@@ -101,7 +101,7 @@ dcor=2.05&lowast;h
     <a href="cpl.html#IF">IF</a> xx &gt; xs  <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=0
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 2 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   e5</span>
-    <a href="cpl.html#RESULT">RESULT</a>=(1-xx&lowast;4)&lowast;&lowast;5
+    <a href="cpl.html#RESULT">RESULT</a>=(1-xx&lowast;4)<a href="cpl.html#compound-index">**</a>5
     <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>= 0
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 3 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   v</span>
@@ -129,27 +129,27 @@ dcor=2.05&lowast;h
     <span class=comment>!  BE </span>
     
     tal=1
-    cal=1/(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5
+    cal=1/(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
     sal=tal&lowast;cal
     r0=0.347826
     <span class=comment>!   r0=0.7</span>
     <span class=comment>!     l0=0.5108695 </span>
     l0=fill
-    l2=(rapp-r0+tal&lowast;l0+r0&lowast;(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5)/tal
-    l1=l2-(rapp-r0+r0/(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5)/tal
+    l2=(rapp-r0+tal&lowast;l0+r0&lowast;(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/tal
+    l1=l2-(rapp-r0+r0/(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/tal
     y1=rapp-r0+r0&lowast;cal
     l1=r0&lowast;sal+l0
     l2=l1+y1/tal
     <span class=comment>!     WRITE 'z,y1,l0,l1,l2',zz,y1,l0,l1,l2 </span>
     l3=l1+(rapp-2&lowast;r0&lowast;(1-cal))/tal
     l4=l3+r0&lowast;sal
-    b1=(l2-fill+0.125-(nr+1)&lowast;rapp)/(l2-fill+0.125)&lowast;&lowast;nr
-    b2=(nr&lowast;rapp-l2+fill-0.125)/(l2-fill+0.125)&lowast;&lowast;(nr+1)
+    b1=(l2-fill+0.125-(nr+1)&lowast;rapp)/(l2-fill+0.125)<a href="cpl.html#compound-index">**</a>nr
+    b2=(nr&lowast;rapp-l2+fill-0.125)/(l2-fill+0.125)<a href="cpl.html#compound-index">**</a>(nr+1)
     
     <a href="cpl.html#IF">IF</a> zz &lt;l0 <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#RESULT">RESULT</a> =rapp
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz &lt;l1 <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0&lowast;&lowast;2-(zz-l0)&lowast;&lowast;2)&lowast;&lowast;0.5
+      <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0<a href="cpl.html#compound-index">**</a>2-(zz-l0)<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;l2  <a href="cpl.html#IF">THEN</a> 
       <a href="cpl.html#RESULT">RESULT</a> = y1+tal&lowast;(l1-zz)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l2  <a href="cpl.html#IF">THEN</a> 
@@ -157,7 +157,7 @@ dcor=2.05&lowast;h
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l1  <a href="cpl.html#IF">THEN</a> 
       <a href="cpl.html#RESULT">RESULT</a> = y1+tal&lowast;(zz-lz+l1)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l0  <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0&lowast;&lowast;2-(zz-lz+l0)&lowast;&lowast;2)&lowast;&lowast;0.5
+      <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0<a href="cpl.html#compound-index">**</a>2-(zz-lz+l0)<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz &lt;lz  <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#RESULT">RESULT</a> =rapp
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a> 
@@ -287,7 +287,7 @@ dcor=2.05&lowast;h
   <a href="cpl.html#IF">IF</a> rapp=0 <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#RESULT">RESULT</a>=pi/2
   <a href="cpl.html#ELSE">ELSE</a>
-    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Builtin">ATAN</a>(fx0/rapp&lowast;(1-gp&lowast;talfa)&lowast;&lowast;0.5)
+    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Builtin">ATAN</a>(fx0/rapp&lowast;(1-gp&lowast;talfa)<a href="cpl.html#compound-index">**</a>0.5)
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <span class=comment>!(   caso lamina     
     RESULT=0.
@@ -305,10 +305,10 @@ dcor=2.05&lowast;h
     <a href="cpl.html#DO">DO</a>
       kv=kn
       <a href="cpl.html#IF">IF</a> wp = 1 <a href="cpl.html#IF">THEN</a>
-        cot=((1.-s&lowast;&lowast;2&lowast;kv&lowast;&lowast;2)&lowast;&lowast;0.5-1.)/s/kv 
+        cot=((1.-s<a href="cpl.html#compound-index">**</a>2&lowast;kv<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5-1.)/s/kv 
         kn=(<a href="cpl.html#Builtin">ATAN</a>(1./cot)+pi)/(pi-delta(xx,zz,calf,salf))
       <a href="cpl.html#ELSE">ELSE</a>
-        cot=(1-(1.-s&lowast;&lowast;2&lowast;kv&lowast;&lowast;2)&lowast;&lowast;0.5)/s/kv 
+        cot=(1-(1.-s<a href="cpl.html#compound-index">**</a>2&lowast;kv<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/s/kv 
         kn=<a href="cpl.html#Builtin">ATAN</a>(1./cot)/(pi-delta(xx,zz,calf,salf))
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <a href="cpl.html#WHILE">WHILE</a>  <a href="cpl.html#ABS">ABS</a>(kv-kn) &gt; 0.0001 
@@ -348,14 +348,14 @@ dcor=2.05&lowast;h
           <a href="cpl.html#IF">IF</a> kca &gt; 0   <a href="cpl.html#IF">THEN</a>
             z1=0.
             z2=2.&lowast;nz&lowast;h
-            d1=(xx-xv)&lowast;&lowast;2+(yy-fondo(xv,z1))&lowast;&lowast;2+(zz-z1)&lowast;&lowast;2
-            d2=(xx-xv)&lowast;&lowast;2+(yy-fondo(xv,z2))&lowast;&lowast;2+(zz-z2)&lowast;&lowast;2
+            d1=(xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-fondo(xv,z1))<a href="cpl.html#compound-index">**</a>2+(zz-z1)<a href="cpl.html#compound-index">**</a>2
+            d2=(xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-fondo(xv,z2))<a href="cpl.html#compound-index">**</a>2+(zz-z2)<a href="cpl.html#compound-index">**</a>2
             <a href="cpl.html#DO">DO</a>
               <span class=comment>!   WRITE 'z1,z2',z1,z2</span>
               zno=0.5&lowast;z1+0.5&lowast;z2
-              dm=(xx-xv)&lowast;&lowast;2+(yy-fondo(xv,zno))&lowast;&lowast;2+(zz-zno)&lowast;&lowast;2
-              dpm=(xx-xv)&lowast;&lowast;2+(yy-fondo(xv,zno+eps))&lowast;&lowast;2+(zz-zno-eps)&lowast;&lowast;2-
-      ((xx-xv)&lowast;&lowast;2+(yy-fondo(xv,zno-eps))&lowast;&lowast;2+(zz-zno+eps)&lowast;&lowast;2)
+              dm=(xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-fondo(xv,zno))<a href="cpl.html#compound-index">**</a>2+(zz-zno)<a href="cpl.html#compound-index">**</a>2
+              dpm=(xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-fondo(xv,zno+eps))<a href="cpl.html#compound-index">**</a>2+(zz-zno-eps)<a href="cpl.html#compound-index">**</a>2-
+      ((xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-fondo(xv,zno-eps))<a href="cpl.html#compound-index">**</a>2+(zz-zno+eps)<a href="cpl.html#compound-index">**</a>2)
               <span class=comment>!   WRITE 'xx,yy,zz,d1,d2,dm,zno,dpm',xx,yy,zz,d1,d2,dm,zno,dpm</span>
               <a href="cpl.html#IF">IF</a> dpm &gt; 0 <a href="cpl.html#IF">THEN</a>
                 z2=zno 
@@ -371,15 +371,15 @@ dcor=2.05&lowast;h
             zno=0.
             calf=1.0
             salf=0.
-            dis=((xx-xv)&lowast;&lowast;2+(yy-fondo(xv,0.))&lowast;&lowast;2)&lowast;&lowast;0.5
+            dis=((xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-fondo(xv,0.))<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
           yv=fondo(xv,zno)
-          dis=((xx-xv)&lowast;&lowast;2+(yy-yv)&lowast;&lowast;2+(zz-zno)&lowast;&lowast;2)&lowast;&lowast;0.5
+          dis=((xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-yv)<a href="cpl.html#compound-index">**</a>2+(zz-zno)<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
           
           <a href="cpl.html#IF">IF</a> yv &gt; 1.05&lowast;h <a href="cpl.html#AND">AND</a> jca&gt;1 <a href="cpl.html#IF">THEN</a> 
             <span class=comment>!    IF  dis &lt; dcor    THEN</span>
             <a href="cpl.html#IF">IF</a>  dis &lt; dcor    <a href="cpl.html#IF">THEN</a>
-              norma=((yy-yv)&lowast;&lowast;2+(zz-zno)&lowast;&lowast;2)&lowast;&lowast;0.5
+              norma=((yy-yv)<a href="cpl.html#compound-index">**</a>2+(zz-zno)<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
               <a href="cpl.html#IF">IF</a> yy &lt; yv <a href="cpl.html#IF">THEN</a> norma=-norma
               <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(norma) &lt; 0.001 <a href="cpl.html#IF">THEN</a>
                 calf=1.
@@ -411,11 +411,11 @@ dcor=2.05&lowast;h
 
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> derc(<a href="cpl.html#REAL">REAL</a> fc,fs,fd,ds,dd,den)
-  <a href="cpl.html#RESULT">RESULT</a>=(fd&lowast;ds&lowast;&lowast;2-fs&lowast;dd&lowast;&lowast;2+fc&lowast;(dd&lowast;&lowast;2-ds&lowast;&lowast;2))/den/h
+  <a href="cpl.html#RESULT">RESULT</a>=(fd&lowast;ds<a href="cpl.html#compound-index">**</a>2-fs&lowast;dd<a href="cpl.html#compound-index">**</a>2+fc&lowast;(dd<a href="cpl.html#compound-index">**</a>2-ds<a href="cpl.html#compound-index">**</a>2))/den/h
 <a href="cpl.html#END">END</a> derc
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> ders(<a href="cpl.html#REAL">REAL</a> f0,f1,f2,d1,d2,den)
-  <a href="cpl.html#RESULT">RESULT</a>=(f1&lowast;d2&lowast;&lowast;2-f2&lowast;d1&lowast;&lowast;2-f0&lowast;(d2&lowast;&lowast;2-d1&lowast;&lowast;2))/den/h
+  <a href="cpl.html#RESULT">RESULT</a>=(f1&lowast;d2<a href="cpl.html#compound-index">**</a>2-f2&lowast;d1<a href="cpl.html#compound-index">**</a>2-f0&lowast;(d2<a href="cpl.html#compound-index">**</a>2-d1<a href="cpl.html#compound-index">**</a>2))/den/h
 <a href="cpl.html#END">END</a> ders
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> des(<a href="cpl.html#REAL">REAL</a> fl,fc,fr,frr,le,ri,rr)
@@ -424,10 +424,10 @@ dcor=2.05&lowast;h
   alrr=alr+rr
   <a href="cpl.html#IF">IF</a> le&lt; pfo <a href="cpl.html#AND">AND</a> rr&gt;0  <a href="cpl.html#IF">THEN</a>
     den =alr&lowast;alrr&lowast;rr
-    <a href="cpl.html#RESULT">RESULT</a>=(fr&lowast;alrr&lowast;&lowast;2-frr&lowast;alr&lowast;&lowast;2-fl&lowast;(alrr&lowast;&lowast;2-alr&lowast;&lowast;2))/h/den
+    <a href="cpl.html#RESULT">RESULT</a>=(fr&lowast;alrr<a href="cpl.html#compound-index">**</a>2-frr&lowast;alr<a href="cpl.html#compound-index">**</a>2-fl&lowast;(alrr<a href="cpl.html#compound-index">**</a>2-alr<a href="cpl.html#compound-index">**</a>2))/h/den
   <a href="cpl.html#ELSE">ELSE</a>
     den=le&lowast;ri&lowast;alr
-    <a href="cpl.html#RESULT">RESULT</a>=(fc&lowast;alr&lowast;&lowast;2-fr&lowast;le&lowast;&lowast;2-fl&lowast;(alr&lowast;&lowast;2-le&lowast;&lowast;2))/h/den
+    <a href="cpl.html#RESULT">RESULT</a>=(fc&lowast;alr<a href="cpl.html#compound-index">**</a>2-fr&lowast;le<a href="cpl.html#compound-index">**</a>2-fl&lowast;(alr<a href="cpl.html#compound-index">**</a>2-le<a href="cpl.html#compound-index">**</a>2))/h/den
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a> des
 
@@ -458,7 +458,7 @@ dcor=2.05&lowast;h
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> fun1(<a href="cpl.html#REAL">REAL</a> fi1<a href="cpl.html#REAL-operator">^</a>,m11<a href="cpl.html#REAL-operator">^</a>,m21<a href="cpl.html#REAL-operator">^</a>,xx,yy)
   <a href="cpl.html#REAL">REAL</a> tet,e,a,d,b,fil,fis,k3,es,cot,s,c,r
-  r=(xx&lowast;xx+yy&lowast;yy)&lowast;&lowast;0.5
+  r=(xx&lowast;xx+yy&lowast;yy)<a href="cpl.html#compound-index">**</a>0.5
   tet=teta(xx,yy)
   <a href="cpl.html#IF">IF</a> del &gt; 0 <a href="cpl.html#IF">THEN</a>
     s=<a href="cpl.html#Builtin">SIN</a>(2&lowast;del)
@@ -483,32 +483,32 @@ dcor=2.05&lowast;h
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     es=1.+k1
     <a href="cpl.html#IF">IF</a> (wp = 1) <a href="cpl.html#IF">THEN</a>
-      fis=r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">COS</a>((1.-k1)&lowast;tet)
-      fil=r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">COS</a>(es&lowast;tet)
+      fis=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">COS</a>((1.-k1)&lowast;tet)
+      fil=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">COS</a>(es&lowast;tet)
       fi1=d&lowast;(fis+e&lowast;fil)
-      m11=a&lowast;r&lowast;&lowast;k1&lowast;<a href="cpl.html#Builtin">SIN</a>(k1&lowast;tet)
-      m21=b&lowast;r&lowast;&lowast;k1&lowast;<a href="cpl.html#Builtin">COS</a>(k1&lowast;tet)
+      m11=a&lowast;r<a href="cpl.html#compound-index">**</a>k1&lowast;<a href="cpl.html#Builtin">SIN</a>(k1&lowast;tet)
+      m21=b&lowast;r<a href="cpl.html#compound-index">**</a>k1&lowast;<a href="cpl.html#Builtin">COS</a>(k1&lowast;tet)
     <a href="cpl.html#ELSE">ELSE</a>
-      fis=r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">SIN</a>((1.-k1)&lowast;tet)
-      fil=r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">SIN</a>(es&lowast;tet)
+      fis=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">SIN</a>((1.-k1)&lowast;tet)
+      fil=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">SIN</a>(es&lowast;tet)
       fi1=d&lowast;(fis+e&lowast;fil)
-      m11=a&lowast;r&lowast;&lowast;k1&lowast;<a href="cpl.html#Builtin">COS</a>(k1&lowast;tet)
-      m21=b&lowast;r&lowast;&lowast;k1&lowast;<a href="cpl.html#Builtin">SIN</a>(k1&lowast;tet)
+      m11=a&lowast;r<a href="cpl.html#compound-index">**</a>k1&lowast;<a href="cpl.html#Builtin">COS</a>(k1&lowast;tet)
+      m21=b&lowast;r<a href="cpl.html#compound-index">**</a>k1&lowast;<a href="cpl.html#Builtin">SIN</a>(k1&lowast;tet)
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#ELSE">ELSE</a>
     <span class=comment>! Lamina</span>
     <a href="cpl.html#IF">IF</a> wp = -1 <a href="cpl.html#IF">THEN</a>
-      m11=r&lowast;&lowast;0.5&lowast;<a href="cpl.html#Builtin">COS</a>(tet/2.)
+      m11=r<a href="cpl.html#compound-index">**</a>0.5&lowast;<a href="cpl.html#Builtin">COS</a>(tet/2.)
       m21=0.
-      fis=r&lowast;&lowast;1.5&lowast;<a href="cpl.html#Builtin">SIN</a>(tet&lowast;0.5)
-      fil=r&lowast;&lowast;1.5&lowast;<a href="cpl.html#Builtin">SIN</a>(tet&lowast;1.5)
+      fis=r<a href="cpl.html#compound-index">**</a>1.5&lowast;<a href="cpl.html#Builtin">SIN</a>(tet&lowast;0.5)
+      fil=r<a href="cpl.html#compound-index">**</a>1.5&lowast;<a href="cpl.html#Builtin">SIN</a>(tet&lowast;1.5)
       fi1=0.25&lowast;(fis+fil)
     <a href="cpl.html#ELSE">ELSE</a>
       <span class=comment>!    m11=0.</span>
-      m11=-r&lowast;&lowast;0.5&lowast;<a href="cpl.html#Builtin">SIN</a>(0.5&lowast;tet)/2
-      m21=r&lowast;&lowast;0.5&lowast;<a href="cpl.html#Builtin">COS</a>(0.5&lowast;tet)
-      fis=r&lowast;&lowast;1.5&lowast;<a href="cpl.html#Builtin">COS</a>(tet&lowast;0.5)
-      fil=r&lowast;&lowast;1.5&lowast;<a href="cpl.html#Builtin">COS</a>(tet&lowast;1.5)
+      m11=-r<a href="cpl.html#compound-index">**</a>0.5&lowast;<a href="cpl.html#Builtin">SIN</a>(0.5&lowast;tet)/2
+      m21=r<a href="cpl.html#compound-index">**</a>0.5&lowast;<a href="cpl.html#Builtin">COS</a>(0.5&lowast;tet)
+      fis=r<a href="cpl.html#compound-index">**</a>1.5&lowast;<a href="cpl.html#Builtin">COS</a>(tet&lowast;0.5)
+      fil=r<a href="cpl.html#compound-index">**</a>1.5&lowast;<a href="cpl.html#Builtin">COS</a>(tet&lowast;1.5)
       <span class=comment>!    fi1=.25&lowast;(fis+fil/3)</span>
       fi1=(fis+fil&lowast;3)/8
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -520,20 +520,20 @@ dcor=2.05&lowast;h
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> fun2(<a href="cpl.html#REAL">REAL</a> fi2<a href="cpl.html#REAL-operator">^</a>,m12<a href="cpl.html#REAL-operator">^</a>,m22<a href="cpl.html#REAL-operator">^</a>,m32<a href="cpl.html#REAL-operator">^</a>,xx,yy)
   <a href="cpl.html#REAL">REAL</a> tet,es,k23,r
   k23=pi/2./(pi-del)
-  r=(xx&lowast;xx+yy&lowast;yy)&lowast;&lowast;0.5
+  r=(xx&lowast;xx+yy&lowast;yy)<a href="cpl.html#compound-index">**</a>0.5
   tet=teta(xx,yy)
   <a href="cpl.html#IF">IF</a> del &gt; 0 <a href="cpl.html#IF">THEN</a>
     es=k2-1.
     <a href="cpl.html#IF">IF</a> (wp = 1) <a href="cpl.html#IF">THEN</a>
-      fi2=-r&lowast;&lowast;k2&lowast;<a href="cpl.html#Builtin">COS</a>(k2&lowast;tet)/k2 
-      m12=r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">SIN</a>(es&lowast;tet)
-      m22=-r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">COS</a>(es&lowast;tet)
-      m32=r&lowast;&lowast;k23&lowast;<a href="cpl.html#Builtin">COS</a>(k23&lowast;tet)
+      fi2=-r<a href="cpl.html#compound-index">**</a>k2&lowast;<a href="cpl.html#Builtin">COS</a>(k2&lowast;tet)/k2 
+      m12=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">SIN</a>(es&lowast;tet)
+      m22=-r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">COS</a>(es&lowast;tet)
+      m32=r<a href="cpl.html#compound-index">**</a>k23&lowast;<a href="cpl.html#Builtin">COS</a>(k23&lowast;tet)
     <a href="cpl.html#ELSE">ELSE</a>
-      fi2=r&lowast;&lowast;k2&lowast;<a href="cpl.html#Builtin">SIN</a>(k2&lowast;tet)/k2 
-      m12=r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">COS</a>(es&lowast;tet)
-      m22=r&lowast;&lowast;es&lowast;<a href="cpl.html#Builtin">SIN</a>(es&lowast;tet)
-      m32=r&lowast;&lowast;k2&lowast;<a href="cpl.html#Builtin">SIN</a>(k2&lowast;tet)
+      fi2=r<a href="cpl.html#compound-index">**</a>k2&lowast;<a href="cpl.html#Builtin">SIN</a>(k2&lowast;tet)/k2 
+      m12=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">COS</a>(es&lowast;tet)
+      m22=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">SIN</a>(es&lowast;tet)
+      m32=r<a href="cpl.html#compound-index">**</a>k2&lowast;<a href="cpl.html#Builtin">SIN</a>(k2&lowast;tet)
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <span class=comment>! Caso lamina</span>
   <a href="cpl.html#ELSE">ELSE</a>
@@ -543,10 +543,10 @@ dcor=2.05&lowast;h
       m22=xx
       m32=xx
     <a href="cpl.html#ELSE">ELSE</a>
-      fi2=-2./3.&lowast;r&lowast;&lowast;1.5&lowast;<a href="cpl.html#Builtin">COS</a>(1.5&lowast;tet)
-      m12=r&lowast;&lowast;0.5&lowast;<a href="cpl.html#Builtin">SIN</a>(0.5&lowast;tet)
-      m22=-r&lowast;&lowast;0.5&lowast;<a href="cpl.html#Builtin">COS</a>(0.5&lowast;tet)
-      m32=r&lowast;&lowast;0.5&lowast;<a href="cpl.html#Builtin">COS</a>(0.5&lowast;tet)
+      fi2=-2./3.&lowast;r<a href="cpl.html#compound-index">**</a>1.5&lowast;<a href="cpl.html#Builtin">COS</a>(1.5&lowast;tet)
+      m12=r<a href="cpl.html#compound-index">**</a>0.5&lowast;<a href="cpl.html#Builtin">SIN</a>(0.5&lowast;tet)
+      m22=-r<a href="cpl.html#compound-index">**</a>0.5&lowast;<a href="cpl.html#Builtin">COS</a>(0.5&lowast;tet)
+      m32=r<a href="cpl.html#compound-index">**</a>0.5&lowast;<a href="cpl.html#Builtin">COS</a>(0.5&lowast;tet)
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a> fun2
@@ -639,7 +639,7 @@ dcor=2.05&lowast;h
   denc6=0.
   dc6=0.
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  ke=1 <a href="cpl.html#TO">TO</a> n6
-    denc6=denc6+a6(ke)&lowast;&lowast;2
+    denc6=denc6+a6(ke)<a href="cpl.html#compound-index">**</a>2
     dc6=dc6+a6(ke)&lowast;b6(ke)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   c6=dc6/denc6
@@ -647,7 +647,7 @@ dcor=2.05&lowast;h
   denc6=0.
   dc6=0.
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  ke=1 <a href="cpl.html#TO">TO</a> n6
-    denc6=denc6+ail(ke)&lowast;&lowast;2
+    denc6=denc6+ail(ke)<a href="cpl.html#compound-index">**</a>2
     dc6=dc6+ail(ke)&lowast;bl(ke)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   c2l=dc6/denc6

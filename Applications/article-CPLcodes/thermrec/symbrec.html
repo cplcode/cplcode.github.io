@@ -66,7 +66,7 @@ D_eps_wmom<a href="cpl.html#Deferred-assignment">==</a> mum(V)&lowast;dyc(w,iy)
   <a href="cpl.html#REAL">REAL</a> U0(0..ny)
   Psi(0)=0; U0(0)=0; U0(1)=0.332/<a href="cpl.html#Builtin">SQRT</a>(x)&lowast;y(1); U0(ny)=1
   <a href="cpl.html#DO">DO</a>
-    U0(1)=U0(1)&lowast;U0(ny)&lowast;&lowast;(-1.5)
+    U0(1)=U0(1)&lowast;U0(ny)<a href="cpl.html#compound-index">**</a>(-1.5)
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
       d1=2/[y(i+1)-y(i-1)]; d2p=d1/[y(i+1)-y(i)]; d2m=d1/[y(i)-y(i-1)]; d20=d2p+d2m
       Psi(i)=Psi(i-1)+[U0(i-1)+U0(i)]&lowast;[y(i)-y(i-1)]/2

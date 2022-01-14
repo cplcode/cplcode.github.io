@@ -30,7 +30,7 @@
     <a href="cpl.html#IF">IF</a> xx &gt; xs  <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=0
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 2 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   e5</span>
-    <a href="cpl.html#RESULT">RESULT</a>=(1-xx&lowast;4)&lowast;&lowast;5
+    <a href="cpl.html#RESULT">RESULT</a>=(1-xx&lowast;4)<a href="cpl.html#compound-index">**</a>5
     <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>= 0
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 3 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   v</span>
@@ -58,27 +58,27 @@
     <span class=comment>!  BE </span>
     
     tal=1
-    cal=1/(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5
+    cal=1/(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
     sal=tal&lowast;cal
     r0=0.347826
     <span class=comment>!   r0=.7</span>
     <span class=comment>!     l0=0.5108695 </span>
     l0=fill
-    l2=(rapp-r0+tal&lowast;l0+r0&lowast;(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5)/tal
-    l1=l2-(rapp-r0+r0/(1+tal&lowast;&lowast;2)&lowast;&lowast;0.5)/tal
+    l2=(rapp-r0+tal&lowast;l0+r0&lowast;(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/tal
+    l1=l2-(rapp-r0+r0/(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/tal
     y1=rapp-r0+r0&lowast;cal
     l1=r0&lowast;sal+l0
     l2=l1+y1/tal
     <span class=comment>!     WRITE 'z,y1,l0,l1,l2',zz,y1,l0,l1,l2 </span>
     l3=l1+(rapp-2&lowast;r0&lowast;(1-cal))/tal
     l4=l3+r0&lowast;sal
-    b1=(l2-fill+0.125-(nr+1)&lowast;rapp)/(l2-fill+0.125)&lowast;&lowast;nr
-    b2=(nr&lowast;rapp-l2+fill-0.125)/(l2-fill+0.125)&lowast;&lowast;(nr+1)
+    b1=(l2-fill+0.125-(nr+1)&lowast;rapp)/(l2-fill+0.125)<a href="cpl.html#compound-index">**</a>nr
+    b2=(nr&lowast;rapp-l2+fill-0.125)/(l2-fill+0.125)<a href="cpl.html#compound-index">**</a>(nr+1)
     
     <a href="cpl.html#IF">IF</a> zz &lt;l0 <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#RESULT">RESULT</a> =rapp
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz &lt;l1 <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0&lowast;&lowast;2-(zz-l0)&lowast;&lowast;2)&lowast;&lowast;0.5
+      <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0<a href="cpl.html#compound-index">**</a>2-(zz-l0)<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;l2  <a href="cpl.html#IF">THEN</a> 
       <a href="cpl.html#RESULT">RESULT</a> = y1+tal&lowast;(l1-zz)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l2  <a href="cpl.html#IF">THEN</a> 
@@ -86,7 +86,7 @@
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l1  <a href="cpl.html#IF">THEN</a> 
       <a href="cpl.html#RESULT">RESULT</a> = y1+tal&lowast;(zz-lz+l1)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l0  <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0&lowast;&lowast;2-(zz-lz+l0)&lowast;&lowast;2)&lowast;&lowast;0.5
+      <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0<a href="cpl.html#compound-index">**</a>2-(zz-lz+l0)<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz &lt;lz  <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#RESULT">RESULT</a> =rapp
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a> 

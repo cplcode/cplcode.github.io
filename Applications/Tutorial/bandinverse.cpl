@@ -1,0 +1,30 @@
+! Direct banded-matrix inversion of Poisson's equation
+! ====================================================
+
+USE rbmat   ! real banded matrix operations
+USE gnuplot ! prepare for plotting
+
+ny=20
+nx=3*ny
+dvar=ny+1  ! band width 
+REAL base(nx,ny)=0, A(nx,ny,-dvar..dvar) !2D solution array and 3D banded matrix
+A(**)=1  ! ** compounds the first two indices into 1; A becomes a 2D matrix
+LOOP FOR ix=1 TO nx-1 AND iy=1 TO ny-1
+  A(ix,iy,0)=4  ! center of the laplacian stencil
+  A(ix,iy,1)=-1 ! 1 step forward in the y direction
+  A(ix,iy,-1)=-1 ! 1 step backward in the y direction 
+  A(ix,iy,dvar)=-1 ! 1 step forward in the x direction
+  A(ix,iy,-dvar)=-1 ! 1 step backward in the x direction
+REPEAT
+DO base(0,iy)=iy/ny FOR ALL iy ! initialize some Dirichlet boundary conditions
+DO base(ix,ny)=1 FOR ix=1 TO ny
+LOOP FOR ix=ny+1 TO nx-1 ! and Neumann boundary conditions
+  A(ix,ny,0)=4
+  A(ix,ny,-1)=-2
+  A(ix,ny,dvar)=-1
+  A(ix,ny,-dvar)=-1
+REPEAT
+LUdecomp A(**) ! banded LU decomposition
+base(**)=A(**)\~ ! invert system
+SPLOT base ! plot result
+READ ! pause to see plot

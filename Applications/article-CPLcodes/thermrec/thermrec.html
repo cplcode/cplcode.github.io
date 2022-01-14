@@ -43,18 +43,18 @@ dbeta=bmax/(nbeta+0.5); bmin=0.5&lowast;dbeta
 <a href="cpl.html#MODULE">MODULE</a> setup_derivatives
 <a href="cpl.html#REAL">REAL</a> M(0..4,0..4),t(0..4)
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#WITH">WITH</a> derivatives(iy)
-  <a href="cpl.html#DO">DO</a> M(i,j)=(y(iy-2+j)-y(iy))&lowast;&lowast;(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <a href="cpl.html#AND">AND</a> j=0 <a href="cpl.html#TO">TO</a> 4; LUdecomp M
+  <a href="cpl.html#DO">DO</a> M(i,j)=(y(iy-2+j)-y(iy))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <a href="cpl.html#AND">AND</a> j=0 <a href="cpl.html#TO">TO</a> 4; LUdecomp M
   t=0; t(0)=24
   d4(-2+(&lowast;))=M\t
-  <a href="cpl.html#DO">DO</a> M(i,j)=(5-i)&lowast;(6-i)&lowast;(7-i)&lowast;(8-i)&lowast;(y(iy-2+j)-y(iy))&lowast;&lowast;(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <a href="cpl.html#AND">AND</a> j=0 <a href="cpl.html#TO">TO</a> 4; LUdecomp M
-  <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> {d4(j)&lowast;(y(iy+j)-y(iy))&lowast;&lowast;(8-i)} <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  <a href="cpl.html#DO">DO</a> M(i,j)=(5-i)&lowast;(6-i)&lowast;(7-i)&lowast;(8-i)&lowast;(y(iy-2+j)-y(iy))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <a href="cpl.html#AND">AND</a> j=0 <a href="cpl.html#TO">TO</a> 4; LUdecomp M
+  <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> {d4(j)&lowast;(y(iy+j)-y(iy))<a href="cpl.html#compound-index">**</a>(8-i)} <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
   d0(-2+(&lowast;))=M\t
-  <a href="cpl.html#DO">DO</a> M(i,j)=(y(iy-2+j)-y(iy))&lowast;&lowast;(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <a href="cpl.html#AND">AND</a> j=0 <a href="cpl.html#TO">TO</a> 4; LUdecomp M
-  t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;(4-i)&lowast;(3-i)&lowast;(2-i)&lowast;(y(iy+j)-y(iy))&lowast;&lowast;(1-i) <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 1
+  <a href="cpl.html#DO">DO</a> M(i,j)=(y(iy-2+j)-y(iy))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <a href="cpl.html#AND">AND</a> j=0 <a href="cpl.html#TO">TO</a> 4; LUdecomp M
+  t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;(4-i)&lowast;(3-i)&lowast;(2-i)&lowast;(y(iy+j)-y(iy))<a href="cpl.html#compound-index">**</a>(1-i) <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 1
   d3(-2+(&lowast;))=M\t
-  t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;(4-i)&lowast;(3-i)&lowast;(y(iy+j)-y(iy))&lowast;&lowast;(2-i) <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 2
+  t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;(4-i)&lowast;(3-i)&lowast;(y(iy+j)-y(iy))<a href="cpl.html#compound-index">**</a>(2-i) <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 2
   d2(-2+(&lowast;))=M\t
-  t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;(4-i)&lowast;(y(iy+j)-y(iy))&lowast;&lowast;(3-i) <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 3
+  t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;(4-i)&lowast;(y(iy+j)-y(iy))<a href="cpl.html#compound-index">**</a>(3-i) <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 3
   d1(-2+(&lowast;))=M\t
 <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#END">END</a> setup_derivatives
@@ -65,7 +65,7 @@ dbeta=bmax/(nbeta+0.5); bmin=0.5&lowast;dbeta
   <a href="cpl.html#REAL">REAL</a> F(0..ny)
   F(0)=0; U0(0)=0; U0(1)=0.332/<a href="cpl.html#Builtin">SQRT</a>(x)&lowast;y(1); U0(ny)=1
   <a href="cpl.html#DO">DO</a>
-    U0(1)=U0(1)&lowast;U0(ny)&lowast;&lowast;(-1.5)
+    U0(1)=U0(1)&lowast;U0(ny)<a href="cpl.html#compound-index">**</a>(-1.5)
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
       d1=2/[y(i+1)-y(i-1)]; d2p=d1/[y(i+1)-y(i)]; d2m=d1/[y(i)-y(i-1)]; d20=d2p+d2m
       F(i)=F(i-1)+[U0(i-1)+U0(i)]&lowast;[y(i)-y(i-1)]/2

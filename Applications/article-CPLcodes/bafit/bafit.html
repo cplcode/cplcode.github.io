@@ -47,7 +47,7 @@ Uw=wpos; UvpVu=ppos; Uu=upos; u=vpos
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BaseFlow(<a href="cpl.html#REAL">REAL</a> x)
   F(0)=0; U(0)=0; U(1)=0.332/<a href="cpl.html#Builtin">SQRT</a>(x)&lowast;y(1); U(ny)=1
   <a href="cpl.html#DO">DO</a>
-    U(1)=U(1)&lowast;U(ny)&lowast;&lowast;(-1.5)
+    U(1)=U(1)&lowast;U(ny)<a href="cpl.html#compound-index">**</a>(-1.5)
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
       d1=2/[y(i+1)-y(i-1)]; d2p=d1/[y(i+1)-y(i)]; d2m=d1/[y(i)-y(i-1)]; d20=d2p+d2m
       F(i)=F(i-1)+[U(i-1)+U(i)]&lowast;[y(i)-y(i-1)]/2

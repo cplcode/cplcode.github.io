@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>bandinverse.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"bandinverse.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<span class=comment>! Direct banded-matrix inversion of Poisson's equation</span>
+<span class=comment>! ====================================================</span>
+
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a>   <span class=comment>! real banded matrix operations</span>
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a> <span class=comment>! prepare for plotting</span>
+
+ny=20
+nx=3&lowast;ny
+dvar=ny+1  <span class=comment>! band width </span>
+<a href="cpl.html#REAL">REAL</a> base(nx,ny)=0, A(nx,ny,-dvar..dvar) <span class=comment>!2D solution array and 3D banded matrix</span>
+A(<a href="cpl.html#compound-index">**</a>)=1  <span class=comment>! &lowast;&lowast; compounds the first two indices into 1; A becomes a 2D matrix</span>
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
+  A(ix,iy,0)=4  <span class=comment>! center of the laplacian stencil</span>
+  A(ix,iy,1)=-1 <span class=comment>! 1 step forward in the y direction</span>
+  A(ix,iy,-1)=-1 <span class=comment>! 1 step backward in the y direction </span>
+  A(ix,iy,dvar)=-1 <span class=comment>! 1 step forward in the x direction</span>
+  A(ix,iy,-dvar)=-1 <span class=comment>! 1 step backward in the x direction</span>
+<a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#DO">DO</a> base(0,iy)=iy/ny <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy <span class=comment>! initialize some Dirichlet boundary conditions</span>
+<a href="cpl.html#DO">DO</a> base(ix,ny)=1 <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> ny
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=ny+1 <a href="cpl.html#TO">TO</a> nx-1 <span class=comment>! and Neumann boundary conditions</span>
+  A(ix,ny,0)=4
+  A(ix,ny,-1)=-2
+  A(ix,ny,dvar)=-1
+  A(ix,ny,-dvar)=-1
+<a href="cpl.html#LOOP">REPEAT</a>
+LUdecomp A(<a href="cpl.html#compound-index">**</a>) <span class=comment>! banded LU decomposition</span>
+base(<a href="cpl.html#compound-index">**</a>)=A(<a href="cpl.html#compound-index">**</a>)\~ <span class=comment>! invert system</span>
+<a href="graphics.html#SPLOT">SPLOT</a> base <span class=comment>! plot result</span>
+<a href="cpl.html#READ">READ</a> <span class=comment>! pause to see plot</span>
+</pre></body></html>

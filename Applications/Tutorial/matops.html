@@ -16,7 +16,7 @@
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
 
 <a href="complex.html#Top">COMPLEX</a> M(0..4,0..4),t(0..4),x(0..4)
-<a href="cpl.html#DO">DO</a> M(i,j)=(1.+j&lowast;I)&lowast;&lowast;(i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j
+<a href="cpl.html#DO">DO</a> M(i,j)=(1.+j&lowast;I)<a href="cpl.html#compound-index">**</a>(i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j
 t=0; t(4)=24 <span class=comment>! initialize some arrays and matrices</span>
 
 <a href="cpl.html#TYPE">TYPEOF</a>(M(3,&lowast;)) temp=M(3,&lowast;)
