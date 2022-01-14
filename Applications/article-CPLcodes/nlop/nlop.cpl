@@ -1,0 +1,177 @@
+USE cbmat
+USE gnuplot
+USE symbolic
+! USE rtchecks
+
+beta=0.45; nm=8; nx=100; ny=100; ymax=12; dy=ymax/ny; dx=1/nx
+
+INTEGER CONSTANT upos=1,vpos=2,wpos=3,ppos=4,nvars=4
+ARRAY(1..(ny+1)*nvars,0..nm) OF COMPLEX Fmem,oldF
+INLINE FUNCTION F(INTEGER var,iy,im)=Fmem(var+nvars*iy,im)
+INLINE FUNCTION y(INTEGER iy)=dy*iy
+! u=F(upos)
+INLINE u(iy,im)=F(upos,iy,im)
+INLINE v(iy,im)=F(vpos,iy,im)
+INLINE w(iy,im)=F(wpos,iy,im)
+INLINE p(iy,im)=0.5*[F(ppos,iy+1,im)+F(ppos,iy,im)]
+
+#define D_z(f) I*im*beta*f
+INLINE D_x_F(var,iy,im)=(F(var,iy,im)-oldF(var+nvars*iy,im))/dx
+INLINE D_y_F(var,iy,im)=[F(var,iy+1,im)-F(var,iy-1,im)]/2/dy
+INLINE D_y_D_y_F(var,iy,im)=[F(var,iy+1,im)-2*F(var,iy,im)+F(var,iy-1,im)]/dy^2
+INLINE D_y_p(iy,im)=[F(ppos,iy+1,im)-F(ppos,iy,im)]/dy
+#define laplacian(f) D_y(D_y(f))+D_z(D_z(f))
+
+ARRAY(1..6,0..ny,0..nm) OF COMPLEX Cmem,oldC
+INLINE F1(var,iy,im) = IF im>=0 THEN F(var,iy,im) ELSE CONJG(F(var,iy,-im))
+INLINE C(var1,var2,iy,im)=Cmem(var1+(var2-1)*var2 DIV 2,iy,im)
+SUBROUTINE convolutions
+  DO
+    C(var1,var2,iy,im)=SUM F1(var1,iy,im1)*F1(var2,iy,im-im1) FOR im1=MAX(-nm,im-nm) TO MIN(nm,im+nm)
+  FOR var1=upos TO wpos AND var2=var1 TO wpos AND iy=0 TO ny AND im=0 TO nm
+END convolutions
+INLINE D_x_C(var1,var2,iy,im)=(C(var1,var2,iy,im)-oldC(var1+(var2-1)*var2 DIV 2,iy,im))/dx
+INLINE D_y_C(var1,var2,iy,im)=[C(var1,var2,iy+1,im)-C(var1,var2,iy-1,im)]/2/dy
+INLINE D_F_C(var1,var2,iy1,im1)=IF ABS(im1-im)>nm OR iy1#iy+j THEN 0 ELSE [IF var1#jv THEN 0 ELSE F1(var2,iy1,im1-im)]+[IF var2#jv THEN 0 ELSE F1(var1,iy1,im1-im)]
+! uu=[trace]C(upos,upos)
+INLINE uu(iy,im)=C(upos,upos,iy,im); INLINE uv(iy,im)=C(upos,vpos,iy,im); INLINE uw(iy,im)=C(upos,wpos,iy,im)
+INLINE vv(iy,im)=C(vpos,vpos,iy,im); INLINE vw(iy,im)=C(vpos,wpos,iy,im); INLINE ww(iy,im)=C(wpos,wpos,iy,im)
+
+! 3D B-L
+INLINE cont(iy,im)=0.5*{D_x(u(iy,im))+D_z(w(iy,im))+[D_x(u(iy-1,im))+D_z(w(iy-1,im))]}+[v(iy,im)-v(iy-1,im)]/dy
+INLINE umom(iy,im)=D_x(uu(iy,im))+D_y(uv(iy,im))+D_z(uw(iy,im))-laplacian(u(iy,im))
+INLINE vmom(iy,im)=D_x(uv(iy,im))+D_y(vv(iy,im))+D_z(vw(iy,im))+D_y(p(iy,im))-laplacian(v(iy,im))
+INLINE wmom(iy,im)=D_x(uw(iy,im))+D_y(vw(iy,im))+D_z(ww(iy,im))+D_z(p(iy,im))-laplacian(w(iy,im))
+
+ARRAY(1+nvars..ny*nvars,-(2*nvars-1)..2*nvars-1) OF COMPLEX A
+SUBROUTINE buildmat(INTEGER im)
+INLINE FUNCTION AA(INTEGER var1,var2)=A(var1+nvars*(*),var2-var1+nvars*(*))
+LOOP FOR iy=1 TO ny-1 AND j=-1 TO 1 AND jv=1 TO nvars
+  AA(vpos,jv,iy,j)=D(cont(iy,im),F[jv,iy+j,im])
+  AA(upos,jv,iy,j)=D(umom(iy,im),F[jv,iy+j,im])
+  AA(wpos,jv,iy,j)=D(wmom(iy,im),F[jv,iy+j,im])
+  AA(ppos,jv,iy,j)=D(vmom(iy,im),F[jv,iy+j,im])
+REPEAT
+DO AA(iv,vpos,ny-1,0)=~+AA(iv,vpos,ny-1,1) FOR iv=1 TO nvars
+END buildmat
+
+ARRAY(1..(ny+1)*nvars) OF COMPLEX tna
+tn==tna(1+nvars..ny*nvars)
+POINTER TO STORED ARRAY(0..nx-1) OF TYPEOF(Fmem) Fstore=CREATE("Fstore")
+REAL x=0
+SUBROUTINE StepForward(INTEGER ix)
+  Fstore(ix-1)=Fmem
+  x=x+dx
+  DO extrp=2*Fmem(i,im)-oldF(i,im); oldF(i,im)=Fmem(i,im); Fmem(i,im)=extrp FOR ALL i,im
+  DO extrp=2*Cmem(i,iy,im)-oldC(i,iy,im); oldC(i,iy,im)=Cmem(i,iy,im); Cmem(i,iy,im)=extrp FOR ALL i,iy,im
+  INTEGER count=0
+  LOOP qn
+    REAL maxerr=0
+    LOOP FOR im=0 TO nm
+      LOOP FOR iy=1 TO ny-1
+        tn(iy*nvars+vpos)=cont(iy,im)
+        tn(iy*nvars+upos)=umom(iy,im)
+        tn(iy*nvars+wpos)=wmom(iy,im)
+        tn(iy*nvars+ppos)=vmom(iy,im)
+      REPEAT
+      buildmat(im); LUdecomp A
+      tn=A\tn
+      maxerr=MAX(~,MOD(tn))
+      Fmem(1+nvars..ny*nvars,im)=~-tn
+      v(ny,im)=v(ny-1,im)
+    REPEAT
+    convolutions
+    INC count
+  REPEAT qn UNTIL maxerr<1E-4
+WRITE x,count
+PLOT u(n,0).REAL,0..ny
+END StepForward
+
+TYPEOF(Fmem) Fmemadj
+uadj==Fmemadj(upos+nvars*(*))
+vadj==Fmemadj(vpos+nvars*(*))
+wadj==Fmemadj(wpos+nvars*(*))
+padj==Fmemadj(ppos+nvars*(*))
+ARRAY(1+nvars..ny*nvars,-nm..nm) OF COMPLEX eqadj=0
+contadj==eqadj(vpos+nvars*(*))
+umomadj==eqadj(upos+nvars*(*))
+vmomadj==eqadj(ppos+nvars*(*))
+wmomadj==eqadj(wpos+nvars*(*))
+SUBROUTINE StepBackward(INTEGER ix)
+  INTEGER count=0
+  LOOP bqn
+    REAL maxerr=0
+    LOOP FOR im=0 TO nm
+      tn=Fmemadj(1+nvars..ny*nvars,im)
+      tna(ny*nvars+vpos)=0
+      LOOP FOR iy=1 TO ny-1 AND in=-nm TO nm AND j=-1 TO 1 AND jv=1 TO nvars
+        tna((iy+j)*nvars+jv)=~+
+          contadj(iy,in)*D(cont(iy,in),F[jv,iy+j,im])+
+          umomadj(iy,in)*D(umom(iy,in),F[jv,iy+j,im])+
+          vmomadj(iy,in)*D(vmom(iy,in),F[jv,iy+j,im])+
+          wmomadj(iy,in)*D(wmom(iy,in),F[jv,iy+j,im])
+      REPEAT
+      tna((ny-1)*nvars+vpos)=~+tna(ny*nvars+vpos)
+      buildmat(im); LUdecomp A
+      tn=tn/A
+      maxerr=MAX(~,MOD(tn))
+      eqadj(*,im)=~-tn
+      IF im#0 THEN eqadj(*,-im)=CONJG(eqadj(*,im))
+    REPEAT
+    INC count
+  REPEAT bqn UNTIL maxerr<1E-8
+  WRITE x,count
+  x=x-dx
+  Fmem=Fstore(ix-1)
+  Fmemadj=0
+  LOOP FOR im=0 TO nm AND iy=1 TO ny-1 AND in=-nm TO nm AND j=-1 TO 1 AND jv=1 TO nvars
+    Fmemadj((iy+j)*nvars+jv,im)=~+
+      contadj(iy,in)*D(0.5/dx*{u(iy,in)+u(iy-1,in)},F[jv,iy+j,im])+
+      umomadj(iy,in)*D(1/dx*uu(iy,in),F[jv,iy+j,im])+
+      vmomadj(iy,in)*D(1/dx*uv(iy,in),F[jv,iy+j,im])+
+      wmomadj(iy,in)*D(1/dx*uw(iy,in),F[jv,iy+j,im])
+  REPEAT
+  OPENGRAPH
+  SPLOT ABS(vadj(x,y))/dy,1..ny-1,0..nm
+END StepBackward
+
+Fmem=0
+DO v(iy,1)=y(iy)^2*EXP(-y(iy)) FOR iy=0 TO ny
+ASK REAL Ein
+LOOP fb
+DO w(iy,im)=-D_y(v(iy,im))/(I*im*beta) FOR iy=1 TO ny-1 AND im=1 TO nm
+DO u(iy,0)=1 FOR iy=1 TO ny
+Er=SQRT(Ein/(dy*SUM NORM(v(iy,im))+NORM(w(iy,im)) FOR iy=1 TO ny-1 AND im=1 TO nm))
+DO v(iy,im)=~*Er; w(iy,im)=~*Er FOR iy=1 TO ny-1 AND im=1 TO nm
+convolutions; oldF=Fmem; oldC=Cmem
+DO StepForward(ix) FOR ix=1 TO nx
+Eout=dy*SUM [NORM(u(iy,1))] FOR iy=1 TO ny-1
+WRITE "Eout:" Eout, "Gain:" Eout/Ein
+!(
+COMPLEX ufin(1..ny-1,0..nm)
+DO ufin(iy,im)=u(iy,im) FOR ALL iy,im
+COMPLEX vinc(1..ny-1,0..nm)=0
+DO vinc(iy,im)=0.00001*(RAND()+I*RAND()) FOR iy=1 TO ny-1 AND im=1 TO nm
+vinc(*,0).IMAG=0
+x=0
+Fmem=0
+DO u(iy,0)=1 FOR iy=1 TO ny
+DO v(iy,1)=50*y(iy)*EXP(-y(iy)) FOR iy=0 TO ny
+DO v(iy,im)=~+vinc(iy,im) FOR ALL iy,im
+convolutions; oldF=Fmem; oldC=Cmem
+DO StepForward(ix) FOR ix=1 TO nx
+DO ufin(iy,im)=u(iy,im)-~ FOR ALL iy,im
+!)
+Fmemadj=0; DO uadj(iy,im)=dy*CONJG(u(iy,im)) FOR iy=1 TO ny-1 AND im=1 TO nm
+DO StepBackward(ix) FOR ix=nx DOWN TO 1
+!(
+WRITE SUM vadj(iy,im)*vinc(iy,im) FOR ALL iy AND im=1 TO nm+
+      0.5*SUM vadj(iy,0)*vinc(iy,0) FOR ALL iy :1.10
+!)
+! DO vadj(iy,im)=~+[wadj(iy+1,im)-wadj(iy-1,im)]/2/dy/(I*im*beta) FOR iy=1 TO ny-1 AND im=1 TO nm
+OPENGRAPH
+SPLOT ABS(vadj(x,y))/dy,1..ny-1,0..nm
+READ
+Fmem=0
+DO v(iy,im)=CONJG(vadj(iy,im))/dy FOR iy=1 TO ny-1 AND im=1 TO nm
+REPEAT fb

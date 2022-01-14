@@ -1,0 +1,198 @@
+USE cbmat
+USE gnuplot
+USE symbolic
+!USE rtchecks
+!(  k_B=1.3806503E-23 m^2 kg s^-2 K^-1
+    T= 300 K
+    rho=1.1174 kg/m^3
+    ni=1.568E-5 m^2/s
+    kTrho^-1ni^-2=1.508E-11 m
+!)
+kTsurhoni2d=1.508E-8
+
+INTEGER ny=1200; ymax=30
+ARRAY(-1..ny+1) OF REAL y
+DO y(i)=ymax*i/ny  !(*(0.8*i/ny+0.2)!) FOR ALL i
+dy=ymax/ny
+
+INTEGER CONSTANT vpos=1,upos=2,wpos=3,ppos=4,nvars=4,
+                 contpos=1,umompos=2,wmompos=3,vmompos=4
+ARRAY(-1..ny) OF REAL Psi=0,oldPsi
+ARRAY(1+nvars..ny*nvars) OF COMPLEX perturbation,oldpert,adjoint,adjdA
+#define u(iy) perturbation[upos+(iy)*nvars]
+#define v(iy) perturbation[vpos+(iy)*nvars]
+#define w(iy) perturbation[wpos+(iy)*nvars]
+#define p(iy) perturbation[ppos+(iy)*nvars]
+
+#define dym(f,iy) [f(iy)-f(iy-1)]/dy
+#define dyp(f,iy) [f(iy+1)-f(iy)]/dy
+#define dyc(f,iy) [f(iy+1)-f(iy-1)]/2/dy
+#define dy2(f,iy) [f(iy+1)-2*f(iy)+f(iy-1)]/dy^2
+#define laplacian(f) dy2(f,iy)-(alpha^2+beta^2)*f(iy)
+#define mum(f) [f(iy)+f(iy-1)]/2
+#define mup(f) [f(iy+1)+f(iy)]/2
+#define U(iy) dym(Psi,iy)
+#define V(iy) [oldPsi(iy)-Psi(iy)]
+#define d2Psi(iy) dy2(Psi,iy)
+
+cont==dym(v,iy)-I*alpha*u(iy)-I*beta*w(iy)
+umom==I*omega*u(iy)-I*alpha*U(iy)*u(iy)+mum(d2Psi)*mum(v)-I*alpha*p(iy)-ni*laplacian(u)
+vmom==I*omega*v(iy)-I*alpha*dyc(Psi,iy)*v(iy)+dyp(p,iy)-ni*laplacian(v)
+wmom==I*omega*w(iy)-I*alpha*U(iy)*w(iy)-I*beta*p(iy)-ni*laplacian(w)
+
+D_eps_umom==-dym(V,iy)*u(iy)+mum(V)*dyc(u,iy)
+D_eps_vmom== V(iy)*dyc(v,iy)+dyc(V,iy)*v(iy)
+D_eps_wmom== mum(V)*dyc(w,iy)
+
+REAL omega,beta,ni,x
+COMPLEX alpha
+ARRAY(1+nvars..ny*nvars,-(2*nvars-1)..2*nvars-1) OF COMPLEX A,dA
+INLINE FUNCTION AA(INTEGER pos1,pos2)=A(pos1+nvars*(*),pos2-pos1+nvars*(*))
+INLINE FUNCTION dAA(INTEGER pos1,pos2)=dA(pos1+nvars*(*),pos2-pos1+nvars*(*))
+
+SUBROUTINE BaseFlow()
+  REAL U0(0..ny)
+  Psi(0)=0; U0(0)=0; U0(1)=0.332/SQRT(x)*y(1); U0(ny)=1
+  DO
+    U0(1)=U0(1)*U0(ny)**(-1.5)
+    LOOP FOR i=1 TO ny-1
+      d1=2/[y(i+1)-y(i-1)]; d2p=d1/[y(i+1)-y(i)]; d2m=d1/[y(i)-y(i-1)]; d20=d2p+d2m
+      Psi(i)=Psi(i-1)+[U0(i-1)+U0(i)]*[y(i)-y(i-1)]/2
+      U0(i+1)={d20*U0(i)-[d2m-d1*Psi(i)/4/x]*U0(i-1)}/[d2p+d1*Psi(i)/4/x]
+    REPEAT LOOP
+    !    WRITE "blasius:" U0(1)/y(1),U0(ny)
+  FOR 2 TIMES
+  Psi(ny)=Psi(ny-1)+[U0(ny-1)+U0(ny)]*[y(ny)-y(ny-1)]/2
+END BaseFlow
+
+SUBROUTINE BuildMats()
+  A=0; dA=0
+  LOOP FOR iy=1 TO ny-1 AND j=-1 TO 1 AND jv=1 TO nvars
+    eps=0
+    AA(contpos,jv,iy,j)=dy*D(cont,perturbation[(iy+j)*nvars+jv])
+    AA(umompos,jv,iy,j)=dy*D(umom,perturbation[(iy+j)*nvars+jv])
+    AA(vmompos,jv,iy,j)=dy*D(vmom,perturbation[(iy+j)*nvars+jv])
+    AA(wmompos,jv,iy,j)=dy*D(wmom,perturbation[(iy+j)*nvars+jv])
+    dAA(contpos,jv,iy,j)=dy*D[D_alpha(cont),perturbation[(iy+j)*nvars+jv]]
+    dAA(umompos,jv,iy,j)=dy*D[D_alpha(umom),perturbation[(iy+j)*nvars+jv]]
+    dAA(vmompos,jv,iy,j)=dy*D[D_alpha(vmom),perturbation[(iy+j)*nvars+jv]]
+    dAA(wmompos,jv,iy,j)=dy*D[D_alpha(wmom),perturbation[(iy+j)*nvars+jv]]
+  REPEAT
+END BuildMats
+
+COMPLEX FUNCTION CMAX(COMPLEX FUNCTION(INTEGER i) f; INTEGER imin..imax)
+  RESULT=0
+  LOOP FOR i=imin TO imax
+    IF ABS(RESULT)<ABS(f(i)) THEN RESULT=f(i)
+  REPEAT
+END CMAX
+
+SUBROUTINE InvIt()
+  DO
+    BuildMats
+    LUdecomp A
+    TYPEOF(perturbation) dAp=dA*perturbation; perturbation=A\dAp
+    adjoint=adjdA/A; adjdA=adjoint*dA
+    savepert=perturbation
+    dAp=dA*perturbation; perturbation=A\dAp
+    adjoint=adjdA/A; adjdA=adjoint*dA
+    dalpha=-(adjdA*savepert)/(adjdA*perturbation)
+    alpha=alpha+dalpha
+    perturbation=perturbation/CMAX(u,1..ny-1)
+    normfact=1/(adjdA*perturbation)
+    adjoint=adjoint*normfact
+    adjdA=adjdA*normfact
+    WRITE ":" ./.
+  WHILE ABS(dalpha)>1.E-8
+  WRITE "." ./.
+END InvIt
+
+#define uadj(iy) adjoint[umompos+(iy)*nvars]
+#define vadj(iy) adjoint[vmompos+(iy)*nvars]
+#define wadj(iy) adjoint[wmompos+(iy)*nvars]
+
+COMPLEX FUNCTION hfa()
+  RESULT=adjdA*(perturbation-oldpert)
+  LOOP FOR iy=2 TO ny-2
+    RESULT=~+dy*[uadj(iy)*D_eps_umom+vadj(iy)*D_eps_vmom+wadj(iy)*D_eps_wmom]
+  REPEAT
+END hfa
+
+REAL FUNCTION SpectRec()=dy*SUM
+  4*NORM[alpha*uadj(iy)]+4*NORM[dym(vadj,iy)]+4*NORM[beta*wadj(iy)]+
+  2*NORM[dyc(uadj,iy)-I*alpha*mum(vadj)]+2*NORM[dyc(wadj,iy)-I*beta*mum(vadj)]+
+  2*NORM[I*beta*uadj(iy)+I*alpha*wadj(iy)]
+FOR iy=2 TO ny-2
+!(
+  REAL FUNCTION SpectRec()
+    k2=NORM(alpha)+beta*beta
+    k4=NORM(alpha^2+beta^2)
+    RESULT=dy*SUM NORM[dy2(vadj)(iy)]*k2/k4+
+   k2*NORM[vadj(iy)]+
+   NORM[dym(vadj)(iy)]*2*k2*[([IMAG(alpha)]^2+k2)/k4+4]
+ FOR iy=2 TO ny-2
+ END SpectRec
+ !)
+ 
+ ni=1/2700
+ xmin=0.090909; xmax=1; nx=40
+ omin=0.02; omax=0.08; nomg=20
+ bmax=0.12; nbeta=10
+ dx=(xmax-xmin)/nx
+ domega=(omax-omin)/nomg
+ dbeta=bmax/(nbeta+0.5); bmin=0.5*dbeta
+ REAL ums(0..nx,1..ny-1)=0
+ FILE spectr=CREATE("spectr.out")
+ COMPLEX Na(0..nomg,0..nx)
+ LOOP FOR omega=omin TO omax+domega/2 BY domega
+   LOOP FOR beta=bmin TO bmax+dbeta/2 BY dbeta
+  WRITE BY NAME omega,beta
+  perturbation=0; u(1)=1
+  adjdA=0; adjdA(umompos+nvars)=1
+  alpha=omega/0.3
+  x=xmin; BaseFlow; InvIt
+  COMPLEX h(0..nx); h(0)=1
+  Na(ROUND[(omega-omin)/domega],0)=1
+  REAL ampl=0
+  LOOP FOR ix=1 TO nx
+    x=x+dx
+    oldPsi=Psi
+    BaseFlow
+    oldalpha=alpha
+    oldpert=perturbation
+    oldadjoint=adjoint
+    oldadjdA=adjdA
+    InvIt
+    h(ix)=h(ix-1)*EXP(-I*(alpha+oldalpha)/2/ni*dx-hfa())
+    IF beta=bmin THEN
+      Na(ROUND[(omega-omin)/domega],ix)=Na(ROUND[(omega-omin)/domega],ix-1)*EXP(-I*(alpha+oldalpha)/2/ni*dx)
+      IF IMAG(oldalpha)<0 AND IMAG(alpha)>0 THEN
+	c=CMAX(1/Na(ROUND[(omega-omin)/domega],i),ix-1..ix)
+	Na(ROUND[(omega-omin)/domega],0..ix)=~*c
+      END IF
+    END IF
+    ampl=~+dx/NORM(h(ix))*SpectRec()
+    IF IMAG(oldalpha)<0 AND IMAG(alpha)>0 THEN
+      c=CMAX(1/h(i),ix-1..ix)
+      h(0..ix)=~*c
+      ampl=ampl/NORM(c)
+    END IF
+    WRITE x,alpha,kTsurhoni2d*ni*ni*ampl*NORM(h(ix))
+    DO ums(ix,iy)=~+kTsurhoni2d*ni*ni*ampl*NORM(h(ix))*NORM(u(iy))*domega/PI*dbeta/PI FOR ALL iy
+  REPEAT
+  WRITE TO spectr omega,beta,kTsurhoni2d*ni*ni*ampl*NORM(h(nx)),ampl,LOG(MOD(h(nx)))
+  !PLOT NORM(1/h(#1)),xmin+#1*dx,0..nx
+  !READ
+ REPEAT
+ WRITE TO spectr
+REPEAT
+FILE rmsfile=CREATE("rmsfile.out")
+LOOP FOR ix=0 TO nx
+  DO WRITE TO rmsfile xmin+ix*dx,y(iy),SQRT(ums(ix,iy)) FOR iy=1 TO ny-1
+  WRITE TO rmsfile
+REPEAT
+FILE maxfile=CREATE("maxfile.out")
+LOOP FOR ix=0 TO nx
+  Reh=SQRT(xmin+ix*dx)/ni
+  WRITE TO maxfile Reh,SQRT(MAX(ums(ix,*))),4.6+7*(Reh-1200)/1000,EXP[4.6+7*(Reh-1200)/1000],MAXABS(Na(*,ix))
+REPEAT

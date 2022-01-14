@@ -1,2 +1,2 @@
-2021-12-28
-Improved error messages. Better usability and corrections to the editor.
+2022-01-14
+Bug corrections and introduction of the INLINE declaration related to symbolic.cpl.

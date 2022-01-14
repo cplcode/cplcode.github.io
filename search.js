@@ -1,12 +1,12 @@
 function tsearch() {
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
-  table = document.getElementsByTagName("table")[0];
-  if(table) {
-    input = document.getElementsByTagName("input")[0];
-    filter = input.value;
-    if (filter && filter[0].toLowerCase()==filter[0]) {filter=filter.toLowerCase();}
-    tr = table.getElementsByTagName("tr");
+  table = document.getElementsByTagName("table");
+  input = document.getElementsByTagName("input")[0];
+  filter = input.value;
+  if (filter && filter[0].toLowerCase()==filter[0]) {filter=filter.toLowerCase();}
+  for(k=0;table[k];k++) {
+    tr = table[k].getElementsByTagName("tr");
   
     // Loop through all table rows, and hide those that don't match the search query
     for (i = 0; i < tr.length; i++) {

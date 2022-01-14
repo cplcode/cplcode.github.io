@@ -1,0 +1,211 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>article-CPLcodes/thermrec/symbrec.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"article-CPLcodes/thermrec/symbrec.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
+<a href="cpl.html#USE">USE</a> <a href="symbolic.html#Top">symbolic</a>
+<span class=comment>!USE rtchecks</span>
+<span class=comment>!(  k_B=1.3806503E-23 m^2 kg s^-2 K^-1
+    T= 300 K
+    rho=1.1174 kg/m^3
+    ni=1.568E-5 m^2/s
+    kTrho^-1ni^-2=1.508E-11 m
+!)</span>
+kTsurhoni2d=1.508E-8
+
+<a href="cpl.html#INTEGER">INTEGER</a> ny=1200; ymax=30
+<a href="cpl.html#ARRAY">ARRAY</a>(-1..ny+1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> y
+<a href="cpl.html#DO">DO</a> y(i)=ymax&lowast;i/ny  <span class=comment>!(&lowast;(0.8&lowast;i/ny+0.2)!)</span> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+dy=ymax/ny
+
+<a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> vpos=1,upos=2,wpos=3,ppos=4,nvars=4,
+                 contpos=1,umompos=2,wmompos=3,vmompos=4
+<a href="cpl.html#ARRAY">ARRAY</a>(-1..ny) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> Psi=0,oldPsi
+<a href="cpl.html#ARRAY">ARRAY</a>(1+nvars..ny&lowast;nvars) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> perturbation,oldpert,adjoint,adjdA
+#define u(iy) perturbation[upos+(iy)&lowast;nvars]
+#define v(iy) perturbation[vpos+(iy)&lowast;nvars]
+#define w(iy) perturbation[wpos+(iy)&lowast;nvars]
+#define p(iy) perturbation[ppos+(iy)&lowast;nvars]
+
+#define dym(f,iy) [f(iy)-f(iy-1)]/dy
+#define dyp(f,iy) [f(iy+1)-f(iy)]/dy
+#define dyc(f,iy) [f(iy+1)-f(iy-1)]/2/dy
+#define dy2(f,iy) [f(iy+1)-2&lowast;f(iy)+f(iy-1)]/dy<a href="cpl.html#REAL-operator">^</a>2
+#define laplacian(f) dy2(f,iy)-(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2)&lowast;f(iy)
+#define mum(f) [f(iy)+f(iy-1)]/2
+#define mup(f) [f(iy+1)+f(iy)]/2
+#define U(iy) dym(Psi,iy)
+#define V(iy) [oldPsi(iy)-Psi(iy)]
+#define d2Psi(iy) dy2(Psi,iy)
+
+cont<a href="cpl.html#Deferred-assignment">==</a>dym(v,iy)-I&lowast;alpha&lowast;u(iy)-I&lowast;beta&lowast;w(iy)
+umom<a href="cpl.html#Deferred-assignment">==</a>I&lowast;omega&lowast;u(iy)-I&lowast;alpha&lowast;U(iy)&lowast;u(iy)+mum(d2Psi)&lowast;mum(v)-I&lowast;alpha&lowast;p(iy)-ni&lowast;laplacian(u)
+vmom<a href="cpl.html#Deferred-assignment">==</a>I&lowast;omega&lowast;v(iy)-I&lowast;alpha&lowast;dyc(Psi,iy)&lowast;v(iy)+dyp(p,iy)-ni&lowast;laplacian(v)
+wmom<a href="cpl.html#Deferred-assignment">==</a>I&lowast;omega&lowast;w(iy)-I&lowast;alpha&lowast;U(iy)&lowast;w(iy)-I&lowast;beta&lowast;p(iy)-ni&lowast;laplacian(w)
+
+D_eps_umom<a href="cpl.html#Deferred-assignment">==</a>-dym(V,iy)&lowast;u(iy)+mum(V)&lowast;dyc(u,iy)
+D_eps_vmom<a href="cpl.html#Deferred-assignment">==</a> V(iy)&lowast;dyc(v,iy)+dyc(V,iy)&lowast;v(iy)
+D_eps_wmom<a href="cpl.html#Deferred-assignment">==</a> mum(V)&lowast;dyc(w,iy)
+
+<a href="cpl.html#REAL">REAL</a> omega,beta,ni,x
+<a href="complex.html#Top">COMPLEX</a> alpha
+<a href="cpl.html#ARRAY">ARRAY</a>(1+nvars..ny&lowast;nvars,-(2&lowast;nvars-1)..2&lowast;nvars-1) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A,dA
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> AA(<a href="cpl.html#INTEGER">INTEGER</a> pos1,pos2)=A(pos1+nvars&lowast;(&lowast;),pos2-pos1+nvars&lowast;(&lowast;))
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> dAA(<a href="cpl.html#INTEGER">INTEGER</a> pos1,pos2)=dA(pos1+nvars&lowast;(&lowast;),pos2-pos1+nvars&lowast;(&lowast;))
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> BaseFlow()
+  <a href="cpl.html#REAL">REAL</a> U0(0..ny)
+  Psi(0)=0; U0(0)=0; U0(1)=0.332/<a href="cpl.html#Builtin">SQRT</a>(x)&lowast;y(1); U0(ny)=1
+  <a href="cpl.html#DO">DO</a>
+    U0(1)=U0(1)&lowast;U0(ny)&lowast;&lowast;(-1.5)
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+      d1=2/[y(i+1)-y(i-1)]; d2p=d1/[y(i+1)-y(i)]; d2m=d1/[y(i)-y(i-1)]; d20=d2p+d2m
+      Psi(i)=Psi(i-1)+[U0(i-1)+U0(i)]&lowast;[y(i)-y(i-1)]/2
+      U0(i+1)={d20&lowast;U0(i)-[d2m-d1&lowast;Psi(i)/4/x]&lowast;U0(i-1)}/[d2p+d1&lowast;Psi(i)/4/x]
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+    <span class=comment>!    WRITE "blasius:" U0(1)/y(1),U0(ny)</span>
+  <a href="cpl.html#FOR">FOR</a> 2 <a href="cpl.html#TIMES">TIMES</a>
+  Psi(ny)=Psi(ny-1)+[U0(ny-1)+U0(ny)]&lowast;[y(ny)-y(ny-1)]/2
+<a href="cpl.html#END">END</a> BaseFlow
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> BuildMats()
+  A=0; dA=0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> jv=1 <a href="cpl.html#TO">TO</a> nvars
+    eps=0
+    AA(contpos,jv,iy,j)=dy&lowast;<a href="symbolic.html#Top">D</a>(cont,perturbation[(iy+j)&lowast;nvars+jv])
+    AA(umompos,jv,iy,j)=dy&lowast;<a href="symbolic.html#Top">D</a>(umom,perturbation[(iy+j)&lowast;nvars+jv])
+    AA(vmompos,jv,iy,j)=dy&lowast;<a href="symbolic.html#Top">D</a>(vmom,perturbation[(iy+j)&lowast;nvars+jv])
+    AA(wmompos,jv,iy,j)=dy&lowast;<a href="symbolic.html#Top">D</a>(wmom,perturbation[(iy+j)&lowast;nvars+jv])
+    dAA(contpos,jv,iy,j)=dy&lowast;<a href="symbolic.html#Top">D</a>[D_alpha(cont),perturbation[(iy+j)&lowast;nvars+jv]]
+    dAA(umompos,jv,iy,j)=dy&lowast;<a href="symbolic.html#Top">D</a>[D_alpha(umom),perturbation[(iy+j)&lowast;nvars+jv]]
+    dAA(vmompos,jv,iy,j)=dy&lowast;<a href="symbolic.html#Top">D</a>[D_alpha(vmom),perturbation[(iy+j)&lowast;nvars+jv]]
+    dAA(wmompos,jv,iy,j)=dy&lowast;<a href="symbolic.html#Top">D</a>[D_alpha(wmom),perturbation[(iy+j)&lowast;nvars+jv]]
+  <a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#END">END</a> BuildMats
+
+<a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> CMAX(<a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a>(<a href="cpl.html#INTEGER">INTEGER</a> i) f; <a href="cpl.html#INTEGER">INTEGER</a> imin..imax)
+  <a href="cpl.html#RESULT">RESULT</a>=0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=imin <a href="cpl.html#TO">TO</a> imax
+    <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(<a href="cpl.html#RESULT">RESULT</a>)&lt;<a href="cpl.html#ABS">ABS</a>(f(i)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=f(i)
+  <a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#END">END</a> CMAX
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> InvIt()
+  <a href="cpl.html#DO">DO</a>
+    BuildMats
+    LUdecomp A
+    <a href="cpl.html#TYPE">TYPEOF</a>(perturbation) dAp=dA&lowast;perturbation; perturbation=A\dAp
+    adjoint=adjdA/A; adjdA=adjoint&lowast;dA
+    savepert=perturbation
+    dAp=dA&lowast;perturbation; perturbation=A\dAp
+    adjoint=adjdA/A; adjdA=adjoint&lowast;dA
+    dalpha=-(adjdA&lowast;savepert)/(adjdA&lowast;perturbation)
+    alpha=alpha+dalpha
+    perturbation=perturbation/CMAX(u,1..ny-1)
+    normfact=1/(adjdA&lowast;perturbation)
+    adjoint=adjoint&lowast;normfact
+    adjdA=adjdA&lowast;normfact
+    <a href="cpl.html#WRITE">WRITE</a> ":" ./.
+  <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#ABS">ABS</a>(dalpha)&gt;1.E-8
+  <a href="cpl.html#WRITE">WRITE</a> "." ./.
+<a href="cpl.html#END">END</a> InvIt
+
+#define uadj(iy) adjoint[umompos+(iy)&lowast;nvars]
+#define vadj(iy) adjoint[vmompos+(iy)&lowast;nvars]
+#define wadj(iy) adjoint[wmompos+(iy)&lowast;nvars]
+
+<a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> hfa()
+  <a href="cpl.html#RESULT">RESULT</a>=adjdA&lowast;(perturbation-oldpert)
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=2 <a href="cpl.html#TO">TO</a> ny-2
+    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Assignment">~</a>+dy&lowast;[uadj(iy)&lowast;D_eps_umom+vadj(iy)&lowast;D_eps_vmom+wadj(iy)&lowast;D_eps_wmom]
+  <a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#END">END</a> hfa
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> SpectRec()=dy&lowast;<a href="cpl.html#Looping-operator">SUM</a>
+  4&lowast;NORM[alpha&lowast;uadj(iy)]+4&lowast;NORM[dym(vadj,iy)]+4&lowast;NORM[beta&lowast;wadj(iy)]+
+  2&lowast;NORM[dyc(uadj,iy)-I&lowast;alpha&lowast;mum(vadj)]+2&lowast;NORM[dyc(wadj,iy)-I&lowast;beta&lowast;mum(vadj)]+
+  2&lowast;NORM[I&lowast;beta&lowast;uadj(iy)+I&lowast;alpha&lowast;wadj(iy)]
+<a href="cpl.html#FOR">FOR</a> iy=2 <a href="cpl.html#TO">TO</a> ny-2
+<span class=comment>!(
+  REAL FUNCTION SpectRec()
+    k2=NORM(alpha)+beta&lowast;beta
+    k4=NORM(alpha^2+beta^2)
+    RESULT=dy&lowast;SUM NORM[dy2(vadj)(iy)]&lowast;k2/k4+
+   k2&lowast;NORM[vadj(iy)]+
+   NORM[dym(vadj)(iy)]&lowast;2&lowast;k2&lowast;[([IMAG(alpha)]^2+k2)/k4+4]
+ FOR iy=2 TO ny-2
+ END SpectRec
+ !)</span>
+ 
+ ni=1/2700
+ xmin=0.090909; xmax=1; nx=40
+ omin=0.02; omax=0.08; nomg=20
+ bmax=0.12; nbeta=10
+ dx=(xmax-xmin)/nx
+ domega=(omax-omin)/nomg
+ dbeta=bmax/(nbeta+0.5); bmin=0.5&lowast;dbeta
+ <a href="cpl.html#REAL">REAL</a> ums(0..nx,1..ny-1)=0
+ <a href="cpl.html#FILE">FILE</a> spectr=<a href="cpl.html#CREATE">CREATE</a>("spectr.out")
+ <a href="complex.html#Top">COMPLEX</a> Na(0..nomg,0..nx)
+ <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> omega=omin <a href="cpl.html#TO">TO</a> omax+domega/2 <a href="cpl.html#BY">BY</a> domega
+   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> beta=bmin <a href="cpl.html#TO">TO</a> bmax+dbeta/2 <a href="cpl.html#BY">BY</a> dbeta
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> omega,beta
+  perturbation=0; u(1)=1
+  adjdA=0; adjdA(umompos+nvars)=1
+  alpha=omega/0.3
+  x=xmin; BaseFlow; InvIt
+  <a href="complex.html#Top">COMPLEX</a> h(0..nx); h(0)=1
+  Na(<a href="cpl.html#ROUND">ROUND</a>[(omega-omin)/domega],0)=1
+  <a href="cpl.html#REAL">REAL</a> ampl=0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx
+    x=x+dx
+    oldPsi=Psi
+    BaseFlow
+    oldalpha=alpha
+    oldpert=perturbation
+    oldadjoint=adjoint
+    oldadjdA=adjdA
+    InvIt
+    h(ix)=h(ix-1)&lowast;<a href="cpl.html#Builtin">EXP</a>(-I&lowast;(alpha+oldalpha)/2/ni&lowast;dx-hfa())
+    <a href="cpl.html#IF">IF</a> beta=bmin <a href="cpl.html#IF">THEN</a>
+      Na(<a href="cpl.html#ROUND">ROUND</a>[(omega-omin)/domega],ix)=Na(<a href="cpl.html#ROUND">ROUND</a>[(omega-omin)/domega],ix-1)&lowast;<a href="cpl.html#Builtin">EXP</a>(-I&lowast;(alpha+oldalpha)/2/ni&lowast;dx)
+      <a href="cpl.html#IF">IF</a> <a href="complex.html#Top">IMAG</a>(oldalpha)&lt;0 <a href="cpl.html#AND">AND</a> <a href="complex.html#Top">IMAG</a>(alpha)&gt;0 <a href="cpl.html#IF">THEN</a>
+        c=CMAX(1/Na(<a href="cpl.html#ROUND">ROUND</a>[(omega-omin)/domega],i),ix-1..ix)
+        Na(<a href="cpl.html#ROUND">ROUND</a>[(omega-omin)/domega],0..ix)=<a href="cpl.html#Assignment">~</a>&lowast;c
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    ampl=<a href="cpl.html#Assignment">~</a>+dx/NORM(h(ix))&lowast;SpectRec()
+    <a href="cpl.html#IF">IF</a> <a href="complex.html#Top">IMAG</a>(oldalpha)&lt;0 <a href="cpl.html#AND">AND</a> <a href="complex.html#Top">IMAG</a>(alpha)&gt;0 <a href="cpl.html#IF">THEN</a>
+      c=CMAX(1/h(i),ix-1..ix)
+      h(0..ix)=<a href="cpl.html#Assignment">~</a>&lowast;c
+      ampl=ampl/NORM(c)
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#WRITE">WRITE</a> x,alpha,kTsurhoni2d&lowast;ni&lowast;ni&lowast;ampl&lowast;NORM(h(ix))
+    <a href="cpl.html#DO">DO</a> ums(ix,iy)=<a href="cpl.html#Assignment">~</a>+kTsurhoni2d&lowast;ni&lowast;ni&lowast;ampl&lowast;NORM(h(ix))&lowast;NORM(u(iy))&lowast;domega/PI&lowast;dbeta/PI <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+  <a href="cpl.html#LOOP">REPEAT</a>
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> spectr omega,beta,kTsurhoni2d&lowast;ni&lowast;ni&lowast;ampl&lowast;NORM(h(nx)),ampl,<a href="cpl.html#Builtin">LOG</a>(<a href="cpl.html#Integer-operator">MOD</a>(h(nx)))
+  <span class=comment>!PLOT NORM(1/h(#1)),xmin+#1&lowast;dx,0..nx</span>
+  <span class=comment>!READ</span>
+ <a href="cpl.html#LOOP">REPEAT</a>
+ <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> spectr
+<a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#FILE">FILE</a> rmsfile=<a href="cpl.html#CREATE">CREATE</a>("rmsfile.out")
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=0 <a href="cpl.html#TO">TO</a> nx
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> rmsfile xmin+ix&lowast;dx,y(iy),<a href="cpl.html#Builtin">SQRT</a>(ums(ix,iy)) <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> rmsfile
+<a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#FILE">FILE</a> maxfile=<a href="cpl.html#CREATE">CREATE</a>("maxfile.out")
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=0 <a href="cpl.html#TO">TO</a> nx
+  Reh=<a href="cpl.html#Builtin">SQRT</a>(xmin+ix&lowast;dx)/ni
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> maxfile Reh,<a href="cpl.html#Builtin">SQRT</a>(<a href="cpl.html#MAX">MAX</a>(ums(ix,&lowast;))),4.6+7&lowast;(Reh-1200)/1000,<a href="cpl.html#Builtin">EXP</a>[4.6+7&lowast;(Reh-1200)/1000],MAXABS(Na(&lowast;,ix))
+<a href="cpl.html#LOOP">REPEAT</a>
+</pre></body></html>

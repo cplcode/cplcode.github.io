@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>article-CPLcodes/nlop/nlop.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"article-CPLcodes/nlop/nlop.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
+<a href="cpl.html#USE">USE</a> <a href="symbolic.html#Top">symbolic</a>
+<span class=comment>! USE rtchecks</span>
+
+beta=0.45; nm=8; nx=100; ny=100; ymax=12; dy=ymax/ny; dx=1/nx
+
+<a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> upos=1,vpos=2,wpos=3,ppos=4,nvars=4
+<a href="cpl.html#ARRAY">ARRAY</a>(1..(ny+1)&lowast;nvars,0..nm) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> Fmem,oldF
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> F(<a href="cpl.html#INTEGER">INTEGER</a> var,iy,im)=Fmem(var+nvars&lowast;iy,im)
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> y(<a href="cpl.html#INTEGER">INTEGER</a> iy)=dy&lowast;iy
+<span class=comment>! u=F(upos)</span>
+<a href="cpl.html#INLINE">INLINE</a> u(iy,im)=F(upos,iy,im)
+<a href="cpl.html#INLINE">INLINE</a> v(iy,im)=F(vpos,iy,im)
+<a href="cpl.html#INLINE">INLINE</a> w(iy,im)=F(wpos,iy,im)
+<a href="cpl.html#INLINE">INLINE</a> p(iy,im)=0.5&lowast;[F(ppos,iy+1,im)+F(ppos,iy,im)]
+
+#define D_z(f) I&lowast;im&lowast;beta&lowast;f
+<a href="cpl.html#INLINE">INLINE</a> D_x_F(var,iy,im)=(F(var,iy,im)-oldF(var+nvars&lowast;iy,im))/dx
+<a href="cpl.html#INLINE">INLINE</a> D_y_F(var,iy,im)=[F(var,iy+1,im)-F(var,iy-1,im)]/2/dy
+<a href="cpl.html#INLINE">INLINE</a> D_y_D_y_F(var,iy,im)=[F(var,iy+1,im)-2&lowast;F(var,iy,im)+F(var,iy-1,im)]/dy<a href="cpl.html#REAL-operator">^</a>2
+<a href="cpl.html#INLINE">INLINE</a> D_y_p(iy,im)=[F(ppos,iy+1,im)-F(ppos,iy,im)]/dy
+#define laplacian(f) D_y(D_y(f))+D_z(D_z(f))
+
+<a href="cpl.html#ARRAY">ARRAY</a>(1..6,0..ny,0..nm) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> Cmem,oldC
+<a href="cpl.html#INLINE">INLINE</a> F1(var,iy,im) = <a href="cpl.html#IF">IF</a> im&gt;=0 <a href="cpl.html#IF">THEN</a> F(var,iy,im) <a href="cpl.html#ELSE">ELSE</a> <a href="complex.html#Top">CONJG</a>(F(var,iy,-im))
+<a href="cpl.html#INLINE">INLINE</a> C(var1,var2,iy,im)=Cmem(var1+(var2-1)&lowast;var2 <a href="cpl.html#DIV">DIV</a> 2,iy,im)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> convolutions
+  <a href="cpl.html#DO">DO</a>
+    C(var1,var2,iy,im)=<a href="cpl.html#Looping-operator">SUM</a> F1(var1,iy,im1)&lowast;F1(var2,iy,im-im1) <a href="cpl.html#FOR">FOR</a> im1=<a href="cpl.html#MAX">MAX</a>(-nm,im-nm) <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(nm,im+nm)
+  <a href="cpl.html#FOR">FOR</a> var1=upos <a href="cpl.html#TO">TO</a> wpos <a href="cpl.html#AND">AND</a> var2=var1 <a href="cpl.html#TO">TO</a> wpos <a href="cpl.html#AND">AND</a> iy=0 <a href="cpl.html#TO">TO</a> ny <a href="cpl.html#AND">AND</a> im=0 <a href="cpl.html#TO">TO</a> nm
+<a href="cpl.html#END">END</a> convolutions
+<a href="cpl.html#INLINE">INLINE</a> D_x_C(var1,var2,iy,im)=(C(var1,var2,iy,im)-oldC(var1+(var2-1)&lowast;var2 <a href="cpl.html#DIV">DIV</a> 2,iy,im))/dx
+<a href="cpl.html#INLINE">INLINE</a> D_y_C(var1,var2,iy,im)=[C(var1,var2,iy+1,im)-C(var1,var2,iy-1,im)]/2/dy
+<a href="cpl.html#INLINE">INLINE</a> D_F_C(var1,var2,iy1,im1)=<a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(im1-im)&gt;nm <a href="cpl.html#OR">OR</a> iy1#iy+j <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> [<a href="cpl.html#IF">IF</a> var1#jv <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> F1(var2,iy1,im1-im)]+[<a href="cpl.html#IF">IF</a> var2#jv <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> F1(var1,iy1,im1-im)]
+<span class=comment>! uu=[trace]C(upos,upos)</span>
+<a href="cpl.html#INLINE">INLINE</a> uu(iy,im)=C(upos,upos,iy,im); <a href="cpl.html#INLINE">INLINE</a> uv(iy,im)=C(upos,vpos,iy,im); <a href="cpl.html#INLINE">INLINE</a> uw(iy,im)=C(upos,wpos,iy,im)
+<a href="cpl.html#INLINE">INLINE</a> vv(iy,im)=C(vpos,vpos,iy,im); <a href="cpl.html#INLINE">INLINE</a> vw(iy,im)=C(vpos,wpos,iy,im); <a href="cpl.html#INLINE">INLINE</a> ww(iy,im)=C(wpos,wpos,iy,im)
+
+<span class=comment>! 3D B-L</span>
+<a href="cpl.html#INLINE">INLINE</a> cont(iy,im)=0.5&lowast;{D_x(u(iy,im))+D_z(w(iy,im))+[D_x(u(iy-1,im))+D_z(w(iy-1,im))]}+[v(iy,im)-v(iy-1,im)]/dy
+<a href="cpl.html#INLINE">INLINE</a> umom(iy,im)=D_x(uu(iy,im))+D_y(uv(iy,im))+D_z(uw(iy,im))-laplacian(u(iy,im))
+<a href="cpl.html#INLINE">INLINE</a> vmom(iy,im)=D_x(uv(iy,im))+D_y(vv(iy,im))+D_z(vw(iy,im))+D_y(p(iy,im))-laplacian(v(iy,im))
+<a href="cpl.html#INLINE">INLINE</a> wmom(iy,im)=D_x(uw(iy,im))+D_y(vw(iy,im))+D_z(ww(iy,im))+D_z(p(iy,im))-laplacian(w(iy,im))
+
+<a href="cpl.html#ARRAY">ARRAY</a>(1+nvars..ny&lowast;nvars,-(2&lowast;nvars-1)..2&lowast;nvars-1) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> buildmat(<a href="cpl.html#INTEGER">INTEGER</a> im)
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> AA(<a href="cpl.html#INTEGER">INTEGER</a> var1,var2)=A(var1+nvars&lowast;(&lowast;),var2-var1+nvars&lowast;(&lowast;))
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> jv=1 <a href="cpl.html#TO">TO</a> nvars
+  AA(vpos,jv,iy,j)=<a href="symbolic.html#Top">D</a>(cont(iy,im),F[jv,iy+j,im])
+  AA(upos,jv,iy,j)=<a href="symbolic.html#Top">D</a>(umom(iy,im),F[jv,iy+j,im])
+  AA(wpos,jv,iy,j)=<a href="symbolic.html#Top">D</a>(wmom(iy,im),F[jv,iy+j,im])
+  AA(ppos,jv,iy,j)=<a href="symbolic.html#Top">D</a>(vmom(iy,im),F[jv,iy+j,im])
+<a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#DO">DO</a> AA(iv,vpos,ny-1,0)=<a href="cpl.html#Assignment">~</a>+AA(iv,vpos,ny-1,1) <a href="cpl.html#FOR">FOR</a> iv=1 <a href="cpl.html#TO">TO</a> nvars
+<a href="cpl.html#END">END</a> buildmat
+
+<a href="cpl.html#ARRAY">ARRAY</a>(1..(ny+1)&lowast;nvars) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> tna
+tn<a href="cpl.html#Deferred-assignment">==</a>tna(1+nvars..ny&lowast;nvars)
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..nx-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#TYPE">TYPEOF</a>(Fmem) Fstore=<a href="cpl.html#CREATE">CREATE</a>("Fstore")
+<a href="cpl.html#REAL">REAL</a> x=0
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> StepForward(<a href="cpl.html#INTEGER">INTEGER</a> ix)
+  Fstore(ix-1)=Fmem
+  x=x+dx
+  <a href="cpl.html#DO">DO</a> extrp=2&lowast;Fmem(i,im)-oldF(i,im); oldF(i,im)=Fmem(i,im); Fmem(i,im)=extrp <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,im
+  <a href="cpl.html#DO">DO</a> extrp=2&lowast;Cmem(i,iy,im)-oldC(i,iy,im); oldC(i,iy,im)=Cmem(i,iy,im); Cmem(i,iy,im)=extrp <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,iy,im
+  <a href="cpl.html#INTEGER">INTEGER</a> count=0
+  <a href="cpl.html#LOOP">LOOP</a> qn
+    <a href="cpl.html#REAL">REAL</a> maxerr=0
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> im=0 <a href="cpl.html#TO">TO</a> nm
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
+        tn(iy&lowast;nvars+vpos)=cont(iy,im)
+        tn(iy&lowast;nvars+upos)=umom(iy,im)
+        tn(iy&lowast;nvars+wpos)=wmom(iy,im)
+        tn(iy&lowast;nvars+ppos)=vmom(iy,im)
+      <a href="cpl.html#LOOP">REPEAT</a>
+      buildmat(im); LUdecomp A
+      tn=A\tn
+      maxerr=<a href="cpl.html#MAX">MAX</a>(<a href="cpl.html#Assignment">~</a>,<a href="cpl.html#Integer-operator">MOD</a>(tn))
+      Fmem(1+nvars..ny&lowast;nvars,im)=<a href="cpl.html#Assignment">~</a>-tn
+      v(ny,im)=v(ny-1,im)
+    <a href="cpl.html#LOOP">REPEAT</a>
+    convolutions
+    <a href="cpl.html#INC">INC</a> count
+  <a href="cpl.html#LOOP">REPEAT</a> qn <a href="cpl.html#UNTIL">UNTIL</a> maxerr&lt;1E-4
+<a href="cpl.html#WRITE">WRITE</a> x,count
+<a href="graphics.html#PLOT">PLOT</a> u(n,0).<a href="cpl.html#REAL">REAL</a>,0..ny
+<a href="cpl.html#END">END</a> StepForward
+
+<a href="cpl.html#TYPE">TYPEOF</a>(Fmem) Fmemadj
+uadj<a href="cpl.html#Deferred-assignment">==</a>Fmemadj(upos+nvars&lowast;(&lowast;))
+vadj<a href="cpl.html#Deferred-assignment">==</a>Fmemadj(vpos+nvars&lowast;(&lowast;))
+wadj<a href="cpl.html#Deferred-assignment">==</a>Fmemadj(wpos+nvars&lowast;(&lowast;))
+padj<a href="cpl.html#Deferred-assignment">==</a>Fmemadj(ppos+nvars&lowast;(&lowast;))
+<a href="cpl.html#ARRAY">ARRAY</a>(1+nvars..ny&lowast;nvars,-nm..nm) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> eqadj=0
+contadj<a href="cpl.html#Deferred-assignment">==</a>eqadj(vpos+nvars&lowast;(&lowast;))
+umomadj<a href="cpl.html#Deferred-assignment">==</a>eqadj(upos+nvars&lowast;(&lowast;))
+vmomadj<a href="cpl.html#Deferred-assignment">==</a>eqadj(ppos+nvars&lowast;(&lowast;))
+wmomadj<a href="cpl.html#Deferred-assignment">==</a>eqadj(wpos+nvars&lowast;(&lowast;))
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> StepBackward(<a href="cpl.html#INTEGER">INTEGER</a> ix)
+  <a href="cpl.html#INTEGER">INTEGER</a> count=0
+  <a href="cpl.html#LOOP">LOOP</a> bqn
+    <a href="cpl.html#REAL">REAL</a> maxerr=0
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> im=0 <a href="cpl.html#TO">TO</a> nm
+      tn=Fmemadj(1+nvars..ny&lowast;nvars,im)
+      tna(ny&lowast;nvars+vpos)=0
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> in=-nm <a href="cpl.html#TO">TO</a> nm <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> jv=1 <a href="cpl.html#TO">TO</a> nvars
+        tna((iy+j)&lowast;nvars+jv)=<a href="cpl.html#Assignment">~</a>+
+          contadj(iy,in)&lowast;<a href="symbolic.html#Top">D</a>(cont(iy,in),F[jv,iy+j,im])+
+          umomadj(iy,in)&lowast;<a href="symbolic.html#Top">D</a>(umom(iy,in),F[jv,iy+j,im])+
+          vmomadj(iy,in)&lowast;<a href="symbolic.html#Top">D</a>(vmom(iy,in),F[jv,iy+j,im])+
+          wmomadj(iy,in)&lowast;<a href="symbolic.html#Top">D</a>(wmom(iy,in),F[jv,iy+j,im])
+      <a href="cpl.html#LOOP">REPEAT</a>
+      tna((ny-1)&lowast;nvars+vpos)=<a href="cpl.html#Assignment">~</a>+tna(ny&lowast;nvars+vpos)
+      buildmat(im); LUdecomp A
+      tn=tn/A
+      maxerr=<a href="cpl.html#MAX">MAX</a>(<a href="cpl.html#Assignment">~</a>,<a href="cpl.html#Integer-operator">MOD</a>(tn))
+      eqadj(&lowast;,im)=<a href="cpl.html#Assignment">~</a>-tn
+      <a href="cpl.html#IF">IF</a> im#0 <a href="cpl.html#IF">THEN</a> eqadj(&lowast;,-im)=<a href="complex.html#Top">CONJG</a>(eqadj(&lowast;,im))
+    <a href="cpl.html#LOOP">REPEAT</a>
+    <a href="cpl.html#INC">INC</a> count
+  <a href="cpl.html#LOOP">REPEAT</a> bqn <a href="cpl.html#UNTIL">UNTIL</a> maxerr&lt;1E-8
+  <a href="cpl.html#WRITE">WRITE</a> x,count
+  x=x-dx
+  Fmem=Fstore(ix-1)
+  Fmemadj=0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> im=0 <a href="cpl.html#TO">TO</a> nm <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> in=-nm <a href="cpl.html#TO">TO</a> nm <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> jv=1 <a href="cpl.html#TO">TO</a> nvars
+    Fmemadj((iy+j)&lowast;nvars+jv,im)=<a href="cpl.html#Assignment">~</a>+
+      contadj(iy,in)&lowast;<a href="symbolic.html#Top">D</a>(0.5/dx&lowast;{u(iy,in)+u(iy-1,in)},F[jv,iy+j,im])+
+      umomadj(iy,in)&lowast;<a href="symbolic.html#Top">D</a>(1/dx&lowast;uu(iy,in),F[jv,iy+j,im])+
+      vmomadj(iy,in)&lowast;<a href="symbolic.html#Top">D</a>(1/dx&lowast;uv(iy,in),F[jv,iy+j,im])+
+      wmomadj(iy,in)&lowast;<a href="symbolic.html#Top">D</a>(1/dx&lowast;uw(iy,in),F[jv,iy+j,im])
+  <a href="cpl.html#LOOP">REPEAT</a>
+  <a href="graphics.html#OPENGRAPH">OPENGRAPH</a>
+  <a href="graphics.html#SPLOT">SPLOT</a> <a href="cpl.html#ABS">ABS</a>(vadj(x,y))/dy,1..ny-1,0..nm
+<a href="cpl.html#END">END</a> StepBackward
+
+Fmem=0
+<a href="cpl.html#DO">DO</a> v(iy,1)=y(iy)<a href="cpl.html#REAL-operator">^</a>2&lowast;<a href="cpl.html#Builtin">EXP</a>(-y(iy)) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny
+<a href="cpl.html#ASK">ASK</a> <a href="cpl.html#REAL">REAL</a> Ein
+<a href="cpl.html#LOOP">LOOP</a> fb
+<a href="cpl.html#DO">DO</a> w(iy,im)=-D_y(v(iy,im))/(I&lowast;im&lowast;beta) <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> im=1 <a href="cpl.html#TO">TO</a> nm
+<a href="cpl.html#DO">DO</a> u(iy,0)=1 <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny
+Er=<a href="cpl.html#Builtin">SQRT</a>(Ein/(dy&lowast;<a href="cpl.html#Looping-operator">SUM</a> NORM(v(iy,im))+NORM(w(iy,im)) <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> im=1 <a href="cpl.html#TO">TO</a> nm))
+<a href="cpl.html#DO">DO</a> v(iy,im)=<a href="cpl.html#Assignment">~</a>&lowast;Er; w(iy,im)=<a href="cpl.html#Assignment">~</a>&lowast;Er <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> im=1 <a href="cpl.html#TO">TO</a> nm
+convolutions; oldF=Fmem; oldC=Cmem
+<a href="cpl.html#DO">DO</a> StepForward(ix) <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx
+Eout=dy&lowast;<a href="cpl.html#Looping-operator">SUM</a> [NORM(u(iy,1))] <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#WRITE">WRITE</a> "Eout:" Eout, "Gain:" Eout/Ein
+<span class=comment>!(
+COMPLEX ufin(1..ny-1,0..nm)
+DO ufin(iy,im)=u(iy,im) FOR ALL iy,im
+COMPLEX vinc(1..ny-1,0..nm)=0
+DO vinc(iy,im)=0.00001&lowast;(RAND()+I&lowast;RAND()) FOR iy=1 TO ny-1 AND im=1 TO nm
+vinc(&lowast;,0).IMAG=0
+x=0
+Fmem=0
+DO u(iy,0)=1 FOR iy=1 TO ny
+DO v(iy,1)=50&lowast;y(iy)&lowast;EXP(-y(iy)) FOR iy=0 TO ny
+DO v(iy,im)=~+vinc(iy,im) FOR ALL iy,im
+convolutions; oldF=Fmem; oldC=Cmem
+DO StepForward(ix) FOR ix=1 TO nx
+DO ufin(iy,im)=u(iy,im)-~ FOR ALL iy,im
+!)</span>
+Fmemadj=0; <a href="cpl.html#DO">DO</a> uadj(iy,im)=dy&lowast;<a href="complex.html#Top">CONJG</a>(u(iy,im)) <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> im=1 <a href="cpl.html#TO">TO</a> nm
+<a href="cpl.html#DO">DO</a> StepBackward(ix) <a href="cpl.html#FOR">FOR</a> ix=nx <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> 1
+<span class=comment>!(
+WRITE SUM vadj(iy,im)&lowast;vinc(iy,im) FOR ALL iy AND im=1 TO nm+
+      0.5&lowast;SUM vadj(iy,0)&lowast;vinc(iy,0) FOR ALL iy :1.10
+!)</span>
+<span class=comment>! DO vadj(iy,im)=~+[wadj(iy+1,im)-wadj(iy-1,im)]/2/dy/(I&lowast;im&lowast;beta) FOR iy=1 TO ny-1 AND im=1 TO nm</span>
+<a href="graphics.html#OPENGRAPH">OPENGRAPH</a>
+<a href="graphics.html#SPLOT">SPLOT</a> <a href="cpl.html#ABS">ABS</a>(vadj(x,y))/dy,1..ny-1,0..nm
+<a href="cpl.html#READ">READ</a>
+Fmem=0
+<a href="cpl.html#DO">DO</a> v(iy,im)=<a href="complex.html#Top">CONJG</a>(vadj(iy,im))/dy <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> im=1 <a href="cpl.html#TO">TO</a> nm
+<a href="cpl.html#LOOP">REPEAT</a> fb
+</pre></body></html>
