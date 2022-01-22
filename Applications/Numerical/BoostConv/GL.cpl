@@ -1,0 +1,156 @@
+USE rbmat 
+USE cbmat 
+USE fft
+USE gnuplot
+!#define DiscardOldest     ! uncomment for old selection strategy in BoostConv 
+USE BoostConv
+!USE rtchecks 
+
+INTEGER nx=800             ! Number of point in the domain (half are used in the uniform part...the rest in the stretched region)
+REAL Lx=20                 ! Width of the domain with uniform grid
+REAL alpha=1.0035          ! Stretching factor for point outside the uniform region
+REAL dt=1.E-3              ! time step
+REAL toll=1.E-6            ! Tolerance for BoostConv 
+
+! ---Parameters of GL --------
+
+COMPLEX mu0=0.52 
+COMPLEX mu2=-0.01 
+COMPLEX cu=0.2 
+COMPLEX cd=-1; 
+COMPLEX ni=2+0.2*I 
+COMPLEX gamma=1+cd*I
+
+!--------------Parameters for storing results ---------
+
+INTEGER plotfreq=1000    ! Frequency for saving plot 
+INTEGER plotres=1000     ! Frequency for saving ressidual
+
+!--------------BoostConv Parameters -------------------
+
+INTEGER boostfreq=100    ! Frequency of BoostConv calls
+BOOLEAN boost=YES        ! Apply Boost Conv (Y/N)
+INTEGER nkrylov=35       ! Dimension of Krylov subsapce for BoostConv
+REAL tboost=100          ! Time after which BoostConv is switched on 
+
+
+WRITE 
+WRITE "!-------Eigenvalues of Equation on infinite domain------" 
+h=SQRT(-2*mu2*gamma) 
+COMPLEX eigg=0; 
+eigg=mu0-cu^2 - ni^2 / (4*gamma) - 0.5*h 
+WRITE "Autovalore 1=", eigg 
+eigg=mu0-cu^2 - ni^2 / (4*gamma) - 1.5*h 
+WRITE "Autovalore 2=", eigg 
+eigg=mu0-cu^2 - ni^2 / (4*gamma) - 2.5*h 
+WRITE "Autovalore 3=", eigg 
+WRITE "!------------------------------------------------------" 
+WRITE
+WRITE
+
+! Function mu(x)
+COMPLEX FUNCTION mu(REAL x)=(mu0-cu^2)+mu2*x^2/2 
+INTEGER nxi=nx DIV 2
+REAL dx=Lx/nxi 
+
+! Spatial Domain of computations:  [-Lx1...Lx1]
+
+ARRAY(-nx..nx) OF REAL x=0 
+DO x(i)=i*dx FOR i=-nxi TO nxi
+DO x(i+1)=x(i)*alpha FOR i=nxi TO nx-1
+DO x(-i-1)=x(-i)*alpha FOR i=nxi TO (nx-1)
+WRITE "Domain: [Lx1..Lx1]=]["x(-nx)".."x(nx)"] ---------------"
+WRITE
+WRITE "dx in uniform domain=" dx
+WRITE 
+WRITE
+WRITE "Press any key to continue..."
+READ
+!-----------------GL EQUATION WITH PERIODIC BC-----------------
+
+SUBROUTINE GL(COMPLEX F^(*),A(*))    
+F(-nx)=gamma*[A(-nx+1)-2*A(-nx)+A(nx-1)]/(dx^2)-ni*[A(-nx+1)-A(nx-1)]/(2*dx)+mu(x(-nx))*A(-nx)-NORM(A(-nx))*A(-nx) 
+LOOP FOR ix=-nx+1 TO nx-1 
+F(ix)=gamma*[A(ix+1)-2*A(ix)+A(ix-1)]/(dx^2)-ni*[A(ix+1)-A(ix-1)]/(2*dx)+mu(x(ix))*A(ix)-NORM(A(ix))*A(ix) 
+REPEAT LOOP 
+F(nx)=gamma*[A(-nx+1)-2*A(nx)+A(nx-1)]/(dx^2)-ni*[A(-nx+1)-A(nx-1)]/(2*dx)+mu(x(nx))*A(nx)-NORM(A(nx))*A(nx) 
+END GL 
+
+!-------------------------------------------------------------
+! 
+ARRAY(-nx..nx) OF COMPLEX A=0,Ain=0,Aold=0,dA=0
+ARRAY(-nx..nx) OF COMPLEX k1,k2,k3,k4	       ! RK4 intermediate varibles
+Ain(0)=1/dx                     	       ! Initial Condition 
+ARRAY(-nx..nx) OF REAL Res=0;                  ! Residual vector 
+REAL res=1
+INTEGER itboost=0			       ! Numbers of call to BoostConv
+
+FILE PROFILO=CREATE("field.out")               ! File where the solution is stored 
+FILE RES=CREATE("residual.out")        	       ! File where the residual is stored 
+INTEGER it=0 
+REAL t=0 
+A=Ain 
+
+!------------GL Marching with KK4-----------
+ 
+DO
+GL(k1,A)				       ! 1st RK stage
+res=MAXABS(k1)				       ! Evaluate the maximum absolute value of the Residual 
+Res=k1.REALIFIED             		       ! Store Residual as REAL ARRAY at iteration it
+
+IF (it MOD plotfreq)=0 THEN         	       ! Store the solution every plotfreq time steps 
+LOOP FOR ix=-nx TO nx 
+WRITE TO PROFILO x(ix),t,A(ix).REAL,A(ix).IMAG 
+REPEAT LOOP 
+WRITE TO PROFILO 
+END IF
+
+IF (it MOD plotres)=0 THEN
+WRITE BY NAME it,t,,res
+WRITE TO RES it,t,res                          ! Store the solution every plotres time steps 
+END IF
+
+
+it=it+1 
+t=dt*it
+GL(k2,A+0.5*dt*k1)                             ! 2nd RK stage
+GL(k3,A+0.5*dt*k2)                             ! 3rd RK stage
+GL(k4,A+dt*k3)                                 ! 4th RK stage
+A=A+dt*[k1+2*k2+2*k3+k4]/6                     ! Solution at t+dt
+
+! --- BoostConv ---                            ! We call BostConv after t>tboost every boostfreq time steps  
+
+IF (t>tboost AND (it MOD boostfreq=0) AND (boost=TRUE)) THEN
+INC itboost              	      	      ! Increase the boostconv counter 
+IF itboost>1 THEN 
+!WRITE  BY NAME it,t,,res, ".......Apply BoostConv...."
+dA=[A-Aold]                                   ! Evaluate difference in solution to be passed to BoostConv
+BoostConv(dA.REALIFIED,length=nkrylov)        ! Call BoostConv              
+A.REALIFIED=Aold.REALIFIED+dA.REALIFIED       ! Update A using the updated difference
+END IF
+Aold=A                                        ! Store solution for next BoostConv call 
+END IF
+
+WHILE res>toll
+
+CLOSE(PROFILO) 
+CLOSE(RES)
+
+!--------------- Using gnuplot to plot results -------------------
+
+! Plot Evolution 
+OPENGRAPH
+WRITE TO gnuplot 'set term x11 0 position 0,0'
+WRITE TO gnuplot 'splot "field.out" u 1:2:3 notitle w l '
+WRITE TO gnuplot 'set xlabel "x"; set ylabel "t"; set title "Evolution of Real(A)"'
+WRITE TO gnuplot 'set pm3d;unset surface; set view map; set grid; set cbr[-0.35:0.55];set grid ; rep'
+SHOWGRAPH
+
+!Plot Residual norm
+WRITE TO gnuplot 'set term x11 1 position 650,0'
+WRITE TO gnuplot 'plot "residual.out" u 2:3 title "Maxabs(residual)" w lp ps 0.5 '
+WRITE TO gnuplot 'unset colorbox; set xlabel "t"; set ylabel "maxabs(Res)"; set title "Evolution of Residual "'
+WRITE TO gnuplot 'set grid ; set termoption enhanced ; set format y "10^{%T}"; set logscale y 10; rep'
+SHOWGRAPH
+READ
+

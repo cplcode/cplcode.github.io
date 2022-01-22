@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Numerical/BoostConv/GL.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"Numerical/BoostConv/GL.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a> 
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a> 
+<a href="cpl.html#USE">USE</a> <a href="fft.html#Top">fft</a>
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
+<span class=comment>!#define DiscardOldest     <span class=comment>! uncomment for old selection strategy in BoostConv </span></span>
+<a href="cpl.html#USE">USE</a> BoostConv
+<span class=comment>!USE rtchecks </span>
+
+<a href="cpl.html#INTEGER">INTEGER</a> nx=800             <span class=comment>! Number of point in the domain (half are used in the uniform part...the rest in the stretched region)</span>
+<a href="cpl.html#REAL">REAL</a> Lx=20                 <span class=comment>! Width of the domain with uniform grid</span>
+<a href="cpl.html#REAL">REAL</a> alpha=1.0035          <span class=comment>! Stretching factor for point outside the uniform region</span>
+<a href="cpl.html#REAL">REAL</a> dt=1.E-3              <span class=comment>! time step</span>
+<a href="cpl.html#REAL">REAL</a> toll=1.E-6            <span class=comment>! Tolerance for BoostConv </span>
+
+<span class=comment>! ---Parameters of GL --------</span>
+
+<a href="complex.html#Top">COMPLEX</a> mu0=0.52 
+<a href="complex.html#Top">COMPLEX</a> mu2=-0.01 
+<a href="complex.html#Top">COMPLEX</a> cu=0.2 
+<a href="complex.html#Top">COMPLEX</a> cd=-1; 
+<a href="complex.html#Top">COMPLEX</a> ni=2+0.2&lowast;I 
+<a href="complex.html#Top">COMPLEX</a> gamma=1+cd&lowast;I
+
+<span class=comment>!--------------Parameters for storing results ---------</span>
+
+<a href="cpl.html#INTEGER">INTEGER</a> plotfreq=1000    <span class=comment>! Frequency for saving plot </span>
+<a href="cpl.html#INTEGER">INTEGER</a> plotres=1000     <span class=comment>! Frequency for saving ressidual</span>
+
+<span class=comment>!--------------BoostConv Parameters -------------------</span>
+
+<a href="cpl.html#INTEGER">INTEGER</a> boostfreq=100    <span class=comment>! Frequency of BoostConv calls</span>
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> boost=<a href="cpl.html#BOOLEAN">YES</a>        <span class=comment>! Apply Boost Conv (Y/N)</span>
+<a href="cpl.html#INTEGER">INTEGER</a> nkrylov=35       <span class=comment>! Dimension of Krylov subsapce for BoostConv</span>
+<a href="cpl.html#REAL">REAL</a> tboost=100          <span class=comment>! Time after which BoostConv is switched on </span>
+
+
+<a href="cpl.html#WRITE">WRITE</a> 
+<a href="cpl.html#WRITE">WRITE</a> "!-------Eigenvalues of Equation on infinite domain------" 
+h=<a href="cpl.html#Builtin">SQRT</a>(-2&lowast;mu2&lowast;gamma) 
+<a href="complex.html#Top">COMPLEX</a> eigg=0; 
+eigg=mu0-cu<a href="cpl.html#REAL-operator">^</a>2 - ni<a href="cpl.html#REAL-operator">^</a>2 / (4&lowast;gamma) - 0.5&lowast;h 
+<a href="cpl.html#WRITE">WRITE</a> "Autovalore 1=", eigg 
+eigg=mu0-cu<a href="cpl.html#REAL-operator">^</a>2 - ni<a href="cpl.html#REAL-operator">^</a>2 / (4&lowast;gamma) - 1.5&lowast;h 
+<a href="cpl.html#WRITE">WRITE</a> "Autovalore 2=", eigg 
+eigg=mu0-cu<a href="cpl.html#REAL-operator">^</a>2 - ni<a href="cpl.html#REAL-operator">^</a>2 / (4&lowast;gamma) - 2.5&lowast;h 
+<a href="cpl.html#WRITE">WRITE</a> "Autovalore 3=", eigg 
+<a href="cpl.html#WRITE">WRITE</a> "!------------------------------------------------------" 
+<a href="cpl.html#WRITE">WRITE</a>
+<a href="cpl.html#WRITE">WRITE</a>
+
+<span class=comment>! Function mu(x)</span>
+<a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> mu(<a href="cpl.html#REAL">REAL</a> x)=(mu0-cu<a href="cpl.html#REAL-operator">^</a>2)+mu2&lowast;x<a href="cpl.html#REAL-operator">^</a>2/2 
+<a href="cpl.html#INTEGER">INTEGER</a> nxi=nx <a href="cpl.html#DIV">DIV</a> 2
+<a href="cpl.html#REAL">REAL</a> dx=Lx/nxi 
+
+<span class=comment>! Spatial Domain of computations:  [-Lx1...Lx1]</span>
+
+<a href="cpl.html#ARRAY">ARRAY</a>(-nx..nx) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> x=0 
+<a href="cpl.html#DO">DO</a> x(i)=i&lowast;dx <a href="cpl.html#FOR">FOR</a> i=-nxi <a href="cpl.html#TO">TO</a> nxi
+<a href="cpl.html#DO">DO</a> x(i+1)=x(i)&lowast;alpha <a href="cpl.html#FOR">FOR</a> i=nxi <a href="cpl.html#TO">TO</a> nx-1
+<a href="cpl.html#DO">DO</a> x(-i-1)=x(-i)&lowast;alpha <a href="cpl.html#FOR">FOR</a> i=nxi <a href="cpl.html#TO">TO</a> (nx-1)
+<a href="cpl.html#WRITE">WRITE</a> "Domain: [Lx1..Lx1]=]["x(-nx)".."x(nx)"] ---------------"
+<a href="cpl.html#WRITE">WRITE</a>
+<a href="cpl.html#WRITE">WRITE</a> "dx in uniform domain=" dx
+<a href="cpl.html#WRITE">WRITE</a> 
+<a href="cpl.html#WRITE">WRITE</a>
+<a href="cpl.html#WRITE">WRITE</a> "Press any key to continue..."
+<a href="cpl.html#READ">READ</a>
+<span class=comment>!-----------------GL EQUATION WITH PERIODIC BC-----------------</span>
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> GL(<a href="complex.html#Top">COMPLEX</a> F<a href="cpl.html#REAL-operator">^</a>(&lowast;),A(&lowast;))    
+F(-nx)=gamma&lowast;[A(-nx+1)-2&lowast;A(-nx)+A(nx-1)]/(dx<a href="cpl.html#REAL-operator">^</a>2)-ni&lowast;[A(-nx+1)-A(nx-1)]/(2&lowast;dx)+mu(x(-nx))&lowast;A(-nx)-NORM(A(-nx))&lowast;A(-nx) 
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=-nx+1 <a href="cpl.html#TO">TO</a> nx-1 
+F(ix)=gamma&lowast;[A(ix+1)-2&lowast;A(ix)+A(ix-1)]/(dx<a href="cpl.html#REAL-operator">^</a>2)-ni&lowast;[A(ix+1)-A(ix-1)]/(2&lowast;dx)+mu(x(ix))&lowast;A(ix)-NORM(A(ix))&lowast;A(ix) 
+<a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a> 
+F(nx)=gamma&lowast;[A(-nx+1)-2&lowast;A(nx)+A(nx-1)]/(dx<a href="cpl.html#REAL-operator">^</a>2)-ni&lowast;[A(-nx+1)-A(nx-1)]/(2&lowast;dx)+mu(x(nx))&lowast;A(nx)-NORM(A(nx))&lowast;A(nx) 
+<a href="cpl.html#END">END</a> GL 
+
+<span class=comment>!-------------------------------------------------------------</span>
+<span class=comment>! </span>
+<a href="cpl.html#ARRAY">ARRAY</a>(-nx..nx) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A=0,Ain=0,Aold=0,dA=0
+<a href="cpl.html#ARRAY">ARRAY</a>(-nx..nx) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> k1,k2,k3,k4               <span class=comment>! RK4 intermediate varibles</span>
+Ain(0)=1/dx                                    <span class=comment>! Initial Condition </span>
+<a href="cpl.html#ARRAY">ARRAY</a>(-nx..nx) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> Res=0;                  <span class=comment>! Residual vector </span>
+<a href="cpl.html#REAL">REAL</a> res=1
+<a href="cpl.html#INTEGER">INTEGER</a> itboost=0                               <span class=comment>! Numbers of call to BoostConv</span>
+
+<a href="cpl.html#FILE">FILE</a> PROFILO=<a href="cpl.html#CREATE">CREATE</a>("field.out")               <span class=comment>! File where the solution is stored </span>
+<a href="cpl.html#FILE">FILE</a> RES=<a href="cpl.html#CREATE">CREATE</a>("residual.out")                       <span class=comment>! File where the residual is stored </span>
+<a href="cpl.html#INTEGER">INTEGER</a> it=0 
+<a href="cpl.html#REAL">REAL</a> t=0 
+A=Ain 
+
+<span class=comment>!------------GL Marching with KK4-----------</span>
+ 
+<a href="cpl.html#DO">DO</a>
+GL(k1,A)                                       <span class=comment>! 1st RK stage</span>
+res=MAXABS(k1)                                       <span class=comment>! Evaluate the maximum absolute value of the Residual </span>
+Res=k1.REALIFIED                                    <span class=comment>! Store Residual as REAL ARRAY at iteration it</span>
+
+<a href="cpl.html#IF">IF</a> (it <a href="cpl.html#Integer-operator">MOD</a> plotfreq)=0 <a href="cpl.html#IF">THEN</a>                        <span class=comment>! Store the solution every plotfreq time steps </span>
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=-nx <a href="cpl.html#TO">TO</a> nx 
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> PROFILO x(ix),t,A(ix).<a href="cpl.html#REAL">REAL</a>,A(ix).<a href="complex.html#Top">IMAG</a> 
+<a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a> 
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> PROFILO 
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+
+<a href="cpl.html#IF">IF</a> (it <a href="cpl.html#Integer-operator">MOD</a> plotres)=0 <a href="cpl.html#IF">THEN</a>
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> it,t,,res
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> RES it,t,res                          <span class=comment>! Store the solution every plotres time steps </span>
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+
+
+it=it+1 
+t=dt&lowast;it
+GL(k2,A+0.5&lowast;dt&lowast;k1)                             <span class=comment>! 2nd RK stage</span>
+GL(k3,A+0.5&lowast;dt&lowast;k2)                             <span class=comment>! 3rd RK stage</span>
+GL(k4,A+dt&lowast;k3)                                 <span class=comment>! 4th RK stage</span>
+A=A+dt&lowast;[k1+2&lowast;k2+2&lowast;k3+k4]/6                     <span class=comment>! Solution at t+dt</span>
+
+<span class=comment>! --- BoostConv ---                            <span class=comment>! We call BostConv after t&gt;tboost every boostfreq time steps  </span></span>
+
+<a href="cpl.html#IF">IF</a> (t&gt;tboost <a href="cpl.html#AND">AND</a> (it <a href="cpl.html#Integer-operator">MOD</a> boostfreq=0) <a href="cpl.html#AND">AND</a> (boost=TRUE)) <a href="cpl.html#IF">THEN</a>
+<a href="cpl.html#INC">INC</a> itboost                                          <span class=comment>! Increase the boostconv counter </span>
+<a href="cpl.html#IF">IF</a> itboost&gt;1 <a href="cpl.html#IF">THEN</a> 
+<span class=comment>!WRITE  BY NAME it,t,,res, ".......Apply BoostConv...."</span>
+dA=[A-Aold]                                   <span class=comment>! Evaluate difference in solution to be passed to BoostConv</span>
+BoostConv(dA.REALIFIED,length=nkrylov)        <span class=comment>! Call BoostConv              </span>
+A.REALIFIED=Aold.REALIFIED+dA.REALIFIED       <span class=comment>! Update A using the updated difference</span>
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+Aold=A                                        <span class=comment>! Store solution for next BoostConv call </span>
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+
+<a href="cpl.html#WHILE">WHILE</a> res&gt;toll
+
+<a href="cpl.html#CLOSE">CLOSE</a>(PROFILO) 
+<a href="cpl.html#CLOSE">CLOSE</a>(RES)
+
+<span class=comment>!--------------- Using gnuplot to plot results -------------------</span>
+
+<span class=comment>! Plot Evolution </span>
+<a href="graphics.html#OPENGRAPH">OPENGRAPH</a>
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> gnuplot 'set term x11 0 position 0,0'
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> gnuplot 'splot "field.out" u 1:2:3 notitle w l '
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> gnuplot 'set xlabel "x"; set ylabel "t"; set title "Evolution of Real(A)"'
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> gnuplot 'set pm3d;unset surface; set view map; set grid; set cbr[-0.35:0.55];set grid ; rep'
+<a href="graphics.html#SHOWGRAPH">SHOWGRAPH</a>
+
+<span class=comment>!Plot Residual norm</span>
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> gnuplot 'set term x11 1 position 650,0'
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> gnuplot 'plot "residual.out" u 2:3 title "Maxabs(residual)" w lp ps 0.5 '
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> gnuplot 'unset colorbox; set xlabel "t"; set ylabel "maxabs(Res)"; set title "Evolution of Residual "'
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> gnuplot 'set grid ; set termoption enhanced ; set format y "10^{%T}"; set logscale y 10; rep'
+<a href="graphics.html#SHOWGRAPH">SHOWGRAPH</a>
+<a href="cpl.html#READ">READ</a>
+
+</pre></body></html>
