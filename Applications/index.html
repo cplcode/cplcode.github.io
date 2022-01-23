@@ -13,32 +13,51 @@
     <link rel="stylesheet" href="../singlecol.css">
     <script src="../search.js">
     </script>
+    <style>
+    .header{
+      position:fixed;
+      top:0;
+      width:100%;
+      max-width:40em;
+      background:white;
+    }
+    .main{
+      margin-top:13.5em;
+      margin-bottom:8em;
+    }
+    .footer{
+      position:fixed;
+      bottom:0;
+      max-width:40em;
+      background:white;
+    }  
+    </style>
   </head>
   <body translate="no">
   <a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a>
     <div class=page>
-      <h2>Applications</h2>
-      <table>
-        <tr><td colspan=2><h2><a href="Tutorial">Tutorial</a></h2>
-          Tutorial programming examples for beginners and not so beginners.
-        </td></tr>
-        <tr><td colspan=2><hr></td></tr>
-        <tr><td colspan=2><h2 style="display:inline-block">Contributed</h2><span style="float:right">search: <input autocomplete="off" type="text" onkeyup="tsearch()" title="case-sensitive search only if first letter is upper case"></span>
-        </td></tr>
+      <div style="position:relative">
+      <div class=header>
+        <h1>Applications</h1>
+          <h2><a href="Tutorial">Tutorial</a></h2>
+            <p>Tutorial programming examples for beginners and not so beginners.</p>
+          <hr>
+          <h2 style="display:inline-block">Contributed</h2><span style="float:right">search: <input autocomplete="off" type="text" onkeyup="tsearch()" title="case-sensitive search only if first letter is upper case"></span>
+      </div>
+      <table class=main>
+        <tr id=BoostConv><td><h3>-</h3></td><td><h3><a href="Numerical/BoostConv" title="directory">BoostConv</a> <a href="Numerical/BoostConv/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/BoostConv/BoostConv.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>, <a href="https://docenti.unisa.it/026456/home" target=_blank>Vincenzo Citro</a> and <a href="https://docenti.unisa.it/020052/home" target=_blank>Flavio Giannetti</a>) improves (or even enables) the convergence of a pre-existing, linear or nonlinear, iterative algorithm. Its reverse-calling interface only requires the insertion of a single line in the original code.</td></tr>
 
-        <tr><td><h3>-</h3></td><td><h3><a href="Numerical/BoostConv" title="directory">BoostConv</a> <a href="Numerical/BoostConv/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/BoostConv/BoostConv.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
-        (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>, <a href="https://docenti.unisa.it/026456/home" target=_blank>Vincenzo Citro</a> and <a href="https://docenti.unisa.it/020052/home" target=_blank>Flavio Giannetti</a>)  improves (or even enables) the convergence of a pre-existing, linear or nonlinear, iterative algorithm. Its reverse-calling interface only requires the insertion of a single line in the original code.</td></tr>
-
-        <tr><td><h3>-</h3></td><td><h3><a href="Numerical/MeanandVar" title="directory">MeanandVar</a> <a href="Numerical/MeanandVar/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/MeanandVar/MeanandVar.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        <tr id=MeanandVar><td><h3>-</h3></td><td><h3><a href="Numerical/MeanandVar" title="directory">MeanandVar</a> <a href="Numerical/MeanandVar/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/MeanandVar/MeanandVar.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
         (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) estimates the mean of a statistically stationary time series simultaneously with a variance of the estimate itself. Its use is to produce a realistic error bar taking into account the statistical error associated with the finite time sampling of an autocorrelated process.</td></tr>
 
-        <tr><td><h3>-</h3></td><td><h3><a href="Numerical/OSE" title="directory">OSE</a> <a href="Numerical/OSE/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/OSE/OSE.cpl" download title="download" class=download>&#x21E9;</a></h3>
+        <tr id=OSE><td><h3>-</h3></td><td><h3><a href="Numerical/OSE" title="directory">OSE</a> <a href="Numerical/OSE/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/OSE/OSE.cpl" download title="download" class=download>&#x21E9;</a></h3>
         (contributed by <a href="https://docenti.unisa.it/020052/home" target=_blank>Flavio Giannetti</a>) evaluates the eigenvalues of the Orr-Sommerfeld equation with a spectral collocation method using a 3-term recurrence relation to evaluate the derivatives of Chebyshev polynomials and the Fortran interface to call the appropriate lapack subroutine.</td></tr>
 
-        <tr><td><h3>-</h3></td><td><h3><a href="Numerical/Thomas53" title="directory">Thomas53</a> <a href="Numerical/Thomas53/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/Thomas53/thomas53.cpl" download title="download" class=download>&#x21E9;</a></h3>
+        <tr id=Thomas53><td><h3>-</h3></td><td><h3><a href="Numerical/Thomas53" title="directory">Thomas53</a> <a href="Numerical/Thomas53/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/Thomas53/thomas53.cpl" download title="download" class=download>&#x21E9;</a></h3>
         (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) Reproduction of the historical (Thomas, 1953) compact-difference computation of eigenfunctions and eigenvalues of the Orr-Sommerfeld equation.</td></tr>
 
-        <tr><td><h3>-</h3></td><td><h3><a href="FluidMechanics/TurbMeanFlow" title="directory">TurbMeanFlow</a> <a href="FluidMechanics/TurbMeanFlow/README.pdf" title="README" class=pdflink>PDF</a> <a href="FluidMechanics/TurbMeanFlow/TurbMeanFlow.cpl" download title="download" class=download>&#x21E9;</a></h3>
+        <tr id=TurbMeanFlow><td><h3>-</h3></td><td><h3><a href="FluidMechanics/TurbMeanFlow" title="directory">TurbMeanFlow</a> <a href="FluidMechanics/TurbMeanFlow/README.pdf" title="README" class=pdflink>PDF</a> <a href="FluidMechanics/TurbMeanFlow/TurbMeanFlow.cpl" download title="download" class=download>&#x21E9;</a></h3>
         (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) Toolbox offering a mean turbulent velocity profile as a CPL FUNCTION that can be used for plotting or as a component of your own program.</td></tr>
 
         <!--
@@ -46,11 +65,13 @@
         (contributed by Paolo Luchini). Search engine with proximity search, indexing an arbitrary text (or a library catalog) and serving an html search form through a cgi-bin application written in CPL.
         </td></tr>
         -->
-        <tr><td colspan=2><hr></td></tr>
-        <tr><td colspan=2><h2><a href="references">References</a></h2>
-          A list of scientific references that used CPL for their programming needs. Some of the codes used can be consulted under <a href="article-CPLcodes"><b>article-CPLcodes</b></a>.
-        </td></tr>
       </table>
+      <div class=footer>
+        <hr>
+        <h2 id=references><a href="references">References</a></h2>
+          <p>A list of scientific references that used CPL for their programming needs. Some of the codes used can be consulted under <a href="article-CPLcodes"><b>article-CPLcodes</b></a>.</p>
+      </div>
+      </div>
     </div>
   </body>
 </html>
