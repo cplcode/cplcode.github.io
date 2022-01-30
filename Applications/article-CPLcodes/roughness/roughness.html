@@ -82,7 +82,7 @@ dx=1/nx; cn=1/dx
 <a href="cpl.html#DO">DO</a> bcond(ix,iy,0)=<a href="cpl.html#POINTER">NULL</a>; bcond(ix,iy,nz)=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy
 <a href="cpl.html#ARRAY">ARRAY</a>(-1..nx+1,-1..ny+1,0..nz) <a href="cpl.html#OF">OF</a> VARS field=0,rhs=0
 
-#define imblapl(f) [f(1,0,0)+f(-1,0,0)+f(0,1,0)+f(0,-1,0)+f(0,0,1)+f(0,0,-1)]/dx/dx
+<a href="cpl.html#C-preprocessor">#define</a> imblapl(f) [f(1,0,0)+f(-1,0,0)+f(0,1,0)+f(0,-1,0)+f(0,0,1)+f(0,0,-1)]/dx/dx
 imbueq<a href="cpl.html#Deferred-assignment">==</a>imblapl(u)-cn&lowast;[p(1,0,0)-p(0,0,0)]
 imbveq<a href="cpl.html#Deferred-assignment">==</a>imblapl(v)-cn&lowast;[p(0,1,0)-p(0,0,0)]
 imbweq<a href="cpl.html#Deferred-assignment">==</a>imblapl(w)-cn&lowast;[p(0,0,1)-p(0,0,0)]

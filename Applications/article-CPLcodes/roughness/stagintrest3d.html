@@ -12,12 +12,12 @@
 <body translate="no"><pre>
 VARS=STRUCTURED <a href="cpl.html#ARRAY">ARRAY</a>(p,u,v,w) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a>
 
-#define uxav0(iy,iz) (0.75&lowast;u(0,iy,iz)+0.25&lowast;u(-1,iy,iz))
-#define uxav1(iy,iz) (0.25&lowast;u(0,iy,iz)+0.75&lowast;u(-1,iy,iz))
-#define vyav0(ix,iz) (0.75&lowast;v(ix,0,iz)+0.25&lowast;v(ix,-1,iz))
-#define vyav1(ix,iz) (0.25&lowast;v(ix,0,iz)+0.75&lowast;v(ix,-1,iz))
-#define wzav0(ix,iy) (0.75&lowast;w(ix,iy,0)+0.25&lowast;w(ix,iy,-1))
-#define wzav1(ix,iy) (0.25&lowast;w(ix,iy,0)+0.75&lowast;w(ix,iy,-1))
+<a href="cpl.html#C-preprocessor">#define</a> uxav0(iy,iz) (0.75&lowast;u(0,iy,iz)+0.25&lowast;u(-1,iy,iz))
+<a href="cpl.html#C-preprocessor">#define</a> uxav1(iy,iz) (0.25&lowast;u(0,iy,iz)+0.75&lowast;u(-1,iy,iz))
+<a href="cpl.html#C-preprocessor">#define</a> vyav0(ix,iz) (0.75&lowast;v(ix,0,iz)+0.25&lowast;v(ix,-1,iz))
+<a href="cpl.html#C-preprocessor">#define</a> vyav1(ix,iz) (0.25&lowast;v(ix,0,iz)+0.75&lowast;v(ix,-1,iz))
+<a href="cpl.html#C-preprocessor">#define</a> wzav0(ix,iy) (0.75&lowast;w(ix,iy,0)+0.25&lowast;w(ix,iy,-1))
+<a href="cpl.html#C-preprocessor">#define</a> wzav1(ix,iy) (0.25&lowast;w(ix,iy,0)+0.75&lowast;w(ix,iy,-1))
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> interp(<a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> VARS c,f<a href="cpl.html#REAL-operator">^</a>) <a href="cpl.html#WITH">WITH</a> c
   f.u(0,0,0)=<a href="cpl.html#Assignment">~</a>+uxav0(0,0)

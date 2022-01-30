@@ -33,7 +33,7 @@
   mirrorbc(field)
 <a href="cpl.html#END">END</a> staircasebc
 
-#define laplacian(f) f(1,0,0)+f(-1,0,0)+f(0,1,0)+f(0,-1,0)+f(0,0,1)+f(0,0,-1)-6&lowast;f(0,0,0)
+<a href="cpl.html#C-preprocessor">#define</a> laplacian(f) f(1,0,0)+f(-1,0,0)+f(0,1,0)+f(0,-1,0)+f(0,0,1)+f(0,0,-1)-6&lowast;f(0,0,0)
 ueq<a href="cpl.html#Deferred-assignment">==</a>laplacian(u)/dx/dx-[p(1,0,0)-p(0,0,0)]/dx
 veq<a href="cpl.html#Deferred-assignment">==</a>laplacian(v)/dx/dx-[p(0,1,0)-p(0,0,0)]/dx
 weq<a href="cpl.html#Deferred-assignment">==</a>laplacian(w)/dx/dx-[p(0,0,1)-p(0,0,0)]/dx

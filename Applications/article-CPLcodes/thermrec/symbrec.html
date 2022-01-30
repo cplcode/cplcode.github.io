@@ -31,21 +31,21 @@ dy=ymax/ny
                  contpos=1,umompos=2,wmompos=3,vmompos=4
 <a href="cpl.html#ARRAY">ARRAY</a>(-1..ny) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> Psi=0,oldPsi
 <a href="cpl.html#ARRAY">ARRAY</a>(1+nvars..ny&lowast;nvars) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> perturbation,oldpert,adjoint,adjdA
-#define u(iy) perturbation[upos+(iy)&lowast;nvars]
-#define v(iy) perturbation[vpos+(iy)&lowast;nvars]
-#define w(iy) perturbation[wpos+(iy)&lowast;nvars]
-#define p(iy) perturbation[ppos+(iy)&lowast;nvars]
+<a href="cpl.html#C-preprocessor">#define</a> u(iy) perturbation[upos+(iy)&lowast;nvars]
+<a href="cpl.html#C-preprocessor">#define</a> v(iy) perturbation[vpos+(iy)&lowast;nvars]
+<a href="cpl.html#C-preprocessor">#define</a> w(iy) perturbation[wpos+(iy)&lowast;nvars]
+<a href="cpl.html#C-preprocessor">#define</a> p(iy) perturbation[ppos+(iy)&lowast;nvars]
 
-#define dym(f,iy) [f(iy)-f(iy-1)]/dy
-#define dyp(f,iy) [f(iy+1)-f(iy)]/dy
-#define dyc(f,iy) [f(iy+1)-f(iy-1)]/2/dy
-#define dy2(f,iy) [f(iy+1)-2&lowast;f(iy)+f(iy-1)]/dy<a href="cpl.html#REAL-operator">^</a>2
-#define laplacian(f) dy2(f,iy)-(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2)&lowast;f(iy)
-#define mum(f) [f(iy)+f(iy-1)]/2
-#define mup(f) [f(iy+1)+f(iy)]/2
-#define U(iy) dym(Psi,iy)
-#define V(iy) [oldPsi(iy)-Psi(iy)]
-#define d2Psi(iy) dy2(Psi,iy)
+<a href="cpl.html#C-preprocessor">#define</a> dym(f,iy) [f(iy)-f(iy-1)]/dy
+<a href="cpl.html#C-preprocessor">#define</a> dyp(f,iy) [f(iy+1)-f(iy)]/dy
+<a href="cpl.html#C-preprocessor">#define</a> dyc(f,iy) [f(iy+1)-f(iy-1)]/2/dy
+<a href="cpl.html#C-preprocessor">#define</a> dy2(f,iy) [f(iy+1)-2&lowast;f(iy)+f(iy-1)]/dy<a href="cpl.html#REAL-operator">^</a>2
+<a href="cpl.html#C-preprocessor">#define</a> laplacian(f) dy2(f,iy)-(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2)&lowast;f(iy)
+<a href="cpl.html#C-preprocessor">#define</a> mum(f) [f(iy)+f(iy-1)]/2
+<a href="cpl.html#C-preprocessor">#define</a> mup(f) [f(iy+1)+f(iy)]/2
+<a href="cpl.html#C-preprocessor">#define</a> U(iy) dym(Psi,iy)
+<a href="cpl.html#C-preprocessor">#define</a> V(iy) [oldPsi(iy)-Psi(iy)]
+<a href="cpl.html#C-preprocessor">#define</a> d2Psi(iy) dy2(Psi,iy)
 
 cont<a href="cpl.html#Deferred-assignment">==</a>dym(v,iy)-I&lowast;alpha&lowast;u(iy)-I&lowast;beta&lowast;w(iy)
 umom<a href="cpl.html#Deferred-assignment">==</a>I&lowast;omega&lowast;u(iy)-I&lowast;alpha&lowast;U(iy)&lowast;u(iy)+mum(d2Psi)&lowast;mum(v)-I&lowast;alpha&lowast;p(iy)-ni&lowast;laplacian(u)
@@ -119,9 +119,9 @@ D_eps_wmom<a href="cpl.html#Deferred-assignment">==</a> mum(V)&lowast;dyc(w,iy)
   <a href="cpl.html#WRITE">WRITE</a> "." ./.
 <a href="cpl.html#END">END</a> InvIt
 
-#define uadj(iy) adjoint[umompos+(iy)&lowast;nvars]
-#define vadj(iy) adjoint[vmompos+(iy)&lowast;nvars]
-#define wadj(iy) adjoint[wmompos+(iy)&lowast;nvars]
+<a href="cpl.html#C-preprocessor">#define</a> uadj(iy) adjoint[umompos+(iy)&lowast;nvars]
+<a href="cpl.html#C-preprocessor">#define</a> vadj(iy) adjoint[vmompos+(iy)&lowast;nvars]
+<a href="cpl.html#C-preprocessor">#define</a> wadj(iy) adjoint[wmompos+(iy)&lowast;nvars]
 
 <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> hfa()
   <a href="cpl.html#RESULT">RESULT</a>=adjdA&lowast;(perturbation-oldpert)

@@ -26,7 +26,7 @@ VFIELD=STRUCTURED <a href="cpl.html#ARRAY">ARRAY</a>[u(0..nx+1,0..ny),
                         v(0..nx+1,1..ny),
                         p(0..nx+1,0..ny)] <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a>
 
-#define laplacian(f) f(1,0)+f(0,1)+f(-1,0)+f(0,-1)-(4+betah<a href="cpl.html#REAL-operator">^</a>2)&lowast;f(0,0)
+<a href="cpl.html#C-preprocessor">#define</a> laplacian(f) f(1,0)+f(0,1)+f(-1,0)+f(0,-1)-(4+betah<a href="cpl.html#REAL-operator">^</a>2)&lowast;f(0,0)
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> uconv(<a href="cpl.html#INTEGER">INTEGER</a> ix,iy)=[u(ix+1,iy)+u(ix,iy)]<a href="cpl.html#REAL-operator">^</a>2-[u(ix,iy)+u(ix-1,iy)]<a href="cpl.html#REAL-operator">^</a>2+
   [u(ix,iy+1)+u(ix,iy)]&lowast;[v(ix,iy+1)+v(ix-1,iy+1)]-[u(ix,iy-1)+u(ix,iy)]&lowast;[v(ix,iy)+v(ix-1,iy)]
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> vconv(<a href="cpl.html#INTEGER">INTEGER</a> ix,iy)=[v(ix,iy+1)+v(ix,iy)]<a href="cpl.html#REAL-operator">^</a>2-[v(ix,iy-1)+v(ix,iy)]<a href="cpl.html#REAL-operator">^</a>2+

@@ -51,13 +51,13 @@ a0=<a href="cpl.html#Builtin">LOG</a>(3.109)/0.392+4.48
   <a href="cpl.html#LOOP">REPEAT</a>
   <a href="cpl.html#DO">DO</a> nu(iy)={<a href="cpl.html#IF">IF</a> confined <a href="cpl.html#IF">THEN</a> 1-y(iy)/Re <a href="cpl.html#ELSE">ELSE</a> 1}&lowast;[y(iy)-y(iy-1)]/[U(iy)-U(iy-1)]
   <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny+1
-  #define D2(p,j) {[p(j+1)-p(j)]/[y(j+1)-y(j)]-[p(j)-p(j-1)]/[y(j)-y(j-1)]}&lowast;2/[y(j+1)-y(j-1)]
-  #define D1(p,j) [p(j+1)-p(j-1)]/[y(j+1)-y(j-1)]
+  <a href="cpl.html#C-preprocessor">#define</a> D2(p,j) {[p(j+1)-p(j)]/[y(j+1)-y(j)]-[p(j)-p(j-1)]/[y(j)-y(j-1)]}&lowast;2/[y(j+1)-y(j-1)]
+  <a href="cpl.html#C-preprocessor">#define</a> D1(p,j) [p(j+1)-p(j-1)]/[y(j+1)-y(j-1)]
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
-    #define omega(j) {D2(psi,j)-alpha<a href="cpl.html#REAL-operator">^</a>2&lowast;psi(j)}
-    #define nuomg(psi,n) {[nu(n)+nu(n+1)]/2&lowast;D2(psi,n)+[nu(n+1)-nu(n)]&lowast;2/[y(n+1)-y(n-1)]&lowast;D1(U,n)/[U(n)+1E-8]&lowast;psi(n)}
-    #define nuomega(n) nuomg(psi,n)-[nu(n)+nu(n+1)]/2&lowast;alpha<a href="cpl.html#REAL-operator">^</a>2&lowast;psi(n)
-    #define nuOmega(n) nuomg(U,n)
+    <a href="cpl.html#C-preprocessor">#define</a> omega(j) {D2(psi,j)-alpha<a href="cpl.html#REAL-operator">^</a>2&lowast;psi(j)}
+    <a href="cpl.html#C-preprocessor">#define</a> nuomg(psi,n) {[nu(n)+nu(n+1)]/2&lowast;D2(psi,n)+[nu(n+1)-nu(n)]&lowast;2/[y(n+1)-y(n-1)]&lowast;D1(U,n)/[U(n)+1E-8]&lowast;psi(n)}
+    <a href="cpl.html#C-preprocessor">#define</a> nuomega(n) nuomg(psi,n)-[nu(n)+nu(n+1)]/2&lowast;alpha<a href="cpl.html#REAL-operator">^</a>2&lowast;psi(n)
+    <a href="cpl.html#C-preprocessor">#define</a> nuOmega(n) nuomg(U,n)
 <span class=comment>!(
     #define nuomega(j) [nu(j)+nu(j+1)]/2&lowast;{omega(j)-D2(U,j)/[U(j)+1E-8]&lowast;psi(j)}+ \
     {nu(j+1)&lowast;[U(j+1)-U(j)]/[y(j+1)-y(j)]-nu(j)&lowast;[U(j)-U(j-1)]/[y(j)-y(j-1)]}&lowast;2/[y(j+1)-y(j-1)]/[U(j)+1E-8]&lowast;psi(j)

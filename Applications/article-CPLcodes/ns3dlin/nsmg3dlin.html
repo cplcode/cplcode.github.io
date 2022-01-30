@@ -136,7 +136,7 @@ XPDIR=4; XNDIR=8
 relax2=1
 cnt<a href="cpl.html#Deferred-assignment">==</a>[u(-1,0,0)-u(0,0,0)+v(0,-1,0)-v(0,0,0)+w(0,0,-1)-w(0,0,0)]/dx
 <span class=comment>! #define limiter(V) 1-V</span>
-#define limiter(V) <a href="cpl.html#IF">IF</a> V&gt;2 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> V&lt;-2 <a href="cpl.html#IF">THEN</a> -2&lowast;V <a href="cpl.html#ELSE">ELSE</a> 1-V&lowast;(1-V/4)
+<a href="cpl.html#C-preprocessor">#define</a> limiter(V) <a href="cpl.html#IF">IF</a> V&gt;2 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> V&lt;-2 <a href="cpl.html#IF">THEN</a> -2&lowast;V <a href="cpl.html#ELSE">ELSE</a> 1-V&lowast;(1-V/4)
 <span class=comment>! #define limiter(V) IF V&gt;1 THEN 0 ELSE IF V&lt;-1 THEN -2&lowast;V ELSE 1-V</span>
 <span class=comment>! #define limiter(V) IF V&gt;0 THEN 1 ELSE 1-2&lowast;V</span>
 <span class=comment>!(
@@ -259,10 +259,10 @@ wcd=={w(1,0,0)+w(-1,0,0)+w(0,1,0)+w(0,-1,0)+w(0,0,1)+w(0,0,-1)-6&lowast;w(0,0,0)
   <a href="parallel.html#PARALLEL">PARALLEL</a> <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ismp=0 <a href="cpl.html#TO">TO</a> nsmp-1
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#MAX">MAX</a>(1,field.<a href="cpl.html#LO">LO1</a>+1) <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI1</a>-1 <a href="cpl.html#AND">AND</a> iy=1+<a href="cpl.html#ROUND">ROUND</a>[ismp/nsmp&lowast;(field.<a href="cpl.html#HI">HI2</a>-1)] <a href="cpl.html#TO">TO</a> <a href="cpl.html#ROUND">ROUND</a>[(ismp+1)/nsmp&lowast;(field.<a href="cpl.html#HI">HI2</a>-1)] <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI3</a>-1
     b=<a href="cpl.html#REAL-operator">^</a>base(ix+&lowast;,iy+&lowast;,iz+&lowast;); f=<a href="cpl.html#REAL-operator">^</a>field(ix+&lowast;,iy+&lowast;,iz+&lowast;)
-    #define p(i,j,k) b.p(i,j,k)+eps&lowast;f.p(i,j,k)
-    #define u(i,j,k) b.u(i,j,k)+eps&lowast;f.u(i,j,k)
-    #define v(i,j,k) b.v(i,j,k)+eps&lowast;f.v(i,j,k)
-    #define w(i,j,k) b.w(i,j,k)+eps&lowast;f.w(i,j,k)
+    <a href="cpl.html#C-preprocessor">#define</a> p(i,j,k) b.p(i,j,k)+eps&lowast;f.p(i,j,k)
+    <a href="cpl.html#C-preprocessor">#define</a> u(i,j,k) b.u(i,j,k)+eps&lowast;f.u(i,j,k)
+    <a href="cpl.html#C-preprocessor">#define</a> v(i,j,k) b.v(i,j,k)+eps&lowast;f.v(i,j,k)
+    <a href="cpl.html#C-preprocessor">#define</a> w(i,j,k) b.w(i,j,k)+eps&lowast;f.w(i,j,k)
     eps=0
     tn.p(ix,iy,iz)=<a href="symbolic.html#Top">D</a>(cnt,eps)
     <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#OR">OR</a> ix+1#field.<a href="cpl.html#HI">HI1</a> <a href="cpl.html#IF">THEN</a> tn.u(ix,iy,iz)=<a href="symbolic.html#Top">D</a>(ucd,eps)
@@ -362,12 +362,12 @@ wcd=={w(1,0,0)+w(-1,0,0)+w(0,1,0)+w(0,-1,0)+w(0,0,1)+w(0,0,-1)-6&lowast;w(0,0,0)
 <a href="cpl.html#FOR">FOR</a> 2 <a href="cpl.html#TIMES">TIMES</a>
 <a href="cpl.html#END">END</a> oversmooth
 
-#define uxav0(iy,iz) (0.75&lowast;u(0,iy,iz)+0.25&lowast;u(-1,iy,iz))
-#define uxav1(iy,iz) (0.25&lowast;u(0,iy,iz)+0.75&lowast;u(-1,iy,iz))
-#define vyav0(ix,iz) (0.75&lowast;v(ix,0,iz)+0.25&lowast;v(ix,-1,iz))
-#define vyav1(ix,iz) (0.25&lowast;v(ix,0,iz)+0.75&lowast;v(ix,-1,iz))
-#define wzav0(ix,iy) (0.75&lowast;w(ix,iy,0)+0.25&lowast;w(ix,iy,-1))
-#define wzav1(ix,iy) (0.25&lowast;w(ix,iy,0)+0.75&lowast;w(ix,iy,-1))
+<a href="cpl.html#C-preprocessor">#define</a> uxav0(iy,iz) (0.75&lowast;u(0,iy,iz)+0.25&lowast;u(-1,iy,iz))
+<a href="cpl.html#C-preprocessor">#define</a> uxav1(iy,iz) (0.25&lowast;u(0,iy,iz)+0.75&lowast;u(-1,iy,iz))
+<a href="cpl.html#C-preprocessor">#define</a> vyav0(ix,iz) (0.75&lowast;v(ix,0,iz)+0.25&lowast;v(ix,-1,iz))
+<a href="cpl.html#C-preprocessor">#define</a> vyav1(ix,iz) (0.25&lowast;v(ix,0,iz)+0.75&lowast;v(ix,-1,iz))
+<a href="cpl.html#C-preprocessor">#define</a> wzav0(ix,iy) (0.75&lowast;w(ix,iy,0)+0.25&lowast;w(ix,iy,-1))
+<a href="cpl.html#C-preprocessor">#define</a> wzav1(ix,iy) (0.25&lowast;w(ix,iy,0)+0.75&lowast;w(ix,iy,-1))
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> interp(VFIELD c,f<a href="cpl.html#REAL-operator">^</a>) <a href="cpl.html#WITH">WITH</a> c
   f.u(0,0,0)=<a href="cpl.html#Assignment">~</a>+uxav0(0,0)
   f.u(-1,0,0)=<a href="cpl.html#Assignment">~</a>+uxav1(0,0)
