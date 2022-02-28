@@ -1,2 +1,2 @@
-2022-01-30 is available.
-Misc bug corrections. Re-introduction of the INLINE declaration in symbolic.cpl.
+2022-02-28 is available.
+Re-introduction of the INLINE FUNCTION declaration in symbolic.cpl. Some corrections.

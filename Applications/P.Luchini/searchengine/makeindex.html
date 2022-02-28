@@ -34,8 +34,8 @@ alpha(248)="o"
 <a href="cpl.html#DO">DO</a> alpha(i)="u" <a href="cpl.html#FOR">FOR</a> i=249 <a href="cpl.html#TO">TO</a> 252
 
 <a href="cpl.html#FRI-SECTION">FRI SECTION</a>
-function "INTEGER"]= cut argument <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> type &lowast; value =[ &lowast;]= cut =[function <a href="cpl.html#INTEGER">INTEGER</a> value "(int)" #1
-function "ITEM"]= cut argument <a href="cpl.html#INTEGER">INTEGER</a> value =[ &lowast;]= cut =[function <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> type "item" value "(void &lowast;)" #1
+function "INTEGER"]= cut =[argument -&gt; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> type &lowast; value =[ &lowast;]= cut =[function <a href="cpl.html#INTEGER">INTEGER</a> "l" value "(ssize_t)" #1
+function "ITEM"]= cut =[argument -&gt; <a href="cpl.html#INTEGER">INTEGER</a> "l" value =[ &lowast;]= cut =[function <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> type "item" value "(void &lowast;)" #1
 <a href="cpl.html#END">END</a> <a href="cpl.html#FRI-SECTION">FRI SECTION</a>
 
 <a href="cpl.html#TYPE">TYPE</a> item=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item brother,son
@@ -46,7 +46,7 @@ item NIL; <a href="cpl.html#WITH">WITH</a> NIL: brother=NIL; son=NIL; c(0)=255
 
 replim=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(2))
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> SortIn(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item <a href="cpl.html#VARIABLE">VARIABLE</a> prev; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#CHAR">CHAR</a> buf; <a href="cpl.html#INTEGER">INTEGER</a> ref)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> SortIn(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item <a href="cpl.html#VARIABLE">VARIABLE</a> prev; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#CHAR">CHAR</a> buf; long ref)
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item loc=prev
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> buf pos=0
 <a href="cpl.html#LOOP">LOOP</a> sort
@@ -157,7 +157,7 @@ traverse(root,root,0,0)
 !)</span>
 
 indexsize=0x10000000
-<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..indexsize-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> index=<a href="cpl.html#CREATE">CREATE</a>(""<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1)".idx")
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..indexsize-1) <a href="cpl.html#OF">OF</a> long index=<a href="cpl.html#CREATE">CREATE</a>(""<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1)".idx")
 <span class=comment>! index=MMAP(indexstor)</span>
 
 <span class=comment>!(

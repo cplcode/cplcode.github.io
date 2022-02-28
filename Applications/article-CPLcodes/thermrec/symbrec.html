@@ -59,8 +59,8 @@ D_eps_wmom<a href="cpl.html#Deferred-assignment">==</a> mum(V)&lowast;dyc(w,iy)
 <a href="cpl.html#REAL">REAL</a> omega,beta,ni,x
 <a href="complex.html#Top">COMPLEX</a> alpha
 <a href="cpl.html#ARRAY">ARRAY</a>(1+nvars..ny&lowast;nvars,-(2&lowast;nvars-1)..2&lowast;nvars-1) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A,dA
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> AA(<a href="cpl.html#INTEGER">INTEGER</a> pos1,pos2)=A(pos1+nvars&lowast;(&lowast;),pos2-pos1+nvars&lowast;(&lowast;))
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> dAA(<a href="cpl.html#INTEGER">INTEGER</a> pos1,pos2)=dA(pos1+nvars&lowast;(&lowast;),pos2-pos1+nvars&lowast;(&lowast;))
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> AA(pos1,pos2)=A(pos1+nvars&lowast;(&lowast;),pos2-pos1+nvars&lowast;(&lowast;))
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> dAA(pos1,pos2)=dA(pos1+nvars&lowast;(&lowast;),pos2-pos1+nvars&lowast;(&lowast;))
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BaseFlow()
   <a href="cpl.html#REAL">REAL</a> U0(0..ny)

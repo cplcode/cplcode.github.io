@@ -7,45 +7,45 @@ beta=0.45; nm=8; nx=100; ny=100; ymax=12; dy=ymax/ny; dx=1/nx
 
 INTEGER CONSTANT upos=1,vpos=2,wpos=3,ppos=4,nvars=4
 ARRAY(1..(ny+1)*nvars,0..nm) OF COMPLEX Fmem,oldF
-INLINE FUNCTION F(INTEGER var,iy,im)=Fmem(var+nvars*iy,im)
-INLINE FUNCTION y(INTEGER iy)=dy*iy
+INLINE FUNCTION F(var,iy,im)=Fmem(var+nvars*iy,im)
+INLINE FUNCTION y(iy)=dy*iy
 ! u=F(upos)
-INLINE u(iy,im)=F(upos,iy,im)
-INLINE v(iy,im)=F(vpos,iy,im)
-INLINE w(iy,im)=F(wpos,iy,im)
-INLINE p(iy,im)=0.5*[F(ppos,iy+1,im)+F(ppos,iy,im)]
+INLINE FUNCTION u(iy,im)=F(upos,iy,im)
+INLINE FUNCTION v(iy,im)=F(vpos,iy,im)
+INLINE FUNCTION w(iy,im)=F(wpos,iy,im)
+INLINE FUNCTION p(iy,im)=0.5*[F(ppos,iy+1,im)+F(ppos,iy,im)]
 
 #define D_z(f) I*im*beta*f
-INLINE D_x_F(var,iy,im)=(F(var,iy,im)-oldF(var+nvars*iy,im))/dx
-INLINE D_y_F(var,iy,im)=[F(var,iy+1,im)-F(var,iy-1,im)]/2/dy
-INLINE D_y_D_y_F(var,iy,im)=[F(var,iy+1,im)-2*F(var,iy,im)+F(var,iy-1,im)]/dy^2
-INLINE D_y_p(iy,im)=[F(ppos,iy+1,im)-F(ppos,iy,im)]/dy
+INLINE FUNCTION D_x_F(var,iy,im)=(F(var,iy,im)-oldF(var+nvars*iy,im))/dx
+INLINE FUNCTION D_y_F(var,iy,im)=[F(var,iy+1,im)-F(var,iy-1,im)]/2/dy
+INLINE FUNCTION D_y_D_y_F(var,iy,im)=[F(var,iy+1,im)-2*F(var,iy,im)+F(var,iy-1,im)]/dy^2
+INLINE FUNCTION D_y_p(iy,im)=[F(ppos,iy+1,im)-F(ppos,iy,im)]/dy
 #define laplacian(f) D_y(D_y(f))+D_z(D_z(f))
 
 ARRAY(1..6,0..ny,0..nm) OF COMPLEX Cmem,oldC
-INLINE F1(var,iy,im) = IF im>=0 THEN F(var,iy,im) ELSE CONJG(F(var,iy,-im))
-INLINE C(var1,var2,iy,im)=Cmem(var1+(var2-1)*var2 DIV 2,iy,im)
+INLINE FUNCTION F1(var,iy,im) = IF im>=0 THEN F(var,iy,im) ELSE CONJG(F(var,iy,-im))
+INLINE FUNCTION C(var1,var2,iy,im)=Cmem(var1+(var2-1)*var2 DIV 2,iy,im)
 SUBROUTINE convolutions
   DO
     C(var1,var2,iy,im)=SUM F1(var1,iy,im1)*F1(var2,iy,im-im1) FOR im1=MAX(-nm,im-nm) TO MIN(nm,im+nm)
   FOR var1=upos TO wpos AND var2=var1 TO wpos AND iy=0 TO ny AND im=0 TO nm
 END convolutions
-INLINE D_x_C(var1,var2,iy,im)=(C(var1,var2,iy,im)-oldC(var1+(var2-1)*var2 DIV 2,iy,im))/dx
-INLINE D_y_C(var1,var2,iy,im)=[C(var1,var2,iy+1,im)-C(var1,var2,iy-1,im)]/2/dy
-INLINE D_F_C(var1,var2,iy1,im1)=IF ABS(im1-im)>nm OR iy1#iy+j THEN 0 ELSE [IF var1#jv THEN 0 ELSE F1(var2,iy1,im1-im)]+[IF var2#jv THEN 0 ELSE F1(var1,iy1,im1-im)]
+INLINE FUNCTION D_x_C(var1,var2,iy,im)=(C(var1,var2,iy,im)-oldC(var1+(var2-1)*var2 DIV 2,iy,im))/dx
+INLINE FUNCTION D_y_C(var1,var2,iy,im)=[C(var1,var2,iy+1,im)-C(var1,var2,iy-1,im)]/2/dy
+INLINE FUNCTION D_F_C(var1,var2,iy1,im1)=IF ABS(im1-im)>nm OR iy1#iy+j THEN 0 ELSE [IF var1#jv THEN 0 ELSE F1(var2,iy1,im1-im)]+[IF var2#jv THEN 0 ELSE F1(var1,iy1,im1-im)]
 ! uu=[trace]C(upos,upos)
-INLINE uu(iy,im)=C(upos,upos,iy,im); INLINE uv(iy,im)=C(upos,vpos,iy,im); INLINE uw(iy,im)=C(upos,wpos,iy,im)
-INLINE vv(iy,im)=C(vpos,vpos,iy,im); INLINE vw(iy,im)=C(vpos,wpos,iy,im); INLINE ww(iy,im)=C(wpos,wpos,iy,im)
+INLINE FUNCTION uu(iy,im)=C(upos,upos,iy,im); INLINE FUNCTION uv(iy,im)=C(upos,vpos,iy,im); INLINE FUNCTION uw(iy,im)=C(upos,wpos,iy,im)
+INLINE FUNCTION vv(iy,im)=C(vpos,vpos,iy,im); INLINE FUNCTION vw(iy,im)=C(vpos,wpos,iy,im); INLINE FUNCTION ww(iy,im)=C(wpos,wpos,iy,im)
 
 ! 3D B-L
-INLINE cont(iy,im)=0.5*{D_x(u(iy,im))+D_z(w(iy,im))+[D_x(u(iy-1,im))+D_z(w(iy-1,im))]}+[v(iy,im)-v(iy-1,im)]/dy
-INLINE umom(iy,im)=D_x(uu(iy,im))+D_y(uv(iy,im))+D_z(uw(iy,im))-laplacian(u(iy,im))
-INLINE vmom(iy,im)=D_x(uv(iy,im))+D_y(vv(iy,im))+D_z(vw(iy,im))+D_y(p(iy,im))-laplacian(v(iy,im))
-INLINE wmom(iy,im)=D_x(uw(iy,im))+D_y(vw(iy,im))+D_z(ww(iy,im))+D_z(p(iy,im))-laplacian(w(iy,im))
+INLINE FUNCTION cont(iy,im)=0.5*{D_x(u(iy,im))+D_z(w(iy,im))+[D_x(u(iy-1,im))+D_z(w(iy-1,im))]}+[v(iy,im)-v(iy-1,im)]/dy
+INLINE FUNCTION umom(iy,im)=D_x(uu(iy,im))+D_y(uv(iy,im))+D_z(uw(iy,im))-laplacian(u(iy,im))
+INLINE FUNCTION vmom(iy,im)=D_x(uv(iy,im))+D_y(vv(iy,im))+D_z(vw(iy,im))+D_y(p(iy,im))-laplacian(v(iy,im))
+INLINE FUNCTION wmom(iy,im)=D_x(uw(iy,im))+D_y(vw(iy,im))+D_z(ww(iy,im))+D_z(p(iy,im))-laplacian(w(iy,im))
 
 ARRAY(1+nvars..ny*nvars,-(2*nvars-1)..2*nvars-1) OF COMPLEX A
 SUBROUTINE buildmat(INTEGER im)
-INLINE FUNCTION AA(INTEGER var1,var2)=A(var1+nvars*(*),var2-var1+nvars*(*))
+INLINE FUNCTION AA(var1,var2)=A(var1+nvars*(*),var2-var1+nvars*(*))
 LOOP FOR iy=1 TO ny-1 AND j=-1 TO 1 AND jv=1 TO nvars
   AA(vpos,jv,iy,j)=D(cont(iy,im),F[jv,iy+j,im])
   AA(upos,jv,iy,j)=D(umom(iy,im),F[jv,iy+j,im])

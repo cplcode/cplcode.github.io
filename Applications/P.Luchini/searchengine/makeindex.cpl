@@ -22,8 +22,8 @@ alpha(248)="o"
 DO alpha(i)="u" FOR i=249 TO 252
 
 FRI SECTION
-function "INTEGER"]= cut argument POINTER TO type * value =[ *]= cut =[function INTEGER value "(int)" #1
-function "ITEM"]= cut argument INTEGER value =[ *]= cut =[function POINTER TO type "item" value "(void *)" #1
+function "INTEGER"]= cut =[argument -> POINTER TO type * value =[ *]= cut =[function INTEGER "l" value "(ssize_t)" #1
+function "ITEM"]= cut =[argument -> INTEGER "l" value =[ *]= cut =[function POINTER TO type "item" value "(void *)" #1
 END FRI SECTION
 
 TYPE item=STRUCTURE(POINTER TO item brother,son
@@ -34,7 +34,7 @@ POINTER TO item root=NIL
 
 replim=atoi(COMMANDLINE(2))
 
-SUBROUTINE SortIn(POINTER TO POINTER TO item VARIABLE prev; POINTER TO ARRAY(*) OF CHAR buf; INTEGER ref)
+SUBROUTINE SortIn(POINTER TO POINTER TO item VARIABLE prev; POINTER TO ARRAY(*) OF CHAR buf; long ref)
 POINTER TO item loc=prev
 POINTER INTO buf pos=0
 LOOP sort
@@ -145,7 +145,7 @@ traverse(root,root,0,0)
 !)
 
 indexsize=0x10000000
-POINTER TO STORED ARRAY(0..indexsize-1) OF INTEGER index=CREATE(""COMMANDLINE(1)".idx")
+POINTER TO STORED ARRAY(0..indexsize-1) OF long index=CREATE(""COMMANDLINE(1)".idx")
 ! index=MMAP(indexstor)
 
 !(

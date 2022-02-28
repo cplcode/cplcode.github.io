@@ -47,8 +47,8 @@ D_eps_wmom== mum(V)*dyc(w,iy)
 REAL omega,beta,ni,x
 COMPLEX alpha
 ARRAY(1+nvars..ny*nvars,-(2*nvars-1)..2*nvars-1) OF COMPLEX A,dA
-INLINE FUNCTION AA(INTEGER pos1,pos2)=A(pos1+nvars*(*),pos2-pos1+nvars*(*))
-INLINE FUNCTION dAA(INTEGER pos1,pos2)=dA(pos1+nvars*(*),pos2-pos1+nvars*(*))
+INLINE FUNCTION AA(pos1,pos2)=A(pos1+nvars*(*),pos2-pos1+nvars*(*))
+INLINE FUNCTION dAA(pos1,pos2)=dA(pos1+nvars*(*),pos2-pos1+nvars*(*))
 
 SUBROUTINE BaseFlow()
   REAL U0(0..ny)

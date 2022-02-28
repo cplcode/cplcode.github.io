@@ -44,7 +44,7 @@ form2 = <<FORM2
 <A href="?#istruzioni"><small>ISTRUZIONI</small></A></td></tr></TABLE></FORM>
 FORM2
 
-istruzioni = <<ISTRUZIONI
+istruzioni = <<FINEISTRUZIONI
 <H3><A name=istruzioni>ISTRUZIONI</A></H3>
 <P>Indicare una o pi&uacute parole da ricercare, usando se necessario le
 congiunzioni logiche "<B>e</B>", "<B>o</B>", "<B>e non</B>". "<B>e</B>" ha
@@ -67,7 +67,7 @@ con il messaggio <B>Richiesta troppo generica</B>. Specificare meglio la
 richiesta.</P>
 <P>Per esempio: &nbsp <A href="?q=%2Bwave*+fluid%3F+e+non+water"> +wave* fluid?
 e non water</A></P>
-ISTRUZIONI
+FINEISTRUZIONI
 
 segnala1 = <<segnala1
 <form action="/~luchini/segnala.cgi" name="f" method="post">
