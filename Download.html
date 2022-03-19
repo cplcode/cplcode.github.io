@@ -31,9 +31,18 @@
   <a href="./"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
   <div class=page>
     <h1>Download CPL</h1>
-    <p>The CPL tools come in a self-extracting archive, which you can download at the bottom of this page. The archive unpacks to its own directory in user space and requires no privileges.
-    <h2>System requirements</h2>
-    <p>The CPL compiler and interpreter run on Linux/unix systems. They were developed on <a href="https://www.debian.org" target=_blank>Debian GNU/Linux</a>, and this is the system where most tests were performed. Nonetheless the tools and the way they are packed are not tied to a specific flavour of Linux or unix nor to a specific processor architecture; any of the widespread Linux/unix distributions on either personal or datacenter systems should unpack and use them equally well, and all those tested did. The tools have also been successfully deployed in <a href="https://raspberrypi.org" target=_blank>Raspberry Pi</a> and <a href="https://www.element14.com/community/docs/DOC-84108/l/beaglebone-black-development-board-with-1ghz-am335x-arm-cortex-a8-processor" target=_blank>Beaglebone Black</a> ARM-based microboards, as well as in non-Linux unices such as older Silicon Graphics machines and BSD systems including Apple Macintosh computers, for which step-by-step instruction are provided in <a href="macOS-howto">this Macintosh howto</a>. And the <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target=_blank>Windows Subsystem for Linux (WSL)</a>, which is an integral part of Microsoft Windows 10, essentially <em>is</em> Debian GNU/Linux (except for its graphical user interface); step-by-step instructions are provided in <a href="Windows-howto">this Windows howto</a>.</p>
+    <p>This software is made available under the terms of its enclosed <a href="version-archive/LICENSE.txt" target=_blank>LICENSE</a>. Versions are denoted by their date. Current version is <strong>2022-03-08</strong>.</p>
+<h3 style="text-align:center">Linux/Unix</h3>
+<p>To download the CPL tools, execute the following click-to-copy line in a terminal:</p>
+    <pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">curl -fsS -o /tmp/unpack-cpl.sh https://CPLcode.net/version-archive/unpack-cpl.sh && sh /tmp/unpack-cpl.sh</pre>
+    <p><strong>You will be asked for confirmation before proceeding.</strong> If you experience difficulties please see the Q&amp;A list of <a href="Documentation/cpl.html#Q&A">common problems and their solutions</a>. Have a look at the <a href=Applications/Tutorial>Tutorials</a> and <q>runcpl Helloworld</q>!</p>
+    <p>Or alternately, <a class=button href="version-archive"><strong>access the version archive</strong></a>.</p>
+    <br>
+<h3 style="text-align:center"><a href="macOS-howto">Macintosh</a>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<a href="Windows-howto">Windows</a></h3>
+<br>
+<h2>System requirements</h2>
+    <p>The CPL compiler, interpreter and editor come in a self-extracting archive which unpacks to its own directory in user space and requires no privileges.</p>
+    <p>The CPL tools run on Linux/unix systems. They were developed on <a href="https://www.debian.org" target=_blank>Debian GNU/Linux</a>, and this is the system where most tests were performed. Nonetheless the tools and the way they are packed are not tied to a specific flavour of Linux or unix nor to a specific processor architecture; any of the widespread Linux/unix distributions on either personal or datacenter systems should unpack and use them equally well, and all those tested did. The tools have also been successfully deployed in <a href="https://raspberrypi.org" target=_blank>Raspberry Pi</a> and <a href="https://www.element14.com/community/docs/DOC-84108/l/beaglebone-black-development-board-with-1ghz-am335x-arm-cortex-a8-processor" target=_blank>Beaglebone Black</a> ARM-based microboards, as well as in non-Linux unices such as older Silicon Graphics machines and BSD systems including Apple Macintosh computers, for which step-by-step instruction are provided in <a href="macOS-howto">this Macintosh howto</a>. And the <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target=_blank>Windows Subsystem for Linux (WSL)</a>, which is an integral part of Microsoft Windows 10, essentially <em>is</em> Debian GNU/Linux (except for its graphical user interface); step-by-step instructions are provided in <a href="Windows-howto">this Windows howto</a>.</p>
     <p>Only basic system tools are required: gzip, tar, cc, make, info, plus <a href="https://sourceforge.net/projects/gnuplot/" target=_blank>gnuplot</a> if you want graphics and <a href="https://curl.se">curl</a> for optional automatic updates. For maximal compatibility the adopted C compiler should be <a href="https://gcc.gnu.org" target=_blank>gcc</a> (as the system compiler is by default in most Linux distributions), but other compilers (e.g. <a href="https://software.intel.com/content/www/us/en/develop/tools/oneapi/components/dpc-compiler.html" target=_blank>icc</a>) have also been used with success. However, CPL <a href="Documentation/cpl.html#nested-functions">nested functions</a> are implemented as C nested functions, a nonstandard gcc extension, and will become unavailable if a compiler other than gcc is used (or if the system's default gcc options disable them).</p>
 
     <h2>Storage requirements</h2>
@@ -52,20 +61,6 @@
     <p> On a finer scale, the optional CPL <a href="Documentation/cpl.html#Library">libraries</a> provided in the package also come with different levels of maturity. See comments in each.</p>
     <p>Mature or not as the code is, bugs will happen. If you believe you found a bug, or an inconsistency between the compiler's behaviour and its documentation, you will do an appreciable service to the CPL community by filing a bug report with <img src="images/bugreports.png" class=em alt="(.....)"> . With your description please enclose a code snippet, as short as possible but complete enough that it compiles as is and triggers the non-conforming behaviour.</p> 
 
-<h2>Downloads</h2>
-    <p>This software is provided under the terms of its enclosed <a href="version-archive/LICENSE.txt" target=_blank>LICENSE</a>. Version updates are denoted by their date. File names in the version archive include dates. Current version is <strong>2022-03-08</strong>.</p>
-<h3 style="text-align:center"><a href="macOS-howto">Macintosh</a>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<a href="Windows-howto">Windows</a></h3>
-<h3 style="text-align:center">Linux/unix</h3>
-<p>To download and unpack the CPL archive, <strong>execute the following click-to-copy line in a terminal:</strong></p>
-    <pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">curl -fsS -o /tmp/unpack-cpl.sh https://CPLcode.net/version-archive/unpack-cpl.sh && sh /tmp/unpack-cpl.sh</pre>
-    <p><strong>You will be asked for confirmation before proceeding.</strong> If you experience difficulties please see the Q&amp;A list of <a href="Documentation/cpl.html#Q&A">common problems and their solutions</a>.</p>
-    <p>Or alternately,<a class=button href="version-archive"><strong>access the version archive</strong></a>.</p>
-<!--
-    <nav>
-      <a class=button href="version-archive/2022-03-08-cpl.sh" download>Agree and download current version</a>
-      <a class=button href="version-archive">Agree and access version archive</a>
-    </nav>
--->
   <div id=snackbar>copied.</div>
   <footer>
       <p><a href="./">Back</a></p>

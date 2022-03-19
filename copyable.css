@@ -7,7 +7,7 @@
       padding:0.5em;
       /*margin:1em;*/
     }
-    .button:hover{
+    .button:hover,.copyable:hover{
       background-color:gold;
     }
     .copyable{
