@@ -4,8 +4,8 @@ WRITE "Hello world!"
 
 ! If this is your first CPL program, download this (or any of the other
 ! tutorial examples) to a working directory in your computer, compile it
-! with the command "makecpl Helloworld", then execute "./Helloworld".
-! Or, compile and execute all at once with "makecpl -r Helloworld".
+! with the command "cpl make Helloworld", then execute "./Helloworld".
+! Or, compile and execute all at once with "cpl run Helloworld".
 
 ! In case of trouble, please read "Troubleshooting" at the end of the Tutorial.
 

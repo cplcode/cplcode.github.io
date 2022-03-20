@@ -1,2 +1,2 @@
-2022-03-19 is available.
-Re-introduction of the INLINE FUNCTION declaration in symbolic.cpl. Misc. corrections.
+2022-03-20 is available.
+Redenomination of compilation commands. "makecpl" becomes "cpl make", "makecpl -a" becomes "cpl remake", "makecpl -r" becomes "cpl run", "icpl" becomes "cpl i", "icpl -edit" becomes "cpl edit", "infocpl" becomes "cpl info". The old names remain available for backward compatibility.

@@ -5,8 +5,8 @@
   <title>CPL Reference Manual</title>
   <meta name="author" content="Paolo Luchini">
   <meta name="copyright" content="Copyright 2001-2020 Paolo Luchini">
-  <meta name="description" content="Language reference manual for CPL, a programming language designed and developed by Paolo Luchini during 1993-2021. CPL has bounds-checked arrays, subarray selections transparent to structure fields, overloaded functions, optional parameters, structured arrays, parentheses, brackets and braces used like in mathematics. Offered for download are an incremental, extensible compiler, interactive interpreter and ide text editor. Extensions include matrix operations, gnuplot graphics and symbolic math manipulation.">
-  <meta name="keywords" content="cpl, CPL, cplcode, CPLcode, statement, declaration, control statement, module, function, subroutine, optional parameter, bounds-checked, array, subarray, structure, structured array, matrix, symbolic math, symbolic manipulation, gnuplot, plotting, numerical, scientific, computation, computational, code, program, programmer, programming language, incremental, extensible, source-to-source, compiler, compiler-compiler, interpreter, compiler-interpreter, ide, text editor, fri, FRI, makecpl, icpl, edit">
+  <meta name="description" content="Language reference manual for CPL, a programming language designed and developed by Paolo Luchini during 1993-2022. CPL has bounds-checked arrays, subarray selections transparent to structure fields, overloaded functions, optional parameters, structured arrays, parentheses, brackets and braces used like in mathematics. Offered for download are an incremental, extensible compiler, interactive interpreter and ide text editor. Extensions include matrix operations, gnuplot graphics and symbolic math manipulation.">
+  <meta name="keywords" content="cpl, CPL, cplcode, CPLcode, statement, declaration, control statement, module, function, subroutine, optional parameter, bounds-checked, array, subarray, structure, structured array, matrix, symbolic math, symbolic manipulation, gnuplot, plotting, numerical, scientific, computation, computational, code, program, programmer, programming language, incremental, extensible, source-to-source, compiler, compiler-compiler, interpreter, compiler-interpreter, ide, text editor, fri, FRI, make, interactive, edit">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="author" href="https://CPLcode.net/Paolo.Luchini">
   <link rel="author" href="https://scholar.google.com/citations?user=thlSP34AAAAJ">
@@ -65,7 +65,7 @@
 <body translate="no"><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
 
 </div><div class=page id="Top">
-Page: (fri)Top, Next: <a href="#FRI-architecture">FRI architecture</a>, Up: <a href="cpl.html#makecpl">(cpl)makecpl</a>
+Page: (fri)Top, Next: <a href="#FRI-architecture">FRI architecture</a>, Up: <a href="cpl.html#cpl">(cpl)cpl</a>
 <hr> <h2>The FRI interpreter</h2>
 The design of most compilers passes through a formal description of the language that is compiled by a parser generator like yacc into a C program. At the heart of CPL's extensibility there is a different structure, where a formal description of the language is never compiled to generate the compiler, but rather interpreted each time a compilation is run. The engine that does this is named fri, the Formal Rule Interpreter. If yacc is a compiler-compiler, fri may be called a compiler-interpreter.
 
