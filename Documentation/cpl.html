@@ -2339,7 +2339,7 @@ Page: (cpl)TO,  Next: <a href="#TRAP">TRAP</a>,  Prev: <a href="#TIMES">TIMES</a
 </div><div class=page id="cpl">
 Page: (cpl)cpl,  Next: <a href="#cpl.bin">cpl.bin</a>,  Prev: <a href="#Control">Control</a>,  Up: <a href="#Top">Top</a>
 <hr> <h1>Compilation tools and their usage</h1>
-All tools acting upon a CPL <a href="#Source-file">Source file</a> are managed by a shell script named cpl.
+All tools that act upon a CPL <a href="#Source-file">Source file</a> are managed by a shell script named cpl.
 
 <h3>Usage</h3>
 	Compiler: cpl make|remake|run &lt;program&gt;[.cpl] [options]
@@ -2355,17 +2355,17 @@ All tools acting upon a CPL <a href="#Source-file">Source file</a> are managed b
 	icpl &lt;--&gt; cpl i
 	icpl -edit &lt;--&gt; cpl edit
 	infocpl &lt;--&gt; cpl info
-	makecpl (with no arguments) &lt;--&gt; cpl version
+	makecpl (with no arguments) &lt;--&gt; cpl version|usage|help
 
 The basic command
 
-	cpl make [-o objdir] &lt;program&gt;[.cpl] [options]
+	cpl make [-o &lt;objdir&gt;] &lt;program&gt;[.cpl] [options]
 
-is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run by its name just like any other executable. As an alternative, the compound command 
+is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run by its name just like any other executable. As an alternative, the shortcut command 
 
-	cpl run [-o objdir] &lt;program&gt;[.cpl] [parameters]
+	cpl run [-o &lt;objdir&gt;] &lt;program&gt;[.cpl] [parameters]
 
-(where <q>run</q> can as well be omitted if no confusion arises) compiles and runs &lt;program&gt; in one shot, or just runs it without compiling if an executable exists and is not older than source code and its dependencies. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable and enjoys automatic compilation when needed.
+(where <q>run</q> may as well be omitted if no confusion arises) compiles and runs &lt;program&gt; in one shot, or just runs it without re-compiling if an executable exists and is not older than source code and its dependencies. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable and enjoys automatic compilation when needed.
 
 cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.bin">cpl.bin</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="*manpages*.html#make">(&lowast;manpages&lowast;)make</a>) on this makefile. Any optional parameters possibly present on the command line are passed on through make to the designated C compiler and linker, or to &lt;program&gt; itself if run was specified.
 
