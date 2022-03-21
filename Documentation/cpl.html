@@ -2361,13 +2361,13 @@ The basic command
 
 	cpl make [-o objdir] &lt;program&gt;[.cpl] [options]
 
-is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; . Its variation
+is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run by its name just like any other executable. As an alternative, the compound command 
 
 	cpl run [-o objdir] &lt;program&gt;[.cpl] [parameters]
 
-(where <q>run</q> can be omitted if no confusion arises) runs &lt;program&gt; immediately after it's been compiled, or just runs it without compiling if an executable exists and is not older than source code and its dependencies. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable and enjoys automatic compilation when needed.
+(where <q>run</q> can as well be omitted if no confusion arises) compiles and runs &lt;program&gt; in one shot, or just runs it without compiling if an executable exists and is not older than source code and its dependencies. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable and enjoys automatic compilation when needed.
 
-cpl's task is achieved by first running <a href="#cpl.bin">cpl.bin</a>, the CPL-to-C compiler, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="*manpages*.html#make">(&lowast;manpages&lowast;)make</a>) on this makefile. Any optional parameters possibly present on the command line are passed on through make to the designated C compiler and linker, or to &lt;program&gt; itself if run was specified.
+cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.bin">cpl.bin</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="*manpages*.html#make">(&lowast;manpages&lowast;)make</a>) on this makefile. Any optional parameters possibly present on the command line are passed on through make to the designated C compiler and linker, or to &lt;program&gt; itself if run was specified.
 
 The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line.
 
@@ -2381,7 +2381,7 @@ Only those source files whose corresponding object file does not exist or is old
 
 achieves this by deleting the object files first.
 
-	cpl version   or   cpl usage   or   cpl help
+	cpl version|usage|help
 
 prints a short version and usage message and exits.
 
