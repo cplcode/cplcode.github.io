@@ -2362,7 +2362,7 @@ The basic command
 
 is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; . Its variation
 
-	cpl run [-o objdir] &lt;program&gt;[.cpl]
+	cpl run [-o objdir] &lt;program&gt;[.cpl] [parameters]
 
 (where <q>run</q> can be omitted if no confusion arises) runs &lt;program&gt; immediately after it's been compiled, or just runs it without compiling if an executable exists and is not older than source code and its dependencies. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable and enjoys automatic compilation when needed.
 

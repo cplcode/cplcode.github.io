@@ -382,7 +382,7 @@ Tracing proceeds as an animation, with one instruction being executed every 0.7 
 </div><div class=page id="Arithmetic-mode">
 Page: (fri)Arithmetic mode, Prev: <a href="#Trace-mode">Trace mode</a>, Up: <a href="#Top">Top</a>
 <hr> <h3>Arithmetic mode</h3>
-For the purpose of a more traditional CPU emulation (used by <a href="cpl.html#icpl">(cpl)icpl</a>), fri provides an additional set of opcodes that specify arithmetic operations. These become active in an ad-hoc <q>arithmetic mode</q> that exists alongside input and output modes. Most arithmetic opcodes manipulate the fri output buffer as a stack of fixed-width objects (binary integers, machine addresses, floats) irrespective of its subdivision in strings. Nevertheless the subdivision remains in action, and output strings serve double use as stack frames. A <q>stack address</q> in what follows is a binary integer expressing a byte count relative to the frame.
+For the purpose of a more traditional CPU emulation (used by <a href="cpl.html#cpl-i">(cpl)cpl i</a>), fri provides an additional set of opcodes that specify arithmetic operations. These become active in an ad-hoc <q>arithmetic mode</q> that exists alongside input and output modes. Most arithmetic opcodes manipulate the fri output buffer as a stack of fixed-width objects (binary integers, machine addresses, floats) irrespective of its subdivision in strings. Nevertheless the subdivision remains in action, and output strings serve double use as stack frames. A <q>stack address</q> in what follows is a binary integer expressing a byte count relative to the frame.
 
 Symbol	pronounced  action
  compute[ compute  activates arithmetic mode for the following bytecodes
