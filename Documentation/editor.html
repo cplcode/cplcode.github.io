@@ -65,18 +65,12 @@
 <body translate="no"><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
 
 </div><div class=page id="Top">
-Page: (editor)Top, Next: <a href="#readline">readline</a>,  Up: <a href="cpl.html#cpl-i">(cpl)cpl i</a>
+Page: (editor)Top, Next: <a href="#readline">readline</a>,  Up: <a href="cpl.html#cpl-i">(cpl)cpl i</a> <a style="float:right" href="#Keyword-Index">Index</a>
 <hr>
- <h1>cpl-embedded line and full-screen editor</h1>
-cpl also includes a text editor, which serves a double purpose as both a GNU readline look-alike, providing command completion and command history to cpl interactive input, and a full-screen editor for program development with CPL word and syntax completion. cpl and the editor are actually a single integrated environment: programs can be run from within the editor, and the cpl and editor screens can be switched at the touch of a key. Both tools display in a terminal, which spoils their graphical appeal but in exchange allows equivalent use in local and remote terminals, as well as in a terminalonly environment like the Windows subsystem for Linux, and even in a smartphone's ssh client if one feels the need for it.
+ <h2>cpl-embedded line and full-screen editor</h2>
+cpl includes a text editor, which serves a double purpose as a GNU readline look-alike, providing command completion and command history to cpl interactive input, and as a full-screen editor for program development, equipped with CPL word and syntax completion. Interactive cpl and the editor are actually a single integrated environment: programs can be run from within the editor, and the cpl and editor screens can be swapped at the touch of a key. Both tools display in a terminal, which somewhat spoils their graphical appeal but in exchange allows equally swift use in local and remote terminals, as well as in a terminal-only environment like the Windows subsystem for Linux, and even in a smartphone's ssh client if one feels the need for it.
 
-Bash-like command completion and command history are traditionally provided by the GNU readline library, which supplies the familiar Tab and Up Arrow commands, input logging and more. The purpose of readline is to allow the user  to edit each command line before committing it, and to keep a history of previous commands for rapid reuse. cpl readline accepts cursor-movement and other commands in one of three equivalent ways: dedicated editing keys, vi-like single-letter commands, and the mouse. Single-letter command mode is toggled in and out of by the Esc key. Full-screen mode is toggled in and out of by F1 or Esc `. Any cursor movement while Shift is pressed (or mouse movement with left button pressed) selects text. For single-letter functions which admit an inverse (such as undo - redo or search forwards - search backwards), capital letter or right mouse button selects its inverse. With the exception of Ctrl-i (Tab) and Ctrl-h (Backspace), Ctrl-&lt;key&gt; also works as an alternative to Esc followed by the same lower-case key.
-
-The full-screen editor can be accessed directly from a unix shell by
-
-	cpl edit [&lt;file&gt; [+&lt;linenumber&gt;]]
-
-(or just <q>edit</q> on most systems). If full-screen mode is toggled on with no other file opened, the command history shows up in the full-screen editor, and the Enter key is now entered as a regular newline. On return to readline mode (when F1 or Esc ` is pressed again), the modified command history is replayed through interactive cpl as if this list of commands had been given afresh when it was launched. Other editing keys work just as in readline mode, except that history lines are now edited in place.
+Bash-like command completion and command history are traditionally provided by the GNU readline library, which supplies the familiar Tab and Up Arrow commands, input logging and more. The purpose of readline is to allow the user  to edit each command line before committing it, and to keep a history of previous commands for rapid reuse. cpl readline accepts cursor-movement and other commands in one of three equivalent ways: dedicated editing keys, vi-like single-letter commands, and the mouse. Single-letter command mode is toggled in and out of by the Esc key. Full-screen mode is toggled in and out of by F1 or Esc `. Any cursor movement while Shift is pressed (or mouse movement with left button pressed) selects text. For single-letter functions which admit an inverse (such as undo - redo or search forwards - search backwards), capital letter or right mouse button selects its inverse. With the exception of Ctrl-i (Tab) and Ctrl-h (Backspace), Ctrl-&lt;key&gt; also works as an alternative to Esc followed by the same lower-case key. If full-screen mode is toggled on with no other file opened, the command history shows up in the full-screen editor, and the Enter key is now entered as a regular newline. On return to readline mode (when F1 or Esc ` is pressed again), the modified command history is replayed through interactive cpl as if this list of commands had been given afresh when it was launched. Other editing keys work just as in readline mode, except that history lines are now edited in place.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -86,8 +80,8 @@ The full-screen editor can be accessed directly from a unix shell by
 </table></nav>
 
 </div><div class=page id="readline">
-Page: (editor)readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a>
-<hr> <h2>Readline assisted console input</h2>
+Page: (editor)readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h3>Readline assisted console input</h3>
 Most used editing keys:
 
  - Left (Esc h), right arrow (Esc l): previous, next char
@@ -108,10 +102,10 @@ Most used editing keys:
  - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
  - Esc \, Ctrl-\: add next (special or control) character verbatim 
 </div><div class=page id="full-screen">
-Page: (editor)full-screen, Next: <a href="#Select">Select</a>, Prev: <a href="#readline">readline</a>, Up: <a href="#Top">Top</a>
+Page: (editor)full-screen, Next: <a href="#Select">Select</a>, Prev: <a href="#readline">readline</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
 <hr>
- <h2>Full-screen editor</h2>
-The full-screen editor is accessed as <q>edit</q> in interactive cpl, or as <q>cpl edit</q> in the shell, or also as <q>edit</q> in the shell if no other <q>edit</q> command takes precedence.
+ <h3>Full-screen editor</h3>
+The full-screen editor is accessed by pressing F1 or Esc ` or by the <q>edit</q> command in interactive cpl, or as <q>cpl edit</q> in the shell, or also as <q>edit</q> in the shell if no other <q>edit</q> command takes precedence.
 
 Most used editing keys:
 
@@ -160,8 +154,8 @@ Most prompts and menus can be aborted by pressing Esc &lowast;twice&lowast;.
 </table></nav>
 
 </div><div class=page id="Select">
-Page: (editor)Select, Next: <a href="#Indentation-and-completion">Indentation and completion</a>, Prev: <a href="#full-screen">full-screen</a>, Up: <a href="#Top">Top</a>
-<hr> <h3>Select, Insert and Delete</h3>
+Page: (editor)Select, Next: <a href="#Indentation-and-completion">Indentation and completion</a>, Prev: <a href="#full-screen">full-screen</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>Select, Insert and Delete</h4>
 Selection of a text area is achieved either by keeping the left mouse button pressed or by pressing shift together with arrow keys. Selection can apply to the text enclosed between the starting and ending selected positions or to a rectangular area with the given corners (useful for column selection). Esc t toggles in and out of rectangle mode. Esc w or double-clicking the mouse selects the word under the cursor; if applied to an opening or closing bracket, Esc w or double clicking selects the entire parenthesis. Esc n or triple clicking selects the line under the cursor. Esc <q>S</q>, or clicking save with the right mouse button, saves the current selection to a file.
 
 Whenever text is selected, the Insert key (or Esc i, or Ctrl-v for those who are accustomed to it) inserts (pastes) the selected text at the current cursor position; <q>copy</q> buffer coincides with selection. The Backspace or Delete key (also aliased to Esc d, Esc x, Ctrl-x) erases the selected text if pressed immediately after a selection. (At any other time these keys erase a single character, the preceding one for Backspace.) Deleted text remains invisibly selected and can be re-inserted after its deletion, up until a new selection is performed. Typing a new character, or pressing Insert, immediately after a selection without any intervening cursor movement replaces the current selection. In this case the function of Insert changes to inserting the butlast selection. Esc m moves (cuts and pastes) the butlast onto the last selection. Pressing the middle mouse button achieves the same purpose as Esc i; the right mouse button the same purpose as Esc m.
@@ -181,8 +175,8 @@ Esc !, respectively Esc @, turns the current selection to all uppercase or to al
 
 The copy-and-paste functionality of the underlying xterm-compatible terminal is also available, and necessary if you want to copy some text to/from the X clipboard. This is accessed by pressing Shift together with the corresponding xterm mouse button (left button to select, center button to paste). Ctrl-Insert and Shift-Insert also keep their function of copying to/from the X clipboard. 
 </div><div class=page id="Indentation-and-completion">
-Page: (editor)Indentation and completion, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a>
-<hr> <h3>CPL syntax-sensitive indentation and completion</h3>
+Page: (editor)Indentation and completion, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>CPL syntax-sensitive indentation and completion</h4>
 When a .cpl file is being edited, pressing Enter at the end of a freshly modified line automatically:
 
  1) indents the new line according to the contents of the previous line;
@@ -208,8 +202,8 @@ In addition, word completion using the Tab key is available in full-screen just 
 
 Parentheses and quote completion also operates, automatically adding closed parentheses and quotes at the time they are opened. 
 </div><div class=page id="Find">
-Page: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>Find and replace</h3>
+Page: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>Find and replace</h4>
 <q>find</q> (Esc f or Ctrl-f or Esc /) and <q>goto</q> (Esc g or Esc +) seek the cursor to a given string or to a given line number. Esc F (or Esc ?, or clicking <q>find</q> with the right mouse button) seeks backwards. The search is caseinsensitive if the first character of the search string is a lowercase letter, case-sensitive otherwise. The found string is automatically selected. If some text is selected when one of this keys is pressed, the selected text will appear as a proposed search string.
 
 Esc , (lowercase &lt;) repeats the last find backwards. Esc . (lowercase &gt;) repeats the last find forwards. Finding with an empty argument also repeats the last find, possibly changing its direction.
@@ -218,8 +212,8 @@ In order to find and replace, find a given text, exit Esc mode, and start typing
 
 Esc Enter repeats whatever the last command was, possibly the last (forward or backward) find or the last replace-and-find-again. 
 </div><div class=page id="Undo">
-Page: (editor)Undo,  Prev: <a href="#Find">Find</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>Undo and redo</h3>
+Page: (editor)Undo,  Prev: <a href="#Find">Find</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>Undo and redo</h4>
 Unlimited undo and redo functionality is supported, activated by Esc u and Esc U respectively (or Esc z and Esc Z as alternates, or Ctrl-z and Ctrl-y, but with the variation detailed below). As a distinctive feature of this editor (shared by hardly any others, a history-setting notable exception being emacs), memory of the undone edits is retained even when further edits take place after an undo.
 
 A standard editor allows the following trap to occur: you undo several times with the purpose of inspecting how your text was at an earlier stage, but with the intention to return to the present, and then before redo-ing, you accidentally hit a key (for example, redo is Ctrl-y and you hit y without Ctrl); now your redo buffer is gone forever, and all you typed in the meanwhile is gone with it.

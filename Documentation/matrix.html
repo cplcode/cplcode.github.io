@@ -65,8 +65,8 @@
 <body translate="no"><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
 
 </div><div class=page id="Top">
-Page: (matrix)Top,  Next: <a href="graphics.html#Top">(graphics)</a>,  Prev: <a href="fft.html#Top">(fft)</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a>
-<hr> <h2>Matrix Operations</h2>
+Page: (matrix)Top,  Next: <a href="graphics.html#Top">(graphics)</a>,  Prev: <a href="fft.html#Top">(fft)</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h3>Matrix Operations</h3>
 The rbmat.cpl and cbmat.cpl libraries add matrix algebra to CPL. The same functions and operators are defined in both, for real and complex numbers respectively, and therefore their result type is indicated as just <q>number</q> in what follows. Wherever a square matrix is expected, a banded matrix in compact rectangular form may also be used; the latter is recognized from its dimensions not being equal, and is defined as having the value zero of its second index as the diagonal. Most of the following functions have an equivalent infix form that allows matrix operations to be specified in the usual algebraic notation.
 
 <nav><table>
@@ -86,82 +86,82 @@ The rbmat.cpl and cbmat.cpl libraries add matrix algebra to CPL. The same functi
 </table></nav>
 
 </div><div class=page id="MatEqu">
-Page: (matrix)MatEqu,  Next: <a href="#DotProduct">DotProduct</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE MatEqu(POINTER TO ARRAY(&lowast;,&lowast;) OF number c; number a)</h3>
+Page: (matrix)MatEqu,  Next: <a href="#DotProduct">DotProduct</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE MatEqu(POINTER TO ARRAY(&lowast;,&lowast;) OF number c; number a)</h4>
 Assigns the scalar (REAL or COMPLEX) value &lt;a&gt; to the diagonal elements of matrix &lt;c&gt;, and zeros all the non-diagonal elements.
 
 Equivalent infix notation:	c = a 
 </div><div class=page id="DotProduct">
-Page: (matrix)DotProduct,  Next: <a href="#LeftMult">LeftMult</a>,  Prev: <a href="#MatEqu">MatEqu</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>number FUNCTION DotProduct(ARRAY(&lowast;) OF number a,b)</h3>
+Page: (matrix)DotProduct,  Next: <a href="#LeftMult">LeftMult</a>,  Prev: <a href="#MatEqu">MatEqu</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>number FUNCTION DotProduct(ARRAY(&lowast;) OF number a,b)</h4>
 Computes the sum of products of the elements of &lt;a&gt; and &lt;b&gt;.
 
 Equivalent infix notation:	a &lowast; b
 
- <h3>COMPLEX FUNCTION DotProduct2(ARRAY(&lowast;) OF COMPLEX a,b)</h3>
+ <h4>COMPLEX FUNCTION DotProduct2(ARRAY(&lowast;) OF COMPLEX a,b)</h4>
 Computes CONJG(a)&lowast;b
 
 Equivalent infix notation:	a | b 
 </div><div class=page id="LeftMult">
-Page: (matrix)LeftMult,  Next: <a href="#RightMult">RightMult</a>,  Prev: <a href="#DotProduct">DotProduct</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE LeftMult(ARRAY(&lowast;) OF number c^; ARRAY(&lowast;,&lowast;) OF number A; ARRAY(&lowast;) OF number b)</h3>
+Page: (matrix)LeftMult,  Next: <a href="#RightMult">RightMult</a>,  Prev: <a href="#DotProduct">DotProduct</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE LeftMult(ARRAY(&lowast;) OF number c^; ARRAY(&lowast;,&lowast;) OF number A; ARRAY(&lowast;) OF number b)</h4>
 Computes the left-hand product of matrix &lt;A&gt; by vector &lt;b&gt;, that is
 
 	c(i)=SUM A(i,j)&lowast;b(j) FOR ALL j
 
 Equivalent infix notation:	A &lowast; b 
 </div><div class=page id="RightMult">
-Page: (matrix)RightMult,  Next: <a href="#LUdecomp">LUdecomp</a>,  Prev: <a href="#LeftMult">LeftMult</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE RightMult(ARRAY(&lowast;) OF number c^,a; ARRAY(&lowast;,&lowast;) OF number B)</h3>
+Page: (matrix)RightMult,  Next: <a href="#LUdecomp">LUdecomp</a>,  Prev: <a href="#LeftMult">LeftMult</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE RightMult(ARRAY(&lowast;) OF number c^,a; ARRAY(&lowast;,&lowast;) OF number B)</h4>
 Computes the right-hand product of vector &lt;a&gt; by matrix &lt;B&gt;, that is
 
 	c(j)=SUM a(i)&lowast;B(i,j) FOR ALL i
 
 Equivalent infix notation:	a &lowast; B
 
- <h3>SUBROUTINE RightMult2(ARRAY(&lowast;) OF COMPLEX c^,a; ARRAY(&lowast;,&lowast;) OF COMPLEX B)</h3>
+ <h4>SUBROUTINE RightMult2(ARRAY(&lowast;) OF COMPLEX c^,a; ARRAY(&lowast;,&lowast;) OF COMPLEX B)</h4>
 Computes CONJG(a)&lowast;B
 
 Equivalent infix notation:	a | B 
 </div><div class=page id="LUdecomp">
-Page: (matrix)LUdecomp,  Next: <a href="#LeftLUDiv">LeftLUDiv</a>,  Prev: <a href="#RightMult">RightMult</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE LUdecomp(POINTER TO ARRAY(&lowast;,&lowast;) OF number A)</h3>
+Page: (matrix)LUdecomp,  Next: <a href="#LeftLUDiv">LeftLUDiv</a>,  Prev: <a href="#RightMult">RightMult</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE LUdecomp(POINTER TO ARRAY(&lowast;,&lowast;) OF number A)</h4>
 Computes the LU decomposition of (square or banded) matrix A in place.
 
- <h3>FUNCTION LU(A)</h3>
+ <h4>FUNCTION LU(A)</h4>
 Returns the LU decomposition of A, which remains untouched. 
 </div><div class=page id="LeftLUDiv">
-Page: (matrix)LeftLUDiv,  Next: <a href="#RightLUDiv">RightLUDiv</a>,  Prev: <a href="#LUdecomp">LUdecomp</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE LeftLUDiv(POINTER TO ARRAY(&lowast;) OF number x; ARRAY(&lowast;,&lowast;) OF number A; ARRAY(&lowast;) OF number t)</h3>
+Page: (matrix)LeftLUDiv,  Next: <a href="#RightLUDiv">RightLUDiv</a>,  Prev: <a href="#LUdecomp">LUdecomp</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE LeftLUDiv(POINTER TO ARRAY(&lowast;) OF number x; ARRAY(&lowast;,&lowast;) OF number A; ARRAY(&lowast;) OF number t)</h4>
 Computes the left-hand division of vector &lt;t&gt; by the previously LU-decomposed matrix &lt;A&gt;, that is A^-1&lowast;t. A must have been preventively treated with either <a href="#LUdecomp">LUdecomp</a> or <a href="#PLU">PLU</a>.
 
 Equivalent infix notation:	A \ t 
 </div><div class=page id="RightLUDiv">
-Page: (matrix)RightLUDiv,  Next: <a href="#Lanczos">Lanczos</a>,  Prev: <a href="#LeftLUDiv">LeftLUDiv</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE RightLUDiv(ARRAY(&lowast;) OF number x^,t; ARRAY(&lowast;,&lowast;) OF number A)</h3>
+Page: (matrix)RightLUDiv,  Next: <a href="#Lanczos">Lanczos</a>,  Prev: <a href="#LeftLUDiv">LeftLUDiv</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE RightLUDiv(ARRAY(&lowast;) OF number x^,t; ARRAY(&lowast;,&lowast;) OF number A)</h4>
 Computes the right-hand division of vector &lt;t&gt; by the previously LU-decomposed matrix &lt;A&gt;, that is t&lowast;A^-1. A must have been preventively treated with either <a href="#LUdecomp">LUdecomp</a> or <a href="#PLU">PLU</a>.
 
 Equivalent infix notation:	t / A 
 </div><div class=page id="Lanczos">
-Page: (matrix)Lanczos,  Next: <a href="#PLU">PLU</a>,  Prev: <a href="#RightLUDiv">RightLUDiv</a>,  Up: <a href="#Top">Top</a>
+Page: (matrix)Lanczos,  Next: <a href="#PLU">PLU</a>,  Prev: <a href="#RightLUDiv">RightLUDiv</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
 <hr> SUBROUTINE Lanczos(POINTER TO ARRAY(&lowast;) OF number x
                    SUBROUTINE[ARRAY(&lowast;) OF number v2^,v1] A,AT
                    ARRAY(&lowast;) OF number y1; REAL eps) SUBROUTINE Lanczos(POINTER TO ARRAY(&lowast;) OF number x
                    ARRAY(&lowast;,&lowast;) OF number M
                    ARRAY(&lowast;) OF number y1; REAL eps) 
 </div><div class=page id="PLU">
-Page: (matrix)PLU,  Next: <a href="#INVERT">INVERT</a>,  Prev: <a href="#Lanczos">Lanczos</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>POINTER TO INVMAT FUNCTION PLU(ARRAY(&lowast;,&lowast;) OF number m)</h3>
+Page: (matrix)PLU,  Next: <a href="#INVERT">INVERT</a>,  Prev: <a href="#Lanczos">Lanczos</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>POINTER TO INVMAT FUNCTION PLU(ARRAY(&lowast;,&lowast;) OF number m)</h4>
 Computes the LU decomposition of (necessarily square) matrix A with pivoting. Returns an appropriate INVMAT compound variable containing the LU decomposition of A, which can be passed to either <a href="#LeftLUDiv">LeftLUDiv</a> or <a href="#RightLUDiv">RightLUDiv</a> and must be explicitly freed by <a href="cpl.html#Top">FREE:(cpl)</a>NEW. once no longer needed. 
 </div><div class=page id="INVERT">
-Page: (matrix)INVERT,  Next: <a href="#DET">DET</a>,  Prev: <a href="#PLU">PLU</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE INVERT(ARRAY(&lowast;,&lowast;) OF number mat^, RESULT^)</h3>
+Page: (matrix)INVERT,  Next: <a href="#DET">DET</a>,  Prev: <a href="#PLU">PLU</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE INVERT(ARRAY(&lowast;,&lowast;) OF number mat^, RESULT^)</h4>
 Returns the inverse of square matrix &lt;mat&gt; in matrix &lt;RESULT&gt;. Uses <a href="#PLU">PLU</a> internally.
 
-<h3>SUBROUTINE INVERT(number m^(&lowast;,&lowast;))</h3>
+<h4>SUBROUTINE INVERT(number m^(&lowast;,&lowast;))</h4>
 Computes the inverse of square matrix &lt;mat&gt; in place. Uses <a href="#PLU">PLU</a> internally. 
 </div><div class=page id="DET">
-Page: (matrix)DET,  Prev: <a href="#INVERT">INVERT</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>number FUNCTION DET(ARRAY(&lowast;,&lowast;) OF number mat)</h3>
+Page: (matrix)DET,  Prev: <a href="#INVERT">INVERT</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>number FUNCTION DET(ARRAY(&lowast;,&lowast;) OF number mat)</h4>
 Returns the determinant of square matrix &lt;mat&gt;. Uses <a href="#PLU">PLU</a> internally. 
 </div></body></html>

@@ -65,8 +65,8 @@
 <body translate="no"><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
 
 </div><div class=page id="Top">
-Page: (graphics)Top, Next: <a href="#nographics">nographics</a>, Prev: <a href="matrix.html#Top">(matrix)</a>, Up: <a href="cpl.html#Library">(cpl)Library</a>
-<hr> <h2>Plotting library</h2>
+Page: (graphics)Top, Next: <a href="#nographics">nographics</a>, Prev: <a href="matrix.html#Top">(matrix)</a>, Up: <a href="cpl.html#Library">(cpl)Library</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h3>Plotting library</h3>
 The graphics.cpl library provides basic plotting instructions by linking a CPL program to GNU plotutils.
 
 The same programming interface is also shared by <a href="#nographics">nographics</a> and <a href="#gnuplot">gnuplot</a>
@@ -87,35 +87,35 @@ The same programming interface is also shared by <a href="#nographics">nographic
 </table></nav>
 
 </div><div class=page id="OPENGRAPH">
-Page: (graphics)OPENGRAPH,  Next: <a href="#WINDOW">WINDOW</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE OPENGRAPH()</h3>
-<h3>SUBROUTINE OPENGRAPH(STRING filename)</h3>
-<h3>SUBROUTINE OPENGRAPH(INTEGER n)</h3>
+Page: (graphics)OPENGRAPH,  Next: <a href="#WINDOW">WINDOW</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE OPENGRAPH()</h4>
+<h4>SUBROUTINE OPENGRAPH(STRING filename)</h4>
+<h4>SUBROUTINE OPENGRAPH(INTEGER n)</h4>
 Starts a new graph, or clears a previously existing one. If the argument &lt;filename&gt; is specified, the graph is simultaneously piped to the screen and to a file of graphics commands that allows the graph to be reproduced later. If the argument &lt;n&gt; is specified (available in the <a href="#gnuplot">gnuplot</a> version only) a new window numbered &lt;n&gt; is opened and the previous graph window is left on screen.
 
 Most graphics commands invoke OPENGRAPH() automatically if no graph was previously opened.
 
 A graphics window may be closed without opening a new one by the
 
-<h3>SUBROUTINE CLOSEGRAPH()</h3>
+<h4>SUBROUTINE CLOSEGRAPH()</h4>
 
 </div><div class=page id="MOUSEGRAPH">
-Page: (graphics)MOUSEGRAPH,  Next: <a href="#WINDOW">WINDOW</a>,  Prev: <a href="#OPENGRAPH">OPENGRAPH</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE MOUSEGRAPH()</h3>
+Page: (graphics)MOUSEGRAPH,  Next: <a href="#WINDOW">WINDOW</a>,  Prev: <a href="#OPENGRAPH">OPENGRAPH</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE MOUSEGRAPH()</h4>
 starts a new graph with mouse grabbing capability,
 
-<h3>SUBROUTINE POLLMOUSE(REAL mx^,my^; INTEGER mb^)</h3>
+<h4>SUBROUTINE POLLMOUSE(REAL mx^,my^; INTEGER mb^)</h4>
 grabs mouse clicks in gnuplot window. 
 </div><div class=page id="WINDOW">
-Page: (graphics)WINDOW,  Next: <a href="#RANGE">RANGE</a>,  Prev: <a href="#MOUSEGRAPH">MOUSEGRAPH</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE WINDOW(REAL VARIABLE x1, x2, y1, y2)</h3>
+Page: (graphics)WINDOW,  Next: <a href="#RANGE">RANGE</a>,  Prev: <a href="#MOUSEGRAPH">MOUSEGRAPH</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE WINDOW(REAL VARIABLE x1, x2, y1, y2)</h4>
 specifies a plotting window within the current graph, in a system of coordinates going from 0 to 1 along either axis.
 
 If WINDOW was not specified, 0,1,0,1 is assumed. 
 </div><div class=page id="RANGE">
-Page: (graphics)RANGE,  Next: <a href="#STARTLINE">STARTLINE</a>,  Prev: <a href="#WINDOW">WINDOW</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE RANGE(REAL x1,x2; FUNCTION(REAL z)-&gt;REAL newxmap; REAL y1,y2; FUNCTION(REAL z)-&gt;REAL newymap)</h3>
-                  <h3>SUBROUTINE RANGE(REAL x1,x2,y1,y2)</h3>
+Page: (graphics)RANGE,  Next: <a href="#STARTLINE">STARTLINE</a>,  Prev: <a href="#WINDOW">WINDOW</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE RANGE(REAL x1,x2; FUNCTION(REAL z)-&gt;REAL newxmap; REAL y1,y2; FUNCTION(REAL z)-&gt;REAL newymap)</h4>
+                  <h4>SUBROUTINE RANGE(REAL x1,x2,y1,y2)</h4>
 specify a range for the drawing coordinates on either axis, and possibly a mapping function (system- or user-provided). For example:
 
 	RANGE(0,100,-1,2.5)
@@ -128,72 +128,72 @@ The predefined function LIN provides a linear identity mapping. The current rang
 
 If RANGE was not specified, 0,1,0,1 is assumed (except for <a href="#PLOT">PLOT</a>). 
 </div><div class=page id="STARTLINE">
-Page: (graphics)STARTLINE,  Next: <a href="#DRAW">DRAW</a>,  Prev: <a href="#RANGE">RANGE</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE STARTLINE()</h3>
-<h3>SUBROUTINE STARTCIRCLE()</h3>
-<h3>SUBROUTINE STARTLINE(ARRAY(&lowast;) OF CHAR style)</h3>
+Page: (graphics)STARTLINE,  Next: <a href="#DRAW">DRAW</a>,  Prev: <a href="#RANGE">RANGE</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE STARTLINE()</h4>
+<h4>SUBROUTINE STARTCIRCLE()</h4>
+<h4>SUBROUTINE STARTLINE(ARRAY(&lowast;) OF CHAR style)</h4>
 Starts a new line (chain of segments) within the current graph. That is, the next <a href="#DRAW">DRAW</a> command will not draw a segment but just a point.
 
 STARTCIRCLE specifies that a small circle be drawn in each point rather than connecting them with segments. In the <a href="#gnuplot">gnuplot</a> version only, the argument &lt;style&gt; may be added to specify a gnuplot-recognized line style. 
 </div><div class=page id="DRAW">
-Page: (graphics)DRAW,  Next: <a href="#LABEL">LABEL</a>,  Prev: <a href="#STARTLINE">STARTLINE</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE DRAW(REAL x,y)</h3>
+Page: (graphics)DRAW,  Next: <a href="#LABEL">LABEL</a>,  Prev: <a href="#STARTLINE">STARTLINE</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE DRAW(REAL x,y)</h4>
 The basic drawing primitive, draws a line segment up to point &lt;x&gt;, &lt;y&gt; or a symbol according to the style specified by <a href="#STARTLINE">STARTLINE</a>.
 
-<h3>SUBROUTINE MOVE(REAL x,y)</h3>
+<h4>SUBROUTINE MOVE(REAL x,y)</h4>
 is equivalent to STARTLINE; DRAW x,y
 
-<h3>SUBROUTINE LINE(REAL x1,y1,x2,y2)</h3>
+<h4>SUBROUTINE LINE(REAL x1,y1,x2,y2)</h4>
 is equivalent to STARTLINE; DRAW x1,y1; DRAW x2,y2
 
-<h3>SUBROUTINE BOX(REAL x1,x2,y1,y2)</h3>
-<h3>SUBROUTINE CIRCLE(REAL x,y,r)</h3>
+<h4>SUBROUTINE BOX(REAL x1,x2,y1,y2)</h4>
+<h4>SUBROUTINE CIRCLE(REAL x,y,r)</h4>
 do what their names imply. 
 </div><div class=page id="LABEL">
-Page: (graphics)LABEL,  Next: <a href="#SHOWGRAPH">SHOWGRAPH</a>,  Prev: <a href="#DRAW">DRAW</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE LABEL(REAL x,y; POINTER TO CSTRING s)</h3>
+Page: (graphics)LABEL,  Next: <a href="#SHOWGRAPH">SHOWGRAPH</a>,  Prev: <a href="#DRAW">DRAW</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE LABEL(REAL x,y; POINTER TO CSTRING s)</h4>
 writes character string &lt;s&gt; starting at coordinates &lt;x&gt;, &lt;y&gt;. 
 </div><div class=page id="SHOWGRAPH">
-Page: (graphics)SHOWGRAPH,  Next: <a href="#PLOT">PLOT</a>,  Prev: <a href="#LABEL">LABEL</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE SHOWGRAPH()</h3>
+Page: (graphics)SHOWGRAPH,  Next: <a href="#PLOT">PLOT</a>,  Prev: <a href="#LABEL">LABEL</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE SHOWGRAPH()</h4>
 flushes the internal buffer, which could otherwise delay the graph from being shown on screen. 
 </div><div class=page id="PLOT">
-Page: (graphics)PLOT,  Next: <a href="#nographics">nographics</a>,  Prev: <a href="#SHOWGRAPH">SHOWGRAPH</a>,  Up: <a href="#Top">Top</a>
-<hr> <h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER n) fy; INTEGER x1..x2)</h3>
+Page: (graphics)PLOT,  Next: <a href="#nographics">nographics</a>,  Prev: <a href="#SHOWGRAPH">SHOWGRAPH</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE PLOT(REAL FUNCTION(INTEGER n) fy; INTEGER x1..x2)</h4>
  plot real function over an interval of integers
 
-<h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER n) fy,fx; INTEGER x1..x2)</h3>
+<h4>SUBROUTINE PLOT(REAL FUNCTION(INTEGER n) fy,fx; INTEGER x1..x2)</h4>
  plot first versus second function over an array of points
 
-<h3>SUBROUTINE PLOT(REAL FUNCTION(INTEGER n) fy; ARRAY(&lowast;) OF REAL vecx)</h3>
+<h4>SUBROUTINE PLOT(REAL FUNCTION(INTEGER n) fy; ARRAY(&lowast;) OF REAL vecx)</h4>
  plot real function over an array of points
 
-<h3>SUBROUTINE PLOT(REAL FUNCTION(REAL x) f; REAL x1..x2)</h3>
+<h4>SUBROUTINE PLOT(REAL FUNCTION(REAL x) f; REAL x1..x2)</h4>
  plot real function over real interval
 
-<h3>SUBROUTINE PLOT(REAL FUNCTION(REAL x) f)</h3>
+<h4>SUBROUTINE PLOT(REAL FUNCTION(REAL x) f)</h4>
  plot real function over preset interval
 
-<h3>SUBROUTINE PLOT(ARRAY(&lowast;) OF REAL vec)</h3>
+<h4>SUBROUTINE PLOT(ARRAY(&lowast;) OF REAL vec)</h4>
  plot real array versus its index
 
-<h3>SUBROUTINE PLOT(ARRAY(&lowast;) OF INTEGER vec)</h3>
+<h4>SUBROUTINE PLOT(ARRAY(&lowast;) OF INTEGER vec)</h4>
  plot integer array versus its index
 
-<h3>SUBROUTINE PLOT(ARRAY(&lowast;) OF REAL vecy,vecx)</h3>
+<h4>SUBROUTINE PLOT(ARRAY(&lowast;) OF REAL vecy,vecx)</h4>
  plot first versus second array
 
-<h3>SUBROUTINE PLOT(ARRAY(&lowast;) OF REAL vecy; ARRAY(&lowast;) OF INTEGER vecx)</h3>
+<h4>SUBROUTINE PLOT(ARRAY(&lowast;) OF REAL vecy; ARRAY(&lowast;) OF INTEGER vecx)</h4>
  plot first versus second array
 
  These subroutines have the purpose of plotting a function or data array in a predefined format with a single command. If a <a href="#RANGE">RANGE</a> was not specified between <a href="#OPENGRAPH">OPENGRAPH</a> and the current <a href="#PLOT">PLOT</a>, it is automatically determined. As a more flexible alternative the <a href="#plot">plot</a> command is also available which more directly mimics, and offers all the options of, gnuplot's <q>plot</q>. 
 </div><div class=page id="nographics">
-Page: (graphics)nographics,  Next: <a href="#gnuplot">gnuplot</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a>
-<hr> <h2>nographics.cpl</h2>
+Page: (graphics)nographics,  Next: <a href="#gnuplot">gnuplot</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h3>nographics.cpl</h3>
 Fake plotting package that allows graphics to be turned off by USEing this library instead of graphics without modifying the rest of the program. 
 </div><div class=page id="gnuplot">
-Page: (graphics)gnuplot,  Next: <a href="#strlines">strlines</a>,  Prev: <a href="#nographics">nographics</a>,  Up: <a href="#Top">Top</a>
-<hr> <h2>gnuplot.cpl</h2>
+Page: (graphics)gnuplot,  Next: <a href="#strlines">strlines</a>,  Prev: <a href="#nographics">nographics</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h3>gnuplot.cpl</h3>
 This library provides the same plotting instructions as graphics.cpl but pipes the appropriate commands to a gnuplot process.
 
 In addition the following commands are available in gnuplot.cpl only:
@@ -214,20 +214,20 @@ In addition the following commands are available in gnuplot.cpl only:
 </table></nav>
 
 </div><div class=page id="SPLOT">
-Page: (graphics)SPLOT,  Next: <a href="#strlines">strlines</a>,  Prev: <a href="#gnuplot">gnuplot</a>,  Up: <a href="#gnuplot">gnuplot</a>
-<hr> <h3>SUBROUTINE SPLOT(REAL FUNCTION(REAL x,y) f; REAL xmin..xmax,ymin..ymax)</h3>
-<h3>SUBROUTINE SPLOT(REAL FUNCTION(REAL x,y) f)</h3>
-<h3>SUBROUTINE SPLOT(REAL FUNCTION(INTEGER x,y) vec; INTEGER xmin..xmax,ymin..ymax)</h3>
-<h3>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF REAL vec)</h3>
-<h3>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF INTEGER vec)</h3>
-<h3>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF REAL vec; ARRAY(&lowast;) OF REAL x,y)</h3>
+Page: (graphics)SPLOT,  Next: <a href="#strlines">strlines</a>,  Prev: <a href="#gnuplot">gnuplot</a>,  Up: <a href="#gnuplot">gnuplot</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h4>SUBROUTINE SPLOT(REAL FUNCTION(REAL x,y) f; REAL xmin..xmax,ymin..ymax)</h4>
+<h4>SUBROUTINE SPLOT(REAL FUNCTION(REAL x,y) f)</h4>
+<h4>SUBROUTINE SPLOT(REAL FUNCTION(INTEGER x,y) vec; INTEGER xmin..xmax,ymin..ymax)</h4>
+<h4>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF REAL vec)</h4>
+<h4>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF INTEGER vec)</h4>
+<h4>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF REAL vec; ARRAY(&lowast;) OF REAL x,y)</h4>
 
 </div><div class=page id="strlines">
-Page: (graphics)strlines,  Next: <a href="parallel.html#Top">(parallel)</a>,  Prev: <a href="#gnuplot">gnuplot</a>,  Up: <a href="#Top">Top</a>
-<hr> <h2>strlines.cpl</h2>
-<h3>SUBROUTINE ShowStr[INTEGER n; ARRAY(&lowast;,&lowast;) OF REAL umat,vmat]</h3>
+Page: (graphics)strlines,  Next: <a href="parallel.html#Top">(parallel)</a>,  Prev: <a href="#gnuplot">gnuplot</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+<hr> <h3>strlines.cpl</h3>
+<h4>SUBROUTINE ShowStr[INTEGER n; ARRAY(&lowast;,&lowast;) OF REAL umat,vmat]</h4>
 draws n randomly positioned streamline segments out of u and v staggered velocity components.
 
-<h3>SUBROUTINE ShowStr[INTEGER n; ARRAY(&lowast;,&lowast;) OF REAL umat,vmat; REAL FUNCTION(INTEGER i) xr,yr]</h3>
+<h4>SUBROUTINE ShowStr[INTEGER n; ARRAY(&lowast;,&lowast;) OF REAL umat,vmat; REAL FUNCTION(INTEGER i) xr,yr]</h4>
 adds the specification of possibly non-uniform x and y coordinates. 
 </div></body></html>
