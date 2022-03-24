@@ -982,7 +982,7 @@ STRUCTUREs may be defined that contain ARRAYs the size of which will only be kno
 	.............
 	twoarrays(8) mytwoarrays mytwoarrays.next=NEW twoarrays(2&lowast;mytwoarrays.n)
 
-Notice that this syntax is intentionally similar to the syntax for FUNCTIONs that contain ARRAYs of runtime-specified size as arguments. Compare <a href="#array-parameters">array parameters</a>. In fact, the set of parameters of a given function may usefully be thought of as a structure, although one that is invisible to the programmer and only exists as a conceptual model. 
+Notice that this syntax is intentionally similar to the syntax for FUNCTIONs that contain ARRAYs of runtime-specified size as arguments. Compare <a href="#array-parameters">array parameters</a>. In fact, the set of arguments of a given function may usefully be thought of as a structure, although one that is invisible to the programmer and only exists as a conceptual model. 
 </div><div class=page id="ARRAY">
 Page: (cpl)ARRAY, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#STRUCTURE">STRUCTURE</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
 <hr> <h3>ARRAYs</h3>
@@ -1067,7 +1067,7 @@ As an experimental feature, and an exception to the general rule for ARRAY(&lowa
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>Predefined strings are:</th></tr>
 <tr><td colspan="2"> </td></tr>
-<tr><td><a href="#COMMANDLINE">COMMANDLINE</a>:</td><td>command line parameter access</td></tr>
+<tr><td><a href="#COMMANDLINE">COMMANDLINE</a>:</td><td>command line argument access</td></tr>
 <tr><td><a href="#TRAP">ERRORMESSAGE:TRAP</a>:</td><td>error message string</td></tr>
 </table></nav>
 
@@ -1189,12 +1189,12 @@ Page: (cpl)Subroutine type, Next: <a href="#Type-identity">Type identity</a>, Pr
 <hr> <h3>Variable call to a subroutine or function</h3>
 A subroutine variable may be specified through the type declarator
 
-	SUBROUTINE( &lt;parameter declarations&gt; )
+	SUBROUTINE( &lt;argument declarations&gt; )
 
 A function variable may be specified through the type declarator
 
-	FUNCTION( &lt;parameter declarations&gt; )-&gt;&lt;type&gt; or else
-	&lt;type&gt; FUNCTION( &lt;parameter declarations&gt; )
+	FUNCTION( &lt;argument declarations&gt; )-&gt;&lt;type&gt; or else
+	&lt;type&gt; FUNCTION( &lt;argument declarations&gt; )
 
 the first form being mandatory when the result &lt;type&gt; is a pointer type and thus ambiguity can arise.
 
@@ -1398,7 +1398,7 @@ Page: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Loop
 </td></tr>
 <tr><td colspan="2"><h4>Builtin STRING functions</h4>
 </td></tr>
-<tr><td><a href="#COMMANDLINE">COMMANDLINE</a>:</td><td>command line parameter access</td></tr>
+<tr><td><a href="#COMMANDLINE">COMMANDLINE</a>:</td><td>command line argument access</td></tr>
 <tr><td><a href="#TRAP">ERRORMESSAGE:TRAP</a>:</td><td>error message string</td></tr>
 <tr><td><a href="#String">String</a>:</td><td>Concatenation and conversion.</td></tr>
 <tr><td colspan="2"> </td></tr>
@@ -1531,9 +1531,9 @@ Finally, a subarray can be extracted from an ARRAY of STRUCTUREs. If the declara
 
 	ARRAY(1..10) OF STRUCTURE(INTEGER i; REAL r) arr
 
-then by a straightforward notation arr.r is the ARRAY(1..10) OF REAL composed of all the r fields of each element of arr. Thus, for instance, arr(5).r and arr.r(5) denote the same REAL field. arr.r is an ARRAY in its own right; it can be copied, passed as a parameter or subjected to further subarray selections.
+then by a straightforward notation arr.r is the ARRAY(1..10) OF REAL composed of all the r fields of each element of arr. Thus, for instance, arr(5).r and arr.r(5) denote the same REAL field. arr.r is an ARRAY in its own right; it can be copied, passed as an argument or subjected to further subarray selections.
 
-It should be noted that all subarray selections are just address manipulations: no element of the array is ever moved and the selected subarray can appear on the left as well as on the right side of an assignment, and can be passed as a POINTER TO ARRAY(&lowast;) parameter to a function or subroutine. No computational penalty is incurred because of the sheer size of either the original or the selected array, but on the other hand any modifications of the subarray also affect the original.
+It should be noted that all subarray selections are just address manipulations: no element of the array is ever moved and the selected subarray can appear on the left as well as on the right side of an assignment, and can be passed as a POINTER TO ARRAY(&lowast;) argument to a function or subroutine. No computational penalty is incurred because of the sheer size of either the original or the selected array, but on the other hand any modifications of the subarray also affect the original.
 
 All subarray selections can also be applied to <a href="#STORED">STORED</a> ARRAYs and <a href="#STRUCTURED">STRUCTURED</a> ARRAYs. 
 </div><div class=page id="compound-index">
@@ -1897,7 +1897,7 @@ waits for input for the given &lt;time&gt; (in seconds, a REAL) before returning
 is a shorthand for INPUTREADY(stdin,&lt;time&gt;). 
 </div><div class=page id="COMMANDLINE">
 Page: (cpl)COMMANDLINE,  Prev: <a href="#INPUTREADY">INPUTREADY</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="#Keyword-Index">Index</a>
-<hr> <h4>Command-line parameter access</h4>
+<hr> <h4>Command-line argument access</h4>
 The command line through which the program was launched is available in the predefined ARRAY OF STRING
 
 	COMMANDLINE
@@ -2343,37 +2343,43 @@ All tools that act upon a CPL <a href="#Source-file">Source file</a> are managed
 
 <h4>Usage</h4>
 	Compiler:  cpl make|remake|run &lt;program&gt;[.cpl] [options]
-	Interpreter:  cpl i [&lt;expression&gt;|&lt;program&gt;[.cpl]] -- or just:  cpl
-	Editor:  cpl edit [&lt;file&gt;] -- or just:  edit
+	Interpreter:  cpl i [&lt;expression&gt;|&lt;program&gt;[.cpl]]
+	Editor:  cpl edit [&lt;file&gt;]
 	Info manual:  cpl info [keyword]
 	Version and usage:  cpl version|usage|help
 
-<h4>Old usage</h4>
-	makecpl &lt;--&gt; cpl make
-	makecpl -a &lt;--&gt; cpl remake
-	makecpl -r &lt;--&gt; cpl run
-	icpl &lt;--&gt; cpl i
-	icpl -edit &lt;--&gt; cpl edit
-	infocpl &lt;--&gt; cpl info
-	makecpl (with no arguments) &lt;--&gt; cpl version|usage|help
+<h4>Abbreviations</h4>
+	cplm --&gt; cpl make
+	cpl (with arguments) --&gt; cpl run
+	cpl (with no arguments) --&gt; cpl i
+	edit --&gt; cpl edit
 
- The basic command
+<h4>Backward compatibility</h4>
+	makecpl --&gt; cpl make
+	makecpl -a --&gt; cpl remake
+	makecpl -r --&gt; cpl run
+	icpl --&gt; cpl i
+	infocpl --&gt; cpl info
+	makecpl (with no arguments) --&gt; cpl version|usage|help
 
-	cpl make [-o &lt;objdir&gt;] &lt;program&gt;[.cpl] [options]
+<h4>Description</h4>
+The basic command
 
-is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run by its name just like any other executable. As an alternative, the shortcut command 
+	cpl make &lt;program&gt;[.cpl] [options]
 
-	cpl run [-o &lt;objdir&gt;] &lt;program&gt;[.cpl] [parameters]
+(or just <q>cplm</q>) is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run by its name just like any other executable. As an alternative, the shortcut command
 
-(where <q>run</q> may as well be omitted if no confusion arises) compiles and runs &lt;program&gt; in a row, or just runs it without re-compiling if an executable is found that is not older than its source code. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable and undergoes automatic compilation when needed.
+	cpl run &lt;program&gt;[.cpl] [arguments]
 
-cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri">cpl.fri</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="https://manpages.debian.org/make.html">manpages.debian.org/make.html</a> ) on this makefile. Any optional parameters possibly present on the command line are passed on through make to the designated C compiler and linker, or to &lt;program&gt; itself if <q>run</q> was specified.
+(or just <q>cpl</q> if no confusion arises) compiles and runs &lt;program&gt; in a row, or just runs it without re-compiling if an executable is found that is not older than its source code. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable and undergoes automatic compilation when needed.
+
+cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri">cpl.fri</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="https://manpages.debian.org/make.html">manpages.debian.org/make.html</a> ) on this makefile. Any arguments possibly present on the command line are passed on through make to the designated C compiler and linker, or to &lt;program&gt; itself if <q>run</q> was specified.
 
 The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line.
 
 The -D and -I compiler options are interpreted by cpl.fri, in addition to being passed on to the C compiler, and provide pre#defined constants and include directories to both.
 
-C source and object files are kept in a local subdirectory usually named .cpl (and therefore hidden from listing under unix convention). An alternate directory can be specified through the environment variable OBJDIR or the -o option.
+C source and object files are kept in a local subdirectory usually named .cpl (and therefore hidden from listing under unix convention). An alternate name for this directory can be specified through the environment variable OBJDIR or the -o option.
 
 Only those source files whose corresponding object file does not exist or is older than the source are actually recompiled. In exceptional cases where a full re-compilation may be necessary, the command
 
@@ -2424,21 +2430,20 @@ This has the effect of dynamically adding new statement constructions and for al
 </div><div class=page id="cpl-info">
 Page: (cpl)cpl info,  Next: <a href="#cpl-i">cpl i</a>,  Prev: <a href="#FRI-SECTION">FRI SECTION</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
 <hr> <h3>info manual</h3>
-Unless the CPL info manual is registered in the general info tree, the command for reading it is relatively cumbersome. <q>cpl info</q> encapsulates this command. Typing just <q>cpl info</q> brings you to the file you are reading. Typing <q>cpl info
-&lt;keyword&gt;</q> brings you help about a specific CPL keyword. 
+A CPL manual in info format is available through GNU info. Its reading command is encapsulated as <q>cpl info</q>. Typing <q>cpl info</q> with no arguments brings you to the head of the file you are now reading. Typing <q>cpl info &lt;keyword&gt;</q> brings you help about a specific CPL keyword. 
 </div><div class=page id="cpl-i">
 Page: (cpl)cpl i,  Next: <a href="#Library">Library</a>,  Prev: <a href="#cpl-info">cpl info</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
 <hr> <h2>Interactive CPL</h2>
 The interactive CPL interpreter, accepting expressions, statements or commands at a console prompt, is launched by the command
 
-	cpl
+	cpl i
 
-Interactive cpl's syntax is totally compatible with CPL's. Any valid CPL statement is executable at the cpl&gt; prompt. As an extension, when an expression is typed alone at the cpl&gt; prompt a WRITE statement is implied. <q>?</q> brings you to this manual. 
+(or just <q>cpl</q> when there are no arguments). Interactive cpl's syntax is totally compatible with CPL's. Any valid CPL statement is executable at the cpl&gt; prompt. As an extension, when an expression is typed alone at the cpl&gt; prompt a WRITE statement is implied. <q>?</q> brings you to this manual. 
  <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
-<tr><td><a href="#cpl-i-commands">cpl i commands</a>:</td><td>icpl specific commands.</td></tr>
-<tr><td><a href="#cpl-i-command-line">cpl i command line</a>:</td><td>parameters.</td></tr>
+<tr><td><a href="#cpl-i-commands">cpl i commands</a>:</td><td>interactive-cpl specific commands.</td></tr>
+<tr><td><a href="#cpl-i-command-line">cpl i command line</a>:</td><td>arguments.</td></tr>
 <tr><td><a href="#Syntax">syntax:Syntax</a>:</td><td>CPL language specification.  </td></tr>
 <tr><td><a href="editor.html#Top">readline:(editor)</a>:</td><td>Console input editing keys.</td></tr>
 </table></nav>
@@ -2446,7 +2451,7 @@ Interactive cpl's syntax is totally compatible with CPL's. Any valid CPL stateme
 </div><div class=page id="cpl-i-commands">
 Page: (cpl)cpl i commands,  Next: <a href="#Library">Library</a>,  Prev: <a href="#cpl-i">cpl i</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
 <hr> <nav><table>
-<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>interactive cpl-specific commands:</th></tr>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>interactive-cpl specific commands:</th></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#?">?</a>:</td><td>help</td></tr>
 <tr><td><a href="#Top"></a>:</td><td>:		shell commands</td></tr>
@@ -2485,7 +2490,7 @@ Page: (cpl)cpl i commands,  Next: <a href="#Library">Library</a>,  Prev: <a href
 
 </div><div class=page id="cpl-i-command-line">
 Page: (cpl)cpl i command line,  Next: <a href="#?">?</a>,  Prev: <a href="#cpl-i-commands">cpl i commands</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="#Keyword-Index">Index</a>
-<hr> <h3>The interactive cpl command line</h3>
+<hr> <h3>The interactive-cpl command line</h3>
 An interactive CPL command can alternately be specified on the cpl i command line, as in
 
 	cpl i &lt;command&gt;

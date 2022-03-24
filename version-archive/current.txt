@@ -1,2 +1,2 @@
-2022-03-20 is available.
+2022-03-24 is available.
 Restyling of compilation commands. "makecpl" becomes "cpl make", "makecpl -a" becomes "cpl remake", "makecpl -r" becomes "cpl run", "icpl" becomes "cpl i", "icpl -edit" becomes "cpl edit", "infocpl" becomes "cpl info". Old command names remain available for backward compatibility.
