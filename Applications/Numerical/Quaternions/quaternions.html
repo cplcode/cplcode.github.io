@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Numerical/Quaternions/quaternions.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"Numerical/Quaternions/quaternions.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<span class=comment>! quaternions.cpl -- Copyright 2017 Paolo Luchini</span>
+<span class=comment>! http://CPLcode.net/Applications/Numerical/Quaternions/</span>
+<span class=comment>!</span>
+<span class=comment>! CPL library providing a QUATERNION type and operations upon it.</span>
+<span class=comment>!</span>
+<span class=comment>!( Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE. !)</span>
+
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a>
+QUATERNION=STRUCTURED <a href="cpl.html#ARRAY">ARRAY</a>(<a href="cpl.html#REAL">REAL</a>,<a href="complex.html#Top">IMAG</a>,JMAG,KMAG) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a>
+
+<a href="cpl.html#INLINE">INLINE</a> QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> <a href="complex.html#Top">CONJG</a>(QUATERNION x)
+  <a href="cpl.html#RESULT">RESULT</a>.<a href="cpl.html#REAL">REAL</a>=x.<a href="cpl.html#REAL">REAL</a>
+  <a href="cpl.html#RESULT">RESULT</a>.<a href="complex.html#Top">IMAG</a>=-x.<a href="complex.html#Top">IMAG</a>
+  <a href="cpl.html#RESULT">RESULT</a>.JMAG=-x.JMAG
+  <a href="cpl.html#RESULT">RESULT</a>.KMAG=-x.KMAG
+<a href="cpl.html#END">END</a> <a href="complex.html#Top">CONJG</a>
+
+QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> mult(QUATERNION a,b)
+  <a href="cpl.html#RESULT">RESULT</a>.<a href="cpl.html#REAL">REAL</a>=a.<a href="cpl.html#REAL">REAL</a>&lowast;b.<a href="cpl.html#REAL">REAL</a>-a.<a href="complex.html#Top">IMAG</a>&lowast;b.<a href="complex.html#Top">IMAG</a>-a.JMAG&lowast;b.JMAG-a.KMAG&lowast;b.KMAG
+  <a href="cpl.html#RESULT">RESULT</a>.<a href="complex.html#Top">IMAG</a>=a.<a href="complex.html#Top">IMAG</a>&lowast;b.<a href="cpl.html#REAL">REAL</a>+a.<a href="cpl.html#REAL">REAL</a>&lowast;b.<a href="complex.html#Top">IMAG</a>+a.JMAG&lowast;b.KMAG-a.KMAG&lowast;b.JMAG
+  <a href="cpl.html#RESULT">RESULT</a>.JMAG=a.JMAG&lowast;b.<a href="cpl.html#REAL">REAL</a>+a.<a href="cpl.html#REAL">REAL</a>&lowast;b.JMAG+a.KMAG&lowast;b.<a href="complex.html#Top">IMAG</a>-a.<a href="complex.html#Top">IMAG</a>&lowast;b.KMAG
+  <a href="cpl.html#RESULT">RESULT</a>.KMAG=a.KMAG&lowast;b.<a href="cpl.html#REAL">REAL</a>+a.<a href="cpl.html#REAL">REAL</a>&lowast;b.KMAG+a.<a href="complex.html#Top">IMAG</a>&lowast;b.JMAG-a.JMAG&lowast;b.<a href="complex.html#Top">IMAG</a>
+<a href="cpl.html#END">END</a> mult
+
+<a href="cpl.html#INLINE">INLINE</a> QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> INV(QUATERNION x)=<a href="complex.html#Top">CONJG</a>(x)/NORM(x)
+
+<a href="cpl.html#FRI-SECTION">FRI SECTION</a>
+FRIsymbol "QUATERNION" =[trytype "QUATERNION" -&gt; type =[ &lowast;]=
+factor &lowast;]= "&lowast;" =[: fullsep cut =[id -&gt; factor =[ &lowast;]= cut =[convert #3 -&gt; 1[assign] QUATERNION value =[ &lowast;]= =[convert #2 -&gt; QUATERNION value =[ &lowast;]= =["mult("{#5}","{#3}")" -&gt; =[id -&gt; factor =[factor &lowast;]=]=
+factor &lowast;]= "/" =[: fullsep cut =[id -&gt; factor =[ &lowast;]= cut =[convert #3 -&gt; 1[assign] QUATERNION value =[ &lowast;]= =[convert #2 -&gt; QUATERNION value =[ &lowast;]= =["mult("{#5}",INV("{#3}"))"  -&gt; =[id -&gt; factor =[factor &lowast;]=]=
+<a href="cpl.html#END">END</a> <a href="cpl.html#FRI-SECTION">FRI SECTION</a>
+
+QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> <a href="cpl.html#Builtin">EXP</a>(QUATERNION x)
+  <a href="cpl.html#REAL">REAL</a> m=<a href="cpl.html#Builtin">EXP</a>(x.<a href="cpl.html#REAL">REAL</a>)
+  s=<a href="cpl.html#Builtin">SQRT</a>(x.<a href="complex.html#Top">IMAG</a><a href="cpl.html#REAL-operator">^</a>2+x.JMAG<a href="cpl.html#REAL-operator">^</a>2+x.KMAG<a href="cpl.html#REAL-operator">^</a>2)
+  <a href="cpl.html#RESULT">RESULT</a>.<a href="cpl.html#REAL">REAL</a>=m&lowast;<a href="cpl.html#Builtin">COS</a>(s)
+  <a href="cpl.html#IF">IF</a> s&gt;1E-8 <a href="cpl.html#IF">THEN</a> m=m&lowast;<a href="cpl.html#Builtin">SIN</a>(s)/s
+  <a href="cpl.html#RESULT">RESULT</a>.<a href="complex.html#Top">IMAG</a>=m&lowast;x.<a href="complex.html#Top">IMAG</a>
+  <a href="cpl.html#RESULT">RESULT</a>.JMAG=m&lowast;x.JMAG
+  <a href="cpl.html#RESULT">RESULT</a>.KMAG=m&lowast;x.KMAG
+<a href="cpl.html#END">END</a> <a href="cpl.html#Builtin">EXP</a>
+
+QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> <a href="cpl.html#Builtin">LOG</a>(QUATERNION x)
+  <a href="cpl.html#REAL">REAL</a> m=x.<a href="complex.html#Top">IMAG</a><a href="cpl.html#REAL-operator">^</a>2+x.JMAG<a href="cpl.html#REAL-operator">^</a>2+x.KMAG<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#RESULT">RESULT</a>.<a href="cpl.html#REAL">REAL</a>=0.5&lowast;<a href="cpl.html#Builtin">LOG</a>(m+x.<a href="cpl.html#REAL">REAL</a><a href="cpl.html#REAL-operator">^</a>2)
+  <a href="cpl.html#IF">IF</a> m&gt;1E-16 <a href="cpl.html#IF">THEN</a> m=atan2(<a href="cpl.html#Builtin">SQRT</a>(m),x.<a href="cpl.html#REAL">REAL</a>)/<a href="cpl.html#Builtin">SQRT</a>(m) <a href="cpl.html#ELSE">ELSE</a> m=1/x.<a href="cpl.html#REAL">REAL</a>
+  <a href="cpl.html#RESULT">RESULT</a>.<a href="complex.html#Top">IMAG</a>=m&lowast;x.<a href="complex.html#Top">IMAG</a>
+  <a href="cpl.html#RESULT">RESULT</a>.JMAG=m&lowast;x.JMAG
+  <a href="cpl.html#RESULT">RESULT</a>.KMAG=m&lowast;x.KMAG
+<a href="cpl.html#END">END</a> <a href="cpl.html#Builtin">LOG</a>
+
+<a href="cpl.html#INLINE">INLINE</a> QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> POWER(QUATERNION x; <a href="cpl.html#REAL">REAL</a> y)=<a href="cpl.html#Builtin">EXP</a>[<a href="cpl.html#Builtin">LOG</a>(x)&lowast;y]
+
+<a href="cpl.html#ARRAY">ARRAY</a>(1..3,1..3) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> rotation(QUATERNION x)
+  u=x/<a href="cpl.html#ABS">ABS</a>(x)
+  <a href="cpl.html#RESULT">RESULT</a>(1,1)=1-2&lowast;(u.JMAG<a href="cpl.html#REAL-operator">^</a>2+u.KMAG<a href="cpl.html#REAL-operator">^</a>2); <a href="cpl.html#RESULT">RESULT</a>(1,2)=2&lowast;(u.<a href="complex.html#Top">IMAG</a>&lowast;u.JMAG-u.<a href="cpl.html#REAL">REAL</a>&lowast;u.KMAG); <a href="cpl.html#RESULT">RESULT</a>(1,3)=2&lowast;(u.<a href="complex.html#Top">IMAG</a>&lowast;u.KMAG+u.<a href="cpl.html#REAL">REAL</a>&lowast;u.JMAG)
+  <a href="cpl.html#RESULT">RESULT</a>(2,1)=2&lowast;(u.<a href="complex.html#Top">IMAG</a>&lowast;u.JMAG+u.<a href="cpl.html#REAL">REAL</a>&lowast;u.KMAG); <a href="cpl.html#RESULT">RESULT</a>(2,2)=1-2&lowast;(u.<a href="complex.html#Top">IMAG</a><a href="cpl.html#REAL-operator">^</a>2+u.KMAG<a href="cpl.html#REAL-operator">^</a>2); <a href="cpl.html#RESULT">RESULT</a>(2,3)=2&lowast;(u.JMAG&lowast;u.KMAG-u.<a href="cpl.html#REAL">REAL</a>&lowast;u.<a href="complex.html#Top">IMAG</a>)
+  <a href="cpl.html#RESULT">RESULT</a>(3,1)=2&lowast;(u.<a href="complex.html#Top">IMAG</a>&lowast;u.KMAG-u.<a href="cpl.html#REAL">REAL</a>&lowast;u.JMAG); <a href="cpl.html#RESULT">RESULT</a>(3,2)=2&lowast;(u.JMAG&lowast;u.KMAG+u.<a href="cpl.html#REAL">REAL</a>&lowast;u.<a href="complex.html#Top">IMAG</a>); <a href="cpl.html#RESULT">RESULT</a>(3,3)=1-2&lowast;(u.<a href="complex.html#Top">IMAG</a><a href="cpl.html#REAL-operator">^</a>2+u.JMAG<a href="cpl.html#REAL-operator">^</a>2)
+<a href="cpl.html#END">END</a> rotation
+</pre></body></html>

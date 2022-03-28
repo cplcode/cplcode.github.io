@@ -1,0 +1,75 @@
+! quaternions.cpl -- Copyright 2017 Paolo Luchini
+! http://CPLcode.net/Applications/Numerical/Quaternions/
+!
+! CPL library providing a QUATERNION type and operations upon it.
+!
+!( Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE. !)
+
+USE rbmat
+QUATERNION=STRUCTURED ARRAY(REAL,IMAG,JMAG,KMAG) OF REAL
+
+INLINE QUATERNION FUNCTION CONJG(QUATERNION x)
+  RESULT.REAL=x.REAL
+  RESULT.IMAG=-x.IMAG
+  RESULT.JMAG=-x.JMAG
+  RESULT.KMAG=-x.KMAG
+END CONJG
+
+QUATERNION FUNCTION mult(QUATERNION a,b)
+  RESULT.REAL=a.REAL*b.REAL-a.IMAG*b.IMAG-a.JMAG*b.JMAG-a.KMAG*b.KMAG
+  RESULT.IMAG=a.IMAG*b.REAL+a.REAL*b.IMAG+a.JMAG*b.KMAG-a.KMAG*b.JMAG
+  RESULT.JMAG=a.JMAG*b.REAL+a.REAL*b.JMAG+a.KMAG*b.IMAG-a.IMAG*b.KMAG
+  RESULT.KMAG=a.KMAG*b.REAL+a.REAL*b.KMAG+a.IMAG*b.JMAG-a.JMAG*b.IMAG
+END mult
+
+INLINE QUATERNION FUNCTION INV(QUATERNION x)=CONJG(x)/NORM(x)
+
+FRI SECTION
+FRIsymbol "QUATERNION" =[trytype "QUATERNION" -> type =[ *]=
+factor *]= "*" =[: fullsep cut =[id -> factor =[ *]= cut =[convert #3 -> 1[assign] QUATERNION value =[ *]= =[convert #2 -> QUATERNION value =[ *]= =["mult("{#5}","{#3}")" -> =[id -> factor =[factor *]=]=
+factor *]= "/" =[: fullsep cut =[id -> factor =[ *]= cut =[convert #3 -> 1[assign] QUATERNION value =[ *]= =[convert #2 -> QUATERNION value =[ *]= =["mult("{#5}",INV("{#3}"))"  -> =[id -> factor =[factor *]=]=
+END FRI SECTION
+
+QUATERNION FUNCTION EXP(QUATERNION x)
+  REAL m=EXP(x.REAL)
+  s=SQRT(x.IMAG^2+x.JMAG^2+x.KMAG^2)
+  RESULT.REAL=m*COS(s)
+  IF s>1E-8 THEN m=m*SIN(s)/s
+  RESULT.IMAG=m*x.IMAG
+  RESULT.JMAG=m*x.JMAG
+  RESULT.KMAG=m*x.KMAG
+END EXP
+
+QUATERNION FUNCTION LOG(QUATERNION x)
+  REAL m=x.IMAG^2+x.JMAG^2+x.KMAG^2
+  RESULT.REAL=0.5*LOG(m+x.REAL^2)
+  IF m>1E-16 THEN m=atan2(SQRT(m),x.REAL)/SQRT(m) ELSE m=1/x.REAL
+  RESULT.IMAG=m*x.IMAG
+  RESULT.JMAG=m*x.JMAG
+  RESULT.KMAG=m*x.KMAG
+END LOG
+
+INLINE QUATERNION FUNCTION POWER(QUATERNION x; REAL y)=EXP[LOG(x)*y]
+
+ARRAY(1..3,1..3) OF REAL FUNCTION rotation(QUATERNION x)
+  u=x/ABS(x)
+  RESULT(1,1)=1-2*(u.JMAG^2+u.KMAG^2); RESULT(1,2)=2*(u.IMAG*u.JMAG-u.REAL*u.KMAG); RESULT(1,3)=2*(u.IMAG*u.KMAG+u.REAL*u.JMAG)
+  RESULT(2,1)=2*(u.IMAG*u.JMAG+u.REAL*u.KMAG); RESULT(2,2)=1-2*(u.IMAG^2+u.KMAG^2); RESULT(2,3)=2*(u.JMAG*u.KMAG-u.REAL*u.IMAG)
+  RESULT(3,1)=2*(u.IMAG*u.KMAG-u.REAL*u.JMAG); RESULT(3,2)=2*(u.JMAG*u.KMAG+u.REAL*u.IMAG); RESULT(3,3)=1-2*(u.IMAG^2+u.JMAG^2)
+END rotation
