@@ -22,7 +22,7 @@ Rh=Reynolds/ny/4
 <span class=comment>! deltat=0.2/(1+Rh)</span>
 deltat=0.1/(1+<a href="cpl.html#ABS">ABS</a>(wavespeed))/(1+2&lowast;Rh)
 
-VFIELD=STRUCTURED <a href="cpl.html#ARRAY">ARRAY</a>[u(0..nx+1,0..ny),
+VFIELD=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>[u(0..nx+1,0..ny),
                         v(0..nx+1,1..ny),
                         p(0..nx+1,0..ny)] <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a>
 
