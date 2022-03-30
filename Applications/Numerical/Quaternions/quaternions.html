@@ -53,6 +53,7 @@ QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> mult(QUATERNION a,b)
 <a href="cpl.html#INLINE">INLINE</a> QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> INV(QUATERNION x)=<a href="complex.html#Top">CONJG</a>(x)/NORM(x)
 
 <a href="cpl.html#FRI-SECTION">FRI SECTION</a>
+<span class=comment>! introduce algebraic syntax for quaternion multiplication and division.</span>
 FRIsymbol "QUATERNION" =[trytype "QUATERNION" -&gt; type =[ &lowast;]=
 factor &lowast;]= "&lowast;" =[: fullsep cut =[id -&gt; factor =[ &lowast;]= cut =[convert #3 -&gt; 1[assign] QUATERNION value =[ &lowast;]= =[convert #2 -&gt; QUATERNION value =[ &lowast;]= =["mult("{#5}","{#3}")" -&gt; =[id -&gt; factor =[factor &lowast;]=]=
 factor &lowast;]= "/" =[: fullsep cut =[id -&gt; factor =[ &lowast;]= cut =[convert #3 -&gt; 1[assign] QUATERNION value =[ &lowast;]= =[convert #2 -&gt; QUATERNION value =[ &lowast;]= =["mult("{#5}",INV("{#3}"))"  -&gt; =[id -&gt; factor =[factor &lowast;]=]=
