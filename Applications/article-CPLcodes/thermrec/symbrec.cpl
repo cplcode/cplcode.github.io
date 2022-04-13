@@ -98,7 +98,7 @@ SUBROUTINE InvIt()
     adjoint=adjdA/A; adjdA=adjoint*dA
     dalpha=-(adjdA*savepert)/(adjdA*perturbation)
     alpha=alpha+dalpha
-    perturbation=perturbation/CMAX(u,1..ny-1)
+    perturbation=perturbation/CMAX[u(i),1..ny-1]
     normfact=1/(adjdA*perturbation)
     adjoint=adjoint*normfact
     adjdA=adjdA*normfact

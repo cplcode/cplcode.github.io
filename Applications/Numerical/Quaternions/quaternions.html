@@ -56,7 +56,7 @@ QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> mult(QUATERNION a,b)
 <span class=comment>! allow algebraic syntax for quaternion multiplication and division.</span>
 FRIsymbol "QUATERNION" =[trytype "QUATERNION" -&gt; type =[ &lowast;]=
 factor &lowast;]= "&lowast;" =[: fullsep cut =[id -&gt; factor =[ &lowast;]= cut =[convert #3 -&gt; 1[assign] QUATERNION value =[ &lowast;]= =[convert #2 -&gt; QUATERNION value =[ &lowast;]= =["mult("{#5}","{#3}")" -&gt; =[id -&gt; factor =[factor &lowast;]=]=
-factor &lowast;]= "/" =[: fullsep cut =[id -&gt; factor =[ &lowast;]= cut =[convert #3 -&gt; 1[assign] QUATERNION value =[ &lowast;]= =[convert #2 -&gt; QUATERNION value =[ &lowast;]= =["mult("{#5}",INV("{#3}"))"  -&gt; =[id -&gt; factor =[factor &lowast;]=]=
+factor &lowast;]= "/" =[: fullsep cut =[id -&gt; factor =[ &lowast;]= cut =[convert #3 -&gt; 1[assign] QUATERNION value =[ &lowast;]= =[convert #2 -&gt; QUATERNION value =[ &lowast;]= =["mult("{#5}",INV("{#3}"))" -&gt; =[id -&gt; factor =[factor &lowast;]=]=
 <a href="cpl.html#END">END</a> <a href="cpl.html#FRI-SECTION">FRI SECTION</a>
 
 QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> <a href="cpl.html#Builtin">EXP</a>(QUATERNION x)

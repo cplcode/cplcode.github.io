@@ -44,7 +44,7 @@ FRI SECTION
 ! allow algebraic syntax for quaternion multiplication and division.
 FRIsymbol "QUATERNION" =[trytype "QUATERNION" -> type =[ *]=
 factor *]= "*" =[: fullsep cut =[id -> factor =[ *]= cut =[convert #3 -> 1[assign] QUATERNION value =[ *]= =[convert #2 -> QUATERNION value =[ *]= =["mult("{#5}","{#3}")" -> =[id -> factor =[factor *]=]=
-factor *]= "/" =[: fullsep cut =[id -> factor =[ *]= cut =[convert #3 -> 1[assign] QUATERNION value =[ *]= =[convert #2 -> QUATERNION value =[ *]= =["mult("{#5}",INV("{#3}"))"  -> =[id -> factor =[factor *]=]=
+factor *]= "/" =[: fullsep cut =[id -> factor =[ *]= cut =[convert #3 -> 1[assign] QUATERNION value =[ *]= =[convert #2 -> QUATERNION value =[ *]= =["mult("{#5}",INV("{#3}"))" -> =[id -> factor =[factor *]=]=
 END FRI SECTION
 
 QUATERNION FUNCTION EXP(QUATERNION x)

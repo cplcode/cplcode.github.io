@@ -132,7 +132,7 @@ SUBROUTINE StepBackward(INTEGER ix)
       wmomadj(iy,in)*D(1/dx*uw(iy,in),F[jv,iy+j,im])
   REPEAT
   OPENGRAPH
-  SPLOT ABS(vadj(x,y))/dy,1..ny-1,0..nm
+  SPLOT <ABS(vadj(x,y))/dy>,1..ny-1,0..nm
 END StepBackward
 
 Fmem=0
@@ -170,7 +170,7 @@ WRITE SUM vadj(iy,im)*vinc(iy,im) FOR ALL iy AND im=1 TO nm+
 !)
 ! DO vadj(iy,im)=~+[wadj(iy+1,im)-wadj(iy-1,im)]/2/dy/(I*im*beta) FOR iy=1 TO ny-1 AND im=1 TO nm
 OPENGRAPH
-SPLOT ABS(vadj(x,y))/dy,1..ny-1,0..nm
+SPLOT <ABS(vadj(x,y))/dy>,1..ny-1,0..nm
 READ
 Fmem=0
 DO v(iy,im)=CONJG(vadj(iy,im))/dy FOR iy=1 TO ny-1 AND im=1 TO nm

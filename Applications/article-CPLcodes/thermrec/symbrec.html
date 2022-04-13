@@ -110,7 +110,7 @@ D_eps_wmom<a href="cpl.html#Deferred-assignment">==</a> mum(V)&lowast;dyc(w,iy)
     adjoint=adjdA/A; adjdA=adjoint&lowast;dA
     dalpha=-(adjdA&lowast;savepert)/(adjdA&lowast;perturbation)
     alpha=alpha+dalpha
-    perturbation=perturbation/CMAX(u,1..ny-1)
+    perturbation=perturbation/CMAX[u(i),1..ny-1]
     normfact=1/(adjdA&lowast;perturbation)
     adjoint=adjoint&lowast;normfact
     adjdA=adjdA&lowast;normfact

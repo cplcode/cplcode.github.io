@@ -144,7 +144,7 @@ wmomadj<a href="cpl.html#Deferred-assignment">==</a>eqadj(wpos+nvars&lowast;(&lo
       wmomadj(iy,in)&lowast;<a href="symbolic.html#Top">D</a>(1/dx&lowast;uw(iy,in),F[jv,iy+j,im])
   <a href="cpl.html#LOOP">REPEAT</a>
   <a href="graphics.html#OPENGRAPH">OPENGRAPH</a>
-  <a href="graphics.html#SPLOT">SPLOT</a> <a href="cpl.html#ABS">ABS</a>(vadj(x,y))/dy,1..ny-1,0..nm
+  <a href="graphics.html#SPLOT">SPLOT</a> &lt;<a href="cpl.html#ABS">ABS</a>(vadj(x,y))/dy&gt;,1..ny-1,0..nm
 <a href="cpl.html#END">END</a> StepBackward
 
 Fmem=0
@@ -182,7 +182,7 @@ WRITE SUM vadj(iy,im)&lowast;vinc(iy,im) FOR ALL iy AND im=1 TO nm+
 !)</span>
 <span class=comment>! DO vadj(iy,im)=~+[wadj(iy+1,im)-wadj(iy-1,im)]/2/dy/(I&lowast;im&lowast;beta) FOR iy=1 TO ny-1 AND im=1 TO nm</span>
 <a href="graphics.html#OPENGRAPH">OPENGRAPH</a>
-<a href="graphics.html#SPLOT">SPLOT</a> <a href="cpl.html#ABS">ABS</a>(vadj(x,y))/dy,1..ny-1,0..nm
+<a href="graphics.html#SPLOT">SPLOT</a> &lt;<a href="cpl.html#ABS">ABS</a>(vadj(x,y))/dy&gt;,1..ny-1,0..nm
 <a href="cpl.html#READ">READ</a>
 Fmem=0
 <a href="cpl.html#DO">DO</a> v(iy,im)=<a href="complex.html#Top">CONJG</a>(vadj(iy,im))/dy <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> im=1 <a href="cpl.html#TO">TO</a> nm
