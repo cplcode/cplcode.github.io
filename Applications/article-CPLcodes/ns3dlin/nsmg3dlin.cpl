@@ -247,10 +247,10 @@ SUBROUTINE lincdresids(VFIELD base^,field^,tn^)
   PARALLEL LOOP FOR ismp=0 TO nsmp-1
   LOOP FOR ix=MAX(1,field.LO1+1) TO field.HI1-1 AND iy=1+ROUND[ismp/nsmp*(field.HI2-1)] TO ROUND[(ismp+1)/nsmp*(field.HI2-1)] AND iz=1 TO field.HI3-1
     b=^base(ix+*,iy+*,iz+*); f=^field(ix+*,iy+*,iz+*)
-    #define p(i,j,k) b.p(i,j,k)+eps*f.p(i,j,k)
-    #define u(i,j,k) b.u(i,j,k)+eps*f.u(i,j,k)
-    #define v(i,j,k) b.v(i,j,k)+eps*f.v(i,j,k)
-    #define w(i,j,k) b.w(i,j,k)+eps*f.w(i,j,k)
+    INLINE FUNCTION p(ix,iy,iz)=b.p(ix,iy,iz)+eps*f.p(ix,iy,iz)
+    INLINE FUNCTION u(ix,iy,iz)=b.u(ix,iy,iz)+eps*f.u(ix,iy,iz)
+    INLINE FUNCTION v(ix,iy,iz)=b.v(ix,iy,iz)+eps*f.v(ix,iy,iz)
+    INLINE FUNCTION w(ix,iy,iz)=b.w(ix,iy,iz)+eps*f.w(ix,iy,iz)
     eps=0
     tn.p(ix,iy,iz)=D(cnt,eps)
     IF NOT last OR ix+1#field.HI1 THEN tn.u(ix,iy,iz)=D(ucd,eps)
@@ -447,7 +447,7 @@ IF nxf MOD 2 = 0 AND fvar.HI2 MOD 2 = 0 AND fvar.HI3 MOD 2 = 0 AND
   smooth(fbase,fvar,ftn,nxf)
   bc(fvar,ftn,0)
   nxc=nxf DIV 2
-  SHARED ARRAY[(fvar.LO1+1) DIV 2 - 1..(fvar.HI1+1) DIV 2, (fvar.LO2-1) DIV 2..(fvar.HI2+1) DIV 2, (fvar.LO3+1) DIV 2..(fvar.HI3+1) DIV 2] OF VARS cbase=0, cvar=0, ctn=0
+  SHARED ARRAY[(fvar.LO1+1) DIV 2 - 1..(fvar.HI1+1) DIV 2, (fvar.LO2-1) DIV 2..(fvar.HI2+1) DIV 2, (fvar.LO3-1) DIV 2..(fvar.HI3+1) DIV 2] OF VARS cbase=0, cvar=0, ctn=0
   SHARED ARRAY(fvar.LO1..fvar.HI1,fvar.LO2..fvar.HI2,fvar.LO3..fvar.HI3) OF VARS frsd=0
   restrictloop(fbase,cbase)
   bc(cbase,ctn,1)
@@ -486,7 +486,7 @@ IF nxf MOD 2 = 0 AND fvar.HI2 MOD 2 = 0 AND fvar.HI3 MOD 2 = 0 AND
   DO mg(cbase,cvar,ctn,nxc) FOR 2 TIMES
   bc(cvar,ctn,0)
 !  nsmp=MIN(nsmpmax,CEILING(fvar.HI2/8))
-PARALLEL LOOP FOR ismp=0 TO nsmp-1
+  PARALLEL LOOP FOR ismp=0 TO nsmp-1
   LOOP FOR ixc=MAX[cvar.LO1+1,fvar.LO1 DIV 2 +1] TO MIN[cvar.HI1,fvar.HI1 DIV 2] AND iyc=1+ROUND[ismp/nsmp*cvar.HI2] TO ROUND[(ismp+1)/nsmp*cvar.HI2] AND izc=cvar.LO3+1 TO cvar.HI3
     interp(cvar(ixc+(-1..0),iyc+(-1..0),izc+(-1..0)),fvar(2*ixc+(-1..0),2*iyc+(-1..0),2*izc+(-1..0)))
   REPEAT; REPEAT

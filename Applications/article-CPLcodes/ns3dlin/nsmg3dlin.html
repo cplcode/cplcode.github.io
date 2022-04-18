@@ -6,7 +6,7 @@
 "programmingLanguage":{
 "@type":"ComputerLanguage",
 "name":"CPL",
-"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
 }</script></head>
 <body translate="no"><pre>
@@ -259,10 +259,10 @@ wcd=={w(1,0,0)+w(-1,0,0)+w(0,1,0)+w(0,-1,0)+w(0,0,1)+w(0,0,-1)-6&lowast;w(0,0,0)
   <a href="parallel.html#PARALLEL">PARALLEL</a> <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ismp=0 <a href="cpl.html#TO">TO</a> nsmp-1
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#MAX">MAX</a>(1,field.<a href="cpl.html#LO">LO1</a>+1) <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI1</a>-1 <a href="cpl.html#AND">AND</a> iy=1+<a href="cpl.html#ROUND">ROUND</a>[ismp/nsmp&lowast;(field.<a href="cpl.html#HI">HI2</a>-1)] <a href="cpl.html#TO">TO</a> <a href="cpl.html#ROUND">ROUND</a>[(ismp+1)/nsmp&lowast;(field.<a href="cpl.html#HI">HI2</a>-1)] <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI3</a>-1
     b=<a href="cpl.html#REAL-operator">^</a>base(ix+&lowast;,iy+&lowast;,iz+&lowast;); f=<a href="cpl.html#REAL-operator">^</a>field(ix+&lowast;,iy+&lowast;,iz+&lowast;)
-    <a href="cpl.html#C-preprocessor">#define</a> p(i,j,k) b.p(i,j,k)+eps&lowast;f.p(i,j,k)
-    <a href="cpl.html#C-preprocessor">#define</a> u(i,j,k) b.u(i,j,k)+eps&lowast;f.u(i,j,k)
-    <a href="cpl.html#C-preprocessor">#define</a> v(i,j,k) b.v(i,j,k)+eps&lowast;f.v(i,j,k)
-    <a href="cpl.html#C-preprocessor">#define</a> w(i,j,k) b.w(i,j,k)+eps&lowast;f.w(i,j,k)
+    <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> p(ix,iy,iz)=b.p(ix,iy,iz)+eps&lowast;f.p(ix,iy,iz)
+    <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> u(ix,iy,iz)=b.u(ix,iy,iz)+eps&lowast;f.u(ix,iy,iz)
+    <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> v(ix,iy,iz)=b.v(ix,iy,iz)+eps&lowast;f.v(ix,iy,iz)
+    <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> w(ix,iy,iz)=b.w(ix,iy,iz)+eps&lowast;f.w(ix,iy,iz)
     eps=0
     tn.p(ix,iy,iz)=<a href="symbolic.html#Top">D</a>(cnt,eps)
     <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#OR">OR</a> ix+1#field.<a href="cpl.html#HI">HI1</a> <a href="cpl.html#IF">THEN</a> tn.u(ix,iy,iz)=<a href="symbolic.html#Top">D</a>(ucd,eps)
@@ -459,7 +459,7 @@ wcd=={w(1,0,0)+w(-1,0,0)+w(0,1,0)+w(0,-1,0)+w(0,0,1)+w(0,0,-1)-6&lowast;w(0,0,0)
   smooth(fbase,fvar,ftn,nxf)
   bc(fvar,ftn,0)
   nxc=nxf <a href="cpl.html#DIV">DIV</a> 2
-  <a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>[(fvar.<a href="cpl.html#LO">LO1</a>+1) <a href="cpl.html#DIV">DIV</a> 2 - 1..(fvar.<a href="cpl.html#HI">HI1</a>+1) <a href="cpl.html#DIV">DIV</a> 2, (fvar.<a href="cpl.html#LO">LO2</a>-1) <a href="cpl.html#DIV">DIV</a> 2..(fvar.<a href="cpl.html#HI">HI2</a>+1) <a href="cpl.html#DIV">DIV</a> 2, (fvar.<a href="cpl.html#LO">LO3</a>+1) <a href="cpl.html#DIV">DIV</a> 2..(fvar.<a href="cpl.html#HI">HI3</a>+1) <a href="cpl.html#DIV">DIV</a> 2] <a href="cpl.html#OF">OF</a> VARS cbase=0, cvar=0, ctn=0
+  <a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>[(fvar.<a href="cpl.html#LO">LO1</a>+1) <a href="cpl.html#DIV">DIV</a> 2 - 1..(fvar.<a href="cpl.html#HI">HI1</a>+1) <a href="cpl.html#DIV">DIV</a> 2, (fvar.<a href="cpl.html#LO">LO2</a>-1) <a href="cpl.html#DIV">DIV</a> 2..(fvar.<a href="cpl.html#HI">HI2</a>+1) <a href="cpl.html#DIV">DIV</a> 2, (fvar.<a href="cpl.html#LO">LO3</a>-1) <a href="cpl.html#DIV">DIV</a> 2..(fvar.<a href="cpl.html#HI">HI3</a>+1) <a href="cpl.html#DIV">DIV</a> 2] <a href="cpl.html#OF">OF</a> VARS cbase=0, cvar=0, ctn=0
   <a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(fvar.<a href="cpl.html#LO">LO1</a>..fvar.<a href="cpl.html#HI">HI1</a>,fvar.<a href="cpl.html#LO">LO2</a>..fvar.<a href="cpl.html#HI">HI2</a>,fvar.<a href="cpl.html#LO">LO3</a>..fvar.<a href="cpl.html#HI">HI3</a>) <a href="cpl.html#OF">OF</a> VARS frsd=0
   restrictloop(fbase,cbase)
   bc(cbase,ctn,1)
@@ -498,7 +498,7 @@ wcd=={w(1,0,0)+w(-1,0,0)+w(0,1,0)+w(0,-1,0)+w(0,0,1)+w(0,0,-1)-6&lowast;w(0,0,0)
   <a href="cpl.html#DO">DO</a> mg(cbase,cvar,ctn,nxc) <a href="cpl.html#FOR">FOR</a> 2 <a href="cpl.html#TIMES">TIMES</a>
   bc(cvar,ctn,0)
 <span class=comment>!  nsmp=MIN(nsmpmax,CEILING(fvar.HI2/8))</span>
-<a href="parallel.html#PARALLEL">PARALLEL</a> <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ismp=0 <a href="cpl.html#TO">TO</a> nsmp-1
+  <a href="parallel.html#PARALLEL">PARALLEL</a> <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ismp=0 <a href="cpl.html#TO">TO</a> nsmp-1
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ixc=<a href="cpl.html#MAX">MAX</a>[cvar.<a href="cpl.html#LO">LO1</a>+1,fvar.<a href="cpl.html#LO">LO1</a> <a href="cpl.html#DIV">DIV</a> 2 +1] <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>[cvar.<a href="cpl.html#HI">HI1</a>,fvar.<a href="cpl.html#HI">HI1</a> <a href="cpl.html#DIV">DIV</a> 2] <a href="cpl.html#AND">AND</a> iyc=1+<a href="cpl.html#ROUND">ROUND</a>[ismp/nsmp&lowast;cvar.<a href="cpl.html#HI">HI2</a>] <a href="cpl.html#TO">TO</a> <a href="cpl.html#ROUND">ROUND</a>[(ismp+1)/nsmp&lowast;cvar.<a href="cpl.html#HI">HI2</a>] <a href="cpl.html#AND">AND</a> izc=cvar.<a href="cpl.html#LO">LO3</a>+1 <a href="cpl.html#TO">TO</a> cvar.<a href="cpl.html#HI">HI3</a>
     interp(cvar(ixc+(-1..0),iyc+(-1..0),izc+(-1..0)),fvar(2&lowast;ixc+(-1..0),2&lowast;iyc+(-1..0),2&lowast;izc+(-1..0)))
   <a href="cpl.html#LOOP">REPEAT</a>; <a href="cpl.html#LOOP">REPEAT</a>

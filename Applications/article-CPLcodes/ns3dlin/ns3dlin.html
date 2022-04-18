@@ -6,7 +6,7 @@
 "programmingLanguage":{
 "@type":"ComputerLanguage",
 "name":"CPL",
-"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
 }</script></head>
 <body translate="no"><pre>
@@ -49,7 +49,7 @@ bc(field(0),tn(0),1)
 <span class=comment>!(
   DO sigma(i,j)=field(i).u|tn(j).u+field(i).v|tn(j).v+field(i).w|tn(j).w FOR i=1 TO Ntot AND j=1 TO Ntot
   invsigma=INV(sigma)
-  WRITE eigv(invsigma)
+  WRITE eigenvalues(invsigma)
 !)</span>
 <span class=comment>!  WRITE MAXABS(field(0).w(&lowast;,&lowast;,nz DIV 2 -1)+field(0).w(&lowast;,&lowast;,nz DIV 2))</span>
   <span class=comment>!IF count MOD 10 =0 THEN SPLOT field(0).p(LO..HI,&lowast;,nz DIV 2)</span>
@@ -83,7 +83,7 @@ REPEAT
   invsigma=INV(sigma)
   invsigma=invsigma+shift
 <span class=comment>!  WRITE invsigma</span>
-  WRITE eigv(invsigma)
+  WRITE eigenvalues(invsigma)
   WRITE count,MAXABS(tn(0).p),MAXABS(tn(0).u),MAXABS(tn(0).v),MAXABS(tn(0).w)
 <span class=comment>!  WRITE MAXABS(field(0).w(&lowast;,&lowast;,nz DIV 2 -1)+field(0).w(&lowast;,&lowast;,nz DIV 2))</span>
   <span class=comment>!IF count MOD 10 =0 THEN SPLOT field(0).p(LO..HI,&lowast;,nz DIV 2)</span>

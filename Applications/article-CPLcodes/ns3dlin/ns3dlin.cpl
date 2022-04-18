@@ -37,7 +37,7 @@ LOOP FOR count=1 TO 100
 !(
   DO sigma(i,j)=field(i).u|tn(j).u+field(i).v|tn(j).v+field(i).w|tn(j).w FOR i=1 TO Ntot AND j=1 TO Ntot
   invsigma=INV(sigma)
-  WRITE eigv(invsigma)
+  WRITE eigenvalues(invsigma)
 !)
 !  WRITE MAXABS(field(0).w(*,*,nz DIV 2 -1)+field(0).w(*,*,nz DIV 2))
   !IF count MOD 10 =0 THEN SPLOT field(0).p(LO..HI,*,nz DIV 2)
@@ -71,7 +71,7 @@ REPEAT
   invsigma=INV(sigma)
   invsigma=invsigma+shift
 !  WRITE invsigma
-  WRITE eigv(invsigma)
+  WRITE eigenvalues(invsigma)
   WRITE count,MAXABS(tn(0).p),MAXABS(tn(0).u),MAXABS(tn(0).v),MAXABS(tn(0).w)
 !  WRITE MAXABS(field(0).w(*,*,nz DIV 2 -1)+field(0).w(*,*,nz DIV 2))
   !IF count MOD 10 =0 THEN SPLOT field(0).p(LO..HI,*,nz DIV 2)

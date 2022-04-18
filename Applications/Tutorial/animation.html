@@ -6,7 +6,7 @@
 "programmingLanguage":{
 "@type":"ComputerLanguage",
 "name":"CPL",
-"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
 }</script></head>
 <body translate="no"><pre>
@@ -21,7 +21,7 @@
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> t=0. <a href="cpl.html#TO">TO</a> 10000 <a href="cpl.html#BY">BY</a> 0.3   <span class=comment>! LOOP can have a REAL index</span>
   amp=<a href="cpl.html#Builtin">SIN</a>(t)        <span class=comment>! time-varying amplitude</span>
   <a href="cpl.html#DO">DO</a> g(ix,iy)=amp&lowast;<a href="cpl.html#Builtin">EXP</a>{-[(0.1&lowast;ix)<a href="cpl.html#REAL-operator">^</a>2+(0.1&lowast;iy)<a href="cpl.html#REAL-operator">^</a>2]/2} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy
-  <span class=comment>! this is a more compact form of LOOP</span>
+  <span class=comment>! a compact LOOP form, tested at the end</span>
   <span class=comment>! alternating the three kinds of brackets improves clarity</span>
   <a href="graphics.html#SPLOT">SPLOT</a> g           <span class=comment>! plot 2D array as a surface</span>
 <a href="cpl.html#LOOP">REPEAT</a>

@@ -6,7 +6,7 @@
 "programmingLanguage":{
 "@type":"ComputerLanguage",
 "name":"CPL",
-"disambiguatingDescription":"Compiler and Programming Language Created by Paolo Luchini",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
 }</script></head>
 <body translate="no"><pre>
@@ -24,7 +24,8 @@ INTEGERARRAY = <a href="cpl.html#ARRAY">ARRAY</a>(10) <a href="cpl.html#OF">OF</
 <a href="cpl.html#INTEGER">INTEGER</a> common = 3
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> 10
   <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> AAA(<a href="cpl.html#ABS">ABS</a>(1)+&lowast;),AAA ii=i <span class=comment>! ii is in machine code a POINTER</span>
-                         <span class=comment>! (for efficiency), but can be used like an INTEGER</span>
+                    <span class=comment>! (for efficiency), but can be used like an INTEGER</span>
+                    <span class=comment>! It is initialized to the INTEGER i</span>
   <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> AAA(i)AAA(ii+2),AAA(ii+<a href="cpl.html#ABS">ABS</a>(1)) <a href="cpl.html#FOR">FOR</a> ii=3 <a href="cpl.html#TO">TO</a> 5
   AAA=<a href="cpl.html#Assignment">~</a>+AAA+<a href="cpl.html#Assignment">~</a> <span class=comment>! AAA = 3 times itself (for each loop). AAA is an ARRAY</span>
   AAA(i)=AAA(i)+10

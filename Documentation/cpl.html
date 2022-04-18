@@ -72,7 +72,7 @@ Page: (cpl)Top,  Next: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="
   CPL = Coactive Parameter Lists
   CPL = Consistent Procedure Linkage
   CPL = Compiler and Programming Language
-  CPL = Created by Paolo Luchini
+  CPL = Conceived by Paolo Luchini
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -215,6 +215,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#STRUCTURED">STRUCTURED</a>:</td><td>ARRAY     may appear as both a structure and an array</td></tr>
 <tr><td><a href="#SUBROUTINE">SUBROUTINE</a>:</td><td>Subroutine declaration</td></tr>
 <tr><td><a href="#Looping-operator">SUM:Looping operator</a>:</td><td></td></tr>
+<tr><td><a href="#Builtin">SWAP:Builtin</a>:</td><td>swap argument values</td></tr>
 <tr><td><a href="graphics.html#gnuplot">TABLE:(graphics)gnuplot</a>:</td><td>WRITE TABLE to file using plot syntax</td></tr>
 <tr><td><a href="#Builtin">TAN:Builtin</a>:</td><td>tangent</td></tr>
 <tr><td><a href="#IF">THEN:IF</a>:</td><td>conditionally executed statement</td></tr>
@@ -336,18 +337,15 @@ If you have no access to /usr/local/, or prefer to avoid root privileges even if
 Page: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#multi-user">multi-user</a>, Up: <a href="#Installation">Installation</a> <a style="float:right" href="#Keyword-Index">Index</a>
 <hr> <h3>Common installation problems and their solution</h3>
 <h4>cpl: command not found</h4>
-If the initial setup did not report any errors, and <q>$HOME/fri/cpl</q> or <q>/usr/local/fri/cpl</q> do work, this is likely to be a PATH problem. CPL setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may find it easier to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions for how to modify the PATH variable.
+If the initial setup did not report any errors, and <q>$HOME/fri/cpl</q> or <q>/usr/local/fri/cpl</q> do work, this is likely to be a PATH problem. cpl setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may find it easier to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions for how to modify the PATH variable.
 
 <h4>My program compiles but does not execute</h4>
 Is . in your PATH? Many Linux distributions do not by default have your current working directory in the set of automatically searched file paths. Solutions:
  1) prefix ./ to the name of your executable, as in <q>./Helloworld</q>
  2) modify your PATH environment variable (look up instructions for your shell)
- 3) use <a href="#cpl-i">cpl i</a> as your shell (either <q>cpl i Helloworld</q> or just <q>cpl</q>
- and then <q>Helloworld</q>). Interactive cpl will automatically compile and execute
- &lt;yourprogram&gt; if a more recent &lt;yourprogram&gt;.cpl file is found in the same
- directory, or interpret &lt;yourprogram&gt;.cpl if the .cpl suffix is included.
-
-<h4>Why should I be concerned with compilation, anyway?</h4>
+ 3) use <a href="#cpl">cpl</a> as your shell (either <q>cpl Helloworld</q> or just <q>cpl</q>
+ and then <q>Helloworld</q>).
+  <h4>Why should I be concerned with compilation, anyway?</h4>
 If you are more at ease with the single-command execution usually provided by an interpreter, just use <a href="#cpl">cpl</a> as you would your interpreter. Compilation will happen automatically in the background. You can even put <q>#!/usr/bin/env
 cpl</q> at the top of your program, and make it executable under the unix interpreter convention.
 
@@ -400,7 +398,7 @@ Page: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#I
   CPL = Coactive Parameter Lists
   CPL = Consistent Procedure Linkage
   CPL = Computer Programming Language
-  CPL = Created by Paolo Luchini
+  CPL = Conceived by Paolo Luchini
 
 A CPL <a href="#Source-file">Source file</a> is composed of nested blocks of statements which take effect in a hierarchical top-down order, much like Pascal or Modula-2. Statements are composed of keywords (<a href="#Keyword-index">Keyword index</a>), identifiers and separators.
 
@@ -1402,6 +1400,11 @@ Page: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Loop
 <tr><td><a href="#TRAP">ERRORMESSAGE:TRAP</a>:</td><td>error message string</td></tr>
 <tr><td><a href="#String">String</a>:</td><td>Concatenation and conversion.</td></tr>
 <tr><td colspan="2"> </td></tr>
+<tr><td colspan="2"><h4>Builtin inline subroutine</h4>
+</td></tr>
+<tr><td colspan="2">  SWAP(.,.): swap the values of arguments of any compatible type.
+
+</td></tr>
 <tr><td colspan="2">In addition, nearly all C library mathematical and other functions are </td></tr>
 <tr><td colspan="2">transparently available with their original names. See <a href="#C-interface">C interface</a>. </td></tr>
 </table></nav>
@@ -2342,7 +2345,7 @@ Page: (cpl)cpl,  Next: <a href="#cpl.fri">cpl.fri</a>,  Prev: <a href="#Control"
 All tools that act upon a CPL <a href="#Source-file">Source file</a> are managed by a shell script named <q>cpl</q> (formerly <q>makecpl</q>).
 
 <h4>Usage</h4>
-	Compiler:  cpl make|remake|run &lt;program&gt;[.cpl] [options]
+	Compiler:  cpl make|remake|run &lt;program&gt;[.cpl] [&lt;option&gt;]
 	Interpreter:  cpl i [&lt;expression&gt;|&lt;program&gt;[.cpl]]
 	Editor:  cpl edit [&lt;file&gt;]
 	Info manual:  cpl info [keyword]
@@ -2365,11 +2368,11 @@ All tools that act upon a CPL <a href="#Source-file">Source file</a> are managed
 <h4>Description</h4>
 The basic command
 
-	cpl make &lt;program&gt;[.cpl] [options]
+	cpl make &lt;program&gt;[.cpl] [&lt;option&gt;]
 
 (or just <q>cplm</q>) is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run by its name just like any other executable. As an alternative, the shortcut command
 
-	cpl run &lt;program&gt;[.cpl] [arguments]
+	cpl run &lt;program&gt;[.cpl] [&lt;argument&gt;]
 
 (or just <q>cpl</q> if no confusion arises) compiles and runs &lt;program&gt; in a row, or just runs it without re-compiling if an executable is found that is not older than its source code. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable and undergoes automatic compilation when needed.
 
@@ -2377,7 +2380,7 @@ cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri"
 
 The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line.
 
-The -D and -I compiler options are interpreted by cpl.fri, in addition to being passed on to the C compiler, and provide pre#defined constants and include directories to both.
+The -D and -I compiler options are interpreted by cpl.fri itself, in addition to being passed on to the C compiler, and provide pre#defined constants and include directories to both.
 
 C source and object files are kept in a local subdirectory usually named .cpl (and therefore hidden from listing under unix convention). An alternate name for this directory can be specified through the environment variable OBJDIR or the -o option.
 
@@ -2426,7 +2429,7 @@ FRI language excerpts may be inserted at any point of a CPL program block by the
 	&lt;FRI code&gt;
 	END FRI SECTION
 
-This has the effect of dynamically adding new statement constructions and for all purposes extending the syntax of the language. (See <a href="fri.html#Top">(fri)Top</a>) Like everything else in CPL, the new extensions are available from the point where the FRI SECTION appears through the end of the enclosing block. 
+This has the effect of dynamically adding new statement constructions and for all purposes extending the syntax of the language (see <a href="fri.html#Top">(fri)Top</a>). Like everything else in CPL, the new extensions are available from the point where the FRI SECTION appears through the end of the enclosing block. 
 </div><div class=page id="cpl-info">
 Page: (cpl)cpl info,  Next: <a href="#cpl-i">cpl i</a>,  Prev: <a href="#FRI-SECTION">FRI SECTION</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
 <hr> <h3>info manual</h3>

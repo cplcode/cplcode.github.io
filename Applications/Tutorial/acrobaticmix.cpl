@@ -12,7 +12,8 @@ REAL FUNCTION PRN(INTEGERARRAY AAA^)
 INTEGER common = 3
 LOOP FOR i=1 TO 10
   POINTER INTO AAA(ABS(1)+*),AAA ii=i ! ii is in machine code a POINTER
-                         ! (for efficiency), but can be used like an INTEGER
+                    ! (for efficiency), but can be used like an INTEGER
+                    ! It is initialized to the INTEGER i
   DO WRITE AAA(i)AAA(ii+2),AAA(ii+ABS(1)) FOR ii=3 TO 5
   AAA=~+AAA+~ ! AAA = 3 times itself (for each loop). AAA is an ARRAY
   AAA(i)=AAA(i)+10
