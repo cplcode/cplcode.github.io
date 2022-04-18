@@ -65,7 +65,7 @@
 <body translate="no"><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
 
 </div><div class=page id="Top">
-Page: (parallel)Top,  Next: <a href="#nonparallel">nonparallel</a>,  Prev: <a href="graphics.html#Top">(graphics)</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (parallel)Top,  Next: <a href="#nonparallel">nonparallel</a>,  Prev: <a href="graphics.html#Top">(graphics)</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Parallel computing</h3>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -79,7 +79,7 @@ Page: (parallel)Top,  Next: <a href="#nonparallel">nonparallel</a>,  Prev: <a hr
 </table></nav>
 
 </div><div class=page id="SHARED">
-Page: (parallel)SHARED,  Next: <a href="#PARALLEL">PARALLEL</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (parallel)SHARED,  Next: <a href="#PARALLEL">PARALLEL</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>SHARED</h4>
 Prefix to global variable declarations specifying that the declared variables are to be shared among parallel modules. Variables without this declaration have separate instances for each module, i.e. changing their value produces no effect outside.
 
@@ -87,7 +87,7 @@ Example:
 
 SHARED ARRAY(0..100) OF REAL vec 
 </div><div class=page id="PARALLEL">
-Page: (parallel)PARALLEL, Next: <a href="#synchronization">synchronization</a>, Prev: <a href="#SHARED">SHARED</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (parallel)PARALLEL, Next: <a href="#synchronization">synchronization</a>, Prev: <a href="#SHARED">SHARED</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>PARALLEL</h4>
 Prefix to either <a href="cpl.html#MODULE">(cpl)MODULE</a> or <a href="cpl.html#LOOP">(cpl)LOOP</a> that specifies  parallel execution. 
 
@@ -95,7 +95,7 @@ A PARALLEL MODULE contains a block of code that gets executed in parallel with w
 
 A PARALLEL LOOP is a loop all instances of which occur in parallel. Synchronization occurs before the LOOP terminates and the program is allowed to continue. 
 </div><div class=page id="synchronization">
-Page: (parallel)synchronization, Next: <a href="#tcpserver">tcpserver</a>, Prev: <a href="#PARALLEL">PARALLEL</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (parallel)synchronization, Next: <a href="#tcpserver">tcpserver</a>, Prev: <a href="#PARALLEL">PARALLEL</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>synchronization</h4>
 Once parallel processes are running explicit synchronization can be achieved through shared variables. A process can be made to wait for a condition by the instruction
 
@@ -105,7 +105,7 @@ In order to make all sleeping processes verify their condition and wake up as ne
 
 WAKEUP 
 </div><div class=page id="nonparallel">
-Page: (parallel)nonparallel,  Next: <a href="symbolic.html#Top">(symbolic)</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (parallel)nonparallel,  Next: <a href="symbolic.html#Top">(symbolic)</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>nonparallel.cpl</h3>
 Fake parallel-computing package that provides void equivalents of the parallel.cpl extensions. 
 </div></body></html>

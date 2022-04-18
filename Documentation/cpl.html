@@ -65,7 +65,7 @@
 <body translate="no"><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
 
 </div><div class=page id="Top">
-Page: (cpl)Top,  Next: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Top,  Next: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr>Documentation for the CPL programming language and its compiler, April 2022. Printable and citable version can be found at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
 
   CPL = Concealed Pointer Lookup
@@ -88,7 +88,7 @@ Page: (cpl)Top,  Next: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="
 </table></nav>
 
 </div><div class=page id="Keyword-Index">
-Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Keyword index</h2>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -298,7 +298,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 </table></nav>
 
 </div><div class=page id="Installation">
-Page: (cpl)Installation, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Installation, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Installation</h2>
 This is CPL, a high-level programming language designed and developed by Paolo Luchini. Copyright 1993-2022 Paolo Luchini <a href="http://CPLcode.net">CPLcode.net</a>
 
@@ -320,7 +320,7 @@ The interactive CPL interpreter (if installed) accepts any CPL expression, state
 </table></nav>
 
 </div><div class=page id="automatic-updates">
-Page: (cpl)automatic updates, Next: <a href="#multi-user">multi-user</a>, Prev: <a href="#Installation">Installation</a>, Up: <a href="#Installation">Installation</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)automatic updates, Next: <a href="#multi-user">multi-user</a>, Prev: <a href="#Installation">Installation</a>, Up: <a href="#Installation">Installation</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Automatic updates</h3>
 The <a href="#cpl">cpl</a> script checks for updates to itself if the curl program is installed in the system (on Debian, <q>apt install curl</q>) and the network is available. This transparent background check at most takes place once a day, and only while cpl is being run.
 
@@ -328,13 +328,13 @@ If a new version is found, you are offered to upgrade to it. In case the answer 
 
 This functionality can be disabled, if undesired, by editing the cpl script and turning ENABLE_UPDATES to <q>NO</q>. 
 </div><div class=page id="multi-user">
-Page: (cpl)multi-user, Next: <a href="#Q&A">Q&amp;A</a>, Prev: <a href="#automatic-updates">automatic updates</a>, Up: <a href="#Installation">Installation</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)multi-user, Next: <a href="#Q&A">Q&amp;A</a>, Prev: <a href="#automatic-updates">automatic updates</a>, Up: <a href="#Installation">Installation</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Installation for multiple users</h3>
 If you unpack the CPL archive while you have write access to the /usr/local/ directory (generally this requires root privileges), the archive gets expanded in /usr/local/fri/ with symbolic links in /usr/local/bin/. This is the simplest way to make CPL simultaneously available to all users of the system.
 
 If you have no access to /usr/local/, or prefer to avoid root privileges even if you can have them, a slightly more complex alternative is to go through the normal single-user installation, make sure that your fri directory and all files in it have read permission for the interested group, and then have every other interested user create their own symbolic links by cd-ing to your fri directory and running ./linksetup.  
 </div><div class=page id="Q&A">
-Page: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#multi-user">multi-user</a>, Up: <a href="#Installation">Installation</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#multi-user">multi-user</a>, Up: <a href="#Installation">Installation</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Common installation problems and their solution</h3>
 <h4>cpl: command not found</h4>
 If the initial setup did not report any errors, and <q>$HOME/fri/cpl</q> or <q>/usr/local/fri/cpl</q> do work, this is likely to be a PATH problem. cpl setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may find it easier to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions for how to modify the PATH variable.
@@ -392,7 +392,7 @@ If to have <q>edit</q> pop up a different editor is your preferred behaviour, ju
 <h4>My .cpl source files get rejected when sent as email attachments</h4>
 gmail and other popular email servers automatically reject files with the .cpl extension (amid a list of about 50 extensions, even when included in compressed archives) because this extension is shared with MS Windows Control PaneL files. This precaution is overkill insofar as it is based on extension only, but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end; or else do as you would for a large attachment: upload your file(s) to a cloud service and email its shareable link. 
 </div><div class=page id="Syntax">
-Page: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>The CPL programming language syntax</h2>
   CPL = Concealed Pointer Lookup
   CPL = Coactive Parameter Lists
@@ -431,23 +431,23 @@ Loops and all other flow control statements (<a href="#Control">Control</a>) imp
 </table></nav>
 
 </div><div class=page id="Comments">
-Page: (cpl)Comments,  Next: <a href="#Parentheses">Parentheses</a>,  Prev: <a href="#Syntax">Syntax</a>,  Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Comments,  Next: <a href="#Parentheses">Parentheses</a>,  Prev: <a href="#Syntax">Syntax</a>,  Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Comments</h3>
 Comments delimited by ! without a following bracket extend to the end of line.
 
 Comments delimited by !( ... !) or ![ ... !] or !{ ... !} can be inserted wherever a space can, and can extend over a few characters or over several lines. The compiler will still match !bracket pairs within comments, and consider the comment finished only when all opened parentheses have been closed. 
 </div><div class=page id="Parentheses">
-Page: (cpl)Parentheses, Next: <a href="#C-preprocessor">C preprocessor</a>, Prev: <a href="#Comments">Comments</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Parentheses, Next: <a href="#C-preprocessor">C preprocessor</a>, Prev: <a href="#Comments">Comments</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Parentheses</h3>
 Round, square and curly brackets can all be used interchangeably wherever a parenthesis is needed, but the compiler requires that every opening bracket is closed by a matching bracket of the same kind, just as in mathematics. To alternate the three kinds of bracket, while not mandatory, makes for easier reading by the programmer and more effective error catching by the compiler.
 
 When round brackets are used in the statement prototypes contained in this manual, it is always implied that the other two styles can be used just as well. In such prototypes, square brackets denote optional items. 
 </div><div class=page id="C-preprocessor">
-Page: (cpl)C preprocessor, Next: <a href="#Source-file">Source file</a>, Prev: <a href="#Parentheses">Parentheses</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)C preprocessor, Next: <a href="#Source-file">Source file</a>, Prev: <a href="#Parentheses">Parentheses</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Macro definition and conditional compilation</h3>
 C preprocessor #define and #if constructs (<a href="/usr/share/info/cpp.html#Top">(/usr/share/info/cpp)</a>.) are used in a CPL program to define macros and alter the flow of compilation. For file inclusion see <a href="#USE">USE</a>, <a href="#INCLUDE">INCLUDE</a>, and <a href="#C-interface">C interface</a>.  
 </div><div class=page id="Source-file">
-Page: (cpl)Source file, Next: <a href="#MODULE">MODULE</a>, Prev: <a href="#C-preprocessor">C preprocessor</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Source file, Next: <a href="#MODULE">MODULE</a>, Prev: <a href="#C-preprocessor">C preprocessor</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Source files</h3>
 A CPL program file directly consists of a sequential block of declarations and statements, some of which may in turn contain other blocks, without any need to mark the beginning and end of the complete program other than by the beginning and end of the file itself.
 
@@ -464,7 +464,7 @@ The standard ending for CPL source files is .cpl, and is automatically added by 
 </table></nav>
 
 </div><div class=page id="USE">
-Page: (cpl)USE, Next: <a href="#INCLUDE">INCLUDE</a>, Prev: <a href="#Source-file">Source file</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)USE, Next: <a href="#INCLUDE">INCLUDE</a>, Prev: <a href="#Source-file">Source file</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Separately compiled program segments</h4>
 Separately compiled source files can be used with the statement
 
@@ -478,7 +478,7 @@ In case actual headers must be generated in order to save space (or to distribut
 
 In an interpreted program (<a href="#cpl-i">cpl i</a>) just as well, USE loads a separately compiled module, whose subroutines can then be executed at compiled speed, and executes its main body, if any, before passing control back to the console. 
 </div><div class=page id="INCLUDE">
-Page: (cpl)INCLUDE, Next: <a href="#C-interface">C interface</a>, Prev: <a href="#USE">USE</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)INCLUDE, Next: <a href="#C-interface">C interface</a>, Prev: <a href="#USE">USE</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>File inclusion</h4>
 Files included with
 
@@ -488,7 +488,7 @@ are treated as if they appeared in the place of the INCLUDE statement during com
 
 If the optional arguments are present, name becomes an alias for value within the scope of the INCLUDEd file only. 
 </div><div class=page id="C-interface">
-Page: (cpl)C interface, Next: <a href="#C-SECTION">C SECTION</a>, Prev: <a href="#INCLUDE">INCLUDE</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)C interface, Next: <a href="#C-SECTION">C SECTION</a>, Prev: <a href="#INCLUDE">INCLUDE</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>C interface</h4>
 The directive
 
@@ -524,7 +524,7 @@ The standard libc headers
 
 are pre-included in all CPL programs and need not (but may) be included again. 
 </div><div class=page id="C-SECTION">
-Page: (cpl)C SECTION, Next: <a href="#FORTRAN-interface">FORTRAN interface</a>, Prev: <a href="#C-interface">C interface</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)C SECTION, Next: <a href="#FORTRAN-interface">FORTRAN interface</a>, Prev: <a href="#C-interface">C interface</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>C SECTION</h4>
 C code excerpts can be inserted in a CPL program through the statement
 
@@ -540,7 +540,7 @@ As an alternative, C code may also be inserted between <q>&lt;&lowast;</q> and <
 
 In this case, anything that appears between <q>&lt;&lowast;</q> and <q>&lowast;&gt;</q> is copied verbatim in the generated C code without any intervention of the CPL compiler. It is up to the programmer to ensure that the resulting code makes sense, so this construction should only be used as a last resort. 
 </div><div class=page id="FORTRAN-interface">
-Page: (cpl)FORTRAN interface, Next: <a href="#MODULE">MODULE</a>, Prev: <a href="#C-SECTION">C SECTION</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)FORTRAN interface, Next: <a href="#MODULE">MODULE</a>, Prev: <a href="#C-SECTION">C SECTION</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Use of FORTRAN subroutine calls</h4>
 An interface to FORTRAN precompiled subroutines is provided by the statements
 
@@ -572,7 +572,7 @@ The name of the object file containing the FORTRAN compiled subroutines must be 
 
 together with any other linking options required (e.g., -lg2c to provide the FORTRAN run time library, if g77 was used as the FORTRAN compiler). 
 </div><div class=page id="MODULE">
-Page: (cpl)MODULE, Next: <a href="#Functions">Functions</a>, Prev: <a href="#Source-file">Source file</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)MODULE, Next: <a href="#Functions">Functions</a>, Prev: <a href="#Source-file">Source file</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Separately scoped program block</h3>
 A block of code can be explicitly delimited as
 
@@ -590,7 +590,7 @@ This construction limits the visibility of variables declared inside the MODULE,
 
 In order to be exported outside, a function declared inside a module must also be declared before the MODULE with the keyword <a href="#FOLLOWS">FOLLOWS</a>. Variables or constants can be simply declared outside a MODULE and assigned a value inside it as necessary. 
 </div><div class=page id="Functions">
-Page: (cpl)Functions,  Next: <a href="#Declarations">Declarations</a>,  Prev: <a href="#Syntax">Syntax</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Functions,  Next: <a href="#Declarations">Declarations</a>,  Prev: <a href="#Syntax">Syntax</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Functions and Subroutines</h2>
 Functions (<a href="#FUNCTION">FUNCTION</a>) and subroutines (<a href="#SUBROUTINE">SUBROUTINE</a>) have a long and a short declaration form. In long form, a subroutine declaration reads
 
@@ -638,7 +638,7 @@ The declared subroutine is visible from the point of its declaration to the end 
 </table></nav>
 
 </div><div class=page id="SUBROUTINE">
-Page: (cpl)SUBROUTINE, Next: <a href="#FUNCTION">FUNCTION</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)SUBROUTINE, Next: <a href="#FUNCTION">FUNCTION</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Subroutine declarations</h3>
 In long form, a subroutine declaration reads
 
@@ -655,7 +655,7 @@ where &lt;single-line block&gt; is a sequence of statements separated by semicol
 The keyword SUBROUTINE is also used to declare variables of <a href="#Subroutine-type">Subroutine
 type</a>. 
 </div><div class=page id="FUNCTION">
-Page: (cpl)FUNCTION, Next: <a href="#INLINE">INLINE</a>, Prev: <a href="#SUBROUTINE">SUBROUTINE</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)FUNCTION, Next: <a href="#INLINE">INLINE</a>, Prev: <a href="#SUBROUTINE">SUBROUTINE</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Function declarations</h3>
 In long form, a function declaration reads
 
@@ -692,13 +692,13 @@ is a shorthand for
 The keyword FUNCTION is also used to declare variables of <a href="#Subroutine-type">Subroutine
 type</a>. The statement RETURN is also used in <a href="#interactive-session">interactive session</a>. 
 </div><div class=page id="INLINE">
-Page: (cpl)INLINE,  Next: <a href="#FOLLOWS">FOLLOWS</a>,  Prev: <a href="#FUNCTION">FUNCTION</a>,  Up: <a href="#Functions">Functions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)INLINE,  Next: <a href="#FOLLOWS">FOLLOWS</a>,  Prev: <a href="#FUNCTION">FUNCTION</a>,  Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Inline functions and subroutines</h3>
 The keyword INLINE prefixed to a <a href="#SUBROUTINE">SUBROUTINE</a> or <a href="#FUNCTION">FUNCTION</a> declaration (in either long or short form) generates a compile-time macro that is inserted in place of each call to the subroutine.
 
 See also <a href="#INLINE-LOOP">INLINE LOOP</a>, <a href="symbolic.html#Top">INLINE:(symbolic)</a>. 
 </div><div class=page id="FOLLOWS">
-Page: (cpl)FOLLOWS,  Next: <a href="#OPTIONAL">OPTIONAL</a>,  Prev: <a href="#INLINE">INLINE</a>,  Up: <a href="#Functions">Functions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)FOLLOWS,  Next: <a href="#OPTIONAL">OPTIONAL</a>,  Prev: <a href="#INLINE">INLINE</a>,  Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Function prototypes</h3>
 In case the prototype of a subroutine must be declared in advance, the construction
 
@@ -708,7 +708,7 @@ In case the prototype of a subroutine must be declared in advance, the construct
 
 A prototype using FOLLOWS may also be defined for a <a href="#CONSTANT">CONSTANT</a>. 
 </div><div class=page id="OPTIONAL">
-Page: (cpl)OPTIONAL, Next: <a href="#nested-functions">nested functions</a>, Prev: <a href="#FOLLOWS">FOLLOWS</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)OPTIONAL, Next: <a href="#nested-functions">nested functions</a>, Prev: <a href="#FOLLOWS">FOLLOWS</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Optional parameters</h3>
 The parameter list of a function or subroutine can include optional items. In the function declaration, optional parameters must appear after all ordinary positional parameters (if there are any), separated by the keyword OPTIONAL. Each optional parameter must be assigned a default value in its declaration. Example:
 
@@ -722,15 +722,15 @@ In the calling statement, optional parameters follow all standard positional par
 
 is a possible calling statement. Optional parameters cannot be used to disambiguate overloaded function names. (See <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>) 
 </div><div class=page id="nested-functions">
-Page: (cpl)nested functions, Next: <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>, Prev: <a href="#OPTIONAL">OPTIONAL</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)nested functions, Next: <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>, Prev: <a href="#OPTIONAL">OPTIONAL</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Nested functions</h3>
 Functions and subroutines exist on a par with variable <a href="#Declarations">Declarations</a> and can appear anywhere in a block, another function included. Nested functions are therefore an integral part of CPL. Like all other block contexts, they have access to variables (and functions) declared before them, in the same or in an enclosing block. The present implementation of nested functions translates to nested functions in the generated C code, and is therefore only compatible with C compilers that handle nested functions as an extended feature (gcc is one of them). 
 </div><div class=page id="Coactive-Parameter-Lists">
-Page: (cpl)Coactive Parameter Lists, Next: <a href="#array-parameters">array parameters</a>, Prev: <a href="#nested-functions">nested functions</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Coactive Parameter Lists, Next: <a href="#array-parameters">array parameters</a>, Prev: <a href="#nested-functions">nested functions</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Coactive Parameter Lists</h3>
 Coactive Parameter Lists (aka function overloading) are an inherent feature of CPL. Since type checking is enforced on function arguments, functions and subroutines of the same name but different (not <a href="#OPTIONAL">OPTIONAL</a>) arguments can be distinguished from each other, and are transparently handled. This also works for single or multiple runtime specified types: see <a href="#DYNAMIC">DYNAMIC</a>. 
 </div><div class=page id="array-parameters">
-Page: (cpl)array parameters, Next: <a href="#RESULT">RESULT</a>, Prev: <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)array parameters, Next: <a href="#RESULT">RESULT</a>, Prev: <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Passing array parameters and their dimensions</h3>
 Functions that accept array parameters of variable dimensions are a necessity that is handled differently in different languages, especially when error checking is desired. In CPL they are handled as follows.
 
@@ -762,10 +762,10 @@ Additionally, the return type of a FUNCTION can as well be an ARRAY involving a 
 
 After this declaration the dimensions of the return type are known to the compiler, and can either be checked by rtchecks or used to allocate a suitable ARRAY CONSTANT. 
 </div><div class=page id="RESULT">
-Page: (cpl)RESULT, Next: <a href="#Declarations">Declarations</a>, Prev: <a href="#array-parameters">array parameters</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)RESULT, Next: <a href="#Declarations">Declarations</a>, Prev: <a href="#array-parameters">array parameters</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> Formal name of the result of a <a href="#FUNCTION">FUNCTION</a> inside of the function's body. RESULT is implicitly declared as a variable of the type indicated in the FUNCTION's declaration and may be used and assigned like any other variable. On exit it becomes the function's value returned to the calling program. 
 </div><div class=page id="Declarations">
-Page: (cpl)Declarations, Next: <a href="#Statements">Statements</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Declarations, Next: <a href="#Statements">Statements</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Variables, types and constants</h2>
 Variables, types and constants are denoted by identifiers introduced through the relevant declarations as follows. Identifiers cannot be duplicated as long as a previous declaration is in effect (in either the same or an enclosing block). An identifier which was not previously declared in the same or an enclosing block and does not coincide with a CPL keyword (see <a href="#Keyword-index">Keyword
 index</a>) is denoted as a newid below.
@@ -826,7 +826,7 @@ CPL is a type-checking language and requires that every VARIABLE be declared bef
 </table></nav>
 
 </div><div class=page id="CONSTANT">
-Page: (cpl)CONSTANT, Next: <a href="#VARIABLE">VARIABLE</a>, Prev: <a href="#Declarations">Declarations</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)CONSTANT, Next: <a href="#VARIABLE">VARIABLE</a>, Prev: <a href="#Declarations">Declarations</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>CONSTANT</h3>
 The word CONSTANT in <a href="#Declarations">Declarations</a> specifies that the declared item cannot be modified. Thus a CONSTANT is not the same thing as a <q>compile-time
 constant</q>, that is an expression whose value can be known at compile time, but more generally a value which cannot appear on the left side of an assignment or have its address assigned to a POINTER.
@@ -846,7 +846,7 @@ If the r.h.s. of a CONSTANT declaration is known at compile time (what is denote
 
 (see <a href="#Delayed-assignment">Delayed assignment</a>). Subroutine formal parameters are by default CONSTANT, with the actual parameter as their value, and must be explicitly declared <a href="#VARIABLE">VARIABLE</a> if they are to be reassigned within the subroutine's body. 
 </div><div class=page id="VARIABLE">
-Page: (cpl)VARIABLE, Next: <a href="#BOOLEAN">BOOLEAN</a>, Prev: <a href="#CONSTANT">CONSTANT</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)VARIABLE, Next: <a href="#BOOLEAN">BOOLEAN</a>, Prev: <a href="#CONSTANT">CONSTANT</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>VARIABLE</h3>
 The word VARIABLE in <a href="#Declarations">Declarations</a> specifies that the declared item is a regular variable and can be modified. In fact, this is the default and the word VARIABLE is optional in ordinary declarations.
 
@@ -856,7 +856,7 @@ Notice that the value assigned to a VARIABLE parameter is invisible after the su
 
 When a VARIABLE identifier is used in an expression, it initially stands for the variable's address in memory, and thus can be used wherever a POINTER is expected; the same identifier gets automatically converted to the variable's value where needed through <a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>. 
 </div><div class=page id="BOOLEAN">
-Page: (cpl)BOOLEAN, Next: <a href="#CHAR">CHAR</a>, Prev: <a href="#VARIABLE">VARIABLE</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)BOOLEAN, Next: <a href="#CHAR">CHAR</a>, Prev: <a href="#VARIABLE">VARIABLE</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>BOOLEAN</h3>
 Primitive type declarator for boolean logical variables translated into C type <q>int</q>. (<a href="#Declarations">Declarations</a>)
 
@@ -871,13 +871,13 @@ BOOLEAN values are denoted as YES or TRUE and NO or FALSE, and written as <q>Y</
 </table></nav>
 
 </div><div class=page id="CHAR">
-Page: (cpl)CHAR,  Next: <a href="#INTEGER">INTEGER</a>,  Prev: <a href="#BOOLEAN">BOOLEAN</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)CHAR,  Next: <a href="#INTEGER">INTEGER</a>,  Prev: <a href="#BOOLEAN">BOOLEAN</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>CHAR</h3>
 Primitive type declarator for character variables translated into C type <q>char</q>. (<a href="#Declarations">Declarations</a>)
 
 Where needed, a single-character <a href="#STRING">STRING</a> literal is implicitly converted to a CHAR constant, which is in turn implicitly converted to an INTEGER ASCII code. INTEGER to CHAR conversion must be explicit (<a href="#Builtin">CHAR:Builtin</a>). 
 </div><div class=page id="INTEGER">
-Page: (cpl)INTEGER,  Next: <a href="#REAL">REAL</a>,  Prev: <a href="#CHAR">CHAR</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)INTEGER,  Next: <a href="#REAL">REAL</a>,  Prev: <a href="#CHAR">CHAR</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>INTEGER</h3>
 Primitive type declarator for integer variables, translated into C type <q>int</q>.
 
@@ -885,19 +885,19 @@ Can be implicitly converted to REAL. REAL to INTEGER conversion must be explicit
 
 See also <a href="#INTEGER-operator">INTEGER operator</a>. 
 </div><div class=page id="REAL">
-Page: (cpl)REAL,  Next: <a href="#SINGLE">SINGLE</a>,  Prev: <a href="#INTEGER">INTEGER</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)REAL,  Next: <a href="#SINGLE">SINGLE</a>,  Prev: <a href="#INTEGER">INTEGER</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>REAL</h3>
 Primitive type declarator for real variables, translated into C type <q>double</q>.
 
 See also <a href="#REAL-operator">REAL operator</a>, <a href="#Builtin">REAL:Builtin</a>, <a href="complex.html#Top">REAL:(complex)</a>. 
 </div><div class=page id="SINGLE">
-Page: (cpl)SINGLE,  Next: <a href="#TYPE">TYPE</a>,  Prev: <a href="#REAL">REAL</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)SINGLE,  Next: <a href="#TYPE">TYPE</a>,  Prev: <a href="#REAL">REAL</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>SINGLE</h3>
 Primitive type declarator for single-precision real variables, translated into C type <q>float</q>.
 
 Can be implicitly converted to REAL. REAL to SINGLE conversion must be explicit (<a href="#Builtin">SINGLE:Builtin</a>). 
 </div><div class=page id="TYPE">
-Page: (cpl)TYPE, Next: <a href="#STRUCTURE">STRUCTURE</a>, Prev: <a href="#REAL">REAL</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)TYPE, Next: <a href="#STRUCTURE">STRUCTURE</a>, Prev: <a href="#REAL">REAL</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Declaration of new type identifiers</h3>
 A new type identifier can be declared as either
 
@@ -922,7 +922,7 @@ interface</a> or to estimate the memory requirements of the program) can be obta
 
 	SIZEOF(&lt;typeorvariable&gt;) 
 </div><div class=page id="ENUM">
-Page: (cpl)ENUM, Next: <a href="#STRUCTURE">STRUCTURE</a>, Prev: <a href="#TYPE">TYPE</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)ENUM, Next: <a href="#STRUCTURE">STRUCTURE</a>, Prev: <a href="#TYPE">TYPE</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Enumerated type</h3>
 Not really a compound type, ENUM (much like C enum) variables take a limited set of explicitly enumerated values. The syntax of this type declaration is
 
@@ -930,7 +930,7 @@ Not really a compound type, ENUM (much like C enum) variables take a limited set
 
 and can directly declare variables or be assigned to a new type name like all other TYPEs. &lt;id1&gt;, &lt;id2&gt;, etc. are thereby declared as constants to which variables of the given type can be set or compared. The purpose of ENUM variables is to flag a specified set of alternatives, while forbidding out-of-range values which could arise if INTEGERs were used for this purpose. No other operations than assignment and comparison are defined on them. 
 </div><div class=page id="STRUCTURE">
-Page: (cpl)STRUCTURE, Next: <a href="#ARRAY">ARRAY</a>, Prev: <a href="#ENUM">ENUM</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)STRUCTURE, Next: <a href="#ARRAY">ARRAY</a>, Prev: <a href="#ENUM">ENUM</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>STRUCTUREs</h3>
 The type declarator for structures is
 
@@ -970,7 +970,7 @@ Anonymous structure fields are CPL's way to define objects that inherit the stru
 </table></nav>
 
 </div><div class=page id="variable-size">
-Page: (cpl)variable size, Next: <a href="#ARRAY">ARRAY</a>, Prev: <a href="#STRUCTURE">STRUCTURE</a>, Up: <a href="#STRUCTURE">STRUCTURE</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)variable size, Next: <a href="#ARRAY">ARRAY</a>, Prev: <a href="#STRUCTURE">STRUCTURE</a>, Up: <a href="#STRUCTURE">STRUCTURE</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Variable size STRUCTUREs</h4>
 STRUCTUREs may be defined that contain ARRAYs the size of which will only be known at run time. Such STRUCTURE TYPEs are declared with one or more INTEGER CONSTANTs among their fields. When a variable of the given type is allocated, either by using the name assigned to the TYPE in a <a href="#Declaration">Declaration</a> or in a <a href="#NEW">NEW</a> statement, the values following the type name in parentheses (like arguments of a function) are assigned to these CONSTANTs by order, and are simultaneously used to allocate a chunk of memory of the appropriate size. Being CONSTANTs, these fields cannot be altered in the subsequent life of the allocated STRUCTURE. Example:
 
@@ -982,7 +982,7 @@ STRUCTUREs may be defined that contain ARRAYs the size of which will only be kno
 
 Notice that this syntax is intentionally similar to the syntax for FUNCTIONs that contain ARRAYs of runtime-specified size as arguments. Compare <a href="#array-parameters">array parameters</a>. In fact, the set of arguments of a given function may usefully be thought of as a structure, although one that is invisible to the programmer and only exists as a conceptual model. 
 </div><div class=page id="ARRAY">
-Page: (cpl)ARRAY, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#STRUCTURE">STRUCTURE</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)ARRAY, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#STRUCTURE">STRUCTURE</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>ARRAYs</h3>
 The prefix type declarator for arrays is
 
@@ -1030,26 +1030,26 @@ Therefore, a notation such as arr(4) is allowed, and has type ARRAY(2..9) OF REA
 </table></nav>
 
 </div><div class=page id="HI">
-Page: (cpl)HI,  Next: <a href="#LO">LO</a>,  Prev: <a href="#ARRAY">ARRAY</a>,  Up: <a href="#ARRAY">ARRAY</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)HI,  Next: <a href="#LO">LO</a>,  Prev: <a href="#ARRAY">ARRAY</a>,  Up: <a href="#ARRAY">ARRAY</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> HI:			upper bound of an array index
 
 The function HI applied to an ARRAY returns the upper bound of its first index. HI1 is a synonym for HI; HI2 and HI3 return the upper bound of the second and third index respectively. Further indices can be accessed by <a href="#subarray">subarray</a> selection.
 
 The argument of HI is implicit (i.e., HI may be written without any argument as if <a href="#WITH">WITH</a> were in action) when HI is used inside the index itself as in arr(HI-3) or in the specification of a <a href="#FOR">FOR</a> loop. 
 </div><div class=page id="LO">
-Page: (cpl)LO,  Next: <a href="#LENGTH">LENGTH</a>,  Prev: <a href="#HI">HI</a>,  Up: <a href="#ARRAY">ARRAY</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)LO,  Next: <a href="#LENGTH">LENGTH</a>,  Prev: <a href="#HI">HI</a>,  Up: <a href="#ARRAY">ARRAY</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> LO:			lower bound of an array index
 
 The function LO applied to an ARRAY returns the lower bound of its first index. LO1 is a synonym for LO; LO2 and LO3 return the lower bound of the second and third index respectively. Further indices can be accessed by <a href="#subarray">subarray</a> selection.
 
 The argument of LO is implicit (i.e., LO may be written without any argument as if <a href="#WITH">WITH</a> were in action) when LO is used inside the index itself as in arr(LO+2) or in the specification of a <a href="#FOR">FOR</a> loop. 
 </div><div class=page id="LENGTH">
-Page: (cpl)LENGTH,  Prev: <a href="#LO">LO</a>,  Up: <a href="#ARRAY">ARRAY</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)LENGTH,  Prev: <a href="#LO">LO</a>,  Up: <a href="#ARRAY">ARRAY</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> LENGTH:			number of elements of an array
 
 The function LENGTH applied to an ARRAY returns its number of elements. LENGTH is equivalent to HI-LO+1. In a multidimensional ARRAY, the number of values of the first index only is returned. 
 </div><div class=page id="STRING">
-Page: (cpl)STRING, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#ARRAY">ARRAY</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)STRING, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#ARRAY">ARRAY</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>STRINGs</h3>
 Type declaration STRING is a synonym for ARRAY(&lowast;) OF <a href="#CHAR">CHAR</a>, and can be used wherever the last can. In particular, a STRING can be subscripted or <a href="#subarray">subarray</a> extracted, and its bounds and length are available through functions <a href="#LO">LO</a>, <a href="#HI">HI</a>, and <a href="#LENGTH">LENGTH</a>. STRING valued constants (which are always indexed starting from 0) can be generated either at compile time, as quoted strings of characters, or dynamically through <a href="#String">String</a> concatenation, and can either be given a name through <a href="#CONSTANT">implicit:CONSTANT</a>. declaration or passed as actual parameters to function calls and further string concatenations.
 
@@ -1070,7 +1070,7 @@ As an experimental feature, and an exception to the general rule for ARRAY(&lowa
 </table></nav>
 
 </div><div class=page id="STRUCTURED">
-Page: (cpl)STRUCTURED, Next: <a href="#POINTER">POINTER</a>, Prev: <a href="#STRING">STRING</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)STRUCTURED, Next: <a href="#POINTER">POINTER</a>, Prev: <a href="#STRING">STRING</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>STRUCTURED ARRAY</h3>
 A structure (<a href="#STRUCTURE">STRUCTURE</a>) of like elements that may also be accessed as a linear array (<a href="#ARRAY">ARRAY</a>) of such. Its type declarator is
 
@@ -1082,7 +1082,7 @@ where &lt;field declarations&gt;, separated by commas, are either single newids 
 
 defines a STRUCTURE named stra with fields a, b of type REAL and c of type ARRAY(1..4,1..2) OF REAL. At the same time, stra may also be accessed as an ARRAY(0..9) OF REAL, with automatically determined bounds. This is particularly useful when the new type has to be subjected to <a href="#ARRAY-operations">ARRAY operations</a>. For instance, one can define a <q>Vector</q> type with fields x,y,z and then perform vector operations on variables of this type. 
 </div><div class=page id="POINTER">
-Page: (cpl)POINTER,  Next: <a href="#INTO">INTO</a>,  Prev: <a href="#ARRAY">ARRAY</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)POINTER,  Next: <a href="#INTO">INTO</a>,  Prev: <a href="#ARRAY">ARRAY</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>POINTERs</h3>
 The type declarator for pointers is POINTER TO (prefix) or ^ (postfix) (<a href="#Postfix">Postfix</a>). For example
 
@@ -1111,7 +1111,7 @@ Uncommitted pointers acquire a special meaning if used as formal parameters or f
 
 See also <a href="#NEW">Memory allocation:NEW</a>, <a href="#DYNAMIC">Object-oriented features:DYNAMIC</a>. 
 </div><div class=page id="INTO">
-Page: (cpl)INTO, Next: <a href="#DYNAMIC">DYNAMIC</a>, Prev: <a href="#POINTER">POINTER</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)INTO, Next: <a href="#DYNAMIC">DYNAMIC</a>, Prev: <a href="#POINTER">POINTER</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Pointer arithmetics</h3>
 Pointer arithmetics is the most powerful feature C has in common with assembly language. It is, however, also one of its weakest points as far as type checking is concerned. For these reasons CPL only allows restricted forms of pointer arithmetics. One of these is <a href="#subarray">subarray</a> extraction. The other is the type declarator
 
@@ -1128,7 +1128,7 @@ which defines a pointer that can be decremented or incremented provided it stays
 
 In other words, code is written just as if an INTEGER index were used, but the program is compiled to use a pointer instead. This can sometimes improve performance, especially in short loops that perform few repeating operations. 
 </div><div class=page id="DYNAMIC">
-Page: (cpl)DYNAMIC, Next: <a href="#IS">IS</a>, Prev: <a href="#INTO">INTO</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)DYNAMIC, Next: <a href="#IS">IS</a>, Prev: <a href="#INTO">INTO</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Object-oriented features</h3>
 CPL is not an object-oriented language in the sense that functions are supposed to be declared within object class declarations, and intentionally so. Object-like behaviour is achieved through overloaded function names (<a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>) and implicit type conversion (<a href="#STRUCTURE">anonymous:STRUCTURE</a>).
 
@@ -1146,7 +1146,7 @@ In this case only types which can be implicitly converted to &lt;type declarator
 
 The actual type a dynamic pointer points to can be tested by the <a href="#IS">IS</a> operator. 
 </div><div class=page id="IS">
-Page: (cpl)IS,  Next: <a href="#Postfix">Postfix</a>,  Prev: <a href="#DYNAMIC">DYNAMIC</a>,  Up: <a href="#DYNAMIC">DYNAMIC</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)IS,  Next: <a href="#Postfix">Postfix</a>,  Prev: <a href="#DYNAMIC">DYNAMIC</a>,  Up: <a href="#DYNAMIC">DYNAMIC</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Type comparison</h4>
 The actual type of the variable pointed to by a dynamic pointer (or, for that matter, of any variable) can be tested by the BOOLEAN expression
 
@@ -1162,7 +1162,7 @@ For instance, in
 
 the IF block is executed only if the dynamic pointer dyn points at run time to a variable of INTEGER type. In addition, the IS test has the side effect of casting a dynamic pointer to an ordinary pointer of the tested type when the test succeeds, thus allowing its use as a regular variable. That is, in the above example dyn is implicitly converted to a POINTER TO INTEGER for the scope of the IF block. A restricted dynamic pointer may always be implicitly converted to its base type, as compatibility is enforced at compile time. 
 </div><div class=page id="Postfix">
-Page: (cpl)Postfix, Next: <a href="#Subroutine-type">Subroutine type</a>, Prev: <a href="#DYNAMIC">DYNAMIC</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Postfix, Next: <a href="#Subroutine-type">Subroutine type</a>, Prev: <a href="#DYNAMIC">DYNAMIC</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Postfix type modifiers</h3>
 A postfix ^ denotes either pointer dereferencing (<a href="#Concealed-Pointer-Lookup">^:Concealed Pointer
 Lookup</a>) or a short form of the POINTER declaration. For instance
@@ -1183,7 +1183,7 @@ is equivalent to
 
 	POINTER TO ARRAY(10) OF STRUCTURE(INTEGER x,y) A 
 </div><div class=page id="Subroutine-type">
-Page: (cpl)Subroutine type, Next: <a href="#Type-identity">Type identity</a>, Prev: <a href="#Postfix">Postfix</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Subroutine type, Next: <a href="#Type-identity">Type identity</a>, Prev: <a href="#Postfix">Postfix</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Variable call to a subroutine or function</h3>
 A subroutine variable may be specified through the type declarator
 
@@ -1198,13 +1198,13 @@ the first form being mandatory when the result &lt;type&gt; is a pointer type an
 
 These type declarators can be used, just like all other type declarators, to declare variables and formal parameters, or as a part of new compound types. In addition to being assigned or compared to each other, subroutine variables can be assigned the name of a compatible subroutine as their value or as the actual parameter, and can later be called with the same syntax as normal (constant) subroutines and functions. 
 </div><div class=page id="Type-identity">
-Page: (cpl)Type identity, Prev: <a href="#Subroutine-type">Subroutine type</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Type identity, Prev: <a href="#Subroutine-type">Subroutine type</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Type identity</h3>
 When are two VARIABLEs of the same TYPE? Pascal-like strongly typed languages only consider variables of the same type when they are declared by the same typename or they appear in the same compound declaration. In other words, repeated compound declarations are not considered the same type even when they are equal, just as are not considered the same type two different typenames with similar definitions. C, on the other hand, handles typenames as bare aliases, and compares their definitions directly. None of these languages has runtime-dimensioned arrays. CPL takes the C approach when possible, and compares type definitions, but explicitly considers two different typenames different even when they correspond to the same declaration. Generally, it is good practice to declare variables that must be of the same type in a single declaration, or through a single typename, or through <a href="#TYPEOF">TYPEOF</a>. This is particularly true with runtime-dimensioned arrays (ARRAYs whose bounds are specified by a VARIABLE and are only known at run time). In fact, since a VARIABLE may take on different values in different parts of the program, multiple declarations of this type are necessarily considered different.
 
 In order to test whether a variable is of a given type the <a href="#IS">IS</a> comparison operator is available. 
 </div><div class=page id="Statements">
-Page: (cpl)Statements, Next: <a href="#Control">Control</a>, Prev: <a href="#Declarations">Declarations</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Statements, Next: <a href="#Control">Control</a>, Prev: <a href="#Declarations">Declarations</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Executable statements and expressions</h2>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -1221,7 +1221,7 @@ Page: (cpl)Statements, Next: <a href="#Control">Control</a>, Prev: <a href="#Dec
 </table></nav>
 
 </div><div class=page id="Expressions">
-Page: (cpl)Expressions, Next: <a href="#Assignment">Assignment</a>, Prev: <a href="#Statements">Statements</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Expressions, Next: <a href="#Assignment">Assignment</a>, Prev: <a href="#Statements">Statements</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Expressions</h3>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -1242,7 +1242,7 @@ Page: (cpl)Expressions, Next: <a href="#Assignment">Assignment</a>, Prev: <a hre
 </table></nav>
 
 </div><div class=page id="INTEGER-operator">
-Page: (cpl)INTEGER operator, Next: <a href="#REAL-operator">REAL operator</a>, Prev: <a href="#Expressions">Expressions</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)INTEGER operator, Next: <a href="#REAL-operator">REAL operator</a>, Prev: <a href="#Expressions">Expressions</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>INTEGER operators:	+  -  &lowast;  DIV  MOD</h4>
 DIV is the INTEGER division operator, and produces a rounded-down INTEGER quotient. <q>/</q> is reserved for REALs, and produces a REAL result even when the operands are INTEGERs.
 
@@ -1256,17 +1256,17 @@ Notice on the truncation of integer division: CPL requires that a MOD b must alw
 
 Operators following the C convention of truncating integer division and signed modulo are available, if needed, as CDIV and CMOD respectively. 
 </div><div class=page id="REAL-operator">
-Page: (cpl)REAL operator, Next: <a href="#Comparison">Comparison</a>, Prev: <a href="#INTEGER-operator">INTEGER operator</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)REAL operator, Next: <a href="#Comparison">Comparison</a>, Prev: <a href="#INTEGER-operator">INTEGER operator</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>REAL operators:		+  -  &lowast;  /  ^ (or &lowast;&lowast;)</h4>
 An infix ^ (or &lowast;&lowast;) is the exponentiation operator. <a href="#Postfix">Postfix</a> ^ is the pointer dereferencing operator. Also <a href="#Concealed-Pointer-Lookup">prefix ^:Concealed Pointer Lookup</a>. 
 </div><div class=page id="Comparison">
-Page: (cpl)Comparison, Next: <a href="#BOOLEAN-ops">BOOLEAN ops</a>, Prev: <a href="#REAL-operator">REAL operator</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Comparison, Next: <a href="#BOOLEAN-ops">BOOLEAN ops</a>, Prev: <a href="#REAL-operator">REAL operator</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Comparison:		&gt;  &gt;=  &lt;  &lt;=  =  #  IS</h4>
 The equality and inequality operators apply to any type, including pointers. Since pointers are implicitly dereferenced (<a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>), an ambiguity may arise as to whether the values or addresses of the two sides must be compared. The comparison generally takes place at the lowest dereferencing level at which types match, but the comparison of two constant addresses is not allowed (so that A = B, where A and B are two simple variables, denotes the comparison of the values of A and B rather than their addresses). Explicit type cast or pointer dereferencing may at times be necessary, and is always advised, where ambiguities exist.
 
 The type-testing operator IS is described in <a href="#DYNAMIC">Object-oriented features:DYNAMIC</a>. 
 </div><div class=page id="BOOLEAN-ops">
-Page: (cpl)BOOLEAN ops, Next: <a href="#Conditional-expressions">Conditional expressions</a>, Prev: <a href="#Comparison">Comparison</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)BOOLEAN ops, Next: <a href="#Conditional-expressions">Conditional expressions</a>, Prev: <a href="#Comparison">Comparison</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>BOOLEAN operators</h4>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -1279,26 +1279,26 @@ Page: (cpl)BOOLEAN ops, Next: <a href="#Conditional-expressions">Conditional exp
 </table></nav>
 
 </div><div class=page id="AND">
-Page: (cpl)AND,  Next: <a href="#OR">OR</a>,  Prev: <a href="#BOOLEAN-ops">BOOLEAN ops</a>,  Up: <a href="#BOOLEAN-ops">BOOLEAN ops</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)AND,  Next: <a href="#OR">OR</a>,  Prev: <a href="#BOOLEAN-ops">BOOLEAN ops</a>,  Up: <a href="#BOOLEAN-ops">BOOLEAN ops</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> AND:		boolean AND operator
 
 Takes precedence over OR but not NOT.
 
 AND may also appear in a FOR clause (<a href="#FOR-AND">FOR AND</a>) and in <a href="#READ">READ</a>. 
 </div><div class=page id="OR">
-Page: (cpl)OR,  Next: <a href="#NOT">NOT</a>,  Prev: <a href="#AND">AND</a>,  Up: <a href="#BOOLEAN-ops">BOOLEAN ops</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)OR,  Next: <a href="#NOT">NOT</a>,  Prev: <a href="#AND">AND</a>,  Up: <a href="#BOOLEAN-ops">BOOLEAN ops</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> OR:		boolean OR operator
 
 Has lower precedence than either AND or NOT.
 
 OR may also appear in a <a href="#READ">READ</a> statement. 
 </div><div class=page id="NOT">
-Page: (cpl)NOT,  Prev: <a href="#OR">OR</a>,  Up: <a href="#BOOLEAN-ops">BOOLEAN ops</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)NOT,  Prev: <a href="#OR">OR</a>,  Up: <a href="#BOOLEAN-ops">BOOLEAN ops</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> NOT:		boolean NOT operator
 
 Has higher precedence than either AND or OR. 
 </div><div class=page id="Conditional-expressions">
-Page: (cpl)Conditional expressions, Next: <a href="#Bitwise">Bitwise</a>, Prev: <a href="#BOOLEAN-ops">BOOLEAN ops</a>,  Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Conditional expressions, Next: <a href="#Bitwise">Bitwise</a>, Prev: <a href="#BOOLEAN-ops">BOOLEAN ops</a>,  Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Conditional expressions</h4>
 	IF &lt;BOOLEAN&gt; THEN &lt;expr1&gt; ELSE &lt;expr2&gt;
 
@@ -1306,11 +1306,11 @@ is an expression that takes the value of &lt;expr1&gt; if &lt;BOOLEAN&gt; is tru
 
 See also the <a href="#IF">IF</a> statement. 
 </div><div class=page id="Bitwise">
-Page: (cpl)Bitwise, Next: <a href="#String">String</a>, Prev: <a href="#Conditional-expressions">Conditional expressions</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Bitwise, Next: <a href="#String">String</a>, Prev: <a href="#Conditional-expressions">Conditional expressions</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Bitwise boolean operations: BITAND BITOR BITXOR BITNOT RSHIFTED LSHIFTED</h4>
 The C-like notation &amp; | &gt;&gt; &lt;&lt; is also available for BITAND BITOR RSHIFTED LSHIFTED. ^ and ~ are reserved as the <a href="#REAL-operator">exponentiation:REAL operator</a>. and the <a href="#Assignment">placeholder:Assignment</a>. 
 </div><div class=page id="String">
-Page: (cpl)String, Next: <a href="#Looping-operator">Looping operator</a>, Prev: <a href="#Bitwise">Bitwise</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)String, Next: <a href="#Looping-operator">Looping operator</a>, Prev: <a href="#Bitwise">Bitwise</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>String concatenation</h4>
 STRINGs written one after the other with no intervening operator (whitespace is allowed, but newlines must be escaped), either in literal (quoted) form or through their names, are concatenated into a single <a href="#STRING">STRING</a>. If all of the STRINGs are literals (i.e., known at compile time), the result will also be a literal, otherwise it will be a dynamically allocated ARRAY(&lowast;) OF CHAR which is transparently freed at the end of the enclosing code block.
 
@@ -1321,7 +1321,7 @@ When a string literal is defined in &lt;&lt; DELIMITER notation (<a href="#STRIN
 
 
 </div><div class=page id="Looping-operator">
-Page: (cpl)Looping operator, Next: <a href="#Builtin">Builtin</a>, Prev: <a href="#String">String</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Looping operator, Next: <a href="#Builtin">Builtin</a>, Prev: <a href="#String">String</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Looping operators</h4>
 The four operators SUM  PRODUCT  MAX  MIN embody a loop to denote respectively the sum, product, maximum and minimum of an expression over a running index. ARGMAX and ARGMIN act like MAX and MIN but return the value of the index. They are constructed as in
 
@@ -1335,7 +1335,7 @@ For example:
 
 See also <a href="#MAX">MAX</a>, <a href="#MIN">MIN</a>. 
 </div><div class=page id="Builtin">
-Page: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Looping-operator">Looping operator</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Looping-operator">Looping operator</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr><nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
@@ -1410,22 +1410,22 @@ Page: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Loop
 </table></nav>
 
 </div><div class=page id="ABS">
-Page: (cpl)ABS,  Next: <a href="#CEILING">CEILING</a>,  Prev: <a href="#Builtin">Builtin</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)ABS,  Next: <a href="#CEILING">CEILING</a>,  Prev: <a href="#Builtin">Builtin</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> ABS:		absolute value
 
 Function ABS returns the absolute value of an INTEGER, REAL or COMPLEX scalar number, or an ARRAY of those. 
 </div><div class=page id="CEILING">
-Page: (cpl)CEILING,  Next: <a href="#FLOOR">FLOOR</a>,  Prev: <a href="#ABS">ABS</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)CEILING,  Next: <a href="#FLOOR">FLOOR</a>,  Prev: <a href="#ABS">ABS</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> CEILING:	larger or equal integer
 
 The function CEILING returns the larger or equal INTEGER to a given REAL value. 
 </div><div class=page id="FLOOR">
-Page: (cpl)FLOOR,  Next: <a href="#MAX">MAX</a>,  Prev: <a href="#CEILING">CEILING</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)FLOOR,  Next: <a href="#MAX">MAX</a>,  Prev: <a href="#CEILING">CEILING</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> FLOOR:		lesser or equal integer
 
 The function FLOOR returns the lesser or equal INTEGER to a given REAL value. 
 </div><div class=page id="MAX">
-Page: (cpl)MAX,  Next: <a href="#MAXABS">MAXABS</a>,  Prev: <a href="#ABS">ABS</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)MAX,  Next: <a href="#MAXABS">MAXABS</a>,  Prev: <a href="#ABS">ABS</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> MAX:		maximum
 
 The function
@@ -1448,7 +1448,7 @@ returns the first index where the maximum is found.
 
 MAX or ARGMAX without a following bracket is a <a href="#Looping-operator">Looping operator</a>. 
 </div><div class=page id="MAXABS">
-Page: (cpl)MAXABS,  Next: <a href="#MIN">MIN</a>,  Prev: <a href="#MAX">MAX</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)MAXABS,  Next: <a href="#MIN">MIN</a>,  Prev: <a href="#MAX">MAX</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> MAXABS:		maximum absolute value
 
 The function
@@ -1457,7 +1457,7 @@ The function
 
 returns the maximum absolute value of the elements of the array. 
 </div><div class=page id="MIN">
-Page: (cpl)MIN,  Next: <a href="#NORM">NORM</a>,  Prev: <a href="#MAXABS">MAXABS</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)MIN,  Next: <a href="#NORM">NORM</a>,  Prev: <a href="#MAXABS">MAXABS</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> MIN:		minimum
 
 The function
@@ -1480,29 +1480,29 @@ returns the first index where the minimum is found.
 
 MIN or ARGMIN without a following bracket is a <a href="#Looping-operator">Looping operator</a>. 
 </div><div class=page id="NORM">
-Page: (cpl)NORM,  Next: <a href="#RAND">RAND</a>,  Prev: <a href="#MIN">MIN</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)NORM,  Next: <a href="#RAND">RAND</a>,  Prev: <a href="#MIN">MIN</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> NORM:		squared absolute value
 
 The function NORM returns the squared absolute value of either a number or a whole array. 
 </div><div class=page id="RAND">
-Page: (cpl)RAND,  Next: <a href="#GAUSS">GAUSS</a>,  Prev: <a href="#MIN">MIN</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)RAND,  Next: <a href="#GAUSS">GAUSS</a>,  Prev: <a href="#MIN">MIN</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> RAND:		uniformly distributed in (0,1) random REAL number
 
 The function RAND takes no argument. It is based on the INTEGER C library function rand, whose seed can be changed with srand (<a href="https://manpages.debian.org/rand.html">manpages.debian.org/rand.html</a> ). 
 </div><div class=page id="GAUSS">
-Page: (cpl)GAUSS,  Next: <a href="#ROUND">ROUND</a>,  Prev: <a href="#RAND">RAND</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)GAUSS,  Next: <a href="#ROUND">ROUND</a>,  Prev: <a href="#RAND">RAND</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> GAUSS:		gaussian distributed random REAL number with variance 1
 
 The function GAUSS takes no argument. It is based on <a href="#RAND">RAND</a>, and the analytic formula (see Knuth, The Art of Computer Programming, chapter on random numbers):
 
 	GAUSS = SQRT{-2&lowast;LOG[RAND()]}&lowast;COS[PI&lowast;RAND()] 
 </div><div class=page id="ROUND">
-Page: (cpl)ROUND,  Prev: <a href="#GAUSS">GAUSS</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)ROUND,  Prev: <a href="#GAUSS">GAUSS</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> ROUND:		nearest integer
 
 The function ROUND returns the nearest INTEGER to a given REAL value. 
 </div><div class=page id="subarray">
-Page: (cpl)subarray, Next: <a href="#compound-index">compound index</a>, Prev: <a href="#Builtin">Builtin</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)subarray, Next: <a href="#compound-index">compound index</a>, Prev: <a href="#Builtin">Builtin</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Subarray selection</h4>
 A portion of an array can be selected by specifying new dimensions. For example, if the declaration is REAL arr(1..10), the notation
 
@@ -1540,7 +1540,7 @@ It should be noted that all subarray selections are just address manipulations: 
 
 All subarray selections can also be applied to <a href="#STORED">STORED</a> ARRAYs and <a href="#STRUCTURED">STRUCTURED</a> ARRAYs. 
 </div><div class=page id="compound-index">
-Page: (cpl)compound index, Next: <a href="#ARRAY-operations">ARRAY operations</a>, Prev: <a href="#subarray">subarray</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)compound index, Next: <a href="#ARRAY-operations">ARRAY operations</a>, Prev: <a href="#subarray">subarray</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Compound index</h4>
 This CPL address manipulation allows a multidimensional ARRAY to be accessed sequentially through a single index, for instance in order to apply linear algebra to it. The syntax for this operation is a sequence of as many &lowast; as indices are to be compounded. For example if V is defined as
 
@@ -1550,7 +1550,7 @@ then V(&lowast;&lowast;&lowast;&lowast;) is a onedimensional <q>view</q> of the 
 
 Compound indices are restricted to arrays (or portions of them) that are contiguous in memory. This generally precludes their use after subarray operations that permute, stride, or restrict the range of indices. 
 </div><div class=page id="ARRAY-operations">
-Page: (cpl)ARRAY operations, Next: <a href="#Einstein-convention">Einstein convention</a>, Prev: <a href="#compound-index">compound index</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)ARRAY operations, Next: <a href="#Einstein-convention">Einstein convention</a>, Prev: <a href="#compound-index">compound index</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Linear-space ARRAY operations</h4>
 Linear-space operations are supported on arrays. That is, congruent ARRAYs of any number of dimensions can be added to or subtracted from each other and multiplied or divided by a scalar inside an expression, as well as appear on the left side of an assignment.
 
@@ -1564,7 +1564,7 @@ Matrix transposition is provided as the <a href="#subarray">TRANSPOSED:subarray<
 
 All ARRAY operations can also be applied to <a href="#STORED">STORED</a> ARRAYs and <a href="#STRUCTURED">STRUCTURED</a> ARRAYs. 
 </div><div class=page id="Einstein-convention">
-Page: (cpl)Einstein convention, Next: <a href="#Assignment">Assignment</a>, Prev: <a href="#ARRAY-operations">ARRAY operations</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Einstein convention, Next: <a href="#Assignment">Assignment</a>, Prev: <a href="#ARRAY-operations">ARRAY operations</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Implicit looping over array indices</h4>
 When indices in an expression are prefixed with a <q>$</q> character, the Einstein convention is implied. In a contraction or in a product the Einstein index must appear exactly twice, and the result will be summed over <a href="#ALL">ALL</a> values of this index; in a sum or in an assignment, Einstein indices must appear exactly once in each and all terms including the l.h.s., and the assignment will be repeated over <a href="#ALL">ALL</a> values of these indices. For example:
 
@@ -1572,7 +1572,7 @@ When indices in an expression are prefixed with a <q>$</q> character, the Einste
 
 Footnote: the euro symbol would have been appropriate to match the <q>e</q> of Einstein, but it is not part of the 7-bit ascii codes so we replaced it by a currency that is (the $). 
 </div><div class=page id="Assignment">
-Page: (cpl)Assignment, Next: <a href="#Deferred-assignment">Deferred assignment</a>, Prev: <a href="#Expressions">Expressions</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Assignment, Next: <a href="#Deferred-assignment">Deferred assignment</a>, Prev: <a href="#Expressions">Expressions</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Assignment</h3>
 Assignment is performed by a single <q>=</q> sign. The l.h.s. must be a POINTER, and the r.h.s. is required to be a value of the TYPE pointed to or to be implicitly convertible to it (<a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>). Compound variables can be assigned as a whole if types match.
 
@@ -1586,7 +1586,7 @@ At any position in the expression appearing on the right-hand side of an assignm
 	listelement = ~.next
 	A(i,j,k) = 3 &lowast; LOG(~) + gamma(~)	 
 </div><div class=page id="Deferred-assignment">
-Page: (cpl)Deferred assignment, Next: <a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>, Prev: <a href="#Assignment">Assignment</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Deferred assignment, Next: <a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>, Prev: <a href="#Assignment">Assignment</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Deferred assignment</h3>
 When an assignment is performed by a double <q>==</q> sign, no statement is generated in place. The l.h.s. is instead defined to be an alias for the r.h.s., and the assignment will be performed (and error messages issued, if any) at the location where this alias is first used.
 
@@ -1594,7 +1594,7 @@ Deferred assignment permits the appearance on the r.h.s. of yet undefined variab
 
 This construction is further extended in the <a href="symbolic.html#Top">(symbolic)Top</a> library. 
 </div><div class=page id="Concealed-Pointer-Lookup">
-Page: (cpl)Concealed Pointer Lookup, Next: <a href="#WITH">WITH</a>, Prev: <a href="#Deferred-assignment">Deferred assignment</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Concealed Pointer Lookup, Next: <a href="#WITH">WITH</a>, Prev: <a href="#Deferred-assignment">Deferred assignment</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Implicit type conversion</h3>
 Type consistency in expressions and assignments is enforced. However some types can be implicitly converted to others. Possible conversions are automatically checked out in the attempt to build a consistent expression. Only if this turns out to be impossible, a compilation error results. The basic rule is that a type can be implicitly converted to one other type only and that there cannot be closed type conversion loops. INTEGERs are implicitly converted to REALs. POINTERs are implicitly converted to the value they point to. Owing to this Concealed Pointer Lookup, it is hardly ever necessary to explicitly dereference pointers. When really wanted, the dereferencing operator is a postfix ^ (as in Pascal). Vice versa, a prefix ^ forces taking the address rather than the value of a variable; this construction too is rarely needed. Notice however that, in the assignment of a previously undeclared CONSTANT,
 
@@ -1606,7 +1606,7 @@ implicitly declares c as a copy of the value of var, whereas
 
 declares c as a POINTER to var. 
 </div><div class=page id="WITH">
-Page: (cpl)WITH, Next: <a href="#NEW">NEW</a>, Prev: <a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)WITH, Next: <a href="#NEW">NEW</a>, Prev: <a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Implicit access to structure fields and functions</h3>
 Like in Pascal or Modula2, a structure may be implicitly selected by the WITH statement. WITH has both a multi-line form:
 
@@ -1634,7 +1634,7 @@ Given the symmetry of treatment of structure fields and functions by CPL (<a hre
 
 is equivalent to WRITE SIN(3). Of course this notation is not very useful for REAL functions, but becomes handy when functions are defined to access user-defined compound types as if they were structures. 
 </div><div class=page id="NEW">
-Page: (cpl)NEW,  Next: <a href="#FREE">FREE</a>,  Prev: <a href="#WITH">WITH</a>,  Up: <a href="#Statements">Statements</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)NEW,  Next: <a href="#FREE">FREE</a>,  Prev: <a href="#WITH">WITH</a>,  Up: <a href="#Statements">Statements</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Memory allocation</h3>
 Runtime memory allocation is achieved either through the statement
 
@@ -1648,13 +1648,13 @@ The NEW statement allocates (through the `malloc' system call) the space necessa
 
 Dynamically allocated space is retained, independently of subroutine scoping, until it is returned to the system by the <a href="#FREE">FREE</a> statement. 
 </div><div class=page id="FREE">
-Page: (cpl)FREE,  Next: <a href="#Input/Output">Input/Output</a>,  Prev: <a href="#NEW">NEW</a>,  Up: <a href="#Statements">Statements</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)FREE,  Next: <a href="#Input/Output">Input/Output</a>,  Prev: <a href="#NEW">NEW</a>,  Up: <a href="#Statements">Statements</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Freeing memory or file allocation</h3>
 	FREE &lt;pointer&gt; [,&lt;pointer&gt;]
 
 releases the memory space or file pointed to by each &lt;pointer&gt;, which must have been previously obtained from <a href="#NEW">NEW</a>, <a href="#OPEN">OPEN</a>, or <a href="#CREATE">CREATE</a>. &lt;pointer&gt; is subsequently zeroed, so that any later dereferencing generates a visible runtime exception. If &lt;pointer&gt; is a file descriptor, FREEing it also writes out any previously buffered data. 
 </div><div class=page id="Input/Output">
-Page: (cpl)Input/Output, Next: <a href="#Control">Control</a>, Prev: <a href="#NEW">NEW</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Input/Output, Next: <a href="#Control">Control</a>, Prev: <a href="#NEW">NEW</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Input/Output</h3>
 Text I/O is performed by <a href="#READ">READ</a> and <a href="#WRITE">WRITE</a> instructions on variables of type <a href="#FILE">FILE</a>, which must be declared like ordinary variables and associated with a file before being used for I/O. FILE variables can be implicitly declared if they are <a href="#CONSTANT">CONSTANT</a> and be part of compound types like all other variables. Association to a file is obtained through <a href="#OPEN">OPEN</a> and <a href="#CREATE">CREATE</a>. A FILE variable is translated to the C type FILE&lowast;, and can be used in C library I/O functions transparently accessed through the <a href="#C-interface">C interface</a>.
 
@@ -1681,7 +1681,7 @@ Random-access binary I/O is where cpl really differs from other languages; see <
 </table></nav>
 
 </div><div class=page id="FILE">
-Page: (cpl)FILE, Next: <a href="#WRITE">WRITE</a>, Prev: <a href="#Input/Output">Input/Output</a>, Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)FILE, Next: <a href="#WRITE">WRITE</a>, Prev: <a href="#Input/Output">Input/Output</a>, Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>FILE</h4>
 File descriptor type, translated to C type FILE&lowast;
 
@@ -1699,7 +1699,7 @@ is used for random-access files (see <a href="#STORED">STORED</a>).
 
 Type FILE is equivalent to FILE OF CHAR. 
 </div><div class=page id="WRITE">
-Page: (cpl)WRITE,  Next: <a href="#READ">READ</a>,  Prev: <a href="#FILE">FILE</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)WRITE,  Next: <a href="#READ">READ</a>,  Prev: <a href="#FILE">FILE</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>WRITE</h4>
 The output statement WRITE is used as follows:
 
@@ -1725,7 +1725,7 @@ If the optional BY NAME qualification is present, WRITE prepends each value with
 
 WRITE syntax may also be used to convert any expression into a string. See <a href="#String">String</a>conversion. 
 </div><div class=page id="READ">
-Page: (cpl)READ,  Next: <a href="#FROM">FROM</a>,  Prev: <a href="#WRITE">WRITE</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)READ,  Next: <a href="#FROM">FROM</a>,  Prev: <a href="#WRITE">WRITE</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>READ</h4>
 The input statement READ is used as follows:
 
@@ -1743,7 +1743,7 @@ READ may also appear as a function in a BOOLEAN expression, and should then be p
 
 If the optional BY NAME qualifier is present, READ expects to find the value of each variable preceded by its name in the input file in the form name=value. 
 </div><div class=page id="FROM">
-Page: (cpl)FROM,  Next: <a href="#ASK">ASK</a>,  Prev: <a href="#READ">READ</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)FROM,  Next: <a href="#ASK">ASK</a>,  Prev: <a href="#READ">READ</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>FROM</h4>
 As an auxiliary keyword, FROM is used in <a href="#READ">READ</a> statements to introduce the <a href="#FILE">FILE</a> data are read from.
 
@@ -1761,7 +1761,7 @@ can replace
 	READ FROM stdin temp
 	WRITE TO stdout 3&lowast;temp 
 </div><div class=page id="ASK">
-Page: (cpl)ASK,  Next: <a href="#BINARY">BINARY</a>,  Prev: <a href="#FROM">FROM</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)ASK,  Next: <a href="#BINARY">BINARY</a>,  Prev: <a href="#FROM">FROM</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Console prompting and reading</h4>
 	ASK [&lt;type&gt;] [<q>literal</q>:] &lt;variable&gt; [, [<q>literal</q>:] &lt;variable&gt;]
 
@@ -1771,7 +1771,7 @@ Console prompting can be compounded with CONSTANT declaration. If &lt;type&gt; i
 
 Under <a href="#cpl-i">cpl i</a>, this console input functionality becomes extended: a cpl shell is opened whenever the program is waiting for input from its controlling terminal, and any number of CPL commands can be executed interactively before answering. The first expression given alone on the command line, which cpl would normally print, gets returned as input instead, and the waiting program resumes. This extension is available to either an interpreted or a compiled program, provided the latter is run under interactive cpl. 
 </div><div class=page id="BINARY">
-Page: (cpl)BINARY,  Next: <a href="#STORED">STORED</a>,  Prev: <a href="#ASK">ASK</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)BINARY,  Next: <a href="#STORED">STORED</a>,  Prev: <a href="#ASK">ASK</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Binary (unformatted) Input/Output</h4>
 Sequential binary I/O is obtained by appending the word BINARY to either <a href="#READ">READ</a> or <a href="#WRITE">WRITE</a>, as in
 
@@ -1783,7 +1783,7 @@ In binary I/O no format need, of course, be specified and no newline is automati
 
 For random-access binary I/O the statement <a href="#POSITION">POSITION</a> can be used to get and set the reading and writing position in the file. A more powerful and frequently preferable mechanism is provided by the <a href="#STORED">STORED</a> declaration. 
 </div><div class=page id="STORED">
-Page: (cpl)STORED,  Next: <a href="#OPEN">OPEN</a>,  Prev: <a href="#BINARY">BINARY</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)STORED,  Next: <a href="#OPEN">OPEN</a>,  Prev: <a href="#BINARY">BINARY</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Random-access files as disk-resident variables</h4>
 A random-access binary file typically contains fields and records at fixed addresses, which can be accessed by POSITIONing the file cursor (<a href="#POSITION">POSITION</a>) before each READ or WRITE <a href="#BINARY">BINARY</a>. However, this process requires knowing the address of each field and is quite error-prone.
 
@@ -1819,7 +1819,7 @@ The ordinary <a href="#FILE">FILE</a> type declarator is a shorthand for FILE OF
 
 STORED ARRAYs and POINTER TO STORED ARRAYs with multiple &lowast; dimensions are allowed as function formal parameters, just like their non-STORED equivalents. The corresponding actual parameter must be a STORED ARRAY of matching number of dimensions and type (not just an OPENed file). 
 </div><div class=page id="OPEN">
-Page: (cpl)OPEN,  Next: <a href="#CREATE">CREATE</a>,  Prev: <a href="#STORED">STORED</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)OPEN,  Next: <a href="#CREATE">CREATE</a>,  Prev: <a href="#STORED">STORED</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Open an existing file and associate a file descriptor with it</h4>
 The statement
 
@@ -1837,7 +1837,7 @@ returns &lt;fd&gt; as its value.
 
 <q>OPEN</q> calls the <q>open</q> system function with options O_RDWR|O_CREAT. For finer control over options, the <q>open</q> or <q>fopen</q> function may be called directly, just as all other libc functions (<a href="#C-interface">C interface</a>). 
 </div><div class=page id="CREATE">
-Page: (cpl)CREATE,  Next: <a href="#FLUSH">FLUSH</a>,  Prev: <a href="#OPEN">OPEN</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)CREATE,  Next: <a href="#FLUSH">FLUSH</a>,  Prev: <a href="#OPEN">OPEN</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Create a new, empty file</h4>
 The statement
 
@@ -1855,7 +1855,7 @@ returns &lt;fd&gt; as its value.
 
 <q>CREATE</q> calls the <q>open</q> system function with options O_RDWR|O_CREAT|O_TRUNC. For finer control over options, the <q>open</q> or <q>fopen</q> function may be called directly, just as all other libc functions (<a href="#C-interface">C interface</a>). 
 </div><div class=page id="FLUSH">
-Page: (cpl)FLUSH,  Next: <a href="#POSITION">POSITION</a>,  Prev: <a href="#CREATE">CREATE</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)FLUSH,  Next: <a href="#POSITION">POSITION</a>,  Prev: <a href="#CREATE">CREATE</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Flush a file's write buffer</h4>
 The statement
 
@@ -1863,7 +1863,7 @@ The statement
 
 writes out any buffered data for the file descriptor &lt;fd&gt;. 
 </div><div class=page id="POSITION">
-Page: (cpl)POSITION, Next: <a href="#INPUTREADY">INPUTREADY</a>, Prev: <a href="#FLUSH">FLUSH</a>, Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)POSITION, Next: <a href="#INPUTREADY">INPUTREADY</a>, Prev: <a href="#FLUSH">FLUSH</a>, Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Read or set a file's current position</h4>
 The statement
 
@@ -1877,7 +1877,7 @@ The function
 
 returns as an INTEGER the current READ/WRITE position in file descriptor &lt;fd&gt;. 
 </div><div class=page id="INPUTREADY">
-Page: (cpl)INPUTREADY, Next: <a href="#COMMANDLINE">COMMANDLINE</a>, Prev: <a href="#POSITION">POSITION</a>, Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)INPUTREADY, Next: <a href="#COMMANDLINE">COMMANDLINE</a>, Prev: <a href="#POSITION">POSITION</a>, Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Test for input ready on a file descriptor or stdin</h4>
 This function is contained in the inputready library (<a href="#USE">USE</a> inputready).
 
@@ -1899,7 +1899,7 @@ waits for input for the given &lt;time&gt; (in seconds, a REAL) before returning
 
 is a shorthand for INPUTREADY(stdin,&lt;time&gt;). 
 </div><div class=page id="COMMANDLINE">
-Page: (cpl)COMMANDLINE,  Prev: <a href="#INPUTREADY">INPUTREADY</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)COMMANDLINE,  Prev: <a href="#INPUTREADY">INPUTREADY</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Command-line argument access</h4>
 The command line through which the program was launched is available in the predefined ARRAY OF STRING
 
@@ -1907,7 +1907,7 @@ The command line through which the program was launched is available in the pred
 
 (the same that is usually named argv in C programs). Therefore the first word passed after the program name is COMMANDLINE(1), the second is COMMANDLINE(2), etc. The program name itself is COMMANDLINE(0). The index of the last word present, obeying normal <a href="#HI">ARRAY:HI</a>. convention, is COMMANDLINE.HI 
 </div><div class=page id="Control">
-Page: (cpl)Control,  Next: <a href="#cpl">cpl</a>,  Prev: <a href="#Statements">Statements</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Control,  Next: <a href="#cpl">cpl</a>,  Prev: <a href="#Statements">Statements</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Program flow control statements</h2>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -1927,7 +1927,7 @@ Page: (cpl)Control,  Next: <a href="#cpl">cpl</a>,  Prev: <a href="#Statements">
 </table></nav>
 
 </div><div class=page id="IF">
-Page: (cpl)IF,  Next: <a href="#LOOP">LOOP</a>,  Prev: <a href="#Control">Control</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)IF,  Next: <a href="#LOOP">LOOP</a>,  Prev: <a href="#Control">Control</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Conditional execution</h3>
 IF statements have a single-line form and a multi-line form. (For the additional use of IF inside expressions see <a href="#Conditional-expressions">Conditional expressions</a>) As in BASIC, single-line IF statements terminate at the end of a line, whereas multi-line IF statements are explicitly terminated by END IF. (<a href="#END">END</a>) Multi-line IF statements have the structure:
 
@@ -1979,7 +1979,7 @@ Multiple-choice conditionals are simply obtained by nesting another IF in the &l
 	&lt;block&gt;
 	END IF 
 </div><div class=page id="LOOP">
-Page: (cpl)LOOP,  Next: <a href="#DO">DO</a>,  Prev: <a href="#IF">IF</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)LOOP,  Next: <a href="#DO">DO</a>,  Prev: <a href="#IF">IF</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Loops</h3>
 Loops tested at their beginning (which are executed zero or more times) are coded as
 
@@ -2022,7 +2022,7 @@ A named loop can be terminated at any point in its body by the <a href="#EXIT">E
 </table></nav>
 
 </div><div class=page id="WHILE">
-Page: (cpl)WHILE,  Next: <a href="#UNTIL">UNTIL</a>,  Prev: <a href="#LOOP">LOOP</a>,  Up: <a href="#LOOP">LOOP</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)WHILE,  Next: <a href="#UNTIL">UNTIL</a>,  Prev: <a href="#LOOP">LOOP</a>,  Up: <a href="#LOOP">LOOP</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>WHILE loops</h4>
 The simplest test that can be used to decide whether to iterate a loop is
 
@@ -2036,7 +2036,7 @@ will repeat while the boolean condition is true.
 
 WHILE is equivalent to <a href="#UNTIL">UNTIL</a> NOT. 
 </div><div class=page id="UNTIL">
-Page: (cpl)UNTIL,  Next: <a href="#FOR">FOR</a>,  Prev: <a href="#WHILE">WHILE</a>,  Up: <a href="#LOOP">LOOP</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)UNTIL,  Next: <a href="#FOR">FOR</a>,  Prev: <a href="#WHILE">WHILE</a>,  Up: <a href="#LOOP">LOOP</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>UNTIL loops</h4>
 The simplest test that can be used to decide whether to terminate a loop is
 
@@ -2050,7 +2050,7 @@ will repeat until the boolean condition becomes true.
 
 UNTIL is equivalent to <a href="#WHILE">WHILE</a> NOT. See also <a href="#C-style">C-style</a> FOR loops. 
 </div><div class=page id="FOR">
-Page: (cpl)FOR,  Next: <a href="#DO">DO</a>,  Prev: <a href="#UNTIL">UNTIL</a>,  Up: <a href="#LOOP">LOOP</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)FOR,  Next: <a href="#DO">DO</a>,  Prev: <a href="#UNTIL">UNTIL</a>,  Up: <a href="#LOOP">LOOP</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>FOR loops</h4>
 The &lt;test&gt; for indexed loops is
 
@@ -2083,7 +2083,7 @@ operator</a>. In addition to the two basic forms, they can have the following va
 </table></nav>
 
 </div><div class=page id="FOR-AND">
-Page: (cpl)FOR AND,  Next: <a href="#ALL">ALL</a>,  Prev: <a href="#FOR">FOR</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)FOR AND,  Next: <a href="#ALL">ALL</a>,  Prev: <a href="#FOR">FOR</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> Two or more FOR loops can be combined in a single &lt;test&gt; through the keyword AND (not to be confused with the logical <a href="#AND">AND</a> operator), as in the following example:
 
 	LOOP FOR i1=l1 TO u1 AND i2=l2 TO u2
@@ -2098,7 +2098,7 @@ which is equivalent to
 	  REPEAT
 	REPEAT 
 </div><div class=page id="ALL">
-Page: (cpl)ALL,  Next: <a href="#TIMES">TIMES</a>,  Prev: <a href="#FOR-AND">FOR AND</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)ALL,  Next: <a href="#TIMES">TIMES</a>,  Prev: <a href="#FOR-AND">FOR AND</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> LOOP FOR ALL &lt;index&gt; [,&lt;index&gt;]
 
 denotes a loop whose bounds are automatically determined as the bounds of the first ARRAY that &lt;index&gt; appears in. Its use should preferably be limited to short loops in which only arrays of the same dimensions appear and no index arithmetics are performed.
@@ -2107,13 +2107,13 @@ ALL can be combined in a multiple loop with AND (<a href="#FOR-AND">FOR AND</a>)
 
 	DO WRITE A(i,j,k) FOR ALL i,j AND k=LO+2 TO HI-3 
 </div><div class=page id="TIMES">
-Page: (cpl)TIMES,  Next: <a href="#IN">IN</a>,  Prev: <a href="#ALL">ALL</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)TIMES,  Next: <a href="#IN">IN</a>,  Prev: <a href="#ALL">ALL</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr>
 	LOOP FOR &lt;number&gt; TIMES
 
 does exactly that, when just a counter and no indexing is needed. 
 </div><div class=page id="IN">
-Page: (cpl)IN,  Next: <a href="#EXCEPT">EXCEPT</a>,  Prev: <a href="#TIMES">TIMES</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)IN,  Next: <a href="#EXCEPT">EXCEPT</a>,  Prev: <a href="#TIMES">TIMES</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr>
 	LOOP FOR &lt;element&gt; IN &lt;array&gt;
 
@@ -2121,12 +2121,12 @@ Here &lt;element&gt; is not an INTEGER, but rather a POINTER to elements of the 
 
 	LOOP FOR n IN (2,5,11) 
 </div><div class=page id="EXCEPT">
-Page: (cpl)EXCEPT,  Next: <a href="#C-style">C-style</a>,  Prev: <a href="#IN">IN</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)EXCEPT,  Next: <a href="#C-style">C-style</a>,  Prev: <a href="#IN">IN</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> LOOP FOR &lt;for clause&gt; EXCEPT &lt;condition&gt; [<q>,</q> &lt;condition&gt;]
 
 The EXCEPT qualifier added to any of the FOR loop constructions excludes exceptional values of the index from the iteration. &lt;condition&gt; may be either an expression of BOOLEAN type, meaning that the loop is skipped when the &lt;condition&gt; is TRUE, or an expression of the same type as the index, meaning that the given value is excluded. 
 </div><div class=page id="C-style">
-Page: (cpl)C-style,  Prev: <a href="#EXCEPT">EXCEPT</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)C-style,  Prev: <a href="#EXCEPT">EXCEPT</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> LOOP FOR &lt;index&gt; = &lt;start&gt; UNTIL &lt;ending condition&gt; BY &lt;incrementing statement&gt;
 
 is a C-style FOR clause in which the index is not necessarily a number but can be of any type; for instance, a pointer to a structure.
@@ -2135,7 +2135,7 @@ is a C-style FOR clause in which the index is not necessarily a number but can b
 
 Either &lt;ending condition&gt; or &lt;incrementing statement&gt; may take an alternative short form. The short form of &lt;ending condition&gt; is an expression of the same type as &lt;start&gt;; this is equivalent to the BOOLEAN &lt;index&gt; = &lt;ending condition&gt;. The short form of &lt;incrementing statement&gt; is a single identifier denoting a function or structure element. This is a shorthand for &lt;index&gt; = &lt;incrementing statement&gt;(&lt;index&gt;). 
 </div><div class=page id="DO">
-Page: (cpl)DO,  Next: <a href="#INLINE-LOOP">INLINE LOOP</a>,  Prev: <a href="#LOOP">LOOP</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)DO,  Next: <a href="#INLINE-LOOP">INLINE LOOP</a>,  Prev: <a href="#LOOP">LOOP</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Loops (short form)</h3>
 A short form for nameless loops tested at the end (which are always executed one or more times) is
 
@@ -2154,7 +2154,7 @@ where &lt;test&gt; may be any one of
 </table></nav>
 
 </div><div class=page id="INLINE-LOOP">
-Page: (cpl)INLINE LOOP,  Next: <a href="#CASE">CASE</a>,  Prev: <a href="#DO">DO</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)INLINE LOOP,  Next: <a href="#CASE">CASE</a>,  Prev: <a href="#DO">DO</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>INLINE LOOP</h3>
 The statement
 
@@ -2166,7 +2166,7 @@ expands in line by repeating the loop contents once for each element of &lt;arra
 
 See also <a href="#IN">IN</a>. 
 </div><div class=page id="CASE">
-Page: (cpl)CASE,  Next: <a href="#CASE-LOOP">CASE LOOP</a>,  Prev: <a href="#INLINE-LOOP">INLINE LOOP</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)CASE,  Next: <a href="#CASE-LOOP">CASE LOOP</a>,  Prev: <a href="#INLINE-LOOP">INLINE LOOP</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Multiple-choice selection</h3>
 A multiple-choice branch is specified as
 
@@ -2180,7 +2180,7 @@ A multiple-choice branch is specified as
 
 where &lt;INTEGER&gt; is any expression of type INTEGER and tag1, tag2,... tagn are integer compile-time constants. A list of values separated by commas may also appear as a tag. 
 </div><div class=page id="CASE-LOOP">
-Page: (cpl)CASE LOOP,  Next: <a href="#EXIT">EXIT</a>,  Prev: <a href="#CASE">CASE</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)CASE LOOP,  Next: <a href="#EXIT">EXIT</a>,  Prev: <a href="#CASE">CASE</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Multiple-choice loop</h3>
 A multiple-choice loop is specified as
 
@@ -2214,7 +2214,7 @@ The CASE LOOP construction is functionally equivalent to a CASE in a LOOP, e.g.
 
 CASE LOOP maintains statements in the same order, but is easier to read and is implemented without auxiliary variables. 
 </div><div class=page id="EXIT">
-Page: (cpl)EXIT,  Next: <a href="#END">END</a>,  Prev: <a href="#CASE">CASE</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)EXIT,  Next: <a href="#END">END</a>,  Prev: <a href="#CASE">CASE</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> EXIT &lt;name&gt; transfers control past the end of the loop, module, function or subroutine labelled &lt;name&gt;. EXIT may be nested in an inner scope, such as a further loop or an IF statement.
 
 <nav><table>
@@ -2228,7 +2228,7 @@ Page: (cpl)EXIT,  Next: <a href="#END">END</a>,  Prev: <a href="#CASE">CASE</a>,
 </table></nav>
 
 </div><div class=page id="END">
-Page: (cpl)END,  Next: <a href="#STOP">STOP</a>,  Prev: <a href="#EXIT">EXIT</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)END,  Next: <a href="#STOP">STOP</a>,  Prev: <a href="#EXIT">EXIT</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> END &lt;name&gt; terminates the body of a module, function or subroutine named &lt;name&gt;. END IF, END CASE, END WITH, END C SECTION, END FRI SECTION and END TRAP terminate the corresponding statements.
 
 <nav><table>
@@ -2246,11 +2246,11 @@ Page: (cpl)END,  Next: <a href="#STOP">STOP</a>,  Prev: <a href="#EXIT">EXIT</a>
 </table></nav>
 
 </div><div class=page id="STOP">
-Page: (cpl)STOP,  Next: <a href="#ERROR">ERROR</a>,  Prev: <a href="#END">END</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)STOP,  Next: <a href="#ERROR">ERROR</a>,  Prev: <a href="#END">END</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>STOP</h3>
 Stop the program and exit (unless intercepted by a <a href="#TRAP">TRAP</a>). Has the same effect as the SIGINT (^C) signal. 
 </div><div class=page id="ERROR">
-Page: (cpl)ERROR,  Next: <a href="#TRAP">TRAP</a>,  Prev: <a href="#STOP">STOP</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)ERROR,  Next: <a href="#TRAP">TRAP</a>,  Prev: <a href="#STOP">STOP</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Error signal</h3>
 The command
 
@@ -2258,7 +2258,7 @@ The command
 
 writes &lt;outputexpr&gt; to the predefined string variable ERRORMESSAGE and signals an error. Unless a <a href="#TRAP">TRAP</a> has been set, this causes the program to exit after writing ERRORMESSAGE to stderr. 
 </div><div class=page id="TRAP">
-Page: (cpl)TRAP,  Prev: <a href="#ERROR">ERROR</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)TRAP,  Prev: <a href="#ERROR">ERROR</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Error handling</h3>
 An error, either caused by a system signal or by the <a href="#ERROR">ERROR</a> statement, normally causes the program to terminate after writing a message to stderr. A trap for errors may be set by the statement
 
@@ -2282,7 +2282,7 @@ At the END TRAP statement, control is passed to the end of the enclosing block, 
 
 An exception caused by SIGINT or STOP is accompanied by an empty ERRORMESSAGE. 
 </div><div class=page id="BY">
-Page: (cpl)BY,  Next: <a href="#C-SECTION">C SECTION</a>,  Prev: <a href="#BOOLEAN">BOOLEAN</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)BY,  Next: <a href="#C-SECTION">C SECTION</a>,  Prev: <a href="#BOOLEAN">BOOLEAN</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> The auxiliary keyword BY is used in
 
 <nav><table>
@@ -2294,7 +2294,7 @@ Page: (cpl)BY,  Next: <a href="#C-SECTION">C SECTION</a>,  Prev: <a href="#BOOLE
 </table></nav>
 
 </div><div class=page id="ELSE">
-Page: (cpl)ELSE,  Next: <a href="#END">END</a>,  Prev: <a href="#DOWN">DOWN</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)ELSE,  Next: <a href="#END">END</a>,  Prev: <a href="#DOWN">DOWN</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> The auxiliary keyword ELSE is used in
 
 <nav><table>
@@ -2305,7 +2305,7 @@ Page: (cpl)ELSE,  Next: <a href="#END">END</a>,  Prev: <a href="#DOWN">DOWN</a>,
 </table></nav>
 
 </div><div class=page id="NAME">
-Page: (cpl)NAME,  Next: <a href="#NEW">NEW</a>,  Prev: <a href="#MODULE">MODULE</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)NAME,  Next: <a href="#NEW">NEW</a>,  Prev: <a href="#MODULE">MODULE</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> The auxiliary keyword NAME is used in
 
 <nav><table>
@@ -2316,7 +2316,7 @@ Page: (cpl)NAME,  Next: <a href="#NEW">NEW</a>,  Prev: <a href="#MODULE">MODULE<
 </table></nav>
 
 </div><div class=page id="OF">
-Page: (cpl)OF,  Next: <a href="#POINTER">POINTER</a>,  Prev: <a href="#NOT">NOT</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)OF,  Next: <a href="#POINTER">POINTER</a>,  Prev: <a href="#NOT">NOT</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> The auxiliary keyword OF is used in:
 
 <nav><table>
@@ -2328,7 +2328,7 @@ Page: (cpl)OF,  Next: <a href="#POINTER">POINTER</a>,  Prev: <a href="#NOT">NOT<
 </table></nav>
 
 </div><div class=page id="TO">
-Page: (cpl)TO,  Next: <a href="#TRAP">TRAP</a>,  Prev: <a href="#TIMES">TIMES</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)TO,  Next: <a href="#TRAP">TRAP</a>,  Prev: <a href="#TIMES">TIMES</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> The auxiliary keyword TO is used in:
 
 <nav><table>
@@ -2340,7 +2340,7 @@ Page: (cpl)TO,  Next: <a href="#TRAP">TRAP</a>,  Prev: <a href="#TIMES">TIMES</a
 </table></nav>
 
 </div><div class=page id="cpl">
-Page: (cpl)cpl,  Next: <a href="#cpl.fri">cpl.fri</a>,  Prev: <a href="#Control">Control</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)cpl,  Next: <a href="#cpl.fri">cpl.fri</a>,  Prev: <a href="#Control">Control</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Compilation tools and their usage</h2>
 All tools that act upon a CPL <a href="#Source-file">Source file</a> are managed by a shell script named <q>cpl</q> (formerly <q>makecpl</q>).
 
@@ -2409,7 +2409,7 @@ install curl</q>), cpl provides the functionality to transparently poll the CPLc
 </table></nav>
 
 </div><div class=page id="cpl.fri">
-Page: (cpl)cpl.fri,  Next: <a href="#FRI-SECTION">FRI SECTION</a>,  Prev: <a href="#cpl">cpl</a>,  Up: <a href="#cpl">cpl</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)cpl.fri,  Next: <a href="#FRI-SECTION">FRI SECTION</a>,  Prev: <a href="#cpl">cpl</a>,  Up: <a href="#cpl">cpl</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>The CPL-to-C compiler</h3>
 The CPL compiler cpl.fri is not an executable file, but rather a formal description of the language that is interpreted by the Formal Rule Interpreter <a href="fri.html#Top">(fri)Top</a>. The cpl.fri file is made executable by the shell convention of having <q>#!/usr/bin/env fri</q> as its first line. Where this convention is understood, the CPL-to-C compilation command is
 
@@ -2421,7 +2421,7 @@ On systems where the #! convention does not work as expected, this command must 
 
 All this is normally handled inside the <a href="#cpl">cpl</a> driver script; direct use of the cpl.fri command is not needed. 
 </div><div class=page id="FRI-SECTION">
-Page: (cpl)FRI SECTION,  Next: <a href="#cpl-info">cpl info</a>,  Prev: <a href="#cpl.fri">cpl.fri</a>,  Up: <a href="#cpl">cpl</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)FRI SECTION,  Next: <a href="#cpl-info">cpl info</a>,  Prev: <a href="#cpl.fri">cpl.fri</a>,  Up: <a href="#cpl">cpl</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Dynamic extension of the CPL language</h4>
 FRI language excerpts may be inserted at any point of a CPL program block by the statement
 
@@ -2431,11 +2431,11 @@ FRI language excerpts may be inserted at any point of a CPL program block by the
 
 This has the effect of dynamically adding new statement constructions and for all purposes extending the syntax of the language (see <a href="fri.html#Top">(fri)Top</a>). Like everything else in CPL, the new extensions are available from the point where the FRI SECTION appears through the end of the enclosing block. 
 </div><div class=page id="cpl-info">
-Page: (cpl)cpl info,  Next: <a href="#cpl-i">cpl i</a>,  Prev: <a href="#FRI-SECTION">FRI SECTION</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)cpl info,  Next: <a href="#cpl-i">cpl i</a>,  Prev: <a href="#FRI-SECTION">FRI SECTION</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>info manual</h3>
 A CPL manual in info format is available through GNU info. Its reading command is encapsulated as <q>cpl info</q>. Typing <q>cpl info</q> with no arguments brings you to the head of the file you are now reading. Typing <q>cpl info &lt;keyword&gt;</q> brings you help about a specific CPL keyword. 
 </div><div class=page id="cpl-i">
-Page: (cpl)cpl i,  Next: <a href="#Library">Library</a>,  Prev: <a href="#cpl-info">cpl info</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)cpl i,  Next: <a href="#Library">Library</a>,  Prev: <a href="#cpl-info">cpl info</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Interactive CPL</h2>
 The interactive CPL interpreter, accepting expressions, statements or commands at a console prompt, is launched by the command
 
@@ -2452,7 +2452,7 @@ The interactive CPL interpreter, accepting expressions, statements or commands a
 </table></nav>
 
 </div><div class=page id="cpl-i-commands">
-Page: (cpl)cpl i commands,  Next: <a href="#Library">Library</a>,  Prev: <a href="#cpl-i">cpl i</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)cpl i commands,  Next: <a href="#Library">Library</a>,  Prev: <a href="#cpl-i">cpl i</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>interactive-cpl specific commands:</th></tr>
 <tr><td colspan="2"> </td></tr>
@@ -2492,7 +2492,7 @@ Page: (cpl)cpl i commands,  Next: <a href="#Library">Library</a>,  Prev: <a href
 </table></nav>
 
 </div><div class=page id="cpl-i-command-line">
-Page: (cpl)cpl i command line,  Next: <a href="#?">?</a>,  Prev: <a href="#cpl-i-commands">cpl i commands</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)cpl i command line,  Next: <a href="#?">?</a>,  Prev: <a href="#cpl-i-commands">cpl i commands</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>The interactive-cpl command line</h3>
 An interactive CPL command can alternately be specified on the cpl i command line, as in
 
@@ -2512,21 +2512,21 @@ command with no arguments launches an interactive cpl session.
 
 When the input of cpl i is redirected (or piped) from an alternate source, commands from that source are interpreted on a line-by-line basis. 
 </div><div class=page id="?">
-Page: (cpl)?,  Next: <a href="#:">:</a>,  Prev: <a href="#cpl-i-command-line">cpl i command line</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)?,  Next: <a href="#:">:</a>,  Prev: <a href="#cpl-i-command-line">cpl i command line</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>The cpl help system</h3>
 The ? command given at the cpl&gt; command prompt brings you to the Top of this info file. ? followed by any user-declared identifier or system-reserved keyword elicits related help. 
 </div><div class=page id=":">
-Page: (cpl):,  Next: <a href="#$">$</a>,  Prev: <a href="#?">?</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl):,  Next: <a href="#$">$</a>,  Prev: <a href="#?">?</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Shell commands</h3>
 Any command that is meaningless to interactive cpl, or not the name of a program to be executed, is passed on to the shell before giving up. Thus most shell commands can be given directly at the cpl&gt; prompt. In case of ambiguity, passing a command to the shell can be forced with
 
 	:&lt;shell command&gt; 
 </div><div class=page id="$">
-Page: (cpl)$,  Next: <a href="#command-interpretation">command interpretation</a>,  Prev: <a href="#:">:</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)$,  Next: <a href="#command-interpretation">command interpretation</a>,  Prev: <a href="#:">:</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Last result</h3>
 Within an interactive cpl expression, the $ symbol stands for the last result printed out by a previous command. 
 </div><div class=page id="command-interpretation">
-Page: (cpl)command interpretation, Next: <a href="#interactive-session">interactive session</a>, Prev: <a href="#$">$</a>, Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)command interpretation, Next: <a href="#interactive-session">interactive session</a>, Prev: <a href="#$">$</a>, Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Command interpretation</h3>
 A statement contained in a string &lt;string&gt; can be executed just as it were typed at the cpl&gt; prompt by the statement
 
@@ -2534,7 +2534,7 @@ A statement contained in a string &lt;string&gt; can be executed just as it were
 
 The icpl statement is available not only to interpreted but also to compiled programs, provided the latter are run under interactive cpl, thus enabling the on-the-fly execution of program-generated statements. All the global variables and subroutines defined in either the compiled or the interpreted part of the program are accessible to the run-time generated command. 
 </div><div class=page id="interactive-session">
-Page: (cpl)interactive session, Prev: <a href="#command-interpretation">command interpretation</a>, Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)interactive session, Prev: <a href="#command-interpretation">command interpretation</a>, Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Interactive session</h3>
 An interactive cpl session can be started in the middle of a running program either by the user typing ctrl-C at the controlling terminal (or any other process giving signal SIGINT), or by the program itself executing the statement
 
@@ -2547,7 +2547,7 @@ The inner session thus opened is signalled by an additional <q>&gt;</q> in the c
 	kill 	or 	stop
   kill the interrupted program and return to the session where it was invoked. 
 </div><div class=page id="Library">
-Page: (cpl)Library,  Prev: <a href="#cpl-i">cpl i</a>,  Next: <a href="#rtchecks">rtchecks</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)Library,  Prev: <a href="#cpl-i">cpl i</a>,  Next: <a href="#rtchecks">rtchecks</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Ready to <a href="#USE">USE</a> library of CPL modules</h2>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>The following libraries are included with CPL:</th></tr>
@@ -2572,7 +2572,7 @@ Page: (cpl)Library,  Prev: <a href="#cpl-i">cpl i</a>,  Next: <a href="#rtchecks
 </table></nav>
 
 </div><div class=page id="rtchecks">
-Page: (cpl)rtchecks,  Next: <a href="complex.html#Top">(complex)</a>,  Prev: <a href="#Library">Library</a>,  Up: <a href="#Library">Library</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)rtchecks,  Next: <a href="complex.html#Top">(complex)</a>,  Prev: <a href="#Library">Library</a>,  Up: <a href="#Library">Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Run Time bounds Checking</h3>
 The rtchecks.cpl library does not add any new subroutines or instructions, but modifies already existing ones in such a way as to provide run-time bounds checking. The impact on performance is considerable; therefore rtchecks should only (and always) be used during development and later disabled once the program is deemed to be reliable. In particular:
 
@@ -2586,7 +2586,7 @@ all array indexing and subarray extraction operations are bounds-checked, pointe
 </table></nav>
 
 </div><div class=page id="TRACE">
-Page: (cpl)TRACE,  Prev: <a href="#rtchecks">rtchecks</a>,  Up: <a href="#rtchecks">rtchecks</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)TRACE,  Prev: <a href="#rtchecks">rtchecks</a>,  Up: <a href="#rtchecks">rtchecks</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>TRACE ON/OFF (also abbreviated TRON/TROFF)</h3>
 toggles execution tracing. When tracing is on, instructions from the source file are displayed in the upper part of the terminal screen while program output goes to the lower part (unless redirected to a file or to another terminal). Each block (e.g., subroutine or loop) of execution is displayed on a new line, thus the last instruction of each block is simultaneously within sight. Each line is prefixed by its source line number and repetition count. Immediate keypresses (with no Enter) alter tracing as follows:
 
@@ -2608,11 +2608,11 @@ toggles execution tracing. When tracing is on, instructions from the source file
 
 Any other key displays a single-line reminder of the above. 
 </div><div class=page id="CHARbyCHAR">
-Page: (cpl)CHARbyCHAR, Next: <a href="#lapack-eigenvalues">lapack-eigenvalues</a>, Prev: <a href="symbolic.html#Top">(symbolic)</a>, Up: <a href="#Library">Library</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)CHARbyCHAR, Next: <a href="#lapack-eigenvalues">lapack-eigenvalues</a>, Prev: <a href="symbolic.html#Top">(symbolic)</a>, Up: <a href="#Library">Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Live keyboard input</h3>
 The CHARbyCHAR.cpl library contains the system calls (termios) necessary to activate unbuffered terminal input, so that the input of a single character may be read immediately (normally input is transferred from the terminal to the running program one line at a time, i.e. only when a newline is entered). USEing this library is all that is necessary. Input is then performed as usual. 
 </div><div class=page id="lapack-eigenvalues">
-Page: (cpl)lapack-eigenvalues,  Prev: <a href="#CHARbyCHAR">CHARbyCHAR</a>,  Next: <a href="#matlib">matlib</a>,  Up: <a href="#Library">Library</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)lapack-eigenvalues,  Prev: <a href="#CHARbyCHAR">CHARbyCHAR</a>,  Next: <a href="#matlib">matlib</a>,  Up: <a href="#Library">Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>CPL wrapper around Lapack eigenvalue routines</h3>
 defines:
 
@@ -2620,7 +2620,7 @@ defines:
 <h4>INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigenvalues(REAL A(&lowast;,&lowast;))</h4>
 In order to use this library you must have the liblapack-dev Debian package (or one equivalent) installed. Please repeat the CPL setup after installing. 
 </div><div class=page id="matlib">
-Page: (cpl)matlib,  Prev: <a href="#lapack-eigenvalues">lapack-eigenvalues</a>,  Up: <a href="#Library">Library</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (cpl)matlib,  Prev: <a href="#lapack-eigenvalues">lapack-eigenvalues</a>,  Up: <a href="#Library">Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Basic matrix-creating functions</h3>
 The matlib.cpl library is used by the m2cpl script in order to translate simple MATLAB programs into their CPL equivalents.
 

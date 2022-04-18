@@ -65,7 +65,7 @@
 <body translate="no"><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
 
 </div><div class=page id="Top">
-Page: (fri)Top, Next: <a href="#FRI-architecture">FRI architecture</a>, Up: <a href="cpl.html#cpl">(cpl)cpl</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (fri)Top, Next: <a href="#FRI-architecture">FRI architecture</a>, Up: <a href="cpl.html#cpl">(cpl)cpl</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>The FRI interpreter</h3>
 The design of most compilers passes through a formal description of the language that is compiled by a parser generator like yacc into a C program. At the heart of CPL's extensibility there is a different structure, where a formal description of the language is never compiled to generate the compiler, but rather interpreted each time a compilation is run. The engine that does this is named fri, the Formal Rule Interpreter. If yacc is a compiler-compiler, fri may be called a compiler-interpreter.
 
@@ -84,7 +84,7 @@ In fact, fri is a quite general pattern-matching engine with its own FRI meta-la
 </table></nav>
 
 </div><div class=page id="FRI-architecture">
-Page: (fri)FRI architecture, Next: <a href="#Assembler">Assembler</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (fri)FRI architecture, Next: <a href="#Assembler">Assembler</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>FRI architecture</h4>
 FRI is a declarative language. Much like a Turing machine, the FRI virtual machine's workspace is composed of three items: an input character stream, an output character stream and a dictionary of rules. A rule is a sequence of bytecodes that can represent characters to be matched against the input stream, characters to be written to the output stream, or opcodes specifying general actions that can modify either stream, or the dictionary itself, or initiate a new rule. A rule <q>matches</q> if it runs to its end, or <q>fails</q> if an input character or an inner nested rule does not match.
 
@@ -96,7 +96,7 @@ The dictionary of rules is alphabetically ordered and, with one exception, indep
 
 When one rule fails, execution restarts with the next one in the dictionary. If two rules have a common root, only the part of the rule that failed undergoes a new attempt; side effects of the part that matched will not be repeated more than once. Execution terminates, as a match, when any one rule's byte sequence attains its end (or an explicit end opcode) or, as a failure, when the dictionary runs out of rules. For debugging purposes, it can also be terminated in an error message by suitable opcodes. 
 </div><div class=page id="Assembler">
-Page: (fri)Assembler, Next: <a href="#Opcodes">Opcodes</a>, Prev: <a href="#FRI-architecture">FRI architecture</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (fri)Assembler, Next: <a href="#Opcodes">Opcodes</a>, Prev: <a href="#FRI-architecture">FRI architecture</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>The FRI assembler</h4>
 Much like machine code of an actual CPU (into which fri might one day be implemented, perhaps), FRI bytecode is hard to type in by a human being. When fri boots up, the rule dictionary is initially filled with just enough rules to assemble human-readable FRI into FRI bytecode.
 
@@ -106,7 +106,7 @@ The two strands FRIsymbol and FRIdefinition contain code for the assembler itsel
 
 A FRI assembler program is a text file with one FRI rule per line (and possible comments). The order of lines is largely irrelevant because they will be alphabetically sorted at the time they are inserted in the dictionary, with the exception that new FRIsymbol's and FRIdefinition's (like the definitions of strand names or of shortcuts) must come before they are used, and that rules that branch in output mode, after a =[ (put) opcode, are kept in last-to-first order. The branching-tree structure of the dictionary makes it so that, in rules having a common stem, the stem will be executed only once, even if one rule fails and the next one is tried. Branching is not allowed to split an output string even if the first few characters are coincident with another's, and will always occur at the =[ opcode that opens it. The last-to-first ordering allows a dynamically generated, more recent rule to temporarily override an older one, with the older rule automatically restored when the overriding one is deleted. 
 </div><div class=page id="Opcodes">
-Page: (fri)Opcodes, Next: <a href="#Command-line">Command line</a>, Prev: <a href="#Assembler">Assembler</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (fri)Opcodes, Next: <a href="#Command-line">Command line</a>, Prev: <a href="#Assembler">Assembler</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Language opcodes</h4>
 FRI opcodes are represented by single bytes (with the 8th bit set), or in some cases by two bytes the first of which is a <q>shift</q> opcode, and in the assembler by symbolic names or punctuation symbols. The meaning of each symbolic name is described below, categorized according to function.
 
@@ -322,7 +322,7 @@ Miscellaneous, less frequently used operations
  shell command shell command  passes the top output string to the operating
 		system shell for execution as a command. 
 </div><div class=page id="Command-line">
-Page: (fri)Command line, Next: <a href="#Trace-mode">Trace mode</a>, Prev: <a href="#Opcodes">Opcodes</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (fri)Command line, Next: <a href="#Trace-mode">Trace mode</a>, Prev: <a href="#Opcodes">Opcodes</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>The fri command line</h4>
 Usage:	      fri [rule file] [-e command] [-i] [data file] ...
 
@@ -347,7 +347,7 @@ tac replacement:
 change oranges to apples:
 	fri -e '<q>orange</q> =[<q>apple</q>]' 
 </div><div class=page id="Trace-mode">
-Page: (fri)Trace mode, Next: <a href="#Arithmetic-mode">Arithmetic mode</a>, Prev: <a href="#Command-line">Command line</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (fri)Trace mode, Next: <a href="#Arithmetic-mode">Arithmetic mode</a>, Prev: <a href="#Command-line">Command line</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Trace mode</h4>
 When the fri compiler-interpreter runs in trace mode, which can be toggled by the <q>trace</q> bytecode, a screenful of information is displayed on the user's ANSI terminal, in a format where ascii characters are colored in yellow and FRI opcodes and strands are disassembled to their symbolic names colored in blue.
 
@@ -380,7 +380,7 @@ Tracing proceeds as an animation, with one instruction being executed every 0.7 
  space 		fast-forward through tracing as long as the key is pressed, and
 		resume the normal 0.7-second rate once released. 
 </div><div class=page id="Arithmetic-mode">
-Page: (fri)Arithmetic mode, Prev: <a href="#Trace-mode">Trace mode</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="#Keyword-Index">Index</a>
+Page: (fri)Arithmetic mode, Prev: <a href="#Trace-mode">Trace mode</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Arithmetic mode</h4>
 For the purpose of a more traditional CPU emulation (used by <a href="cpl.html#cpl-i">(cpl)cpl i</a>), fri provides an additional set of opcodes that specify arithmetic operations. These become active in an ad-hoc <q>arithmetic mode</q> that exists alongside input and output modes. Most arithmetic opcodes manipulate the fri output buffer as a stack of fixed-width objects (binary integers, machine addresses, floats) irrespective of its subdivision in strings. Nevertheless the subdivision remains in action, and output strings serve double use as stack frames. A <q>stack address</q> in what follows is a binary integer expressing a byte count relative to the frame.
 
