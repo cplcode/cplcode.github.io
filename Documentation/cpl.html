@@ -249,6 +249,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="graphics.html#gnuplot">gnuplot:(graphics)gnuplot</a>:</td><td>plotting primitives rendered through gnuplot</td></tr>
 <tr><td><a href="graphics.html#Top">graphics:(graphics)</a>:</td><td>plotting primitives using GNU plotutils</td></tr>
 <tr><td><a href="#cpl-i">cpl i</a>:</td><td>Interactive CPL</td></tr>
+<tr><td><a href="#cpl-run">cpl run</a>:</td><td>automatic compilation when needed</td></tr>
 <tr><td><a href="#command-interpretation">icpl:command interpretation</a>:</td><td>of a run-time generated CPL statement</td></tr>
 <tr><td><a href="#cpl-info">cpl info</a>:</td><td>info reading script</td></tr>
 <tr><td><a href="#lapack-eigenvalues">lapack-eigenvalues</a>:</td><td>CPL wrapper around Lapack eigenvalue routines</td></tr>
@@ -2340,7 +2341,7 @@ Page: (cpl)TO,  Next: <a href="#TRAP">TRAP</a>,  Prev: <a href="#TIMES">TIMES</a
 </table></nav>
 
 </div><div class=page id="cpl">
-Page: (cpl)cpl,  Next: <a href="#cpl.fri">cpl.fri</a>,  Prev: <a href="#Control">Control</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)cpl,  Next: <a href="#cpl-run">cpl run</a>,  Prev: <a href="#Control">Control</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Compilation tools and their usage</h2>
 All tools that act upon a CPL <a href="#Source-file">Source file</a> are managed by a shell script named <q>cpl</q> (formerly <q>makecpl</q>).
 
@@ -2371,11 +2372,7 @@ The basic command
 
 	cpl make &lt;program&gt;[.cpl] [&lt;option&gt;]
 
-(or just <q>cplm</q>) is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run by its name just like any other executable. As an alternative, the shortcut command
-
-	cpl run &lt;program&gt;[.cpl] [&lt;argument&gt;]
-
-(or just <q>cpl</q> if no confusion arises) compiles and runs &lt;program&gt; in one shot, or just runs it without re-compiling if an executable is found that is not older than its source code. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable and undergoes automatic compilation when needed.
+(or just <q>cplm</q>) is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run by its name just like any other executable. As an alternative, the straight <a href="#cpl-run">cpl run</a> command compiles and then runs &lt;program&gt; in one shot.
 
 cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri">cpl.fri</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="https://manpages.debian.org/make.html">manpages.debian.org/make.html</a> ) on this makefile. Any arguments possibly present on the command line are passed on through make to the designated C compiler and linker, or to &lt;program&gt; itself if <q>run</q> was specified.
 
@@ -2401,6 +2398,7 @@ install curl</q>), cpl provides the functionality to transparently poll the CPLc
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
+<tr><td><a href="#cpl-run">cpl run</a>:</td><td>automatic compilation when needed</td></tr>
 <tr><td><a href="#cpl.fri">cpl.fri</a>:</td><td>The CPL-to-C compiler</td></tr>
 <tr><td><a href="fri.html#Top">(fri)Top</a>:</td><td>The Formal Rule Interpreter</td></tr>
 <tr><td><a href="#FRI-SECTION">FRI SECTION</a>:</td><td>Dynamic extension of the CPL language</td></tr>
@@ -2409,8 +2407,17 @@ install curl</q>), cpl provides the functionality to transparently poll the CPLc
 <tr><td><a href="#cpl-info">cpl info</a>:</td><td>info reading script</td></tr>
 </table></nav>
 
+</div><div class=page id="cpl-run">
+Page: (cpl)cpl run,  Next: <a href="#cpl.fri">cpl.fri</a>,  Prev: <a href="#cpl">cpl</a>,  Up: <a href="#cpl">cpl</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr>
+	cpl run &lt;program&gt;[.cpl] [&lt;argument&gt;]
+
+(or just <q>cpl</q> if no confusion arises) compiles and runs &lt;program&gt; in one shot, or just runs it without re-compiling if an executable is found that is not older than its source code. &lt;argument&gt;'s are passed to &lt;program&gt; itself.
+
+<h4>Unix interpreter directive</h4>
+Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable and undergoes automatic compilation when needed. 
 </div><div class=page id="cpl.fri">
-Page: (cpl)cpl.fri,  Next: <a href="#FRI-SECTION">FRI SECTION</a>,  Prev: <a href="#cpl">cpl</a>,  Up: <a href="#cpl">cpl</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)cpl.fri,  Next: <a href="#FRI-SECTION">FRI SECTION</a>,  Prev: <a href="#cpl-run">cpl run</a>,  Up: <a href="#cpl">cpl</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>The CPL-to-C compiler</h3>
 The CPL compiler cpl.fri is not an executable file, but rather a formal description of the language that is interpreted by the Formal Rule Interpreter <a href="fri.html#Top">(fri)Top</a>. The cpl.fri file is made executable by the shell convention of having <q>#!/usr/bin/env fri</q> as its first line. Where this convention is understood, the CPL-to-C compilation command is
 
