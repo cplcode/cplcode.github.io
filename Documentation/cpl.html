@@ -710,13 +710,13 @@ A prototype using FOLLOWS may also be defined for a <a href="#CONSTANT">CONSTANT
 </div><div class=page id="OPTIONAL">
 Page: (cpl)OPTIONAL, Next: <a href="#nested-functions">nested functions</a>, Prev: <a href="#FOLLOWS">FOLLOWS</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Optional parameters</h3>
-The parameter list of a function or subroutine can include optional items. In the function declaration, optional parameters must appear after all ordinary positional parameters (if there are any), separated by the keyword OPTIONAL. Each optional parameter must be assigned a default value in its declaration. Example:
+The parameter list of a function or subroutine can include optional items. In the function declaration, optional parameters must appear after all standard positional parameters (if there are any), separated by the keyword OPTIONAL or by its abbreviation -- . Each optional parameter must be assigned a default value in its declaration. For example:
 
 	SUBROUTINE test(INTEGER x; OPTIONAL INTEGER y=0,z=3; REAL w=3.14)
 
 Within the body of the function, optional parameters obey the same rules as ordinary formal parameters; on entry they acquire the value of each corresponding actual parameter if one is specified in the calling statement, or their default value otherwise.
 
-In the calling statement, optional parameters follow all standard positional parameters and can appear in any order (or not appear at all); they are identified by name rather than by position. In the above example,
+In the calling statement, optional parameters follow all standard positional parameters (if there are any) and can appear in any order (or not appear at all); they are identified by name rather than by position. In the above example,
 
 	test(3,w=1E2,y=1)
 
@@ -986,11 +986,11 @@ Page: (cpl)ARRAY, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#ST
 <hr> <h3>ARRAYs</h3>
 The prefix type declarator for arrays is
 
-	ARRAY(dimension[,dimension]) OF &lt;type&gt;
+	ARRAY(&lt;dimension&gt;[,&lt;dimension&gt;]) OF &lt;type&gt;
 
-The postfix declarator is just (dimension[,dimension]). Each dimension is specified either as &lt;lower bound&gt;..&lt;upper bound&gt; or as &lt;upper bound&gt; only, in which case the lower bound is taken to be unity. Specifying multiple dimensions, like in ARRAY(dimension1,dimension2) OF, is a shorthand for
+The postfix declarator is just (&lt;dimension&gt;[,&lt;dimension&gt;]). Each &lt;dimension&gt; is specified either as &lt;lower bound&gt;..&lt;upper bound&gt; or as &lt;upper bound&gt; only, in which case the lower bound is taken to be 1. Specifying multiple dimensions, like in ARRAY(&lt;dimension1&gt;,&lt;dimension2&gt;) OF, is a shorthand for
 
-	ARRAY(dimension1) OF ARRAY(dimension2) OF
+	ARRAY(&lt;dimension1&gt;) OF ARRAY(&lt;dimension2&gt;) OF
 
 Therefore the order in which the elements of the array are stored in memory is similar to C and Pascal and different from FORTRAN.
 
@@ -2005,7 +2005,7 @@ or
 	&lt;block&gt;
 	REPEAT name &lt;test&gt;
 
-or else by the <a href="#DO">DO</a> short form.
+or else in the <a href="#DO">DO</a> short form.
 
 A named loop can be terminated at any point in its body by the <a href="#EXIT">EXIT</a> statement. A named loop without &lt;test&gt; is an infinite loop that can only be terminated by <a href="#EXIT">EXIT</a>.
 
@@ -2064,7 +2064,7 @@ or
 
 	&lt;index&gt; = &lt;ubound&gt; DOWN TO &lt;lbound&gt; [BY &lt;step&gt;]
 
-&lt;index&gt; is incremented by &lt;step&gt; in each iteration in the first case and decremented in the second. The loop terminates when &lt;index&gt; exceeds &lt;ubound&gt; in the first case or drops below &lt;lbound&gt; in the second. If BY &lt;step&gt; is omitted, BY 1 is assumed. &lt;lbound&gt;, &lt;ubound&gt; and &lt;step&gt; can all be arbitrary expressions; notice that a negative &lt;step&gt; in either case generates a non-terminating loop.
+&lt;index&gt; is incremented by &lt;step&gt; in each iteration in the first case and decremented in the second. The loop terminates when &lt;index&gt; exceeds &lt;ubound&gt; in the first case or drops below &lt;lbound&gt; in the second. If BY &lt;step&gt; is omitted, BY 1 is assumed. &lt;lbound&gt;, &lt;ubound&gt; and &lt;step&gt; can all be arbitrary expressions; notice that a zero or negative &lt;step&gt; in either case generates a non-terminating loop.
 
 Both INTEGER and REAL types are allowed. &lt;index&gt; may be an already existing variable or be implicitly declared by the loop itself (<a href="#Declarations">Declarations</a>). In the latter case it acquires the type of the loop bounds and behaves as a <a href="#CONSTANT">CONSTANT</a> within the body of the loop. If the index is REAL, BY cannot be omitted.
 
@@ -2356,6 +2356,7 @@ All tools that act upon a CPL <a href="#Source-file">Source file</a> are managed
 	cpl (with arguments) == cpl run
 	cpl (with no arguments) == cpli == cpl i
 	edit == cple == cpl e == cpl edit
+	cpl ? == cpl info
 
 <h4>Backward compatibility</h4>
 	makecpl == cpl make
@@ -2374,7 +2375,7 @@ The basic command
 
 	cpl run &lt;program&gt;[.cpl] [&lt;argument&gt;]
 
-(or just <q>cpl</q> if no confusion arises) compiles and runs &lt;program&gt; in a row, or just runs it without re-compiling if an executable is found that is not older than its source code. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable and undergoes automatic compilation when needed.
+(or just <q>cpl</q> if no confusion arises) compiles and runs &lt;program&gt; in one shot, or just runs it without re-compiling if an executable is found that is not older than its source code. Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable and undergoes automatic compilation when needed.
 
 cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri">cpl.fri</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="https://manpages.debian.org/make.html">manpages.debian.org/make.html</a> ) on this makefile. Any arguments possibly present on the command line are passed on through make to the designated C compiler and linker, or to &lt;program&gt; itself if <q>run</q> was specified.
 
