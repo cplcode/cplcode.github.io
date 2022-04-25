@@ -20,7 +20,8 @@ ny=20
 nx=3&lowast;ny
 dvar=ny+1  <span class=comment>! band width </span>
 <a href="cpl.html#REAL">REAL</a> base(nx,ny)=0, A(nx,ny,-dvar..dvar) <span class=comment>!2D solution array and 3D banded matrix</span>
-A(<a href="cpl.html#compound-index">**</a>)=1  <span class=comment>! &lowast;&lowast; compounds the first two indices into 1; A becomes a 2D matrix</span>
+A(<a href="cpl.html#compound-index">**</a>)=1  <span class=comment>! &lowast;&lowast; compounds the first two indices into 1; A is initialized to</span>
+         <span class=comment>! a 2D identity matrix in banded storage</span>
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
   A(ix,iy,0)=4  <span class=comment>! center of the laplacian stencil</span>
   A(ix,iy,1)=-1 <span class=comment>! 1 step forward in the y direction</span>
