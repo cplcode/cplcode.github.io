@@ -409,11 +409,11 @@ Separators can be spaces, tabs or comments (<a href="#Comments">Comments</a>) in
 
 Statements within a block are delimited by either newline or <q>;</q>, which allows for multi-statement lines without requiring (but permitting) a <q>;</q> when the statement ends at the end of a line. Multi-line statements can be broken wherever the statement is incomplete: if the given line does not make sense as is, the compiler will automatically treat newline as a separator and try to complete the statement on the next line. Continuation can also be explicitly requested wherever a separator is allowed by putting a <q>\</q> as the last character before newline.
 
-Round, square and curly brackets can be used interchangeably wherever a parenthesis is needed, in either declarations, statements or expressions. (<a href="#Parentheses">Parentheses</a>)
+Round, square and curly brackets can be used interchangeably wherever a parenthesis is needed, in either declarations, statements or expressions. (see <a href="#Parentheses">Parentheses</a>)
 
-Subroutine and function declarations (<a href="#Functions">Functions</a>) are on the same footing as all other <a href="#VARIABLE">VARIABLE</a>, <a href="#CONSTANT">CONSTANT</a> and <a href="#TYPE">TYPE</a> declarations. Contrary to many other languages, declarations (<a href="#Declarations">Declarations</a>) and executable statements (<a href="#Statements">Statements</a>) may be freely intermixed in the program flow. The scope of a declaration extends from the position where the declaration appears down to the end of the containing block. It is recommended that declarations appear as close as possible to the position where the declared item is used for the first time, as this enables the compiler to catch a larger number of errors automatically. In most situations, a variable can be declared and initialized in a single statement.
+Subroutine and function declarations (see <a href="#Functions">Functions</a>) are on the same footing as all other <a href="#VARIABLE">VARIABLE</a>, <a href="#CONSTANT">CONSTANT</a> and <a href="#TYPE">TYPE</a> declarations. Contrary to many other languages, declarations (<a href="#Declarations">Declarations</a>) and executable statements (<a href="#Statements">Statements</a>) may be freely intermixed in the program flow. The scope of a declaration extends from the position where the declaration appears down to the end of the containing block. It is recommended that declarations appear as close as possible to the position where the declared item is used for the first time, as this enables the compiler to catch a larger number of errors automatically. In most situations, a variable can be declared and initialized in a single statement.
 
-CPL has <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>, meaning that the type definition of a function's parameter list coacts with its name in identifying the function or subroutine. In other words, functions of the same name and different parameter types are allowed and considered distinct by the language. In addition, not just commas but any non-ambiguous single characters or character sequences may be used as parameter separators in function calls, and equally cooperate in disambiguating the function (<a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>). Whereas commas will still be the commonest choice for short parameter lists, a remindful choice of separators can make long parameter lists both more understandable and more thoroughly checked by the compiler. Parameters can also be <a href="#OPTIONAL">OPTIONAL</a>, and be specified by name rather than by position.
+CPL has <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>, meaning that the type definition of a function's parameter list coacts with its name in identifying the function or subroutine. In other words, functions of the same name and different parameter types are allowed and considered distinct by the language. In addition, not just commas but any non-ambiguous single characters or character sequences may be used as parameter separators in function calls, and equally cooperate in disambiguating the function (see <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>). Whereas commas will still be the commonest choice for short parameter lists, a remindful choice of separators can make long parameter lists both more understandable and more thoroughly checked by the compiler. Parameters can also be <a href="#OPTIONAL">OPTIONAL</a>, and be specified by name rather than by position.
 
 Loops and all other flow control statements (<a href="#Control">Control</a>) implicitly define new blocks within them, just as subroutine declarations do. A block can also be explicitly delimited as a <a href="#MODULE">MODULE</a>. A block can contain every declaration that the outermost block can, including further subroutines and modules, but the declared items cease to exist on exit from the block.
 
@@ -446,7 +446,7 @@ When round brackets are used in the statement prototypes contained in this manua
 </div><div class=page id="C-preprocessor">
 Page: (cpl)C preprocessor, Next: <a href="#Source-file">Source file</a>, Prev: <a href="#Parentheses">Parentheses</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Macro definition and conditional compilation</h3>
-C preprocessor #define and #if constructs (<a href="/usr/share/info/cpp.html#Top">(/usr/share/info/cpp)</a>.) are used in a CPL program to define macros and alter the flow of compilation. For file inclusion see <a href="#USE">USE</a>, <a href="#INCLUDE">INCLUDE</a>, and <a href="#C-interface">C interface</a>.  
+C preprocessor #define and #if constructs (see <a href="/usr/share/info/cpp.html#Top">(/usr/share/info/cpp)</a>.) are used in a CPL program to define macros and alter the flow of compilation. For file inclusion see <a href="#USE">USE</a>, <a href="#INCLUDE">INCLUDE</a>, and <a href="#C-interface">C interface</a>.  
 </div><div class=page id="Source-file">
 Page: (cpl)Source file, Next: <a href="#MODULE">MODULE</a>, Prev: <a href="#C-preprocessor">C preprocessor</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Source files</h3>
@@ -617,7 +617,7 @@ where &lt;single-line block&gt; is a sequence of statements separated by semicol
 
 CPL has Coactive Parameter Lists, meaning that the type definition of a function's parameter list coacts with its name in identifying the function or subroutine. In other words, functions of the same name and different parameter types are allowed and considered distinct by the language. In addition, not just commas but any non-ambiguous single characters or character sequences may be used as parameter separators in function calls, and equally cooperate in disambiguating the function. Whereas commas will still be the commonest choice for short parameter lists, a remindful choice of separators can make long parameter lists both more understandable and more thoroughly checked by the compiler. Parameters can also be <a href="#OPTIONAL">OPTIONAL</a>, and be specified by name rather than by position.
 
-Formal parameter declarations otherwise follow the same syntax as normal variable declarations, and are distinguished both by their position within the parenthesis following the subroutine or function name and by separator matching. Round, square or curly brackets can be used, just as everywhere else (<a href="#Parentheses">Parentheses</a>). However an important difference exists: whereas general variables are by default <a href="#VARIABLE">VARIABLE</a>, i.e. can be assigned a value multiple times, and must be explicitly declared <a href="#CONSTANT">CONSTANT</a> to become inalterable, formal parameters are by default CONSTANT and only become VARIABLE if explicitly declared so.
+Formal parameter declarations otherwise follow the same syntax as normal variable declarations, and are distinguished both by their position within the parenthesis following the subroutine or function name and by separator matching. Round, square or curly brackets can be used, just as everywhere else (see <a href="#Parentheses">Parentheses</a>). However an important difference exists: whereas general variables are by default <a href="#VARIABLE">VARIABLE</a>, i.e. can be assigned a value multiple times, and must be explicitly declared <a href="#CONSTANT">CONSTANT</a> to become inalterable, formal parameters are by default CONSTANT and only become VARIABLE if explicitly declared so.
 
 A subroutine returns at the END of the subroutine block or at the <a href="#EXIT">EXIT</a>  statement. Within functions a variable named RESULT is implicitly declared with the type of the function's result, and can be used just as any other local variable of that type within the body of the function; the function returns the value of the variable <a href="#RESULT">RESULT</a> at the time of exit.
 
@@ -859,7 +859,7 @@ When a VARIABLE identifier is used in an expression, it initially stands for the
 </div><div class=page id="BOOLEAN">
 Page: (cpl)BOOLEAN, Next: <a href="#CHAR">CHAR</a>, Prev: <a href="#VARIABLE">VARIABLE</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>BOOLEAN</h3>
-Primitive type declarator for boolean logical variables translated into C type <q>int</q>. (<a href="#Declarations">Declarations</a>)
+Primitive type declarator for boolean logical variables translated into C type <q>int</q>. (see <a href="#Declarations">Declarations</a>)
 
 BOOLEAN values are denoted as YES or TRUE and NO or FALSE, and written as <q>Y</q> and <q>N</q>. On reading any complete word starting with <q>T</q>, <q>Y</q>, <q>t</q> or <q>y</q> is read as YES, any word starting with <q>F</q>, <q>N</q>, <q>f</q>, <q>n</q> as NO.
 
@@ -874,15 +874,15 @@ BOOLEAN values are denoted as YES or TRUE and NO or FALSE, and written as <q>Y</
 </div><div class=page id="CHAR">
 Page: (cpl)CHAR,  Next: <a href="#INTEGER">INTEGER</a>,  Prev: <a href="#BOOLEAN">BOOLEAN</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>CHAR</h3>
-Primitive type declarator for character variables translated into C type <q>char</q>. (<a href="#Declarations">Declarations</a>)
+Primitive type declarator for character variables translated into C type <q>char</q>. (see <a href="#Declarations">Declarations</a>)
 
-Where needed, a single-character <a href="#STRING">STRING</a> literal is implicitly converted to a CHAR constant, which is in turn implicitly converted to an INTEGER ASCII code. INTEGER to CHAR conversion must be explicit (<a href="#Builtin">CHAR:Builtin</a>). 
+Where needed, a single-character <a href="#STRING">STRING</a> literal is implicitly converted to a CHAR constant, which is in turn implicitly converted to an INTEGER ASCII code. INTEGER to CHAR conversion must be explicit (see <a href="#Builtin">CHAR:Builtin</a>). 
 </div><div class=page id="INTEGER">
 Page: (cpl)INTEGER,  Next: <a href="#REAL">REAL</a>,  Prev: <a href="#CHAR">CHAR</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>INTEGER</h3>
 Primitive type declarator for integer variables, translated into C type <q>int</q>.
 
-Can be implicitly converted to REAL. REAL to INTEGER conversion must be explicit (<a href="#Builtin">INTEGER:Builtin</a>).
+Can be implicitly converted to REAL. REAL to INTEGER conversion must be explicit (see <a href="#Builtin">INTEGER:Builtin</a>).
 
 See also <a href="#INTEGER-operator">INTEGER operator</a>. 
 </div><div class=page id="REAL">
@@ -896,7 +896,7 @@ Page: (cpl)SINGLE,  Next: <a href="#TYPE">TYPE</a>,  Prev: <a href="#REAL">REAL<
 <hr> <h3>SINGLE</h3>
 Primitive type declarator for single-precision real variables, translated into C type <q>float</q>.
 
-Can be implicitly converted to REAL. REAL to SINGLE conversion must be explicit (<a href="#Builtin">SINGLE:Builtin</a>). 
+Can be implicitly converted to REAL. REAL to SINGLE conversion must be explicit (see <a href="#Builtin">SINGLE:Builtin</a>). 
 </div><div class=page id="TYPE">
 Page: (cpl)TYPE, Next: <a href="#STRUCTURE">STRUCTURE</a>, Prev: <a href="#REAL">REAL</a>,  Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Declaration of new type identifiers</h3>
@@ -1006,7 +1006,7 @@ ARRAY elements are accessed through INTEGER indices in brackets as usual, e.g.:
 	REAL arr(1..8,2..9)
 	WRITE arr(4,5)
 
-All three kinds of bracket are allowed (<a href="#Parentheses">Parentheses</a>). It should be noted that the above declaration is a shorthand for
+All three kinds of bracket are allowed (see <a href="#Parentheses">Parentheses</a>). It should be noted that the above declaration is a shorthand for
 
 	ARRAY(1..8) OF ARRAY(2..9) OF REAL arr
 
@@ -1058,8 +1058,8 @@ Quoted strings of characters, also known as literals, are delimited by either do
 
 Where appropriate, a single-character literal is implicitly converted to a CHAR constant, which is in turn implicitly converted to an INTEGER ASCII code. Strings may also be concatenated among themselves and with variables, see <a href="#String">conversion:String</a>.
 
-Standard C functions returning a char&lowast; (<a href="/usr/share/info/libc.html#-String-and-Array-Utilities">(/usr/share/info/libc) String and
-Array Utilities</a>) are also interpreted as generating a STRING value. Just as for all <a href="#C-interface">C interface</a> calls, it is the programmer's responsibility to ensure that such C library functions are used consistently and to free any possible malloc-ated space where appropriate.
+Standard C functions returning a char&lowast; (see <a href="/usr/share/info/libc.html#-String-and-Array-Utilities">(/usr/share/info/libc) String
+and Array Utilities</a>) are also interpreted as generating a STRING value. Just as for all <a href="#C-interface">C interface</a> calls, it is the programmer's responsibility to ensure that such C library functions are used consistently and to free any possible malloc-ated space where appropriate.
 
 As an experimental feature, and an exception to the general rule for ARRAY(&lowast;), STRING VARIABLEs may also be declared and assigned a value. In the present implementation STRINGs embedded as STRUCTURE fields or ARRAY elements may generate unwanted effects when the container is assigned as a whole.
 
@@ -1131,15 +1131,15 @@ In other words, code is written just as if an INTEGER index were used, but the p
 </div><div class=page id="DYNAMIC">
 Page: (cpl)DYNAMIC, Next: <a href="#IS">IS</a>, Prev: <a href="#INTO">INTO</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Object-oriented features</h3>
-CPL is not an object-oriented language in the sense that functions are supposed to be declared within object class declarations, and intentionally so. Object-like behaviour is achieved through overloaded function names (<a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>) and implicit type conversion (<a href="#STRUCTURE">anonymous:STRUCTURE</a>).
+CPL is not an object-oriented language in which functions are supposed to be declared within object class declarations, and intentionally so. Object-like behaviour is achieved with ordinary STRUCTUREs through overloaded function names (see <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>) and implicit type conversion of an <a href="#STRUCTURE">anonymous:STRUCTURE</a>.
 
-In addition, situations where the type of an object is not fixed at compile time are catered for by <q>dynamic pointers</q>, pointers that can reference and provide type checking for objects whose type will only be known at run time. These are declared by the type declarator
+In addition, situations where the type of an object is not decided at compile time are catered for by <q>dynamic pointers</q>, pointers that can reference and provide type checking for objects whose type will only be known at run time. These are declared by the type declarator
 
 	DYNAMIC POINTER
 
 A function call in which such a pointer appears is transparently switched at run time to the function defined for the type of the actual arguments, or an error is thrown if no such function exists.
 
-Pointers to variables of any type except ARRAY(&lowast;) and STORED can be assigned to a DYNAMIC POINTER. If the scope of assignment is to be restricted, the declaration becomes
+Pointers to variables of any except ARRAY(&lowast;) and STORED type can be assigned to a DYNAMIC POINTER. If the scope of assignment is to be restricted, the declaration becomes
 
 	DYNAMIC POINTER TO &lt;type declarator&gt;
 
@@ -1165,7 +1165,7 @@ the IF block is executed only if the dynamic pointer dyn points at run time to a
 </div><div class=page id="Postfix">
 Page: (cpl)Postfix, Next: <a href="#Subroutine-type">Subroutine type</a>, Prev: <a href="#DYNAMIC">DYNAMIC</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Postfix type modifiers</h3>
-A postfix ^ denotes either pointer dereferencing (<a href="#Concealed-Pointer-Lookup">^:Concealed Pointer
+A postfix ^ denotes either pointer dereferencing (see <a href="#Concealed-Pointer-Lookup">^:Concealed Pointer
 Lookup</a>) or a short form of the POINTER declaration. For instance
 
 			INTEGER a^,b^ is a shorthand for
@@ -1263,7 +1263,8 @@ An infix ^ (or &lowast;&lowast;) is the exponentiation operator. <a href="#Postf
 </div><div class=page id="Comparison">
 Page: (cpl)Comparison, Next: <a href="#BOOLEAN-ops">BOOLEAN ops</a>, Prev: <a href="#REAL-operator">REAL operator</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Comparison:		&gt;  &gt;=  &lt;  &lt;=  =  #  IS</h4>
-The equality and inequality operators apply to any type, including pointers. Since pointers are implicitly dereferenced (<a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>), an ambiguity may arise as to whether the values or addresses of the two sides must be compared. The comparison generally takes place at the lowest dereferencing level at which types match, but the comparison of two constant addresses is not allowed (so that A = B, where A and B are two simple variables, denotes the comparison of the values of A and B rather than their addresses). Explicit type cast or pointer dereferencing may at times be necessary, and is always advised, where ambiguities exist.
+The equality and inequality operators apply to any type, including pointers. Since pointers are implicitly dereferenced (see<a href="#Concealed-Pointer-Lookup">Concealed Pointer
+Lookup</a>), an ambiguity may arise as to whether the values or addresses of the two sides must be compared. The comparison generally takes place at the lowest dereferencing level at which types match, but the comparison of two constant addresses is not allowed (so that A = B, where A and B are two simple variables, denotes the comparison of the values of A and B rather than their addresses). Explicit type cast or pointer dereferencing may at times be necessary, and is always advised, where ambiguities exist.
 
 The type-testing operator IS is described in <a href="#DYNAMIC">Object-oriented features:DYNAMIC</a>. 
 </div><div class=page id="BOOLEAN-ops">
@@ -1318,7 +1319,7 @@ STRINGs written one after the other with no intervening operator (whitespace is 
 <h4>String conversion</h4>
 In addition to STRINGs, values of different type may appear in a concatenation, provided the first item is an actual STRING (possibly <q></q>); they are then implicitly converted to strings just as if they appeared in a <a href="#WRITE">WRITE</a> statement. Please pay attention that a numeric parenthesis that is concatenated after a string will be interpreted as an ARRAY subscript, since the STRING is a legitimate ARRAY OF CHAR, unless space is placed between the string and the parenthesis. Conversion of a string into a numeric value must be handled explicitly through <a href="/usr/share/info/libc.html#String">(/usr/share/info/libc)String</a>.
 
-When a string literal is defined in &lt;&lt; DELIMITER notation (<a href="#STRING">STRING</a>), a variable included as DELIMITER &lt;variable&gt; DELIMITER is concatenated within the string being defined just as above (whereas DELIMITER &lt;newline&gt; ends the definition).
+When a string literal is defined in &lt;&lt; DELIMITER notation (see <a href="#STRING">STRING</a>), a variable included as DELIMITER &lt;variable&gt; DELIMITER is concatenated within the string being defined just as above (whereas DELIMITER &lt;newline&gt; ends the definition).
 
 
 </div><div class=page id="Looping-operator">
@@ -1575,7 +1576,7 @@ Footnote: the euro symbol would have been appropriate to match the <q>e</q> of E
 </div><div class=page id="Assignment">
 Page: (cpl)Assignment, Next: <a href="#Deferred-assignment">Deferred assignment</a>, Prev: <a href="#Expressions">Expressions</a>, Up: <a href="#Statements">Statements</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Assignment</h3>
-Assignment is performed by a single <q>=</q> sign. The l.h.s. must be a POINTER, and the r.h.s. is required to be a value of the TYPE pointed to or to be implicitly convertible to it (<a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>). Compound variables can be assigned as a whole if types match.
+Assignment is performed by a single <q>=</q> sign. The l.h.s. must be a POINTER, and the r.h.s. is required to be a value of the TYPE pointed to or to be implicitly convertible to it (see <a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>). Compound variables can be assigned as a whole if types match.
 
 Owing to their all-encompassing role, assignment and equality/inequality tests are the only situations in which pointer dereferencing must be explicit. The left side of an assignment will never be implicitly dereferenced, and must be dereferenced by a postfix <q>^</q> if assignment of the value pointed to is desired. For increased clarity, the type of the object to be assigned may also be specified, as in the example (after the declaration REAL a^,b):
 
@@ -1629,7 +1630,7 @@ writing
 
 becomes equivalent to v1.x=v2.y; v1.y=3, or to x(v1)=y(v2); y(v1)=3.
 
-Given the symmetry of treatment of structure fields and functions by CPL (<a href="#STRUCTURE">STRUCTURE</a>), a function argument may also be specified in a WITH clause. Thus, for instance,
+Given the symmetry of treatment of structure fields and functions by CPL (see <a href="#STRUCTURE">STRUCTURE</a>), a function argument may also be specified in a WITH clause. Thus, for instance,
 
 	WITH 3: WRITE SIN
 
@@ -1712,7 +1713,7 @@ The output statement WRITE is used as follows:
 
 or <q>,</q>.
 
-&lt;value&gt; can be of any type except POINTER (which if present undergoes <a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>). Compound types such as <a href="#ARRAY">ARRAY</a> and <a href="#STRUCTURE">STRUCTURE</a> are printed in a standard format which is understandable to <a href="#READ">READ</a>. (If STRUCTURE elements are POINTERs, however, they are printed as the string <q>POINTER</q> and cannot be read back.) If a SUBROUTINE named WRITE is defined with first argument of type FILE and second argument of a user-defined TYPE, it is used to print variables of such type. Primitive types are printed in a default format, unless the numeric part of a C format specifier is included after a colon.
+&lt;value&gt; can be of any type except a POINTER (which if present undergoes <a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>). Compound types such as <a href="#ARRAY">ARRAY</a> and <a href="#STRUCTURE">STRUCTURE</a> are printed in a standard format which is understandable to <a href="#READ">READ</a>. (If STRUCTURE elements are POINTERs, however, they are printed as the string <q>POINTER</q> and cannot be read back.) If a SUBROUTINE named WRITE is defined with first argument of type FILE and second argument of a user-defined TYPE, it is used to print variables of such type. Primitive types are printed in a default format, unless the numeric part of a C format specifier is included after a colon.
 
 The default format is initially the C library's default, but may be changed (down to the end of the enclosing scope) by the declaration DEFAULTFORMAT, e.g.
 
@@ -1734,7 +1735,7 @@ The input statement READ is used as follows:
 
 &lt;file&gt; can be a file descriptor, of type <a href="#FILE">FILE</a>, such as returned by <a href="#OPEN">OPEN</a> or <a href="#CREATE">CREATE</a>, or else a string representing a filename. In the latter case the file is implicitly opened before READ is executed and closed afterwards. If <q>FROM &lt;file&gt;</q> is omitted, stdin is assumed.
 
-&lt;variable&gt; must be a <a href="#VARIABLE">VARIABLE</a> identifier or a <a href="#POINTER">POINTER</a> to a variable, which can be of any type except POINTER. Compound types such as <a href="#ARRAY">ARRAY</a> and <a href="#STRUCTURE">STRUCTURE</a> are also accepted; they are expected to appear in the same format as produced by <a href="#WRITE">WRITE</a> &lt;variable&gt; can also be a literal <a href="#STRING">STRING</a>, which is then expected to appear verbatim in the input file. If &lt;variable&gt; is an ARRAY OF CHAR, characters are read until the array is full or a newline appears. In all other cases, blanks, tabs and newlines are automatically skipped. Lines starting with <q>!</q> are considered comments and skipped.
+&lt;variable&gt; must be a <a href="#VARIABLE">VARIABLE</a> identifier or a <a href="#POINTER">POINTER</a> to a variable, which can be of any type except a POINTER. Compound types such as <a href="#ARRAY">ARRAY</a> and <a href="#STRUCTURE">STRUCTURE</a> are also accepted; they are expected to appear in the same format as produced by <a href="#WRITE">WRITE</a> &lt;variable&gt; can also be a literal <a href="#STRING">STRING</a>, which is then expected to appear verbatim in the input file. If &lt;variable&gt; is an ARRAY OF CHAR, characters are read until the array is full or a newline appears. In all other cases, blanks, tabs and newlines are automatically skipped. Lines starting with <q>!</q> are considered as comments and skipped.
 
 &lt;conjunction&gt; can be <q>,</q> AND or OR. If <q>,</q> or AND is used, the joined variables must both be compulsorily present in the input or an I/O error results. If the conjunction is OR, only one or the other is expected to be present and the READ statement succeeds and yields control as soon as one is found.
 
@@ -1786,7 +1787,7 @@ For random-access binary I/O the statement <a href="#POSITION">POSITION</a> can 
 </div><div class=page id="STORED">
 Page: (cpl)STORED,  Next: <a href="#OPEN">OPEN</a>,  Prev: <a href="#BINARY">BINARY</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Random-access files as disk-resident variables</h4>
-A random-access binary file typically contains fields and records at fixed addresses, which can be accessed by POSITIONing the file cursor (<a href="#POSITION">POSITION</a>) before each READ or WRITE <a href="#BINARY">BINARY</a>. However, this process requires knowing the address of each field and is quite error-prone.
+A random-access binary file typically contains fields and records at fixed addresses, which can be accessed by POSITIONing the file cursor (see <a href="#POSITION">POSITION</a>) before each READ or WRITE <a href="#BINARY">BINARY</a>. However, this process requires knowing the address of each field and is quite error-prone.
 
 CPL provides a powerful alternative: a pointer to a compound variable residing in a disk file. Records and fields are then defined by just declaring a suitable compound type through the usual <a href="#STRUCTURE">STRUCTURE</a> and <a href="#ARRAY">ARRAY</a> declarations. For this purpose a type declaration prefixed by the keyword STORED is used, as in the example:
 
@@ -1836,7 +1837,7 @@ returns &lt;fd&gt; as its value.
 
 &lt;filename&gt; is opened for both reading and writing, and is created if it does not exist, but it is never truncated. Therefore, it may be written over but any data which are not overwritten will remain there. If a possible file of the same name is to be cleared before writing, <a href="#CREATE">CREATE</a> should be used instead.
 
-<q>OPEN</q> calls the <q>open</q> system function with options O_RDWR|O_CREAT. For finer control over options, the <q>open</q> or <q>fopen</q> function may be called directly, just as all other libc functions (<a href="#C-interface">C interface</a>). 
+<q>OPEN</q> calls the <q>open</q> system function with options O_RDWR|O_CREAT. For finer control over options, the <q>open</q> or <q>fopen</q> function may be called directly, just as all other libc functions (see <a href="#C-interface">C interface</a>). 
 </div><div class=page id="CREATE">
 Page: (cpl)CREATE,  Next: <a href="#FLUSH">FLUSH</a>,  Prev: <a href="#OPEN">OPEN</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Create a new, empty file</h4>
@@ -1854,7 +1855,7 @@ returns &lt;fd&gt; as its value.
 
 &lt;filename&gt; is opened for both reading and writing, is created if it does not exist, and is truncated to zero length. Therefore, it may be reread after it has been written, but any data in a pre-existing file of the same name are lost. If a possible file of the same name is to be preserved, <a href="#OPEN">OPEN</a> should be used instead.
 
-<q>CREATE</q> calls the <q>open</q> system function with options O_RDWR|O_CREAT|O_TRUNC. For finer control over options, the <q>open</q> or <q>fopen</q> function may be called directly, just as all other libc functions (<a href="#C-interface">C interface</a>). 
+<q>CREATE</q> calls the <q>open</q> system function with options O_RDWR|O_CREAT|O_TRUNC. For finer control over options, the <q>open</q> or <q>fopen</q> function may be called directly, just as all other libc functions (see <a href="#C-interface">C interface</a>). 
 </div><div class=page id="FLUSH">
 Page: (cpl)FLUSH,  Next: <a href="#POSITION">POSITION</a>,  Prev: <a href="#CREATE">CREATE</a>,  Up: <a href="#Input/Output">Input/Output</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Flush a file's write buffer</h4>
@@ -2067,7 +2068,7 @@ or
 
 &lt;index&gt; is incremented by &lt;step&gt; in each iteration in the first case and decremented in the second. The loop terminates when &lt;index&gt; exceeds &lt;ubound&gt; in the first case or drops below &lt;lbound&gt; in the second. If BY &lt;step&gt; is omitted, BY 1 is assumed. &lt;lbound&gt;, &lt;ubound&gt; and &lt;step&gt; can all be arbitrary expressions; notice that a zero or negative &lt;step&gt; in either case generates a non-terminating loop.
 
-Both INTEGER and REAL types are allowed. &lt;index&gt; may be an already existing variable or be implicitly declared by the loop itself (<a href="#Declarations">Declarations</a>). In the latter case it acquires the type of the loop bounds and behaves as a <a href="#CONSTANT">CONSTANT</a> within the body of the loop. If the index is REAL, BY cannot be omitted.
+Both INTEGER and REAL types are allowed, as well as other types (for instance <a href="#INTO:">POINTER:INTO:</a>) for which increment and comparison make sense. &lt;index&gt; may be an already existing variable or be implicitly declared by the loop itself (see <a href="#Declarations">Declarations</a>). In the latter case it acquires the type of the loop bounds and behaves like a <a href="#CONSTANT">CONSTANT</a> within the body of the loop. If the index is REAL, the BY specification cannot be omitted.
 
 FOR clauses can appear in a <a href="#LOOP">LOOP</a>, <a href="#DO">DO</a> and <a href="#Looping-operator">Looping
 operator</a>. In addition to the two basic forms, they can have the following variants:
@@ -2476,13 +2477,13 @@ Page: (cpl)cpl i commands,  Next: <a href="#Library">Library</a>,  Prev: <a href
 <tr><td><a href="#q">q</a>:</td><td>exit interactive cpl (also :q, useful if q exists as a variable)</td></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td colspan="2">A powerful feature of interactive cpl is its capability to transparently </td></tr>
-<tr><td colspan="2"><a href="#USE">USE</a> a compiled CPL program or #include (<a href="#C-interface">C interface</a>) a compiled </td></tr>
-<tr><td colspan="2">C program. All functions and variables in such programs become accessible at </td></tr>
-<tr><td colspan="2">the cpl&gt; prompt as well as at the <a href="#?">?</a> request for info.
+<tr><td colspan="2"><a href="#USE">USE</a> a compiled CPL program or #include (see <a href="#C-interface">C interface</a>) </td></tr>
+<tr><td colspan="2">a compiled C program. All functions and variables in such programs become </td></tr>
+<tr><td colspan="2">accessible at the cpl&gt; prompt as well as at the <a href="#?">?</a> request for info.
 
 </td></tr>
 <tr><td colspan="2">For interactive cpl to work, the Formal Rule Interpreter <a href="fri.html#Top">(fri)Top</a> must </td></tr>
-<tr><td colspan="2">have been compiled with readline (<a href="editor.html#Top">(editor)Top</a>) and dynamic loading </td></tr>
+<tr><td colspan="2">have been compiled with readline (see <a href="editor.html#Top">(editor)Top</a>) and dynamic loading </td></tr>
 <tr><td colspan="2">(<a href="https://manpages/debian.org/dlopen.html">manpages/debian.org/dlopen.html</a> ) support.
 
 </td></tr>
@@ -2506,7 +2507,7 @@ An interactive CPL command can alternately be specified on the cpl i command lin
 
 	cpl i &lt;command&gt;
 
-&lt;command&gt; may need to be quoted if it contains characters that are interpreted by the shell specially. If, either at the console prompt or on the command line, the name of a CPL file is given as a command without the <q>.cpl</q> extension, this source file is automatically compiled as necessary (if it is more recent than its executable), and then executed at compiled speed but with interpreted commands available. If the name of a CPL file is given as a command with the <q>.cpl</q> extension included, it is loaded and executed in the interpreter as when it appears in an <a href="#INCLUDE">INCLUDE</a> statement. Exploiting the unix interpreter convention, a CPL source program can be made directly executable by writing <q>#!/usr/bin/env cpl</q> as its first line and turning on the executable permission flag. (<a href="bash.html#Shell-Scripts">(bash)Shell Scripts</a>)
+&lt;command&gt; may need to be quoted if it contains characters that are interpreted by the shell specially. If, either at the console prompt or on the command line, the name of a CPL file is given as a command without the <q>.cpl</q> extension, this source file is automatically compiled as necessary (if it is more recent than its executable), and then executed at compiled speed but with interpreted commands available. If the name of a CPL file is given as a command with the <q>.cpl</q> extension included, it is loaded and executed in the interpreter as when it appears in an <a href="#INCLUDE">INCLUDE</a> statement. Exploiting the unix interpreter convention, a CPL source program can be made directly executable by writing <q>#!/usr/bin/env cpl</q> as its first line and turning on the executable permission flag. (see <a href="bash.html#Shell-Scripts">(bash)Shell Scripts</a>)
 
 The
 
