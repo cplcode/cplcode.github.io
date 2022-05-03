@@ -1,0 +1,161 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Numerical/Multigrid/poissonmg3d.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"Numerical/Multigrid/poissonmg3d.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<span class=comment>! poissonmg3d -- Copyright 2010 Paolo Luchini</span>
+<span class=comment>! http://CPLcode.net/Applications/Numerical/Multigrid/</span>
+<span class=comment>!</span>
+<span class=comment>! solves the constant-coefficient 3D Poisson problem using a multigrid iteration</span>
+
+<span class=comment>!( Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. !)</span>
+
+
+<span class=comment>!( Use this to impose Dirichlet boundary conditions.
+  The array of unknowns has to be declared in the main program as
+  var(0..nx,0..ny,0..nz), with no ghost points.
+  This routine does nothing.
+  !)</span>
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> dirichlet(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var)
+<a href="cpl.html#END">END</a> dirichlet
+
+<span class=comment>!( This routine imposes Neumann boundary conditions.
+  The array of unknowns has to be declared in the main program as
+  var(-1..nx+1,-1..ny+1,-1..nz+1), with one ghost plane on each of the 6 sides.
+  !)</span>
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> neumann(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var)
+  nx=var.<a href="cpl.html#HI">HI</a>-1; ny=var(0).<a href="cpl.html#HI">HI</a>-1; nz=var(0,0).<a href="cpl.html#HI">HI</a>-1
+  <a href="cpl.html#DO">DO</a> var(ix,-1,iz)=var(ix,1,iz); var(ix,ny+1,iz)=var(ix,ny-1,iz) <a href="cpl.html#FOR">FOR</a> ix=0 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iz=0 <a href="cpl.html#TO">TO</a> nz
+  <a href="cpl.html#DO">DO</a> var(-1,iy,iz)=var(1,iy,iz); var(nx+1,iy,iz)=var(nx-1,iy,iz) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny <a href="cpl.html#AND">AND</a> iz=0 <a href="cpl.html#TO">TO</a> nz
+  <a href="cpl.html#DO">DO</a> var(ix,iy,-1)=var(ix,iy,1); var(ix,iy,nz+1)=var(ix,iy,nz-1) <a href="cpl.html#FOR">FOR</a> ix=0 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy=0 <a href="cpl.html#TO">TO</a> ny
+<a href="cpl.html#END">END</a> neumann
+
+<span class=comment>!( This routine imposes periodic boundary conditions in the x and y directions
+  and Neumann boundary conditions in the z direction.
+  The array of unknowns has to be declared in the main program as
+  var(-1..nx,-1..ny,-1..nz+1), with one ghost plane in the periodic directions
+  and two in the Neumann direction.
+  !)</span>
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> biperiod(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var)
+  <span class=comment>! In a distributed-memory parallel implementation, this is the only</span>
+  <span class=comment>! routine where communication will need to appear.</span>
+  <a href="cpl.html#DO">DO</a> var(ix,iy,<a href="cpl.html#LO">LO</a>)=var(ix,iy,<a href="cpl.html#LO">LO</a>+2); var(ix,iy,<a href="cpl.html#HI">HI</a>)=var(ix,iy,<a href="cpl.html#HI">HI</a>-2) <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iy=<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1
+  <a href="cpl.html#DO">DO</a> var(ix,<a href="cpl.html#LO">LO</a>,iz)=var(ix,<a href="cpl.html#HI">HI</a>-1,iz); var(ix,<a href="cpl.html#HI">HI</a>,iz)=var(ix,<a href="cpl.html#LO">LO</a>+1,iz) <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iz
+  <a href="cpl.html#DO">DO</a> var(<a href="cpl.html#LO">LO</a>,iy,iz)=var(<a href="cpl.html#HI">HI</a>-1,iy,iz); var(<a href="cpl.html#HI">HI</a>,iy,iz)=var(<a href="cpl.html#LO">LO</a>+1,iy,iz) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy,iz
+<a href="cpl.html#END">END</a> biperiod
+
+<span class=comment>!( When no Dirichlet boundary conditions are used, the solution exists subject
+  to the compatibility condition that the sum of the r.h.s. should be zero.
+  This routine enforces this by subtracting from the r.h.s. its average.
+  !)</span>
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> compat(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> rhs)
+  <a href="cpl.html#REAL">REAL</a> s=<a href="cpl.html#Looping-operator">SUM</a> rhs(ix,iy,iz) <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iy=<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iz=<a href="cpl.html#LO">LO</a>+2 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-2
+  <a href="cpl.html#DO">DO</a> s=<a href="cpl.html#Assignment">~</a>+0.5&lowast;[rhs(ix,iy,<a href="cpl.html#LO">LO</a>+1)+rhs(ix,iy,<a href="cpl.html#HI">HI</a>-1)] <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iy=<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>-1
+  s=s/(rhs.<a href="cpl.html#HI">HI1</a>-rhs.<a href="cpl.html#LO">LO1</a>-1)/(rhs.<a href="cpl.html#HI">HI2</a>-rhs.<a href="cpl.html#LO">LO2</a>-1)/(rhs.<a href="cpl.html#HI">HI3</a>-rhs.<a href="cpl.html#LO">LO3</a>-2)
+  <a href="cpl.html#DO">DO</a> rhs(ix,iy,iz)=<a href="cpl.html#Assignment">~</a>-s <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy,iz
+<a href="cpl.html#END">END</a> compat
+
+<span class=comment>!( Basic red-black Jacobi iteration used as the smoother. The parameter
+  makeghosts can be any one of the above routines used to impose boundary
+  conditions, or you can construct your own hybrid.
+  !)</span>
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> poissonrb(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var, rhs; <a href="cpl.html#FUNCTION">SUBROUTINE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> v) makeghosts)
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=var.<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> var.<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iy=var(0).<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> var(0).<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iz=var(0,0).<a href="cpl.html#LO">LO</a>+1+[(ix+iy+var(0,0).<a href="cpl.html#LO">LO</a>+1+parity) <a href="cpl.html#Integer-operator">MOD</a> 2] <a href="cpl.html#TO">TO</a> var(0,0).<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#BY">BY</a> 2
+      var(ix,iy,iz)=(var(ix+1,iy,iz)+var(ix-1,iy,iz)+var(ix,iy+1,iz)+var(ix,iy-1,iz)+var(ix,iy,iz+1)+var(ix,iy,iz-1))/6-rhs(ix,iy,iz)
+    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+    makeghosts(var)
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> poissonrb
+
+<span class=comment>!( Current residual of the difference equation, used both in the multigrid
+  routine AND TO write out the residual itself.
+  !)</span>
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> rsd(<a href="cpl.html#REAL">REAL</a> var(&lowast;,&lowast;,&lowast;); <a href="cpl.html#INTEGER">INTEGER</a> ix,iy,iz)=(var(ix,iy+1,iz)+var(ix,iy-1,iz)+var(ix+1,iy,iz)+var(ix-1,iy,iz)+var(ix,iy,iz+1)+var(ix,iy,iz-1))/6-var(ix,iy,iz)
+
+<span class=comment>! Main multigrid routine. Same calling prototype as poissonrb.</span>
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> poissonmg(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> fvar, frhs; <a href="cpl.html#FUNCTION">SUBROUTINE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var) makeghosts)
+  <span class=comment>! apply smoother 1 time</span>
+  <a href="cpl.html#DO">DO</a> poissonrb(fvar,frhs,makeghosts) <a href="cpl.html#FOR">FOR</a> 1 <a href="cpl.html#TIMES">TIMES</a>
+  <span class=comment>! allocate variables for the next coarser grid</span>
+  <a href="cpl.html#ARRAY">ARRAY</a>((fvar.<a href="cpl.html#LO">LO</a>-1) <a href="cpl.html#DIV">DIV</a> 2..(fvar.<a href="cpl.html#HI">HI</a>+1) <a href="cpl.html#DIV">DIV</a> 2, (fvar.<a href="cpl.html#LO">LO2</a>-1) <a href="cpl.html#DIV">DIV</a> 2..(fvar.<a href="cpl.html#HI">HI2</a>+1) <a href="cpl.html#DIV">DIV</a> 2, (fvar.<a href="cpl.html#LO">LO3</a>-1) <a href="cpl.html#DIV">DIV</a> 2..(fvar.<a href="cpl.html#HI">HI3</a>+1) <a href="cpl.html#DIV">DIV</a> 2) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> cvar=0, crhs=0
+  <span class=comment>! restriction</span>
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ixc=cvar.<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> cvar.<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iyc=cvar(0).<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> cvar(0).<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> izc=cvar(0,0).<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> cvar(0,0).<a href="cpl.html#HI">HI</a>-1
+    ixf=2&lowast;ixc; iyf=2&lowast;iyc; izf=2&lowast;izc
+    crhs(ixc,iyc,izc)=2&lowast;[frhs(ixf,iyf,izf)-rsd(fvar,ixf,iyf,izf)]
+    cvar(ixc,iyc)=-crhs(ixc,iyc)
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  makeghosts(cvar)
+  <span class=comment>!  compat(crhs)</span>
+  <a href="cpl.html#IF">IF</a> fvar.<a href="cpl.html#HI">HI</a> <a href="cpl.html#DIV">DIV</a> 2 <a href="cpl.html#Integer-operator">MOD</a> 4 = 0 <a href="cpl.html#AND">AND</a> fvar(0).<a href="cpl.html#HI">HI</a> <a href="cpl.html#DIV">DIV</a> 2 <a href="cpl.html#Integer-operator">MOD</a> 4 = 0 <a href="cpl.html#AND">AND</a> fvar(0,0).<a href="cpl.html#HI">HI</a> <a href="cpl.html#DIV">DIV</a> 2 <a href="cpl.html#Integer-operator">MOD</a> 2 = 0 <a href="cpl.html#IF">THEN</a>
+    <span class=comment>! recursively call itself on the coarser grid in a W-cycle</span>
+    <a href="cpl.html#DO">DO</a> poissonmg(cvar,crhs,makeghosts) <a href="cpl.html#FOR">FOR</a> 2 <a href="cpl.html#TIMES">TIMES</a>
+    <span class=comment>! or, on the coarsest grid, call redblack fifty times.</span>
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#DO">DO</a> poissonrb(cvar,crhs,makeghosts) <a href="cpl.html#FOR">FOR</a> 50 <a href="cpl.html#TIMES">TIMES</a>
+  <span class=comment>! prolongation</span>
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ixc=cvar.<a href="cpl.html#LO">LO1</a>+1 <a href="cpl.html#TO">TO</a> fvar.<a href="cpl.html#HI">HI1</a> <a href="cpl.html#DIV">DIV</a> 2 <a href="cpl.html#AND">AND</a> iyc=cvar.<a href="cpl.html#LO">LO2</a>+1 <a href="cpl.html#TO">TO</a> fvar.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#DIV">DIV</a> 2 <a href="cpl.html#AND">AND</a> izc=cvar.<a href="cpl.html#LO">LO3</a>+1 <a href="cpl.html#TO">TO</a> fvar.<a href="cpl.html#HI">HI3</a> <a href="cpl.html#DIV">DIV</a> 2
+    ixf=2&lowast;ixc; iyf=2&lowast;iyc; izf=2&lowast;izc
+    fvar(ixf-1,iyf,izf)=<a href="cpl.html#Assignment">~</a>+(cvar(ixc-1,iyc,izc)+cvar(ixc,iyc,izc))&lowast;0.5
+    fvar(ixf,iyf-1,izf)=<a href="cpl.html#Assignment">~</a>+(cvar(ixc,iyc-1,izc)+cvar(ixc,iyc,izc))&lowast;0.5
+    fvar(ixf,iyf,izf-1)=<a href="cpl.html#Assignment">~</a>+(cvar(ixc,iyc,izc-1)+cvar(ixc,iyc,izc))&lowast;0.5
+    fvar(ixf-1,iyf-1,izf-1)=<a href="cpl.html#Assignment">~</a>+[cvar(ixc-1,iyc-1,izc-1)+cvar(ixc,iyc-1,izc-1)+
+      cvar(ixc-1,iyc,izc-1)+cvar(ixc,iyc,izc-1)+cvar(ixc-1,iyc-1,izc)+
+      cvar(ixc,iyc-1,izc)+cvar(ixc-1,iyc,izc)+cvar(ixc,iyc,izc)]/8
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  makeghosts(fvar)
+  <span class=comment>! apply smoother 2 more times</span>
+  <a href="cpl.html#DO">DO</a> poissonrb(fvar,frhs,makeghosts) <a href="cpl.html#FOR">FOR</a> 2 <a href="cpl.html#TIMES">TIMES</a>
+<a href="cpl.html#END">END</a> poissonmg
+
+<span class=comment>! calculate maximum residual, for convergence test only</span>
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> mrsd(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var, rhs)
+  <a href="cpl.html#RESULT">RESULT</a>=0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=var.<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> var.<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iy=var(0).<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> var(0).<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iz=var(0,0).<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> var(0,0).<a href="cpl.html#HI">HI</a>-1
+    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#MAX">MAX</a>(<a href="cpl.html#RESULT">RESULT</a>,<a href="cpl.html#ABS">ABS</a>[rsd(var,ix,iy,iz)-rhs(ix,iy,iz)])
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#END">END</a> mrsd
+
+<span class=comment>! Usage example and test</span>
+<span class=comment>! Uncomment what follows to test the routine</span>
+<span class=comment>! For best performance nx,ny,nz should be (possibly different) powers of 2</span>
+<span class=comment>! This constraint can be removed with a slightly more complicated bookkeeping.</span>
+<span class=comment>!(
+ASK INTEGER nx,ny,nz
+ARRAY(-1..nx,-1..ny,-1..nz+1) OF REAL p,rhs=0
+DO p(ix,iy,iz)=RAND() FOR ALL ix,iy,iz
+DO rhs(ix,iy,iz)=RAND() FOR ix=LO+1 TO HI-1 AND iy=LO+1 TO HI-1 AND iz=LO+1 TO HI-1
+compat(rhs)
+REAL oldr, r=0
+LOOP main
+  oldr=r
+  r=mrsd(p,rhs)
+<span class=comment>!  compat(rhs)</span>
+  DO poissonrb(p,rhs,biperiod) FOR 4 TIMES
+  poissonmg(p,rhs,biperiod)
+  WRITE r, oldr/r
+REPEAT main FOR 12 TIMES
+!)</span>
+</pre></body></html>
