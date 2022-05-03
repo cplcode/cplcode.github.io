@@ -80,7 +80,7 @@ SUBROUTINE poissonrb(POINTER TO ARRAY(*,*,*) OF REAL var, rhs; SUBROUTINE(POINTE
 END poissonrb
 
 !( Current residual of the difference equation, used both in the multigrid
-  routine AND TO write out the residual itself.
+  routine and to write out the residual itself.
   !)
 INLINE FUNCTION rsd(REAL var(*,*,*); INTEGER ix,iy,iz)=(var(ix,iy+1,iz)+var(ix,iy-1,iz)+var(ix+1,iy,iz)+var(ix-1,iy,iz)+var(ix,iy,iz+1)+var(ix,iy,iz-1))/6-var(ix,iy,iz)
 

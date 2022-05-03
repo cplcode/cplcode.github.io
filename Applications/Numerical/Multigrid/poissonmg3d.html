@@ -92,7 +92,7 @@ SOFTWARE. !)</span>
 <a href="cpl.html#END">END</a> poissonrb
 
 <span class=comment>!( Current residual of the difference equation, used both in the multigrid
-  routine AND TO write out the residual itself.
+  routine and to write out the residual itself.
   !)</span>
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> rsd(<a href="cpl.html#REAL">REAL</a> var(&lowast;,&lowast;,&lowast;); <a href="cpl.html#INTEGER">INTEGER</a> ix,iy,iz)=(var(ix,iy+1,iz)+var(ix,iy-1,iz)+var(ix+1,iy,iz)+var(ix-1,iy,iz)+var(ix,iy,iz+1)+var(ix,iy,iz-1))/6-var(ix,iy,iz)
 
