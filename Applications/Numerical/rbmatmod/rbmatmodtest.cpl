@@ -1,0 +1,78 @@
+! rbmatmodtest -- Copyright 2000 Paolo Luchini
+! http://CPLcode.net/Applications/Numerical/Multigrid/
+!
+! test and usage example of the rbmatmod library
+
+!( Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. !)
+
+! run as, e.g.: rbmatmodtest 1 2 localhost & rbmatmodtest 2 2 localhost
+
+USE parallel
+USE rtchecks
+INTEGER iproc=1, nproc=1
+! iproc=number of the present node; nproc=total number of (distributed) nodes.
+IF COMMANDLINE.HI>0 THEN iproc=atoi(COMMANDLINE(1)); nproc=atoi(COMMANDLINE(2))
+
+! open TCP sockets using the functions tcpserver and tcpclient provided in
+! parallel.cpl. COMMANDLINE(3) is the name or ip of the next node; prev
+! is listening for a similar connection from the previous node.
+FILE prev,next
+bufsize=800
+baseport=IPPORT_USERRESERVED+111
+IF iproc<nproc THEN
+  next=fdopen(tcpserver(baseport+iproc),"r+")
+  setvbuf(next,malloc(bufsize),_IOFBF,bufsize)
+END IF
+IF iproc>1 THEN
+  prev=fdopen(tcpclient(COMMANDLINE(3),baseport+iproc-1),"r+")
+  setvbuf(prev,malloc(bufsize),_IOFBF,bufsize)
+END IF
+first==(prev=NULL FILE); last==(next=NULL FILE); has_terminal==last
+USE rbmatmod
+
+! Allocate some matrix and random vectors
+N=10
+! The unused elements of the first and last vector must be zeroed (at
+! inizialization only) because they will not be skipped.
+REAL mat(0..N+2,-2..2), x(-2..N+2)=0, y(-2..N+2)=0, t(-2..N+2)=0
+DO mat(i)=(1,-4,6,-4,1) FOR i=0 TO 10
+DO x(i)=RAND(); y(i)=RAND() FOR i=0 TO 10
+
+! parallel equivalent to LUdecomp mat (as defined in rbmat.cpl)
+LUdecompStep mat
+! parallel equivalent to t=mat\x (as defined in rbmat.cpl)
+LeftLUDivStep1(t,mat,x)
+FlushStep1
+LeftLUDivStep2(t,mat)
+FlushStep2
+! parallel scalar product between t and y
+REAL sum
+IF NOT first THEN READ BINARY FROM prev sum ELSE sum=0
+DO sum=~+t(i)*y(i) FOR i=0 TO 10
+IF NOT last THEN WRITE BINARY TO next sum; FLUSH next ELSE WRITE sum
+! parallel equivalent to y=y/mat (as defined in rbmat.cpl)
+RightLUDivStep1(y,y,mat)
+FlushStep1
+RightLUDivStep2(y,mat)
+FlushStep2
+! parallel scalar product between x and y
+IF NOT first THEN READ BINARY FROM prev sum ELSE sum=0
+DO sum=~+x(i)*y(i) FOR i=0 TO 10
+IF NOT last THEN WRITE BINARY TO next sum; FLUSH next ELSE WRITE sum
+! if the two products match, the test has been successful!

@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Numerical/rbmatmod/rbmatmodtest.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:monospace,monospace;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"Numerical/rbmatmod/rbmatmodtest.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<span class=comment>! rbmatmodtest -- Copyright 2000 Paolo Luchini</span>
+<span class=comment>! http://CPLcode.net/Applications/Numerical/Multigrid/</span>
+<span class=comment>!</span>
+<span class=comment>! test and usage example of the rbmatmod library</span>
+
+<span class=comment>!( Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. !)</span>
+
+<span class=comment>! run as, e.g.: rbmatmodtest 1 2 localhost &amp; rbmatmodtest 2 2 localhost</span>
+
+<a href="cpl.html#USE">USE</a> <a href="parallel.html#Top">parallel</a>
+<a href="cpl.html#USE">USE</a> <a href="cpl.html#rtchecks">rtchecks</a>
+<a href="cpl.html#INTEGER">INTEGER</a> iproc=1, nproc=1
+<span class=comment>! iproc=number of the present node; nproc=total number of (distributed) nodes.</span>
+<a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>&gt;0 <a href="cpl.html#IF">THEN</a> iproc=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1)); nproc=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(2))
+
+<span class=comment>! open TCP sockets using the functions tcpserver and tcpclient provided in</span>
+<span class=comment>! parallel.cpl. COMMANDLINE(3) is the name or ip of the next node; prev</span>
+<span class=comment>! is listening for a similar connection from the previous node.</span>
+<a href="cpl.html#FILE">FILE</a> prev,next
+bufsize=800
+baseport=IPPORT_USERRESERVED+111
+<a href="cpl.html#IF">IF</a> iproc&lt;nproc <a href="cpl.html#IF">THEN</a>
+  next=fdopen(tcpserver(baseport+iproc),"r+")
+  setvbuf(next,malloc(bufsize),_IOFBF,bufsize)
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#IF">IF</a> iproc&gt;1 <a href="cpl.html#IF">THEN</a>
+  prev=fdopen(tcpclient(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(3),baseport+iproc-1),"r+")
+  setvbuf(prev,malloc(bufsize),_IOFBF,bufsize)
+<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+first<a href="cpl.html#Deferred-assignment">==</a>(prev=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#FILE">FILE</a>); last<a href="cpl.html#Deferred-assignment">==</a>(next=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#FILE">FILE</a>); has_terminal<a href="cpl.html#Deferred-assignment">==</a>last
+<a href="cpl.html#USE">USE</a> rbmatmod
+
+<span class=comment>! Allocate some matrix and random vectors</span>
+N=10
+<span class=comment>! The unused elements of the first and last vector must be zeroed (at</span>
+<span class=comment>! inizialization only) because they will not be skipped.</span>
+<a href="cpl.html#REAL">REAL</a> mat(0..N+2,-2..2), x(-2..N+2)=0, y(-2..N+2)=0, t(-2..N+2)=0
+<a href="cpl.html#DO">DO</a> mat(i)=(1,-4,6,-4,1) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 10
+<a href="cpl.html#DO">DO</a> x(i)=RAND(); y(i)=RAND() <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 10
+
+<span class=comment>! parallel equivalent to LUdecomp mat (as defined in rbmat.cpl)</span>
+LUdecompStep mat
+<span class=comment>! parallel equivalent to t=mat\x (as defined in rbmat.cpl)</span>
+LeftLUDivStep1(t,mat,x)
+FlushStep1
+LeftLUDivStep2(t,mat)
+FlushStep2
+<span class=comment>! parallel scalar product between t and y</span>
+<a href="cpl.html#REAL">REAL</a> sum
+<a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#FROM">FROM</a> prev sum <a href="cpl.html#ELSE">ELSE</a> sum=0
+<a href="cpl.html#DO">DO</a> sum=<a href="cpl.html#Assignment">~</a>+t(i)&lowast;y(i) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 10
+<a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next sum; FLUSH next <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#WRITE">WRITE</a> sum
+<span class=comment>! parallel equivalent to y=y/mat (as defined in rbmat.cpl)</span>
+RightLUDivStep1(y,y,mat)
+FlushStep1
+RightLUDivStep2(y,mat)
+FlushStep2
+<span class=comment>! parallel scalar product between x and y</span>
+<a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#FROM">FROM</a> prev sum <a href="cpl.html#ELSE">ELSE</a> sum=0
+<a href="cpl.html#DO">DO</a> sum=<a href="cpl.html#Assignment">~</a>+x(i)&lowast;y(i) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 10
+<a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next sum; FLUSH next <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#WRITE">WRITE</a> sum
+<span class=comment>! if the two products match, the test has been successful<span class=comment>!</span></span>
+</pre></body></html>
