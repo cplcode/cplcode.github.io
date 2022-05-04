@@ -127,8 +127,8 @@ REAL FUNCTION mrsd(POINTER TO ARRAY(*,*,*) OF REAL var, rhs)
 END mrsd
 
 ! Usage example and test
-! Uncomment what follows to test the routine
-! For best performance nx,ny,nz should be (possibly different) powers of 2
+! Uncomment what follows to test the routine.
+! For best performance nx,ny,nz should be (possibly different) powers of 2.
 ! This constraint can be removed with a slightly more complicated bookkeeping.
 !(
 ASK INTEGER nx,ny,nz

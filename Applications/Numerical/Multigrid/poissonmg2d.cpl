@@ -1,0 +1,120 @@
+! poissonmg2d -- Copyright 2002 Paolo Luchini
+! http://CPLcode.net/Applications/Numerical/Multigrid/
+!
+! solves the constant-coefficient 2D Poisson problem using a multigrid iteration
+
+!( Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. !)
+
+
+!( Use this to impose Dirichlet boundary conditions.
+  The array of unknowns has to be declared in the main program as
+  var(0..nx,0..ny), with no ghost points. This routine does nothing.
+  !)
+SUBROUTINE dirichlet(POINTER TO ARRAY(*,*) OF REAL var)
+END dirichlet
+
+!( This routine imposes Neumann boundary conditions.
+  The array of unknowns has to be declared in the main program as
+  var(-1..nx+1,-1..ny+1), with one ghost plane on each of the 6 sides.
+  !)
+SUBROUTINE neumann(POINTER TO ARRAY(*,*) OF REAL var)
+  nx=var.HI-1; ny=var(0).HI-1
+  DO var(ix,-1)=var(ix,1); var(ix,ny+1)=var(ix,ny-1) FOR ix=0 TO nx
+  DO var(-1,iy)=var(1,iy); var(nx+1,iy)=var(nx-1,iy) FOR iy=0 TO ny
+END neumann
+
+!( This routine imposes periodic boundary conditions in the x and y directions.
+  The array of unknowns has to be declared in the main program as
+  var(-1..nx,-1..ny), with one ghost plane in each periodic direction.
+  !)
+SUBROUTINE biperiod(POINTER TO ARRAY(*,*) OF REAL var)
+  nx=var.HI; ny=var(0).HI
+  DO var(ix,-1)=var(ix,ny-1); var(ix,ny)=var(ix,0) FOR ix=0 TO nx-1
+  DO var(-1,iy)=var(nx-1,iy); var(nx,iy)=var(0,iy) FOR iy=0 TO ny-1
+  var(-1,-1)=var(nx-1,ny-1);var(-1,ny)=var(nx-1,0); var(nx,ny)=var(0,0); var(nx,-1)=var(0,ny-1)
+END biperiod
+
+!( Basic red-black Jacobi iteration used as the smoother. The parameter
+  makeghosts can be any one of the above routines used to impose boundary
+  conditions, or you can construct your own hybrid.
+  !)
+SUBROUTINE poissonrb(POINTER TO ARRAY(*,*) OF REAL var, rhs; SUBROUTINE(POINTER TO ARRAY(*,*) OF REAL v) makeghosts)
+  LOOP FOR parity=0 TO 1 
+    LOOP FOR ix=var.LO+1 TO var.HI-1 AND iy=var(0).LO+1 + (ix+var(0).LO+1+parity) MOD 2 TO var(0).HI-1 BY 2
+      var(ix,iy)=(var(ix,iy+1)+var(ix,iy-1)+var(ix+1,iy)+var(ix-1,iy))*0.25+rhs(ix,iy)
+    REPEAT LOOP
+    makeghosts(var)
+  REPEAT LOOP
+END poissonrb
+
+! Main multigrid routine. Same calling prototype as poissonrb.
+SUBROUTINE poissonmg(POINTER TO ARRAY(*,*) OF REAL fvar, frhs; SUBROUTINE(POINTER TO ARRAY(*,*) OF REAL var) makeghosts)
+  ! apply smoother
+  poissonrb(fvar,frhs,makeghosts)
+  ! allocate variables for the next coarser grid
+  ARRAY((fvar.LO-1) DIV 2..(fvar.HI+1) DIV 2, (fvar.LO2-1) DIV 2..(fvar.HI2+1) DIV 2) OF REAL cvar, crhs
+  ! restriction
+  DO cvar(ixc,iyc)=0; crhs(ixc,iyc)=0 FOR ixc=cvar.LO TO cvar.HI AND iyc=cvar(0).LO TO cvar(0).HI
+  LOOP FOR ixc=cvar.LO+1 TO cvar.HI-1 AND iyc=cvar(0).LO+1 TO cvar(0).HI-1
+    ixf=2*ixc; iyf=2*iyc
+    crhs(ixc,iyc)=[(fvar(ixf,iyf+1)+fvar(ixf,iyf-1)+fvar(ixf+1,iyf)+fvar(ixf-1,iyf))*0.25+frhs(ixf,iyf)-fvar(ixf,iyf)]*2
+    cvar(ixc,iyc)=crhs(ixc,iyc)
+  REPEAT LOOP
+  makeghosts(cvar)
+  IF fvar.HI DIV 2 MOD 2 = 0 AND fvar(0).HI DIV 2 MOD 2 = 0 AND cvar.HI > 2 AND cvar(0).HI > 2 THEN
+    ! recursively call itself on the coarser grid in a V-cycle
+    poissonmg(cvar,crhs,makeghosts)
+    ! or, on the coarsest grid, call redblack twenty times.
+  ELSE DO poissonrb(cvar,crhs,makeghosts) FOR 20 TIMES
+  ! prolongation
+  LOOP FOR ixc=cvar.LO+1 TO cvar.HI AND iyc=cvar(0).LO+1 TO cvar(0).HI
+    ixf=2*ixc; iyf=2*iyc
+    IF iyf<=fvar.HI2 THEN fvar(ixf-1,iyf)=fvar(ixf-1,iyf)+(cvar(ixc-1,iyc)+cvar(ixc,iyc))*0.5
+    IF ixf<=fvar.HI1 THEN fvar(ixf,iyf-1)=fvar(ixf,iyf-1)+(cvar(ixc,iyc-1)+cvar(ixc,iyc))*0.5
+  REPEAT LOOP
+  makeghosts(fvar)
+  ! apply smoother
+  poissonrb(fvar,frhs,makeghosts)
+END poissonmg
+
+! calculate maximum residual, for convergence test only
+REAL FUNCTION mrsd(POINTER TO ARRAY(*,*) OF REAL var, rhs)
+  RESULT=0
+  LOOP FOR ix=var.LO+1 TO var.HI-1 AND iy=var(0).LO+1 TO var(0).HI-1
+    RESULT=MAX(RESULT,ABS[(var(ix,iy+1)+var(ix,iy-1)+var(ix+1,iy)+var(ix-1,iy))*0.25+rhs(ix,iy)-var(ix,iy)])
+  REPEAT LOOP
+END mrsd
+! Usage example and test
+! Uncomment what follows to test the routine.
+! For best performance nx and ny should be (possibly different) powers of 2.
+! This constraint can be removed with a slightly more complicated bookkeeping.
+!(
+  ASK INTEGER nx
+  ny=nx
+  ARRAY(-1..nx+1,-1..ny+1) OF REAL p,rhs=0
+  DO p(ix,iy)=ix^2+iy^2 FOR ALL ix,iy
+  
+  REAL oldr, r=0
+  LOOP main
+    oldr=r
+    r=mrsd(p,rhs)
+    poissonmg(p,rhs,neumann)
+    WRITE r, oldr/r
+  REPEAT main FOR 20 TIMES
+  !)
