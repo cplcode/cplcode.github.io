@@ -61,7 +61,7 @@ first<a href="cpl.html#Deferred-assignment">==</a>(prev=<a href="cpl.html#POINTE
 <span class=comment>! Allocate some matrix and random vectors</span>
 N=10
 <span class=comment>! The unused elements of the first and last vector must be zeroed (at</span>
-<span class=comment>! inizialization only) because they will not be skipped.</span>
+<span class=comment>! initialization only) because they will not be skipped.</span>
 <a href="cpl.html#REAL">REAL</a> mat(0..N+2,-2..2), x(-2..N+2)=0, y(-2..N+2)=0, t(-2..N+2)=0
 <a href="cpl.html#DO">DO</a> mat(i)=(1,-4,6,-4,1) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 10
 <a href="cpl.html#DO">DO</a> x(i)=RAND(); y(i)=RAND() <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 10

@@ -49,7 +49,7 @@ USE rbmatmod
 ! Allocate some matrix and random vectors
 N=10
 ! The unused elements of the first and last vector must be zeroed (at
-! inizialization only) because they will not be skipped.
+! initialization only) because they will not be skipped.
 REAL mat(0..N+2,-2..2), x(-2..N+2)=0, y(-2..N+2)=0, t(-2..N+2)=0
 DO mat(i)=(1,-4,6,-4,1) FOR i=0 TO 10
 DO x(i)=RAND(); y(i)=RAND() FOR i=0 TO 10
