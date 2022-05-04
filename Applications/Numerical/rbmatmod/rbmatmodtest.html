@@ -42,17 +42,17 @@ SOFTWARE. !)</span>
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>&gt;0 <a href="cpl.html#IF">THEN</a> iproc=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1)); nproc=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(2))
 
 <span class=comment>! Open TCP sockets using the functions tcpserver and tcpclient provided in</span>
-<span class=comment>! parallel.cpl. COMMANDLINE(3) is the name or ip of the next node; prev</span>
+<span class=comment>! parallel.cpl. COMMANDLINE(3) is the hostname or ip of the next node; prev</span>
 <span class=comment>! is listening for a similar connection from the previous node.</span>
 <a href="cpl.html#FILE">FILE</a> prev,next
 bufsize=800
 baseport=IPPORT_USERRESERVED+111
 <a href="cpl.html#IF">IF</a> iproc&lt;nproc <a href="cpl.html#IF">THEN</a>
-  next=fdopen(tcpserver(baseport+iproc),"r+")
+  next=fdopen(<a href="parallel.html#tcpserver">tcpserver</a>(baseport+iproc),"r+")
   setvbuf(next,malloc(bufsize),_IOFBF,bufsize)
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#IF">IF</a> iproc&gt;1 <a href="cpl.html#IF">THEN</a>
-  prev=fdopen(tcpclient(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(3),baseport+iproc-1),"r+")
+  prev=fdopen(<a href="parallel.html#tcpclient">tcpclient</a>(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(3),baseport+iproc-1),"r+")
   setvbuf(prev,malloc(bufsize),_IOFBF,bufsize)
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 first<a href="cpl.html#Deferred-assignment">==</a>(prev=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#FILE">FILE</a>); last<a href="cpl.html#Deferred-assignment">==</a>(next=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#FILE">FILE</a>); has_terminal<a href="cpl.html#Deferred-assignment">==</a>last
@@ -65,7 +65,7 @@ b=2
 <span class=comment>! initialization only) because they will not be skipped.</span>
 <a href="cpl.html#REAL">REAL</a> mat(0..N+b,-b..b), x(-b..N+b)=0, y(-b..N+b)=0, t(-b..N+b)=0
 <a href="cpl.html#DO">DO</a> mat(i)=(1,-4,6,-4,1) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> N
-<a href="cpl.html#DO">DO</a> x(i)=RAND(); y(i)=RAND() <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> N
+<a href="cpl.html#DO">DO</a> x(i)=<a href="cpl.html#RAND">RAND</a>(); y(i)=<a href="cpl.html#RAND">RAND</a>() <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> N
 
 <span class=comment>! parallel equivalent to LUdecomp mat (as defined in rbmat.cpl)</span>
 LUdecompStep mat

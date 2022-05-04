@@ -20,7 +20,7 @@ srand[<a href="cpl.html#INTEGER">INTEGER</a>(time(<a href="cpl.html#POINTER">NUL
 
 <a href="cpl.html#REAL">REAL</a> procstate=0.5
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> process() <span class=comment>! simple first-order dynamical system with lorentzian spectrum</span>
-  procstate=0.9&lowast;<a href="cpl.html#Assignment">~</a>+0.1&lowast;RAND()
+  procstate=0.9&lowast;<a href="cpl.html#Assignment">~</a>+0.1&lowast;<a href="cpl.html#RAND">RAND</a>()
   <a href="cpl.html#RESULT">RESULT</a>=procstate
 <a href="cpl.html#END">END</a> process
 

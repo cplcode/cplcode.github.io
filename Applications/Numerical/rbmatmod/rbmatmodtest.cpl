@@ -30,7 +30,7 @@ INTEGER iproc=1, nproc=1
 IF COMMANDLINE.HI>0 THEN iproc=atoi(COMMANDLINE(1)); nproc=atoi(COMMANDLINE(2))
 
 ! Open TCP sockets using the functions tcpserver and tcpclient provided in
-! parallel.cpl. COMMANDLINE(3) is the name or ip of the next node; prev
+! parallel.cpl. COMMANDLINE(3) is the hostname or ip of the next node; prev
 ! is listening for a similar connection from the previous node.
 FILE prev,next
 bufsize=800

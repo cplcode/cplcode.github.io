@@ -81,7 +81,7 @@ Page: (parallel)Top,  Next: <a href="#nonparallel">nonparallel</a>,  Prev: <a hr
 </div><div class=page id="SHARED">
 Page: (parallel)SHARED,  Next: <a href="#PARALLEL">PARALLEL</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>SHARED</h4>
-Prefix to global variable declarations specifying that the declared variables are to be shared among parallel modules. Variables without this declaration have separate instances for each module, i.e. changing their value produces no effect outside.
+Prefix to global variable declarations specifying that the declared variables are to be shared among parallel modules. Variables without this declaration have separate instances for each module, i.e. changing their value produces no outside effect.
 
 Example:
 
@@ -104,6 +104,14 @@ SLEEP UNTIL &lt;condition&gt;
 In order to make all sleeping processes verify their condition and wake up as needed, the process modifying the condition must subsequently execute the command
 
 WAKEUP 
+</div><div class=page id="tcpserver">
+Page: (parallel)tcpserver, Next: <a href="#tcpclient">tcpclient</a>, Prev: <a href="#synchronization">synchronization</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h4>int tcpserver(uint16_t port)</h4>
+C function (transparently available to CPL): listen on port <q>port</q> for a TCP connection and return the corresponding file handle. 
+</div><div class=page id="tcpclient">
+Page: (parallel)tcpclient, Next: <a href="#nonparallel">nonparallel</a>, Prev: <a href="#tcpserver">tcpserver</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h4>int tcpclient(const char &lowast;hostname, uint16_t port)  </h4>
+C function (transparently available to CPL): connect to a TCP server listening on port <q>port</q> of host <q>hostname</q> and return the corresponding file handle. 
 </div><div class=page id="nonparallel">
 Page: (parallel)nonparallel,  Next: <a href="symbolic.html#Top">(symbolic)</a>,  Prev: <a href="#Top">Top</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>nonparallel.cpl</h3>
