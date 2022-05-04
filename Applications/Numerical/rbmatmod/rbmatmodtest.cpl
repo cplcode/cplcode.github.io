@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. !)
 
-! run as, e.g.: rbmatmodtest 1 2 localhost & rbmatmodtest 2 2 localhost
+! Run as, e.g.: rbmatmodtest 1 2 localhost & rbmatmodtest 2 2 localhost
 
 USE parallel
 USE rtchecks
@@ -29,7 +29,7 @@ INTEGER iproc=1, nproc=1
 ! iproc=number of the present node; nproc=total number of (distributed) nodes.
 IF COMMANDLINE.HI>0 THEN iproc=atoi(COMMANDLINE(1)); nproc=atoi(COMMANDLINE(2))
 
-! open TCP sockets using the functions tcpserver and tcpclient provided in
+! Open TCP sockets using the functions tcpserver and tcpclient provided in
 ! parallel.cpl. COMMANDLINE(3) is the name or ip of the next node; prev
 ! is listening for a similar connection from the previous node.
 FILE prev,next
@@ -48,11 +48,12 @@ USE rbmatmod
 
 ! Allocate some matrix and random vectors
 N=10
+b=2
 ! The unused elements of the first and last vector must be zeroed (at
 ! initialization only) because they will not be skipped.
-REAL mat(0..N+2,-2..2), x(-2..N+2)=0, y(-2..N+2)=0, t(-2..N+2)=0
-DO mat(i)=(1,-4,6,-4,1) FOR i=0 TO 10
-DO x(i)=RAND(); y(i)=RAND() FOR i=0 TO 10
+REAL mat(0..N+b,-b..b), x(-b..N+b)=0, y(-b..N+b)=0, t(-b..N+b)=0
+DO mat(i)=(1,-4,6,-4,1) FOR i=0 TO N
+DO x(i)=RAND(); y(i)=RAND() FOR i=0 TO N
 
 ! parallel equivalent to LUdecomp mat (as defined in rbmat.cpl)
 LUdecompStep mat
@@ -64,7 +65,7 @@ FlushStep2
 ! parallel scalar product between t and y
 REAL sum
 IF NOT first THEN READ BINARY FROM prev sum ELSE sum=0
-DO sum=~+t(i)*y(i) FOR i=0 TO 10
+DO sum=~+t(i)*y(i) FOR i=0 TO N
 IF NOT last THEN WRITE BINARY TO next sum; FLUSH next ELSE WRITE sum
 ! parallel equivalent to y=y/mat (as defined in rbmat.cpl)
 RightLUDivStep1(y,y,mat)
@@ -73,6 +74,6 @@ RightLUDivStep2(y,mat)
 FlushStep2
 ! parallel scalar product between x and y
 IF NOT first THEN READ BINARY FROM prev sum ELSE sum=0
-DO sum=~+x(i)*y(i) FOR i=0 TO 10
+DO sum=~+x(i)*y(i) FOR i=0 TO N
 IF NOT last THEN WRITE BINARY TO next sum; FLUSH next ELSE WRITE sum
-! if the two products match, the test has been successful!
+! If the two products match, the test has been successful: y*mat\x = y/mat*x !

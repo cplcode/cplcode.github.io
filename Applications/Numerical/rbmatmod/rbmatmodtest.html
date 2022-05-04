@@ -33,7 +33,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. !)</span>
 
-<span class=comment>! run as, e.g.: rbmatmodtest 1 2 localhost &amp; rbmatmodtest 2 2 localhost</span>
+<span class=comment>! Run as, e.g.: rbmatmodtest 1 2 localhost &amp; rbmatmodtest 2 2 localhost</span>
 
 <a href="cpl.html#USE">USE</a> <a href="parallel.html#Top">parallel</a>
 <a href="cpl.html#USE">USE</a> <a href="cpl.html#rtchecks">rtchecks</a>
@@ -41,7 +41,7 @@ SOFTWARE. !)</span>
 <span class=comment>! iproc=number of the present node; nproc=total number of (distributed) nodes.</span>
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>&gt;0 <a href="cpl.html#IF">THEN</a> iproc=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1)); nproc=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(2))
 
-<span class=comment>! open TCP sockets using the functions tcpserver and tcpclient provided in</span>
+<span class=comment>! Open TCP sockets using the functions tcpserver and tcpclient provided in</span>
 <span class=comment>! parallel.cpl. COMMANDLINE(3) is the name or ip of the next node; prev</span>
 <span class=comment>! is listening for a similar connection from the previous node.</span>
 <a href="cpl.html#FILE">FILE</a> prev,next
@@ -60,11 +60,12 @@ first<a href="cpl.html#Deferred-assignment">==</a>(prev=<a href="cpl.html#POINTE
 
 <span class=comment>! Allocate some matrix and random vectors</span>
 N=10
+b=2
 <span class=comment>! The unused elements of the first and last vector must be zeroed (at</span>
 <span class=comment>! initialization only) because they will not be skipped.</span>
-<a href="cpl.html#REAL">REAL</a> mat(0..N+2,-2..2), x(-2..N+2)=0, y(-2..N+2)=0, t(-2..N+2)=0
-<a href="cpl.html#DO">DO</a> mat(i)=(1,-4,6,-4,1) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 10
-<a href="cpl.html#DO">DO</a> x(i)=RAND(); y(i)=RAND() <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 10
+<a href="cpl.html#REAL">REAL</a> mat(0..N+b,-b..b), x(-b..N+b)=0, y(-b..N+b)=0, t(-b..N+b)=0
+<a href="cpl.html#DO">DO</a> mat(i)=(1,-4,6,-4,1) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> N
+<a href="cpl.html#DO">DO</a> x(i)=RAND(); y(i)=RAND() <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> N
 
 <span class=comment>! parallel equivalent to LUdecomp mat (as defined in rbmat.cpl)</span>
 LUdecompStep mat
@@ -76,7 +77,7 @@ FlushStep2
 <span class=comment>! parallel scalar product between t and y</span>
 <a href="cpl.html#REAL">REAL</a> sum
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#FROM">FROM</a> prev sum <a href="cpl.html#ELSE">ELSE</a> sum=0
-<a href="cpl.html#DO">DO</a> sum=<a href="cpl.html#Assignment">~</a>+t(i)&lowast;y(i) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 10
+<a href="cpl.html#DO">DO</a> sum=<a href="cpl.html#Assignment">~</a>+t(i)&lowast;y(i) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> N
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next sum; FLUSH next <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#WRITE">WRITE</a> sum
 <span class=comment>! parallel equivalent to y=y/mat (as defined in rbmat.cpl)</span>
 RightLUDivStep1(y,y,mat)
@@ -85,7 +86,7 @@ RightLUDivStep2(y,mat)
 FlushStep2
 <span class=comment>! parallel scalar product between x and y</span>
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#FROM">FROM</a> prev sum <a href="cpl.html#ELSE">ELSE</a> sum=0
-<a href="cpl.html#DO">DO</a> sum=<a href="cpl.html#Assignment">~</a>+x(i)&lowast;y(i) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 10
+<a href="cpl.html#DO">DO</a> sum=<a href="cpl.html#Assignment">~</a>+x(i)&lowast;y(i) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> N
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next sum; FLUSH next <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#WRITE">WRITE</a> sum
-<span class=comment>! if the two products match, the test has been successful<span class=comment>!</span></span>
+<span class=comment>! If the two products match, the test has been successful: y&lowast;mat\x = y/mat&lowast;x <span class=comment>!</span></span>
 </pre></body></html>
