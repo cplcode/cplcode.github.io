@@ -47,33 +47,34 @@ first==(prev=NULL FILE); last==(next=NULL FILE); has_terminal==last
 USE rbmatmod
 
 ! Allocate some matrix and random vectors
+M=10
 N=10
 b=2
 ! The unused elements of the first and last vector must be zeroed (at
 ! initialization only) because they will not be skipped.
-REAL mat(0..N+b,-b..b), x(-b..N+b)=0, y(-b..N+b)=0, t(-b..N+b)=0
+REAL mat(0..N+b,-b..b), x(1..M,-b..N+b)=0, y(1..M,-b..N+b)=0, t(1..M,-b..N+b)=0
 DO mat(i)=(1,-4,6,-4,1) FOR i=0 TO N
-DO x(i)=RAND(); y(i)=RAND() FOR i=0 TO N
+DO x(m,i)=RAND(); y(m,i)=RAND() FOR ALL m AND i=0 TO N
 
 ! parallel equivalent to LUdecomp mat (as defined in rbmat.cpl)
 LUdecompStep mat
 ! parallel equivalent to t=mat\x (as defined in rbmat.cpl)
-LeftLUDivStep1(t,mat,x)
+DO LeftLUDivStep1[t(m),mat,x(m)] FOR ALL m
 FlushStep1
-LeftLUDivStep2(t,mat)
+DO LeftLUDivStep2[t(m),mat] FOR ALL m
 FlushStep2
 ! parallel scalar product between t and y
-REAL sum
-IF NOT first THEN READ BINARY FROM prev sum ELSE sum=0
-DO sum=~+t(i)*y(i) FOR i=0 TO N
-IF NOT last THEN WRITE BINARY TO next sum; FLUSH next ELSE WRITE sum
+REAL sum1=SUM t(m,i)*y(m,i) FOR ALL m AND i=0 TO N
+IF NOT first THEN sum1=~+BINARY REAL FROM prev
+IF NOT last THEN WRITE BINARY TO next sum1; FLUSH next ELSE WRITE sum1
 ! parallel equivalent to y=y/mat (as defined in rbmat.cpl)
-RightLUDivStep1(y,y,mat)
+DO RightLUDivStep1[y(m),y(m),mat] FOR ALL m
 FlushStep1
-RightLUDivStep2(y,mat)
+DO RightLUDivStep2[y(m),mat] FOR ALL m
 FlushStep2
 ! parallel scalar product between x and y
-IF NOT first THEN READ BINARY FROM prev sum ELSE sum=0
-DO sum=~+x(i)*y(i) FOR i=0 TO N
-IF NOT last THEN WRITE BINARY TO next sum; FLUSH next ELSE WRITE sum
+REAL sum2=SUM x(m,i)*y(m,i) FOR ALL m AND i=0 TO N
+IF NOT first THEN sum2=~+BINARY REAL FROM prev
+IF NOT last THEN WRITE BINARY TO next sum2; FLUSH next ELSE WRITE sum2
 ! If the two products match, the test has been successful: y*mat\x = y/mat*x !
+IF ABS(1-sum2/sum1)<1E-7 THEN WRITE "success!"
