@@ -72,8 +72,10 @@ b=2
 LUdecompStep mat
 <span class=comment>! parallel equivalent to t=mat\x (as defined in rbmat.cpl)</span>
 <a href="cpl.html#DO">DO</a> LeftLUDivStep1[t(m),mat,x(m)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m
+<span class=comment>! flush output buffer before switching from writing to reading on the prev node</span>
 FlushStep1
 <a href="cpl.html#DO">DO</a> LeftLUDivStep2[t(m),mat] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m
+<span class=comment>! flush output buffer before switching from writing to reading on the next node</span>
 FlushStep2
 <span class=comment>! parallel scalar product between t and y</span>
 <a href="cpl.html#REAL">REAL</a> sum1=<a href="cpl.html#Looping-operator">SUM</a> t(m,i)&lowast;y(m,i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m <a href="cpl.html#AND">AND</a> i=0 <a href="cpl.html#TO">TO</a> N

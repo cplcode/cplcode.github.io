@@ -60,8 +60,10 @@ DO x(m,i)=RAND(); y(m,i)=RAND() FOR ALL m AND i=0 TO N
 LUdecompStep mat
 ! parallel equivalent to t=mat\x (as defined in rbmat.cpl)
 DO LeftLUDivStep1[t(m),mat,x(m)] FOR ALL m
+! flush output buffer before switching from writing to reading on the prev node
 FlushStep1
 DO LeftLUDivStep2[t(m),mat] FOR ALL m
+! flush output buffer before switching from writing to reading on the next node
 FlushStep2
 ! parallel scalar product between t and y
 REAL sum1=SUM t(m,i)*y(m,i) FOR ALL m AND i=0 TO N
