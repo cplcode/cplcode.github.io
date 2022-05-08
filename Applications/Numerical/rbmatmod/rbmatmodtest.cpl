@@ -1,7 +1,7 @@
 ! rbmatmodtest -- Copyright 2000 Paolo Luchini
 ! http://CPLcode.net/Applications/Numerical/Multigrid/
 !
-! test and usage example of the rbmatmod library
+! test and usage example of the rbmatmod.cpl library
 
 !( Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,8 +30,8 @@ INTEGER iproc=1, nproc=1
 IF COMMANDLINE.HI>0 THEN iproc=atoi(COMMANDLINE(1)); nproc=atoi(COMMANDLINE(2))
 
 ! Open TCP sockets using the functions tcpserver and tcpclient provided in
-! parallel.cpl. COMMANDLINE(3) is the hostname or ip of the next node; prev
-! is listening for a similar connection from the previous node.
+! parallel.cpl. COMMANDLINE(3) is the hostname or ip of the previous node;
+! tcpserver is listening for a similar connection from the next node.
 FILE prev,next
 bufsize=800
 baseport=IPPORT_USERRESERVED+111
@@ -55,8 +55,10 @@ b=2
 REAL mat(0..N+b,-b..b), x(1..M,-b..N+b)=0, y(1..M,-b..N+b)=0, t(1..M,-b..N+b)=0
 DO mat(i)=(1,-4,6,-4,1) FOR i=0 TO N
 DO x(m,i)=RAND(); y(m,i)=RAND() FOR ALL m AND i=0 TO N
-
-! parallel equivalent to LUdecomp mat (as defined in rbmat.cpl)
+! make a copy for later test
+savemat=mat
+! parallel equivalent to LUdecomp mat (as defined in rbmat.cpl);
+! modifies mat in place
 LUdecompStep mat
 ! parallel equivalent to t=mat\x (as defined in rbmat.cpl)
 DO LeftLUDivStep1[t(m),mat,x(m)] FOR ALL m
@@ -65,6 +67,10 @@ FlushStep1
 DO LeftLUDivStep2[t(m),mat] FOR ALL m
 ! flush output buffer before switching from writing to reading on the next node
 FlushStep2
+! calculate maximum error in the solution of the linear system
+REAL err=MAX ABS{x(m,i)-SUM savemat(i,j)*t(m,i+j) FOR j=-b TO b} FOR ALL m AND i=0 TO N
+IF NOT first THEN err=MAX(~,BINARY REAL FROM prev)
+IF NOT last THEN WRITE BINARY TO next err; FLUSH next ELSE WRITE err
 ! parallel scalar product between t and y
 REAL sum1=SUM t(m,i)*y(m,i) FOR ALL m AND i=0 TO N
 IF NOT first THEN sum1=~+BINARY REAL FROM prev
@@ -79,4 +85,4 @@ REAL sum2=SUM x(m,i)*y(m,i) FOR ALL m AND i=0 TO N
 IF NOT first THEN sum2=~+BINARY REAL FROM prev
 IF NOT last THEN WRITE BINARY TO next sum2; FLUSH next ELSE WRITE sum2
 ! If the two products match, the test has been successful: y*mat\x = y/mat*x !
-IF ABS(1-sum2/sum1)<1E-7 THEN WRITE "success!"
+IF err<1E-7 AND ABS(1-sum2/sum1)<1E-7 THEN WRITE "success!"

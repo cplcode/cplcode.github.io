@@ -13,7 +13,7 @@
 <span class=comment>! rbmatmodtest -- Copyright 2000 Paolo Luchini</span>
 <span class=comment>! http://CPLcode.net/Applications/Numerical/Multigrid/</span>
 <span class=comment>!</span>
-<span class=comment>! test and usage example of the rbmatmod library</span>
+<span class=comment>! test and usage example of the rbmatmod.cpl library</span>
 
 <span class=comment>!( Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -42,8 +42,8 @@ SOFTWARE. !)</span>
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>&gt;0 <a href="cpl.html#IF">THEN</a> iproc=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1)); nproc=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(2))
 
 <span class=comment>! Open TCP sockets using the functions tcpserver and tcpclient provided in</span>
-<span class=comment>! parallel.cpl. COMMANDLINE(3) is the hostname or ip of the next node; prev</span>
-<span class=comment>! is listening for a similar connection from the previous node.</span>
+<span class=comment>! parallel.cpl. COMMANDLINE(3) is the hostname or ip of the previous node;</span>
+<span class=comment>! tcpserver is listening for a similar connection from the next node.</span>
 <a href="cpl.html#FILE">FILE</a> prev,next
 bufsize=800
 baseport=IPPORT_USERRESERVED+111
@@ -67,8 +67,10 @@ b=2
 <a href="cpl.html#REAL">REAL</a> mat(0..N+b,-b..b), x(1..M,-b..N+b)=0, y(1..M,-b..N+b)=0, t(1..M,-b..N+b)=0
 <a href="cpl.html#DO">DO</a> mat(i)=(1,-4,6,-4,1) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> N
 <a href="cpl.html#DO">DO</a> x(m,i)=<a href="cpl.html#RAND">RAND</a>(); y(m,i)=<a href="cpl.html#RAND">RAND</a>() <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m <a href="cpl.html#AND">AND</a> i=0 <a href="cpl.html#TO">TO</a> N
-
-<span class=comment>! parallel equivalent to LUdecomp mat (as defined in rbmat.cpl)</span>
+<span class=comment>! make a copy for later test</span>
+savemat=mat
+<span class=comment>! parallel equivalent to LUdecomp mat (as defined in rbmat.cpl);</span>
+<span class=comment>! modifies mat in place</span>
 LUdecompStep mat
 <span class=comment>! parallel equivalent to t=mat\x (as defined in rbmat.cpl)</span>
 <a href="cpl.html#DO">DO</a> LeftLUDivStep1[t(m),mat,x(m)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m
@@ -77,6 +79,10 @@ FlushStep1
 <a href="cpl.html#DO">DO</a> LeftLUDivStep2[t(m),mat] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m
 <span class=comment>! flush output buffer before switching from writing to reading on the next node</span>
 FlushStep2
+<span class=comment>! calculate maximum error in the solution of the linear system</span>
+<a href="cpl.html#REAL">REAL</a> err=<a href="cpl.html#MAX">MAX</a> <a href="cpl.html#ABS">ABS</a>{x(m,i)-<a href="cpl.html#Looping-operator">SUM</a> savemat(i,j)&lowast;t(m,i+j) <a href="cpl.html#FOR">FOR</a> j=-b <a href="cpl.html#TO">TO</a> b} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m <a href="cpl.html#AND">AND</a> i=0 <a href="cpl.html#TO">TO</a> N
+<a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> err=<a href="cpl.html#MAX">MAX</a>(<a href="cpl.html#Assignment">~</a>,<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> prev)
+<a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next err; FLUSH next <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#WRITE">WRITE</a> err
 <span class=comment>! parallel scalar product between t and y</span>
 <a href="cpl.html#REAL">REAL</a> sum1=<a href="cpl.html#Looping-operator">SUM</a> t(m,i)&lowast;y(m,i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m <a href="cpl.html#AND">AND</a> i=0 <a href="cpl.html#TO">TO</a> N
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> sum1=<a href="cpl.html#Assignment">~</a>+<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> prev
@@ -91,5 +97,5 @@ FlushStep2
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> sum2=<a href="cpl.html#Assignment">~</a>+<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> prev
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next sum2; FLUSH next <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#WRITE">WRITE</a> sum2
 <span class=comment>! If the two products match, the test has been successful: y&lowast;mat\x = y/mat&lowast;x <span class=comment>!</span></span>
-<a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(1-sum2/sum1)&lt;1E-7 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> "success!"
+<a href="cpl.html#IF">IF</a> err&lt;1E-7 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ABS">ABS</a>(1-sum2/sum1)&lt;1E-7 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> "success!"
 </pre></body></html>
