@@ -31,9 +31,9 @@
       max-width:40em;
       background:white;
     }
-    tr:target td{
-    margin-top:-13.5em;
-    padding-top:13.5em;
+    .displace{
+      position:relative;
+      top:-13.5em;
     }
     </style>
   </head>
@@ -49,32 +49,32 @@
           <h2 style="display:inline-block">Contributed</h2><span style="float:right">search: <input autocomplete="off" type="text" onkeyup="tsearch()" title="case-sensitive search only if first letter is upper case"></span>
       </div>
       <table class=main>
-        <tr id=BoostConv><td><h3>-</h3></td><td><h3><a href="Numerical/BoostConv" title="directory">BoostConv</a> <a href="Numerical/BoostConv/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/BoostConv/BoostConv.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        <tr><td><span id=BoostConv class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/BoostConv" title="directory">BoostConv</a> <a href="Numerical/BoostConv/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/BoostConv/BoostConv.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
         (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>, <a href="https://docenti.unisa.it/026456/home" target=_blank>Vincenzo Citro</a> and <a href="https://docenti.unisa.it/020052/home" target=_blank>Flavio Giannetti</a>) improves (or even enables) the convergence of a pre-existing, linear or nonlinear, iterative algorithm. Its reverse-calling interface only requires the insertion of a single line in the original code.</td></tr>
 
-        <tr id=MeanandVar><td><h3>-</h3></td><td><h3><a href="Numerical/MeanandVar" title="directory">MeanandVar</a> <a href="Numerical/MeanandVar/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/MeanandVar/MeanandVar.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        <tr><td><span id=MeanandVar class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/MeanandVar" title="directory">MeanandVar</a> <a href="Numerical/MeanandVar/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/MeanandVar/MeanandVar.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
         (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) estimates the mean of a statistically stationary time series simultaneously with a variance of the estimate itself. Its use is to produce a realistic error bar taking into account the statistical error associated with the finite time sampling of an autocorrelated process.</td></tr>
 
-        <tr id=Multigrid><td><h3>-</h3></td><td><h3><a href="Numerical/Multigrid" title="directory">Multigrid</a> <a href="Numerical/Multigrid/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/Multigrid/Multigrid.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        <tr><td><span id=Multigrid class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/Multigrid" title="directory">Multigrid</a> <a href="Numerical/Multigrid/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/Multigrid/Multigrid.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
         (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) CPL library that solves the constant-coefficient 2D and 3D Poisson equation with multigrid iteration.</td></tr>
 
-        <tr id=OSE><td><h3>-</h3></td><td><h3><a href="Numerical/OSE" title="directory">OSE</a> <a href="Numerical/OSE/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/OSE/OSE.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        <tr><td><span id=OSE class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/OSE" title="directory">OSE</a> <a href="Numerical/OSE/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/OSE/OSE.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
         (contributed by <a href="https://docenti.unisa.it/020052/home" target=_blank>Flavio Giannetti</a>) evaluates the eigenvalues of the Orr-Sommerfeld equation with a spectral collocation method using a 3-term recurrence relation to evaluate the derivatives of Chebyshev polynomials and the Fortran interface to call the appropriate lapack subroutine.</td></tr>
 
-        <tr id=Quaternions><td><h3>-</h3></td><td><h3><a href="Numerical/Quaternions" title="directory">Quaternions</a> <a href="Numerical/Quaternions/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/Quaternions/Quaternions.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        <tr><td><span id=Quaternions class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/Quaternions" title="directory">Quaternions</a> <a href="Numerical/Quaternions/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/Quaternions/Quaternions.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
         (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) CPL library providing a QUATERNION type and operations upon it in a straightforward algebraic syntax.</td></tr>
 
-        <tr id=rbmatmod><td><h3>-</h3></td><td><h3><a href="Numerical/rbmatmod" title="directory">rbmatmod</a> <a href="Numerical/rbmatmod/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/rbmatmod/rbmatmod.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        <tr><td><span id=rbmatmod class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/rbmatmod" title="directory">rbmatmod</a> <a href="Numerical/rbmatmod/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/rbmatmod/rbmatmod.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
         (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) Distributed-memory extension of the rbmat.cpl library that solves a banded linear system by distributing the work among multiple nodes.</td></tr>
 
-        <tr id=Thomas53><td><h3>-</h3></td><td><h3><a href="Numerical/Thomas53" title="directory">Thomas53</a> <a href="Numerical/Thomas53/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/Thomas53/Thomas53.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        <tr><td><span id=Thomas53 class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/Thomas53" title="directory">Thomas53</a> <a href="Numerical/Thomas53/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/Thomas53/Thomas53.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
         (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) Reproduction of the historical (Thomas, 1953) compact-difference computation of eigenfunctions and eigenvalues of the Orr-Sommerfeld equation.</td></tr>
 
-        <tr id=TurbMeanFlow><td><h3>-</h3></td><td><h3><a href="FluidMechanics/TurbMeanFlow" title="directory">TurbMeanFlow</a> <a href="FluidMechanics/TurbMeanFlow/README.pdf" title="README" class=pdflink>PDF</a> <a href="FluidMechanics/TurbMeanFlow/TurbMeanFlow.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        <tr><td><span id=TurbMeanFlow class=displace></span><h3>-</h3></td><td><h3><a href="FluidMechanics/TurbMeanFlow" title="directory">TurbMeanFlow</a> <a href="FluidMechanics/TurbMeanFlow/README.pdf" title="README" class=pdflink>PDF</a> <a href="FluidMechanics/TurbMeanFlow/TurbMeanFlow.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
         (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) Toolbox offering a mean turbulent velocity profile as a CPL FUNCTION that can be used for plotting or as a component of your own program.</td></tr>
 
         <!--
-        <tr><td><h3>-</h3></td><td><h3><a href="P.Luchini/searchengine" title="directory">Search engine</a> <a href="P.Luchini/searchengine/0DESCRIPTION.pdf" title="description" class=pdflink>PDF</a> <a href="P.Luchini/searchengine.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color:yellow">empty directory for example only</span></h3>
+        <tr><td><span id=searchengine class=displace></span><h3>-</h3></td><td><h3><a href="P.Luchini/searchengine" title="directory">Search engine</a> <a href="P.Luchini/searchengine/0DESCRIPTION.pdf" title="description" class=pdflink>PDF</a> <a href="P.Luchini/searchengine.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color:yellow">empty directory for example only</span></h3>
         (contributed by Paolo Luchini). Search engine with proximity search, indexing an arbitrary text (or a library catalog) and serving an html search form through a cgi-bin application written in CPL.
         </td></tr>
         -->
