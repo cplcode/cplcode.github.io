@@ -95,10 +95,11 @@ Starts a new graph, or clears a previously existing one. If the argument &lt;fil
 
 Most graphics commands invoke OPENGRAPH() automatically if no graph was previously opened.
 
-A graphics window may be closed without opening a new one by the
-
 <h4>SUBROUTINE CLOSEGRAPH()</h4>
+closes a graphics window (not necessary when opening a new one).
 
+<h4>SUBROUTINE OPENMOVIE(STRING filename)</h4>
+pipes the output of gnuplot to ffmpeg and the output of ffmpeg to &lt;filename&gt;, in such a way that a movie is produced from whatever graphic commands follow. 
 </div><div class=page id="MOUSEGRAPH">
 Page: (graphics)MOUSEGRAPH,  Next: <a href="#WINDOW">WINDOW</a>,  Prev: <a href="#OPENGRAPH">OPENGRAPH</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>SUBROUTINE MOUSEGRAPH()</h4>
@@ -218,6 +219,7 @@ Page: (graphics)SPLOT,  Next: <a href="#strlines">strlines</a>,  Prev: <a href="
 <hr> <h4>SUBROUTINE SPLOT(REAL FUNCTION(REAL x,y) f; REAL xmin..xmax,ymin..ymax)</h4>
 <h4>SUBROUTINE SPLOT(REAL FUNCTION(REAL x,y) f)</h4>
 <h4>SUBROUTINE SPLOT(REAL FUNCTION(INTEGER x,y) vec; INTEGER xmin..xmax,ymin..ymax)</h4>
+<h4>SUBROUTINE SPLOT(REAL FUNCTION(INTEGER x,y) vec; ARRAY(&lowast;) OF REAL x,y)</h4>
 <h4>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF REAL vec)</h4>
 <h4>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF INTEGER vec)</h4>
 <h4>SUBROUTINE SPLOT(ARRAY(&lowast;,&lowast;) OF REAL vec; ARRAY(&lowast;) OF REAL x,y)</h4>
