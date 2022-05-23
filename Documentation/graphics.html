@@ -98,8 +98,7 @@ Most graphics commands invoke OPENGRAPH() automatically if no graph was previous
 <h4>SUBROUTINE CLOSEGRAPH()</h4>
 closes a graphics window (not necessary when opening a new one).
 
-<h4>SUBROUTINE OPENMOVIE(STRING filename)</h4>
-pipes the output of gnuplot to ffmpeg and the output of ffmpeg to &lt;filename&gt;, in such a way that a movie is produced from whatever graphic commands follow. 
+
 </div><div class=page id="MOUSEGRAPH">
 Page: (graphics)MOUSEGRAPH,  Next: <a href="#WINDOW">WINDOW</a>,  Prev: <a href="#OPENGRAPH">OPENGRAPH</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>SUBROUTINE MOUSEGRAPH()</h4>
@@ -212,6 +211,10 @@ In addition the following commands are available in gnuplot.cpl only:
 <tr><td colspan="2">          format, with automatic dimensioning. </td></tr>
 <tr><td><a href="#WRITE-TABLE-[TO-POINTER-TO-FILE]">WRITE TABLE [TO POINTER TO FILE]</a>:</td><td>accepts the same syntax as <q>plot</q>, but</td></tr>
 <tr><td colspan="2">          writes out the corresponding data in table format. </td></tr>
+<tr><td><a href="#OPENMOVIE-<filename>">OPENMOVIE &lt;filename&gt;</a>:</td><td>pipes the output of gnuplot to ffmpeg and the output</td></tr>
+<tr><td colspan="2">          of ffmpeg to &lt;filename&gt;, in such a way that a movie is produced from
+</td></tr>
+<tr><td colspan="2">          whatever graphic commands follow. </td></tr>
 </table></nav>
 
 </div><div class=page id="SPLOT">
