@@ -1,2 +1,2 @@
 2022-05-23
-Redenomination of a)ttr (editor command) to o)ption and of l(o)ad to a)dd. New OPENMOVIE instruction in gnuplot.cpl records a graphic animation as a movie.
+minor corrections.
