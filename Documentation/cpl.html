@@ -350,7 +350,7 @@ Is . in your PATH? Many Linux distributions do not by default have your current 
  and then <q>Helloworld</q>).
   <h4>Why should I be concerned with compilation, anyway?</h4>
 If you are more at ease with the single-command execution usually provided by an interpreter, just use <a href="#cpl">cpl</a> as you would your interpreter. Compilation will happen automatically in the background. You can even put <q>#!/usr/bin/env
-cpl</q> at the top of your program, and make it executable under the unix interpreter convention.
+cpl</q> at the top of your CPL source file, and make it executable under the unix interpreter convention.
 
 <h4>I want to use a specialized C compiler</h4>
 In order to apply a non-default C compiler to your CPL program, define the CC environment variable, either for the duration of the session as in
@@ -368,8 +368,11 @@ functions</a>. If you want some of the pre-packaged libraries to be recompiled, 
 
 The original won't be affected.
 
-<h4>I want to compile my program (or my LaTeX text) from the editor screen</h4>
-When you are in the full-screen editor (see <a href="editor.html#full-screen">(editor)full-screen</a>), pressing F2 or Esc - repeats the last command. Therefore: the first time you need to compile, switch to the interactive cpl command screen with F1 or Esc `, and give your compilation command explicitly. Revert to editing with the same F1 or Esc `. When you later want to re-compile, just press F2 or Esc -.
+<h4>Installation fails with error messages mentioning <q>fenv</q></h4>
+fenv.h is the system C library that deals with floating-point exceptions. The default on most compilers is to ignore floating-point errors (such as overflow or division by zero) and continue with the value set to nan. The CPL default is to stop the program with an error message. Unfortunately the fenv library does not always support this operation, and especially on Apple macOS, compilation failures have been observed. If this happens, you may want to retry the installation with option -Dnofenv, as <q>CC=gcc-11 sh /tmp/unpack-cpl.sh -Dnofenv</q>. If you just want to ignore floating-point errors for the scope of a single program, <q>cpl make &lt;myprogram&gt; -Dnofenv</q>.
+
+<h4>I want a key to compile my program (or my LaTeX text) from the editor screen</h4>
+When you are in the full-screen editor (see <a href="editor.html#full-screen">(editor)full-screen</a>), pressing F2 or Esc - repeats the last command. Therefore: the first time you need to compile, switch to the interactive cpl command screen with F1 or Esc `, and give your compilation command explicitly. Revert to editing with F1 or Esc ` again. When you later want to re-compile, just press F2 or Esc -.
 
 <h4>My program crashes without any error messages</h4>
 Always put <q>USE rtchecks</q> near the beginning of your main program file during development. <a href="#rtchecks">rtchecks</a> transparently adds a number of runtime checks and error messages at the expense of execution speed. You will remove it once your program is debugged.
@@ -378,10 +381,10 @@ Always put <q>USE rtchecks</q> near the beginning of your main program file duri
 Drag and drop the <q>interactive CPL</q> icon from wherever your <q>fri</q> directory is (typically, /usr/local/fri or $HOME/fri) to your Desktop.
 
 <h4>I want to receive automatic updates</h4>
-Starting with version 2020-12-16, cpl automatically offers updates when they become available (see <a href="#automatic-updates">automatic updates</a>). If you see an update on the website for which you did not get a reminder while running cpl, please check that the <q>curl</q> command is installed (on Debian, <q>apt install curl</q>) and that you have write access to the parent of the fri/ directory. In case you would rather disable this feature, edit the cpl script and turn ENABLE_UPDATES from <q>YES</q> to <q>NO</q>.
+Starting with version 2020-12-16, cpl automatically offers updates when they become available (see <a href="#automatic-updates">automatic updates</a>). If you see an update on the website for which you did not get a reminder while running cpl, please check that the <q>curl</q> command is installed (on Debian, <q>apt install curl</q>) and that you have write access to the parent of the fri/ directory. In case you would rather disable this feature, edit the <q>cpl</q> script and turn ENABLE_UPDATES from <q>YES</q> to <q>NO</q>.
 
 <h4>I want to go back to a previous CPL version</h4>
-During an update your present fri/ directory is copied to fri.bak/ . You can always run your previous cpl version by its full pathname (e.g., ~/fri.bak/cpl) You can also install historical cpl versions from the  <a href="https://CPLcode.net/version-archive">CPLcode.net/version-archive</a> . After you do so, the just installed (historical) version will be in fri/, whereas your current version will be in fri.bak/ ; if this is confusing, or if you need more than two simultaneous versions, you may want to rename (mv) fri/ or fri.bak/ or both to something else (say, their version date).
+During an update your present fri/ directory is copied to fri.bak/ . You can always run your previous cpl version by its full pathname (e.g., ~/fri.bak/cpl) or restore it by renaming (mv) fri.bak to fri. You can also install historical CPL versions from the <a href="https://CPLcode.net/version-archive">CPLcode.net/version-archive</a> . After you do so, the just installed (historical) version will be in fri/, whereas your current version will have been moved to fri.bak/ ; if this is confusing, or if you need more than two simultaneous versions, you may want to rename (mv) fri/ or fri.bak/ or both to something else (say, their version date).
 
 <h4>I want to use interactive cpl and/or edit remotely</h4>
 Interactive cpl is perfectly compatible with ssh. Just ssh into your remote system where CPL is installed, and give the <q>cpl</q> command there. Non-Linux ssh clients are ok too. All special and arrow keys have alphabetic equivalents for the case they may be missing or hard to combine on your keyboard. In a pinch, you can even log in from your smartphone using ConnectBot or similar.
@@ -393,7 +396,7 @@ The <q>edit</q> command is used as an alias by more than one editor, including v
 If to have <q>edit</q> pop up a different editor is your preferred behaviour, just delete the bin/edit symbolic link. You will still be able to access the cpl editor as <q>cpl edit</q>.
 
 <h4>My .cpl source files get rejected when sent as email attachments</h4>
-gmail and other popular email servers automatically reject files with the .cpl extension (amid a list of about 50 extensions, even when included in compressed archives) because this extension is shared with MS Windows Control PaneL files. This precaution is overkill insofar as it is based on extension only, but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .txt) extension before sending, and rename them back on the receiving end; or else do as you would for a large attachment: upload your file(s) to a cloud service and email its shareable link. 
+A number of popular email servers automatically reject files with the .cpl extension (amid a list of about 50 extensions, even when included in compressed archives) because this extension is shared with MS Windows Control PaneL files. This precaution is overkill insofar as it is based on extension only, but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .cplcode or .txt) extension before sending, and rename them back on the receiving end; or else do as you would for a large attachment: upload your file(s) to a cloud service and email its shareable link. 
 </div><div class=page id="Syntax">
 Page: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>The CPL programming language syntax</h2>
