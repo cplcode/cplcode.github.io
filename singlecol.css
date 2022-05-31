@@ -41,7 +41,7 @@
 }
       code,pre {
         font-size: 1em;
-        font-family:monospace,monospace;
+        font-family:"Droid Sans",monospace,serif;
         overflow:auto;
       }
       iframe.news {
@@ -83,7 +83,7 @@
         margin-right:0.75em;
         padding-right:0.5em;
         border-right:0.25em solid lightgrey;
-        font-family:monospace,monospace;
+        font-family:"Droid Sans",monospace,serif;
         font-size:1em;
         white-space:pre;
       }
@@ -103,7 +103,7 @@
         margin-left:0.75em;
         padding-left:0.5em;
         border-left:0.25em solid lightgrey;
-        font-family:monospace,monospace;
+        font-family:"Droid Sans",monospace,serif;
         font-size:1em;
         white-space:pre;
       }

@@ -43,7 +43,7 @@ In fact, its  <a href="Documentation/cpl.html#cpl">compiler</a> is implemented a
 <p>CPL <a href="Documentation/cpl.html#ARRAY">arrays</a>
 <span class=rightinset>STRUCTURE(REAL a,b,c) s(-2..8)
 REAL v(-9..15,1..7)
-s(-1..5).a=2*v(-2..4,6)
+s(-1..5).a=2&lowast;v(-2..4,6)
 
 var=SUM v(i,j)^2 FOR ALL i,j</span>
 allow variable as well as constant lower and upper bounds of each index, and are (on request) fully bounds-checked. An ample set of <a href="Documentation/cpl.html#subarray">subarray selections</a>, commutable with structure fields, is efficiently supported.<br>A gamut of <a href="Documentation/cpl.html#ALL">shortened loop forms</a> is offered by the implicit handling of array bounds.</p>
