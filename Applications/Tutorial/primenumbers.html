@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>primenumbers.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>pre{font-family:ui-monospace,monospace,sans-serif;font-size:1em;} .comment{color:HotPink;} a:link,a:visited{color:MediumBlue;text-decoration:none} a:hover,a:active{text-decoration:underline}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"primenumbers.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<span class=comment>! print first N prime numbers</span>
+<span class=comment>! ---------------------------</span>
+
+<a href="cpl.html#ASK">ASK</a> <a href="cpl.html#INTEGER">INTEGER</a> "How many?": N
+<a href="cpl.html#ARRAY">ARRAY</a>(1..N) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> prime <span class=comment>! declare and allocate an ARRAY with the just entered</span>
+                             <span class=comment>! number of elements.</span>
+prime(1)=2; <a href="cpl.html#WRITE">WRITE</a> 2          <span class=comment>! initialize first prime.</span>
+<a href="cpl.html#INTEGER">INTEGER</a> n=2, testnum=1       <span class=comment>! prepare for iteration.</span>
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> n&lt;=N
+  testnum=testnum+2          <span class=comment>! test next odd integer.</span>
+  <a href="cpl.html#INTEGER">INTEGER</a> i=0
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> i <a href="cpl.html#WHILE">WHILE</a> testnum <a href="cpl.html#INTEGER-operator">MOD</a> prime(i) # 0 <span class=comment>!( not divisible by i-th prime number !)</span> <a href="cpl.html#AND">AND</a>
+    prime(i)<a href="cpl.html#REAL-operator">^</a>2&lt;testnum <span class=comment>!( not necessary to test for primes larger than this !)</span>
+  <a href="cpl.html#IF">IF</a> testnum <a href="cpl.html#INTEGER-operator">MOD</a> prime(i) # 0 <a href="cpl.html#IF">THEN</a>  <span class=comment>! found<span class=comment>!</span></span>
+    <a href="cpl.html#WRITE">WRITE</a> testnum
+    prime(n)=testnum  <span class=comment>! record as prime</span>
+    <a href="cpl.html#Builtin">INC</a> n,1           <span class=comment>! and start searching for the next one.</span>
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#LOOP">REPEAT</a>
+</pre></body></html>

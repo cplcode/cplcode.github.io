@@ -46,7 +46,7 @@ MEANANDVAR=<a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#REAL">RE
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> meanandvar(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>;<a href="cpl.html#REAL">REAL</a> xx) <a href="cpl.html#WITH">WITH</a> mvp
   bm(0)=xx-mean+<a href="cpl.html#Assignment">~</a>
-  <a href="cpl.html#INC">INC</a> bs
+  <a href="cpl.html#Builtin">INC</a> bs
   <a href="cpl.html#IF">IF</a> bs&gt;=ts <a href="cpl.html#IF">THEN</a>
     nt=<a href="cpl.html#Assignment">~</a>+bs
     mean=<a href="cpl.html#Assignment">~</a>+bm(0)/nt

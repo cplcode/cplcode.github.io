@@ -57,7 +57,7 @@ AndNot_WS=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(WS_type; DYNAMIC <a href="c
 <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Next(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> Match_WS WS) <a href="cpl.html#WITH">WITH</a> WS
   <a href="cpl.html#IF">IF</a> nw&gt;replim <a href="cpl.html#IF">THEN</a> <a href="cpl.html#NEW">FREE</a> WS; RETURN INT_MAX-1
   <a href="cpl.html#IF">IF</a> nw=0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#NEW">FREE</a> WS; RETURN INT_MAX
-  <a href="cpl.html#INC">INC</a> loc; <a href="cpl.html#DEC">DEC</a> nw
+  <a href="cpl.html#Builtin">INC</a> loc; <a href="cpl.html#Builtin">DEC</a> nw
   <a href="cpl.html#RESULT">RESULT</a>=index(loc)
 <a href="cpl.html#END">END</a> Next
 
@@ -166,10 +166,10 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
     <a href="cpl.html#VARIABLE">VARIABLE</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> wordbuf fw; <a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#VARIABLE">VARIABLE</a> printfws)
   <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING word=start,word1
   <a href="cpl.html#IF">IF</a> word(0)="(" <a href="cpl.html#IF">THEN</a>
-    <a href="cpl.html#INC">INC</a> word; <a href="cpl.html#RESULT">RESULT</a>=Pattern(word)
+    <a href="cpl.html#Builtin">INC</a> word; <a href="cpl.html#RESULT">RESULT</a>=Pattern(word)
     start=word+1; <a href="cpl.html#EXIT">EXIT</a> Match
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> word(0)="+": <a href="cpl.html#INC">INC</a> nerr; printfws=<a href="cpl.html#BOOLEAN">NO</a>; <a href="cpl.html#INC">INC</a> word
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> word(0)="+": <a href="cpl.html#Builtin">INC</a> nerr; printfws=<a href="cpl.html#BOOLEAN">NO</a>; <a href="cpl.html#Builtin">INC</a> word
   <a href="cpl.html#ARRAY">ARRAY</a>(0..3) <a href="cpl.html#OF">OF</a> <a href="cpl.html#CHAR">CHAR</a> locchr
   <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT locchr=index(loc)
   WS=<a href="cpl.html#NEW">NEW</a> Match_WS
@@ -193,11 +193,11 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
         <a href="cpl.html#LOOP">REPEAT</a>
         <a href="cpl.html#EXIT">EXIT</a> match
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-      fw(0)=locchr(sub); <a href="cpl.html#INC">INC</a> fw
+      fw(0)=locchr(sub); <a href="cpl.html#Builtin">INC</a> fw
     "&lowast;": <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> (sub&gt;0 <a href="cpl.html#OR">OR</a> [locchr(0)#0 <a href="cpl.html#AND">AND</a> index(loc+2) <a href="cpl.html#Bitwise">BITAND</a> 0xff=0 <a href="cpl.html#AND">AND</a> alpha(word(1))#0]) <a href="cpl.html#AND">AND</a>
         alpha(word(1))#locchr(sub)
-        fw(0)=locchr(sub); <a href="cpl.html#INC">INC</a> fw
-        <a href="cpl.html#INC">INC</a> sub; <a href="cpl.html#IF">IF</a> sub&gt;locchr.<a href="cpl.html#HI">HI</a> <a href="cpl.html#OR">OR</a> sub&gt;0 <a href="cpl.html#AND">AND</a> locchr(sub)=0 <a href="cpl.html#IF">THEN</a>
+        fw(0)=locchr(sub); <a href="cpl.html#Builtin">INC</a> fw
+        <a href="cpl.html#Builtin">INC</a> sub; <a href="cpl.html#IF">IF</a> sub&gt;locchr.<a href="cpl.html#HI">HI</a> <a href="cpl.html#OR">OR</a> sub&gt;0 <a href="cpl.html#AND">AND</a> locchr(sub)=0 <a href="cpl.html#IF">THEN</a>
           loc=index(loc+1); <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT locchr=index(loc); sub=0
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
       <a href="cpl.html#LOOP">REPEAT</a>
@@ -210,7 +210,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
         <a href="cpl.html#LOOP">REPEAT</a>
         loc=saveloc; <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT locchr=index(loc)
       <a href="cpl.html#ELSE">ELSE</a> word1=word; fw(0)=locchr(sub); <a href="cpl.html#RESULT">RESULT</a>=condjoin(<a href="cpl.html#RESULT">RESULT</a>,Match(word1,loc,sub+1,nerr,fw+1,<a href="cpl.html#BOOLEAN">NO</a>))
-      <a href="cpl.html#DEC">DEC</a> sub
+      <a href="cpl.html#Builtin">DEC</a> sub
     <a href="cpl.html#ELSE">ELSE</a>
       <a href="cpl.html#IF">IF</a> nerr&gt;0 <a href="cpl.html#AND">AND</a> w#0 <a href="cpl.html#AND">AND</a> w#alpha(word(1)) <span class=comment>![ AND (locchr(sub)=0 OR locchr(sub)=alpha(word(1)) OR nerr&gt;1) !]</span> <a href="cpl.html#IF">THEN</a> word1=word+1; <a href="cpl.html#RESULT">RESULT</a>=condjoin(<a href="cpl.html#RESULT">RESULT</a>,Match(word1,loc,sub,nerr-1,fw,printfws))
       <a href="cpl.html#IF">IF</a> sub=0 <a href="cpl.html#IF">THEN</a>
@@ -236,7 +236,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
         fw(0)=locchr(sub)
         word1=word; <a href="cpl.html#RESULT">RESULT</a>=condjoin(<a href="cpl.html#RESULT">RESULT</a>,Match(word1,loc,sub+1,nerr-1,fw+1,printfws))
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-      <a href="cpl.html#IF">IF</a> locchr(sub)#w <a href="cpl.html#IF">THEN</a> <a href="cpl.html#DEC">DEC</a> nerr
+      <a href="cpl.html#IF">IF</a> locchr(sub)#w <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">DEC</a> nerr
       <a href="cpl.html#IF">IF</a> nerr&lt;0 <a href="cpl.html#OR">OR</a> locchr(sub)=0 <a href="cpl.html#OR">OR</a> w=0 <a href="cpl.html#IF">THEN</a>
         <a href="cpl.html#IF">IF</a> locchr(0)=0 <a href="cpl.html#AND">AND</a> w=0 <a href="cpl.html#AND">AND</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT locchr #0 <a href="cpl.html#IF">THEN</a>
           <a href="cpl.html#IF">IF</a> nerr=0 <a href="cpl.html#IF">THEN</a>
@@ -251,7 +251,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
                 <span class=comment>! nota: richiede conversione di "" in &amp;quot</span>
                 fw(0)=0; fws(0..<a href="cpl.html#HI">HI</a>)=' &lt;A HREF="?q=' wordbuf '"&gt;' wordbuf '&lt;/A&gt;(' (<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT locchr) <a href="cpl.html#Bitwise">RSHIFTED</a> 8 ')'
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-              <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> fws(0)=0 <a href="cpl.html#OR">OR</a> fws&gt;fws.<a href="cpl.html#HI">HI</a>-5: <a href="cpl.html#INC">INC</a> fws; <a href="cpl.html#LOOP">REPEAT</a>
+              <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> fws(0)=0 <a href="cpl.html#OR">OR</a> fws&gt;fws.<a href="cpl.html#HI">HI</a>-5: <a href="cpl.html#Builtin">INC</a> fws; <a href="cpl.html#LOOP">REPEAT</a>
             <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
           <a href="cpl.html#ELSE">ELSE</a>
             WS1=<a href="cpl.html#NEW">NEW</a> Match_WS
@@ -262,17 +262,17 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         <a href="cpl.html#EXIT">EXIT</a> match
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-      fw(0)=locchr(sub); <a href="cpl.html#INC">INC</a> fw
+      fw(0)=locchr(sub); <a href="cpl.html#Builtin">INC</a> fw
     <a href="cpl.html#END">END</a> <a href="cpl.html#CASE">CASE</a>
-    <a href="cpl.html#INC">INC</a> word
-    <a href="cpl.html#INC">INC</a> sub
+    <a href="cpl.html#Builtin">INC</a> word
+    <a href="cpl.html#Builtin">INC</a> sub
   <a href="cpl.html#LOOP">REPEAT</a> match
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> alpha(word(0))#0: <a href="cpl.html#INC">INC</a> word
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> alpha(word(0))#0: <a href="cpl.html#Builtin">INC</a> word
   start=word
 <a href="cpl.html#END">END</a> Match
 
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> skipfw(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING cur<a href="cpl.html#REAL-operator">^</a>)
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> cur(0)=0 <a href="cpl.html#OR">OR</a> cur(0)="(" <a href="cpl.html#OR">OR</a> cur(0)=")" <a href="cpl.html#OR">OR</a> alpha(cur(0))#0: <a href="cpl.html#INC">INC</a> cur
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> cur(0)=0 <a href="cpl.html#OR">OR</a> cur(0)="(" <a href="cpl.html#OR">OR</a> cur(0)=")" <a href="cpl.html#OR">OR</a> alpha(cur(0))#0: <a href="cpl.html#Builtin">INC</a> cur
 <a href="cpl.html#END">END</a> skipfw
 
 DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_type <a href="cpl.html#FUNCTION">FUNCTION</a> Pattern(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING start<a href="cpl.html#REAL-operator">^</a>)
@@ -284,17 +284,17 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
     DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_type ARESULT=Match(cur,root,0,1,0,<a href="cpl.html#BOOLEAN">YES</a>)
     skipfw(cur)
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> cur(0)=0 <a href="cpl.html#OR">OR</a> cur(0)=")" <a href="cpl.html#OR">OR</a> strncmp(cur,Or,<a href="cpl.html#TYPE">SIZEOF</a>(Or))=0
-      <a href="cpl.html#IF">IF</a> strncmp(cur,And,<a href="cpl.html#TYPE">SIZEOF</a>(And))=0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#INC">INC</a> cur,<a href="cpl.html#TYPE">SIZEOF</a>(And); skipfw(cur)
+      <a href="cpl.html#IF">IF</a> strncmp(cur,And,<a href="cpl.html#TYPE">SIZEOF</a>(And))=0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">INC</a> cur,<a href="cpl.html#TYPE">SIZEOF</a>(And); skipfw(cur)
       <a href="cpl.html#IF">IF</a> strncmp(cur,Not,<a href="cpl.html#TYPE">SIZEOF</a>(Not))=0 <a href="cpl.html#IF">THEN</a>
-        <a href="cpl.html#INC">INC</a> cur,<a href="cpl.html#TYPE">SIZEOF</a>(Not); skipfw(cur)
+        <a href="cpl.html#Builtin">INC</a> cur,<a href="cpl.html#TYPE">SIZEOF</a>(Not); skipfw(cur)
         <a href="cpl.html#IF">IF</a> cur(0)='"' <a href="cpl.html#IF">THEN</a>
-          <a href="cpl.html#DO">DO</a> <a href="cpl.html#INC">INC</a> cur <a href="cpl.html#UNTIL">UNTIL</a> cur(0)=0 <a href="cpl.html#OR">OR</a> cur(0)='"'
-          <a href="cpl.html#IF">IF</a> cur(0)#0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#INC">INC</a> cur
+          <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> cur <a href="cpl.html#UNTIL">UNTIL</a> cur(0)=0 <a href="cpl.html#OR">OR</a> cur(0)='"'
+          <a href="cpl.html#IF">IF</a> cur(0)#0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">INC</a> cur
         <a href="cpl.html#ELSE">ELSE</a>
           <a href="cpl.html#TYPE">TYPEOF</a>(cur) cur1=cur
-          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> cur1(0)#0 <a href="cpl.html#AND">AND</a> alpha(cur1(0))=cur1(0): <a href="cpl.html#INC">INC</a> cur1
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> cur1(0)#0 <a href="cpl.html#AND">AND</a> alpha(cur1(0))=cur1(0): <a href="cpl.html#Builtin">INC</a> cur1
           <a href="cpl.html#IF">IF</a> alpha(cur1(0))#0 <a href="cpl.html#IF">THEN</a>
-            cur=cur1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#INC">INC</a> cur <a href="cpl.html#UNTIL">UNTIL</a> alpha(cur(0))=0
+            cur=cur1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> cur <a href="cpl.html#UNTIL">UNTIL</a> alpha(cur(0))=0
           <a href="cpl.html#ELSE">ELSE</a>
             WS=<a href="cpl.html#NEW">NEW</a> AndNot_WS
             WS.n1=0; WS.n2=0
@@ -307,46 +307,46 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
       skipfw(cur)
     <a href="cpl.html#LOOP">REPEAT</a>
     <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a>=EMPTY WS_type <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=ARESULT <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#RESULT">RESULT</a>=join(<a href="cpl.html#RESULT">RESULT</a>,ARESULT)
-    <a href="cpl.html#IF">IF</a> strncmp(cur,Or,<a href="cpl.html#TYPE">SIZEOF</a>(Or))=0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#INC">INC</a> cur,<a href="cpl.html#TYPE">SIZEOF</a>(Or); skipfw(cur)
+    <a href="cpl.html#IF">IF</a> strncmp(cur,Or,<a href="cpl.html#TYPE">SIZEOF</a>(Or))=0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">INC</a> cur,<a href="cpl.html#TYPE">SIZEOF</a>(Or); skipfw(cur)
   <a href="cpl.html#LOOP">REPEAT</a>
   start=cur
 <a href="cpl.html#END">END</a> Pattern
 
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> skipfwq(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING cur<a href="cpl.html#REAL-operator">^</a>)
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> cur(0)=0 <a href="cpl.html#OR">OR</a> cur(0)="(" <a href="cpl.html#OR">OR</a> cur(0)=")" <a href="cpl.html#OR">OR</a> cur(0)='"' <a href="cpl.html#OR">OR</a> alpha(cur(0))#0: <a href="cpl.html#INC">INC</a> cur
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> cur(0)=0 <a href="cpl.html#OR">OR</a> cur(0)="(" <a href="cpl.html#OR">OR</a> cur(0)=")" <a href="cpl.html#OR">OR</a> cur(0)='"' <a href="cpl.html#OR">OR</a> alpha(cur(0))#0: <a href="cpl.html#Builtin">INC</a> cur
 <a href="cpl.html#END">END</a> skipfwq
 
 <a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Wmatch(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING <a href="cpl.html#VARIABLE">VARIABLE</a> s,p; <a href="cpl.html#INTEGER">INTEGER</a> basenerr)
   <a href="cpl.html#CHAR">CHAR</a> stop=0
-  <a href="cpl.html#IF">IF</a> p(0)='"' <a href="cpl.html#IF">THEN</a> stop='"'; <a href="cpl.html#INC">INC</a> p
+  <a href="cpl.html#IF">IF</a> p(0)='"' <a href="cpl.html#IF">THEN</a> stop='"'; <a href="cpl.html#Builtin">INC</a> p
   <a href="cpl.html#INTEGER">INTEGER</a> nerr=basenerr
   <a href="cpl.html#LOOP">LOOP</a>
-    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> p(0)="+": <a href="cpl.html#INC">INC</a> nerr; <a href="cpl.html#INC">INC</a> p
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> p(0)="+": <a href="cpl.html#Builtin">INC</a> nerr; <a href="cpl.html#Builtin">INC</a> p
     <a href="cpl.html#CASE">CASE</a> p(0) <a href="cpl.html#OF">OF</a>
     "?":
-    "&lowast;": <a href="cpl.html#INC">INC</a> p; <a href="cpl.html#IF">IF</a> alpha(p(0))=0 <a href="cpl.html#IF">THEN</a> RETURN TRUE
+    "&lowast;": <a href="cpl.html#Builtin">INC</a> p; <a href="cpl.html#IF">IF</a> alpha(p(0))=0 <a href="cpl.html#IF">THEN</a> RETURN TRUE
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> alpha(s(0))#0
         <a href="cpl.html#IF">IF</a> alpha(s(0))=alpha(p(0)) <a href="cpl.html#AND">AND</a> Wmatch(s,p,nerr) <a href="cpl.html#IF">THEN</a> RETURN TRUE
-        <a href="cpl.html#INC">INC</a> s
+        <a href="cpl.html#Builtin">INC</a> s
       <a href="cpl.html#LOOP">REPEAT</a>
       RETURN FALSE         
     <a href="cpl.html#ELSE">ELSE</a>
       <a href="cpl.html#IF">IF</a> nerr&gt;0 <a href="cpl.html#AND">AND</a> [Wmatch(s+1,p,nerr-1) <a href="cpl.html#OR">OR</a> Wmatch(s,p+1,nerr-1)] <a href="cpl.html#IF">THEN</a>
-        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> alpha(s(0))=0: <a href="cpl.html#INC">INC</a> s
-        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> alpha(p(0))=0: <a href="cpl.html#INC">INC</a> p
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> alpha(s(0))=0: <a href="cpl.html#Builtin">INC</a> s
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> alpha(p(0))=0: <a href="cpl.html#Builtin">INC</a> p
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
       <a href="cpl.html#IF">IF</a> [alpha(p(0))=stop <a href="cpl.html#OR">OR</a> p(0)=stop] <a href="cpl.html#AND">AND</a> alpha(s(0))=0 <a href="cpl.html#IF">THEN</a> RETURN TRUE
       <a href="cpl.html#IF">IF</a> p(0)#s(0) <a href="cpl.html#AND">AND</a>
-      <a href="cpl.html#NOT">NOT</a> {[alpha(p(0))=0 <a href="cpl.html#OR">OR</a> alpha(p(0))=p(0)] <a href="cpl.html#AND">AND</a> alpha(p(0))=alpha(s(0))} <a href="cpl.html#IF">THEN</a> <a href="cpl.html#DEC">DEC</a> nerr
+      <a href="cpl.html#NOT">NOT</a> {[alpha(p(0))=0 <a href="cpl.html#OR">OR</a> alpha(p(0))=p(0)] <a href="cpl.html#AND">AND</a> alpha(p(0))=alpha(s(0))} <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">DEC</a> nerr
       <a href="cpl.html#IF">IF</a> nerr&lt;0 <a href="cpl.html#IF">THEN</a> RETURN FALSE
       <a href="cpl.html#IF">IF</a> alpha(p(0))=0 <a href="cpl.html#AND">AND</a> alpha(s(0))=0 <a href="cpl.html#IF">THEN</a>
         skipfwq(p)
-        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> s(0)=0 <a href="cpl.html#OR">OR</a> alpha(s(0))#0: <a href="cpl.html#INC">INC</a> s
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> s(0)=0 <a href="cpl.html#OR">OR</a> alpha(s(0))#0: <a href="cpl.html#Builtin">INC</a> s
         nerr=basenerr
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <a href="cpl.html#END">END</a> <a href="cpl.html#CASE">CASE</a>
-    <a href="cpl.html#INC">INC</a> p
-    <a href="cpl.html#INC">INC</a> s
+    <a href="cpl.html#Builtin">INC</a> p
+    <a href="cpl.html#Builtin">INC</a> s
   <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#END">END</a> Wmatch
 
@@ -354,11 +354,11 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
   <a href="cpl.html#INTEGER">INTEGER</a> count=0; <a href="cpl.html#BOOLEAN">BOOLEAN</a> quot=FALSE
   <a href="cpl.html#DO">DO</a>
     <a href="cpl.html#CASE">CASE</a> cur(0) <a href="cpl.html#OF">OF</a>
-    "(": <a href="cpl.html#INC">INC</a> count
-    ")": <a href="cpl.html#DEC">DEC</a> count
+    "(": <a href="cpl.html#Builtin">INC</a> count
+    ")": <a href="cpl.html#Builtin">DEC</a> count
     '"': quot=<a href="cpl.html#NOT">NOT</a> quot
     <a href="cpl.html#END">END</a> <a href="cpl.html#CASE">CASE</a>
-    <a href="cpl.html#INC">INC</a> cur
+    <a href="cpl.html#Builtin">INC</a> cur
   <a href="cpl.html#UNTIL">UNTIL</a> alpha(cur(0))=0 <a href="cpl.html#AND">AND</a> count=0 <a href="cpl.html#AND">AND</a> <a href="cpl.html#NOT">NOT</a> quot
 <a href="cpl.html#END">END</a> toend
 
@@ -367,18 +367,18 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> pat(0)=0 <a href="cpl.html#OR">OR</a> pat(0)=")"
     <a href="cpl.html#RESULT">RESULT</a>=TRUE
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> pat(0)=0 <a href="cpl.html#OR">OR</a> pat(0)=")" <a href="cpl.html#OR">OR</a> strncmp(pat,Or,<a href="cpl.html#TYPE">SIZEOF</a>(Or))=0
-      <a href="cpl.html#IF">IF</a> strncmp(pat,And,<a href="cpl.html#TYPE">SIZEOF</a>(And))=0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#INC">INC</a> pat,<a href="cpl.html#TYPE">SIZEOF</a>(And); skipfwq(pat)
+      <a href="cpl.html#IF">IF</a> strncmp(pat,And,<a href="cpl.html#TYPE">SIZEOF</a>(And))=0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">INC</a> pat,<a href="cpl.html#TYPE">SIZEOF</a>(And); skipfwq(pat)
       <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#IF">THEN</a>
         <a href="cpl.html#BOOLEAN">BOOLEAN</a> neg=strncmp(pat,Not,<a href="cpl.html#TYPE">SIZEOF</a>(Not))=0
-        <a href="cpl.html#IF">IF</a> neg <a href="cpl.html#IF">THEN</a> <a href="cpl.html#INC">INC</a> pat,<a href="cpl.html#TYPE">SIZEOF</a>(Not); skipfwq(pat)
+        <a href="cpl.html#IF">IF</a> neg <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">INC</a> pat,<a href="cpl.html#TYPE">SIZEOF</a>(Not); skipfwq(pat)
         <a href="cpl.html#IF">IF</a> pat(0)="(" <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=Pmatch(start,pat+1) <a href="cpl.html#ELSE">ELSE</a>
           <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING s=start
-          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> s(0)=0 <a href="cpl.html#OR">OR</a> alpha(s(0))#0: <a href="cpl.html#INC">INC</a> s
+          <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> s(0)=0 <a href="cpl.html#OR">OR</a> alpha(s(0))#0: <a href="cpl.html#Builtin">INC</a> s
           <a href="cpl.html#RESULT">RESULT</a>=FALSE
           <a href="cpl.html#LOOP">LOOP</a> w <a href="cpl.html#UNTIL">UNTIL</a> s(0)=0
             <a href="cpl.html#IF">IF</a> Wmatch(s,pat,0) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=TRUE; <a href="cpl.html#EXIT">EXIT</a> w
-            <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> alpha(s(0))#0: <a href="cpl.html#INC">INC</a> s
-            <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> s(0)=0 <a href="cpl.html#OR">OR</a> alpha(s(0))#0: <a href="cpl.html#INC">INC</a> s
+            <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> alpha(s(0))#0: <a href="cpl.html#Builtin">INC</a> s
+            <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> s(0)=0 <a href="cpl.html#OR">OR</a> alpha(s(0))#0: <a href="cpl.html#Builtin">INC</a> s
           <a href="cpl.html#LOOP">REPEAT</a> w
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         <a href="cpl.html#RESULT">RESULT</a> = <a href="cpl.html#Assignment">~</a> XOR neg
@@ -387,7 +387,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
       skipfwq(pat)
     <a href="cpl.html#LOOP">REPEAT</a>
     <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> Pmatch
-    <a href="cpl.html#IF">IF</a> strncmp(pat,Or,<a href="cpl.html#TYPE">SIZEOF</a>(Or))=0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#INC">INC</a> pat,<a href="cpl.html#TYPE">SIZEOF</a>(Or); skipfwq(pat)
+    <a href="cpl.html#IF">IF</a> strncmp(pat,Or,<a href="cpl.html#TYPE">SIZEOF</a>(Or))=0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">INC</a> pat,<a href="cpl.html#TYPE">SIZEOF</a>(Or); skipfwq(pat)
   <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#END">END</a> Pmatch
 
@@ -396,7 +396,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> s(0)#0
     <a href="cpl.html#CASE">CASE</a> s(0) <a href="cpl.html#OF">OF</a>
     "|": <a href="cpl.html#IF">IF</a> unimarc <a href="cpl.html#IF">THEN</a> putc("|",here) <a href="cpl.html#ELSE">ELSE</a>
-        <a href="cpl.html#INC">INC</a> s
+        <a href="cpl.html#Builtin">INC</a> s
         <a href="cpl.html#CASE">CASE</a> s(0) <a href="cpl.html#OF">OF</a>
         "f": putc("/",here)
         "e": putc(":",here)
@@ -412,13 +412,13 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     \n: fputs("&lt;BR&gt;",here)
     '"': fputs("&amp;quot;",here)
-    "&lt;": <a href="cpl.html#IF">IF</a> s(1)="&lt;" <a href="cpl.html#IF">THEN</a> <a href="cpl.html#INC">INC</a> s <a href="cpl.html#ELSE">ELSE</a> fputs("&amp;lt;",here)
-    "&gt;": <a href="cpl.html#IF">IF</a> s(1)="&gt;" <a href="cpl.html#IF">THEN</a> <a href="cpl.html#INC">INC</a> s <a href="cpl.html#ELSE">ELSE</a> fputs("&amp;gt;",here)
+    "&lt;": <a href="cpl.html#IF">IF</a> s(1)="&lt;" <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">INC</a> s <a href="cpl.html#ELSE">ELSE</a> fputs("&amp;lt;",here)
+    "&gt;": <a href="cpl.html#IF">IF</a> s(1)="&gt;" <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">INC</a> s <a href="cpl.html#ELSE">ELSE</a> fputs("&amp;gt;",here)
     "&amp;": fputs("&amp;amp;",here)
     <a href="cpl.html#ELSE">ELSE</a>
       putc(s(0),here)
     <a href="cpl.html#END">END</a> <a href="cpl.html#CASE">CASE</a>
-    <a href="cpl.html#INC">INC</a> s
+    <a href="cpl.html#Builtin">INC</a> s
   <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#END">END</a> htmlwr
 
@@ -426,14 +426,14 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
   <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CSTRING t=s
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> s(0)#0
     <a href="cpl.html#CASE">CASE</a> s(0) <a href="cpl.html#OF">OF</a>
-    "%": <a href="cpl.html#INC">INC</a> s
+    "%": <a href="cpl.html#Builtin">INC</a> s
       t(0)=(<a href="cpl.html#IF">IF</a> s(0)-"0"&lt;=9 <a href="cpl.html#IF">THEN</a> s(0)-"0" <a href="cpl.html#ELSE">ELSE</a> s(0)-"A"+10)<a href="cpl.html#Bitwise">LSHIFTED</a> 4
-      <a href="cpl.html#INC">INC</a> s
+      <a href="cpl.html#Builtin">INC</a> s
       t(0)=<a href="cpl.html#Assignment">~</a><a href="cpl.html#Bitwise">BITOR</a> (<a href="cpl.html#IF">IF</a> s(0)-"0"&lt;=9 <a href="cpl.html#IF">THEN</a> s(0)-"0" <a href="cpl.html#ELSE">ELSE</a> s(0)-"A"+10)
     "+": t(0)=" "
     <a href="cpl.html#ELSE">ELSE</a> t(0)=s(0)
   <a href="cpl.html#END">END</a> <a href="cpl.html#CASE">CASE</a>
-  <a href="cpl.html#INC">INC</a> s; <a href="cpl.html#INC">INC</a> t
+  <a href="cpl.html#Builtin">INC</a> s; <a href="cpl.html#Builtin">INC</a> t
 <a href="cpl.html#LOOP">REPEAT</a>
 t(0)=0
 <a href="cpl.html#END">END</a> uri2asc
@@ -447,7 +447,7 @@ t(0)=0
     " ": putchar("+")
     <a href="cpl.html#ELSE">ELSE</a> putchar(s(0))
   <a href="cpl.html#END">END</a> <a href="cpl.html#CASE">CASE</a>
-  <a href="cpl.html#INC">INC</a> s
+  <a href="cpl.html#Builtin">INC</a> s
 <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#END">END</a> asc2uri
 </pre></body></html>

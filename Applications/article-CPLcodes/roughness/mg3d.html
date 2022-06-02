@@ -43,8 +43,8 @@ weq<a href="cpl.html#Deferred-assignment">==</a>laplacian(w)/dx/dx-[p(0,0,1)-p(0
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI1</a>-1 <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI2</a>-1 <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI3</a>-1
     <a href="cpl.html#EXCEPT">EXCEPT</a> bcond(ix,iy,iz)=<a href="cpl.html#POINTER">NULL</a>
     <a href="cpl.html#WITH">WITH</a> field(ix+&lowast;,iy+&lowast;,iz+&lowast;)
-    <a href="cpl.html#IF">IF</a> bcond(ix <a href="cpl.html#Integer-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iy,iz)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> rhs(ix,iy,iz).u=<a href="cpl.html#Assignment">~</a>+ueq
-    <a href="cpl.html#IF">IF</a> bcond(ix,iy <a href="cpl.html#Integer-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iz)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> rhs(ix,iy,iz).v=<a href="cpl.html#Assignment">~</a>+veq
+    <a href="cpl.html#IF">IF</a> bcond(ix <a href="cpl.html#INTEGER-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iy,iz)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> rhs(ix,iy,iz).u=<a href="cpl.html#Assignment">~</a>+ueq
+    <a href="cpl.html#IF">IF</a> bcond(ix,iy <a href="cpl.html#INTEGER-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iz)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> rhs(ix,iy,iz).v=<a href="cpl.html#Assignment">~</a>+veq
     <a href="cpl.html#IF">IF</a> bcond(ix,iy,iz+1)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> rhs(ix,iy,iz).w=<a href="cpl.html#Assignment">~</a>+weq
     rhs(ix,iy,iz).p=<a href="cpl.html#Assignment">~</a>+[u(0,0,0)-u(-1,0,0)+v(0,0,0)-v(0,-1,0)+w(0,0,0)-w(0,0,-1)]/dx
   <a href="cpl.html#LOOP">REPEAT</a>
@@ -56,17 +56,17 @@ weq<a href="cpl.html#Deferred-assignment">==</a>laplacian(w)/dx/dx-[p(0,0,1)-p(0
   dx=1/(field.<a href="cpl.html#HI">HI1</a>-1)
   c0=6/dx/dx
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1
-    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI1</a>-1 <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI2</a>-1 <a href="cpl.html#AND">AND</a> iz=2-(ix+iy+parity) <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI3</a>-1 <a href="cpl.html#BY">BY</a> 2
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI1</a>-1 <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI2</a>-1 <a href="cpl.html#AND">AND</a> iz=2-(ix+iy+parity) <a href="cpl.html#INTEGER-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> field.<a href="cpl.html#HI">HI3</a>-1 <a href="cpl.html#BY">BY</a> 2
       <a href="cpl.html#EXCEPT">EXCEPT</a> bcond(ix,iy,iz)#<a href="cpl.html#REAL-operator">^</a>stdpoint
       <a href="cpl.html#REAL">REAL</a> ut(-1..0),dtu(-1..0),vt(-1..0),dtv(-1..0),wt(-1..0),dtw(-1..0)
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> dix=-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#WITH">WITH</a> field(ix+dix+&lowast;,iy+&lowast;,iz+&lowast;)
-        <a href="cpl.html#IF">IF</a> bcond((ix+2&lowast;dix) <a href="cpl.html#Integer-operator">MOD</a> <a href="cpl.html#HI">HI</a> + 1,iy,iz)#<a href="cpl.html#REAL-operator">^</a>stdpoint <a href="cpl.html#IF">THEN</a> dtu(dix)=0 <a href="cpl.html#ELSE">ELSE</a>
+        <a href="cpl.html#IF">IF</a> bcond((ix+2&lowast;dix) <a href="cpl.html#INTEGER-operator">MOD</a> <a href="cpl.html#HI">HI</a> + 1,iy,iz)#<a href="cpl.html#REAL-operator">^</a>stdpoint <a href="cpl.html#IF">THEN</a> dtu(dix)=0 <a href="cpl.html#ELSE">ELSE</a>
           dtu(dix)=1/c0
           <a href="cpl.html#IF">IF</a> dix=0 <a href="cpl.html#IF">THEN</a> u(0,0,0)=u(0,0,0)+[ueq+rhs(ix+dix,iy,iz).u]&lowast;dtu(dix)
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
       <a href="cpl.html#LOOP">REPEAT</a>
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> diy=-1 <a href="cpl.html#TO">TO</a> 0 <a href="cpl.html#WITH">WITH</a> field(ix+&lowast;,iy+diy+&lowast;,iz+&lowast;)
-        <a href="cpl.html#IF">IF</a> bcond(ix,(iy+2&lowast;diy) <a href="cpl.html#Integer-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iz)#<a href="cpl.html#REAL-operator">^</a>stdpoint <a href="cpl.html#IF">THEN</a> dtv(diy)=0 <a href="cpl.html#ELSE">ELSE</a>
+        <a href="cpl.html#IF">IF</a> bcond(ix,(iy+2&lowast;diy) <a href="cpl.html#INTEGER-operator">MOD</a> <a href="cpl.html#HI">HI</a> +1,iz)#<a href="cpl.html#REAL-operator">^</a>stdpoint <a href="cpl.html#IF">THEN</a> dtv(diy)=0 <a href="cpl.html#ELSE">ELSE</a>
           dtv(diy)=1/c0
           <a href="cpl.html#IF">IF</a> diy=0 <a href="cpl.html#IF">THEN</a> v(0,0,0)=v(0,0,0)+[veq+rhs(ix,iy+diy,iz).v]&lowast;dtv(diy)
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -117,7 +117,7 @@ weq<a href="cpl.html#Deferred-assignment">==</a>laplacian(w)/dx/dx-[p(0,0,1)-p(0
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   crhs(-1,&lowast;,&lowast;).u=crhs(<a href="cpl.html#HI">HI</a>-2,&lowast;,&lowast;).u; crhs(0,&lowast;,&lowast;)=crhs(<a href="cpl.html#HI">HI</a>-1,&lowast;,&lowast;); crhs(<a href="cpl.html#HI">HI</a>,&lowast;,&lowast;)=crhs(1,&lowast;,&lowast;)
   crhs(&lowast;,-1,&lowast;).v=crhs(&lowast;,<a href="cpl.html#HI">HI</a>-2,&lowast;).v; crhs(&lowast;,0,&lowast;)=crhs(&lowast;,<a href="cpl.html#HI">HI</a>-1,&lowast;); crhs(&lowast;,<a href="cpl.html#HI">HI</a>,&lowast;)=crhs(&lowast;,1,&lowast;)
-  <a href="cpl.html#IF">IF</a> nxc <a href="cpl.html#Integer-operator">MOD</a> 2 =0 <a href="cpl.html#AND">AND</a> nyc <a href="cpl.html#Integer-operator">MOD</a> 2 =0 <a href="cpl.html#AND">AND</a> nxc&gt;5 <a href="cpl.html#AND">AND</a> nyc&gt;5 <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> nxc <a href="cpl.html#INTEGER-operator">MOD</a> 2 =0 <a href="cpl.html#AND">AND</a> nyc <a href="cpl.html#INTEGER-operator">MOD</a> 2 =0 <a href="cpl.html#AND">AND</a> nxc&gt;5 <a href="cpl.html#AND">AND</a> nyc&gt;5 <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> 2 <a href="cpl.html#TIMES">TIMES</a>
       <a href="cpl.html#DO">DO</a> smooth(cf,crhs,cbcond) <a href="cpl.html#FOR">FOR</a> 3 <a href="cpl.html#TIMES">TIMES</a>
       <a href="cpl.html#TYPE">TYPEOF</a>(crhs(&lowast;)) crsd=crhs

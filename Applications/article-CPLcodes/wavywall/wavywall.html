@@ -42,7 +42,7 @@ VFIELD=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>[u(0..nx+1,0..ny),
 
 <a href="cpl.html#REAL">REAL</a> vwall(0..nx+1)
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> pressit(VFIELD Vnew<a href="cpl.html#REAL-operator">^</a>; <a href="cpl.html#REAL">REAL</a> betah) <a href="cpl.html#WITH">WITH</a> Vnew
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> ix=1 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy=1+(ix+parity)<a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#BY">BY</a> 2
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> ix=1 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy=1+(ix+parity)<a href="cpl.html#INTEGER-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#BY">BY</a> 2
     c=cont(ix,iy)/(4+betah<a href="cpl.html#REAL-operator">^</a>2)
     p(ix,iy)=<a href="cpl.html#Assignment">~</a>-c
     u(ix+1,iy)=<a href="cpl.html#Assignment">~</a>-c
@@ -68,7 +68,7 @@ Vb=<a href="cpl.html#Assignment">~</a>+Vbn&lowast;deltat
 Vb.u(0)=Vb.u(nx); Vb.u(nx+1)=Vb.u(1)
 Vb.v(0)=Vb.v(nx); Vb.v(nx+1)=Vb.v(1)
 <a href="cpl.html#DO">DO</a> pressit(Vb,0) <a href="cpl.html#FOR">FOR</a> 4 <a href="cpl.html#TIMES">TIMES</a>
-<a href="cpl.html#IF">IF</a> count <a href="cpl.html#Integer-operator">MOD</a> 1000 =0 <a href="cpl.html#IF">THEN</a>
+<a href="cpl.html#IF">IF</a> count <a href="cpl.html#INTEGER-operator">MOD</a> 1000 =0 <a href="cpl.html#IF">THEN</a>
   <a href="graphics.html#OPENGRAPH">NEWGRAPH</a>; <a href="graphics.html#SPLOT">SPLOT</a> Vb.u
   <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> count
   <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> MAXABS(Vbn)

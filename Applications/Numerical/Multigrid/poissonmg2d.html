@@ -68,7 +68,7 @@ SOFTWARE. !)</span>
   !)</span>
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> poissonrb(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var, rhs; <a href="cpl.html#FUNCTION">SUBROUTINE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> v) makeghosts)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 
-    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=var.<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> var.<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iy=var(0).<a href="cpl.html#LO">LO</a>+1 + (ix+var(0).<a href="cpl.html#LO">LO</a>+1+parity) <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> var(0).<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#BY">BY</a> 2
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=var.<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> var.<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iy=var(0).<a href="cpl.html#LO">LO</a>+1 + (ix+var(0).<a href="cpl.html#LO">LO</a>+1+parity) <a href="cpl.html#INTEGER-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> var(0).<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#BY">BY</a> 2
       var(ix,iy)=(var(ix,iy+1)+var(ix,iy-1)+var(ix+1,iy)+var(ix-1,iy))&lowast;0.25+rhs(ix,iy)
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
     makeghosts(var)
@@ -89,7 +89,7 @@ SOFTWARE. !)</span>
     cvar(ixc,iyc)=crhs(ixc,iyc)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   makeghosts(cvar)
-  <a href="cpl.html#IF">IF</a> fvar.<a href="cpl.html#HI">HI</a> <a href="cpl.html#DIV">DIV</a> 2 <a href="cpl.html#Integer-operator">MOD</a> 2 = 0 <a href="cpl.html#AND">AND</a> fvar(0).<a href="cpl.html#HI">HI</a> <a href="cpl.html#DIV">DIV</a> 2 <a href="cpl.html#Integer-operator">MOD</a> 2 = 0 <a href="cpl.html#AND">AND</a> cvar.<a href="cpl.html#HI">HI</a> &gt; 2 <a href="cpl.html#AND">AND</a> cvar(0).<a href="cpl.html#HI">HI</a> &gt; 2 <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> fvar.<a href="cpl.html#HI">HI</a> <a href="cpl.html#DIV">DIV</a> 2 <a href="cpl.html#INTEGER-operator">MOD</a> 2 = 0 <a href="cpl.html#AND">AND</a> fvar(0).<a href="cpl.html#HI">HI</a> <a href="cpl.html#DIV">DIV</a> 2 <a href="cpl.html#INTEGER-operator">MOD</a> 2 = 0 <a href="cpl.html#AND">AND</a> cvar.<a href="cpl.html#HI">HI</a> &gt; 2 <a href="cpl.html#AND">AND</a> cvar(0).<a href="cpl.html#HI">HI</a> &gt; 2 <a href="cpl.html#IF">THEN</a>
     <span class=comment>! recursively call itself on the coarser grid in a V-cycle</span>
     poissonmg(cvar,crhs,makeghosts)
     <span class=comment>! or, on the coarsest grid, call redblack twenty times.</span>

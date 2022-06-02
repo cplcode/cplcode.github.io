@@ -1,0 +1,19 @@
+! print first N prime numbers
+! ---------------------------
+
+ASK INTEGER "How many?": N
+ARRAY(1..N) OF INTEGER prime ! declare and allocate an ARRAY with the just entered
+                             ! number of elements.
+prime(1)=2; WRITE 2          ! initialize first prime.
+INTEGER n=2, testnum=1       ! prepare for iteration.
+LOOP WHILE n<=N
+  testnum=testnum+2          ! test next odd integer.
+  INTEGER i=0
+  DO INC i WHILE testnum MOD prime(i) # 0 !( not divisible by i-th prime number !) AND
+    prime(i)^2<testnum !( not necessary to test for primes larger than this !)
+  IF testnum MOD prime(i) # 0 THEN  ! found!
+    WRITE testnum
+    prime(n)=testnum  ! record as prime
+    INC n,1           ! and start searching for the next one.
+  END IF
+REPEAT

@@ -37,7 +37,7 @@ J<a href="cpl.html#Deferred-assignment">==</a>mu&lowast;mod
 <span class=comment>! (of yet undeclared array lu) to be minimized.</span>
 <a href="cpl.html#LOOP">LOOP</a> iter <a href="cpl.html#FOR">FOR</a> n=1 <a href="cpl.html#TO">TO</a> 100000
   <a href="cpl.html#REAL">REAL</a> maxrsd=0
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> ix=1 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#AND">AND</a> iy=2-(ix+parity) <a href="cpl.html#Integer-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#BY">BY</a> 2 <a href="cpl.html#EXCEPT">EXCEPT</a> f(ix,iy)=0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> ix=1 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#AND">AND</a> iy=2-(ix+parity) <a href="cpl.html#INTEGER-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#BY">BY</a> 2 <a href="cpl.html#EXCEPT">EXCEPT</a> f(ix,iy)=0
   <span class=comment>!(this is the red-black iteration. Notice use of EXCEPT to exclude the region where f=0!)</span>
     lu=<a href="cpl.html#REAL-operator">^</a>u(ix+(-1..1),iy+(-1..1))   <span class=comment>!( define lu as a subarray of u centered
       in ix,iy. ^ specifies that this is not a copy but a pointer !)</span>
@@ -51,7 +51,7 @@ J<a href="cpl.html#Deferred-assignment">==</a>mu&lowast;mod
   <a href="cpl.html#LOOP">REPEAT</a>
   fr=dx<a href="cpl.html#REAL-operator">^</a>2&lowast;(<a href="cpl.html#Looping-operator">SUM</a> u(ix,iy) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy)
   px=px&lowast;(0.8+0.2/fr)   <span class=comment>! feed back upon px so as to normalize the mean velocity</span>
-  <a href="cpl.html#IF">IF</a> n <a href="cpl.html#Integer-operator">MOD</a> 10 =0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> maxrsd; <a href="graphics.html#SPLOT">SPLOT</a> u
+  <a href="cpl.html#IF">IF</a> n <a href="cpl.html#INTEGER-operator">MOD</a> 10 =0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> maxrsd; <a href="graphics.html#SPLOT">SPLOT</a> u
   <a href="cpl.html#IF">IF</a> maxrsd&lt;1E-2 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> iter   <span class=comment>! loops can be exited by name</span>
 <a href="cpl.html#LOOP">REPEAT</a> iter
 </pre></body></html>

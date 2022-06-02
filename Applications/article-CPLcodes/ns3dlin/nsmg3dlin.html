@@ -454,7 +454,7 @@ wcd=={w(1,0,0)+w(-1,0,0)+w(0,1,0)+w(0,-1,0)+w(0,0,1)+w(0,0,-1)-6&lowast;w(0,0,0)
 <a href="cpl.html#END">END</a> restrictloop
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> mg(VFIELD fbase<a href="cpl.html#REAL-operator">^</a>,fvar<a href="cpl.html#REAL-operator">^</a>,ftn<a href="cpl.html#REAL-operator">^</a>; <a href="cpl.html#INTEGER">INTEGER</a> nxf)
-<a href="cpl.html#IF">IF</a> nxf <a href="cpl.html#Integer-operator">MOD</a> 2 = 0 <a href="cpl.html#AND">AND</a> fvar.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#Integer-operator">MOD</a> 2 = 0 <a href="cpl.html#AND">AND</a> fvar.<a href="cpl.html#HI">HI3</a> <a href="cpl.html#Integer-operator">MOD</a> 2 = 0 <a href="cpl.html#AND">AND</a>
+<a href="cpl.html#IF">IF</a> nxf <a href="cpl.html#INTEGER-operator">MOD</a> 2 = 0 <a href="cpl.html#AND">AND</a> fvar.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#INTEGER-operator">MOD</a> 2 = 0 <a href="cpl.html#AND">AND</a> fvar.<a href="cpl.html#HI">HI3</a> <a href="cpl.html#INTEGER-operator">MOD</a> 2 = 0 <a href="cpl.html#AND">AND</a>
    nxf &gt; 4 <a href="cpl.html#AND">AND</a> fvar.<a href="cpl.html#HI">HI2</a> &gt; 4 <a href="cpl.html#AND">AND</a> fvar.<a href="cpl.html#HI">HI3</a> &gt; 4 <a href="cpl.html#IF">THEN</a>
   smooth(fbase,fvar,ftn,nxf)
   bc(fvar,ftn,0)

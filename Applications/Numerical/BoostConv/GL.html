@@ -110,14 +110,14 @@ GL(k1,A)                                       <span class=comment>! 1st RK stag
 res=MAXABS(k1)                                       <span class=comment>! Evaluate the maximum absolute value of the Residual </span>
 Res=k1.REALIFIED                                    <span class=comment>! Store Residual as REAL ARRAY at iteration it</span>
 
-<a href="cpl.html#IF">IF</a> (it <a href="cpl.html#Integer-operator">MOD</a> plotfreq)=0 <a href="cpl.html#IF">THEN</a>                        <span class=comment>! Store the solution every plotfreq time steps </span>
+<a href="cpl.html#IF">IF</a> (it <a href="cpl.html#INTEGER-operator">MOD</a> plotfreq)=0 <a href="cpl.html#IF">THEN</a>                        <span class=comment>! Store the solution every plotfreq time steps </span>
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=-nx <a href="cpl.html#TO">TO</a> nx 
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> PROFILO x(ix),t,A(ix).<a href="cpl.html#REAL">REAL</a>,A(ix).<a href="complex.html#Top">IMAG</a> 
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a> 
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> PROFILO 
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 
-<a href="cpl.html#IF">IF</a> (it <a href="cpl.html#Integer-operator">MOD</a> plotres)=0 <a href="cpl.html#IF">THEN</a>
+<a href="cpl.html#IF">IF</a> (it <a href="cpl.html#INTEGER-operator">MOD</a> plotres)=0 <a href="cpl.html#IF">THEN</a>
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> it,t,,res
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> RES it,t,res                          <span class=comment>! Store the solution every plotres time steps </span>
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -132,8 +132,8 @@ A=A+dt&lowast;[k1+2&lowast;k2+2&lowast;k3+k4]/6                     <span class=
 
 <span class=comment>! --- BoostConv ---                            <span class=comment>! We call BostConv after t&gt;tboost every boostfreq time steps  </span></span>
 
-<a href="cpl.html#IF">IF</a> (t&gt;tboost <a href="cpl.html#AND">AND</a> (it <a href="cpl.html#Integer-operator">MOD</a> boostfreq=0) <a href="cpl.html#AND">AND</a> (boost=TRUE)) <a href="cpl.html#IF">THEN</a>
-<a href="cpl.html#INC">INC</a> itboost                                          <span class=comment>! Increase the boostconv counter </span>
+<a href="cpl.html#IF">IF</a> (t&gt;tboost <a href="cpl.html#AND">AND</a> (it <a href="cpl.html#INTEGER-operator">MOD</a> boostfreq=0) <a href="cpl.html#AND">AND</a> (boost=TRUE)) <a href="cpl.html#IF">THEN</a>
+<a href="cpl.html#Builtin">INC</a> itboost                                          <span class=comment>! Increase the boostconv counter </span>
 <a href="cpl.html#IF">IF</a> itboost&gt;1 <a href="cpl.html#IF">THEN</a> 
 <span class=comment>!WRITE  BY NAME it,t,,res, ".......Apply BoostConv...."</span>
 dA=[A-Aold]                                   <span class=comment>! Evaluate difference in solution to be passed to BoostConv</span>

@@ -45,7 +45,7 @@ no=200
     psiwstar(it)={zstarold(1)&lowast;B(1,-1)+zstarold(2)&lowast;B(2,-2)-
                  zstar(1)&lowast;[B(1,-1)+A(1,-1)&lowast;dt]-zstar(2)&lowast;[B(2,-2)+A(2,-2)&lowast;dt]}/dt
     uwstar(it)=[zstarold(1)&lowast;B(1,-2)-zstar(1)&lowast;(B(1,-2)+dt&lowast;A(1,-2))]&lowast;(y(-1)-y(1))/dt
-    <a href="cpl.html#IF">IF</a> it <a href="cpl.html#Integer-operator">MOD</a>(nt <a href="cpl.html#DIV">DIV</a> 100) = 0 <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#IF">IF</a> it <a href="cpl.html#INTEGER-operator">MOD</a>(nt <a href="cpl.html#DIV">DIV</a> 100) = 0 <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> profile alfa,t+dt,Energy(zstarnorm),<a href="cpl.html#ABS">ABS</a>(psiwstar(it)),
                <a href="cpl.html#Builtin">ARG</a>(psiwstar(it)),<a href="cpl.html#ABS">ABS</a>(uwstar(it)),<a href="cpl.html#Builtin">ARG</a>(uwstar(it))
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>

@@ -46,7 +46,7 @@
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> k=A.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> 1
       <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> A(i,&lowast;+k),A(i+k,&lowast;) j=0
       piv=A(i,j+k)
-      <a href="cpl.html#DO">DO</a> <a href="cpl.html#DEC">DEC</a> j; A(i,j+k)=<a href="cpl.html#Assignment">~</a>-piv&lowast;A(i+k,j) <a href="cpl.html#FOR">FOR</a> -A.<a href="cpl.html#LO">LO2</a> <a href="cpl.html#TIMES">TIMES</a>
+      <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">DEC</a> j; A(i,j+k)=<a href="cpl.html#Assignment">~</a>-piv&lowast;A(i+k,j) <a href="cpl.html#FOR">FOR</a> -A.<a href="cpl.html#LO">LO2</a> <a href="cpl.html#TIMES">TIMES</a>
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
     piv=1/A(i,0); A(i,0)=piv
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> j <a href="cpl.html#INTO">INTO</a> A(i,A.<a href="cpl.html#LO">LO2</a>..-1): A(i,j)=<a href="cpl.html#Assignment">~</a>&lowast;piv
@@ -61,7 +61,7 @@
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=A.<a href="cpl.html#HI">HI1</a>-A.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> A.<a href="cpl.html#LO">LO1</a>
     <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> A(i,&lowast;),x(i+&lowast;) j=A.<a href="cpl.html#HI">HI2</a>
     <a href="cpl.html#REAL">REAL</a> sum=t(i)
-    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> A.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#TIMES">TIMES</a>: sum=<a href="cpl.html#Assignment">~</a>-A(i,j)&lowast;x(i+j); <a href="cpl.html#DEC">DEC</a> j
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> A.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#TIMES">TIMES</a>: sum=<a href="cpl.html#Assignment">~</a>-A(i,j)&lowast;x(i+j); <a href="cpl.html#Builtin">DEC</a> j
     x(i+j)=sum&lowast;A(i,j)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> prev x(<a href="cpl.html#LO">LO</a>+2),x(<a href="cpl.html#LO">LO</a>+3)
@@ -74,7 +74,7 @@
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=A.<a href="cpl.html#LO">LO1</a> <a href="cpl.html#TO">TO</a> A.<a href="cpl.html#HI">HI1</a>
     <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> A(i,&lowast;),x(i+&lowast;) j=A.<a href="cpl.html#LO">LO2</a>
     <a href="cpl.html#REAL">REAL</a> sum=0
-    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> -A.<a href="cpl.html#LO">LO2</a> <a href="cpl.html#TIMES">TIMES</a>: sum=<a href="cpl.html#Assignment">~</a>+A(i,j)&lowast;x(i+j); <a href="cpl.html#INC">INC</a> j
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> -A.<a href="cpl.html#LO">LO2</a> <a href="cpl.html#TIMES">TIMES</a>: sum=<a href="cpl.html#Assignment">~</a>+A(i,j)&lowast;x(i+j); <a href="cpl.html#Builtin">INC</a> j
     x(i+j)=<a href="cpl.html#Assignment">~</a>-sum
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next x(<a href="cpl.html#HI">HI</a>-3),x(<a href="cpl.html#HI">HI</a>-2)
@@ -98,7 +98,7 @@
     <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> A(i,&lowast;),x(i+&lowast;) j=0
     p=x(i+j)&lowast;A(i,0)
     x(i+j)=p
-    <a href="cpl.html#DO">DO</a> <a href="cpl.html#INC">INC</a> j; x(i+j)=<a href="cpl.html#Assignment">~</a>-A(i,j)&lowast;p <a href="cpl.html#FOR">FOR</a> A.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#TIMES">TIMES</a>
+    <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> j; x(i+j)=<a href="cpl.html#Assignment">~</a>-A(i,j)&lowast;p <a href="cpl.html#FOR">FOR</a> A.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#TIMES">TIMES</a>
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next x(<a href="cpl.html#HI">HI</a>-3),x(<a href="cpl.html#HI">HI</a>-2),x(<a href="cpl.html#HI">HI</a>-1),x(<a href="cpl.html#HI">HI</a>)

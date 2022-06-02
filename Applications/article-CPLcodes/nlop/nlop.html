@@ -88,12 +88,12 @@ tn<a href="cpl.html#Deferred-assignment">==</a>tna(1+nvars..ny&lowast;nvars)
       <a href="cpl.html#LOOP">REPEAT</a>
       buildmat(im); LUdecomp A
       tn=A\tn
-      maxerr=<a href="cpl.html#MAX">MAX</a>(<a href="cpl.html#Assignment">~</a>,<a href="cpl.html#Integer-operator">MOD</a>(tn))
+      maxerr=<a href="cpl.html#MAX">MAX</a>(<a href="cpl.html#Assignment">~</a>,<a href="cpl.html#INTEGER-operator">MOD</a>(tn))
       Fmem(1+nvars..ny&lowast;nvars,im)=<a href="cpl.html#Assignment">~</a>-tn
       v(ny,im)=v(ny-1,im)
     <a href="cpl.html#LOOP">REPEAT</a>
     convolutions
-    <a href="cpl.html#INC">INC</a> count
+    <a href="cpl.html#Builtin">INC</a> count
   <a href="cpl.html#LOOP">REPEAT</a> qn <a href="cpl.html#UNTIL">UNTIL</a> maxerr&lt;1E-4
 <a href="cpl.html#WRITE">WRITE</a> x,count
 <a href="graphics.html#PLOT">PLOT</a> u(n,0).<a href="cpl.html#REAL">REAL</a>,0..ny
@@ -126,11 +126,11 @@ wmomadj<a href="cpl.html#Deferred-assignment">==</a>eqadj(wpos+nvars&lowast;(&lo
       tna((ny-1)&lowast;nvars+vpos)=<a href="cpl.html#Assignment">~</a>+tna(ny&lowast;nvars+vpos)
       buildmat(im); LUdecomp A
       tn=tn/A
-      maxerr=<a href="cpl.html#MAX">MAX</a>(<a href="cpl.html#Assignment">~</a>,<a href="cpl.html#Integer-operator">MOD</a>(tn))
+      maxerr=<a href="cpl.html#MAX">MAX</a>(<a href="cpl.html#Assignment">~</a>,<a href="cpl.html#INTEGER-operator">MOD</a>(tn))
       eqadj(&lowast;,im)=<a href="cpl.html#Assignment">~</a>-tn
       <a href="cpl.html#IF">IF</a> im#0 <a href="cpl.html#IF">THEN</a> eqadj(&lowast;,-im)=<a href="complex.html#Top">CONJG</a>(eqadj(&lowast;,im))
     <a href="cpl.html#LOOP">REPEAT</a>
-    <a href="cpl.html#INC">INC</a> count
+    <a href="cpl.html#Builtin">INC</a> count
   <a href="cpl.html#LOOP">REPEAT</a> bqn <a href="cpl.html#UNTIL">UNTIL</a> maxerr&lt;1E-8
   <a href="cpl.html#WRITE">WRITE</a> x,count
   x=x-dx

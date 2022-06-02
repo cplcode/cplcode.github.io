@@ -1,2 +1,2 @@
-2022-06-01
-minor corrections.
+2022-06-02
+Floating-point exception handling extended to Apple ARM. Minor corrections.
