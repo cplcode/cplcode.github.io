@@ -1,5 +1,5 @@
 ! print first N prime numbers
-! ---------------------------
+! ===========================
 
 ASK INTEGER "How many?": N
 ARRAY(1..N) OF INTEGER prime ! declare and allocate an ARRAY with the just entered
