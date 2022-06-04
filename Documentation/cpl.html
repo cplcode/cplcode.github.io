@@ -371,9 +371,9 @@ functions</a>. If you want some of the pre-packaged libraries to be recompiled, 
 The original won't be affected.
 
 <h4>Installation fails with error messages mentioning <q>fenv</q></h4>
-fenv.h is the system C library that deals with floating-point exceptions. The default on most compilers is to ignore floating-point errors (such as overflow or division by zero) and continue with the value set to nan. The CPL default is to stop the program with an error message. Unfortunately the fenv library does not always support this operation, and especially on Apple macOS, compilation failures have been observed. If this happens, you may want to retry the installation with option -Dnofenv, as <q>CC=gcc-11 sh /tmp/unpack-cpl.sh -Dnofenv</q>. If you just want to ignore floating-point errors for the scope of a single program, <q>cpl make &lt;myprogram&gt; -Dnofenv</q>.
+fenv.h is the system C library that deals with floating-point exceptions. The default on most compilers is to ignore floating-point errors (such as overflow or division by zero) and continue with the value set to nan. The CPL default is to stop the program with an error message. Exceptions can be enabled or disabled using the fenv library, but unfortunately not on all systems. Notably on Apple macOS, compilation failures have been observed. If you encounter this error, you may want to retry the installation with option -Dnofenv, as <q>CC=gcc-11 sh /tmp/unpack-cpl.sh -Dnofenv</q>. If you just want to ignore floating-point errors for the scope of a single program, <q>cpl make &lt;myprogram&gt; -Dnofenv</q>.
 
-<h4>I want a key to compile my program (or my LaTeX text) from the editor screen</h4>
+<h4>I want a shortcut key to compile my program (or my LaTeX text)</h4>
 When you are in the full-screen editor (see <a href="editor.html#full-screen">(editor)full-screen</a>), pressing F2 or Esc - repeats the last command. Therefore: the first time you need to compile, switch to the interactive cpl command screen with F1 or Esc `, and give your compilation command explicitly. Revert to editing with F1 or Esc ` again. When you later want to re-compile, just press F2 or Esc -.
 
 <h4>My program crashes without any error messages</h4>
@@ -2394,7 +2394,7 @@ The basic command
 
 (or just <q>cplm</q>) is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run by its name just like any other executable. As an alternative, the straight <a href="#cpl-run">cpl run</a> command compiles and then runs &lt;program&gt; in one shot.
 
-cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri">cpl.fri</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="https://manpages.debian.org/make.html">manpages.debian.org/make.html</a> ) on this makefile. Any arguments possibly present on the command line are passed on through make to the designated C compiler and linker, or to &lt;program&gt; itself if <q>run</q> was specified.
+cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri">cpl.fri</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="https://manpages.debian.org/make.html">manpages.debian.org/make.html</a> ) on this makefile. Any arguments possibly present on the command line are passed on as options to the designated C compiler and linker, or to &lt;program&gt; itself if <q>run</q> was specified.
 
 The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line.
 
