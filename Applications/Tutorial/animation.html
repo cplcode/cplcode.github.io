@@ -16,9 +16,12 @@
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
 <a href="cpl.html#REAL">REAL</a> g(-20..20,-20..20) <span class=comment>! declare a 2D array with negative lower bounds</span>
 <a href="graphics.html#OPENGRAPH">OPENGRAPH</a>           <span class=comment>! open a clean graphics window </span>
+<span class=comment>! uncomment the following line to record rather than display your animation</span>
+<span class=comment>! OPENMOVIE "myanimation.mp4"  <span class=comment>! requires ffmpeg to be installed</span></span>
+
 <a href="graphics.html#gnuplot">set</a> zrange [-1:1]   <span class=comment>! "set" commands are passed to gnuplot unchanged</span>
 <span class=comment>! zrange must be set or it will change from one image to another</span>
-<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> t=0. <a href="cpl.html#TO">TO</a> 10000 <a href="cpl.html#BY">BY</a> 0.3   <span class=comment>! LOOP can have a REAL index</span>
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> t=0. <a href="cpl.html#TO">TO</a> 200 <a href="cpl.html#BY">BY</a> 0.3   <span class=comment>! LOOP can have a REAL index</span>
   amp=<a href="cpl.html#Builtin">SIN</a>(t)        <span class=comment>! time-varying amplitude</span>
   <a href="cpl.html#DO">DO</a> g(ix,iy)=amp&lowast;<a href="cpl.html#Builtin">EXP</a>{-[(0.1&lowast;ix)<a href="cpl.html#REAL-operator">^</a>2+(0.1&lowast;iy)<a href="cpl.html#REAL-operator">^</a>2]/2} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy
   <span class=comment>! a compact LOOP form, tested at the end</span>
