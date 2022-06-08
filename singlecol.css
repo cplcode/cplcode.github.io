@@ -39,11 +39,11 @@
         padding-bottom:1em;
         min-height:calc(100% - 1em);
 }
-      code,pre {
+      code,pre,.leftinset,.rightinset {
         font-size: 1em;
-        font-family:"SF Mono",ui-monospace,monospace,sans-serif;
-        overflow:auto;
+        font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,ui-monospace,monospace,sans-serif;
       }
+      code,pre {overflow:auto;}
       iframe.news {
         position:absolute;
         width:95%;
@@ -83,8 +83,6 @@
         margin-right:0.75em;
         padding-right:0.5em;
         border-right:0.25em solid lightgrey;
-        font-family:ui-monospace,monospace,sans-serif;
-        font-size:1em;
         white-space:pre;
       }
       .leftinset a {
@@ -103,8 +101,6 @@
         margin-left:0.75em;
         padding-left:0.5em;
         border-left:0.25em solid lightgrey;
-        font-family:ui-monospace,monospace,sans-serif;
-        font-size:1em;
         white-space:pre;
       }
       img.em {
