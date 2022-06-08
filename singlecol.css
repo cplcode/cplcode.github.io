@@ -41,7 +41,7 @@
 }
       code,pre,.leftinset,.rightinset {
         font-size: 1em;
-        font-family:"Roboto Mono",ui-monospace,monospace,sans-serif;
+        font-family:-apple-system,ui-monospace,monospace,Roboto;
       }
       code,pre {overflow:auto;}
       iframe.news {
