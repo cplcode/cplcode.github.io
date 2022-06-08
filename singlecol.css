@@ -41,7 +41,7 @@
 }
       code,pre,.leftinset,.rightinset {
         font-size: 1em;
-        font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,ui-monospace,monospace,sans-serif;
+        font-family:"Roboto Mono",ui-monospace,monospace,sans-serif;
       }
       code,pre {overflow:auto;}
       iframe.news {
