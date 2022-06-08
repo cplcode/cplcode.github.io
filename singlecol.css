@@ -41,7 +41,7 @@
 }
       code,pre {
         font-size: 1em;
-        font-family:ui-monospace,monospace,sans-serif;
+        font-family:Monaco,ui-monospace,monospace,sans-serif;
         overflow:auto;
       }
       iframe.news {
