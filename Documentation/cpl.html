@@ -348,11 +348,9 @@ If the initial setup did not report any errors, and <q>$HOME/fri/cpl</q> or <q>/
 Is . in your PATH? Many Linux distributions do not by default have your current working directory in the set of automatically searched file paths. Solutions:
  1) prefix ./ to the name of your executable, as in <q>./Helloworld</q>
  2) modify your PATH environment variable (look up instructions for your shell)
- 3) use <a href="#cpl">cpl</a> as your shell (either <q>cpl Helloworld</q> or just <q>cpl</q>
- and then <q>Helloworld</q>).
+ 3) use <a href="#cpl">cpl</a> as your shell (either <q>cpl Helloworld</q> or just <q>cpl</q> and then <q>Helloworld</q>).
   <h4>Why should I be concerned with compilation, anyway?</h4>
-If you are more at ease with the single-command execution usually provided by an interpreter, just use <a href="#cpl">cpl</a> as you would your interpreter. Compilation will happen automatically in the background. You can even put <q>#!/usr/bin/env
-cpl</q> at the top of your CPL source file, and make it executable under the unix interpreter convention.
+If you are more at ease with the single-command execution usually provided by an interpreter, just use <a href="#cpl">cpl</a> as you would your interpreter. Compilation will happen automatically in the background. You can even put <q>#!/usr/bin/env cpl</q> at the top of your CPL source file, and make it executable under the unix interpreter convention.
 
 <h4>I want to use a specialized C compiler</h4>
 In order to apply a non-default C compiler to your CPL program, define the CC environment variable, either for the duration of the session as in
@@ -363,8 +361,7 @@ or of a single command:
 
  	CC=&lt;myspecialCcompiler&gt; cpl make &lt;myprogram&gt;
 
-With a compiler other than gcc, you may be unable to use <a href="#nested-functions">nested
-functions</a>. If you want some of the pre-packaged libraries to be recompiled, just include a symbolic link for each in your local working directory as in the example
+With a compiler other than gcc, you may be unable to use <a href="#nested-functions">nested functions</a>. If you want some of the pre-packaged libraries to be recompiled, just include a symbolic link for each in your local working directory as in the example
 
  	ln -s ~/fri/rbmat.cpl .
 
@@ -660,8 +657,7 @@ In short form:
 
 where &lt;single-line block&gt; is a sequence of statements separated by semicolons and terminated by the first newline.
 
-The keyword SUBROUTINE is also used to declare variables of <a href="#Subroutine-type">Subroutine
-type</a>. 
+The keyword SUBROUTINE is also used to declare variables of <a href="#Subroutine-type">Subroutine type</a>. 
 </div><div class=page id="FUNCTION">
 Page: (cpl)FUNCTION, Next: <a href="#INLINE">INLINE</a>, Prev: <a href="#SUBROUTINE">SUBROUTINE</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Function declarations</h3>
@@ -697,8 +693,7 @@ is a shorthand for
 
 	RESULT=&lt;value&gt;; EXIT name. 
 
-The keyword FUNCTION is also used to declare variables of <a href="#Subroutine-type">Subroutine
-type</a>. The statement RETURN is also used in <a href="#interactive-session">interactive session</a>. 
+The keyword FUNCTION is also used to declare variables of <a href="#Subroutine-type">Subroutine type</a>. The statement RETURN is also used in <a href="#interactive-session">interactive session</a>. 
 </div><div class=page id="INLINE">
 Page: (cpl)INLINE,  Next: <a href="#FOLLOWS">FOLLOWS</a>,  Prev: <a href="#FUNCTION">FUNCTION</a>,  Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Inline functions and subroutines</h3>
@@ -775,8 +770,7 @@ Page: (cpl)RESULT, Next: <a href="#Declarations">Declarations</a>, Prev: <a href
 </div><div class=page id="Declarations">
 Page: (cpl)Declarations, Next: <a href="#Statements">Statements</a>, Prev: <a href="#Functions">Functions</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Variables, types and constants</h2>
-Variables, types and constants are denoted by identifiers introduced through the relevant declarations as follows. Identifiers cannot be duplicated as long as a previous declaration is in effect (in either the same or an enclosing block). An identifier which was not previously declared in the same or an enclosing block and does not coincide with a CPL keyword (see <a href="#Keyword-index">Keyword
-index</a>) is denoted as a newid below.
+Variables, types and constants are denoted by identifiers introduced through the relevant declarations as follows. Identifiers cannot be duplicated as long as a previous declaration is in effect (in either the same or an enclosing block). An identifier which was not previously declared in the same or an enclosing block and does not coincide with a CPL keyword (see <a href="#Keyword-index">Keyword index</a>) is denoted as a newid below.
 
 A general declaration has the form:
 
@@ -836,8 +830,7 @@ CPL is a type-checking language and requires that every VARIABLE be declared bef
 </div><div class=page id="CONSTANT">
 Page: (cpl)CONSTANT, Next: <a href="#VARIABLE">VARIABLE</a>, Prev: <a href="#Declarations">Declarations</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>CONSTANT</h3>
-The word CONSTANT in <a href="#Declarations">Declarations</a> specifies that the declared item cannot be modified. Thus a CONSTANT is not the same thing as a <q>compile-time
-constant</q>, that is an expression whose value can be known at compile time, but more generally a value which cannot appear on the left side of an assignment or have its address assigned to a POINTER.
+The word CONSTANT in <a href="#Declarations">Declarations</a> specifies that the declared item cannot be modified. Thus a CONSTANT is not the same thing as a <q>compile-time constant</q>, that is an expression whose value can be known at compile time, but more generally a value which cannot appear on the left side of an assignment or have its address assigned to a POINTER.
 
 The value of the CONSTANT is usually specified in the declaration itself but occasionally later. When this happens the constant declaration takes the role of a constant prototype, and may be optionally followed by the keyword <a href="#FOLLOWS">FOLLOWS</a>. (For instance, a constant may be declared outside a <a href="#MODULE">MODULE</a>, but its value only be known inside the module itself; or the value may be <a href="#READ">READ</a> as input.) If the constant is not initialized in the declaration itself, it is understood that it will be assigned once only in the course of its block.
 
@@ -845,8 +838,7 @@ In alternative, a statement of the form
 
 	newid = value
 
-implicitly declares a CONSTANT whose type and value are the type and value of the r.h.s. (see, however, <a href="#Concealed-Pointer-Lookup-if-the-address-of-the-r">CONSTANT:Concealed Pointer Lookup if the
-address of the r</a>.h.s. is desired instead).
+implicitly declares a CONSTANT whose type and value are the type and value of the r.h.s. (see, however, <a href="#Concealed-Pointer-Lookup-if-the-address-of-the-r">CONSTANT:Concealed Pointer Lookup if the address of the r</a>.h.s. is desired instead).
 
 If the r.h.s. of a CONSTANT declaration is known at compile time (what is denoted as a compile-time constant), the new identifier becomes just an alias for it and no storage is assigned. This also applies to <a href="#STRING">STRING</a>s. An alias for any expression, even one which does not represent a compile-time constant, can always be defined through the statement
 
@@ -925,8 +917,7 @@ which can appear wherever a type name can. (E.g., it can be assigned to a type i
 
 In order to test whether a variable is of a given type the <a href="#IS">IS</a> comparison operator is available. See also <a href="#Type-identity">Type identity</a>.
 
-The memory size in bytes of a type or variable (useful when using the <a href="#C-interface">C
-interface</a> or to estimate the memory requirements of the program) can be obtained from the pseudo-function
+The memory size in bytes of a type or variable (useful when using the <a href="#C-interface">C interface</a> or to estimate the memory requirements of the program) can be obtained from the pseudo-function
 
 	SIZEOF(&lt;typeorvariable&gt;) 
 </div><div class=page id="ENUM">
@@ -973,8 +964,7 @@ var includes a field of type t1 of which var.a denotes the <q>a</q> field.
 Anonymous structure fields are CPL's way to define objects that inherit the structure of other more general objects and add their own specific fields. When these objects are accessed as arguments to functions or subroutines, the appropriate function among those with the same name and different arguments is automatically selected. See also <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>, <a href="#DYNAMIC">DYNAMIC</a>.
 
 <nav><table>
-<tr><td><a href="#Menu-*-variable-size">Menu
-&lowast; variable size</a>:</td><td>STRUCTUREs</td></tr>
+<tr><td><a href="#Menu-*-variable-size">Menu &lowast; variable size</a>:</td><td>STRUCTUREs</td></tr>
 </table></nav>
 
 </div><div class=page id="variable-size">
@@ -1073,8 +1063,7 @@ alone on a new line, where DELIMITER can be any word that is not to be part of t
 
 Where appropriate, a single-character literal is implicitly converted to a CHAR constant, which is in turn implicitly converted to an INTEGER ASCII code. Strings may also be concatenated among themselves and with variables, see <a href="#String">conversion:String</a>.
 
-Standard C functions returning a char&lowast; (see <a href="/usr/share/info/libc.html#-String-and-Array-Utilities">(/usr/share/info/libc) String
-and Array Utilities</a>) are also interpreted as generating a STRING value. Just as for all <a href="#C-interface">C interface</a> calls, it is the programmer's responsibility to ensure that such C library functions are used consistently and to free any possible malloc-ated space where appropriate.
+Standard C functions returning a char&lowast; (see <a href="/usr/share/info/libc.html#-String-and-Array-Utilities">(/usr/share/info/libc) String and Array Utilities</a>) are also interpreted as generating a STRING value. Just as for all <a href="#C-interface">C interface</a> calls, it is the programmer's responsibility to ensure that such C library functions are used consistently and to free any possible malloc-ated space where appropriate.
 
 As an experimental feature, and an exception to the general rule for ARRAY(&lowast;), STRING VARIABLEs may also be declared and assigned a value. In the present implementation STRINGs embedded as STRUCTURE fields or ARRAY elements may generate unwanted effects when the container is assigned as a whole.
 
@@ -1180,8 +1169,7 @@ the IF block is executed only if the dynamic pointer dyn points at run time to a
 </div><div class=page id="Postfix">
 Page: (cpl)Postfix, Next: <a href="#Subroutine-type">Subroutine type</a>, Prev: <a href="#DYNAMIC">DYNAMIC</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Postfix type modifiers</h3>
-A postfix ^ denotes either pointer dereferencing (see <a href="#Concealed-Pointer-Lookup">^:Concealed Pointer
-Lookup</a>) or a short form of the POINTER declaration. For instance
+A postfix ^ denotes either pointer dereferencing (see <a href="#Concealed-Pointer-Lookup">^:Concealed Pointer Lookup</a>) or a short form of the POINTER declaration. For instance
 
 			INTEGER a^,b^ is a shorthand for
 			POINTER TO INTEGER a,b
@@ -1278,8 +1266,7 @@ An infix ^ (or &lowast;&lowast;) is the exponentiation operator. <a href="#Postf
 </div><div class=page id="Comparison">
 Page: (cpl)Comparison, Next: <a href="#BOOLEAN-ops">BOOLEAN ops</a>, Prev: <a href="#REAL-operator">REAL operator</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Comparison:		&gt;  &gt;=  &lt;  &lt;=  =  #  IS</h4>
-The equality and inequality operators apply to any type, including pointers. Since pointers are implicitly dereferenced (see<a href="#Concealed-Pointer-Lookup">Concealed Pointer
-Lookup</a>), an ambiguity may arise as to whether the values or addresses of the two sides must be compared. The comparison generally takes place at the lowest dereferencing level at which types match, but the comparison of two constant addresses is not allowed (so that A = B, where A and B are two simple variables, denotes the comparison of the values of A and B rather than their addresses). Explicit type cast or pointer dereferencing may at times be necessary, and is always advised, where ambiguities exist.
+The equality and inequality operators apply to any type, including pointers. Since pointers are implicitly dereferenced (see<a href="#Concealed-Pointer-Lookup">Concealed Pointer Lookup</a>), an ambiguity may arise as to whether the values or addresses of the two sides must be compared. The comparison generally takes place at the lowest dereferencing level at which types match, but the comparison of two constant addresses is not allowed (so that A = B, where A and B are two simple variables, denotes the comparison of the values of A and B rather than their addresses). Explicit type cast or pointer dereferencing may at times be necessary, and is always advised, where ambiguities exist.
 
 The type-testing operator IS is described in <a href="#DYNAMIC">Object-oriented features:DYNAMIC</a>. 
 </div><div class=page id="BOOLEAN-ops">
@@ -2089,8 +2076,7 @@ or
 
 Both INTEGER and REAL types are allowed, as well as other types (for instance <a href="#INTO:">POINTER:INTO:</a>) for which increment and comparison make sense. &lt;index&gt; may be an already existing variable or be implicitly declared by the loop itself (see <a href="#Declarations">Declarations</a>). In the latter case it acquires the type of the loop bounds and behaves like a <a href="#CONSTANT">CONSTANT</a> within the body of the loop. If the index is REAL, the BY specification cannot be omitted.
 
-FOR clauses can appear in a <a href="#LOOP">LOOP</a>, <a href="#DO">DO</a> and <a href="#Looping-operator">Looping
-operator</a>. In addition to the two basic forms, they can have the following variants:
+FOR clauses can appear in a <a href="#LOOP">LOOP</a>, <a href="#DO">DO</a> and <a href="#Looping-operator">Looping operator</a>. In addition to the two basic forms, they can have the following variants:
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -2412,8 +2398,7 @@ achieves this by deleting the object files first.
 
 prints a short version and usage message and exits.
 
-If your system includes the curl command (on Debian you can install it as <q>apt
-install curl</q>), cpl provides the functionality to transparently poll the CPLcode.net website for updates. See <a href="#automatic-updates">automatic updates</a>.
+If your system includes the curl command (on Debian you can install it as <q>apt install curl</q>), cpl provides the functionality to transparently poll the CPLcode.net website for updates. See <a href="#automatic-updates">automatic updates</a>.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>

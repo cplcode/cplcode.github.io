@@ -7,7 +7,8 @@ USE gnuplot ! prepare for plotting
 ny=20
 nx=3*ny
 dvar=ny+1  ! band width 
-REAL base(nx,ny)=0, A(nx,ny,-dvar..dvar) !2D solution array and 3D banded matrix
+REAL base(0..nx,0..ny)=0,    ! 2D solution array
+  A(0..nx,0..ny,-dvar..dvar) ! banded matrix
 A(**)=1  ! ** compounds the first two indices into 1; A is initialized to
          ! a 2D identity matrix in banded storage
 LOOP FOR ix=1 TO nx-1 AND iy=1 TO ny-1
