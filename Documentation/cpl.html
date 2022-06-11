@@ -259,6 +259,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#STRING">literal:STRING</a>:</td><td>constant string of characters</td></tr>
 <tr><td><a href="#cpl">cpl</a>:</td><td>Compilation tools and their usage</td></tr>
 <tr><td><a href="matrix.html#Top">matrix:(matrix)</a>:</td><td>Matrix operations</td></tr>
+<tr><td><a href="#mpicpl">mpicpl</a>:</td><td>Compile with mpi options</td></tr>
 <tr><td><a href="#nested-functions">nested functions</a>:</td><td>are allowed wherever a declaration is.</td></tr>
 <tr><td><a href="graphics.html#nographics">nographics:(graphics)nographics</a>:</td><td>fake plotting package (does nothing)</td></tr>
 <tr><td><a href="parallel.html#nonparallel">nonparallel:(parallel)nonparallel</a>:</td><td>fake parallel package (does nothing)</td></tr>
@@ -479,7 +480,7 @@ Separately compiled source files can be used with the statement
 
 The USEd file is logically treated as if it were inserted in the program sequence in place of the <q>USE</q> statement, i.e. just as if <a href="#INCLUDE">INCLUDE</a> were in place. However, in reality the file is either compiled into a separate object file or, if a more recent object file of the same name already exists, not compiled at all. In the latter case the CPL compiler reads the outermost block only from the USEd source file and skips the inner block contents altogether, generating the same effect as a Modula-2 definition file or a C header file.
 
-In case actual headers must be generated in order to save space (or to distribute a library without source code) it is possible to USE a source file with empty subroutine bodies, since the compiler would not read the subroutine bodies anyway, provided the object file is artificially given a more recent date (for instance, through <a href="https://manpages.debian.org/touch.html">manpages.debian.org/touch.html</a> ). Missing this, empty subroutines will be recompiled with obviously unwanted results.
+In case actual headers must be generated in order to save space (or to distribute a library without source code) it is possible to USE a source file with empty subroutine bodies, since the compiler would not read the subroutine bodies anyway, provided the object file is artificially given a more recent date (for instance, through <a href="https://manpages.debian.org/touch.html">manpages.debian.org/touch.html</a>). Missing this, empty subroutines will be recompiled with obviously unwanted results.
 
 In an interpreted program (<a href="#cpl-i">cpl i</a>) just as well, USE loads a separately compiled module, whose subroutines can then be executed at compiled speed, and executes its main body, if any, before passing control back to the console. 
 </div><div class=page id="INCLUDE">
@@ -1496,7 +1497,7 @@ The function NORM returns the squared absolute value of either a number or a who
 Page: (cpl)RAND,  Next: <a href="#GAUSS">GAUSS</a>,  Prev: <a href="#MIN">MIN</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> RAND:		uniformly distributed in (0,1) random REAL number
 
-The function RAND takes no argument. It is based on the INTEGER C library function rand, whose seed can be changed with srand (<a href="https://manpages.debian.org/rand.html">manpages.debian.org/rand.html</a> ). 
+The function RAND takes no argument. It is based on the INTEGER C library function rand, whose seed can be changed with srand (<a href="https://manpages.debian.org/rand.html">manpages.debian.org/rand.html</a>). 
 </div><div class=page id="GAUSS">
 Page: (cpl)GAUSS,  Next: <a href="#ROUND">ROUND</a>,  Prev: <a href="#RAND">RAND</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> GAUSS:		gaussian distributed random REAL number with variance 1
@@ -2380,7 +2381,7 @@ The basic command
 
 (or just <q>cplm</q>) is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run by its name just like any other executable. As an alternative, the straight <a href="#cpl-run">cpl run</a> command compiles and then runs &lt;program&gt; in one shot.
 
-cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri">cpl.fri</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="https://manpages.debian.org/make.html">manpages.debian.org/make.html</a> ) on this makefile. Any arguments possibly present on the command line are passed on as options to the designated C compiler and linker, or to &lt;program&gt; itself if <q>run</q> was specified.
+cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri">cpl.fri</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="https://manpages.debian.org/make.html">manpages.debian.org/make.html</a>) on this makefile. Any arguments possibly present on the command line are passed on as options to the designated C compiler and linker, or to &lt;program&gt; itself if <q>run</q> was specified.
 
 The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line.
 
@@ -2410,6 +2411,7 @@ If your system includes the curl command (on Debian you can install it as <q>apt
 <tr><td><a href="#cpl-i">cpl i</a>:</td><td>Interactive CPL</td></tr>
 <tr><td><a href="editor.html#Top">cpl edit:(editor)Top</a>:</td><td>development text editor with word and syntax completion</td></tr>
 <tr><td><a href="#cpl-info">cpl info</a>:</td><td>info reading script</td></tr>
+<tr><td><a href="#mpicpl">mpicpl</a>:</td><td>Compile with mpi options</td></tr>
 </table></nav>
 
 </div><div class=page id="cpl-run">
@@ -2444,9 +2446,15 @@ FRI language excerpts may be inserted at any point of a CPL program block by the
 
 This has the effect of dynamically adding new statement constructions and for all purposes extending the syntax of the language (see <a href="fri.html#Top">(fri)Top</a>). Like everything else in CPL, the new extensions are available from the point where the FRI SECTION appears through the end of the enclosing block. 
 </div><div class=page id="cpl-info">
-Page: (cpl)cpl info,  Next: <a href="#cpl-i">cpl i</a>,  Prev: <a href="#FRI-SECTION">FRI SECTION</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)cpl info,  Next: <a href="#mpicpl">mpicpl</a>,  Prev: <a href="#FRI-SECTION">FRI SECTION</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>info manual</h3>
 A CPL manual in info format is available through GNU info. Its reading command is encapsulated as <q>cpl info</q>. Typing <q>cpl info</q> with no arguments brings you to the head of the file you are now reading. Typing <q>cpl info &lt;keyword&gt;</q> brings you help about a specific CPL keyword. 
+</div><div class=page id="mpicpl">
+Page: (cpl)mpicpl,  Next: <a href="#cpl-i">cpl i</a>,  Prev: <a href="#cpl-info">cpl info</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h3>Compile mpi program</h3>
+	mpicpl &lt;program&gt;[.cpl]
+
+invokes cpl make with the same options as used by mpicc. (<a href="https://manpages.debian.org/mpicc.html">manpages.debian.org/mpicc.html</a>) 
 </div><div class=page id="cpl-i">
 Page: (cpl)cpl i,  Next: <a href="#Library">Library</a>,  Prev: <a href="#cpl-info">cpl info</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Interactive CPL</h2>
@@ -2488,7 +2496,7 @@ Page: (cpl)cpl i commands,  Next: <a href="#Library">Library</a>,  Prev: <a href
 </td></tr>
 <tr><td colspan="2">For interactive cpl to work, the Formal Rule Interpreter <a href="fri.html#Top">(fri)Top</a> must </td></tr>
 <tr><td colspan="2">have been compiled with readline (see <a href="editor.html#Top">(editor)Top</a>) and dynamic loading </td></tr>
-<tr><td colspan="2">(<a href="https://manpages/debian.org/dlopen.html">manpages/debian.org/dlopen.html</a> ) support.
+<tr><td colspan="2">(<a href="https://manpages/debian.org/dlopen.html">manpages/debian.org/dlopen.html</a>) support.
 
 </td></tr>
 <tr><td colspan="2">When either an interpreted or a compiled program is running under interactive </td></tr>

@@ -1,2 +1,2 @@
 2022-06-11
-minor corrections.
+mpicpl alias added to the cpl script.
