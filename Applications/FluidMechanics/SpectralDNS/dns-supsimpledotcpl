@@ -1,0 +1,262 @@
+USE fft
+USE rbmat
+!USE rtchecks
+
+FILE dati=OPEN("dns.in")
+INTEGER CONSTANT nx,ny,nz
+REAL CONSTANT alfa0,beta0,htcoeff,ymax=2,ymin=0,t_max,dt_field,dt_save
+REAL ni, meanpx=0, meanpz=0, meanflowx=0, meanflowz=0, deltat, time=0
+STRING restart_file
+READ BY NAME FROM dati nx,ny,nz,alfa0,beta0,htcoeff,ni; ni=1/~
+DO WHILE READ BY NAME FROM dati meanpx OR meanflowx OR meanpz OR meanflowz
+READ BY NAME FROM dati deltat, t_max, dt_field, dt_save
+IF NOT READ BY NAME FROM dati restart_file THEN restart_file=""
+REAL y(-1..ny+1); DO y(i)=ymax*i/ny FOR ALL i
+
+STRUCTURE[ARRAY(-2..2) OF REAL d0,d1,d2,d4] derivatives(1..ny-1)
+ARRAY(-2..2) OF REAL d040,d140,d14m1, d04n,d14n,d14np1
+MODULE setup_derivatives
+REAL M(0..4,0..4),t(0..4)
+LOOP FOR iy=1 TO ny-1 WITH derivatives(iy)
+  DO M(i,j)=(y(iy-2+j)-y(iy))**(4-i) FOR ALL i,j; LUdecomp M
+  t=0; t(0)=24
+  d4(-2+(*))=M\t
+  DO M(i,j)=(5-i)*(6-i)*(7-i)*(8-i)*(y(iy-2+j)-y(iy))**(4-i) FOR ALL i,j; LUdecomp M
+  DO t(i)=SUM {d4(j)*(y(iy+j)-y(iy))**(8-i)} FOR ALL j FOR ALL i
+  d0(-2+(*))=M\t
+  DO M(i,j)=(y(iy-2+j)-y(iy))**(4-i) FOR ALL i,j; LUdecomp M
+  t=0; DO t(i)=SUM d0(j)*(4-i)*(3-i)*(y(iy+j)-y(iy))**(2-i) FOR ALL j FOR i=0 TO 2
+  d2(-2+(*))=M\t
+  t=0; DO t(i)=SUM d0(j)*(4-i)*(y(iy+j)-y(iy))**(3-i) FOR ALL j FOR i=0 TO 3
+  d1(-2+(*))=M\t
+REPEAT
+DO M(i,j)=(y(-1+j)-y(0))**(4-i) FOR ALL i,j; LUdecomp M
+t=0; t(3)=1; d140(-2+(*))=M\t
+DO M(i,j)=(y(-1+j)-y(-1))**(4-i) FOR ALL i,j; LUdecomp M
+t=0; t(3)=1; d14m1(-2+(*))=M\t
+d04n=0; d04n(1)=1; d040=0; d040(-1)=1
+DO M(i,j)=(y(ny-3+j)-y(ny))**(4-i) FOR ALL i,j; LUdecomp M
+t=0; t(3)=1; d14n(-2+(*))=M\t
+DO M(i,j)=(y(ny-3+j)-y(ny+1))**(4-i) FOR ALL i,j; LUdecomp M
+t=0; t(3)=1; d14np1(-2+(*))=M\t
+END setup_derivatives
+  
+INLINE REAL FUNCTION D0(REAL f(*)) = d0(-2)*f(-2)+d0(-1)*f(-1)+d0(0)*f(0)+d0(1)*f(1)+d0(2)*f(2)
+INLINE REAL FUNCTION D1(REAL f(*)) = d1(-2)*f(-2)+d1(-1)*f(-1)+d1(0)*f(0)+d1(1)*f(1)+d1(2)*f(2)
+INLINE REAL FUNCTION D2(REAL f(*)) = d2(-2)*f(-2)+d2(-1)*f(-1)+d2(0)*f(0)+d2(1)*f(1)+d2(2)*f(2)
+INLINE REAL FUNCTION D4(REAL f(*)) = d4(-2)*f(-2)+d4(-1)*f(-1)+d4(0)*f(0)+d4(1)*f(1)+d4(2)*f(2)
+INLINE COMPLEX FUNCTION D0(COMPLEX f(*))=D0(f.REAL)+I*D0(f.IMAG)
+INLINE COMPLEX FUNCTION D1(COMPLEX f(*))=D1(f.REAL)+I*D1(f.IMAG)
+INLINE COMPLEX FUNCTION D2(COMPLEX f(*))=D2(f.REAL)+I*D2(f.IMAG)
+INLINE COMPLEX FUNCTION D4(COMPLEX f(*))=D4(f.REAL)+I*D4(f.IMAG)
+
+REAL FUNCTION yintegr(REAL f(*))
+  RESULT=0
+  LOOP FOR iy=1 TO ny-1 BY 2 
+   yp1=y(iy+1)-y(iy); ym1=y(iy-1)-y(iy) 
+   a1=-1/3*ym1+1/6*yp1+1/6*yp1*yp1/ym1
+   a3=+1/3*yp1-1/6*ym1-1/6*ym1*ym1/yp1
+   a2=yp1-ym1-a1-a3
+   RESULT=~+a1*f(iy-1) + a2*f(iy) + a3*f(iy+1)    
+  REPEAT
+END yintegr
+
+VELOCITY=STRUCTURE(COMPLEX u,v,w)
+ARRAY(0..nx,-nz..nz,-1..ny+1) OF VELOCITY V=0
+MOMFLUX=STRUCTURE(COMPLEX uu,uv,vv,vw,ww,uw)
+MOMFLUX VV(0..nx,-nz..nz,-2..2)=0
+INTEGER nxd=3*nx DIV 2 - 1; DO INC nxd UNTIL FFTfit(nxd)
+INTEGER nzd=3*nz - 1; DO INC nzd UNTIL FFTfit(nzd)
+ARRAY(0..nxd-1,0..nzd-1) OF VELOCITY Vd=0
+ARRAY(0..nxd-1,0..nzd-1) OF MOMFLUX VVd=0
+
+maxtimelevels=1
+RHSTYPE=ARRAY(0..nx,-nz..nz) OF STRUCTURE(COMPLEX eta,D2v)
+ARRAY(-2..0) OF POINTER TO RHSTYPE newrhs
+DO newrhs(i) = NEW RHSTYPE FOR ALL i
+ARRAY(maxtimelevels,1..ny-1) OF RHSTYPE oldrhs=0
+
+SUBROUTINE convolutions(ARRAY(*,*) OF VELOCITY Vplane; POINTER TO ARRAY(*,*) OF MOMFLUX VVplane)
+  Vd=0; LOOP FOR ix=0 TO nx
+    DO Vd(ix,iz)=Vplane(ix,iz) FOR iz=0 TO nz
+    DO Vd(ix,nzd+iz)=Vplane(ix,iz) FOR iz=-nz TO -1
+    WITH Vd(ix,*): IFT(u); IFT(v); IFT(w)
+  REPEAT LOOP  
+  DO WITH Vd(*,iz): RFT(u); RFT(v); RFT(w); FOR ALL iz
+  DO WITH Vd(ix,iz), VVd(ix,iz)
+    uu.REAL=u.REAL*u.REAL; uu.IMAG=u.IMAG*u.IMAG 
+    uv.REAL=u.REAL*v.REAL; uv.IMAG=u.IMAG*v.IMAG 
+    vv.REAL=v.REAL*v.REAL; vv.IMAG=v.IMAG*v.IMAG 
+    vw.REAL=v.REAL*w.REAL; vw.IMAG=v.IMAG*w.IMAG 
+    ww.REAL=w.REAL*w.REAL; ww.IMAG=w.IMAG*w.IMAG 
+    uw.REAL=u.REAL*w.REAL; uw.IMAG=u.IMAG*w.IMAG 
+  FOR ALL ix,iz
+  DO WITH VVd(*,iz): HFT(uu); HFT(uv); HFT(vv); HFT(vw); HFT(ww); HFT(uw) FOR ALL iz
+  LOOP FOR ix=0 TO nx
+    WITH VVd(ix,*): FFT(uu); FFT(uv); FFT(vv); FFT(vw); FFT(ww); FFT(uw)
+    DO VVplane(ix,iz)=VVd(ix,iz) FOR iz=0 TO nz
+    DO VVplane(ix,iz)=VVd(ix,nzd+iz) FOR iz=-nz TO -1
+  REPEAT LOOP
+END convolutions
+
+IF restart_file#"" THEN
+  READ BINARY FROM restart_file V, oldrhs
+ELSE
+  DO V(0,0,iy).u.REAL=y(iy)*(2-y(iy)) FOR ALL iy
+  DO WITH V(ix,iz,iy)
+    eps=0.002; u=~+eps*RAND(); w=~+eps*RAND(); w=~+eps*RAND()
+  FOR ALL ix,iz AND iy=1 TO ny-1
+END IF
+
+INLINE FUNCTION OS(INTEGER iy,i)=ni*[d4(i)-2*k2*d2(i)+k2*k2*d0(i)]
+INLINE FUNCTION SQ(INTEGER iy,i)=ni*[d2(i)-k2*d0(i)]
+SUBROUTINE buildrhs[SUBROUTINE(COMPLEX rhs^,old^(*),unknown,implicit_part,explicit_part) timescheme]
+DO convolutions(V(*,*,iy),VV(*,*,iy)) FOR iy=-1 TO 2
+LOOP FOR iy=1 TO ny-1
+  DO VV(ix,iz,i)=VV(ix,iz,i+1) FOR ALL ix,iz AND i=-2 TO 1
+  convolutions(V(*,*,iy+2),VV(*,*,2))
+  WITH derivatives(iy) LOOP FOR ALL ix AND ALL iz
+    ialfa=I*alfa0*ix; ibeta=I*beta0*iz
+    k2=(alfa0*ix)**2+(beta0*iz)**2
+    WITH VV(ix,iz,*), V(ix,iz,iy+(*)):
+    rhsu=-ialfa*D0(uu)-D1(uv)-ibeta*D0(uw)
+    rhsv=-ialfa*D0(uv)-D1(vv)-ibeta*D0(vw)
+    rhsw=-ialfa*D0(uw)-D1(vw)-ibeta*D0(ww)
+    D2vimpl = SUM OS(iy,i)*v(i) FOR i=-2 TO 2
+    timescheme{newrhs(0,ix,iz).D2v,oldrhs(*,iy,ix,iz).D2v,D2(v)-k2*D0(v),
+               D2vimpl,
+               ialfa*[ialfa*D1(uu)+D2(uv)+ibeta*D1(uw)]+
+               ibeta*[ialfa*D1(uw)+D2(vw)+ibeta*D1(ww)]-k2*rhsv}
+    IF ix=0 AND iz=0 THEN ! mean u stored in eta.REAL, mean w in eta.IMAG
+      timescheme{newrhs(0,0,0).eta,oldrhs(*,iy,0,0).eta,D0(u.REAL)+D0(w.REAL)*I,
+                 ni*D2(u.REAL)+ni*D2(w.REAL)*I,
+                 rhsu.REAL+meanpx+[rhsw.REAL+meanpz]*I}
+    ELSE
+      etaimpl=SUM SQ(iy,i)*[ibeta*u(i)-ialfa*w(i)] FOR i=-2 TO 2
+      timescheme{newrhs(0,ix,iz).eta,oldrhs(*,iy,ix,iz).eta,ibeta*D0(u)-ialfa*D0(w),
+                 etaimpl,
+                 ibeta*rhsu-ialfa*rhsw}
+    END IF
+    V(ix,iz,iy-2).u=newrhs(-2,ix,iz).eta; V(ix,iz,iy-2).v=newrhs(-2,ix,iz).D2v
+  REPEAT LOOP
+  temp=newrhs(-2); newrhs(-2)=newrhs(-1); newrhs(-1)=newrhs(0); newrhs(0)=temp
+REPEAT LOOP
+DO V(ix,iz,ny+i).u=newrhs(i,ix,iz).eta; V(ix,iz,ny+i).v=newrhs(i,ix,iz).D2v FOR ALL ix,iz AND i=-2 TO -1
+END buildrhs
+
+SUBROUTINE bcLUdecomp[POINTER TO ARRAY(-1..ny+1,-2..2) OF REAL A]
+  A(0,-1..HI)=~-A(0,-2)/A(-1,-2)*A(-1,-1..HI)
+  A(1,-1..HI)=~-A(1,-2)/A(-1,-2)*A(-1,-1..HI)
+  A(1,0..HI)=~-A(1,-1)/A(0,-1)*A(0,0..HI)
+  A[2,-1+(0..HI)]=~-A(2,-2)/A(0,-1)*A(0,0..HI)
+  A(ny,LO..1)=~-A(ny,2)/A(ny+1,2)*A(ny+1,LO..1)
+  A(ny-1,LO..1)=~-A(ny-1,2)/A(ny+1,2)*A(ny+1,LO..1)
+  A(ny-1,LO..0)=~-A(ny-1,1)/A(ny,1)*A(ny,LO..0)
+  A[ny-2,1+(LO..0)]=~-A(ny-2,2)/A(ny,1)*A(ny,LO..0)
+  LUdecomp A(1..ny-1)
+END bcLUdecomp
+
+SUBROUTINE bcLeftDiv[POINTER TO ARRAY(*) OF REAL x; ARRAY(-1..ny+1,-2..2) OF REAL A]
+  x(0)=~-A(0,-2)/A(-1,-2)*x(-1)
+  x(1)=~-A(1,-2)/A(-1,-2)*x(-1)
+  x(1)=~-A(1,-1)/A(0,-1)*x(0)
+  x(2)=~-A(2,-2)/A(0,-1)*x(0)
+  x(ny)=~-A(ny,2)/A(ny+1,2)*x(ny+1)
+  x(ny-1)=~-A(ny-1,2)/A(ny+1,2)*x(ny+1)
+  x(ny-1)=~-A(ny-1,1)/A(ny,1)*x(ny)
+  x(ny-2)=~-A(ny-2,2)/A(ny,1)*x(ny)
+  x(1..ny-1)=A(1..ny-1)\~
+  x(0)=-{A(0,0..2)*x[1+(0..2)]}/A(0,-1)
+  x(-1)=-{A(-1,-1..2)*x[1+(-1..2)]}/A(-1,-2)
+  x(ny)=-{A(ny,-2..0)*x[ny-1+(-2..0)]}/A(ny,1)
+  x(ny+1)=-{A(ny+1,-2..1)*x[ny-1+(-2..1)]}/A(ny+1,2)
+END bcLeftDiv
+
+ARRAY(-1..ny+1,-2..2) OF REAL D0mat=0, etamat=0, D2vmat=0
+D0mat(1..ny-1)=derivatives.d0
+D0mat(-1)=0; D0mat(-1,-2)=1; D0mat(0)=0; D0mat(0,-1)=1
+D0mat(ny)=0; D0mat(ny,1)=1; D0mat(ny+1)=0; D0mat(ny+1,2)=1
+bcLUdecomp D0mat
+SUBROUTINE deriv(ARRAY(*) OF REAL f0,f1^)
+  f1(0)=SUM d140(i)*f0(1+i) FOR i=-2 TO 2
+  f1(-1)=SUM d14m1(i)*f0(1+i) FOR i=-2 TO 2
+  f1(ny)=SUM d14n(i)*f0(ny-1+i) FOR i=-2 TO 2
+  f1(ny+1)=SUM d14np1(i)*f0(ny-1+i) FOR i=-2 TO 2
+  DO WITH derivatives(i) f1(i)=D1(f0(i+(*))) FOR i=1 TO ny-1
+  bcLeftDiv(f1,D0mat)
+END deriv
+ 
+SUBROUTINE linsolve(REAL lambda)
+LOOP FOR ALL ix,iz
+  ialfa=I*alfa0*ix; ibeta=I*beta0*iz
+  k2=(alfa0*ix)**2+(beta0*iz)**2
+  LOOP FOR iy=1 TO ny-1 AND ALL i WITH derivatives(iy)
+    D2vmat(iy,i)=lambda*[d2(i)-k2*d0(i)]-OS(iy,i)
+    etamat(iy,i)=lambda*d0(i)-SQ(iy,i) 
+  REPEAT
+  ! condizioni al contorno
+  D2vmat(0)=d040; D2vmat(-1)=d140
+  D2vmat(ny)=d04n; D2vmat(ny+1)=d14n
+  etamat(0)=d040; etamat(-1)=derivatives(1).d4
+  etamat(ny)=d04n; etamat(ny+1)=derivatives(ny-1).d4
+  bcLUdecomp D2vmat; bcLUdecomp etamat
+  WITH V(ix,iz,*):
+  v(0)=0;  v(-1)=0; v(ny)=0; v(ny+1)=0
+  bcLeftDiv(v.REAL,D2vmat); bcLeftDiv(v.IMAG,D2vmat)
+  u(0)=0; u(-1)=0;  u(ny)=0; u(ny+1)=0
+  bcLeftDiv(u.REAL,etamat); bcLeftDiv(u.IMAG,etamat)
+  IF ix=0 AND iz=0 THEN
+    w=u.IMAG; u.IMAG=0
+    IF ABS(meanflowx)>1E-10 OR ABS(meanflowz)>1E-10 THEN
+      REAL ucor(-1..ny+1); DO ucor(iy)=1 FOR iy=1 TO ny-1
+      ucor(0)=0; ucor(-1)=0; ucor(ny)=0; ucor(ny+1)=0
+      bcLeftDiv(ucor,etamat)
+      IF ABS(meanflowx)>1E-10 THEN u.REAL=~+(meanflowx-yintegr(u.REAL))/yintegr(ucor)*ucor
+      IF ABS(meanflowz)>1E-10 THEN v.REAL=~+(meanflowz-yintegr(v.REAL))/yintegr(ucor)*ucor
+    END IF
+  ELSE
+    deriv(v.REAL,w.REAL); deriv(v.IMAG,w.IMAG)
+    DO temp=(ialfa*w(iy)-ibeta*u(iy))/k2
+      w(iy)=(ibeta*w(iy)+ialfa*u(iy))/k2 
+      u(iy)=temp
+    FOR iy=-1 TO ny+1
+  END IF
+REPEAT
+END linsolve
+
+SUBROUTINE RK1_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=120/32/deltat*unkn+impl+2*expl
+  old(1)=expl
+END RK1_rai
+CONSTANT REAL RK1_rai_coeff=120/32
+
+SUBROUTINE RK2_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=120/(8*deltat)*unkn+impl+50/8*expl-34/8*old(1)
+  old(1)=expl
+END RK2_rai
+CONSTANT REAL RK2_rai_coeff=120/8
+
+SUBROUTINE RK3_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=120/(20*deltat)*unkn+impl+90/20*expl-50/20*old(1)
+END RK3_rai
+CONSTANT REAL RK3_rai_coeff=120/20      
+
+
+INTEGER cont=0
+LOOP timeloop WHILE time < t_max-deltat/2
+  time=~+2/RK1_rai_coeff*deltat
+  buildrhs(RK1_rai);linsolve(RK1_rai_coeff/deltat)
+  time=~+2/RK2_rai_coeff*deltat
+  buildrhs(RK2_rai);linsolve(RK2_rai_coeff/deltat)
+  time=~+2/RK3_rai_coeff*deltat
+  buildrhs(RK3_rai);linsolve(RK3_rai_coeff/deltat)
+
+  WRITE              time,SUM d140(i)*V(0,0,1+i).u.REAL FOR i=-2 TO 2, 
+                         -SUM d14n(i)*V(0,0,ny-1+i).u.REAL FOR i=-2 TO 2,
+                         meanpx, yintegr(V(0,0,*).u.REAL)/2
+
+  IF FLOOR(time / dt_save) > FLOOR((time-deltat) / dt_save) THEN
+    WRITE BINARY TO "dati.out" V, oldrhs
+  END IF
+
+REPEAT timeloop

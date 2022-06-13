@@ -1,0 +1,148 @@
+USE fft
+USE rbmat
+!USE rtchecks
+
+FILE dati=OPEN("dns.in")
+INTEGER CONSTANT nx,ny,nz
+REAL CONSTANT alfa0,beta0,htcoeff,ymax=2,ymin=0,t_max,dt_field,dt_save
+REAL ni, meanpx=0, meanpz=0, meanflowx=0, meanflowz=0, deltat, time=0
+STRING restart_file
+READ BY NAME FROM dati nx,ny,nz,alfa0,beta0,htcoeff,ni; ni=1/~
+DO WHILE READ BY NAME FROM dati meanpx OR meanflowx OR meanpz OR meanflowz
+READ BY NAME FROM dati deltat, t_max, dt_field, dt_save
+IF NOT READ BY NAME FROM dati restart_file THEN restart_file=""
+REAL y(-1..ny+1); DO y(i)=ymax*i/ny FOR ALL i
+
+STRUCTURE[ARRAY(-2..2) OF REAL d0,d1,d2,d4] derivatives(1..ny-1)
+ARRAY(-2..2) OF REAL d040,d140,d14m1, d04n,d14n,d14np1
+MODULE setup_derivatives
+REAL M(0..4,0..4),t(0..4)
+LOOP FOR iy=1 TO ny-1 WITH derivatives(iy)
+  DO M(i,j)=(y(iy-2+j)-y(iy))**(4-i) FOR ALL i,j; LUdecomp M
+  t=0; t(0)=24
+  d4(-2+(*))=M\t
+  DO M(i,j)=(5-i)*(6-i)*(7-i)*(8-i)*(y(iy-2+j)-y(iy))**(4-i) FOR ALL i,j; LUdecomp M
+  DO t(i)=SUM {d4(j)*(y(iy+j)-y(iy))**(8-i)} FOR ALL j FOR ALL i
+  d0(-2+(*))=M\t
+  DO M(i,j)=(y(iy-2+j)-y(iy))**(4-i) FOR ALL i,j; LUdecomp M
+  t=0; DO t(i)=SUM d0(j)*(4-i)*(3-i)*(y(iy+j)-y(iy))**(2-i) FOR ALL j FOR i=0 TO 2
+  d2(-2+(*))=M\t
+  t=0; DO t(i)=SUM d0(j)*(4-i)*(y(iy+j)-y(iy))**(3-i) FOR ALL j FOR i=0 TO 3
+  d1(-2+(*))=M\t
+REPEAT
+DO M(i,j)=(y(-1+j)-y(0))**(4-i) FOR ALL i,j; LUdecomp M
+t=0; t(3)=1; d140(-2+(*))=M\t
+DO M(i,j)=(y(-1+j)-y(-1))**(4-i) FOR ALL i,j; LUdecomp M
+t=0; t(3)=1; d14m1(-2+(*))=M\t
+d04n=0; d04n(1)=1; d040=0; d040(-1)=1
+DO M(i,j)=(y(ny-3+j)-y(ny))**(4-i) FOR ALL i,j; LUdecomp M
+t=0; t(3)=1; d14n(-2+(*))=M\t
+DO M(i,j)=(y(ny-3+j)-y(ny+1))**(4-i) FOR ALL i,j; LUdecomp M
+t=0; t(3)=1; d14np1(-2+(*))=M\t
+END setup_derivatives
+  
+INLINE REAL FUNCTION D0(REAL f(*)) = d0(-2)*f(-2)+d0(-1)*f(-1)+d0(0)*f(0)+d0(1)*f(1)+d0(2)*f(2)
+INLINE REAL FUNCTION D1(REAL f(*)) = d1(-2)*f(-2)+d1(-1)*f(-1)+d1(0)*f(0)+d1(1)*f(1)+d1(2)*f(2)
+INLINE REAL FUNCTION D2(REAL f(*)) = d2(-2)*f(-2)+d2(-1)*f(-1)+d2(0)*f(0)+d2(1)*f(1)+d2(2)*f(2)
+INLINE REAL FUNCTION D4(REAL f(*)) = d4(-2)*f(-2)+d4(-1)*f(-1)+d4(0)*f(0)+d4(1)*f(1)+d4(2)*f(2)
+INLINE COMPLEX FUNCTION D0(COMPLEX f(*))=D0(f.REAL)+I*D0(f.IMAG)
+INLINE COMPLEX FUNCTION D1(COMPLEX f(*))=D1(f.REAL)+I*D1(f.IMAG)
+INLINE COMPLEX FUNCTION D2(COMPLEX f(*))=D2(f.REAL)+I*D2(f.IMAG)
+INLINE COMPLEX FUNCTION D4(COMPLEX f(*))=D4(f.REAL)+I*D4(f.IMAG)
+
+REAL FUNCTION yintegr(REAL f(*))
+  RESULT=0
+  LOOP FOR iy=1 TO ny-1 BY 2 
+   yp1=y(iy+1)-y(iy); ym1=y(iy-1)-y(iy) 
+   a1=-1/3*ym1+1/6*yp1+1/6*yp1*yp1/ym1
+   a3=+1/3*yp1-1/6*ym1-1/6*ym1*ym1/yp1
+   a2=yp1-ym1-a1-a3
+   RESULT=~+a1*f(iy-1) + a2*f(iy) + a3*f(iy+1)    
+  REPEAT
+END yintegr
+
+USE convolutions
+
+IF restart_file#"" THEN
+  READ BINARY FROM restart_file V, oldrhs
+ELSE
+  DO V(0,0,iy).u.REAL=y(iy)*(2-y(iy)) FOR ALL iy
+  DO WITH V(ix,iz,iy)
+    eps=0.002; u=~+eps*RAND(); w=~+eps*RAND(); w=~+eps*RAND()
+  FOR ALL ix,iz AND iy=1 TO ny-1
+END IF
+
+INLINE FUNCTION OS(INTEGER iy,i)=ni*[d4(i)-2*k2*d2(i)+k2*k2*d0(i)]
+INLINE FUNCTION SQ(INTEGER iy,i)=ni*[d2(i)-k2*d0(i)]
+SUBROUTINE buildrhs[SUBROUTINE(COMPLEX rhs^,old^(*),unknown,implicit_part,explicit_part) timescheme]
+DO convolutions(V(*,*,iy),VV(*,*,iy)) FOR iy=-1 TO 2
+LOOP FOR iy=1 TO ny-1
+  DO VV(ix,iz,i)=VV(ix,iz,i+1) FOR ALL ix,iz AND i=-2 TO 1
+  convolutions(V(*,*,iy+2),VV(*,*,2))
+  WITH derivatives(iy) LOOP FOR ALL ix AND ALL iz
+    ialfa=I*alfa0*ix; ibeta=I*beta0*iz
+    k2=(alfa0*ix)**2+(beta0*iz)**2
+    WITH VV(ix,iz,*), V(ix,iz,iy+(*)):
+    rhsu=-ialfa*D0(uu)-D1(uv)-ibeta*D0(uw)
+    rhsv=-ialfa*D0(uv)-D1(vv)-ibeta*D0(vw)
+    rhsw=-ialfa*D0(uw)-D1(vw)-ibeta*D0(ww)
+    D2vimpl = SUM OS(iy,i)*v(i) FOR i=-2 TO 2
+    timescheme{newrhs(0,ix,iz).D2v,oldrhs(*,iy,ix,iz).D2v,D2(v)-k2*D0(v),
+               D2vimpl,
+               ialfa*[ialfa*D1(uu)+D2(uv)+ibeta*D1(uw)]+
+               ibeta*[ialfa*D1(uw)+D2(vw)+ibeta*D1(ww)]-k2*rhsv}
+    IF ix=0 AND iz=0 THEN ! mean u stored in eta.REAL, mean w in eta.IMAG
+      timescheme{newrhs(0,0,0).eta,oldrhs(*,iy,0,0).eta,D0(u.REAL)+D0(w.REAL)*I,
+                 ni*D2(u.REAL)+ni*D2(w.REAL)*I,
+                 rhsu.REAL+meanpx+[rhsw.REAL+meanpz]*I}
+    ELSE
+      etaimpl=SUM SQ(iy,i)*[ibeta*u(i)-ialfa*w(i)] FOR i=-2 TO 2
+      timescheme{newrhs(0,ix,iz).eta,oldrhs(*,iy,ix,iz).eta,ibeta*D0(u)-ialfa*D0(w),
+                 etaimpl,
+                 ibeta*rhsu-ialfa*rhsw}
+    END IF
+    V(ix,iz,iy-2).u=newrhs(-2,ix,iz).eta; V(ix,iz,iy-2).v=newrhs(-2,ix,iz).D2v
+  REPEAT LOOP
+  temp=newrhs(-2); newrhs(-2)=newrhs(-1); newrhs(-1)=newrhs(0); newrhs(0)=temp
+REPEAT LOOP
+DO V(ix,iz,ny+i).u=newrhs(i,ix,iz).eta; V(ix,iz,ny+i).v=newrhs(i,ix,iz).D2v FOR ALL ix,iz AND i=-2 TO -1
+END buildrhs
+
+USE linsolve
+
+SUBROUTINE RK1_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=120/32/deltat*unkn+impl+2*expl
+  old(1)=expl
+END RK1_rai
+CONSTANT REAL RK1_rai_coeff=120/32
+
+SUBROUTINE RK2_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=120/(8*deltat)*unkn+impl+50/8*expl-34/8*old(1)
+  old(1)=expl
+END RK2_rai
+CONSTANT REAL RK2_rai_coeff=120/8
+
+SUBROUTINE RK3_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=120/(20*deltat)*unkn+impl+90/20*expl-50/20*old(1)
+END RK3_rai
+CONSTANT REAL RK3_rai_coeff=120/20      
+
+
+INTEGER cont=0
+LOOP timeloop WHILE time < t_max-deltat/2
+  time=~+2/RK1_rai_coeff*deltat
+  buildrhs(RK1_rai);linsolve(RK1_rai_coeff/deltat)
+  time=~+2/RK2_rai_coeff*deltat
+  buildrhs(RK2_rai);linsolve(RK2_rai_coeff/deltat)
+  time=~+2/RK3_rai_coeff*deltat
+  buildrhs(RK3_rai);linsolve(RK3_rai_coeff/deltat)
+
+  WRITE              time,SUM d140(i)*V(0,0,1+i).u.REAL FOR i=-2 TO 2, 
+                         -SUM d14n(i)*V(0,0,ny-1+i).u.REAL FOR i=-2 TO 2,
+                         meanpx, yintegr(V(0,0,*).u.REAL)/2
+
+  IF FLOOR(time / dt_save) > FLOOR((time-deltat) / dt_save) THEN
+    WRITE BINARY TO "dati.out" V, oldrhs
+  END IF
+
+REPEAT timeloop
