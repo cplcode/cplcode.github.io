@@ -16,10 +16,10 @@
 
 <a href="cpl.html#FILE">FILE</a> dati=<a href="cpl.html#OPEN">OPEN</a>("dns.in")
 <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> nx,ny,nz
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#CONSTANT">CONSTANT</a> alfa0,beta0,htcoeff,ymax=2,ymin=0,t_max,dt_field,dt_save
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#CONSTANT">CONSTANT</a> alpha0,beta0,htcoeff,ymax=2,ymin=0,t_max,dt_field,dt_save
 <a href="cpl.html#REAL">REAL</a> ni, meanpx=0, meanpz=0, meanflowx=0, meanflowz=0, deltat, time=0
 <a href="cpl.html#STRING">STRING</a> restart_file
-<a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> dati nx,ny,nz,alfa0,beta0,htcoeff,ni; ni=1/<a href="cpl.html#Assignment">~</a>
+<a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> dati nx,ny,nz,alpha0,beta0,htcoeff,ni; ni=1/<a href="cpl.html#Assignment">~</a>
 <a href="cpl.html#DO">DO</a> <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> dati meanpx <a href="cpl.html#OR">OR</a> meanflowx <a href="cpl.html#OR">OR</a> meanpz <a href="cpl.html#OR">OR</a> meanflowz
 <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> dati deltat, t_max, dt_field, dt_save
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> dati restart_file <a href="cpl.html#IF">THEN</a> restart_file=""
@@ -84,34 +84,34 @@ t=0; t(3)=1; d14np1(-2+(&lowast;))=M\t
   <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iz <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> OS(<a href="cpl.html#INTEGER">INTEGER</a> iy,i)=ni&lowast;[d4(i)-2&lowast;k2&lowast;d2(i)+k2&lowast;k2&lowast;d0(i)]
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> SQ(<a href="cpl.html#INTEGER">INTEGER</a> iy,i)=ni&lowast;[d2(i)-k2&lowast;d0(i)]
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> OS(<a href="cpl.html#INTEGER">INTEGER</a> i)=ni&lowast;[d4(i)-2&lowast;k2&lowast;d2(i)+k2&lowast;k2&lowast;d0(i)]
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> SQ(<a href="cpl.html#INTEGER">INTEGER</a> i)=ni&lowast;[d2(i)-k2&lowast;d0(i)]
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> buildrhs[<a href="cpl.html#FUNCTION">SUBROUTINE</a>(<a href="complex.html#Top">COMPLEX</a> rhs<a href="cpl.html#REAL-operator">^</a>,old<a href="cpl.html#REAL-operator">^</a>(&lowast;),unknown,implicit_part,explicit_part) timescheme]
 <a href="cpl.html#DO">DO</a> convolutions(V(&lowast;,&lowast;,iy),VV(&lowast;,&lowast;,iy)) <a href="cpl.html#FOR">FOR</a> iy=-1 <a href="cpl.html#TO">TO</a> 2
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
   <a href="cpl.html#DO">DO</a> VV(ix,iz,i)=VV(ix,iz,i+1) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iz <a href="cpl.html#AND">AND</a> i=-2 <a href="cpl.html#TO">TO</a> 1
   convolutions(V(&lowast;,&lowast;,iy+2),VV(&lowast;,&lowast;,2))
   <a href="cpl.html#WITH">WITH</a> derivatives(iy) <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iz
-    ialfa=I&lowast;alfa0&lowast;ix; ibeta=I&lowast;beta0&lowast;iz
-    k2=(alfa0&lowast;ix)<a href="cpl.html#compound-index">**</a>2+(beta0&lowast;iz)<a href="cpl.html#compound-index">**</a>2
+    ialpha=I&lowast;alpha0&lowast;ix; ibeta=I&lowast;beta0&lowast;iz
+    k2=(alpha0&lowast;ix)<a href="cpl.html#compound-index">**</a>2+(beta0&lowast;iz)<a href="cpl.html#compound-index">**</a>2
     <a href="cpl.html#WITH">WITH</a> VV(ix,iz,&lowast;), V(ix,iz,iy+(&lowast;)):
-    rhsu=-ialfa&lowast;D0(uu)-D1(uv)-ibeta&lowast;D0(uw)
-    rhsv=-ialfa&lowast;D0(uv)-D1(vv)-ibeta&lowast;D0(vw)
-    rhsw=-ialfa&lowast;D0(uw)-D1(vw)-ibeta&lowast;D0(ww)
-    D2vimpl = <a href="cpl.html#Looping-operator">SUM</a> OS(iy,i)&lowast;v(i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
+    rhsu=-ialpha&lowast;D0(uu)-D1(uv)-ibeta&lowast;D0(uw)
+    rhsv=-ialpha&lowast;D0(uv)-D1(vv)-ibeta&lowast;D0(vw)
+    rhsw=-ialpha&lowast;D0(uw)-D1(vw)-ibeta&lowast;D0(ww)
+    D2vimpl = <a href="cpl.html#Looping-operator">SUM</a> OS(i)&lowast;v(i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
     timescheme{newrhs(0,ix,iz).D2v,oldrhs(&lowast;,iy,ix,iz).D2v,D2(v)-k2&lowast;D0(v),
                D2vimpl,
-               ialfa&lowast;[ialfa&lowast;D1(uu)+D2(uv)+ibeta&lowast;D1(uw)]+
-               ibeta&lowast;[ialfa&lowast;D1(uw)+D2(vw)+ibeta&lowast;D1(ww)]-k2&lowast;rhsv}
+               ialpha&lowast;[ialpha&lowast;D1(uu)+D2(uv)+ibeta&lowast;D1(uw)]+
+               ibeta&lowast;[ialpha&lowast;D1(uw)+D2(vw)+ibeta&lowast;D1(ww)]-k2&lowast;rhsv}
     <a href="cpl.html#IF">IF</a> ix=0 <a href="cpl.html#AND">AND</a> iz=0 <a href="cpl.html#IF">THEN</a> <span class=comment>! mean u stored in eta.REAL, mean w in eta.IMAG</span>
       timescheme{newrhs(0,0,0).eta,oldrhs(&lowast;,iy,0,0).eta,D0(u.<a href="cpl.html#REAL">REAL</a>)+D0(w.<a href="cpl.html#REAL">REAL</a>)&lowast;I,
                  ni&lowast;D2(u.<a href="cpl.html#REAL">REAL</a>)+ni&lowast;D2(w.<a href="cpl.html#REAL">REAL</a>)&lowast;I,
                  rhsu.<a href="cpl.html#REAL">REAL</a>+meanpx+[rhsw.<a href="cpl.html#REAL">REAL</a>+meanpz]&lowast;I}
     <a href="cpl.html#ELSE">ELSE</a>
-      etaimpl=<a href="cpl.html#Looping-operator">SUM</a> SQ(iy,i)&lowast;[ibeta&lowast;u(i)-ialfa&lowast;w(i)] <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
-      timescheme{newrhs(0,ix,iz).eta,oldrhs(&lowast;,iy,ix,iz).eta,ibeta&lowast;D0(u)-ialfa&lowast;D0(w),
+      etaimpl=<a href="cpl.html#Looping-operator">SUM</a> SQ(i)&lowast;[ibeta&lowast;u(i)-ialpha&lowast;w(i)] <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
+      timescheme{newrhs(0,ix,iz).eta,oldrhs(&lowast;,iy,ix,iz).eta,ibeta&lowast;D0(u)-ialpha&lowast;D0(w),
                  etaimpl,
-                 ibeta&lowast;rhsu-ialfa&lowast;rhsw}
+                 ibeta&lowast;rhsu-ialpha&lowast;rhsw}
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     V(ix,iz,iy-2).u=newrhs(-2,ix,iz).eta; V(ix,iz,iy-2).v=newrhs(-2,ix,iz).D2v
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>

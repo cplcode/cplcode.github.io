@@ -4,10 +4,10 @@ USE rbmat
 
 FILE dati=OPEN("dns.in")
 INTEGER CONSTANT nx,ny,nz
-REAL CONSTANT alfa0,beta0,htcoeff,ymax=2,ymin=0,t_max,dt_field,dt_save
+REAL CONSTANT alpha0,beta0,htcoeff,ymax=2,ymin=0,t_max,dt_field,dt_save
 REAL ni, meanpx=0, meanpz=0, meanflowx=0, meanflowz=0, deltat, time=0
 STRING restart_file
-READ BY NAME FROM dati nx,ny,nz,alfa0,beta0,htcoeff,ni; ni=1/~
+READ BY NAME FROM dati nx,ny,nz,alpha0,beta0,htcoeff,ni; ni=1/~
 DO WHILE READ BY NAME FROM dati meanpx OR meanflowx OR meanpz OR meanflowz
 READ BY NAME FROM dati deltat, t_max, dt_field, dt_save
 IF NOT READ BY NAME FROM dati restart_file THEN restart_file=""
@@ -72,34 +72,34 @@ ELSE
   FOR ALL ix,iz AND iy=1 TO ny-1
 END IF
 
-INLINE FUNCTION OS(INTEGER iy,i)=ni*[d4(i)-2*k2*d2(i)+k2*k2*d0(i)]
-INLINE FUNCTION SQ(INTEGER iy,i)=ni*[d2(i)-k2*d0(i)]
+INLINE FUNCTION OS(INTEGER i)=ni*[d4(i)-2*k2*d2(i)+k2*k2*d0(i)]
+INLINE FUNCTION SQ(INTEGER i)=ni*[d2(i)-k2*d0(i)]
 SUBROUTINE buildrhs[SUBROUTINE(COMPLEX rhs^,old^(*),unknown,implicit_part,explicit_part) timescheme]
 DO convolutions(V(*,*,iy),VV(*,*,iy)) FOR iy=-1 TO 2
 LOOP FOR iy=1 TO ny-1
   DO VV(ix,iz,i)=VV(ix,iz,i+1) FOR ALL ix,iz AND i=-2 TO 1
   convolutions(V(*,*,iy+2),VV(*,*,2))
   WITH derivatives(iy) LOOP FOR ALL ix AND ALL iz
-    ialfa=I*alfa0*ix; ibeta=I*beta0*iz
-    k2=(alfa0*ix)**2+(beta0*iz)**2
+    ialpha=I*alpha0*ix; ibeta=I*beta0*iz
+    k2=(alpha0*ix)**2+(beta0*iz)**2
     WITH VV(ix,iz,*), V(ix,iz,iy+(*)):
-    rhsu=-ialfa*D0(uu)-D1(uv)-ibeta*D0(uw)
-    rhsv=-ialfa*D0(uv)-D1(vv)-ibeta*D0(vw)
-    rhsw=-ialfa*D0(uw)-D1(vw)-ibeta*D0(ww)
-    D2vimpl = SUM OS(iy,i)*v(i) FOR i=-2 TO 2
+    rhsu=-ialpha*D0(uu)-D1(uv)-ibeta*D0(uw)
+    rhsv=-ialpha*D0(uv)-D1(vv)-ibeta*D0(vw)
+    rhsw=-ialpha*D0(uw)-D1(vw)-ibeta*D0(ww)
+    D2vimpl = SUM OS(i)*v(i) FOR i=-2 TO 2
     timescheme{newrhs(0,ix,iz).D2v,oldrhs(*,iy,ix,iz).D2v,D2(v)-k2*D0(v),
                D2vimpl,
-               ialfa*[ialfa*D1(uu)+D2(uv)+ibeta*D1(uw)]+
-               ibeta*[ialfa*D1(uw)+D2(vw)+ibeta*D1(ww)]-k2*rhsv}
+               ialpha*[ialpha*D1(uu)+D2(uv)+ibeta*D1(uw)]+
+               ibeta*[ialpha*D1(uw)+D2(vw)+ibeta*D1(ww)]-k2*rhsv}
     IF ix=0 AND iz=0 THEN ! mean u stored in eta.REAL, mean w in eta.IMAG
       timescheme{newrhs(0,0,0).eta,oldrhs(*,iy,0,0).eta,D0(u.REAL)+D0(w.REAL)*I,
                  ni*D2(u.REAL)+ni*D2(w.REAL)*I,
                  rhsu.REAL+meanpx+[rhsw.REAL+meanpz]*I}
     ELSE
-      etaimpl=SUM SQ(iy,i)*[ibeta*u(i)-ialfa*w(i)] FOR i=-2 TO 2
-      timescheme{newrhs(0,ix,iz).eta,oldrhs(*,iy,ix,iz).eta,ibeta*D0(u)-ialfa*D0(w),
+      etaimpl=SUM SQ(i)*[ibeta*u(i)-ialpha*w(i)] FOR i=-2 TO 2
+      timescheme{newrhs(0,ix,iz).eta,oldrhs(*,iy,ix,iz).eta,ibeta*D0(u)-ialpha*D0(w),
                  etaimpl,
-                 ibeta*rhsu-ialfa*rhsw}
+                 ibeta*rhsu-ialpha*rhsw}
     END IF
     V(ix,iz,iy-2).u=newrhs(-2,ix,iz).eta; V(ix,iz,iy-2).v=newrhs(-2,ix,iz).D2v
   REPEAT LOOP
