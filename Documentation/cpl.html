@@ -628,7 +628,9 @@ A subroutine returns at the END of the subroutine block or at the <a href="#EXIT
 
 The declared subroutine is visible from the point of its declaration to the end of the enclosing block, just as all other declarations. This includes the subroutine body itself, and recursive calls are thus automatically allowed.
 
-<nav><table>
+A function can also be declared implicitly where a function argument is expected, by providing the function body as the actual parameter. See <a href="#Implicit-function-declaration">Implicit function declaration</a>.
+
+ <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#SUBROUTINE">SUBROUTINE</a>:</td><td>Subroutine declaration</td></tr>
@@ -640,6 +642,7 @@ The declared subroutine is visible from the point of its declaration to the end 
 <tr><td><a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>:</td><td>aka function overloading</td></tr>
 <tr><td><a href="#array-parameters">array parameters</a>:</td><td>passing arrays of variable dimensions</td></tr>
 <tr><td><a href="#Subroutine-type">Subroutine type</a>:</td><td>variable call to a subroutine or function</td></tr>
+<tr><td><a href="#Implicit-function-declaration">Implicit function declaration</a>:</td><td></td></tr>
 <tr><td><a href="#Builtin">Builtin</a>:</td><td>built-in function list</td></tr>
 </table></nav>
 
@@ -1142,7 +1145,7 @@ In addition, situations where the type of an object is not decided at compile ti
 
 	DYNAMIC POINTER
 
-A function call in which such a pointer appears is transparently switched at run time to the function defined for the type of the actual arguments, or an error is thrown if no such function exists.
+A function call in which such a pointer appears is transparently switched at run time to the function defined for the type of the actual parameters, or an error is thrown if no such function exists.
 
 Pointers to variables of any except ARRAY(&lowast;) and STORED type can be assigned to a DYNAMIC POINTER. If the scope of assignment is to be restricted, the declaration becomes
 
@@ -1188,7 +1191,7 @@ is equivalent to
 
 	POINTER TO ARRAY(10) OF STRUCTURE(INTEGER x,y) A 
 </div><div class=page id="Subroutine-type">
-Page: (cpl)Subroutine type, Next: <a href="#Type-identity">Type identity</a>, Prev: <a href="#Postfix">Postfix</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)Subroutine type, Next: <a href="#Implicit-function-declaration">Implicit function declaration</a>, Prev: <a href="#Postfix">Postfix</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Variable call to a subroutine or function</h3>
 A subroutine variable may be specified through the type declarator
 
@@ -1202,8 +1205,22 @@ A function variable may be specified through the type declarator
 the first form being mandatory when the result &lt;type&gt; is a pointer type and thus ambiguity can arise.
 
 These type declarators can be used, just like all other type declarators, to declare variables and formal parameters, or as a part of new compound types. In addition to being assigned or compared to each other, subroutine variables can be assigned the name of a compatible subroutine as their value or as the actual parameter, and can later be called with the same syntax as normal (constant) subroutines and functions. 
+</div><div class=page id="Implicit-function-declaration">
+Page: (cpl)Implicit function declaration, Next: <a href="#Type-identity">Type identity</a>, Prev: <a href="#Subroutine-type">Subroutine type</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h3>Implicit declaration of functions or subroutines</h3>
+Where a subroutine or function variable is expected (in an assignment or as an actual parameter to a call expecting a function type), in alternative to the name of an existing function the implicit definition of a function can be passed. Such an implicit declaration provides the body of the function as it would appear after the = sign in a short-form declaration (<a href="#FUNCTION">short form:FUNCTION</a>), with the formal parameters identified by the names declared in their original function-variable declaration. For example,
+
+	SUBROUTINE PLOT(REAL FUNCTION(REAL x) f; REAL x1..x2)
+
+(a declaration actually contained in graphics.cpl or gnuplot.cpl) declares a formal parameter f that takes an argument named x. After this declaration
+
+	PLOT SIN(x^2),0..2&lowast;PI
+
+is a valid call and implicitly declares f(x) = SIN(x^2). For greater clarity, or in rare cases where this syntax may generate confusion, angle brackets can be added as in the alternative syntax
+
+	PLOT &lt;SIN(x^2)&gt;,0..2&lowast;PI 
 </div><div class=page id="Type-identity">
-Page: (cpl)Type identity, Prev: <a href="#Subroutine-type">Subroutine type</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)Type identity, Prev: <a href="#Implicit-function-declaration">Implicit function declaration</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Type identity</h3>
 When are two VARIABLEs of the same TYPE? Pascal-like strongly typed languages only consider variables of the same type when they are declared by the same typename or they appear in the same compound declaration. In other words, repeated compound declarations are not considered the same type even when they are equal, just as are not considered the same type two different typenames with similar definitions. C, on the other hand, handles typenames as bare aliases, and compares their definitions directly. None of these languages has runtime-dimensioned arrays. CPL takes the C approach when possible, and compares type definitions, but explicitly considers two different typenames different even when they correspond to the same declaration. Generally, it is good practice to declare variables that must be of the same type in a single declaration, or through a single typename, or through <a href="#TYPEOF">TYPEOF</a>. This is particularly true with runtime-dimensioned arrays (ARRAYs whose bounds are specified by a VARIABLE and are only known at run time). In fact, since a VARIABLE may take on different values in different parts of the program, multiple declarations of this type are necessarily considered different.
 
