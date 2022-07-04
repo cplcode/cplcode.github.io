@@ -1208,9 +1208,9 @@ These type declarators can be used, just like all other type declarators, to dec
 </div><div class=page id="Implicit-function-declaration">
 Page: (cpl)Implicit function declaration, Next: <a href="#Type-identity">Type identity</a>, Prev: <a href="#Subroutine-type">Subroutine type</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Implicit declaration of functions or subroutines</h3>
-Where a subroutine or function variable is expected (in an assignment or as an actual parameter to a call expecting a function type), in alternative to the name of an existing function the implicit definition of a function can be passed. Such an implicit declaration provides the body of the function as it would appear after the = sign in a short-form declaration (<a href="#FUNCTION">short form:FUNCTION</a>), with the formal parameters identified by the names declared in their original function-variable declaration. For example,
+Where a subroutine or function variable is expected (in an assignment or as an actual parameter to a call expecting a function-type argument), in alternative to the name of an existing function the implicit definition of a function can be passed. Such an implicit declaration is formed by the body of the function as it would appear after the = sign in a short-form declaration (<a href="#FUNCTION">short form:FUNCTION</a>), with the formal parameters identified by the names defined in their original function-variable declaration. For example,
 
-	SUBROUTINE PLOT(REAL FUNCTION(REAL x) f; REAL x1..x2)
+	SUBROUTINE PLOT(FUNCTION(REAL x)-&gt;REAL f; REAL x1..x2)
 
 (a declaration actually contained in graphics.cpl or gnuplot.cpl) declares a formal parameter f that takes an argument named x. After this declaration
 
