@@ -43,7 +43,7 @@
         font-size: 1em;
         font-family:-apple-system,ui-monospace,monospace,serif;
       }
-      code,pre {overflow:auto;}
+      /* code,pre {overflow:auto;} */
       iframe.news {
         position:absolute;
         width:95%;
