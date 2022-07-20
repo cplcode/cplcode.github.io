@@ -246,7 +246,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="complex.html#Top">complex:(complex)</a>:</td><td>Complex numbers</td></tr>
 <tr><td><a href="#cpl.fri">cpl.fri</a>:</td><td>The CPL-to-C compiler</td></tr>
 <tr><td><a href="editor.html#full-screen">edit:(editor)full-screen</a>:</td><td>Open an existing or new file in full-screen editor</td></tr>
-<tr><td><a href="#cpl-i">exit:cpl i</a>:</td><td>quit interactive cpl</td></tr>
+<tr><td><a href="#cpl-i-commands">exit:cpl i commands</a>:</td><td>quit interactive cpl</td></tr>
 <tr><td><a href="fft.html#Top">fft:(fft)</a>:</td><td>Fast Fourier Transforms</td></tr>
 <tr><td><a href="fri.html#Top">fri:(fri)</a>:</td><td>The Formal Rule Interpreter</td></tr>
 <tr><td><a href="graphics.html#gnuplot">gnuplot:(graphics)gnuplot</a>:</td><td>plotting primitives rendered through gnuplot</td></tr>
@@ -265,7 +265,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="parallel.html#nonparallel">nonparallel:(parallel)nonparallel</a>:</td><td>fake parallel package (does nothing)</td></tr>
 <tr><td><a href="parallel.html#Top">parallel:(parallel)</a>:</td><td>Parallel computing</td></tr>
 <tr><td><a href="graphics.html#gnuplot">plot:(graphics)gnuplot</a>:</td><td>gnuplot plot command with CPL arguments</td></tr>
-<tr><td><a href="#cpl-i">quit:cpl i</a>:</td><td>exit interactive cpl</td></tr>
+<tr><td><a href="#cpl-i-commands">quit:cpl i commands</a>:</td><td>exit interactive cpl</td></tr>
 <tr><td><a href="matrix.html#Top">rbmat:(matrix)</a>:</td><td>Real square and Banded Matrix operations</td></tr>
 <tr><td><a href="editor.html#Top">readline:(editor)</a>:</td><td>Own implementation of readline input editor</td></tr>
 <tr><td><a href="#rtchecks">rtchecks</a>:</td><td>Run Time bounds Checking</td></tr>
@@ -384,7 +384,7 @@ Drag and drop the <q>interactive CPL</q> icon from wherever your <q>fri</q> dire
 Starting with version 2020-12-16, cpl automatically offers updates when they become available (see <a href="#automatic-updates">automatic updates</a>). If you see an update on the website for which you did not get a reminder while running cpl, please check that the <q>curl</q> command is installed (on Debian, <q>apt install curl</q>) and that you have write access to the parent of the fri/ directory. In case you would rather disable this feature, edit the <q>cpl</q> script and turn ENABLE_UPDATES from <q>YES</q> to <q>NO</q>.
 
 <h4>I want to go back to a previous CPL version</h4>
-During an update your present fri/ directory is copied to fri.bak/ . You can always run your previous cpl version by its full pathname (e.g., ~/fri.bak/cpl) or restore it by renaming (mv) fri.bak to fri. You can also install historical CPL versions from the <a href="https://CPLcode.net/version-archive">CPLcode.net/version-archive</a> . After you do so, the just installed (historical) version will be in fri/, whereas your current version will have been moved to fri.bak/ ; if this is confusing, or if you need more than two simultaneous versions, you may want to rename (mv) fri/ or fri.bak/ or both to something else (say, their version date).
+You see an error or an unexpected behaviour of your program which did not occur with a previous CPL version? Your butlast CPL version is conveniently available in fri.bak/ . You can run it by its full pathname (e.g., ~/fri.bak/cpl), or restore it by renaming (mv) fri.bak to fri. You can also install any older CPL version from the <a href="https://CPLcode.net/version-archive">CPLcode.net/version-archive</a> . After you do so the older version will be in fri/, whereas your current version will have been moved to fri.bak/; if this is confusing, or if you need more than two versions at the same time, you may want to rename (mv) fri/ or fri.bak/ or both to something else (say, their version date). If you confirm that the newest version misbehaves, don't forget to inform the developer.
 
 <h4>I want to use interactive cpl and/or edit remotely</h4>
 Interactive cpl is perfectly compatible with ssh. Just ssh into your remote system where CPL is installed, and give the <q>cpl</q> command there. Non-Linux ssh clients are ok too. All special and arrow keys have alphabetic equivalents for the case they may be missing or hard to combine on your keyboard. In a pinch, you can even log in from your smartphone using ConnectBot or similar.
@@ -2503,7 +2503,7 @@ Page: (cpl)cpl i commands,  Next: <a href="#Library">Library</a>,  Prev: <a href
 <tr><td><a href="editor.html#readline">add:(editor)readline</a>:</td><td>add and execute command history from file</td></tr>
 <tr><td><a href="editor.html#full-screen">edit:(editor)full-screen</a>:</td><td>open file in new full-screen window</td></tr>
 <tr><td><a href="editor.html#full-screen">close:(editor)full-screen</a>:</td><td>close present full-screen window</td></tr>
-<tr><td><a href="#q">q</a>:</td><td>exit interactive cpl (also :q, useful if q exists as a variable)</td></tr>
+<tr><td><a href="#Top">q:</a>:</td><td>exit interactive cpl (also :q, useful if q exists as a variable)</td></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td colspan="2">A powerful feature of interactive cpl is its capability to transparently </td></tr>
 <tr><td colspan="2"><a href="#USE">USE</a> a compiled CPL program or #include (see <a href="#C-interface">C interface</a>) </td></tr>
@@ -2605,7 +2605,7 @@ Page: (cpl)Library,  Prev: <a href="#cpl-i">cpl i</a>,  Next: <a href="#rtchecks
 <tr><td><a href="#CHARbyCHAR">CHARbyCHAR</a>:</td><td>live keyboard input</td></tr>
 <tr><td><a href="#INPUTREADY">inputready:INPUTREADY</a>:</td><td>test for input ready on a file descriptor or stdin</td></tr>
 <tr><td><a href="#lapack-eigenvalues">lapack-eigenvalues</a>:</td><td>CPL wrapper around Lapack eigenvalue routines</td></tr>
-<tr><td><a href="#matlib">matlib</a>:</td><td>Some basic compact matrix-defining functions</td></tr>
+<tr><td><a href="#matlib">matlib</a>:</td><td>Some basic matrix-defining functions</td></tr>
 <tr><td colspan="2"> </td></tr>
 </table></nav>
 

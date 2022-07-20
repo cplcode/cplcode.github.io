@@ -32,21 +32,21 @@ p=&amp;(&lowast;&lowast;p).next;
 
 p.col=j
 p=p.next</span>
-    (but in fact even more similar to the once popular <a href="https://en.wikipedia.org/wiki/Pascal_(programming_language)">Pascal</a> and <a href="https://en.wikipedia.org/wiki/Modula-2">Modula-2</a>, for those who remember them), with some unique features. It was born out of the effort to provide the pointer flexibility of C without the bookkeeping of &lowast;'s and &amp;'s, the function overloading of C++ without the scaffolding of classes, and the cross-file prototype checking of Modula-2 (and most modern languages) without the need for dedicated header or interface files.</p>
+    (but in fact even more similar to the once popular <a href="https://en.wikipedia.org/wiki/Pascal_(programming_language)">Pascal</a> and <a href="https://en.wikipedia.org/wiki/Modula-2">Modula-2</a>, for those who remember them), with some unique features. It was born out of the effort to provide the pointer flexibility of C without the hindrance of &lowast;'s and &amp;'s, the function overloading of C++ without the scaffolding of classes, and the cross-file prototype checking of Modula-2 (and most modern languages) without the need for dedicated header or interface files.</p>
 
 <p>It also aims for the ease of use of interpreted languages like <a href="https://www.mathworks.com/products/matlab.html">MATLAB</a> or <a href="https://www.python.org/">Python</a>, without giving up the error-catching benefits of mandatorily declared variables and the sheer speed of compiled execution. CPL was thought out as a compiled language from the very beginning; when used for computationally intensive tasks, it inherits the speed of compiled C.
   <span class=leftinset>&gt; cpl make Helloworld
 &gt; ./Helloworld
 Hello world!</span>
-In fact, its  <a href="Documentation/cpl.html#cpl">compiler</a> is implemented as a nimble and fast source-to-source translator which then invokes the system C compiler; this action, as well as the re-making of any required modules that were modified in the meanwhile, occurs behind the scenes at a single <a href="Documentation/cpl.html#cpl"><code>cpl make</code></a> command. Even this command can be spared, if desired, by embedding <a href="Documentation/cpl.html#cpl-run"><code>cpl run</code></a> in the program itself for immediate execution. At a later time the <a href="Documentation/cpl.html#cpl-i"><code>interactive cpl</code></a> interpreter was added, with the ability to run a combination of interpreted and compiled CPL modules, as well as any function provided by an existing CPL or C library, directly from its console.</p>
+In fact, its  <a href="Documentation/cpl.html#cpl">compiler</a> is implemented as a nimble and fast source-to-source translator which then invokes the system C compiler; this action, as well as the re-making of any modified modules, occurs behind the scenes at a single <a href="Documentation/cpl.html#cpl"><code>cpl make</code></a> command. Even this command can be spared, if desired, by embedding <a href="Documentation/cpl.html#cpl-run"><code>cpl run</code></a> in the program itself for immediate execution. Later in development the <a href="Documentation/cpl.html#cpl-i"><code>interactive cpl</code></a> interpreter was added, with the ability to run a combination of interpreted and compiled CPL modules, as well as any function provided by an existing CPL or C library, directly from its console.</p>
 
-<p>CPL <a href="Documentation/cpl.html#ARRAY">arrays</a>
+<p>CPL <a href="Documentation/cpl.html#ARRAY">ARRAYs</a>
 <span class=rightinset>STRUCTURE(REAL a,b,c) s(-2..8)
 REAL v(-9..15,1..7)
 s(-1..5).a=2&lowast;v(-2..4,6)
 
 var=SUM v(i,j)^2 FOR ALL i,j</span>
-allow variable as well as constant lower and upper bounds of each index, and are (on request) fully bounds-checked. An ample set of <a href="Documentation/cpl.html#subarray">subarray selections</a>, commutable with structure fields, is efficiently supported.<br>A gamut of <a href="Documentation/cpl.html#ALL">shortened loop forms</a> is enabled by the implicit handling of array bounds.</p>
+allow variable lower and upper bounds of each index, and are (on demand) fully bounds-checked. An ample set of <a href="Documentation/cpl.html#subarray">subarray selections</a>, commuting with structure fields, is efficiently supported.<br>A gamut of <a href="Documentation/cpl.html#ALL">shortened loop forms</a> is enabled by the implicit handling of array bounds.</p>
 
 <p>The CPL compiler's most distinctive feature is its incremental extensibility. The <a href="Documentation/cpl.html#Library">included libraries</a> can thus provide <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">gnuplot graphics</a>, and <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>,
   <span class=leftinset>USE lapack-eigenvalues
@@ -57,7 +57,7 @@ Additionally, any function provided by an external <a href="Documentation/cpl.ht
 
   <p>To cap this bird's-eye presentation, a hallmark aesthetic touch of CPL is the availability of all three kinds of round, square, and curly <a href="Documentation/cpl.html#Parentheses">brackets</a> for grouping arithmetic (or other) expressions,
 <span class=rightinset>p(i)=EXP(-{[x(i)-mu]/sigma}^2/2)</span>
-just as you were taught in school. While to alternate parentheses, brackets and braces is optional and might be unessential to some, to do so eases the human eye's reading and proofreading nested formulas; and it enhances automatic error catching too. The provided <a href="Documentation/editor.html#full-screen">text editor</a> can automatically complete parentheses and alternate bracket styles for you.</p> 
+just as you were taught in school. While to alternate parentheses, brackets and braces is optional and might be unessential to some users, to do so eases the human eye's reading and proofreading nested formulas; and it enhances automatic error catching too. The provided <a href="Documentation/editor.html#full-screen">text editor</a> can automatically complete parentheses and alternate bracket styles for you.</p> 
     <footer>
       <p><a href="./">Back</a></p>
     </footer>
