@@ -55,7 +55,7 @@ LOOP FOR i=RowStart.LO TO RowStart.HI
   DO DRAW p.col,p.var+i/20 FOR p=RowStart(i) UNTIL p=NULL BY p=p.next
 REPEAT
 SHOWGRAPH
-READ ! keep plot displayed until Enter is pressed
+READ ! wait on input and keep plot displayed until Enter is pressed
 
 !(
   C-like (or Pascal-like) structures and pointers are a standard part of
