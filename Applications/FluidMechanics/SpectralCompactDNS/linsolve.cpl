@@ -1,0 +1,92 @@
+! The following routines invert a pentadiagonal          [ d x x x x ]
+! linear system with offset initial and final            [ x d x x x ]
+! rows, compactly stored as in the scheme to             [ x x d x x ] 
+! the right, where "d" denotes diagonal elements.        [ x x d x x ] 
+! This allows the boundary conditions to be              [ --------- ]
+! included in the same matrix as the differential        [ x x d x x ]
+! equation without any additional storage.               [ x x d x x ]
+! The routines are functionally equivalent to            [ x x x d x ]
+! LUdecomp and \ from rbmat.cpl.                         [ x x x x d ]
+
+SUBROUTINE bcLUdecomp[POINTER TO ARRAY(-1..ny+1,-2..2) OF REAL A]
+  ! eliminate (in the sense of Gauss) first and last two rows and then
+  ! invoke standard LUdecomp.
+  A(0,-1..HI)=~-A(0,-2)/A(-1,-2)*A(-1,-1..HI)
+  A(1,-1..HI)=~-A(1,-2)/A(-1,-2)*A(-1,-1..HI)
+  A(1,0..HI)=~-A(1,-1)/A(0,-1)*A(0,0..HI)
+  A[2,-1+(0..HI)]=~-A(2,-2)/A(0,-1)*A(0,0..HI)
+  A(ny,LO..1)=~-A(ny,2)/A(ny+1,2)*A(ny+1,LO..1)
+  A(ny-1,LO..1)=~-A(ny-1,2)/A(ny+1,2)*A(ny+1,LO..1)
+  A(ny-1,LO..0)=~-A(ny-1,1)/A(ny,1)*A(ny,LO..0)
+  A[ny-2,1+(LO..0)]=~-A(ny-2,2)/A(ny,1)*A(ny,LO..0)
+  LUdecomp A(1..ny-1)
+END bcLUdecomp
+
+SUBROUTINE bcLeftDiv[POINTER TO ARRAY(*) OF REAL x; ARRAY(-1..ny+1,-2..2) OF REAL A]
+! notice: x cannot be declared with fixed size because it may be non-contiguous
+  x(0)=~-A(0,-2)/A(-1,-2)*x(-1)
+  x(1)=~-A(1,-2)/A(-1,-2)*x(-1)
+  x(1)=~-A(1,-1)/A(0,-1)*x(0)
+  x(2)=~-A(2,-2)/A(0,-1)*x(0)
+  x(ny)=~-A(ny,2)/A(ny+1,2)*x(ny+1)
+  x(ny-1)=~-A(ny-1,2)/A(ny+1,2)*x(ny+1)
+  x(ny-1)=~-A(ny-1,1)/A(ny,1)*x(ny)
+  x(ny-2)=~-A(ny-2,2)/A(ny,1)*x(ny)
+  x(1..ny-1)=A(1..ny-1)\~
+  x(0)=-{A(0,0..2)*x[1+(0..2)]}/A(0,-1)
+  x(-1)=-{A(-1,-1..2)*x[1+(-1..2)]}/A(-1,-2)
+  x(ny)=-{A(ny,-2..0)*x[ny-1+(-2..0)]}/A(ny,1)
+  x(ny+1)=-{A(ny+1,-2..1)*x[ny-1+(-2..1)]}/A(ny+1,2)
+END bcLeftDiv
+
+ARRAY(-1..ny+1,-2..2) OF REAL D0mat=0, etamat=0, D2vmat=0
+D0mat(1..ny-1)=derivatives.d0
+D0mat(-1)=0; D0mat(-1,-2)=1; D0mat(0)=0; D0mat(0,-1)=1
+D0mat(ny)=0; D0mat(ny,1)=1; D0mat(ny+1)=0; D0mat(ny+1,2)=1
+bcLUdecomp D0mat
+SUBROUTINE deriv(ARRAY(*) OF REAL f0,f1^)
+  f1(0)=SUM d140(i)*f0(1+i) FOR i=-2 TO 2
+  f1(-1)=SUM d14m1(i)*f0(1+i) FOR i=-2 TO 2
+  f1(ny)=SUM d14n(i)*f0(ny-1+i) FOR i=-2 TO 2
+  f1(ny+1)=SUM d14np1(i)*f0(ny-1+i) FOR i=-2 TO 2
+  DO WITH derivatives(i) f1(i)=D1(f0(i+(*))) FOR i=1 TO ny-1
+  bcLeftDiv(f1,D0mat)
+END deriv
+
+SUBROUTINE linsolve(REAL lambda)
+  LOOP FOR ALL ix,iz
+  ialpha=I*alpha0*ix; ibeta=I*beta0*iz
+  k2=(alpha0*ix)**2+(beta0*iz)**2
+  LOOP FOR iy=1 TO ny-1 WITH derivatives(iy)
+    DO D2vmat(iy,i)=lambda*[d2(i)-k2*d0(i)]-OS(i) FOR ALL i
+    DO etamat(iy,i)=lambda*d0(i)-SQ(i) FOR ALL i
+  REPEAT
+  ! boundary conditions
+  D2vmat(0)=d040; D2vmat(-1)=d140
+  D2vmat(ny)=d04n; D2vmat(ny+1)=d14n
+  etamat(0)=d040; etamat(-1)=derivatives(1).d4
+  etamat(ny)=d04n; etamat(ny+1)=derivatives(ny-1).d4
+  bcLUdecomp D2vmat; bcLUdecomp etamat
+  WITH V(ix,iz,*):
+  v(0)=0;  v(-1)=0; v(ny)=0; v(ny+1)=0
+  bcLeftDiv(v.REAL,D2vmat); bcLeftDiv(v.IMAG,D2vmat)
+  u(0)=0; u(-1)=0;  u(ny)=0; u(ny+1)=0
+  bcLeftDiv(u.REAL,etamat); bcLeftDiv(u.IMAG,etamat)
+  IF ix=0 AND iz=0 THEN
+    w=u.IMAG; u.IMAG=0
+    IF ABS(meanflowx)>1E-10 OR ABS(meanflowz)>1E-10 THEN
+      REAL ucor(-1..ny+1); DO ucor(iy)=1 FOR iy=1 TO ny-1
+      ucor(0)=0; ucor(-1)=0; ucor(ny)=0; ucor(ny+1)=0
+      bcLeftDiv(ucor,etamat)
+      IF ABS(meanflowx)>1E-10 THEN u.REAL=~+(meanflowx-yintegr(u.REAL))/yintegr(ucor)*ucor
+      IF ABS(meanflowz)>1E-10 THEN v.REAL=~+(meanflowz-yintegr(v.REAL))/yintegr(ucor)*ucor
+    END IF
+  ELSE
+    deriv(v.REAL,w.REAL); deriv(v.IMAG,w.IMAG)
+    DO temp=(ialpha*w(iy)-ibeta*u(iy))/k2
+      w(iy)=(ibeta*w(iy)+ialpha*u(iy))/k2 
+      u(iy)=temp
+    FOR iy=-1 TO ny+1
+  END IF
+REPEAT
+END linsolve

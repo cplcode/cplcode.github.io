@@ -66,7 +66,7 @@
 
 </div><div class=page id="Top">
 Page: (cpl)Top,  Next: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr>Documentation for the CPL programming language and its compiler, July 2022. Printable and citable version can be found at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
+<hr>Documentation for the CPL programming language and its compiler, August 2022. Printable and citable version can be found at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
 
   CPL = Concealed Pointer Lookup
   CPL = Coactive Parameter Lists
@@ -2439,7 +2439,7 @@ Page: (cpl)cpl run,  Next: <a href="#cpl.fri">cpl.fri</a>,  Prev: <a href="#cpl"
 (or just <q>cpl</q> if no confusion arises) compiles and runs &lt;program&gt; in one shot, or just runs it without re-compiling if an executable is found that is not older than its source code. &lt;argument&gt;'s are passed to &lt;program&gt; itself.
 
 <h4>Unix interpreter directive</h4>
-Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable in compiled form, and undergoes automatic recompilation when changed. 
+Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable in compiled form, and undergoes automatic recompilation if and when it is modified. 
 </div><div class=page id="cpl.fri">
 Page: (cpl)cpl.fri,  Next: <a href="#FRI-SECTION">FRI SECTION</a>,  Prev: <a href="#cpl-run">cpl run</a>,  Up: <a href="#cpl">cpl</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>The CPL-to-C compiler</h3>
@@ -2479,7 +2479,7 @@ The interactive CPL interpreter, accepting expressions, statements or commands a
 
 	cpl i
 
-(or just <q>cpl</q> when there are no arguments). Interactive cpl's syntax is totally compatible with CPL's. Any valid CPL statement is executable at the cpl&gt; prompt. As an extension, when an expression is typed alone at the cpl&gt; prompt a WRITE statement is implied. <q>?</q> brings you to this manual. 
+(or just <q>cpl</q> when there are no arguments). Interactive cpl's syntax is totally compatible with CPL's. Any valid CPL statement is executable at the cpl&gt; prompt. As an extension, when an expression is typed alone at the cpl&gt; prompt a WRITE statement is implied, thus e.g. <q>2+2</q> is equivalent to <q>WRITE 2+2</q> and outputs <q>4</q>. In addition when a command is not recognized, it gets passed to the unix shell before giving up. A shell command can also be given explicitly by prefixing it with <q>:</q>. <q>?</q> brings you to this manual. 
  <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
@@ -2495,7 +2495,7 @@ Page: (cpl)cpl i commands,  Next: <a href="#Library">Library</a>,  Prev: <a href
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>interactive-cpl specific commands:</th></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#?">?</a>:</td><td>help</td></tr>
-<tr><td><a href="#Top"></a>:</td><td>:		shell commands</td></tr>
+<tr><td><a href="#Top"></a>:</td><td>shell command</td></tr>
 <tr><td><a href="#$">$</a>:</td><td>last result</td></tr>
 <tr><td><a href="#command-interpretation">icpl:command interpretation</a>:</td><td>of a run-time generated CPL statement</td></tr>
 <tr><td><a href="#clear">clear</a>:</td><td>cancel variable declaration and free its associated storage</td></tr>
@@ -2550,17 +2550,17 @@ command with no arguments launches an interactive cpl session.
 
 When the input of cpl i is redirected (or piped) from an alternate source, commands from that source are interpreted on a line-by-line basis. 
 </div><div class=page id="?">
-Page: (cpl)?,  Next: <a href="#:">:</a>,  Prev: <a href="#cpl-i-command-line">cpl i command line</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)?,  Next: <a href="#shell-command">shell command</a>,  Prev: <a href="#cpl-i-command-line">cpl i command line</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>The cpl help system</h3>
 The ? command given at the cpl&gt; command prompt brings you to the Top of this info file. ? followed by any user-declared identifier or system-reserved keyword elicits related help. 
-</div><div class=page id=":">
-Page: (cpl):,  Next: <a href="#$">$</a>,  Prev: <a href="#?">?</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+</div><div class=page id="shell-command">
+Page: (cpl)shell command,  Next: <a href="#$">$</a>,  Prev: <a href="#?">?</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Shell commands</h3>
 Any command that is meaningless to interactive cpl, or not the name of a program to be executed, is passed on to the shell before giving up. Thus most shell commands can be given directly at the cpl&gt; prompt. In case of ambiguity, passing a command to the shell can be forced with
 
 	:&lt;shell command&gt; 
 </div><div class=page id="$">
-Page: (cpl)$,  Next: <a href="#command-interpretation">command interpretation</a>,  Prev: <a href="#:">:</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)$,  Next: <a href="#command-interpretation">command interpretation</a>,  Prev: <a href="#shell-command">shell command</a>,  Up: <a href="#cpl-i">cpl i</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Last result</h3>
 Within an interactive cpl expression, the $ symbol stands for the last result printed out by a previous command. 
 </div><div class=page id="command-interpretation">

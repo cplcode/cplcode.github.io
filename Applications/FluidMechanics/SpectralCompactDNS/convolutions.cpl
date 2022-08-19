@@ -1,0 +1,37 @@
+VELOCITY=STRUCTURE(COMPLEX u,v,w)
+ARRAY(0..nx,-nz..nz,-1..ny+1) OF VELOCITY V=0
+MOMFLUX=STRUCTURE(COMPLEX uu,uv,vv,vw,ww,uw)
+MOMFLUX VV(0..nx,-nz..nz,-2..2)=0
+INTEGER nxd=3*nx DIV 2 - 1; DO INC nxd UNTIL FFTfit(nxd)
+INTEGER nzd=3*nz - 1; DO INC nzd UNTIL FFTfit(nzd)
+ARRAY(0..nxd-1,0..nzd-1) OF VELOCITY Vd=0
+ARRAY(0..nxd-1,0..nzd-1) OF MOMFLUX VVd=0
+
+maxtimelevels=1
+RHSTYPE=ARRAY(0..nx,-nz..nz) OF STRUCTURE(COMPLEX eta,D2v)
+ARRAY(-2..0) OF POINTER TO RHSTYPE newrhs
+DO newrhs(i) = NEW RHSTYPE FOR ALL i
+ARRAY(maxtimelevels,1..ny-1) OF RHSTYPE oldrhs=0
+
+SUBROUTINE convolutions(ARRAY(*,*) OF VELOCITY Vplane; POINTER TO ARRAY(*,*) OF MOMFLUX VVplane)
+  Vd=0; LOOP FOR ix=0 TO nx
+    DO Vd(ix,iz)=Vplane(ix,iz) FOR iz=0 TO nz
+    DO Vd(ix,nzd+iz)=Vplane(ix,iz) FOR iz=-nz TO -1
+    WITH Vd(ix,*): IFT(u); IFT(v); IFT(w)
+  REPEAT LOOP  
+  DO WITH Vd(*,iz): RFT(u); RFT(v); RFT(w); FOR ALL iz
+  DO WITH Vd(ix,iz), VVd(ix,iz)
+    uu.REAL=u.REAL*u.REAL; uu.IMAG=u.IMAG*u.IMAG 
+    uv.REAL=u.REAL*v.REAL; uv.IMAG=u.IMAG*v.IMAG 
+    vv.REAL=v.REAL*v.REAL; vv.IMAG=v.IMAG*v.IMAG 
+    vw.REAL=v.REAL*w.REAL; vw.IMAG=v.IMAG*w.IMAG 
+    ww.REAL=w.REAL*w.REAL; ww.IMAG=w.IMAG*w.IMAG 
+    uw.REAL=u.REAL*w.REAL; uw.IMAG=u.IMAG*w.IMAG 
+  FOR ALL ix,iz
+  DO WITH VVd(*,iz): HFT(uu); HFT(uv); HFT(vv); HFT(vw); HFT(ww); HFT(uw) FOR ALL iz
+  LOOP FOR ix=0 TO nx
+    WITH VVd(ix,*): FFT(uu); FFT(uv); FFT(vv); FFT(vw); FFT(ww); FFT(uw)
+    DO VVplane(ix,iz)=VVd(ix,iz) FOR iz=0 TO nz
+    DO VVplane(ix,iz)=VVd(ix,nzd+iz) FOR iz=-nz TO -1
+  REPEAT LOOP
+END convolutions
