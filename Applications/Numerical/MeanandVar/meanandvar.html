@@ -94,8 +94,10 @@ present, is a number of lines to be skipped at the beginning of the file
 (default: adaptive).
 
 Output is its estimate of the mean and standard deviation for each selected
-column, one per line. A final line contains the total number of samples received
-and the automatic batch size (roughly proportional to correlation time).
+column, one per line. A final line contains the total number of samples used
+for the estimate and the automatic batch size (roughly proportional
+to correlation time). The number of samples used may differ from the number of
+samples received by the size of the last partially filled batch.
 helpends
     STOP
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
