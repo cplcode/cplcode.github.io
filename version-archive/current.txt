@@ -1,2 +1,2 @@
 2022-09-04
-minor corrections.
+Memory-allocation strategy made thread-safe. CPL can now transparently use OpenMP directives. Other minor corrections.

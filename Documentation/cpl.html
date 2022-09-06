@@ -186,6 +186,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#OPEN">OPEN</a>:</td><td>open a file and associate a file descriptor</td></tr>
 <tr><td><a href="#OPTIONAL">OPTIONAL</a>:</td><td>optional function parameters recognized by name</td></tr>
 <tr><td><a href="#OR">OR</a>:</td><td>boolean OR</td></tr>
+<tr><td><a href="#OpenMP">OpenMP</a>:</td><td>CPL transparent OpenMP directives</td></tr>
 <tr><td><a href="parallel.html#Top">PARALLEL MODULE:(parallel)</a>:</td><td>Forking a parallel process</td></tr>
 <tr><td><a href="parallel.html#Top">PARALLEL LOOP:(parallel)</a>:</td><td>Simultaneous multiple processes</td></tr>
 <tr><td><a href="graphics.html#MOUSEGRAPH">POLLMOUSE:(graphics)MOUSEGRAPH</a>:</td><td>grabs mouse clicks in gnuplot window</td></tr>
@@ -259,7 +260,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#STRING">literal:STRING</a>:</td><td>constant string of characters</td></tr>
 <tr><td><a href="#cpl">cpl</a>:</td><td>Compilation tools and their usage</td></tr>
 <tr><td><a href="matrix.html#Top">matrix:(matrix)</a>:</td><td>Matrix operations</td></tr>
-<tr><td><a href="#mpicpl">mpicpl</a>:</td><td>Compile with mpi options</td></tr>
+<tr><td><a href="#mpicpl">mpicpl</a>:</td><td>Compile with MPI options</td></tr>
 <tr><td><a href="#nested-functions">nested functions</a>:</td><td>are allowed wherever a declaration is.</td></tr>
 <tr><td><a href="graphics.html#nographics">nographics:(graphics)nographics</a>:</td><td>fake plotting package (does nothing)</td></tr>
 <tr><td><a href="parallel.html#nonparallel">nonparallel:(parallel)nonparallel</a>:</td><td>fake parallel package (does nothing)</td></tr>
@@ -2428,7 +2429,8 @@ If your system includes the curl command (on Debian you can install it as <q>apt
 <tr><td><a href="#cpl-i">cpl i</a>:</td><td>Interactive CPL</td></tr>
 <tr><td><a href="editor.html#Top">cpl edit:(editor)Top</a>:</td><td>development text editor with word and syntax completion</td></tr>
 <tr><td><a href="#cpl-info">cpl info</a>:</td><td>info reading script</td></tr>
-<tr><td><a href="#mpicpl">mpicpl</a>:</td><td>Compile with mpi options</td></tr>
+<tr><td><a href="#mpicpl">mpicpl</a>:</td><td>Compile with MPI options</td></tr>
+<tr><td><a href="#OpenMP">OpenMP</a>:</td><td>CPL transparent OpenMP directives</td></tr>
 </table></nav>
 
 </div><div class=page id="cpl-run">
@@ -2606,6 +2608,8 @@ Page: (cpl)Library,  Prev: <a href="#cpl-i">cpl i</a>,  Next: <a href="#rtchecks
 <tr><td><a href="#INPUTREADY">inputready:INPUTREADY</a>:</td><td>test for input ready on a file descriptor or stdin</td></tr>
 <tr><td><a href="#lapack-eigenvalues">lapack-eigenvalues</a>:</td><td>CPL wrapper around Lapack eigenvalue routines</td></tr>
 <tr><td><a href="#matlib">matlib</a>:</td><td>Some basic matrix-defining functions</td></tr>
+<tr><td><a href="#mpicpl">mpicpl</a>:</td><td>Compile with MPI options</td></tr>
+<tr><td><a href="#OpenMP">OpenMP</a>:</td><td>CPL transparent OpenMP directives</td></tr>
 <tr><td colspan="2"> </td></tr>
 </table></nav>
 
@@ -2658,9 +2662,34 @@ defines:
 <h4>INLINE ARRAY(A.LO..A.HI) OF COMPLEX FUNCTION eigenvalues(REAL A(&lowast;,&lowast;))</h4>
 In order to use this library you must have the liblapack-dev Debian package (or one equivalent) installed. Please repeat the CPL setup after installing. 
 </div><div class=page id="matlib">
-Page: (cpl)matlib,  Prev: <a href="#lapack-eigenvalues">lapack-eigenvalues</a>,  Up: <a href="#Library">Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)matlib,  Prev: <a href="#lapack-eigenvalues">lapack-eigenvalues</a>,  Next: <a href="#OpenMP">OpenMP</a>,  Up: <a href="#Library">Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Basic matrix-creating functions</h3>
 The matlib.cpl library is used by the m2cpl script in order to translate simple MATLAB programs into their CPL equivalents.
 
 Both matlib and m2cpl are in very preliminary development and only include the most basic functions. 
+</div><div class=page id="OpenMP">
+Page: (cpl)OpenMP,  Prev: <a href="#matlib">matlib</a>,  Up: <a href="#Library">Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h3>OpenMP transparent directives</h3>
+OpenMP is a standard for parallel computation on shared-memory architectures. (see <a href="http://www.openmp.org">www.openmp.org</a>). It is built in most FORTRAN and C compilers, gcc included, and is accessed through suitable command-line options. OpenMP directives (C language style) are transparently available in CPL. For example,
+
+serial:
+
+	LOOP FOR i=1 TO 1000000
+	  a(i)=b(i)+c(i)
+	REPEAT
+
+parallel:
+
+	#pragma omp parallel for
+	LOOP FOR i=1 TO 1000000
+	  a(i)=b(i)+c(i)
+	REPEAT
+
+Compile the parallel version as <q>cpl make ... -fopenmp -O3</q>.
+
+Notes:
+ 1) If the parallel version is compiled without the -fopenmp option, #pragma is treated as a comment, that is you obtain the serial version of the program. This is intentional.
+ 2) C compiler options, of which -fopenmp is one, must appear after the name of the program to be compiled (see <a href="#cpl">cpl</a>).
+ 3) The <q>omp for</q> directive can only be applied to a basic <q>LOOP FOR</q> construction, which gets translated to a C <q>for</q>. Other types of LOOP or DO do not involve a <q>for</q> and are not recognized by OpenMP.
+ 4) If an <q>omp parallel</q> directive needs to be applied to a block of code, as opposed to a single subsequent instruction, this block can be delimited by <q>MODULE ... END MODULE</q> (see <a href="#MODULE">MODULE</a>). 
 </div></body></html>
