@@ -2670,7 +2670,7 @@ Both matlib and m2cpl are in very preliminary development and only include the m
 </div><div class=page id="OpenMP">
 Page: (cpl)OpenMP,  Prev: <a href="#matlib">matlib</a>,  Up: <a href="#Library">Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>OpenMP transparent directives</h3>
-OpenMP is a standard for parallel computation on shared-memory architectures. (see <a href="http://www.openmp.org">www.openmp.org</a>). It is built in most FORTRAN and C compilers, gcc included, and is accessed through suitable command-line options. OpenMP directives (C language style) are transparently available in CPL. For example,
+OpenMP is a standard for parallel computation on shared-memory architectures. (see <a href="http://www.openmp.org">www.openmp.org</a>). It is built in many FORTRAN and C compilers, gcc included, and is accessed through suitable command-line options. C-style OpenMP directives are transparently available in CPL. For example,
 
 serial:
 
@@ -2685,11 +2685,11 @@ parallel:
 	  a(i)=b(i)+c(i)
 	REPEAT
 
-Compile the parallel version as <q>cpl make ... -fopenmp -O3</q>.
+Compile the parallel version as <q>cpl make &lt;program&gt; -fopenmp -O3</q>.
 
 Notes:
- 1) If the parallel version is compiled without the -fopenmp option, #pragma is treated as a comment, that is you obtain the serial version of the program. This is intentional.
- 2) C compiler options, of which -fopenmp is one, must appear after the name of the program to be compiled (see <a href="#cpl">cpl</a>).
- 3) The <q>omp for</q> directive can only be applied to a basic <q>LOOP FOR</q> construction, which gets translated to a C <q>for</q>. Other types of LOOP or DO do not involve a <q>for</q> and are not recognized by OpenMP.
- 4) If an <q>omp parallel</q> directive needs to be applied to a block of code, as opposed to a single subsequent instruction, this block can be delimited by <q>MODULE ... END MODULE</q> (see <a href="#MODULE">MODULE</a>). 
+ 1) If the parallel version is compiled without the -fopenmp option, #pragma is treated as a comment, that is you obtain the serial version of the program. This is intentional and conforming to C behaviour.
+ 2) C compiler options, of which -fopenmp is one, must appear after &lt;program&gt; in order to be distinguished from cpl options (see <a href="#cpl">cpl</a>).
+ 3) The <q>omp for</q> directive can only be applied to a basic <q>LOOP FOR</q> construction, which gets translated to <q>for</q> in the intermediate C code. Other types of LOOP or DO do not involve a <q>for</q> and are not recognized by OpenMP.
+ 4) If an <q>omp parallel</q> directive needs to be applied to a block of code that is not implicitly delimited by the subsequent instruction, this block can be delimited by <q>MODULE ... END MODULE</q> (see <a href="#MODULE">MODULE</a>). 
 </div></body></html>
