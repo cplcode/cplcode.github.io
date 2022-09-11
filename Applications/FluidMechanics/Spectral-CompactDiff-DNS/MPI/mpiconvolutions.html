@@ -1,0 +1,128 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>FluidMechanics/Spectral-CompactDiff-DNS/MPI/mpiconvolutions.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/singlecol.css"><style>pre{margin-left:0.5em;margin-right:0.5em} .comment{color:HotPink} a:link,a:visited{color:MediumBlue;text-decoration:none} a:hover,a:active{text-decoration:underline}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"FluidMechanics/Spectral-CompactDiff-DNS/MPI/mpiconvolutions.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+<a href="cpl.html#USE">USE</a> <a href="fft.html#Top">fft</a>
+<a href="cpl.html#C-interface">#include</a> &lt;mpi.h&gt;
+<a href="cpl.html#C-interface">#link</a> "-lmpi"
+<a href="cpl.html#C-interface">#include</a> &lt;fenv.h&gt;
+<a href="cpl.html#INTEGER">INTEGER</a> totnproc,myiproc,nprocy
+fedisableexcept(FE_INVALID | FE_OVERFLOW | FE_DIVBYZERO)
+MPI_Init(argc,argv) <span class=comment>! on some systems triggers a floating-point exception</span>
+feenableexcept(FE_INVALID | FE_OVERFLOW | FE_DIVBYZERO)
+MPI_Comm_size(MPI_COMM_WORLD, totnproc)
+<a href="cpl.html#INTEGER">INTEGER</a> nprocy=4; npy=getenv("NPROCY")
+<a href="cpl.html#IF">IF</a> npy#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> nprocy=atoi(npy)
+nprocx=totnproc <a href="cpl.html#DIV">DIV</a> nprocy
+<a href="cpl.html#IF">IF</a> nprocx&lowast;nprocy#totnproc <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> "warning: "nprocx&lowast;nprocy" cores will be used"
+MPI_Comm_rank(MPI_COMM_WORLD, myiproc)
+myAproc=myiproc <a href="cpl.html#DIV">DIV</a> nprocy; myBproc=myiproc <a href="cpl.html#INTEGER-operator">MOD</a> nprocy
+
+<a href="cpl.html#INTEGER">INTEGER</a> nxd=3&lowast;nx <a href="cpl.html#DIV">DIV</a> 2 -1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> nxd <a href="cpl.html#UNTIL">UNTIL</a> FFTfit(nxd)
+<a href="cpl.html#INTEGER">INTEGER</a> nyd=3&lowast;ny -1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> nyd <a href="cpl.html#UNTIL">UNTIL</a> FFTfit(nyd)
+<a href="cpl.html#ARRAY">ARRAY</a>(0..nprocx) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> nxA,nydA
+<a href="cpl.html#ARRAY">ARRAY</a>(0..nprocy) <a href="cpl.html#OF">OF</a> <a href="cpl.html#INTEGER">INTEGER</a> nyB
+<a href="cpl.html#DO">DO</a> nxA(i)=<a href="cpl.html#ROUND">ROUND</a>[(nx+1)/nprocx&lowast;i] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+<a href="cpl.html#DO">DO</a> nyB(i)=-ny+<a href="cpl.html#ROUND">ROUND</a>[(2&lowast;ny+1)/nprocy&lowast;i] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+<a href="cpl.html#DO">DO</a> nydA(i)=<a href="cpl.html#ROUND">ROUND</a>(nyd/nprocx&lowast;i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+
+VELOCITY=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>(u,w,v) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a>
+MOMFLUX=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>(uu,vv,ww,uv,uw,vw) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a>
+VELOCITY V[nxA(myAproc)..nxA(myAproc+1)-1,nyB(myBproc)..nyB(myBproc+1)-1,-1..nz+1]=0
+MOMFLUX VV[nxA(myAproc)..nxA(myAproc+1)-1,nyB(myBproc)..nyB(myBproc+1)-1,-2..nprocy+1]
+VELOCITY intV[nxA(myAproc)..nxA(myAproc+1)-1,0..nyd-1], physV[0..nxd-1,nydA(myAproc)..nydA(myAproc+1)-1]
+MOMFLUX intVV[nxA(myAproc)..nxA(myAproc+1)-1,0..nyd-1], physVV[0..nxd-1,nydA(myAproc)..nydA(myAproc+1)-1]
+have00 = V.<a href="cpl.html#LO">LO1</a>&lt;=0 <a href="cpl.html#AND">AND</a> V.<a href="cpl.html#HI">HI1</a>&gt;=0 <a href="cpl.html#AND">AND</a> V.<a href="cpl.html#LO">LO2</a>&lt;=0 <a href="cpl.html#AND">AND</a> V.<a href="cpl.html#HI">HI2</a>&gt;=0
+<a href="cpl.html#INTEGER">INTEGER</a> VVstart
+
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> Send[<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> arr; <a href="cpl.html#INTEGER">INTEGER</a> dest]
+  <a href="cpl.html#TYPE">TYPEOF</a>(arr) buf=arr <span class=comment>! allocate buffer in contiguous memory</span>
+  MPI_Send[buf(<a href="cpl.html#compound-index">**</a>), 2&lowast;<a href="cpl.html#LENGTH">LENGTH</a>[buf(<a href="cpl.html#compound-index">**</a>)], MPI_DOUBLE, dest, 0, MPI_COMM_WORLD]
+<a href="cpl.html#END">END</a> Send
+
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">SUBROUTINE</a> Recv[<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> arr; <a href="cpl.html#INTEGER">INTEGER</a> from]
+  <a href="cpl.html#TYPE">TYPEOF</a>(arr) buf <span class=comment>! allocate buffer in contiguous memory</span>
+  MPI_Recv[buf(<a href="cpl.html#compound-index">**</a>), 2&lowast;<a href="cpl.html#LENGTH">LENGTH</a>[buf(<a href="cpl.html#compound-index">**</a>)], MPI_DOUBLE, from, 0, MPI_COMM_WORLD,MPI_STATUS_IGNORE]
+  arr=buf
+<a href="cpl.html#END">END</a> Recv
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> convolutions(<a href="cpl.html#INTEGER">INTEGER</a> bzl)
+  myz=bzl+myBproc
+  intV(&lowast;,ny+1..nyd-ny-1)=0; physV(nx+1..<a href="cpl.html#HI">HI</a>,&lowast;)=0
+  
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#BY">BY</a> 2 <a href="cpl.html#AND">AND</a> Bproc=0 <a href="cpl.html#TO">TO</a> nprocy-1
+    <a href="cpl.html#IF">IF</a> (Bproc-myBproc)&lowast;parity&gt;0 <a href="cpl.html#IF">THEN</a>
+      iz=bzl+Bproc
+      <a href="cpl.html#EXCEPT">EXCEPT</a> iz&gt;V.<a href="cpl.html#HI">HI3</a>
+      <a href="cpl.html#DO">DO</a> Send[V(&lowast;,iy,iz),myAproc&lowast;nprocy+Bproc] <a href="cpl.html#FOR">FOR</a> iy=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> (Bproc-myBproc)&lowast;parity&lt;0 <a href="cpl.html#IF">THEN</a>
+      <a href="cpl.html#EXCEPT">EXCEPT</a> myz&gt;V.<a href="cpl.html#HI">HI3</a>
+      <a href="cpl.html#DO">DO</a> Recv[intV(&lowast;,<a href="cpl.html#IF">IF</a> iy&gt;=0 <a href="cpl.html#IF">THEN</a> iy <a href="cpl.html#ELSE">ELSE</a> nyd+iy),myAproc&lowast;nprocy+Bproc]
+      <a href="cpl.html#FOR">FOR</a> iy=nyB(Bproc) <a href="cpl.html#TO">TO</a> nyB(Bproc+1)-1
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#LOOP">REPEAT</a>
+  
+  <a href="cpl.html#IF">IF</a> myz&lt;=V.<a href="cpl.html#HI">HI3</a> <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#DO">DO</a> intV(&lowast;,<a href="cpl.html#IF">IF</a> iy&gt;=0 <a href="cpl.html#IF">THEN</a> iy <a href="cpl.html#ELSE">ELSE</a> nyd+iy)=V(&lowast;,iy,myz) <a href="cpl.html#FOR">FOR</a> iy=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
+    <a href="cpl.html#DO">DO</a> IFTU[intV(ix,&lowast;,iv)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iv
+    physV(intV.<a href="cpl.html#LO">LO1</a>..intV.<a href="cpl.html#HI">HI1</a>,&lowast;)=intV(&lowast;,physV.<a href="cpl.html#LO">LO2</a>..physV.<a href="cpl.html#HI">HI2</a>)
+    
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#BY">BY</a> 2 <a href="cpl.html#AND">AND</a> Aproc=0 <a href="cpl.html#TO">TO</a> nprocx-1
+      <a href="cpl.html#IF">IF</a> (Aproc-myAproc)&lowast;parity&gt;0 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#DO">DO</a> Send{intV[ix,nydA(Aproc)..nydA(Aproc+1)-1],Aproc&lowast;nprocy+myBproc} <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
+      <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> (Aproc-myAproc)&lowast;parity&lt;0 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#DO">DO</a> Recv[physV(ix,&lowast;),Aproc&lowast;nprocy+myBproc]
+        <a href="cpl.html#FOR">FOR</a> ix=nxA(Aproc) <a href="cpl.html#TO">TO</a> nxA(Aproc+1)-1
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#LOOP">REPEAT</a>
+    
+    <a href="cpl.html#DO">DO</a> RFTU[physV(&lowast;,iy,iv)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy,iv
+    <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> physVV(ix,iy), physV(ix,iy) 
+      uu.<a href="cpl.html#REAL">REAL</a>=u.<a href="cpl.html#REAL">REAL</a>&lowast;u.<a href="cpl.html#REAL">REAL</a>; uu.<a href="complex.html#Top">IMAG</a>=u.<a href="complex.html#Top">IMAG</a>&lowast;u.<a href="complex.html#Top">IMAG</a>
+      uv.<a href="cpl.html#REAL">REAL</a>=u.<a href="cpl.html#REAL">REAL</a>&lowast;v.<a href="cpl.html#REAL">REAL</a>; uv.<a href="complex.html#Top">IMAG</a>=u.<a href="complex.html#Top">IMAG</a>&lowast;v.<a href="complex.html#Top">IMAG</a>
+      vv.<a href="cpl.html#REAL">REAL</a>=v.<a href="cpl.html#REAL">REAL</a>&lowast;v.<a href="cpl.html#REAL">REAL</a>; vv.<a href="complex.html#Top">IMAG</a>=v.<a href="complex.html#Top">IMAG</a>&lowast;v.<a href="complex.html#Top">IMAG</a>
+      vw.<a href="cpl.html#REAL">REAL</a>=v.<a href="cpl.html#REAL">REAL</a>&lowast;w.<a href="cpl.html#REAL">REAL</a>; vw.<a href="complex.html#Top">IMAG</a>=v.<a href="complex.html#Top">IMAG</a>&lowast;w.<a href="complex.html#Top">IMAG</a>
+      ww.<a href="cpl.html#REAL">REAL</a>=w.<a href="cpl.html#REAL">REAL</a>&lowast;w.<a href="cpl.html#REAL">REAL</a>; ww.<a href="complex.html#Top">IMAG</a>=w.<a href="complex.html#Top">IMAG</a>&lowast;w.<a href="complex.html#Top">IMAG</a>
+      uw.<a href="cpl.html#REAL">REAL</a>=u.<a href="cpl.html#REAL">REAL</a>&lowast;w.<a href="cpl.html#REAL">REAL</a>; uw.<a href="complex.html#Top">IMAG</a>=u.<a href="complex.html#Top">IMAG</a>&lowast;w.<a href="complex.html#Top">IMAG</a>
+    <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy
+    <a href="cpl.html#DO">DO</a> HFTU[physVV(&lowast;,iy,iv)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy,iv
+    
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#BY">BY</a> 2 <a href="cpl.html#AND">AND</a> Aproc=0 <a href="cpl.html#TO">TO</a> nprocx-1
+      <a href="cpl.html#IF">IF</a> (Aproc-myAproc)&lowast;parity&gt;0 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#DO">DO</a> Send[physVV(ix,&lowast;),Aproc&lowast;nprocy+myBproc]
+        <a href="cpl.html#FOR">FOR</a> ix=nxA(Aproc) <a href="cpl.html#TO">TO</a> nxA(Aproc+1)-1
+      <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> (Aproc-myAproc)&lowast;parity&lt;0 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#DO">DO</a> Recv{intVV[ix,nydA(Aproc)..nydA(Aproc+1)-1],Aproc&lowast;nprocy+myBproc}
+        <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+    <a href="cpl.html#LOOP">REPEAT</a>
+    
+    intVV(&lowast;,physVV.<a href="cpl.html#LO">LO2</a>..physVV.<a href="cpl.html#HI">HI2</a>)=physVV(intVV.<a href="cpl.html#LO">LO1</a>..intVV.<a href="cpl.html#HI">HI1</a>,&lowast;)
+    <a href="cpl.html#DO">DO</a> FFTU[intVV(ix,&lowast;,iv)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iv
+    <a href="cpl.html#DO">DO</a> VV(&lowast;,iy,myz-VVstart)=intVV(&lowast;,<a href="cpl.html#IF">IF</a> iy&gt;=0 <a href="cpl.html#IF">THEN</a> iy <a href="cpl.html#ELSE">ELSE</a> nyd+iy) <a href="cpl.html#FOR">FOR</a> iy=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#BY">BY</a> 2 <a href="cpl.html#AND">AND</a> Bproc=0 <a href="cpl.html#TO">TO</a> nprocy-1
+    <a href="cpl.html#IF">IF</a> (Bproc-myBproc)&lowast;parity&gt;0 <a href="cpl.html#IF">THEN</a>
+      <a href="cpl.html#EXCEPT">EXCEPT</a> myz&gt;V.<a href="cpl.html#HI">HI3</a>
+      <a href="cpl.html#DO">DO</a> Send[intVV(&lowast;,<a href="cpl.html#IF">IF</a> iy&gt;=0 <a href="cpl.html#IF">THEN</a> iy <a href="cpl.html#ELSE">ELSE</a> nyd+iy),myAproc&lowast;nprocy+Bproc]
+      <a href="cpl.html#FOR">FOR</a> iy=nyB(Bproc) <a href="cpl.html#TO">TO</a> nyB(Bproc+1)-1
+    <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> (Bproc-myBproc)&lowast;parity&lt;0 <a href="cpl.html#IF">THEN</a>
+      sz=bzl+Bproc
+      <a href="cpl.html#EXCEPT">EXCEPT</a> sz&gt;V.<a href="cpl.html#HI">HI3</a>
+      <a href="cpl.html#DO">DO</a> Recv[VV(&lowast;,iy,sz-VVstart),myAproc&lowast;nprocy+Bproc] <a href="cpl.html#FOR">FOR</a> iy=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#LOOP">REPEAT</a>
+  
+<a href="cpl.html#END">END</a> convolutions
+
+atexit(MPI_Finalize)
+</pre></body></html>

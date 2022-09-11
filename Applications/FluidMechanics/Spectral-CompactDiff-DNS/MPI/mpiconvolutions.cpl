@@ -1,0 +1,115 @@
+USE fft
+#include <mpi.h>
+#link "-lmpi"
+#include <fenv.h>
+INTEGER totnproc,myiproc,nprocy
+fedisableexcept(FE_INVALID | FE_OVERFLOW | FE_DIVBYZERO)
+MPI_Init(argc,argv) ! on some systems triggers a floating-point exception
+feenableexcept(FE_INVALID | FE_OVERFLOW | FE_DIVBYZERO)
+MPI_Comm_size(MPI_COMM_WORLD, totnproc)
+INTEGER nprocy=4; npy=getenv("NPROCY")
+IF npy#NULL THEN nprocy=atoi(npy)
+nprocx=totnproc DIV nprocy
+IF nprocx*nprocy#totnproc THEN WRITE "warning: "nprocx*nprocy" cores will be used"
+MPI_Comm_rank(MPI_COMM_WORLD, myiproc)
+myAproc=myiproc DIV nprocy; myBproc=myiproc MOD nprocy
+
+INTEGER nxd=3*nx DIV 2 -1; DO INC nxd UNTIL FFTfit(nxd)
+INTEGER nyd=3*ny -1; DO INC nyd UNTIL FFTfit(nyd)
+ARRAY(0..nprocx) OF INTEGER nxA,nydA
+ARRAY(0..nprocy) OF INTEGER nyB
+DO nxA(i)=ROUND[(nx+1)/nprocx*i] FOR ALL i
+DO nyB(i)=-ny+ROUND[(2*ny+1)/nprocy*i] FOR ALL i
+DO nydA(i)=ROUND(nyd/nprocx*i) FOR ALL i
+
+VELOCITY=STRUCTURED ARRAY(u,w,v) OF COMPLEX
+MOMFLUX=STRUCTURED ARRAY(uu,vv,ww,uv,uw,vw) OF COMPLEX
+VELOCITY V[nxA(myAproc)..nxA(myAproc+1)-1,nyB(myBproc)..nyB(myBproc+1)-1,-1..nz+1]=0
+MOMFLUX VV[nxA(myAproc)..nxA(myAproc+1)-1,nyB(myBproc)..nyB(myBproc+1)-1,-2..nprocy+1]
+VELOCITY intV[nxA(myAproc)..nxA(myAproc+1)-1,0..nyd-1], physV[0..nxd-1,nydA(myAproc)..nydA(myAproc+1)-1]
+MOMFLUX intVV[nxA(myAproc)..nxA(myAproc+1)-1,0..nyd-1], physVV[0..nxd-1,nydA(myAproc)..nydA(myAproc+1)-1]
+have00 = V.LO1<=0 AND V.HI1>=0 AND V.LO2<=0 AND V.HI2>=0
+INTEGER VVstart
+
+INLINE SUBROUTINE Send[POINTER TO ARRAY(*,*) OF COMPLEX arr; INTEGER dest]
+  TYPEOF(arr) buf=arr ! allocate buffer in contiguous memory
+  MPI_Send[buf(**), 2*LENGTH[buf(**)], MPI_DOUBLE, dest, 0, MPI_COMM_WORLD]
+END Send
+
+INLINE SUBROUTINE Recv[POINTER TO ARRAY(*,*) OF COMPLEX arr; INTEGER from]
+  TYPEOF(arr) buf ! allocate buffer in contiguous memory
+  MPI_Recv[buf(**), 2*LENGTH[buf(**)], MPI_DOUBLE, from, 0, MPI_COMM_WORLD,MPI_STATUS_IGNORE]
+  arr=buf
+END Recv
+
+SUBROUTINE convolutions(INTEGER bzl)
+  myz=bzl+myBproc
+  intV(*,ny+1..nyd-ny-1)=0; physV(nx+1..HI,*)=0
+  
+  LOOP FOR parity=-1 TO 1 BY 2 AND Bproc=0 TO nprocy-1
+    IF (Bproc-myBproc)*parity>0 THEN
+      iz=bzl+Bproc
+      EXCEPT iz>V.HI3
+      DO Send[V(*,iy,iz),myAproc*nprocy+Bproc] FOR iy=LO TO HI
+    ELSE IF (Bproc-myBproc)*parity<0 THEN
+      EXCEPT myz>V.HI3
+      DO Recv[intV(*,IF iy>=0 THEN iy ELSE nyd+iy),myAproc*nprocy+Bproc]
+      FOR iy=nyB(Bproc) TO nyB(Bproc+1)-1
+    END IF
+  REPEAT
+  
+  IF myz<=V.HI3 THEN
+    DO intV(*,IF iy>=0 THEN iy ELSE nyd+iy)=V(*,iy,myz) FOR iy=LO TO HI
+    DO IFTU[intV(ix,*,iv)] FOR ALL ix,iv
+    physV(intV.LO1..intV.HI1,*)=intV(*,physV.LO2..physV.HI2)
+    
+    LOOP FOR parity=-1 TO 1 BY 2 AND Aproc=0 TO nprocx-1
+      IF (Aproc-myAproc)*parity>0 THEN
+        DO Send{intV[ix,nydA(Aproc)..nydA(Aproc+1)-1],Aproc*nprocy+myBproc} FOR ix=LO TO HI
+      ELSE IF (Aproc-myAproc)*parity<0 THEN
+        DO Recv[physV(ix,*),Aproc*nprocy+myBproc]
+        FOR ix=nxA(Aproc) TO nxA(Aproc+1)-1
+      END IF
+    REPEAT
+    
+    DO RFTU[physV(*,iy,iv)] FOR ALL iy,iv
+    DO WITH physVV(ix,iy), physV(ix,iy) 
+      uu.REAL=u.REAL*u.REAL; uu.IMAG=u.IMAG*u.IMAG
+      uv.REAL=u.REAL*v.REAL; uv.IMAG=u.IMAG*v.IMAG
+      vv.REAL=v.REAL*v.REAL; vv.IMAG=v.IMAG*v.IMAG
+      vw.REAL=v.REAL*w.REAL; vw.IMAG=v.IMAG*w.IMAG
+      ww.REAL=w.REAL*w.REAL; ww.IMAG=w.IMAG*w.IMAG
+      uw.REAL=u.REAL*w.REAL; uw.IMAG=u.IMAG*w.IMAG
+    FOR ALL ix,iy
+    DO HFTU[physVV(*,iy,iv)] FOR ALL iy,iv
+    
+    LOOP FOR parity=-1 TO 1 BY 2 AND Aproc=0 TO nprocx-1
+      IF (Aproc-myAproc)*parity>0 THEN
+        DO Send[physVV(ix,*),Aproc*nprocy+myBproc]
+        FOR ix=nxA(Aproc) TO nxA(Aproc+1)-1
+      ELSE IF (Aproc-myAproc)*parity<0 THEN
+        DO Recv{intVV[ix,nydA(Aproc)..nydA(Aproc+1)-1],Aproc*nprocy+myBproc}
+        FOR ix=LO TO HI
+      END IF
+    REPEAT
+    
+    intVV(*,physVV.LO2..physVV.HI2)=physVV(intVV.LO1..intVV.HI1,*)
+    DO FFTU[intVV(ix,*,iv)] FOR ALL ix,iv
+    DO VV(*,iy,myz-VVstart)=intVV(*,IF iy>=0 THEN iy ELSE nyd+iy) FOR iy=LO TO HI
+  END IF
+  
+  LOOP FOR parity=-1 TO 1 BY 2 AND Bproc=0 TO nprocy-1
+    IF (Bproc-myBproc)*parity>0 THEN
+      EXCEPT myz>V.HI3
+      DO Send[intVV(*,IF iy>=0 THEN iy ELSE nyd+iy),myAproc*nprocy+Bproc]
+      FOR iy=nyB(Bproc) TO nyB(Bproc+1)-1
+    ELSE IF (Bproc-myBproc)*parity<0 THEN
+      sz=bzl+Bproc
+      EXCEPT sz>V.HI3
+      DO Recv[VV(*,iy,sz-VVstart),myAproc*nprocy+Bproc] FOR iy=LO TO HI
+    END IF
+  REPEAT
+  
+END convolutions
+
+atexit(MPI_Finalize)

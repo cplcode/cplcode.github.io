@@ -1,0 +1,323 @@
+USE rbmat
+! USE rtchecks
+USE tsfft
+FFTSETUP(96)
+
+! Read discretization and simulation parameters from input file
+FILE data=OPENRO[""COMMANDLINE(0)".in"]
+INTEGER CONSTANT nx,ny,nz
+REAL alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_field,dt_save
+REAL Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
+STRING restart_file
+READ BY NAME FROM data nx,ny,nz,alpha0,beta0,htcoeff,Re; nu=1/Re
+DO WHILE READ BY NAME FROM data meanpx OR meanflowx OR meanpy OR meanflowy
+READ BY NAME FROM data deltat, t_max, dt_field, dt_save
+READ BY NAME FROM data restart_file
+! Define wall-normal mesh
+! Alternative Options for uniform or channel-type with two walls and finer spacing near the walls
+REAL z(-1..nz+1)
+!DO z(i)=zmax*i/nz FOR ALL i ! Uniform mesh
+DO z(i)=zmin+0.5*(zmax-zmin)*[tanh(htcoeff*(2*i/nz-1))/tanh(htcoeff)+0.5*(zmax-zmin)] FOR ALL i ! Channel with two walls
+
+! Definition of the velocity data structure (type and then array)
+VELOCITY=STRUCTURE(COMPLEX u,w,v)
+ARRAY(0..nx,-ny..ny,-1..nz+1) OF VELOCITY V=0
+DO V(0,0,iz).u.REAL=(z(iz)-zmin)*(zmax-z(iz)) FOR ALL iz
+DO WITH V(ix,iy,iz)
+  eps=0.002; u=~+eps*RAND(); v=~+eps*RAND(); w=~+eps*RAND()
+FOR ALL ix,iy AND iz=1 TO nz-1
+
+! Read the initial velocity field 
+INTEGER oldnx=nx,oldnz=nz,oldny=ny
+IF restart_file # "" THEN
+  data = OPENRO(restart_file)
+  WRITE "Reading from "restart_file
+  REAL oldalpha0,oldbeta0,oldhtcoeff,oldzmin=0,oldzmax=2,oldRe,oldeltat=0
+  READ FROM data "nx="oldnx,"ny="oldny,"nz="oldnz,"alpha0="oldalpha0,"beta0="oldbeta0,"htcoeff="oldhtcoeff,"zmin="oldzmin,"zmax="oldzmax,"Re="oldRe,"dt="oldeltat
+END IF
+READ FROM data ! consume the last line feed before binary data
+LOOP FOR ix=0 TO oldnx AND iy=-oldny TO oldny AND iz=-1 TO oldnz+1
+  READ BINARY FROM data V(ix,iy,iz)
+REPEAT LOOP; CLOSE data
+
+! Prepare the compact-difference coefficients, then set special cases at the boundaries
+STRUCTURE[ARRAY(-2..2) OF REAL d0,d1,d2,d4] derivatives(1..nz-1)
+ARRAY(-2..2) OF REAL d040,d140,d14m1, d04n,d14n,d14np1
+MODULE setup_derivatives
+  REAL M(0..4,0..4),t(0..4)
+  LOOP FOR iz=1 TO nz-1 WITH derivatives(iz)
+    DO M(i,j)=(z(iz-2+j)-z(iz))**(4-i) FOR ALL i,j; LUdecomp M
+    t=0; t(0)=24
+    d4(-2+(*))=M\t
+    DO M(i,j)=(5-i)*(6-i)*(7-i)*(8-i)*(z(iz-2+j)-z(iz))**(4-i) FOR ALL i,j; LUdecomp M
+    DO t(i)=SUM {d4(j)*(z(iz+j)-z(iz))**(8-i)} FOR ALL j FOR ALL i
+    d0(-2+(*))=M\t
+    DO M(i,j)=(z(iz-2+j)-z(iz))**(4-i) FOR ALL i,j; LUdecomp M
+    t=0; DO t(i)=SUM d0(j)*(4-i)*(3-i)*(z(iz+j)-z(iz))**(2-i) FOR ALL j FOR i=0 TO 2
+    d2(-2+(*))=M\t
+    t=0; DO t(i)=SUM d0(j)*(4-i)*(z(iz+j)-z(iz))**(3-i) FOR ALL j FOR i=0 TO 3
+    d1(-2+(*))=M\t
+  REPEAT
+  DO M(i,j)=(z(-1+j)-z(0))**(4-i) FOR ALL i,j; LUdecomp M
+  t=0; t(3)=1; d140(-2+(*))=M\t
+  DO M(i,j)=(z(-1+j)-z(-1))**(4-i) FOR ALL i,j; LUdecomp M
+  t=0; t(3)=1; d14m1(-2+(*))=M\t
+  d04n=0; d04n(1)=1; d040=0; d040(-1)=1
+  DO M(i,j)=(z(nz-3+j)-z(nz))**(4-i) FOR ALL i,j; LUdecomp M
+  t=0; t(3)=1; d14n(-2+(*))=M\t
+  DO M(i,j)=(z(nz-3+j)-z(nz+1))**(4-i) FOR ALL i,j; LUdecomp M
+  t=0; t(3)=1; d14np1(-2+(*))=M\t
+END setup_derivatives
+
+! Define compact-difference operators; D0 applies to the undifferentiated terms, and makes the scheme compact
+INLINE REAL FUNCTION D0(REAL f(*)) = d0(-2)*f(-2)+d0(-1)*f(-1)+d0(0)*f(0)+d0(1)*f(1)+d0(2)*f(2)
+INLINE REAL FUNCTION D1(REAL f(*)) = d1(-2)*f(-2)+d1(-1)*f(-1)+d1(0)*f(0)+d1(1)*f(1)+d1(2)*f(2)
+INLINE REAL FUNCTION D2(REAL f(*)) = d2(-2)*f(-2)+d2(-1)*f(-1)+d2(0)*f(0)+d2(1)*f(1)+d2(2)*f(2)
+INLINE REAL FUNCTION D4(REAL f(*)) = d4(-2)*f(-2)+d4(-1)*f(-1)+d4(0)*f(0)+d4(1)*f(1)+d4(2)*f(2)
+INLINE COMPLEX FUNCTION D0(COMPLEX f(*))=D0(f.REAL)+I*D0(f.IMAG)
+INLINE COMPLEX FUNCTION D1(COMPLEX f(*))=D1(f.REAL)+I*D1(f.IMAG)
+INLINE COMPLEX FUNCTION D2(COMPLEX f(*))=D2(f.REAL)+I*D2(f.IMAG)
+INLINE COMPLEX FUNCTION D4(COMPLEX f(*))=D4(f.REAL)+I*D4(f.IMAG)
+
+! Temporary two-dimensional storage for the non-linear terms, and expanded arrays for de-aliases FFTs.
+MOMFLUX=STRUCTURE(COMPLEX uu,uv,vv,vw,ww,uw)
+MOMFLUX VV(0..nx,-ny..ny,-2..2)=0
+INTEGER nxd=3*nx DIV 2 -1; DO INC nxd UNTIL FFTfit(nxd)
+INTEGER nyd=3*ny -1; DO INC nyd UNTIL FFTfit(nyd)
+ARRAY(0..nxd-1,0..nyd-1) OF VELOCITY Vd=0
+ARRAY(0..nxd-1,0..nyd-1) OF MOMFLUX VVd=0
+
+! Two-dimensional data structures for the solution of the linear systems.
+maxtimelevels=1
+RHSTYPE=ARRAY(0..nx,-ny..ny) OF STRUCTURE(COMPLEX eta,D2w)
+ARRAY(-2..0) OF POINTER TO RHSTYPE newrhs
+DO newrhs(i) = NEW RHSTYPE FOR ALL i
+ARRAY(maxtimelevels,1..nz-1) OF RHSTYPE oldrhs=0
+
+! Core of the time step: convolutions of velocity Fourier components, computed pseudo-spectrally using FFTs for efficiency
+SUBROUTINE convolutions(ARRAY(*,*) OF VELOCITY Vplane; POINTER TO ARRAY(*,*) OF MOMFLUX VVplane)
+  Vd=0
+  #pragma omp parallel for
+  LOOP FOR ix=0 TO nx
+    DO Vd(ix,iy)=Vplane(ix,iy) FOR iy=0 TO ny
+    DO Vd(ix,nyd+iy)=Vplane(ix,iy) FOR iy=-ny TO -1
+    WITH Vd(ix,*): IFTU(u); IFTU(w); IFTU(v)
+  REPEAT LOOP
+  #pragma omp parallel for
+  LOOP FOR iy=LO TO HI
+    WITH Vd(*,iy): RFTU(u); RFTU(w); RFTU(v)
+    LOOP FOR ALL ix WITH Vd(ix,iy), VVd(ix,iy)
+      uu.REAL=u.REAL*u.REAL; uu.IMAG=u.IMAG*u.IMAG 
+      uw.REAL=u.REAL*w.REAL; uw.IMAG=u.IMAG*w.IMAG 
+      ww.REAL=w.REAL*w.REAL; ww.IMAG=w.IMAG*w.IMAG 
+      vw.REAL=w.REAL*v.REAL; vw.IMAG=w.IMAG*v.IMAG 
+      vv.REAL=v.REAL*v.REAL; vv.IMAG=v.IMAG*v.IMAG 
+      uv.REAL=u.REAL*v.REAL; uv.IMAG=u.IMAG*v.IMAG 
+    REPEAT
+    WITH VVd(*,iy): HFTU(uu); HFTU(uw); HFTU(ww); HFTU(vw); HFTU(vv); HFTU(uv)
+  REPEAT
+  #pragma omp parallel for
+  LOOP FOR ix=0 TO nx
+    WITH VVd(ix,*): FFTU(uu); FFTU(uw); FFTU(ww); FFTU(vw); FFTU(vv); FFTU(uv)
+    DO VVplane(ix,iy)=VVd(ix,iy) FOR iy=0 TO ny
+    DO VVplane(ix,iy)=VVd(ix,nyd+iy) FOR iy=-ny TO -1
+  REPEAT LOOP
+END convolutions
+
+! OS and SQ stand for Orr-Sommerfeld and Squire, but fully non-linear
+INLINE FUNCTION OS(INTEGER iz,i)=nu*[d4(i)-2*k2*d2(i)+k2*k2*d0(i)]
+INLINE FUNCTION SQ(INTEGER iz,i)=nu*[d2(i)-k2*d0(i)]
+SUBROUTINE buildrhs[SUBROUTINE(COMPLEX rhs^,old^(*),unknown,implicit_part,explicit_part) timescheme]
+DO convolutions(V(*,*,iz),VV(*,*,iz)) FOR iz=-1 TO 2
+LOOP FOR iz=1 TO nz-1
+  #pragma omp parallel for  
+  LOOP FOR ix=LO TO HI: DO VV(ix,iy,i)=VV(ix,iy,i+1) FOR ALL iy AND i=-2 TO 1
+  WITH derivatives(iz)
+  convolutions(V(*,*,iz+2),VV(*,*,2))
+  #pragma omp parallel for  
+  LOOP FOR ix=LO TO HI AND ALL iy
+    ialpha=I*alpha0*ix; ibeta=I*beta0*iy
+    k2=(alpha0*ix)**2+(beta0*iy)**2
+    WITH VV(ix,iy,*), V(ix,iy,iz+(*)):
+    rhsu=-ialpha*D0(uu)-D1(uw)-ibeta*D0(uv)
+    rhsw=-ialpha*D0(uw)-D1(ww)-ibeta*D0(vw)
+    rhsv=-ialpha*D0(uv)-D1(vw)-ibeta*D0(vv)
+    D2wimpl = SUM OS(iz,i)*w(i) FOR i=-2 TO 2
+! timescheme here is the generic temporal scheme, selected in the main time loop    
+    timescheme{newrhs(0,ix,iy).D2w,oldrhs(*,iz,ix,iy).D2w,D2(w)-k2*D0(w),
+               D2wimpl,
+               ialpha*[ialpha*D1(uu)+D2(uw)+ibeta*D1(uv)]+
+               ibeta*[ialpha*D1(uv)+D2(vw)+ibeta*D1(vv)]-k2*rhsw}
+! special treatment of the (0,0) wavenumber               
+    IF ix=0 AND iy=0 THEN ! mean u stored in eta.REAL, mean v in eta.IMAG
+      timescheme{newrhs(0,0,0).eta,oldrhs(*,iz,0,0).eta,D0(u.REAL)+D0(v.REAL)*I,
+                 nu*D2(u.REAL)+nu*D2(v.REAL)*I,
+                 rhsu.REAL+meanpx+[rhsv.REAL+meanpy]*I}
+    ELSE
+      etaimpl=SUM SQ(iz,i)*[ibeta*u(i)-ialpha*v(i)] FOR i=-2 TO 2
+      timescheme{newrhs(0,ix,iy).eta,oldrhs(*,iz,ix,iy).eta,ibeta*D0(u)-ialpha*D0(v),
+                 etaimpl,
+                 ibeta*rhsu-ialpha*rhsv}
+    END IF
+    V(ix,iy,iz-2).u=newrhs(-2,ix,iy).eta; V(ix,iy,iz-2).w=newrhs(-2,ix,iy).D2w
+  REPEAT LOOP
+  temp=newrhs(-2); newrhs(-2)=newrhs(-1); newrhs(-1)=newrhs(0); newrhs(0)=temp
+REPEAT LOOP
+DO V(ix,iy,nz+i).u=newrhs(i,ix,iy).eta; V(ix,iy,nz+i).w=newrhs(i,ix,iy).D2w FOR ALL ix,iy AND i=-2 TO -1
+END buildrhs
+
+SUBROUTINE bcLUdecomp[POINTER TO ARRAY(-1..nz+1,-2..2) OF REAL A]
+  A(0,-1..HI)=~-A(0,-2)/A(-1,-2)*A(-1,-1..HI)
+  A(1,-1..HI)=~-A(1,-2)/A(-1,-2)*A(-1,-1..HI)
+  A(1,0..HI)=~-A(1,-1)/A(0,-1)*A(0,0..HI)
+  A[2,-1+(0..HI)]=~-A(2,-2)/A(0,-1)*A(0,0..HI)
+  A(nz,LO..1)=~-A(nz,2)/A(nz+1,2)*A(nz+1,LO..1)
+  A(nz-1,LO..1)=~-A(nz-1,2)/A(nz+1,2)*A(nz+1,LO..1)
+  A(nz-1,LO..0)=~-A(nz-1,1)/A(nz,1)*A(nz,LO..0)
+  A[nz-2,1+(LO..0)]=~-A(nz-2,2)/A(nz,1)*A(nz,LO..0)
+  LUdecomp A(1..nz-1)
+END bcLUdecomp
+
+SUBROUTINE bcLeftDiv[POINTER TO ARRAY(*) OF REAL x; ARRAY(-1..nz+1,-2..2) OF REAL A]
+  x(0)=~-A(0,-2)/A(-1,-2)*x(-1)
+  x(1)=~-A(1,-2)/A(-1,-2)*x(-1)
+  x(1)=~-A(1,-1)/A(0,-1)*x(0)
+  x(2)=~-A(2,-2)/A(0,-1)*x(0)
+  x(nz)=~-A(nz,2)/A(nz+1,2)*x(nz+1)
+  x(nz-1)=~-A(nz-1,2)/A(nz+1,2)*x(nz+1)
+  x(nz-1)=~-A(nz-1,1)/A(nz,1)*x(nz)
+  x(nz-2)=~-A(nz-2,2)/A(nz,1)*x(nz)
+  x(1..nz-1)=A(1..nz-1)\~
+  x(0)={~-A(0,0..2)*x[1+(0..2)]}/A(0,-1)
+  x(-1)={~-A(-1,-1..2)*x[1+(-1..2)]}/A(-1,-2)
+  x(nz)={~-A(nz,-2..0)*x[nz-1+(-2..0)]}/A(nz,1)
+  x(nz+1)={~-A(nz+1,-2..1)*x[nz-1+(-2..1)]}/A(nz+1,2)
+END bcLeftDiv
+
+ARRAY(-1..nz+1,-2..2) OF REAL D0mat=0
+D0mat(1..nz-1)=derivatives.d0
+D0mat(-1)=0; D0mat(-1,-2)=1; D0mat(0)=0; D0mat(0,-1)=1
+D0mat(nz)=0; D0mat(nz,1)=1; D0mat(nz+1)=0; D0mat(nz+1,2)=1
+bcLUdecomp D0mat
+
+! Function to integrate quantities wrt y wall-to-wall
+REAL FUNCTION yintegr(REAL f(*))
+  RESULT=0
+  LOOP FOR iz=1 TO nz-1 BY 2 
+    yp1=z(iz+1)-z(iz); ym1=z(iz-1)-z(iz) 
+   a1=-1/3*ym1+1/6*yp1+1/6*yp1*yp1/ym1
+   a3=+1/3*yp1-1/6*ym1-1/6*ym1*ym1/yp1
+   a2=yp1-ym1-a1-a3
+   RESULT=~+a1*f(iz-1) + a2*f(iz) + a3*f(iz+1)    
+ REPEAT
+END yintegr
+
+! Function to derive quantities wrt y wall-to-wall
+SUBROUTINE deriv(ARRAY(*) OF REAL f0,f1^)
+  f1(0)=SUM d140(i)*f0(1+i) FOR i=-2 TO 2
+  f1(-1)=SUM d14m1(i)*f0(1+i) FOR i=-2 TO 2
+  f1(nz)=SUM d14n(i)*f0(nz-1+i) FOR i=-2 TO 2
+  f1(nz+1)=SUM d14np1(i)*f0(nz-1+i) FOR i=-2 TO 2
+  DO WITH derivatives(i) f1(i)=D1(f0(i+(*))) FOR i=1 TO nz-1
+  bcLeftDiv(f1,D0mat)
+END deriv
+
+! Solution of the linear system, for each (alpha,beta) pair 
+SUBROUTINE linsolve(REAL lambda)
+  #pragma omp parallel for
+  LOOP FOR ix=LO TO HI AND ALL iy
+    ARRAY(-1..nz+1,-2..2) OF REAL etamat, D2wmat
+    ialpha=I*alpha0*ix; ibeta=I*beta0*iy
+    k2=(alpha0*ix)**2+(beta0*iy)**2
+    LOOP FOR iz=1 TO nz-1 AND ALL i WITH derivatives(iz)
+      D2wmat(iz,i)=lambda*[d2(i)-k2*d0(i)]-OS(iz,i)
+      etamat(iz,i)=lambda*d0(i)-SQ(iz,i) 
+    REPEAT
+    ! boundary conditions
+    ! the missing bc for eta(0) and eta(nz) derives from extrapolation
+    D2wmat(0)=d040; D2wmat(-1)=d140
+    D2wmat(nz)=d04n; D2wmat(nz+1)=d14n
+    etamat(0)=d040; etamat(-1)=derivatives(1).d4
+    etamat(nz)=d04n; etamat(nz+1)=derivatives(nz-1).d4
+    bcLUdecomp D2wmat; bcLUdecomp etamat
+    WITH V(ix,iy,*):
+    w(0)=0;  w(-1)=0; w(nz)=0; w(nz+1)=0
+    bcLeftDiv(w.REAL,D2wmat); bcLeftDiv(w.IMAG,D2wmat)
+    u(0)=0; u(-1)=0;  u(nz)=0; u(nz+1)=0
+    bcLeftDiv(u.REAL,etamat); bcLeftDiv(u.IMAG,etamat)
+    IF ix=0 AND iy=0 THEN
+      ! Mean flow in the two homogeneous directions, and forcing term  
+      v=u.IMAG; u.IMAG=0
+      IF ABS(meanflowx)>1E-10 OR ABS(meanflowy)>1E-10 THEN
+        REAL ucor(-1..nz+1); DO ucor(iz)=1 FOR iz=1 TO nz-1
+        ucor(0)=0; ucor(-1)=0; ucor(nz)=0; ucor(nz+1)=0
+        bcLeftDiv(ucor,etamat)
+        IF ABS(meanflowx)>1E-10 THEN u.REAL=~+(meanflowx-yintegr(u.REAL))/yintegr(ucor)*ucor
+        IF ABS(meanflowy)>1E-10 THEN w.REAL=~+(meanflowy-yintegr(w.REAL))/yintegr(ucor)*ucor
+      END IF
+    ELSE
+      ! Algebraic 2x2 system to recover u,v from w,eta  
+      deriv(w.REAL,v.REAL); deriv(w.IMAG,v.IMAG)
+      DO temp=(ialpha*v(iz)-ibeta*u(iz))/k2
+        v(iz)=(ibeta*v(iz)+ialpha*u(iz))/k2 
+        u(iz)=temp
+      FOR iz=-1 TO nz+1
+    END IF
+  REPEAT
+END linsolve
+
+! Only one Runge-Kutta implementation with 3 substeps is provided here
+SUBROUTINE RK1_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=120/32/deltat*unkn+impl+2*expl
+  old(1)=expl
+END RK1_rai
+CONSTANT REAL RK1_rai_coeff=120/32
+
+SUBROUTINE RK2_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=120/(8*deltat)*unkn+impl+50/8*expl-34/8*old(1)
+  old(1)=expl
+END RK2_rai
+CONSTANT REAL RK2_rai_coeff=120/8
+
+SUBROUTINE RK3_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=120/(20*deltat)*unkn+impl+90/20*expl-50/20*old(1)
+END RK3_rai
+CONSTANT REAL RK3_rai_coeff=120/20      
+
+
+! Main time integration loop
+INTEGER cont=0
+! Saving the restart file
+LOOP timeloop WHILE time < t_max-deltat/2
+  IF time>deltat AND FLOOR(time / dt_save) > FLOOR((time-deltat) / dt_save) THEN
+    WRITE "Writing restart file..."
+    image = CREATE("Restart.out")
+    WRITE TO image "nx="nx,"ny="ny,"nz="nz,"alpha0="alpha0,"beta0="beta0,"htcoeff="htcoeff,"zmin="zmin,"zmax="zmax,"Re="1/nu,"dt="deltat
+    WRITE BINARY TO image V; CLOSE image
+  END IF
+! Saving the velocity file (incremental database, velocity field in w,eta form)
+  IF time>deltat AND FLOOR(time / dt_field) > FLOOR((time-deltat) / dt_field) THEN
+  INC cont
+  image = CREATE("Field"cont".bin")
+      WRITE TO image "nx="nx,"ny="ny,"nz="nz,"alpha0="alpha0,"beta0="beta0,"htcoeff="htcoeff,"zmin="zmin,"zmax="zmax,"nu="nu,"dt="deltat
+    LOOP FOR ALL ix,iy,iz
+      ialpha = I*alpha0*ix; ibeta = I*beta0*iy
+      eta = ibeta*V(ix,iy,iz).u - ialpha*V(ix,iy,iz).v
+      WRITE BINARY TO image V(ix,iy,iz).w, eta
+    REPEAT
+    WRITE BINARY TO image V(0,0,*).u, V(0,0,*).v
+    CLOSE image
+  END IF
+  time=~+2/RK1_rai_coeff*deltat
+  buildrhs(RK1_rai);linsolve(RK1_rai_coeff/deltat)
+  time=~+2/RK2_rai_coeff*deltat
+  buildrhs(RK2_rai);linsolve(RK2_rai_coeff/deltat)
+  time=~+2/RK3_rai_coeff*deltat
+  buildrhs(RK3_rai);linsolve(RK3_rai_coeff/deltat)
+
+! Minimalistic runtime output to screen: 
+! friction at the two walls, pressure gradient and bulk velocity
+  WRITE              time,nu*SUM d140(i)*V(0,0,1+i).u.REAL FOR i=-2 TO 2, 
+                         -nu*SUM d14n(i)*V(0,0,nz-1+i).u.REAL FOR i=-2 TO 2,
+                         meanpx, yintegr(V(0,0,*).u.REAL)/2
+REPEAT timeloop

@@ -1,0 +1,9 @@
+nx=32	ny=32	nz=100
+alpha0=0.66 beta0=1.32
+htcoeff=1.5
+Re=180
+meanpx=1	meanpy=0
+
+deltat=0.002 	t_max=0.1
+dt_field=0.5	dt_save=5.0
+restart_file=Restart.Re180Px.32.in
