@@ -1,20 +1,19 @@
 USE complex
 USE rbmat
-USE gnuplot
 ! USE rtchecks
 
-FILE data=OPENRO[""COMMANDLINE(0)".in"]
-STRING restart_file
+FILE data=OPENRO[IF COMMANDLINE.HI>0 THEN COMMANDLINE(1) ELSE ""COMMANDLINE(0)".in"]
 INTEGER CONSTANT nx,ny,nz
 REAL CONSTANT alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_field,dt_save
 REAL Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
+STRING restart_file
 READ BY NAME FROM data nx,ny,nz,alpha0,beta0,htcoeff,Re; nu=1/Re
 DO WHILE READ BY NAME FROM data meanpx OR meanflowx OR meanpy OR meanflowy
 READ BY NAME FROM data deltat, t_max, dt_field, dt_save
-READ BY NAME FROM data restart_file
+DO WHILE READ BY NAME FROM data restart_file
 REAL z(-1..nz+1)
-! DO z(i)=zmax*i/nz FOR ALL i
-DO z(i)=zmin+0.5*(zmax-zmin)*{tanh[htcoeff*(2*i/nz-1)]/tanh(htcoeff) + 1} FOR ALL i 
+! DO z(i)=zmax*i/nz FOR ALL i ! Uniform mesh
+DO z(i)=zmin+0.5*(zmax-zmin)*{tanh[htcoeff*(2*i/nz-1)]/tanh(htcoeff)+0.5*(zmax-zmin)} FOR ALL i ! Channel with two walls
 
 USE mpiconvolutions
 IF have00 THEN WRITE BY NAME nx,ny,nz,2*PI/alpha0,2*PI/beta0,Re
@@ -30,11 +29,11 @@ IF restart_file # "" THEN
 END IF
 READ FROM data ! consume the last line feed before binary data
 !(
-LOOP FOR ix=0 TO oldnx AND iy=-oldny TO oldny AND iz=-1 TO oldnz+1
-  READ BINARY FROM data V(ix,iy,iz)
-REPEAT LOOP
+  LOOP FOR ix=0 TO oldnx AND iy=-oldny TO oldny AND iz=-1 TO oldnz+1
+    READ BINARY FROM data V(ix,iy,iz)
+  REPEAT LOOP
 !)
-POINTER TO STORED STRUCTURE[CHAR header[0..POSITION(data)-1]; ARRAY(0..oldnx,-oldny..oldny,-1..oldnz+1) OF VELOCITY oldV] image=data
+POINTER TO STORED STRUCTURE[CHAR header[1..POSITION(data)]; ARRAY(0..oldnx,-oldny..oldny,-1..oldnz+1) OF VELOCITY oldV] image=data
 LOOP FOR ix=MAX(V.LO1,image.oldV.LO1) TO MIN(V.HI1,image.oldV.HI1) AND iy=MAX(V.LO2,image.oldV.LO2) TO MIN(V.HI2,image.oldV.HI2) AND iz=MAX(V.LO3,image.oldV.LO3) TO MIN(V.HI3,image.oldV.HI3)
   V(ix,iy,iz)=image.oldV(ix,iy,iz)
 REPEAT LOOP
@@ -45,7 +44,7 @@ ARRAY(-2..2) OF REAL d040,d140,d14m1, d04n,d14n,d14np1
 MODULE setup_derivatives
   REAL M(0..4,0..4),t(0..4)
   LOOP FOR iz=1 TO nz-1 WITH derivatives(iz)
-    DO M(i,j)=[z(iz-2+j)-z(iz)]**(4-i) FOR ALL i,j; LUdecomp M
+    DO M(i,j)=(z(iz-2+j)-z(iz))**(4-i) FOR ALL i,j; LUdecomp M
     t=0; t(0)=24
     d4(-2+(*))=M\t
     DO M(i,j)=(5-i)*(6-i)*(7-i)*(8-i)*(z(iz-2+j)-z(iz))**(4-i) FOR ALL i,j; LUdecomp M
@@ -57,12 +56,12 @@ MODULE setup_derivatives
     t=0; DO t(i)=SUM d0(j)*(4-i)*(z(iz+j)-z(iz))**(3-i) FOR ALL j FOR i=0 TO 3
     d1(-2+(*))=M\t
   REPEAT
-  DO M(i,j)=[z(-1+j)-z(0)]**(4-i) FOR ALL i,j; LUdecomp M
+  DO M(i,j)=(z(-1+j)-z(0))**(4-i) FOR ALL i,j; LUdecomp M
   t=0; t(3)=1; d140(-2+(*))=M\t
   DO M(i,j)=(z(-1+j)-z(-1))**(4-i) FOR ALL i,j; LUdecomp M
   t=0; t(3)=1; d14m1(-2+(*))=M\t
   d04n=0; d04n(1)=1; d040=0; d040(-1)=1
-  DO M(i,j)=[z(nz-3+j)-z(nz)]**(4-i) FOR ALL i,j; LUdecomp M
+  DO M(i,j)=(z(nz-3+j)-z(nz))**(4-i) FOR ALL i,j; LUdecomp M
   t=0; t(3)=1; d14n(-2+(*))=M\t
   DO M(i,j)=(z(nz-3+j)-z(nz+1))**(4-i) FOR ALL i,j; LUdecomp M
   t=0; t(3)=1; d14np1(-2+(*))=M\t
@@ -78,10 +77,10 @@ INLINE COMPLEX FUNCTION D2(COMPLEX f(*))=D2(f.REAL)+I*D2(f.IMAG)
 INLINE COMPLEX FUNCTION D4(COMPLEX f(*))=D4(f.REAL)+I*D4(f.IMAG)
 
 maxtimelevels=1
-rhstype=ARRAY(V.LO1..V.HI1,V.LO2..V.HI2) OF STRUCTURE(COMPLEX zeta,D2w)
-ARRAY(-2..0) OF POINTER TO rhstype newrhs
-DO newrhs(i) = NEW rhstype FOR ALL i
-ARRAY(maxtimelevels,1..nz-1) OF rhstype oldrhs=0
+RHSTYPE=ARRAY(V.LO1..V.HI1,V.LO2..V.HI2) OF STRUCTURE(COMPLEX zeta,D2w)
+ARRAY(-2..0) OF POINTER TO RHSTYPE newrhs
+DO newrhs(i) = NEW RHSTYPE FOR ALL i
+ARRAY(maxtimelevels,1..nz-1) OF RHSTYPE oldrhs=0
 
 INLINE FUNCTION OS(INTEGER iz,i)=nu*[d4(i)-2*k2*d2(i)+k2*k2*d0(i)]
 INLINE FUNCTION SQ(INTEGER iz,i)=nu*[d2(i)-k2*d0(i)]

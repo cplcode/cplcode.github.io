@@ -22,8 +22,8 @@ DO nxA(i)=ROUND[(nx+1)/nprocx*i] FOR ALL i
 DO nyB(i)=-ny+ROUND[(2*ny+1)/nprocy*i] FOR ALL i
 DO nydA(i)=ROUND(nyd/nprocx*i) FOR ALL i
 
-VELOCITY=STRUCTURED ARRAY(u,w,v) OF COMPLEX
-MOMFLUX=STRUCTURED ARRAY(uu,vv,ww,uv,uw,vw) OF COMPLEX
+VELOCITY=STRUCTURED ARRAY(u,v,w) OF COMPLEX
+MOMFLUX=STRUCTURED ARRAY(uu,uv,vv,vw,ww,uw) OF COMPLEX
 VELOCITY V[nxA(myAproc)..nxA(myAproc+1)-1,nyB(myBproc)..nyB(myBproc+1)-1,-1..nz+1]=0
 MOMFLUX VV[nxA(myAproc)..nxA(myAproc+1)-1,nyB(myBproc)..nyB(myBproc+1)-1,-2..nprocy+1]
 VELOCITY intV[nxA(myAproc)..nxA(myAproc+1)-1,0..nyd-1], physV[0..nxd-1,nydA(myAproc)..nydA(myAproc+1)-1]
