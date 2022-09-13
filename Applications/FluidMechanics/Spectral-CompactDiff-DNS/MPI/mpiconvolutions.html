@@ -34,8 +34,8 @@ myAproc=myiproc <a href="cpl.html#DIV">DIV</a> nprocy; myBproc=myiproc <a href="
 <a href="cpl.html#DO">DO</a> nyB(i)=-ny+<a href="cpl.html#ROUND">ROUND</a>[(2&lowast;ny+1)/nprocy&lowast;i] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
 <a href="cpl.html#DO">DO</a> nydA(i)=<a href="cpl.html#ROUND">ROUND</a>(nyd/nprocx&lowast;i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
 
-VELOCITY=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>(u,w,v) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a>
-MOMFLUX=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>(uu,vv,ww,uv,uw,vw) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a>
+VELOCITY=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>(u,v,w) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a>
+MOMFLUX=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>(uu,uv,vv,vw,ww,uw) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a>
 VELOCITY V[nxA(myAproc)..nxA(myAproc+1)-1,nyB(myBproc)..nyB(myBproc+1)-1,-1..nz+1]=0
 MOMFLUX VV[nxA(myAproc)..nxA(myAproc+1)-1,nyB(myBproc)..nyB(myBproc+1)-1,-2..nprocy+1]
 VELOCITY intV[nxA(myAproc)..nxA(myAproc+1)-1,0..nyd-1], physV[0..nxd-1,nydA(myAproc)..nydA(myAproc+1)-1]

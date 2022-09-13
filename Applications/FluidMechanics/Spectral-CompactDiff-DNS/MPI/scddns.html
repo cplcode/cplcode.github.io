@@ -12,21 +12,20 @@
 <body translate="no"><pre>
 <a href="cpl.html#USE">USE</a> <a href="complex.html#Top">complex</a>
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a>
-<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
 <span class=comment>! USE rtchecks</span>
 
-<a href="cpl.html#FILE">FILE</a> data=OPENRO[""<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(0)".in"]
-<a href="cpl.html#STRING">STRING</a> restart_file
+<a href="cpl.html#FILE">FILE</a> data=OPENRO[<a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1) <a href="cpl.html#ELSE">ELSE</a> ""<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(0)".in"]
 <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> nx,ny,nz
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#CONSTANT">CONSTANT</a> alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_field,dt_save
 <a href="cpl.html#REAL">REAL</a> Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
+<a href="cpl.html#STRING">STRING</a> restart_file
 <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data nx,ny,nz,alpha0,beta0,htcoeff,Re; nu=1/Re
 <a href="cpl.html#DO">DO</a> <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data meanpx <a href="cpl.html#OR">OR</a> meanflowx <a href="cpl.html#OR">OR</a> meanpy <a href="cpl.html#OR">OR</a> meanflowy
 <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data deltat, t_max, dt_field, dt_save
-<a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data restart_file
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data restart_file
 <a href="cpl.html#REAL">REAL</a> z(-1..nz+1)
-<span class=comment>! DO z(i)=zmax&lowast;i/nz FOR ALL i</span>
-<a href="cpl.html#DO">DO</a> z(i)=zmin+0.5&lowast;(zmax-zmin)&lowast;{tanh[htcoeff&lowast;(2&lowast;i/nz-1)]/tanh(htcoeff) + 1} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i 
+<span class=comment>! DO z(i)=zmax&lowast;i/nz FOR ALL i <span class=comment>! Uniform mesh</span></span>
+<a href="cpl.html#DO">DO</a> z(i)=zmin+0.5&lowast;(zmax-zmin)&lowast;{tanh[htcoeff&lowast;(2&lowast;i/nz-1)]/tanh(htcoeff)+0.5&lowast;(zmax-zmin)} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>! Channel with two walls</span>
 
 <a href="cpl.html#USE">USE</a> mpiconvolutions
 <a href="cpl.html#IF">IF</a> have00 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> nx,ny,nz,2&lowast;PI/alpha0,2&lowast;PI/beta0,Re
@@ -42,11 +41,11 @@
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data <span class=comment>! consume the last line feed before binary data</span>
 <span class=comment>!(
-LOOP FOR ix=0 TO oldnx AND iy=-oldny TO oldny AND iz=-1 TO oldnz+1
-  READ BINARY FROM data V(ix,iy,iz)
-REPEAT LOOP
+  LOOP FOR ix=0 TO oldnx AND iy=-oldny TO oldny AND iz=-1 TO oldnz+1
+    READ BINARY FROM data V(ix,iy,iz)
+  REPEAT LOOP
 !)</span>
-<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#CHAR">CHAR</a> header[0..<a href="cpl.html#POSITION">POSITION</a>(data)-1]; <a href="cpl.html#ARRAY">ARRAY</a>(0..oldnx,-oldny..oldny,-1..oldnz+1) <a href="cpl.html#OF">OF</a> VELOCITY oldV] image=data
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#CHAR">CHAR</a> header[1..<a href="cpl.html#POSITION">POSITION</a>(data)]; <a href="cpl.html#ARRAY">ARRAY</a>(0..oldnx,-oldny..oldny,-1..oldnz+1) <a href="cpl.html#OF">OF</a> VELOCITY oldV] image=data
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#MAX">MAX</a>(V.<a href="cpl.html#LO">LO1</a>,image.oldV.<a href="cpl.html#LO">LO1</a>) <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(V.<a href="cpl.html#HI">HI1</a>,image.oldV.<a href="cpl.html#HI">HI1</a>) <a href="cpl.html#AND">AND</a> iy=<a href="cpl.html#MAX">MAX</a>(V.<a href="cpl.html#LO">LO2</a>,image.oldV.<a href="cpl.html#LO">LO2</a>) <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(V.<a href="cpl.html#HI">HI2</a>,image.oldV.<a href="cpl.html#HI">HI2</a>) <a href="cpl.html#AND">AND</a> iz=<a href="cpl.html#MAX">MAX</a>(V.<a href="cpl.html#LO">LO3</a>,image.oldV.<a href="cpl.html#LO">LO3</a>) <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(V.<a href="cpl.html#HI">HI3</a>,image.oldV.<a href="cpl.html#HI">HI3</a>)
   V(ix,iy,iz)=image.oldV(ix,iy,iz)
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
@@ -57,7 +56,7 @@ REPEAT LOOP
 <a href="cpl.html#MODULE">MODULE</a> setup_derivatives
   <a href="cpl.html#REAL">REAL</a> M(0..4,0..4),t(0..4)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#WITH">WITH</a> derivatives(iz)
-    <a href="cpl.html#DO">DO</a> M(i,j)=[z(iz-2+j)-z(iz)]<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
+    <a href="cpl.html#DO">DO</a> M(i,j)=(z(iz-2+j)-z(iz))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
     t=0; t(0)=24
     d4(-2+(&lowast;))=M\t
     <a href="cpl.html#DO">DO</a> M(i,j)=(5-i)&lowast;(6-i)&lowast;(7-i)&lowast;(8-i)&lowast;(z(iz-2+j)-z(iz))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
@@ -69,12 +68,12 @@ REPEAT LOOP
     t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;(4-i)&lowast;(z(iz+j)-z(iz))<a href="cpl.html#compound-index">**</a>(3-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 3
     d1(-2+(&lowast;))=M\t
   <a href="cpl.html#LOOP">REPEAT</a>
-  <a href="cpl.html#DO">DO</a> M(i,j)=[z(-1+j)-z(0)]<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
+  <a href="cpl.html#DO">DO</a> M(i,j)=(z(-1+j)-z(0))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
   t=0; t(3)=1; d140(-2+(&lowast;))=M\t
   <a href="cpl.html#DO">DO</a> M(i,j)=(z(-1+j)-z(-1))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
   t=0; t(3)=1; d14m1(-2+(&lowast;))=M\t
   d04n=0; d04n(1)=1; d040=0; d040(-1)=1
-  <a href="cpl.html#DO">DO</a> M(i,j)=[z(nz-3+j)-z(nz)]<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
+  <a href="cpl.html#DO">DO</a> M(i,j)=(z(nz-3+j)-z(nz))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
   t=0; t(3)=1; d14n(-2+(&lowast;))=M\t
   <a href="cpl.html#DO">DO</a> M(i,j)=(z(nz-3+j)-z(nz+1))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
   t=0; t(3)=1; d14np1(-2+(&lowast;))=M\t
@@ -90,10 +89,10 @@ REPEAT LOOP
 <a href="cpl.html#INLINE">INLINE</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D4(<a href="complex.html#Top">COMPLEX</a> f(&lowast;))=D4(f.<a href="cpl.html#REAL">REAL</a>)+I&lowast;D4(f.<a href="complex.html#Top">IMAG</a>)
 
 maxtimelevels=1
-rhstype=<a href="cpl.html#ARRAY">ARRAY</a>(V.<a href="cpl.html#LO">LO1</a>..V.<a href="cpl.html#HI">HI1</a>,V.<a href="cpl.html#LO">LO2</a>..V.<a href="cpl.html#HI">HI2</a>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">COMPLEX</a> zeta,D2w)
-<a href="cpl.html#ARRAY">ARRAY</a>(-2..0) <a href="cpl.html#OF">OF</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> rhstype newrhs
-<a href="cpl.html#DO">DO</a> newrhs(i) = <a href="cpl.html#NEW">NEW</a> rhstype <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
-<a href="cpl.html#ARRAY">ARRAY</a>(maxtimelevels,1..nz-1) <a href="cpl.html#OF">OF</a> rhstype oldrhs=0
+RHSTYPE=<a href="cpl.html#ARRAY">ARRAY</a>(V.<a href="cpl.html#LO">LO1</a>..V.<a href="cpl.html#HI">HI1</a>,V.<a href="cpl.html#LO">LO2</a>..V.<a href="cpl.html#HI">HI2</a>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">COMPLEX</a> zeta,D2w)
+<a href="cpl.html#ARRAY">ARRAY</a>(-2..0) <a href="cpl.html#OF">OF</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> RHSTYPE newrhs
+<a href="cpl.html#DO">DO</a> newrhs(i) = <a href="cpl.html#NEW">NEW</a> RHSTYPE <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+<a href="cpl.html#ARRAY">ARRAY</a>(maxtimelevels,1..nz-1) <a href="cpl.html#OF">OF</a> RHSTYPE oldrhs=0
 
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> OS(<a href="cpl.html#INTEGER">INTEGER</a> iz,i)=nu&lowast;[d4(i)-2&lowast;k2&lowast;d2(i)+k2&lowast;k2&lowast;d0(i)]
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> SQ(<a href="cpl.html#INTEGER">INTEGER</a> iz,i)=nu&lowast;[d2(i)-k2&lowast;d0(i)]
