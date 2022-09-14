@@ -16,7 +16,7 @@
 FFTSETUP(96)
 
 <span class=comment>! Read discretization and simulation parameters from initial field</span>
-<a href="cpl.html#FILE">FILE</a> data=OPENRO[<a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1) <a href="cpl.html#ELSE">ELSE</a> "dnsfield0.dat"]
+<a href="cpl.html#FILE">FILE</a> data=OPENRO[<a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1) <a href="cpl.html#ELSE">ELSE</a> "scddns0.dat"]
 <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> nx,ny,nz
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#CONSTANT">CONSTANT</a> alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_field,dt_save
 <a href="cpl.html#REAL">REAL</a> Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
@@ -40,12 +40,12 @@ VELOCITY=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">C
 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1
 <a href="cpl.html#DO">DO</a> V(0,0,iz).u.<a href="cpl.html#REAL">REAL</a>=(z(iz)-zmin)&lowast;(zmax-z(iz)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
 <span class=comment>! Read the initial velocity field if present</span>
-<a href="cpl.html#STRING">STRING</a> field0
-<a href="cpl.html#DO">DO</a> <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data field0
+<a href="cpl.html#STRING">STRING</a> scddns0
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data scddns0
 <a href="cpl.html#INTEGER">INTEGER</a> oldnx=nx, oldny=ny, oldnz=nz
-<a href="cpl.html#IF">IF</a> field0 # "" <a href="cpl.html#IF">THEN</a>
-  data = OPENRO(field0)
-  <a href="cpl.html#WRITE">WRITE</a> "Reading from "field0
+<a href="cpl.html#IF">IF</a> scddns0 # <a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a>
+  data = OPENRO(scddns0)
+  <a href="cpl.html#WRITE">WRITE</a> "Reading from "scddns0
   <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data "nx="oldnx,"ny="oldny,"nz="oldnz
   <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data  <span class=comment>! skip rest of line</span>
   <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data  <span class=comment>! and next line</span>
@@ -54,7 +54,7 @@ VELOCITY=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">C
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> EOF(data) <a href="cpl.html#IF">THEN</a>
   <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#CHAR">CHAR</a> header[1..<a href="cpl.html#POSITION">POSITION</a>(data)]; <a href="cpl.html#ARRAY">ARRAY</a>(0..oldnx,-oldny..oldny,-1..oldnz+1) <a href="cpl.html#OF">OF</a> VELOCITY oldV] image=data
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#MAX">MAX</a>(V.<a href="cpl.html#LO">LO1</a>,image.oldV.<a href="cpl.html#LO">LO1</a>) <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(V.<a href="cpl.html#HI">HI1</a>,image.oldV.<a href="cpl.html#HI">HI1</a>) <a href="cpl.html#AND">AND</a> iy=<a href="cpl.html#MAX">MAX</a>(V.<a href="cpl.html#LO">LO2</a>,image.oldV.<a href="cpl.html#LO">LO2</a>) <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(V.<a href="cpl.html#HI">HI2</a>,image.oldV.<a href="cpl.html#HI">HI2</a>)
-    <a href="cpl.html#DO">DO</a> V(ix,iy,iz)=oldV[ix,iy,-1+(oldnz+2)&lowast;(iz+1)<a href="cpl.html#DIV">DIV</a>(nz+2)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
+    <a href="cpl.html#DO">DO</a> V(ix,iy,iz)=image.oldV[ix,iy,-1+(oldnz+2)&lowast;(iz+1)<a href="cpl.html#DIV">DIV</a>(nz+2)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#CLOSE">CLOSE</a> data
@@ -220,7 +220,7 @@ D0mat(nz)=0; D0mat(nz,1)=1; D0mat(nz+1)=0; D0mat(nz+1,2)=1
 bcLUdecomp D0mat
 
 <span class=comment>! Function to integrate quantities wrt y wall-to-wall</span>
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> yintegr(<a href="cpl.html#REAL">REAL</a> f(&lowast;))
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> zintegr(<a href="cpl.html#REAL">REAL</a> f(&lowast;))
   <a href="cpl.html#RESULT">RESULT</a>=0
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#BY">BY</a> 2 
     yp1=z(iz+1)-z(iz); ym1=z(iz-1)-z(iz) 
@@ -229,7 +229,7 @@ bcLUdecomp D0mat
    a2=yp1-ym1-a1-a3
    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Assignment">~</a>+a1&lowast;f(iz-1) + a2&lowast;f(iz) + a3&lowast;f(iz+1)    
  <a href="cpl.html#LOOP">REPEAT</a>
-<a href="cpl.html#END">END</a> yintegr
+<a href="cpl.html#END">END</a> zintegr
 
 <span class=comment>! Function to derive quantities wrt y wall-to-wall</span>
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> deriv(<a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> f0,f1<a href="cpl.html#REAL-operator">^</a>)
@@ -271,8 +271,8 @@ bcLUdecomp D0mat
         <a href="cpl.html#REAL">REAL</a> ucor(-1..nz+1); <a href="cpl.html#DO">DO</a> ucor(iz)=1 <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1
         ucor(0)=0; ucor(-1)=0; ucor(nz)=0; ucor(nz+1)=0
         bcLeftDiv(ucor,zetamat)
-        <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(meanflowx)&gt;1E-10 <a href="cpl.html#IF">THEN</a> u.<a href="cpl.html#REAL">REAL</a>=<a href="cpl.html#Assignment">~</a>+(meanflowx-yintegr(u.<a href="cpl.html#REAL">REAL</a>))/yintegr(ucor)&lowast;ucor
-        <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(meanflowy)&gt;1E-10 <a href="cpl.html#IF">THEN</a> w.<a href="cpl.html#REAL">REAL</a>=<a href="cpl.html#Assignment">~</a>+(meanflowy-yintegr(w.<a href="cpl.html#REAL">REAL</a>))/yintegr(ucor)&lowast;ucor
+        <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(meanflowx)&gt;1E-10 <a href="cpl.html#IF">THEN</a> u.<a href="cpl.html#REAL">REAL</a>=<a href="cpl.html#Assignment">~</a>+(meanflowx-zintegr(u.<a href="cpl.html#REAL">REAL</a>))/zintegr(ucor)&lowast;ucor
+        <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(meanflowy)&gt;1E-10 <a href="cpl.html#IF">THEN</a> w.<a href="cpl.html#REAL">REAL</a>=<a href="cpl.html#Assignment">~</a>+(meanflowy-zintegr(w.<a href="cpl.html#REAL">REAL</a>))/zintegr(ucor)&lowast;ucor
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <a href="cpl.html#ELSE">ELSE</a>
       <span class=comment>! Algebraic 2x2 system to recover u,v from w,zeta  </span>
@@ -306,7 +306,7 @@ bcLUdecomp D0mat
 
 
 <span class=comment>! Main time-integration loop</span>
-<a href="cpl.html#INTEGER">INTEGER</a> cont=0
+<a href="cpl.html#INTEGER">INTEGER</a> count=0
 <a href="cpl.html#LOOP">LOOP</a> timeloop <a href="cpl.html#WHILE">WHILE</a> time &lt; t_max-deltat/2
   <span class=comment>! run three Runge-Kutta substeps</span>
   buildrhs(RK1_rai); linsolve(RK1_rai_coeff/deltat)
@@ -330,6 +330,6 @@ bcLUdecomp D0mat
   <span class=comment>! friction at the two walls, pressure gradient and bulk velocity</span>
   <a href="cpl.html#WRITE">WRITE</a> time,nu&lowast;<a href="cpl.html#Looping-operator">SUM</a> d140(i)&lowast;V(0,0,1+i).u.<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2, 
   -nu&lowast;<a href="cpl.html#Looping-operator">SUM</a> d14n(i)&lowast;V(0,0,nz-1+i).u.<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2,
-  meanpx, yintegr(V(0,0,&lowast;).u.<a href="cpl.html#REAL">REAL</a>)/2
+  meanpx, zintegr(V(0,0,&lowast;).u.<a href="cpl.html#REAL">REAL</a>)/2
 <a href="cpl.html#LOOP">REPEAT</a> timeloop
 </pre></body></html>

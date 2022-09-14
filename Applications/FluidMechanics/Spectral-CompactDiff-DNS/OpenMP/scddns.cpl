@@ -4,7 +4,7 @@ USE tsfft
 FFTSETUP(96)
 
 ! Read discretization and simulation parameters from initial field
-FILE data=OPENRO[IF COMMANDLINE.HI>0 THEN COMMANDLINE(1) ELSE "dnsfield0.dat"]
+FILE data=OPENRO[IF COMMANDLINE.HI>0 THEN COMMANDLINE(1) ELSE "scddns0.dat"]
 INTEGER CONSTANT nx,ny,nz
 REAL CONSTANT alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_field,dt_save
 REAL Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
@@ -28,12 +28,12 @@ DO WITH V(ix,iy,iz)
 FOR ALL ix,iy AND iz=1 TO nz-1
 DO V(0,0,iz).u.REAL=(z(iz)-zmin)*(zmax-z(iz)) FOR ALL iz
 ! Read the initial velocity field if present
-STRING field0
-DO WHILE READ BY NAME FROM data field0
+STRING scddns0
+DO WHILE READ BY NAME FROM data scddns0
 INTEGER oldnx=nx, oldny=ny, oldnz=nz
-IF field0 # "" THEN
-  data = OPENRO(field0)
-  WRITE "Reading from "field0
+IF scddns0 # NULL THEN
+  data = OPENRO(scddns0)
+  WRITE "Reading from "scddns0
   READ FROM data "nx="oldnx,"ny="oldny,"nz="oldnz
   READ FROM data  ! skip rest of line
   READ FROM data  ! and next line
@@ -42,7 +42,7 @@ READ FROM data  ! consume the last line feed before binary data
 IF NOT EOF(data) THEN
   POINTER TO STORED STRUCTURE[CHAR header[1..POSITION(data)]; ARRAY(0..oldnx,-oldny..oldny,-1..oldnz+1) OF VELOCITY oldV] image=data
   LOOP FOR ix=MAX(V.LO1,image.oldV.LO1) TO MIN(V.HI1,image.oldV.HI1) AND iy=MAX(V.LO2,image.oldV.LO2) TO MIN(V.HI2,image.oldV.HI2)
-    DO V(ix,iy,iz)=oldV[ix,iy,-1+(oldnz+2)*(iz+1)DIV(nz+2)] FOR ALL iz
+    DO V(ix,iy,iz)=image.oldV[ix,iy,-1+(oldnz+2)*(iz+1)DIV(nz+2)] FOR ALL iz
   REPEAT LOOP
 END IF
 CLOSE data
@@ -208,7 +208,7 @@ D0mat(nz)=0; D0mat(nz,1)=1; D0mat(nz+1)=0; D0mat(nz+1,2)=1
 bcLUdecomp D0mat
 
 ! Function to integrate quantities wrt y wall-to-wall
-REAL FUNCTION yintegr(REAL f(*))
+REAL FUNCTION zintegr(REAL f(*))
   RESULT=0
   LOOP FOR iz=1 TO nz-1 BY 2 
     yp1=z(iz+1)-z(iz); ym1=z(iz-1)-z(iz) 
@@ -217,7 +217,7 @@ REAL FUNCTION yintegr(REAL f(*))
    a2=yp1-ym1-a1-a3
    RESULT=~+a1*f(iz-1) + a2*f(iz) + a3*f(iz+1)    
  REPEAT
-END yintegr
+END zintegr
 
 ! Function to derive quantities wrt y wall-to-wall
 SUBROUTINE deriv(ARRAY(*) OF REAL f0,f1^)
@@ -259,8 +259,8 @@ SUBROUTINE linsolve(REAL lambda)
         REAL ucor(-1..nz+1); DO ucor(iz)=1 FOR iz=1 TO nz-1
         ucor(0)=0; ucor(-1)=0; ucor(nz)=0; ucor(nz+1)=0
         bcLeftDiv(ucor,zetamat)
-        IF ABS(meanflowx)>1E-10 THEN u.REAL=~+(meanflowx-yintegr(u.REAL))/yintegr(ucor)*ucor
-        IF ABS(meanflowy)>1E-10 THEN w.REAL=~+(meanflowy-yintegr(w.REAL))/yintegr(ucor)*ucor
+        IF ABS(meanflowx)>1E-10 THEN u.REAL=~+(meanflowx-zintegr(u.REAL))/zintegr(ucor)*ucor
+        IF ABS(meanflowy)>1E-10 THEN w.REAL=~+(meanflowy-zintegr(w.REAL))/zintegr(ucor)*ucor
       END IF
     ELSE
       ! Algebraic 2x2 system to recover u,v from w,zeta  
@@ -294,7 +294,7 @@ CONSTANT REAL RK3_rai_coeff=120/20
 
 
 ! Main time-integration loop
-INTEGER cont=0
+INTEGER count=0
 LOOP timeloop WHILE time < t_max-deltat/2
   ! run three Runge-Kutta substeps
   buildrhs(RK1_rai); linsolve(RK1_rai_coeff/deltat)
@@ -318,5 +318,5 @@ LOOP timeloop WHILE time < t_max-deltat/2
   ! friction at the two walls, pressure gradient and bulk velocity
   WRITE time,nu*SUM d140(i)*V(0,0,1+i).u.REAL FOR i=-2 TO 2, 
   -nu*SUM d14n(i)*V(0,0,nz-1+i).u.REAL FOR i=-2 TO 2,
-  meanpx, yintegr(V(0,0,*).u.REAL)/2
+  meanpx, zintegr(V(0,0,*).u.REAL)/2
 REPEAT timeloop

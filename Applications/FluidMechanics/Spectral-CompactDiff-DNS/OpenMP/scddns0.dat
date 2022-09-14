@@ -7,4 +7,4 @@ meanpx=1	meanpy=0
 deltat=0.002 	t_max=10
 dt_field=0.5	dt_save=5.0
 
-scddns0=../scddns0.dat
+scddns0=../scddns0-Re180Px-32.dat
