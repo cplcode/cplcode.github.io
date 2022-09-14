@@ -11,25 +11,24 @@
 }</script></head>
 <body translate="no"><pre>
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a>
+<a href="cpl.html#USE">USE</a> <a href="fft.html#Top">fft</a>
 <span class=comment>! USE rtchecks</span>
-<a href="cpl.html#USE">USE</a> tsfft
-FFTSETUP(96)
 
 <span class=comment>! Read discretization and simulation parameters from initial field</span>
 <a href="cpl.html#FILE">FILE</a> data=OPENRO[<a href="cpl.html#IF">IF</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>.<a href="cpl.html#HI">HI</a>&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(1) <a href="cpl.html#ELSE">ELSE</a> "scddns0.dat"]
 <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> nx,ny,nz
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#CONSTANT">CONSTANT</a> alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_field,dt_save
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#CONSTANT">CONSTANT</a> alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_save
 <a href="cpl.html#REAL">REAL</a> Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
 <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data nx,ny,nz,alpha0,beta0,htcoeff,Re; nu=1/Re
 <a href="cpl.html#DO">DO</a> <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data meanpx <a href="cpl.html#OR">OR</a> meanflowx <a href="cpl.html#OR">OR</a> meanpy <a href="cpl.html#OR">OR</a> meanflowy
-<a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data deltat, t_max, dt_field, dt_save
+<a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data deltat, t_max, dt_save
 <span class=comment>! Define wall-normal mesh</span>
 <span class=comment>! Alternative Options for uniform or channel-type with two walls and finer spacing near the walls</span>
 <a href="cpl.html#REAL">REAL</a> z(-1..nz+1)
 <span class=comment>!DO z(i)=zmax&lowast;i/nz FOR ALL i <span class=comment>! Uniform mesh</span></span>
 <a href="cpl.html#DO">DO</a> z(i)=zmin+0.5&lowast;(zmax-zmin)&lowast;{tanh[htcoeff&lowast;(2&lowast;i/nz-1)]/tanh(htcoeff)+0.5&lowast;(zmax-zmin)} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>! Channel with two walls</span>
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> nx,ny,nz,2&lowast;PI/alpha0,2&lowast;PI/beta0,Re
-<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> deltat,t_max,dt_field,dt_save
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> deltat,t_max,dt_save
 
 <span class=comment>! Definition of the velocity data structure (type and then array)</span>
 VELOCITY=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">COMPLEX</a> u,v,w)
@@ -105,7 +104,7 @@ MOMFLUX VV(0..nx,-ny..ny,-2..2)=0
 <a href="cpl.html#INTEGER">INTEGER</a> nyd=3&lowast;ny -1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> nyd <a href="cpl.html#UNTIL">UNTIL</a> FFTfit(nyd)
 <a href="cpl.html#ARRAY">ARRAY</a>(0..nxd-1,0..nyd-1) <a href="cpl.html#OF">OF</a> VELOCITY Vd=0
 <a href="cpl.html#ARRAY">ARRAY</a>(0..nxd-1,0..nyd-1) <a href="cpl.html#OF">OF</a> MOMFLUX VVd=0
-
+FFTSETUP[<a href="cpl.html#MAX">MAX</a>(nxd,nyd)]  <span class=comment>! pre-allocation needed for the fft to be thread-safe</span>
 <span class=comment>! Two-dimensional data structures for the solution of the linear systems.</span>
 maxtimelevels=1
 RHSTYPE=<a href="cpl.html#ARRAY">ARRAY</a>(V.<a href="cpl.html#LO">LO1</a>..V.<a href="cpl.html#HI">HI1</a>,V.<a href="cpl.html#LO">LO2</a>..V.<a href="cpl.html#HI">HI2</a>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">COMPLEX</a> zeta,D2w)
@@ -219,19 +218,19 @@ D0mat(-1)=0; D0mat(-1,-2)=1; D0mat(0)=0; D0mat(0,-1)=1
 D0mat(nz)=0; D0mat(nz,1)=1; D0mat(nz+1)=0; D0mat(nz+1,2)=1
 bcLUdecomp D0mat
 
-<span class=comment>! Function to integrate quantities wrt y wall-to-wall</span>
+<span class=comment>! Function to integrate quantities wrt z wall-to-wall</span>
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> zintegr(<a href="cpl.html#REAL">REAL</a> f(&lowast;))
   <a href="cpl.html#RESULT">RESULT</a>=0
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#BY">BY</a> 2 
-    yp1=z(iz+1)-z(iz); ym1=z(iz-1)-z(iz) 
-   a1=-1/3&lowast;ym1+1/6&lowast;yp1+1/6&lowast;yp1&lowast;yp1/ym1
-   a3=+1/3&lowast;yp1-1/6&lowast;ym1-1/6&lowast;ym1&lowast;ym1/yp1
-   a2=yp1-ym1-a1-a3
+    zp1=z(iz+1)-z(iz); zm1=z(iz-1)-z(iz) 
+   a1=-1/3&lowast;ym1+1/6&lowast;zp1+1/6&lowast;zp1&lowast;zp1/ym1
+   a3=+1/3&lowast;yp1-1/6&lowast;zm1-1/6&lowast;zm1&lowast;zm1/yp1
+   a2=zp1-zm1-a1-a3
    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Assignment">~</a>+a1&lowast;f(iz-1) + a2&lowast;f(iz) + a3&lowast;f(iz+1)    
  <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#END">END</a> zintegr
 
-<span class=comment>! Function to derive quantities wrt y wall-to-wall</span>
+<span class=comment>! Function to derive quantities wrt z wall-to-wall</span>
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> deriv(<a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> f0,f1<a href="cpl.html#REAL-operator">^</a>)
   f1(0)=<a href="cpl.html#Looping-operator">SUM</a> d140(i)&lowast;f0(1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
   f1(-1)=<a href="cpl.html#Looping-operator">SUM</a> d14m1(i)&lowast;f0(1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
@@ -241,7 +240,7 @@ bcLUdecomp D0mat
   bcLeftDiv(f1,D0mat)
 <a href="cpl.html#END">END</a> deriv
 
-<span class=comment>! Solution of the linear system, for each (alpha,beta) pair </span>
+<span class=comment>! Solution of the linear system for each alpha,beta pair </span>
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> linsolve(<a href="cpl.html#REAL">REAL</a> lambda)
   #pragma omp <a href="parallel.html#Top">parallel</a> for
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a> <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy

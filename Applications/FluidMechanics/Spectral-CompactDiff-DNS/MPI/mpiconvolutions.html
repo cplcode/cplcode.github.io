@@ -19,7 +19,7 @@ fedisableexcept(FE_INVALID | FE_OVERFLOW | FE_DIVBYZERO)
 MPI_Init(argc,argv) <span class=comment>! on some systems triggers a floating-point exception</span>
 feenableexcept(FE_INVALID | FE_OVERFLOW | FE_DIVBYZERO)
 MPI_Comm_size(MPI_COMM_WORLD, totnproc)
-<a href="cpl.html#INTEGER">INTEGER</a> nprocy=4; npy=getenv("NPROCY")
+<a href="cpl.html#INTEGER">INTEGER</a> nprocy=<a href="cpl.html#FLOOR">FLOOR</a>[<a href="cpl.html#Builtin">SQRT</a>(totnproc)]; npy=getenv("NPROCY")
 <a href="cpl.html#IF">IF</a> npy#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a> nprocy=atoi(npy)
 nprocx=totnproc <a href="cpl.html#DIV">DIV</a> nprocy
 <a href="cpl.html#IF">IF</a> nprocx&lowast;nprocy#totnproc <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> "warning: "nprocx&lowast;nprocy" cores will be used"

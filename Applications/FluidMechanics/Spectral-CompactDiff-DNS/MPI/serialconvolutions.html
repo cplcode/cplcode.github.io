@@ -12,7 +12,10 @@
 <body translate="no"><pre>
 <a href="cpl.html#USE">USE</a> <a href="fft.html#Top">fft</a>
 have00=<a href="cpl.html#BOOLEAN">YES</a>
+totnproc=1
 nprocy=1
+myiproc=0
+<a href="cpl.html#C-preprocessor">#define</a> MPI_Barrier(MPI_COMM_WORLD)
 VELOCITY=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>(u,v,w) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a>
 MOMFLUX=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>(uu,uv,vv,vw,ww,uw) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a>
 VELOCITY V(0..nx,-ny..ny,-1..nz+1)=0

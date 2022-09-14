@@ -7,7 +7,7 @@ fedisableexcept(FE_INVALID | FE_OVERFLOW | FE_DIVBYZERO)
 MPI_Init(argc,argv) ! on some systems triggers a floating-point exception
 feenableexcept(FE_INVALID | FE_OVERFLOW | FE_DIVBYZERO)
 MPI_Comm_size(MPI_COMM_WORLD, totnproc)
-INTEGER nprocy=4; npy=getenv("NPROCY")
+INTEGER nprocy=FLOOR[SQRT(totnproc)]; npy=getenv("NPROCY")
 IF npy#NULL THEN nprocy=atoi(npy)
 nprocx=totnproc DIV nprocy
 IF nprocx*nprocy#totnproc THEN WRITE "warning: "nprocx*nprocy" cores will be used"
