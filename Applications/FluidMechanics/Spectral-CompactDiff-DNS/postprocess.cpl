@@ -1,6 +1,6 @@
-USE rtchecks
 USE complex
 USE rbmat
+! USE rtchecks
 
 FILE data=OPENRO("dns-supsimple.in")
 INTEGER nx,ny,nz

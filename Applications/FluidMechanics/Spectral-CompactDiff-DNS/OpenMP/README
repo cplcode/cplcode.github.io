@@ -1,0 +1,17 @@
+- compile with cpl make scddns -fopenmp -O3
+- if "-fopenmp" is omitted, the serial version is obtained
+- run as scddns [<input file>]
+- <input file> defaults to scddns0.dat if omitted
+- the input file contains a number of parameters of the form name=value,
+  optionally followed by a velocity field as binary data
+- alternately an additional parameter of the form initfield=<filename> can
+  specify an older input file from which to take the binary data. This
+  other file may contain different dimensions nx,ny,nz (as well as different
+  values of other parameters such as the Reynolds number), and in such case
+  the initial velocity field is automatically interpolated.
+- if no binary data or alternate file are present, a random initial field
+  is generated
+- output velocity fields, sequentially numbered as scddns<num>.dat, are
+  in the same format as the input file; any of them can be used to restart
+  the computation.
+  
