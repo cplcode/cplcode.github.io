@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>CPL Applications</title>
+    <meta name="author" content="Paolo Luchini">
+    <meta name="copyright" content="Copyright 2020 Paolo Luchini">
+    <meta name="description" content="Contributed applications of CPL, a compiled programming language designed and developed by Paolo Luchini during 1993-2020.">
+    <meta name="keywords" content="cpl, CPL, numerical, computation, computational, code, program, programmer, programming language, programming tutorial, compiler, command interpreter, text editor, fri, FRI, makecpl, icpl, edit, quaternion, Orr-Sommerfeld, boostconv, meanandvar">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="author" href="https://CPLcode.net/Paolo.Luchini">
+    <link rel="canonical" href="https://CPLcode.net/Applications">
+    <link rel="stylesheet" href="../singlecol.css">
+    <script src="../search.js">
+    </script>
+    <style>
+    .header{
+      position:fixed;
+      top:0;
+      width:100%;
+      max-width:40em;
+     background-image: linear-gradient(white,white,white,white,white,white,white,white,white,rgba(255, 255, 255,0));
+    }
+    .main{
+      margin-top:13.5em;
+      margin-bottom:8em;
+    }
+    .footer{
+      position:fixed;
+      bottom:0;
+      max-width:40em;
+     background-image: linear-gradient(rgba(255, 255, 255,0),white,white,white,white,white,white,white,white,white,white,white);
+    }
+    .displace{
+      position:relative;
+      top:-13.5em;
+    }
+    </style>
+  </head>
+  <body translate="no">
+  <a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a>
+    <div class=page>
+      <div style="position:relative">
+      <div class=header>
+        <h1>Applications</h1>
+          <h2><a href="Tutorial">Tutorial</a></h2>
+            <p>Tutorial programming examples for beginners and not so beginners.</p>
+          <hr>
+          <h2 style="display:inline-block">Contributed</h2><span style="float:right">search: <input autocomplete="off" type="text" onkeyup="tsearch()" title="case-sensitive search only if first letter is upper case"></span>
+      </div>
+      <table class=main>
+        <tr><td><span id=BoostConv class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/BoostConv" title="directory">BoostConv</a> <a href="Numerical/BoostConv/BoostConv.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/BoostConv/BoostConv.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>, <a href="https://docenti.unisa.it/026456/home" target=_blank>Vincenzo Citro</a> and <a href="https://docenti.unisa.it/020052/home" target=_blank>Flavio Giannetti</a>) improves (or even enables) the convergence of a pre-existing, linear or nonlinear, iterative algorithm. Its reverse-calling interface only requires the insertion of a single line in the original code.</td></tr>
+
+        <tr><td><span id=MeanandVar class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/MeanandVar" title="directory">MeanandVar</a> <a href="Numerical/MeanandVar/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/MeanandVar/MeanandVar.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) estimates the mean of a statistically stationary time series simultaneously with a variance of the estimate itself. Its use is to produce a realistic error bar taking into account the statistical error associated with the finite time sampling of an autocorrelated process.</td></tr>
+
+        <tr><td><span id=Multigrid class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/Multigrid" title="directory">Multigrid</a> <a href="Numerical/Multigrid/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/Multigrid/Multigrid.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) CPL library that solves the constant-coefficient 2D and 3D Poisson equation with multigrid iteration.</td></tr>
+
+        <tr><td><span id=OSE class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/OSE" title="directory">OSE</a> <a href="Numerical/OSE/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/OSE/OSE.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        (contributed by <a href="https://docenti.unisa.it/020052/home" target=_blank>Flavio Giannetti</a>) evaluates the eigenvalues of the Orr-Sommerfeld equation with a spectral collocation method using a 3-term recurrence relation to evaluate the derivatives of Chebyshev polynomials and the Fortran interface to call the appropriate lapack subroutine.</td></tr>
+
+        <tr><td><span id=Quaternions class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/Quaternions" title="directory">Quaternions</a> <a href="Numerical/Quaternions/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/Quaternions/Quaternions.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) CPL library providing a QUATERNION type and operations upon it in a straightforward algebraic syntax.</td></tr>
+
+        <tr><td><span id=rbmatmod class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/rbmatmod" title="directory">rbmatmod</a> <a href="Numerical/rbmatmod/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/rbmatmod/rbmatmod.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) Distributed-memory extension of the rbmat.cpl library that solves a banded linear system by distributing the work among multiple nodes.</td></tr>
+
+        <tr><td><span id=Thomas53 class=displace></span><h3>-</h3></td><td><h3><a href="Numerical/Thomas53" title="directory">Thomas53</a> <a href="Numerical/Thomas53/README.pdf" title="README" class=pdflink>PDF</a> <a href="Numerical/Thomas53/Thomas53.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) Reproduction of the historical (Thomas, 1953) compact-difference computation of eigenfunctions and eigenvalues of the Orr-Sommerfeld equation.</td></tr>
+
+        <tr><td><span id=TurbMeanFlow class=displace></span><h3>-</h3></td><td><h3><a href="FluidMechanics/TurbMeanFlow" title="directory">TurbMeanFlow</a> <a href="FluidMechanics/TurbMeanFlow/TurbMeanFlow.pdf" title="README" class=pdflink>PDF</a> <a href="FluidMechanics/TurbMeanFlow/TurbMeanFlow.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a></h3>
+        (contributed by <a href="../Paolo.Luchini" target=_blank>Paolo Luchini</a>) Toolbox offering a mean turbulent velocity profile as a CPL FUNCTION that can be used for plotting or as a component of your own program.</td></tr>
+
+        <!--
+        <tr><td><span id=searchengine class=displace></span><h3>-</h3></td><td><h3><a href="P.Luchini/searchengine" title="directory">Search engine</a> <a href="P.Luchini/searchengine/0DESCRIPTION.pdf" title="description" class=pdflink>PDF</a> <a href="P.Luchini/searchengine.tar.gz" download title="download tar.gz" class=download>&#x21E9;</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color:yellow">empty directory for example only</span></h3>
+        (contributed by Paolo Luchini). Search engine with proximity search, indexing an arbitrary text (or a library catalog) and serving an html search form through a cgi-bin application written in CPL.
+        </td></tr>
+        -->
+      </table>
+      <div class=footer>
+        <hr>
+        <h2 id=references><a href="references">References</a></h2>
+          <p>A list of scientific references that used CPL for their programming needs. Some of the codes used can be consulted under <a href="article-CPLcodes"><b>article-CPLcodes</b></a>.</p>
+      </div>
+      </div>
+    </div>
+  </body>
+</html>

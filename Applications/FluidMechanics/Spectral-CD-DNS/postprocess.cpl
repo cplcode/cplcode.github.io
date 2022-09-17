@@ -1,0 +1,183 @@
+! scddns -- Copyright 2022 Paolo Luchini and Maurizio Quadrio
+! http://CPLcode.net/Applications/FluidMechanics/Spectral-CD-DNS
+
+!( Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. !)
+
+USE complex
+USE rbmat
+! USE rtchecks
+
+FILE data=OPENRO[IF COMMANDLINE.HI>0 THEN COMMANDLINE(1) ELSE "scddns0.dat"]
+INTEGER CONSTANT nx,ny,nz
+REAL CONSTANT alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_save
+REAL Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
+STRING init
+READ BY NAME FROM data nx,ny,nz,alpha0,beta0,htcoeff,Re; nu=1/Re
+DO WHILE READ BY NAME FROM data meanpx OR meanflowx OR meanpy OR meanflowy OR init
+READ BY NAME FROM data deltat, t_max, dt_save
+CLOSE data
+
+REAL z(-1..nz+1)
+!DO z(i)=zmax*i/nz FOR ALL i ! Uniform mesh
+DO z(i)=zmin+0.5*(zmax-zmin)*[tanh(htcoeff*(2*i/nz-1))/tanh(htcoeff)+0.5*(zmax-zmin)] FOR ALL i ! Channel with two walls
+
+! Compute the FD coefficients, then set special cases at the boundaries
+STRUCTURE[ARRAY(-2..2) OF REAL d0,d1,d2,d4] derivatives(1..nz-1)
+ARRAY(-2..2) OF REAL d040,d140,d14m1, d04n,d14n,d14np1
+MODULE setup_derivatives
+  REAL M(0..4,0..4),t(0..4)
+  LOOP FOR iy=1 TO nz-1 WITH derivatives(iy)
+    DO M(i,j)=(z(iy-2+j)-z(iy))**(4-i) FOR ALL i,j; LUdecomp M
+    t=0; t(0)=24
+    d4(-2+(*))=M\t
+    DO M(i,j)=(5-i)*(6-i)*(7-i)*(8-i)*(z(iy-2+j)-z(iy))**(4-i) FOR ALL i,j; LUdecomp M
+    DO t(i)=SUM {d4(j)*(z(iy+j)-z(iy))**(8-i)} FOR ALL j FOR ALL i
+    d0(-2+(*))=M\t
+    DO M(i,j)=(z(iy-2+j)-z(iy))**(4-i) FOR ALL i,j; LUdecomp M
+    t=0; DO t(i)=SUM d0(j)*(4-i)*(3-i)*(z(iy+j)-z(iy))**(2-i) FOR ALL j FOR i=0 TO 2
+    d2(-2+(*))=M\t
+    t=0; DO t(i)=SUM d0(j)*(4-i)*(z(iy+j)-z(iy))**(3-i) FOR ALL j FOR i=0 TO 3
+    d1(-2+(*))=M\t
+  REPEAT
+  DO M(i,j)=(z(-1+j)-z(0))**(4-i) FOR ALL i,j; LUdecomp M
+  t=0; t(3)=1; d140(-2+(*))=M\t
+  DO M(i,j)=(z(-1+j)-z(-1))**(4-i) FOR ALL i,j; LUdecomp M
+  t=0; t(3)=1; d14m1(-2+(*))=M\t
+  d04n=0; d04n(1)=1; d040=0; d040(-1)=1
+  DO M(i,j)=(z(nz-3+j)-z(nz))**(4-i) FOR ALL i,j; LUdecomp M
+  t=0; t(3)=1; d14n(-2+(*))=M\t
+  DO M(i,j)=(z(nz-3+j)-z(nz+1))**(4-i) FOR ALL i,j; LUdecomp M
+  t=0; t(3)=1; d14np1(-2+(*))=M\t
+END setup_derivatives
+
+! Prepare compact operators; D0 stands for zeroth-order, and makes the schemes compact
+INLINE REAL FUNCTION D0(REAL f(*)) = d0(-2)*f(-2)+d0(-1)*f(-1)+d0(0)*f(0)+d0(1)*f(1)+d0(2)*f(2)
+INLINE REAL FUNCTION D1(REAL f(*)) = d1(-2)*f(-2)+d1(-1)*f(-1)+d1(0)*f(0)+d1(1)*f(1)+d1(2)*f(2)
+INLINE REAL FUNCTION D2(REAL f(*)) = d2(-2)*f(-2)+d2(-1)*f(-1)+d2(0)*f(0)+d2(1)*f(1)+d2(2)*f(2)
+INLINE REAL FUNCTION D4(REAL f(*)) = d4(-2)*f(-2)+d4(-1)*f(-1)+d4(0)*f(0)+d4(1)*f(1)+d4(2)*f(2)
+INLINE COMPLEX FUNCTION D0(COMPLEX f(*))=D0(f.REAL)+I*D0(f.IMAG)
+INLINE COMPLEX FUNCTION D1(COMPLEX f(*))=D1(f.REAL)+I*D1(f.IMAG)
+INLINE COMPLEX FUNCTION D2(COMPLEX f(*))=D2(f.REAL)+I*D2(f.IMAG)
+INLINE COMPLEX FUNCTION D4(COMPLEX f(*))=D4(f.REAL)+I*D4(f.IMAG)
+
+SUBROUTINE bcLUdecomp[POINTER TO ARRAY(-1..nz+1,-2..2) OF REAL A]
+  A(0,-1..HI)=~-A(0,-2)/A(-1,-2)*A(-1,-1..HI)
+  A(1,-1..HI)=~-A(1,-2)/A(-1,-2)*A(-1,-1..HI)
+  A(1,0..HI)=~-A(1,-1)/A(0,-1)*A(0,0..HI)
+  A[2,-1+(0..HI)]=~-A(2,-2)/A(0,-1)*A(0,0..HI)
+  A(nz,LO..1)=~-A(nz,2)/A(nz+1,2)*A(nz+1,LO..1)
+  A(nz-1,LO..1)=~-A(nz-1,2)/A(nz+1,2)*A(nz+1,LO..1)
+  A(nz-1,LO..0)=~-A(nz-1,1)/A(nz,1)*A(nz,LO..0)
+  A[nz-2,1+(LO..0)]=~-A(nz-2,2)/A(nz,1)*A(nz,LO..0)
+  LUdecomp A(1..nz-1)
+END bcLUdecomp
+
+SUBROUTINE bcLeftDiv[POINTER TO ARRAY(*) OF REAL x; ARRAY(-1..nz+1,-2..2) OF REAL A]
+  x(0)=~-A(0,-2)/A(-1,-2)*x(-1)
+  x(1)=~-A(1,-2)/A(-1,-2)*x(-1)
+  x(1)=~-A(1,-1)/A(0,-1)*x(0)
+  x(2)=~-A(2,-2)/A(0,-1)*x(0)
+  x(nz)=~-A(nz,2)/A(nz+1,2)*x(nz+1)
+  x(nz-1)=~-A(nz-1,2)/A(nz+1,2)*x(nz+1)
+  x(nz-1)=~-A(nz-1,1)/A(nz,1)*x(nz)
+  x(nz-2)=~-A(nz-2,2)/A(nz,1)*x(nz)
+  x(1..nz-1)=A(1..nz-1)\~
+  x(0)=-{A(0,0..2)*x[1+(0..2)]}/A(0,-1)
+  x(-1)=-{A(-1,-1..2)*x[1+(-1..2)]}/A(-1,-2)
+  x(nz)=-{A(nz,-2..0)*x[nz-1+(-2..0)]}/A(nz,1)
+  x(nz+1)=-{A(nz+1,-2..1)*x[nz-1+(-2..1)]}/A(nz+1,2)
+END bcLeftDiv
+
+ARRAY(-1..nz+1,-2..2) OF REAL D0mat=0, etamat=0, D2vmat=0
+D0mat(1..nz-1)=derivatives.d0
+D0mat(-1)=0; D0mat(-1,-2)=1; D0mat(0)=0; D0mat(0,-1)=1
+D0mat(nz)=0; D0mat(nz,1)=1; D0mat(nz+1)=0; D0mat(nz+1,2)=1
+bcLUdecomp D0mat
+
+VELOCITY=STRUCTURE(COMPLEX u,v,w)
+ARRAY(0..nx,-ny..ny,-1..nz+1) OF VELOCITY V=0
+
+REALVEL=STRUCTURE(REAL u,v,w)
+SPECTRUM=STRUCTURE(REAL uu,uv,uw,vv,vw,ww)
+DERIVS=STRUCTURE(COMPLEX ux,uy,uz,vx,vy,vz,wx,wy,wz)
+DERPRODS=STRUCTURE(COMPLEX ux2,vx2,wx2,uy2,vy2,wy2,uz2,vz2,wz2,uyvx,uzwx,wyvz)
+
+REALVEL mean(0..nz)=0; SPECTRUM rms(0..nz)=0
+
+SUBROUTINE deriv(ARRAY(*) OF REAL f0,f1^)
+  f1(0)=SUM d140(i)*f0(1+i) FOR i=-2 TO 2
+  f1(-1)=SUM d14m1(i)*f0(1+i) FOR i=-2 TO 2
+  f1(nz)=SUM d14n(i)*f0(nz-1+i) FOR i=-2 TO 2
+  f1(nz+1)=SUM d14np1(i)*f0(nz-1+i) FOR i=-2 TO 2
+  DO WITH derivatives(i) f1(i)=D1(f0(i+(*))) FOR i=1 TO ny-1
+  bcLeftDiv(f1,D0mat)
+END deriv
+
+INTEGER nfmin,nfmax,nftot
+ASK nfmin, nfmax
+nftot=nfmax-nfmin+1
+
+LOOP files FOR n=nfmin TO nfmax
+  V=0  
+  WRITE "Reading field scddns"n".dat"
+  data = OPENRO("scddns"n".dat")
+  INTEGER oldnx=nx, oldny=ny, oldnz=nz
+  READ FROM data "nx="oldnx,"ny="oldny,"nz="oldnz
+  READ FROM data  ! skip rest of line
+  READ FROM data  ! and next line
+  READ FROM data  ! consume the last line feed before binary data
+  POINTER TO STORED STRUCTURE[CHAR header[1..POSITION(data)]; ARRAY(0..oldnx,-oldny..oldny,-1..oldnz+1) OF VELOCITY oldV] image=data
+  LOOP FOR ix=MAX(V.LO1,image.oldV.LO1) TO MIN(V.HI1,image.oldV.HI1) AND iy=MAX(V.LO2,image.oldV.LO2) TO MIN(V.HI2,image.oldV.HI2)
+    DO V(ix,iy,iz)=image.oldV[ix,iy,-1+(oldnz+2)*(iz+1)DIV(nz+2)] FOR ALL iz
+  REPEAT LOOP
+  CLOSE data
+  
+  LOOP FOR iy=mean.LO TO mean.HI WITH mean(iy)
+    u=~+V(0,0,iy).u.REAL; w=~+V(0,0,iy).w.REAL 
+  REPEAT
+  
+  LOOP FOR iz=rms.LO TO rms.HI WITH rms(iz)
+    uu= ~ + [NORM[V(0,*,iz).u] + 2*[SUM NORM[V(ix,*,iz).u] FOR ix=1 TO nx]] 
+    vv= ~ + [NORM[V(0,*,iz).v] + 2*[SUM NORM[V(ix,*,iz).v] FOR ix=1 TO nx]]  
+    ww= ~ + [NORM[V(0,*,iz).w] + 2*[SUM NORM[V(ix,*,iz).w] FOR ix=1 TO nx]]
+    uv= ~ + [2*[SUM (V(ix,*,iz).u | V(ix,*,iz).v).REAL FOR ix=1 TO nx]]
+    uv= ~ + [V(0,*,iz).u | V(0,*,iz).v].REAL
+    uw= ~ + [2*[SUM (V(ix,*,iz).u | V(ix,*,iz).w).REAL FOR ix=1 TO nx]]
+    uw= ~ + [V(0,*,iz).u | V(0,*,iz).w].REAL
+    vw= ~ + [2*[SUM (V(ix,*,iz).v | V(ix,*,iz).w).REAL FOR ix=1 TO nx]]
+    vw= ~ + [V(0,*,iz).v | V(0,*,iz).w].REAL 
+  REPEAT LOOP
+
+REPEAT files 
+
+DO WITH mean(iz): u=~/nftot; v=~/nftot; w=~/nftot FOR ALL iz
+
+DO WITH rms(iz): uu=SQRT{uu/nftot-mean(iz).u^2}; vv=SQRT{vv/nftot}; ww=SQRT{ww/nftot-mean(iz).w^2}; uv=uv/nftot; uw=uw/nftot-(mean(iz).u*mean(iz).w); vw=vw/nftot FOR iz=0 TO HI
+
+FILE out=CREATE("mean.dat")
+DO WITH mean(iz):
+        WRITE TO out z(iz),u,w FOR iz=0 TO nz
+CLOSE out
+
+FILE out=CREATE("rms.dat")
+DO WITH rms(iz): 
+        WRITE TO out z(iz),uu,vv,ww,uv,uw,vw FOR iz=0 TO nz
+CLOSE out
+
+STOP

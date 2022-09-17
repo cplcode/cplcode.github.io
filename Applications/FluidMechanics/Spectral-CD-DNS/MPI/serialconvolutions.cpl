@@ -1,0 +1,60 @@
+! scddns -- Copyright 2022 Paolo Luchini and Maurizio Quadrio
+! http://CPLcode.net/Applications/FluidMechanics/Spectral-CD-DNS
+
+!( Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. !)
+
+USE fft
+have00=YES
+totnproc=1
+nprocy=1
+myiproc=0
+#define MPI_Barrier(MPI_COMM_WORLD)
+VELOCITY=STRUCTURED ARRAY(u,v,w) OF COMPLEX
+MOMFLUX=STRUCTURED ARRAY(uu,uv,vv,vw,ww,uw) OF COMPLEX
+VELOCITY V(0..nx,-ny..ny,-1..nz+1)=0
+MOMFLUX VV(0..nx,-ny..ny,-2..2)
+INTEGER VVstart
+INTEGER nxd=3*nx DIV 2 -1; DO INC nxd UNTIL FFTfit(nxd)
+INTEGER nyd=3*ny -1; DO INC nyd UNTIL FFTfit(nyd)
+ARRAY(0..nxd-1,0..nyd-1) OF VELOCITY Vd
+ARRAY(0..nxd-1,0..nyd-1) OF MOMFLUX VVd
+
+SUBROUTINE convolutions(INTEGER iz)
+  Vd=0; LOOP FOR ix=0 TO nx
+    DO Vd(ix,iy)=V(ix,iy,iz) FOR iy=0 TO ny
+    DO Vd(ix,nyd+iy)=V(ix,iy,iz) FOR iy=-ny TO -1
+    WITH Vd(ix,*): IFTU(u); IFTU(v); IFTU(w)
+  REPEAT LOOP
+  DO WITH Vd(*,iy): RFTU(u); RFTU(v); RFTU(w); FOR ALL iy
+  DO WITH Vd(ix,iy), VVd(ix,iy)
+    uu.REAL=u.REAL*u.REAL; uu.IMAG=u.IMAG*u.IMAG 
+    uv.REAL=u.REAL*v.REAL; uv.IMAG=u.IMAG*v.IMAG 
+    vv.REAL=v.REAL*v.REAL; vv.IMAG=v.IMAG*v.IMAG 
+    vw.REAL=v.REAL*w.REAL; vw.IMAG=v.IMAG*w.IMAG 
+    ww.REAL=w.REAL*w.REAL; ww.IMAG=w.IMAG*w.IMAG 
+    uw.REAL=u.REAL*w.REAL; uw.IMAG=u.IMAG*w.IMAG 
+  FOR ALL ix,iy
+  DO WITH VVd(*,iy): HFTU(uu); HFTU(uv); HFTU(vv); HFTU(vw); HFTU(ww); HFTU(uw) FOR ALL iy
+  LOOP FOR ix=0 TO nx
+    WITH VVd(ix,*): FFTU(uu); FFTU(uv); FFTU(vv); FFTU(vw); FFTU(ww); FFTU(uw)
+    DO VV(ix,iy,iz-VVstart)=VVd(ix,iy) FOR iy=0 TO ny
+    DO VV(ix,iy,iz-VVstart)=VVd(ix,nyd+iy) FOR iy=-ny TO -1
+  REPEAT LOOP
+END convolutions
+
