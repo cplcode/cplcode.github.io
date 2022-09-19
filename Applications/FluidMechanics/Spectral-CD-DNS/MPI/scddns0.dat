@@ -2,7 +2,7 @@ nx=32	ny=32	nz=100
 alpha0=0.66 beta0=1.32
 htcoeff=1.5
 Re=180
-meanpx=1	meanpy=0
-init=../scddns0-Re180Px-32.dat
 deltat=0.002 	t_max=10
 dt_save=0.5
+meanpx=1	meanpy=0
+Vfield=../scddns0-Re180Px-32.dat

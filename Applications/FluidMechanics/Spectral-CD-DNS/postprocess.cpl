@@ -66,7 +66,7 @@ MODULE setup_derivatives
   t=0; t(3)=1; d14np1(-2+(*))=M\t
 END setup_derivatives
 
-! Prepare compact operators; D0 stands for zeroth-order, and makes the schemes compact
+! Prepare compact-difference operators; D0 multiplies the whole expression and makes the scheme compact
 INLINE REAL FUNCTION D0(REAL f(*)) = d0(-2)*f(-2)+d0(-1)*f(-1)+d0(0)*f(0)+d0(1)*f(1)+d0(2)*f(2)
 INLINE REAL FUNCTION D1(REAL f(*)) = d1(-2)*f(-2)+d1(-1)*f(-1)+d1(0)*f(0)+d1(1)*f(1)+d1(2)*f(2)
 INLINE REAL FUNCTION D2(REAL f(*)) = d2(-2)*f(-2)+d2(-1)*f(-1)+d2(0)*f(0)+d2(1)*f(1)+d2(2)*f(2)
@@ -142,14 +142,14 @@ LOOP files FOR n=nfmin TO nfmax
   READ FROM data  ! skip rest of line
   READ FROM data  ! and next line
   READ FROM data  ! consume the last line feed before binary data
-  POINTER TO STORED STRUCTURE[CHAR header[1..POSITION(data)]; ARRAY(0..oldnx,-oldny..oldny,-1..oldnz+1) OF VELOCITY oldV] image=data
+  POINTER TO STORED STRUCTURE[CHAR skip[1..POSITION(data)]; ARRAY(0..oldnx,-oldny..oldny,-1..oldnz+1) OF VELOCITY oldV] image=data
   LOOP FOR ix=MAX(V.LO1,image.oldV.LO1) TO MIN(V.HI1,image.oldV.HI1) AND iy=MAX(V.LO2,image.oldV.LO2) TO MIN(V.HI2,image.oldV.HI2)
     DO V(ix,iy,iz)=image.oldV[ix,iy,-1+(oldnz+2)*(iz+1)DIV(nz+2)] FOR ALL iz
   REPEAT LOOP
   CLOSE data
   
   LOOP FOR iy=mean.LO TO mean.HI WITH mean(iy)
-    u=~+V(0,0,iy).u.REAL; w=~+V(0,0,iy).w.REAL 
+    u=~+V(0,0,iy).u.REAL; v=~+V(0,0,iy).v.REAL 
   REPEAT
   
   LOOP FOR iz=rms.LO TO rms.HI WITH rms(iz)
@@ -168,14 +168,16 @@ REPEAT files
 
 DO WITH mean(iz): u=~/nftot; v=~/nftot; w=~/nftot FOR ALL iz
 
-DO WITH rms(iz): uu=SQRT{uu/nftot-mean(iz).u^2}; vv=SQRT{vv/nftot}; ww=SQRT{ww/nftot-mean(iz).w^2}; uv=uv/nftot; uw=uw/nftot-(mean(iz).u*mean(iz).w); vw=vw/nftot FOR iz=0 TO HI
+DO WITH rms(iz): uu=SQRT{uu/nftot-mean(iz).u^2}; vv=SQRT{vv/nftot-mean(iz).v^2}; ww=SQRT{ww/nftot}; uv=uv/nftot-mean(iz).u*mean(iz).v; uw=uw/nftot; vw=vw/nftot FOR iz=0 TO HI
 
 FILE out=CREATE("mean.dat")
+WRITE TO out "# z	u	v"
 DO WITH mean(iz):
-        WRITE TO out z(iz),u,w FOR iz=0 TO nz
+        WRITE TO out z(iz),u,v FOR iz=0 TO nz
 CLOSE out
 
 FILE out=CREATE("rms.dat")
+WRITE TO out "# z	u'	v'	w'	uv	uw	vw"
 DO WITH rms(iz): 
         WRITE TO out z(iz),uu,vv,ww,uv,uw,vw FOR iz=0 TO nz
 CLOSE out

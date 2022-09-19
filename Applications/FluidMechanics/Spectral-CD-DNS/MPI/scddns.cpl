@@ -28,10 +28,16 @@ FILE data=OPENRO[IF COMMANDLINE.HI>0 THEN COMMANDLINE(1) ELSE "scddns0.dat"]
 INTEGER CONSTANT nx,ny,nz
 REAL CONSTANT alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_save
 REAL Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
-STRING init
+STRING Vfield
 READ BY NAME FROM data nx,ny,nz,alpha0,beta0,htcoeff,Re; nu=1/Re
-DO WHILE READ BY NAME FROM data meanpx OR meanflowx OR meanpy OR meanflowy OR init
 READ BY NAME FROM data deltat, t_max, dt_save
+LOOP UNTIL EOF(data) OR READ BY NAME FROM data Vfield
+  IF NOT READ BY NAME FROM data meanpx OR meanflowx OR meanpy OR meanflowy THEN
+    READ FROM data
+  END IF
+REPEAT
+! Define wall-normal mesh
+! Alternative Options for uniform or channel-type with two walls and finer spacing near the walls
 REAL z(-1..nz+1)
 ! DO z(i)=zmax*i/nz FOR ALL i ! Uniform mesh
 DO z(i)=zmin+0.5*(zmax-zmin)*{tanh[htcoeff*(2*i/nz-1)]/tanh(htcoeff)+0.5*(zmax-zmin)} FOR ALL i ! Channel with two walls
@@ -47,17 +53,18 @@ DO WITH V(ix,iy,iz)
 FOR ALL ix,iy AND iz=1 TO nz-1
 IF have00 THEN DO V(0,0,iz).u.REAL=(z(iz)-zmin)*(zmax-z(iz)) FOR ALL iz
 ! Read the initial velocity field if present
-INTEGER oldnx=nx, oldny=ny, oldnz=nz
-IF init # NULL THEN
-  data = OPENRO(init)
-  WRITE "Reading from "init
-  READ FROM data "nx="oldnx,"ny="oldny,"nz="oldnz
-  READ FROM data  ! skip rest of line
-  READ FROM data  ! and next line
-END IF
-READ FROM data  ! consume the last line feed before binary data
-IF NOT EOF(data) THEN
-  POINTER TO STORED STRUCTURE[CHAR header[1..POSITION(data)]; ARRAY(0..oldnx,-oldny..oldny,-1..oldnz+1) OF VELOCITY oldV] image=data
+IF Vfield#NULL THEN
+  INTEGER oldnx=nx, oldny=ny, oldnz=nz
+  STRING oldVfield
+  IF Vfield#"" THEN
+    data = OPENRO(Vfield)
+    WRITE "Reading from "Vfield
+    READ FROM data "nx="oldnx,"ny="oldny,"nz="oldnz
+    LOOP UNTIL READ BY NAME FROM data "Vfield="oldVfield
+      READ FROM data
+    REPEAT
+  END IF
+  POINTER TO STORED STRUCTURE[CHAR skip[1..POSITION(data)]; ARRAY(0..oldnx,-oldny..oldny,-1..oldnz+1) OF VELOCITY oldV] image=data
   LOOP FOR ix=MAX(V.LO1,image.oldV.LO1) TO MIN(V.HI1,image.oldV.HI1) AND iy=MAX(V.LO2,image.oldV.LO2) TO MIN(V.HI2,image.oldV.HI2)
     DO V(ix,iy,iz)=image.oldV[ix,iy,-1+(oldnz+2)*(iz+1)DIV(nz+2)] FOR ALL iz
   REPEAT LOOP
@@ -279,9 +286,10 @@ LOOP timeloop WHILE time < t_max-deltat/2
       IF myiproc=i THEN
         field = OPEN("scddns"count".dat")
         WRITE TO field "nx="nx,"ny="ny,"nz="nz,"alpha0="alpha0,"beta0="beta0,"htcoeff="htcoeff,"Re="1/nu
-        WRITE BY NAME TO field meanpx,meanflowx,meanpy,meanflowy
         WRITE BY NAME TO field deltat, t_max, dt_save
-        POINTER TO STORED STRUCTURE[CHAR header[1..POSITION(field)]; ARRAY(0..nx,-ny..ny,-1..nz+1) OF VELOCITY saveV] image=field
+        WRITE BY NAME TO field meanpx,meanflowx,meanpy,meanflowy
+        WRITE TO field "Vfield="
+        POINTER TO STORED STRUCTURE[CHAR skip[1..POSITION(field)]; ARRAY(0..nx,-ny..ny,-1..nz+1) OF VELOCITY saveV] image=field
         image.saveV(V.LO1..V.HI1,V.LO2..V.HI2)=V
         CLOSE field
       END IF

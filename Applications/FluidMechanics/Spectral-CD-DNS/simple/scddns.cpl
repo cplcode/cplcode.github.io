@@ -29,8 +29,8 @@ INTEGER CONSTANT nx,ny,nz
 REAL CONSTANT alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_save
 REAL Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
 READ BY NAME FROM data nx,ny,nz,alpha0,beta0,htcoeff,Re; nu=1/Re
-DO WHILE READ BY NAME FROM data meanpx OR meanflowx OR meanpy OR meanflowy
 READ BY NAME FROM data deltat, t_max, dt_save
+DO WHILE READ BY NAME FROM data meanpx OR meanflowx OR meanpy OR meanflowy
 ! Define wall-normal mesh
 ! Alternative Options for uniform or channel-type with two walls and finer spacing near the walls
 REAL z(-1..nz+1)
@@ -48,8 +48,7 @@ DO WITH V(ix,iy,iz)
 FOR ALL ix,iy AND iz=1 TO nz-1
 DO V(0,0,iz).u.REAL=(z(iz)-zmin)*(zmax-z(iz)) FOR ALL iz
 ! Read the initial velocity field if present
-READ FROM data  ! consume the last line feed before binary data
-IF NOT EOF(data) THEN READ BINARY FROM data V
+IF READ FROM data "Vfield="\n THEN READ BINARY FROM data V
 CLOSE data
 
 ! Prepare the compact-difference coefficients, then set special cases at the boundaries

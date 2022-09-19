@@ -78,7 +78,7 @@ SOFTWARE. !)</span>
   t=0; t(3)=1; d14np1(-2+(&lowast;))=M\t
 <a href="cpl.html#END">END</a> setup_derivatives
 
-<span class=comment>! Prepare compact operators; D0 stands for zeroth-order, and makes the schemes compact</span>
+<span class=comment>! Prepare compact-difference operators; D0 multiplies the whole expression and makes the scheme compact</span>
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D0(<a href="cpl.html#REAL">REAL</a> f(&lowast;)) = d0(-2)&lowast;f(-2)+d0(-1)&lowast;f(-1)+d0(0)&lowast;f(0)+d0(1)&lowast;f(1)+d0(2)&lowast;f(2)
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D1(<a href="cpl.html#REAL">REAL</a> f(&lowast;)) = d1(-2)&lowast;f(-2)+d1(-1)&lowast;f(-1)+d1(0)&lowast;f(0)+d1(1)&lowast;f(1)+d1(2)&lowast;f(2)
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D2(<a href="cpl.html#REAL">REAL</a> f(&lowast;)) = d2(-2)&lowast;f(-2)+d2(-1)&lowast;f(-1)+d2(0)&lowast;f(0)+d2(1)&lowast;f(1)+d2(2)&lowast;f(2)
@@ -154,14 +154,14 @@ nftot=nfmax-nfmin+1
   <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data  <span class=comment>! skip rest of line</span>
   <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data  <span class=comment>! and next line</span>
   <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data  <span class=comment>! consume the last line feed before binary data</span>
-  <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#CHAR">CHAR</a> header[1..<a href="cpl.html#POSITION">POSITION</a>(data)]; <a href="cpl.html#ARRAY">ARRAY</a>(0..oldnx,-oldny..oldny,-1..oldnz+1) <a href="cpl.html#OF">OF</a> VELOCITY oldV] image=data
+  <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#CHAR">CHAR</a> skip[1..<a href="cpl.html#POSITION">POSITION</a>(data)]; <a href="cpl.html#ARRAY">ARRAY</a>(0..oldnx,-oldny..oldny,-1..oldnz+1) <a href="cpl.html#OF">OF</a> VELOCITY oldV] image=data
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#MAX">MAX</a>(V.<a href="cpl.html#LO">LO1</a>,image.oldV.<a href="cpl.html#LO">LO1</a>) <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(V.<a href="cpl.html#HI">HI1</a>,image.oldV.<a href="cpl.html#HI">HI1</a>) <a href="cpl.html#AND">AND</a> iy=<a href="cpl.html#MAX">MAX</a>(V.<a href="cpl.html#LO">LO2</a>,image.oldV.<a href="cpl.html#LO">LO2</a>) <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(V.<a href="cpl.html#HI">HI2</a>,image.oldV.<a href="cpl.html#HI">HI2</a>)
     <a href="cpl.html#DO">DO</a> V(ix,iy,iz)=image.oldV[ix,iy,-1+(oldnz+2)&lowast;(iz+1)<a href="cpl.html#DIV">DIV</a>(nz+2)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#CLOSE">CLOSE</a> data
   
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=mean.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> mean.<a href="cpl.html#HI">HI</a> <a href="cpl.html#WITH">WITH</a> mean(iy)
-    u=<a href="cpl.html#Assignment">~</a>+V(0,0,iy).u.<a href="cpl.html#REAL">REAL</a>; w=<a href="cpl.html#Assignment">~</a>+V(0,0,iy).w.<a href="cpl.html#REAL">REAL</a> 
+    u=<a href="cpl.html#Assignment">~</a>+V(0,0,iy).u.<a href="cpl.html#REAL">REAL</a>; v=<a href="cpl.html#Assignment">~</a>+V(0,0,iy).v.<a href="cpl.html#REAL">REAL</a> 
   <a href="cpl.html#LOOP">REPEAT</a>
   
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz=rms.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> rms.<a href="cpl.html#HI">HI</a> <a href="cpl.html#WITH">WITH</a> rms(iz)
@@ -180,14 +180,16 @@ nftot=nfmax-nfmin+1
 
 <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> mean(iz): u=<a href="cpl.html#Assignment">~</a>/nftot; v=<a href="cpl.html#Assignment">~</a>/nftot; w=<a href="cpl.html#Assignment">~</a>/nftot <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
 
-<a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> rms(iz): uu=<a href="cpl.html#Builtin">SQRT</a>{uu/nftot-mean(iz).u<a href="cpl.html#REAL-operator">^</a>2}; vv=<a href="cpl.html#Builtin">SQRT</a>{vv/nftot}; ww=<a href="cpl.html#Builtin">SQRT</a>{ww/nftot-mean(iz).w<a href="cpl.html#REAL-operator">^</a>2}; uv=uv/nftot; uw=uw/nftot-(mean(iz).u&lowast;mean(iz).w); vw=vw/nftot <a href="cpl.html#FOR">FOR</a> iz=0 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> rms(iz): uu=<a href="cpl.html#Builtin">SQRT</a>{uu/nftot-mean(iz).u<a href="cpl.html#REAL-operator">^</a>2}; vv=<a href="cpl.html#Builtin">SQRT</a>{vv/nftot-mean(iz).v<a href="cpl.html#REAL-operator">^</a>2}; ww=<a href="cpl.html#Builtin">SQRT</a>{ww/nftot}; uv=uv/nftot-mean(iz).u&lowast;mean(iz).v; uw=uw/nftot; vw=vw/nftot <a href="cpl.html#FOR">FOR</a> iz=0 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
 
 <a href="cpl.html#FILE">FILE</a> out=<a href="cpl.html#CREATE">CREATE</a>("mean.dat")
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> out "# z        u        v"
 <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> mean(iz):
-        <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> out z(iz),u,w <a href="cpl.html#FOR">FOR</a> iz=0 <a href="cpl.html#TO">TO</a> nz
+        <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> out z(iz),u,v <a href="cpl.html#FOR">FOR</a> iz=0 <a href="cpl.html#TO">TO</a> nz
 <a href="cpl.html#CLOSE">CLOSE</a> out
 
 <a href="cpl.html#FILE">FILE</a> out=<a href="cpl.html#CREATE">CREATE</a>("rms.dat")
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> out "# z        u'        v'        w'        uv        uw        vw"
 <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> rms(iz): 
         <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> out z(iz),uu,vv,ww,uv,uw,vw <a href="cpl.html#FOR">FOR</a> iz=0 <a href="cpl.html#TO">TO</a> nz
 <a href="cpl.html#CLOSE">CLOSE</a> out

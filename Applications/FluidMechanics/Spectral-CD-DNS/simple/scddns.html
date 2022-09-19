@@ -41,8 +41,8 @@ SOFTWARE. !)</span>
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#CONSTANT">CONSTANT</a> alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_save
 <a href="cpl.html#REAL">REAL</a> Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
 <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data nx,ny,nz,alpha0,beta0,htcoeff,Re; nu=1/Re
-<a href="cpl.html#DO">DO</a> <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data meanpx <a href="cpl.html#OR">OR</a> meanflowx <a href="cpl.html#OR">OR</a> meanpy <a href="cpl.html#OR">OR</a> meanflowy
 <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data deltat, t_max, dt_save
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data meanpx <a href="cpl.html#OR">OR</a> meanflowx <a href="cpl.html#OR">OR</a> meanpy <a href="cpl.html#OR">OR</a> meanflowy
 <span class=comment>! Define wall-normal mesh</span>
 <span class=comment>! Alternative Options for uniform or channel-type with two walls and finer spacing near the walls</span>
 <a href="cpl.html#REAL">REAL</a> z(-1..nz+1)
@@ -60,8 +60,7 @@ VELOCITY=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">C
 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1
 <a href="cpl.html#DO">DO</a> V(0,0,iz).u.<a href="cpl.html#REAL">REAL</a>=(z(iz)-zmin)&lowast;(zmax-z(iz)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
 <span class=comment>! Read the initial velocity field if present</span>
-<a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data  <span class=comment>! consume the last line feed before binary data</span>
-<a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> EOF(data) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#FROM">FROM</a> data V
+<a href="cpl.html#IF">IF</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data "Vfield="\n <a href="cpl.html#IF">THEN</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#FROM">FROM</a> data V
 <a href="cpl.html#CLOSE">CLOSE</a> data
 
 <span class=comment>! Prepare the compact-difference coefficients, then set special cases at the boundaries</span>

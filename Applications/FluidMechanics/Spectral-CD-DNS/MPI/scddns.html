@@ -40,10 +40,16 @@ SOFTWARE. !)</span>
 <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> nx,ny,nz
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#CONSTANT">CONSTANT</a> alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_save
 <a href="cpl.html#REAL">REAL</a> Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
-<a href="cpl.html#STRING">STRING</a> init
+<a href="cpl.html#STRING">STRING</a> Vfield
 <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data nx,ny,nz,alpha0,beta0,htcoeff,Re; nu=1/Re
-<a href="cpl.html#DO">DO</a> <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data meanpx <a href="cpl.html#OR">OR</a> meanflowx <a href="cpl.html#OR">OR</a> meanpy <a href="cpl.html#OR">OR</a> meanflowy <a href="cpl.html#OR">OR</a> init
 <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data deltat, t_max, dt_save
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> EOF(data) <a href="cpl.html#OR">OR</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data Vfield
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data meanpx <a href="cpl.html#OR">OR</a> meanflowx <a href="cpl.html#OR">OR</a> meanpy <a href="cpl.html#OR">OR</a> meanflowy <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#LOOP">REPEAT</a>
+<span class=comment>! Define wall-normal mesh</span>
+<span class=comment>! Alternative Options for uniform or channel-type with two walls and finer spacing near the walls</span>
 <a href="cpl.html#REAL">REAL</a> z(-1..nz+1)
 <span class=comment>! DO z(i)=zmax&lowast;i/nz FOR ALL i <span class=comment>! Uniform mesh</span></span>
 <a href="cpl.html#DO">DO</a> z(i)=zmin+0.5&lowast;(zmax-zmin)&lowast;{tanh[htcoeff&lowast;(2&lowast;i/nz-1)]/tanh(htcoeff)+0.5&lowast;(zmax-zmin)} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>! Channel with two walls</span>
@@ -59,17 +65,18 @@ SOFTWARE. !)</span>
 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1
 <a href="cpl.html#IF">IF</a> have00 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#DO">DO</a> V(0,0,iz).u.<a href="cpl.html#REAL">REAL</a>=(z(iz)-zmin)&lowast;(zmax-z(iz)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
 <span class=comment>! Read the initial velocity field if present</span>
-<a href="cpl.html#INTEGER">INTEGER</a> oldnx=nx, oldny=ny, oldnz=nz
-<a href="cpl.html#IF">IF</a> init # <a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a>
-  data = OPENRO(init)
-  <a href="cpl.html#WRITE">WRITE</a> "Reading from "init
-  <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data "nx="oldnx,"ny="oldny,"nz="oldnz
-  <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data  <span class=comment>! skip rest of line</span>
-  <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data  <span class=comment>! and next line</span>
-<a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-<a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data  <span class=comment>! consume the last line feed before binary data</span>
-<a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> EOF(data) <a href="cpl.html#IF">THEN</a>
-  <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#CHAR">CHAR</a> header[1..<a href="cpl.html#POSITION">POSITION</a>(data)]; <a href="cpl.html#ARRAY">ARRAY</a>(0..oldnx,-oldny..oldny,-1..oldnz+1) <a href="cpl.html#OF">OF</a> VELOCITY oldV] image=data
+<a href="cpl.html#IF">IF</a> Vfield#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#INTEGER">INTEGER</a> oldnx=nx, oldny=ny, oldnz=nz
+  <a href="cpl.html#STRING">STRING</a> oldVfield
+  <a href="cpl.html#IF">IF</a> Vfield#"" <a href="cpl.html#IF">THEN</a>
+    data = OPENRO(Vfield)
+    <a href="cpl.html#WRITE">WRITE</a> "Reading from "Vfield
+    <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data "nx="oldnx,"ny="oldny,"nz="oldnz
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#UNTIL">UNTIL</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#FROM">FROM</a> data "Vfield="oldVfield
+      <a href="cpl.html#READ">READ</a> <a href="cpl.html#FROM">FROM</a> data
+    <a href="cpl.html#LOOP">REPEAT</a>
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#CHAR">CHAR</a> skip[1..<a href="cpl.html#POSITION">POSITION</a>(data)]; <a href="cpl.html#ARRAY">ARRAY</a>(0..oldnx,-oldny..oldny,-1..oldnz+1) <a href="cpl.html#OF">OF</a> VELOCITY oldV] image=data
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#MAX">MAX</a>(V.<a href="cpl.html#LO">LO1</a>,image.oldV.<a href="cpl.html#LO">LO1</a>) <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(V.<a href="cpl.html#HI">HI1</a>,image.oldV.<a href="cpl.html#HI">HI1</a>) <a href="cpl.html#AND">AND</a> iy=<a href="cpl.html#MAX">MAX</a>(V.<a href="cpl.html#LO">LO2</a>,image.oldV.<a href="cpl.html#LO">LO2</a>) <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(V.<a href="cpl.html#HI">HI2</a>,image.oldV.<a href="cpl.html#HI">HI2</a>)
     <a href="cpl.html#DO">DO</a> V(ix,iy,iz)=image.oldV[ix,iy,-1+(oldnz+2)&lowast;(iz+1)<a href="cpl.html#DIV">DIV</a>(nz+2)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
@@ -291,9 +298,10 @@ bcLUdecomp D0mat
       <a href="cpl.html#IF">IF</a> myiproc=i <a href="cpl.html#IF">THEN</a>
         field = <a href="cpl.html#OPEN">OPEN</a>("scddns"count".dat")
         <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> field "nx="nx,"ny="ny,"nz="nz,"alpha0="alpha0,"beta0="beta0,"htcoeff="htcoeff,"Re="1/nu
-        <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#TO">TO</a> field meanpx,meanflowx,meanpy,meanflowy
         <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#TO">TO</a> field deltat, t_max, dt_save
-        <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#CHAR">CHAR</a> header[1..<a href="cpl.html#POSITION">POSITION</a>(field)]; <a href="cpl.html#ARRAY">ARRAY</a>(0..nx,-ny..ny,-1..nz+1) <a href="cpl.html#OF">OF</a> VELOCITY saveV] image=field
+        <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#TO">TO</a> field meanpx,meanflowx,meanpy,meanflowy
+        <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> field "Vfield="
+        <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#CHAR">CHAR</a> skip[1..<a href="cpl.html#POSITION">POSITION</a>(field)]; <a href="cpl.html#ARRAY">ARRAY</a>(0..nx,-ny..ny,-1..nz+1) <a href="cpl.html#OF">OF</a> VELOCITY saveV] image=field
         image.saveV(V.<a href="cpl.html#LO">LO1</a>..V.<a href="cpl.html#HI">HI1</a>,V.<a href="cpl.html#LO">LO2</a>..V.<a href="cpl.html#HI">HI2</a>)=V
         <a href="cpl.html#CLOSE">CLOSE</a> field
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>

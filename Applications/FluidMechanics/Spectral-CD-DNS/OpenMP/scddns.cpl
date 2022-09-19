@@ -2,18 +2,18 @@
 ! http://CPLcode.net/Applications/FluidMechanics/Spectral-CD-DNS
 
 !( Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-  
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-  
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -28,10 +28,14 @@ FILE data=OPENRO[IF COMMANDLINE.HI>0 THEN COMMANDLINE(1) ELSE "scddns0.dat"]
 INTEGER CONSTANT nx,ny,nz
 REAL CONSTANT alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_save
 REAL Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
-STRING init
+STRING Vfield
 READ BY NAME FROM data nx,ny,nz,alpha0,beta0,htcoeff,Re; nu=1/Re
-DO WHILE READ BY NAME FROM data meanpx OR meanflowx OR meanpy OR meanflowy OR init
 READ BY NAME FROM data deltat, t_max, dt_save
+LOOP UNTIL EOF(data) OR READ BY NAME FROM data Vfield
+  IF NOT READ BY NAME FROM data meanpx OR meanflowx OR meanpy OR meanflowy THEN
+    READ FROM data
+  END IF
+REPEAT
 ! Define wall-normal mesh
 ! Alternative Options for uniform or channel-type with two walls and finer spacing near the walls
 REAL z(-1..nz+1)
@@ -49,17 +53,18 @@ DO WITH V(ix,iy,iz)
 FOR ALL ix,iy AND iz=1 TO nz-1
 DO V(0,0,iz).u.REAL=(z(iz)-zmin)*(zmax-z(iz)) FOR ALL iz
 ! Read the initial velocity field if present
-INTEGER oldnx=nx, oldny=ny, oldnz=nz
-IF init # NULL THEN
-  data = OPENRO(init)
-  WRITE "Reading from "init
-  READ FROM data "nx="oldnx,"ny="oldny,"nz="oldnz
-  READ FROM data  ! skip rest of line
-  READ FROM data  ! and next line
-END IF
-READ FROM data  ! consume the last line feed before binary data
-IF NOT EOF(data) THEN
-  POINTER TO STORED STRUCTURE[CHAR header[1..POSITION(data)]; ARRAY(0..oldnx,-oldny..oldny,-1..oldnz+1) OF VELOCITY oldV] image=data
+IF Vfield#NULL THEN
+  INTEGER oldnx=nx, oldny=ny, oldnz=nz
+  STRING oldVfield
+  IF Vfield#"" THEN
+    data = OPENRO(Vfield)
+    WRITE "Reading from "Vfield
+    READ FROM data "nx="oldnx,"ny="oldny,"nz="oldnz
+    LOOP UNTIL READ BY NAME FROM data "Vfield="oldVfield
+      READ FROM data
+    REPEAT
+  END IF
+  POINTER TO STORED STRUCTURE[CHAR skip[1..POSITION(data)]; ARRAY(0..oldnx,-oldny..oldny,-1..oldnz+1) OF VELOCITY oldV] image=data
   LOOP FOR ix=MAX(V.LO1,image.oldV.LO1) TO MIN(V.HI1,image.oldV.HI1) AND iy=MAX(V.LO2,image.oldV.LO2) TO MIN(V.HI2,image.oldV.HI2)
     DO V(ix,iy,iz)=image.oldV[ix,iy,-1+(oldnz+2)*(iz+1)DIV(nz+2)] FOR ALL iz
   REPEAT LOOP
@@ -231,8 +236,8 @@ REAL FUNCTION zintegr(REAL f(*))
   RESULT=0
   LOOP FOR iz=1 TO nz-1 BY 2 
     zp1=z(iz+1)-z(iz); zm1=z(iz-1)-z(iz) 
-   a1=-1/3*ym1+1/6*zp1+1/6*zp1*zp1/ym1
-   a3=+1/3*yp1-1/6*zm1-1/6*zm1*zm1/yp1
+   a1=-1/3*zm1+1/6*zp1+1/6*zp1*zp1/zm1
+   a3=+1/3*zp1-1/6*zm1-1/6*zm1*zm1/zp1
    a2=zp1-zm1-a1-a3
    RESULT=~+a1*f(iz-1) + a2*f(iz) + a3*f(iz+1)    
  REPEAT
@@ -328,8 +333,9 @@ LOOP timeloop WHILE time < t_max-deltat/2
     INC count
     field = CREATE("scddns"count".dat")
     WRITE TO field "nx="nx,"ny="ny,"nz="nz,"alpha0="alpha0,"beta0="beta0,"htcoeff="htcoeff,"Re="1/nu
-    WRITE BY NAME TO field meanpx,meanflowx,meanpy,meanflowy
     WRITE BY NAME TO field deltat, t_max, dt_save
+    WRITE BY NAME TO field meanpx,meanflowx,meanpy,meanflowy
+    WRITE TO field "Vfield="
     WRITE BINARY TO field V
     CLOSE field
   END IF
