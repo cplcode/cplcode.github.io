@@ -27,10 +27,14 @@ FILE data=OPENRO[IF COMMANDLINE.HI>0 THEN COMMANDLINE(1) ELSE "scddns0.dat"]
 INTEGER CONSTANT nx,ny,nz
 REAL CONSTANT alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_save
 REAL Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
-STRING init
+STRING Vfield
 READ BY NAME FROM data nx,ny,nz,alpha0,beta0,htcoeff,Re; nu=1/Re
-DO WHILE READ BY NAME FROM data meanpx OR meanflowx OR meanpy OR meanflowy OR init
 READ BY NAME FROM data deltat, t_max, dt_save
+LOOP UNTIL EOF(data) OR READ BY NAME FROM data Vfield
+  IF NOT READ BY NAME FROM data meanpx OR meanflowx OR meanpy OR meanflowy THEN
+    READ FROM data
+  END IF
+REPEAT
 CLOSE data
 
 REAL z(-1..nz+1)
@@ -138,10 +142,11 @@ LOOP files FOR n=nfmin TO nfmax
   WRITE "Reading field scddns"n".dat"
   data = OPENRO("scddns"n".dat")
   INTEGER oldnx=nx, oldny=ny, oldnz=nz
+  STRING oldVfield
   READ FROM data "nx="oldnx,"ny="oldny,"nz="oldnz
-  READ FROM data  ! skip rest of line
-  READ FROM data  ! and next line
-  READ FROM data  ! consume the last line feed before binary data
+  LOOP UNTIL READ BY NAME FROM data "Vfield="oldVfield
+    READ FROM data
+  REPEAT
   POINTER TO STORED STRUCTURE[CHAR skip[1..POSITION(data)]; ARRAY(0..oldnx,-oldny..oldny,-1..oldnz+1) OF VELOCITY oldV] image=data
   LOOP FOR ix=MAX(V.LO1,image.oldV.LO1) TO MIN(V.HI1,image.oldV.HI1) AND iy=MAX(V.LO2,image.oldV.LO2) TO MIN(V.HI2,image.oldV.HI2)
     DO V(ix,iy,iz)=image.oldV[ix,iy,-1+(oldnz+2)*(iz+1)DIV(nz+2)] FOR ALL iz
