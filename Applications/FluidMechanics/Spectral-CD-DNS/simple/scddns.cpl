@@ -48,7 +48,7 @@ DO WITH V(ix,iy,iz)
 FOR ALL ix,iy AND iz=1 TO nz-1
 DO V(0,0,iz).u.REAL=(z(iz)-zmin)*(zmax-z(iz)) FOR ALL iz
 ! Read the initial velocity field if present
-IF READ FROM data "Vfield="\n THEN READ BINARY FROM data V
+IF READ FROM data " Vfield="\n THEN READ BINARY FROM data V
 CLOSE data
 
 ! Prepare the compact-difference coefficients, then set special cases at the boundaries
