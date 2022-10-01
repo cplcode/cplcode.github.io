@@ -14,18 +14,18 @@
 <span class=comment>! http://CPLcode.net/Applications/FluidMechanics/Spectral-CD-DNS</span>
 
 <span class=comment>!( Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-  
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-  
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -60,9 +60,11 @@ SOFTWARE. !)</span>
 <a href="cpl.html#IF">IF</a> have00 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> deltat,t_max,dt_save
 
 <span class=comment>! Generate random initial field in case none is provided </span>
-<a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> V(ix,iy,iz)
-  eps=0.002; u=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#RAND">RAND</a>(); v=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#RAND">RAND</a>(); w=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#RAND">RAND</a>()
-<a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix <a href="cpl.html#EXCEPT">EXCEPT</a> ix=0
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> V(ix,iy,iz)
+    eps=0.002; u=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#Builtin">EXP</a>[<a href="cpl.html#RAND">RAND</a>()&lowast;2&lowast;PI&lowast;I]; v=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#Builtin">EXP</a>[<a href="cpl.html#RAND">RAND</a>()&lowast;2&lowast;PI&lowast;I]; w=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#Builtin">EXP</a>[<a href="cpl.html#RAND">RAND</a>()&lowast;2&lowast;PI&lowast;I]
+  <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1
+<a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#IF">IF</a> have00 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#DO">DO</a> V(0,0,iz).u.<a href="cpl.html#REAL">REAL</a>=(z(iz)-zmin)&lowast;(zmax-z(iz)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
 <span class=comment>! Read the initial velocity field if present</span>
 <a href="cpl.html#IF">IF</a> Vfield#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a>

@@ -49,8 +49,8 @@ VELOCITY=STRUCTURE(COMPLEX u,v,w)
 ARRAY(0..nx,-ny..ny,-1..nz+1) OF VELOCITY V=0
 ! Generate random initial field in case none is provided 
 DO WITH V(ix,iy,iz)
-  eps=0.002; u=~+eps*RAND(); v=~+eps*RAND(); w=~+eps*RAND()
-FOR ALL ix,iy AND iz=1 TO nz-1
+  eps=0.002; u=~+eps*EXP[RAND()*2*PI*I]; v=~+eps*EXP[RAND()*2*PI*I]; w=~+eps*EXP[RAND()*2*PI*I]
+FOR ix=1 TO HI AND ALL iy AND iz=1 TO nz-1
 DO V(0,0,iz).u.REAL=(z(iz)-zmin)*(zmax-z(iz)) FOR ALL iz
 ! Read the initial velocity field if present
 IF Vfield#NULL THEN

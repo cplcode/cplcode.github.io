@@ -61,8 +61,8 @@ VELOCITY=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">C
 <a href="cpl.html#ARRAY">ARRAY</a>(0..nx,-ny..ny,-1..nz+1) <a href="cpl.html#OF">OF</a> VELOCITY V=0
 <span class=comment>! Generate random initial field in case none is provided </span>
 <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> V(ix,iy,iz)
-  eps=0.002; u=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#RAND">RAND</a>(); v=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#RAND">RAND</a>(); w=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#RAND">RAND</a>()
-<a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iy <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1
+  eps=0.002; u=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#Builtin">EXP</a>[<a href="cpl.html#RAND">RAND</a>()&lowast;2&lowast;PI&lowast;I]; v=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#Builtin">EXP</a>[<a href="cpl.html#RAND">RAND</a>()&lowast;2&lowast;PI&lowast;I]; w=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#Builtin">EXP</a>[<a href="cpl.html#RAND">RAND</a>()&lowast;2&lowast;PI&lowast;I]
+<a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a> <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1
 <a href="cpl.html#DO">DO</a> V(0,0,iz).u.<a href="cpl.html#REAL">REAL</a>=(z(iz)-zmin)&lowast;(zmax-z(iz)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
 <span class=comment>! Read the initial velocity field if present</span>
 <a href="cpl.html#IF">IF</a> Vfield#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a>
