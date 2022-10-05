@@ -46,18 +46,18 @@ REAL v(-9..15,1..7)
 s(-1..5).a=2&lowast;v(-2..4,6)
 
 var=SUM [v(i,j)-m]^2 FOR ALL i,j</span>
-allow variable lower and upper bounds of each index, and are (on demand) fully bounds-checked. An ample set of <a href="Documentation/cpl.html#subarray">subarray selections</a>, commuting with structure fields, is efficiently supported.<br>A gamut of <a href="Documentation/cpl.html#ALL">shorthand loops</a> is enabled by the implicit handling of array bounds.</p>
+allow variable lower and upper bounds of each index, and are (on demand) fully bounds-checked. An ample set of <a href="Documentation/cpl.html#subarray">subarray selections</a>, commuting with structure fields, is efficiently supported.<br>A gamut of <a href="Documentation/cpl.html#ALL">loop shortcuts</a> is enabled by the implicit handling of array bounds.</p>
 
-<p>The CPL compiler's most distinctive feature is its incremental extensibility. The <a href="Documentation/cpl.html#Library">included libraries</a> can thus provide <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">gnuplot graphics</a>, and <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>,
+<p>The CPL compiler's most distinctive feature is its incremental extensibility. The <a href="Documentation/cpl.html#Library">included libraries</a> thus provide <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">gnuplot graphics</a>, and <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>,
   <span class=leftinset>USE lapack-eigenvalues
 A=[(1.,2.),(3.,4.)]
 WRITE eigenvalues(A)</span>
 just to name three examples, all blended into the <a href="Documentation/cpl.html#Syntax">language syntax</a>.
-Additionally, any function provided by an external <a href="Documentation/cpl.html#C-interface">C</a> or <a href="Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be seamlessly called inside a CPL program (or from the  <a href="Documentation/cpl.html#icpl"><code>cpl i</code></a> command line), giving access to a large number of public and proprietary libraries alike. And to encapsulate a (e.g. <a href="http://www.netlib.org/lapack/">LAPACK</a>) call in a CPL wrapper, as exemplified in this <a href="Applications/Tutorial/lapack.html">lapack Tutorial</a>, simplifies syntax and exacts no performance penalty.</p>
+Additionally, any function provided by an external <a href="Documentation/cpl.html#C-interface">C</a> or <a href="Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be seamlessly called in a CPL program (or from the  <a href="Documentation/cpl.html#icpl"><code>cpl i</code></a> command prompt), giving access to a large number of public and proprietary libraries alike. And to encapsulate a (e.g. <a href="http://www.netlib.org/lapack/">LAPACK</a>) call in a CPL wrapper, as exemplified in this <a href="Applications/Tutorial/lapack.html">lapack Tutorial</a>, simplifies syntax and exacts no performance penalty.</p>
 
   <p>To cap this bird's-eye presentation, a hallmark aesthetic touch of CPL is the availability of all three kinds of round, square, and curly <a href="Documentation/cpl.html#Parentheses">brackets</a> for grouping arithmetic (or other) expressions,
 <span class=rightinset>p(i)=EXP(-{[x(i)-mu]/sigma}^2/2)</span>
-just as you were taught in school. While to alternate parentheses, brackets and braces is optional and might be unessential to some users, to do so eases the human eye's reading and proofreading nested formulas; and it enhances automatic error catching too. The provided <a href="Documentation/editor.html#full-screen">text editor</a> can automatically complete parentheses and alternate bracket styles for you.</p> 
+just as you were taught in school. While to alternate parentheses, brackets and braces is optional and might be unessential to some users, to do so eases the human eye's reading and proofreading nested formulas; and it enhances automatic error catching too. The provided <a href="Documentation/editor.html#full-screen">text editor</a> can automatically match and alternate bracket styles for you.</p> 
     <footer>
       <p><a href="./">Back</a></p>
     </footer>
