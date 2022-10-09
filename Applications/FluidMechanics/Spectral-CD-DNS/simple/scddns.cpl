@@ -111,22 +111,22 @@ SUBROUTINE convolutions(ARRAY(*,*) OF VELOCITY Vplane; POINTER TO ARRAY(*,*) OF 
   LOOP FOR ix=0 TO nx
     DO Vd(ix,iy)=Vplane(ix,iy) FOR iy=0 TO ny
     DO Vd(ix,nyd+iy)=Vplane(ix,iy) FOR iy=-ny TO -1
-    WITH Vd(ix,*): IFTU(u); IFTU(w); IFTU(v)
+    WITH Vd(ix,*): IFTU(u); IFTU(v); IFTU(w)
   REPEAT LOOP
   LOOP FOR iy=LO TO HI
-    WITH Vd(*,iy): RFTU(u); RFTU(w); RFTU(v)
+    WITH Vd(*,iy): RFTU(u); RFTU(v); RFTU(w)
     LOOP FOR ALL ix WITH Vd(ix,iy), VVd(ix,iy)
       uu.REAL=u.REAL*u.REAL; uu.IMAG=u.IMAG*u.IMAG 
+      uv.REAL=u.REAL*v.REAL; uv.IMAG=u.IMAG*v.IMAG 
+      vv.REAL=v.REAL*v.REAL; vv.IMAG=v.IMAG*v.IMAG 
       uw.REAL=u.REAL*w.REAL; uw.IMAG=u.IMAG*w.IMAG 
       ww.REAL=w.REAL*w.REAL; ww.IMAG=w.IMAG*w.IMAG 
       vw.REAL=w.REAL*v.REAL; vw.IMAG=w.IMAG*v.IMAG 
-      vv.REAL=v.REAL*v.REAL; vv.IMAG=v.IMAG*v.IMAG 
-      uv.REAL=u.REAL*v.REAL; uv.IMAG=u.IMAG*v.IMAG 
     REPEAT
-    WITH VVd(*,iy): HFTU(uu); HFTU(uw); HFTU(ww); HFTU(vw); HFTU(vv); HFTU(uv)
+    WITH VVd(*,iy): HFTU(uu); HFTU(uv); HFTU(vv); HFTU(uw); HFTU(ww); HFTU(vw)
   REPEAT
   LOOP FOR ix=0 TO nx
-    WITH VVd(ix,*): FFTU(uu); FFTU(uw); FFTU(ww); FFTU(vw); FFTU(vv); FFTU(uv)
+    WITH VVd(ix,*): FFTU(uu); FFTU(uv); FFTU(vv); FFTU(uw); FFTU(ww); FFTU(vw)
     DO VVplane(ix,iy)=VVd(ix,iy) FOR iy=0 TO ny
     DO VVplane(ix,iy)=VVd(ix,nyd+iy) FOR iy=-ny TO -1
   REPEAT LOOP
@@ -256,7 +256,7 @@ SUBROUTINE linsolve(REAL lambda)
         ucor(0)=0; ucor(-1)=0; ucor(nz)=0; ucor(nz+1)=0
         bcLeftDiv(ucor,zetamat)
         IF ABS(meanflowx)>1E-10 THEN u.REAL=~+(meanflowx-zintegr(u.REAL))/zintegr(ucor)*ucor
-        IF ABS(meanflowy)>1E-10 THEN w.REAL=~+(meanflowy-zintegr(w.REAL))/zintegr(ucor)*ucor
+        IF ABS(meanflowy)>1E-10 THEN v.REAL=~+(meanflowy-zintegr(v.REAL))/zintegr(ucor)*ucor
       END IF
     ELSE
       ! Algebraic 2x2 system to recover u,v from w,zeta  
