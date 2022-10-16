@@ -1,2 +1,2 @@
-2022-10-07
-minor corrections.
+2022-10-16
+New OPERATOR overloading statement. Editor warning for file modifications.

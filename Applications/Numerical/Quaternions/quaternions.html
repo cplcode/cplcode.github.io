@@ -16,22 +16,22 @@
 <span class=comment>! CPL library providing a QUATERNION type and operations upon it.</span>
 <span class=comment>!</span>
 <span class=comment>!( Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-  
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-  
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE. !)</span>
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. !)</span>
 
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a>
 <a href="cpl.html#TYPE">TYPE</a> QUATERNION=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>(<a href="cpl.html#REAL">REAL</a>,<a href="complex.html#Top">IMAG</a>,JMAG,KMAG) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a>
@@ -43,21 +43,18 @@
   <a href="cpl.html#RESULT">RESULT</a>.KMAG=-x.KMAG
 <a href="cpl.html#END">END</a> <a href="complex.html#Top">CONJG</a>
 
-QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> mult(QUATERNION a,b)
+QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> qmult(QUATERNION a,b)
   <a href="cpl.html#RESULT">RESULT</a>.<a href="cpl.html#REAL">REAL</a>=a.<a href="cpl.html#REAL">REAL</a>&lowast;b.<a href="cpl.html#REAL">REAL</a>-a.<a href="complex.html#Top">IMAG</a>&lowast;b.<a href="complex.html#Top">IMAG</a>-a.JMAG&lowast;b.JMAG-a.KMAG&lowast;b.KMAG
   <a href="cpl.html#RESULT">RESULT</a>.<a href="complex.html#Top">IMAG</a>=a.<a href="complex.html#Top">IMAG</a>&lowast;b.<a href="cpl.html#REAL">REAL</a>+a.<a href="cpl.html#REAL">REAL</a>&lowast;b.<a href="complex.html#Top">IMAG</a>+a.JMAG&lowast;b.KMAG-a.KMAG&lowast;b.JMAG
   <a href="cpl.html#RESULT">RESULT</a>.JMAG=a.JMAG&lowast;b.<a href="cpl.html#REAL">REAL</a>+a.<a href="cpl.html#REAL">REAL</a>&lowast;b.JMAG+a.KMAG&lowast;b.<a href="complex.html#Top">IMAG</a>-a.<a href="complex.html#Top">IMAG</a>&lowast;b.KMAG
   <a href="cpl.html#RESULT">RESULT</a>.KMAG=a.KMAG&lowast;b.<a href="cpl.html#REAL">REAL</a>+a.<a href="cpl.html#REAL">REAL</a>&lowast;b.KMAG+a.<a href="complex.html#Top">IMAG</a>&lowast;b.JMAG-a.JMAG&lowast;b.<a href="complex.html#Top">IMAG</a>
-<a href="cpl.html#END">END</a> mult
+<a href="cpl.html#END">END</a> qmult
 
 <a href="cpl.html#INLINE">INLINE</a> QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> INV(QUATERNION x)=<a href="complex.html#Top">CONJG</a>(x)/NORM(x)
 
-<a href="cpl.html#FRI-SECTION">FRI SECTION</a>
-<span class=comment>! allow algebraic syntax for quaternion multiplication and division.</span>
-FRIsymbol "QUATERNION" =[trytype "QUATERNION" -&gt; type =[ &lowast;]=
-factor &lowast;]= "&lowast;" =[: fullsep cut =[id -&gt; factor =[ &lowast;]= cut =[convert #3 -&gt; 1[assign] QUATERNION value =[ &lowast;]= =[convert #2 -&gt; QUATERNION value =[ &lowast;]= =["mult("{#5}","{#3}")" -&gt; =[id -&gt; factor =[factor &lowast;]=]=
-factor &lowast;]= "/" =[: fullsep cut =[id -&gt; factor =[ &lowast;]= cut =[convert #3 -&gt; 1[assign] QUATERNION value =[ &lowast;]= =[convert #2 -&gt; QUATERNION value =[ &lowast;]= =["mult("{#5}",INV("{#3}"))" -&gt; =[id -&gt; factor =[factor &lowast;]=]=
-<a href="cpl.html#END">END</a> <a href="cpl.html#FRI-SECTION">FRI SECTION</a>
+OPERATOR QUATERNION x &lowast; QUATERNION y = qmult(x,y)
+OPERATOR QUATERNION x / QUATERNION y = qmult(x,INV(y))
+OPERATOR <a href="cpl.html#REAL">REAL</a> x / QUATERNION y = x&lowast;INV(y)
 
 QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> <a href="cpl.html#Builtin">EXP</a>(QUATERNION x)
   <a href="cpl.html#REAL">REAL</a> m=<a href="cpl.html#Builtin">EXP</a>(x.<a href="cpl.html#REAL">REAL</a>)

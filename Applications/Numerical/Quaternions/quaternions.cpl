@@ -4,22 +4,22 @@
 ! CPL library providing a QUATERNION type and operations upon it.
 !
 !( Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-  
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-  
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE. !)
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. !)
 
 USE rbmat
 TYPE QUATERNION=STRUCTURED ARRAY(REAL,IMAG,JMAG,KMAG) OF REAL
@@ -31,21 +31,18 @@ INLINE QUATERNION FUNCTION CONJG(QUATERNION x)
   RESULT.KMAG=-x.KMAG
 END CONJG
 
-QUATERNION FUNCTION mult(QUATERNION a,b)
+QUATERNION FUNCTION qmult(QUATERNION a,b)
   RESULT.REAL=a.REAL*b.REAL-a.IMAG*b.IMAG-a.JMAG*b.JMAG-a.KMAG*b.KMAG
   RESULT.IMAG=a.IMAG*b.REAL+a.REAL*b.IMAG+a.JMAG*b.KMAG-a.KMAG*b.JMAG
   RESULT.JMAG=a.JMAG*b.REAL+a.REAL*b.JMAG+a.KMAG*b.IMAG-a.IMAG*b.KMAG
   RESULT.KMAG=a.KMAG*b.REAL+a.REAL*b.KMAG+a.IMAG*b.JMAG-a.JMAG*b.IMAG
-END mult
+END qmult
 
 INLINE QUATERNION FUNCTION INV(QUATERNION x)=CONJG(x)/NORM(x)
 
-FRI SECTION
-! allow algebraic syntax for quaternion multiplication and division.
-FRIsymbol "QUATERNION" =[trytype "QUATERNION" -> type =[ *]=
-factor *]= "*" =[: fullsep cut =[id -> factor =[ *]= cut =[convert #3 -> 1[assign] QUATERNION value =[ *]= =[convert #2 -> QUATERNION value =[ *]= =["mult("{#5}","{#3}")" -> =[id -> factor =[factor *]=]=
-factor *]= "/" =[: fullsep cut =[id -> factor =[ *]= cut =[convert #3 -> 1[assign] QUATERNION value =[ *]= =[convert #2 -> QUATERNION value =[ *]= =["mult("{#5}",INV("{#3}"))" -> =[id -> factor =[factor *]=]=
-END FRI SECTION
+OPERATOR QUATERNION x * QUATERNION y = qmult(x,y)
+OPERATOR QUATERNION x / QUATERNION y = qmult(x,INV(y))
+OPERATOR REAL x / QUATERNION y = x*INV(y)
 
 QUATERNION FUNCTION EXP(QUATERNION x)
   REAL m=EXP(x.REAL)
