@@ -52,6 +52,8 @@ QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> qmult(QUATERNION a,b)
 
 <a href="cpl.html#INLINE">INLINE</a> QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> INV(QUATERNION x)=<a href="complex.html#Top">CONJG</a>(x)/NORM(x)
 
+<span class=comment>! notice: vector-space operations such as addition and multiplication by </span>
+<span class=comment>! a scalar are provided by rbmat.cpl insofar as a QUATERNION is also a vector</span>
 OPERATOR QUATERNION x &lowast; QUATERNION y = qmult(x,y)
 OPERATOR QUATERNION x / QUATERNION y = qmult(x,INV(y))
 OPERATOR <a href="cpl.html#REAL">REAL</a> x / QUATERNION y = x&lowast;INV(y)

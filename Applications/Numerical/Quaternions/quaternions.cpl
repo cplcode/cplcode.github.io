@@ -40,6 +40,8 @@ END qmult
 
 INLINE QUATERNION FUNCTION INV(QUATERNION x)=CONJG(x)/NORM(x)
 
+! notice: vector-space operations such as addition and multiplication by 
+! a scalar are provided by rbmat.cpl insofar as a QUATERNION is also a vector
 OPERATOR QUATERNION x * QUATERNION y = qmult(x,y)
 OPERATOR QUATERNION x / QUATERNION y = qmult(x,INV(y))
 OPERATOR REAL x / QUATERNION y = x*INV(y)
