@@ -1607,7 +1607,7 @@ New meanings can be assigned to the standard operators by the declaration
 
 	OPERATOR &lt;type&gt; &lt;id&gt; &lt;op&gt; &lt;type&gt; &lt;id&gt; = &lt;expression&gt;
 
-Similar to an INLINE FUNCTION (see <a href="#INLINE">INLINE</a>), this statement does not generate any executable code but determines an equivalence, or more exactly an inline substitution, of the expression on the right for the operator on the left. For instance, after defining a COMPLEX type and a ComplexAddition function, an operator could be defined using this function as
+Similar to an INLINE FUNCTION (see <a href="#INLINE">INLINE</a>), this statement does not generate any executable code but determines a compile-time equivalence, or more exactly an inline substitution, of the expression on the right for the operator on the left. For instance, after defining a COMPLEX type and a ComplexAddition function, an operator using this function could be defined as
 
 	OPERATOR COMPLEX x + COMPLEX y = ComplexAddition(x,y)
 

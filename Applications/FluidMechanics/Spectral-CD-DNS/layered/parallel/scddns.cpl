@@ -1,0 +1,248 @@
+! scddns -- Copyright 2022 Paolo Luchini and Maurizio Quadrio
+! http://CPLcode.net/Applications/FluidMechanics/Spectral-CD-DNS
+
+!( Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. !)
+
+USE rbmat
+USE fft
+!USE rtchecks
+
+! Read discretization and simulation parameters from initial field
+FILE data=OPENRO("scddns0.dat")
+INTEGER CONSTANT nx,ny,nz
+REAL CONSTANT alpha0,beta0,htcoeff,zmin=0,zmax=2,t_max,dt_save
+REAL Re, nu, meanpx=0, meanpy=0, meanflowx=0, meanflowy=0, deltat, time=0
+STRING Vfield
+READ BY NAME FROM data nx,ny,nz,alpha0,beta0,htcoeff,Re; nu=1/Re
+READ BY NAME FROM data deltat, t_max, dt_save
+LOOP UNTIL EOF(data) OR READ BY NAME FROM data Vfield
+  IF NOT READ BY NAME FROM data meanpx OR meanflowx OR meanpy OR meanflowy THEN
+    READ FROM data
+  END IF
+REPEAT
+USE rbmatmod
+IF last THEN WRITE BY NAME nx,ny,nz,2*PI/alpha0,2*PI/beta0,Re
+IF last THEN WRITE BY NAME deltat,t_max,dt_save,nproc,nsmp
+! Define wall-normal mesh
+! Alternative options for uniform or channel-type with two walls and finer spacing near the walls
+REAL z(IF first THEN nzl-2 ELSE nzl-4..IF last THEN nzh+2 ELSE nzh+4)
+!DO z(i)=zmax*i/nz FOR ALL i ! Uniform mesh
+DO z(i)=zmin+0.5*(zmax-zmin)*{tanh[htcoeff*(2*i/nz-1)]/tanh(htcoeff)+0.5*(zmax-zmin)} FOR ALL i ! Channel with two walls
+
+! Definition of the velocity data structure (type and then array)
+VELOCITY=STRUCTURE(COMPLEX u,v,w)
+SHARED ARRAY(0..nx,-ny..ny,nzl-2..nzh+2) OF VELOCITY V=0
+! Generate random initial field in case none is provided 
+DO WITH V(ix,iy,iz)
+  eps=0.002; u=~+eps*EXP[RAND()*2*PI*I]; v=~+eps*EXP[RAND()*2*PI*I]; w=~+eps*EXP[RAND()*2*PI*I]
+FOR ix=1 TO HI AND ALL iy AND iz=nzl TO nzh
+DO V(0,0,iz).u.REAL=(z(iz)-zmin)*(zmax-z(iz)) FOR iz=V.LO3 TO V.HI3
+! Read the initial velocity field if present
+IF Vfield#NULL THEN
+  INTEGER oldnx=nx, oldny=ny, oldnz=nz
+  STRING oldVfield
+  IF Vfield#"" THEN
+    data = OPENRO(Vfield)
+    WRITE "Reading from "Vfield
+    READ FROM data "nx="oldnx,"ny="oldny,"nz="oldnz
+    LOOP UNTIL READ BY NAME FROM data "Vfield="oldVfield
+      READ FROM data
+    REPEAT
+  END IF
+  POINTER TO STORED STRUCTURE[CHAR skip[1..POSITION(data)]; ARRAY(0..oldnx,-oldny..oldny,-1..oldnz+1) OF VELOCITY oldV] image=data
+  LOOP FOR ix=MAX(V.LO1,image.oldV.LO1) TO MIN(V.HI1,image.oldV.HI1) AND iy=MAX(V.LO2,image.oldV.LO2) TO MIN(V.HI2,image.oldV.HI2)
+    DO V(ix,iy,iz)=image.oldV[ix,iy,-1+(oldnz+2)*(iz+1)DIV(nz+2)] FOR ALL iz
+  REPEAT LOOP
+END IF
+CLOSE data
+
+! Prepare the compact-difference coefficients, then set special cases at the boundaries
+SHARED STRUCTURE[ARRAY(-2..2) OF REAL d0,d1,d2,d4] derivatives(IF first THEN nzl ELSE nzl-2..IF last THEN nzh ELSE nzh+2)
+SHARED ARRAY(-2..2) OF REAL d040,d140,d14m1, d04n,d14n,d14np1
+MODULE setup_derivatives
+  REAL M(0..4,0..4),t(0..4)
+  LOOP FOR iz=derivatives.LO TO derivatives.HI WITH derivatives(iz)
+    DO M(i,j)=(z(iz-2+j)-z(iz))**(4-i) FOR ALL i,j; LUdecomp M
+    t=0; t(0)=24
+    d4(-2+(*))=M\t
+    DO M(i,j)=(5-i)*(6-i)*(7-i)*(8-i)*(z(iz-2+j)-z(iz))**(4-i) FOR ALL i,j; LUdecomp M
+    DO t(i)=SUM {d4(j)*(z(iz+j)-z(iz))**(8-i)} FOR ALL j FOR ALL i
+    d0(-2+(*))=M\t
+    DO M(i,j)=(z(iz-2+j)-z(iz))**(4-i) FOR ALL i,j; LUdecomp M
+    t=0; DO t(i)=SUM d0(j)*(4-i)*(3-i)*(z(iz+j)-z(iz))**(2-i) FOR ALL j FOR i=0 TO 2
+    d2(-2+(*))=M\t
+    t=0; DO t(i)=SUM d0(j)*(4-i)*(z(iz+j)-z(iz))**(3-i) FOR ALL j FOR i=0 TO 3
+    d1(-2+(*))=M\t
+  REPEAT
+  IF first THEN
+    d040=0; d040(-1)=1
+    DO M(i,j)=(z(-1+j)-z(0))**(4-i) FOR ALL i,j; LUdecomp M
+    t=0; t(3)=1; d140(-2+(*))=M\t
+    DO M(i,j)=(z(-1+j)-z(-1))**(4-i) FOR ALL i,j; LUdecomp M
+    t=0; t(3)=1; d14m1(-2+(*))=M\t
+  END IF
+  IF last THEN
+    d04n=0; d04n(1)=1
+    DO M(i,j)=(z(nz-3+j)-z(nz))**(4-i) FOR ALL i,j; LUdecomp M
+    t=0; t(3)=1; d14n(-2+(*))=M\t
+    DO M(i,j)=(z(nz-3+j)-z(nz+1))**(4-i) FOR ALL i,j; LUdecomp M
+    t=0; t(3)=1; d14np1(-2+(*))=M\t
+  END IF
+END setup_derivatives
+
+! Define compact-difference operators; D0 applies to the undifferentiated terms, and makes the scheme compact
+INLINE REAL FUNCTION D0(REAL f(*)) = d0(-2)*f(-2)+d0(-1)*f(-1)+d0(0)*f(0)+d0(1)*f(1)+d0(2)*f(2)
+INLINE REAL FUNCTION D1(REAL f(*)) = d1(-2)*f(-2)+d1(-1)*f(-1)+d1(0)*f(0)+d1(1)*f(1)+d1(2)*f(2)
+INLINE REAL FUNCTION D2(REAL f(*)) = d2(-2)*f(-2)+d2(-1)*f(-1)+d2(0)*f(0)+d2(1)*f(1)+d2(2)*f(2)
+INLINE REAL FUNCTION D4(REAL f(*)) = d4(-2)*f(-2)+d4(-1)*f(-1)+d4(0)*f(0)+d4(1)*f(1)+d4(2)*f(2)
+INLINE COMPLEX FUNCTION D0(COMPLEX f(*))=D0(f.REAL)+I*D0(f.IMAG)
+INLINE COMPLEX FUNCTION D1(COMPLEX f(*))=D1(f.REAL)+I*D1(f.IMAG)
+INLINE COMPLEX FUNCTION D2(COMPLEX f(*))=D2(f.REAL)+I*D2(f.IMAG)
+INLINE COMPLEX FUNCTION D4(COMPLEX f(*))=D4(f.REAL)+I*D4(f.IMAG)
+
+! Temporary two-dimensional storage for the non-linear terms, and expanded arrays for de-aliases FFTs.
+MOMFLUX=STRUCTURE(COMPLEX uu,uv,vv,vw,ww,uw)
+INTEGER nxd=3*nx DIV 2 -1; DO INC nxd UNTIL FFTfit(nxd)
+INTEGER nyd=3*ny -1; DO INC nyd UNTIL FFTfit(nyd)
+SHARED ARRAY(0..nx,0..nyd-1,-2..2) OF VELOCITY Vd=0
+SHARED ARRAY(0..nxd-1,0..nyd-1) OF VELOCITY tVd=0
+SHARED ARRAY(0..nxd-1,0..nyd-1,-2..2) OF MOMFLUX VVd=0
+! Two-dimensional data structures for the solution of the linear systems.
+maxtimelevels=1
+RHSTYPE=ARRAY(V.LO1..V.HI1,V.LO2..V.HI2) OF STRUCTURE(COMPLEX zeta,D2w)
+SHARED ARRAY(maxtimelevels,V.LO3..V.HI3) OF RHSTYPE oldrhs=0
+
+! Core of the time step: convolutions of velocity Fourier components, computed pseudo-spectrally using FFTs for efficiency
+SUBROUTINE convolutions(ARRAY(*,*) OF VELOCITY Vplane)
+  LOOP FOR ix=ismp*(nx+1) DIV nsmp TO (ismp+1)*(nx+1) DIV nsmp -1
+    DO Vd(ix,iy,2)=Vplane(ix,iy) FOR iy=0 TO ny
+    Vd(ix,ny+1..nyd-ny-1,2)=0
+    DO Vd(ix,nyd+iy,2)=Vplane(ix,iy) FOR iy=-ny TO -1
+    WITH Vd(ix,*,2): IFTU[u,tVd(ix).u]; IFTU[v,tVd(ix).v]; IFTU[w,tVd(ix).w]
+  REPEAT LOOP
+  IF ismp=0 THEN tVd(nx+1..HI)=0
+  SYNC(ismp,nsmp)
+  LOOP FOR iy=ismp*nyd DIV nsmp TO (ismp+1)*nyd DIV nsmp -1
+    WITH tVd(*,iy): RFTU(u); RFTU(v); RFTU(w)
+    LOOP FOR ALL ix WITH tVd(ix,iy), VVd(ix,iy,2)
+      uu.REAL=u.REAL*u.REAL; uu.IMAG=u.IMAG*u.IMAG 
+      uv.REAL=u.REAL*v.REAL; uv.IMAG=u.IMAG*v.IMAG 
+      vv.REAL=v.REAL*v.REAL; vv.IMAG=v.IMAG*v.IMAG 
+      vw.REAL=w.REAL*v.REAL; vw.IMAG=w.IMAG*v.IMAG 
+      ww.REAL=w.REAL*w.REAL; ww.IMAG=w.IMAG*w.IMAG 
+      uw.REAL=u.REAL*w.REAL; uw.IMAG=u.IMAG*w.IMAG 
+    REPEAT
+    WITH VVd(*,iy,2): HFTU(uu); HFTU(uv); HFTU(vv); HFTU(vw); HFTU(ww); HFTU(uw)
+  REPEAT
+  SYNC(ismp,nsmp)
+  LOOP FOR ix=ismp*(nx+1) DIV nsmp TO (ismp+1)*(nx+1) DIV nsmp -1
+    WITH VVd(ix,*,2): FFTU(uu); FFTU(uv); FFTU(vv); FFTU(vw); FFTU(ww); FFTU(uw)
+  REPEAT LOOP
+END convolutions
+
+! OS and SQ stand for Orr-Sommerfeld and Squire, but fully non-linear
+INLINE FUNCTION OS(INTEGER iz,i)=nu*[d4(i)-2*k2*d2(i)+k2*k2*d0(i)]
+INLINE FUNCTION SQ(INTEGER iz,i)=nu*[d2(i)-k2*d0(i)]
+SUBROUTINE buildrhs[SUBROUTINE(COMPLEX rhs^,old^(*),unknown,implicit_part,explicit_part) timescheme]
+  Vd=0; VVd=0
+  PARALLEL LOOP FOR ismp=0 TO nsmp-1
+    LOOP FOR iz=IF first THEN nzl-4 ELSE nzl-2 TO IF last THEN nzh ELSE nzh+2
+      IF iz+2<=nzh OR last THEN convolutions(V(*,*,iz+2)) ELSE Vd(ismp*(nx+1) DIV nsmp ..(ismp+1)*(nx+1) DIV nsmp -1,*,2)=0; VVd(ismp*(nx+1) DIV nsmp ..(ismp+1)*(nx+1) DIV nsmp -1,*,2)=0
+      IF iz>=1 THEN
+        WITH derivatives(iz)
+        LOOP FOR ix=ismp*(nx+1) DIV nsmp TO (ismp+1)*(nx+1) DIV nsmp -1 AND iy=-ny TO ny
+          ialpha=I*alpha0*ix; ibeta=I*beta0*iy
+          k2=(alpha0*ix)**2+(beta0*iy)**2
+          WITH VVd(ix,IF iy>=0 THEN iy ELSE nyd+iy), Vd(ix,IF iy>=0 THEN iy ELSE nyd+iy):
+          rhsu=-ialpha*D0(uu)-ibeta*D0(uv)-D1(uw)
+          rhsv=-ialpha*D0(uv)-ibeta*D0(vv)-D1(vw)
+          rhsw=-ialpha*D0(uw)-ibeta*D0(vw)-D1(ww)
+          D2wimpl = SUM OS(iz,i)*w(i) FOR i=-2 TO 2
+          ! timescheme here is the generic temporal scheme, selected in the main time loop    
+          timescheme{V(ix,iy,iz).w,oldrhs(*,iz,ix,iy).D2w,D2(w)-k2*D0(w),
+            D2wimpl,
+            ialpha*[ialpha*D1(uu)+ibeta*D1(uv)+D2(uw)]+
+            ibeta*[ialpha*D1(uv)+ibeta*D1(vv)+D2(vw)]-k2*rhsw}
+          ! special treatment of the (0,0) wavenumber               
+          IF ix=0 AND iy=0 THEN ! mean u stored in zeta.REAL, mean v in zeta.IMAG     
+            timescheme{V(0,0,iz).u,oldrhs(*,iz,0,0).zeta,D0(u.REAL)+D0(v.REAL)*I,
+              nu*D2(u.REAL)+nu*D2(v.REAL)*I,
+              rhsu.REAL+meanpx+[rhsv.REAL+meanpy]*I}
+          ELSE
+            zetaimpl=SUM SQ(iz,i)*[ibeta*u(i)-ialpha*v(i)] FOR i=-2 TO 2
+            timescheme{V(ix,iy,iz).u,oldrhs(*,iz,ix,iy).zeta,ibeta*D0(u)-ialpha*D0(v),
+              zetaimpl,
+              ibeta*rhsu-ialpha*rhsv}
+          END IF
+        REPEAT LOOP
+      END IF
+      LOOP FOR ix=ismp*(nx+1) DIV nsmp TO (ismp+1)*(nx+1) DIV nsmp -1: DO Vd(ix,iy,i)=Vd(ix,iy,i+1); VVd(ix,iy,i)=VVd(ix,iy,i+1) FOR ALL iy AND i=-2 TO 1
+    REPEAT LOOP
+  REPEAT LOOP
+END buildrhs
+
+USE linsolve
+
+! Only one Runge-Kutta implementation with 3 substeps is provided here
+! but any preferred timescheme can be similarly used
+SUBROUTINE RK1_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=120/32/deltat*unkn+impl+2*expl
+  old(1)=expl
+END RK1_rai
+CONSTANT REAL RK1_rai_coeff=120/32
+
+SUBROUTINE RK2_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=120/(8*deltat)*unkn+impl+50/8*expl-34/8*old(1)
+  old(1)=expl
+END RK2_rai
+CONSTANT REAL RK2_rai_coeff=120/8
+
+SUBROUTINE RK3_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=120/(20*deltat)*unkn+impl+90/20*expl-50/20*old(1)
+END RK3_rai
+CONSTANT REAL RK3_rai_coeff=120/20      
+
+
+! Main time-integration loop
+INTEGER count=0
+LOOP timeloop WHILE time < t_max-deltat/2
+  ! run three Runge-Kutta substeps
+  buildrhs(RK1_rai); linsolve(RK1_rai_coeff/deltat)
+  time=~+2/RK1_rai_coeff*deltat
+  buildrhs(RK2_rai); linsolve(RK2_rai_coeff/deltat)
+  time=~+2/RK2_rai_coeff*deltat
+  buildrhs(RK3_rai); linsolve(RK3_rai_coeff/deltat)
+  time=~+2/RK3_rai_coeff*deltat
+  
+  IF FLOOR[(time+deltat/2)/dt_save] > FLOOR[(time-deltat/2)/dt_save] THEN
+    ! Save the velocity file for later post-processing and/or restart
+    INC count
+    field = CREATE("scddns"count".dat")
+    WRITE TO field "nx="nx,"ny="ny,"nz="nz,"alpha0="alpha0,"beta0="beta0,"htcoeff="htcoeff,"Re="1/nu
+    WRITE BY NAME TO field deltat, t_max, dt_save
+    WRITE BY NAME TO field meanpx,meanflowx,meanpy,meanflowy
+    WRITE TO field "Vfield="
+    WRITE BINARY TO field V
+    CLOSE field
+  END IF
+  ! Minimalist runtime output to screen: 
+  ! friction at the two walls, pressure gradient and bulk velocity
+  bv=zintegr(V(0,0,*).u.REAL)/2
+  IF last THEN WRITE time,-nu*SUM d14n(i)*V(0,0,nz-1+i).u.REAL FOR i=-2 TO 2, meanpx, bv
+REPEAT timeloop

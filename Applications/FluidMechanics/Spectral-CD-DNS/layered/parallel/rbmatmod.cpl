@@ -1,0 +1,137 @@
+USE parallel
+INTEGER ismp,nsmp=2
+newsmp=getenv("NSMP")
+IF newsmp#NULL THEN nsmp=atoi(newsmp)
+INTEGER iproc,nproc
+IF COMMANDLINE.HI<2 THEN iproc=1; nproc=1 ELSE
+  iproc=atoi[COMMANDLINE(1)]; nproc=atoi[COMMANDLINE(2)]
+END IF
+bufsize=800; baseport=IPPORT_USERRESERVED+111
+FILE prevr=NULL,nextr=NULL,prevw=NULL,nextw=NULL
+IF iproc<nproc THEN
+  nextr=fdopen[tcpserver(baseport+2*iproc),"r"]
+  setvbuf(nextr,NULL,_IONBF,0)
+  nextw=fdopen[tcpserver(baseport+1+2*iproc),"w"]
+  setvbuf[nextw,malloc(bufsize),_IOFBF,bufsize]
+END IF
+IF iproc>1 THEN
+  prevw=fdopen{tcpclient[COMMANDLINE(3),baseport-2+2*iproc],"w"}
+  setvbuf[prevw,malloc(bufsize),_IOFBF,bufsize]
+  sleep 1
+  prevr=fdopen{tcpclient[COMMANDLINE(3),baseport-1+2*iproc],"r"}
+  setvbuf(prevr,NULL,_IONBF,0)
+ELSE
+  int pipefd(0..1); pipe(pipefd)
+  prevr=fdopen(pipefd(0),"r"); prevw=fdopen(pipefd(1),"w")
+  setvbuf(prevr,NULL,_IONBF,0)
+  setvbuf(prevw,NULL,_IONBF,0)
+END IF
+first==(iproc=1); last==(nextr=NULL FILE); has_terminal==last
+nzl=IF first THEN 1 ELSE -1+(iproc-1)*(nz+3) DIV nproc
+nzh=IF last THEN nz-1 ELSE -2+iproc*(nz+3) DIV nproc
+
+SUBROUTINE bcLUdecompStep[POINTER TO ARRAY(nzl-2..nzh+2,-2..2) OF REAL A]
+  IF first THEN
+    A(0,-1..HI)=~-A(0,-2)/A(-1,-2)*A(-1,-1..HI)
+    A(1,-1..HI)=~-A(1,-2)/A(-1,-2)*A(-1,-1..HI)
+    A(1,0..HI)=~-A(1,-1)/A(0,-1)*A(0,0..HI)
+    A[2,-1+(0..HI)]=~-A(2,-2)/A(0,-1)*A(0,0..HI)
+  END IF
+  IF last THEN
+    A(nz,LO..1)=~-A(nz,2)/A(nz+1,2)*A(nz+1,LO..1)
+    A(nz-1,LO..1)=~-A(nz-1,2)/A(nz+1,2)*A(nz+1,LO..1)
+    A(nz-1,LO..0)=~-A(nz-1,1)/A(nz,1)*A(nz,LO..0)
+    A[nz-2,1+(LO..0)]=~-A(nz-2,2)/A(nz,1)*A(nz,LO..0)
+  ELSE READ BINARY FROM nextr A(HI-1..HI)
+  REAL piv
+  LOOP FOR i=A.HI1-A.HI2 DOWN TO A.LO1-A.LO2
+    LOOP FOR k=MIN(A.HI2,nz-1-i) DOWN TO 1
+      POINTER INTO A(i,*+k),A(i+k,*) j=0
+      piv=A(i,j+k)
+      DO DEC j; A(i,j+k)=~-piv*A(i+k,j) FOR -A.LO2 TIMES
+    REPEAT LOOP
+    piv=1/A(i,0); A(i,0)=piv                                        
+    DO A(i,j)=~*piv FOR j INTO A(i,A.LO2..-1)                                   
+  REPEAT LOOP
+  IF NOT first THEN WRITE BINARY TO prevw A(LO+2..LO+3)
+END bcLUdecompStep
+
+SUBROUTINE bcLDivStep[POINTER TO ARRAY(*) OF REAL x; ARRAY(nzl-2..nzh+2,-2..2) OF REAL A]
+  IF first THEN
+    x(0)=~-A(0,-2)/A(-1,-2)*x(-1)
+    x(1)=~-A(1,-2)/A(-1,-2)*x(-1)
+    x(1)=~-A(1,-1)/A(0,-1)*x(0)
+    x(2)=~-A(2,-2)/A(0,-1)*x(0)
+  END IF
+  IF last THEN
+    x(nz)=~-A(nz,2)/A(nz+1,2)*x(nz+1)
+    x(nz-1)=~-A(nz-1,2)/A(nz+1,2)*x(nz+1)
+    x(nz-1)=~-A(nz-1,1)/A(nz,1)*x(nz)
+    x(nz-2)=~-A(nz-2,2)/A(nz,1)*x(nz)
+  ELSE
+    x(HI-3)=~+ BINARY REAL FROM nextr
+    x(HI-2)=~+ BINARY REAL FROM nextr
+    x(HI)=~*A(HI,0)
+    x(HI-1)=[~-A(HI-1,1)*x(HI)]*A(HI-1,0)+ BINARY REAL FROM nextr
+    x(HI)=~+ BINARY REAL FROM nextr
+  END IF
+  lb=A.LO1+2
+  LOOP FOR i=A.HI1-2 DOWN TO lb
+    jmax=MIN(A.HI2,nz-1-i)
+    POINTER INTO A(i,*),x(i+*) j=jmax
+    REAL sum=x(i)
+    LOOP FOR jmax TIMES: sum=~-A(i,j)*x(i+j); DEC j
+    x(i+j)=sum*A(i,j)
+  REPEAT LOOP
+  IF NOT first THEN WRITE BINARY TO prevw x(LO..LO+3) ELSE WRITE TO prevw
+END bcLDivStep
+
+SUBROUTINE bcUDivStep[POINTER TO ARRAY(*) OF REAL x; ARRAY(nzl-2..nzh+2,-2..2) OF REAL A]
+  IF NOT first THEN READ BINARY FROM prevr x(LO..LO+3) ELSE READ FROM prevr
+  ub=IF last THEN A.HI1-2 ELSE A.HI1
+  LOOP FOR i=A.LO1+(IF first THEN 2 ELSE 4) TO ub
+    jmin=MAX(A.LO2,1-i)
+    POINTER INTO A(i,*),x(i+*) j=jmin
+    REAL sum=x(i)
+    LOOP FOR -jmin TIMES: sum=~-A(i,j)*x(i+j); INC j
+    x(i+j)=sum
+  REPEAT LOOP
+  IF first THEN
+    x(0)={~-A(0,0..2)*x[1+(0..2)]}/A(0,-1)
+    x(-1)={~-A(-1,-1..2)*x[1+(-1..2)]}/A(-1,-2)
+  END IF
+  IF last THEN
+    x(nz)={~-A(nz,-2..0)*x[nz-1+(-2..0)]}/A(nz,1)
+    x(nz+1)={~-A(nz+1,-2..1)*x[nz-1+(-2..1)]}/A(nz+1,2)
+  ELSE WRITE BINARY TO nextw x(HI-3..HI)
+  END bcUDivStep
+
+INLINE SUBROUTINE FlushLDivStep = IF NOT first THEN FLUSH prevw
+
+INLINE SUBROUTINE FlushUDivStep = IF NOT last THEN FLUSH nextw
+!(
+SUBROUTINE RightUDivStep(ARRAY(*) OF REAL x^,t; ARRAY(nzl-2..nzh+2,-2..2) OF REAL A)
+  IF NOT last THEN READ BINARY FROM nextr x(HI-1..HI)
+  LOOP FOR i=A.HI1-A.HI2 DOWN TO A.LO1-A.LO2
+    REAL sum=t(i)
+    DO sum=~-A(i-j,j)*x(i-j) FOR j=A.LO2 TO -1
+    x(i)=sum
+  REPEAT LOOP
+  IF NOT first THEN WRITE BINARY TO prevr x(LO+2..LO+3)
+END RightUDivStep
+
+SUBROUTINE RightLDivStep(ARRAY(*) OF REAL x^; ARRAY(nzl-2..nzh+2,-2..2) OF REAL A)
+  IF NOT first THEN READ BINARY FROM prevw x(LO..LO+3)
+  LOOP FOR i=A.LO1-A.LO2 TO A.HI1-A.HI2
+    POINTER INTO A(i,*),x(i+*) j=0
+    p=x(i+j)*A(i,0)
+    x(i+j)=p
+    DO INC j; x(i+j)=~-A(i,j)*p FOR A.HI2 TIMES
+  REPEAT LOOP
+  IF NOT last THEN
+    WRITE BINARY TO nextw x(HI-3..HI)
+    x(HI-1)=~*A(HI-1,0)
+    x(HI)=(~-A(HI-1,1)*x(HI-1))*A(HI,0)
+  END IF
+END RightLDivStep
+!)

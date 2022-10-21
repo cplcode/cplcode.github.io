@@ -1,0 +1,125 @@
+rotbufN=256
+SHARED ARRAY(0..rotbufN-1) OF STRUCTURE[ARRAY(nzl-2..nzh+2,-2..2) OF REAL D2wmat,zetamat] rotbuf
+SHARED volatile POINTER INTO rotbuf s1r,s2r
+volatile POINTER INTO rotbuf FUNCTION rotnext(volatile POINTER INTO rotbuf r)
+  RESULT=r-1; IF RESULT<LO THEN RESULT=HI
+END rotnext  
+
+SHARED ARRAY(nzl-2..nzh+2,-2..2) OF REAL D0mat=0
+D0mat(nzl..nzh)=derivatives.d0(nzl..nzh)
+IF first THEN D0mat(-1)=0; D0mat(-1,-2)=1; D0mat(0)=0; D0mat(0,-1)=1
+IF last THEN D0mat(nz)=0; D0mat(nz,1)=1; D0mat(nz+1)=0; D0mat(nz+1,2)=1
+bcLUdecompStep D0mat
+
+! Function to integrate quantities wrt z wall-to-wall
+REAL FUNCTION zintegr(REAL f(*))
+  RESULT=0
+  LOOP FOR iz=[nzl DIV 2]*2+1 TO nzh BY 2                                       
+    zp1=z(iz+1)-z(iz); zm1=z(iz-1)-z(iz) 
+    a1=-1/3*zm1+1/6*zp1+1/6*zp1*zp1/zm1
+    a3=+1/3*zp1-1/6*zm1-1/6*zm1*zm1/zp1
+    a2=zp1-zm1-a1-a3
+    RESULT=~+a1*f(iz-1) + a2*f(iz) + a3*f(iz+1)    
+  REPEAT
+  IF NOT first THEN RESULT=~+ BINARY REAL FROM prevr
+  IF NOT last THEN WRITE BINARY TO nextw RESULT; FLUSH nextw; READ BINARY FROM nextr RESULT
+  IF NOT first THEN WRITE BINARY TO prevw RESULT; FLUSH prevw
+END zintegr
+
+! Function to derive quantities wrt z wall-to-wall
+SUBROUTINE deriv(ARRAY(*) OF REAL f0,f1^)
+  IF first THEN
+    f1(0)=SUM d140(i)*f0(1+i) FOR i=-2 TO 2
+    f1(-1)=SUM d14m1(i)*f0(1+i) FOR i=-2 TO 2
+  ELSE f1(LO..LO+1)=0
+  IF last THEN
+    f1(nz)=SUM d14n(i)*f0(nz-1+i) FOR i=-2 TO 2
+    f1(nz+1)=SUM d14np1(i)*f0(nz-1+i) FOR i=-2 TO 2
+  ELSE f1(HI-1..HI)=0
+  DO WITH derivatives(i) f1(i)=D1(f0(i+(*))) FOR i=nzl TO nzh
+  bcLDivStep(f1,D0mat)
+END deriv
+
+! Solution of the linear system for each alpha,beta pair 
+SUBROUTINE linsolve(REAL lambda)
+  s1r=0; s2r=0
+  MODULE wzetasolve    
+    PARALLEL MODULE LDiv      
+      LOOP FOR ix=LO TO HI AND ALL iy
+        ialpha=I*alpha0*ix; ibeta=I*beta0*iy
+        k2=(alpha0*ix)**2+(beta0*iy)**2
+        WITH rotbuf(s1r), V(ix,iy)
+        LOOP FOR iz=nzl TO nzh AND ALL i WITH derivatives(iz)
+          D2wmat(iz,i)=lambda*[d2(i)-k2*d0(i)]-OS(iz,i)
+          zetamat(iz,i)=lambda*d0(i)-SQ(iz,i) 
+        REPEAT
+        ! boundary conditions
+        IF first THEN
+          D2wmat(0)=d040; D2wmat(-1)=d140
+          zetamat(0)=d040; zetamat(-1)=derivatives(1).d4
+        END IF
+        IF last THEN
+          D2wmat(nz)=d04n; D2wmat(nz+1)=d14n
+          zetamat(nz)=d04n; zetamat(nz+1)=derivatives(nz-1).d4
+        END IF
+        bcLUdecompStep D2wmat; bcLUdecompStep zetamat
+        IF first THEN u(0)=0; u(-1)=0
+        IF last THEN u(nz)=0; u(nz+1)=0
+        bcLDivStep(u.REAL,zetamat); bcLDivStep(u.IMAG,zetamat)
+        IF ix=0 AND iy=0 THEN
+          IF ABS(meanflowx)>1E-10 OR ABS(meanflowy)>1E-10 THEN
+            ucor==w.REAL; DO ucor(iz)=1 FOR iz=nzl TO nzh
+            ucor(nzl-2)=0; ucor(nzl-1)=0; ucor(nzh+1)=0; ucor(nzh+2)=0
+            bcLDivStep(ucor,zetamat)
+          END IF
+        ELSE
+          IF first THEN w(0)=0;  w(-1)=0
+          IF last THEN w(nz)=0; w(nz+1)=0
+          bcLDivStep(w.REAL,D2wmat); bcLDivStep(w.IMAG,D2wmat)
+        END IF
+        s1n=rotnext(s1r); IF s1n=s2r THEN FlushLDivStep; SLEEP UNTIL s1n#s2r
+        s1r=s1n; WAKEUP
+      REPEAT
+      FlushLDivStep
+    END LDiv
+    LOOP FOR ix=LO TO HI AND ALL iy
+      IF s2r=s1r THEN FlushUDivStep; SLEEP UNTIL s2r#s1r
+      WITH rotbuf(s2r),V(ix,iy)
+      bcUDivStep(u.REAL,zetamat); bcUDivStep(u.IMAG,zetamat)
+      IF ix=0 AND iy=0 THEN
+        IF ABS(meanflowx)>1E-10 OR ABS(meanflowy)>1E-10 THEN bcUDivStep(w.REAL,zetamat)
+      ELSE
+        bcUDivStep(w.REAL,D2wmat); bcUDivStep(w.IMAG,D2wmat)
+      END IF
+      s2r=rotnext(s2r); WAKEUP
+    REPEAT
+    FlushUDivStep
+  END wzetasolve
+  MODULE wzeta2uvw
+    PARALLEL MODULE derive
+      LOOP FOR ix=LO TO HI AND ALL iy EXCEPT ix=0 AND iy=0
+        WITH V(ix,iy)
+        deriv(w.REAL,v.REAL); deriv(w.IMAG,v.IMAG)
+      REPEAT
+      FlushLDivStep
+    END derive
+    LOOP FOR ix=LO TO HI AND ALL iy EXCEPT ix=0 AND iy=0
+      ialpha=I*alpha0*ix; ibeta=I*beta0*iy
+      k2=(alpha0*ix)**2+(beta0*iy)**2
+      WITH V(ix,iy)
+      bcUDivStep(v.REAL,D0mat); bcUDivStep(v.IMAG,D0mat)
+      DO temp=(ialpha*v(iz)-ibeta*u(iz))/k2
+        v(iz)=(ibeta*v(iz)+ialpha*u(iz))/k2 
+        u(iz)=temp
+      FOR ALL iz
+    REPEAT
+    FlushUDivStep
+  END wzeta2uvw
+  WITH V(0,0)
+  ! Mean flow in the two homogeneous directions, and forcing term  
+  v=u.IMAG; u.IMAG=0
+  ucor==w.REAL
+  IF ABS(meanflowx)>1E-10 THEN u.REAL=~+(meanflowx-zintegr(u.REAL))/zintegr(ucor)*ucor
+  IF ABS(meanflowy)>1E-10 THEN v.REAL=~+(meanflowy-zintegr(v.REAL))/zintegr(ucor)*ucor
+  w=0
+END linsolve

@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>FluidMechanics/Spectral-CD-DNS/layered/parallel/linsolve.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/singlecol.css"><style>pre{margin-left:0.5em;margin-right:0.5em} .comment{color:HotPink} a:link,a:visited{color:MediumBlue;text-decoration:none} a:hover,a:active{text-decoration:underline}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"FluidMechanics/Spectral-CD-DNS/layered/parallel/linsolve.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script></head>
+<body translate="no"><pre>
+rotbufN=256
+<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..rotbufN-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#ARRAY">ARRAY</a>(nzl-2..nzh+2,-2..2) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> D2wmat,zetamat] rotbuf
+<a href="parallel.html#SHARED">SHARED</a> volatile <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> rotbuf s1r,s2r
+volatile <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> rotbuf <a href="cpl.html#FUNCTION">FUNCTION</a> rotnext(volatile <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> rotbuf r)
+  <a href="cpl.html#RESULT">RESULT</a>=r-1; <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a>&lt;<a href="cpl.html#LO">LO</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#HI">HI</a>
+<a href="cpl.html#END">END</a> rotnext  
+
+<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(nzl-2..nzh+2,-2..2) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> D0mat=0
+D0mat(nzl..nzh)=derivatives.d0(nzl..nzh)
+<a href="cpl.html#IF">IF</a> first <a href="cpl.html#IF">THEN</a> D0mat(-1)=0; D0mat(-1,-2)=1; D0mat(0)=0; D0mat(0,-1)=1
+<a href="cpl.html#IF">IF</a> last <a href="cpl.html#IF">THEN</a> D0mat(nz)=0; D0mat(nz,1)=1; D0mat(nz+1)=0; D0mat(nz+1,2)=1
+bcLUdecompStep D0mat
+
+<span class=comment>! Function to integrate quantities wrt z wall-to-wall</span>
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> zintegr(<a href="cpl.html#REAL">REAL</a> f(&lowast;))
+  <a href="cpl.html#RESULT">RESULT</a>=0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz=[nzl <a href="cpl.html#DIV">DIV</a> 2]&lowast;2+1 <a href="cpl.html#TO">TO</a> nzh <a href="cpl.html#BY">BY</a> 2                                       
+    zp1=z(iz+1)-z(iz); zm1=z(iz-1)-z(iz) 
+    a1=-1/3&lowast;zm1+1/6&lowast;zp1+1/6&lowast;zp1&lowast;zp1/zm1
+    a3=+1/3&lowast;zp1-1/6&lowast;zm1-1/6&lowast;zm1&lowast;zm1/zp1
+    a2=zp1-zm1-a1-a3
+    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Assignment">~</a>+a1&lowast;f(iz-1) + a2&lowast;f(iz) + a3&lowast;f(iz+1)    
+  <a href="cpl.html#LOOP">REPEAT</a>
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Assignment">~</a>+ <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> prevr
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> nextw <a href="cpl.html#RESULT">RESULT</a>; FLUSH nextw; <a href="cpl.html#READ">READ</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#FROM">FROM</a> nextr <a href="cpl.html#RESULT">RESULT</a>
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> prevw <a href="cpl.html#RESULT">RESULT</a>; FLUSH prevw
+<a href="cpl.html#END">END</a> zintegr
+
+<span class=comment>! Function to derive quantities wrt z wall-to-wall</span>
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> deriv(<a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> f0,f1<a href="cpl.html#REAL-operator">^</a>)
+  <a href="cpl.html#IF">IF</a> first <a href="cpl.html#IF">THEN</a>
+    f1(0)=<a href="cpl.html#Looping-operator">SUM</a> d140(i)&lowast;f0(1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
+    f1(-1)=<a href="cpl.html#Looping-operator">SUM</a> d14m1(i)&lowast;f0(1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
+  <a href="cpl.html#ELSE">ELSE</a> f1(<a href="cpl.html#LO">LO</a>..<a href="cpl.html#LO">LO</a>+1)=0
+  <a href="cpl.html#IF">IF</a> last <a href="cpl.html#IF">THEN</a>
+    f1(nz)=<a href="cpl.html#Looping-operator">SUM</a> d14n(i)&lowast;f0(nz-1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
+    f1(nz+1)=<a href="cpl.html#Looping-operator">SUM</a> d14np1(i)&lowast;f0(nz-1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
+  <a href="cpl.html#ELSE">ELSE</a> f1(<a href="cpl.html#HI">HI</a>-1..<a href="cpl.html#HI">HI</a>)=0
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> derivatives(i) f1(i)=D1(f0(i+(&lowast;))) <a href="cpl.html#FOR">FOR</a> i=nzl <a href="cpl.html#TO">TO</a> nzh
+  bcLDivStep(f1,D0mat)
+<a href="cpl.html#END">END</a> deriv
+
+<span class=comment>! Solution of the linear system for each alpha,beta pair </span>
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> linsolve(<a href="cpl.html#REAL">REAL</a> lambda)
+  s1r=0; s2r=0
+  <a href="cpl.html#MODULE">MODULE</a> wzetasolve    
+    <a href="parallel.html#PARALLEL">PARALLEL</a> <a href="cpl.html#MODULE">MODULE</a> LDiv      
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a> <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy
+        ialpha=I&lowast;alpha0&lowast;ix; ibeta=I&lowast;beta0&lowast;iy
+        k2=(alpha0&lowast;ix)<a href="cpl.html#compound-index">**</a>2+(beta0&lowast;iy)<a href="cpl.html#compound-index">**</a>2
+        <a href="cpl.html#WITH">WITH</a> rotbuf(s1r), V(ix,iy)
+        <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz=nzl <a href="cpl.html#TO">TO</a> nzh <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> i <a href="cpl.html#WITH">WITH</a> derivatives(iz)
+          D2wmat(iz,i)=lambda&lowast;[d2(i)-k2&lowast;d0(i)]-OS(iz,i)
+          zetamat(iz,i)=lambda&lowast;d0(i)-SQ(iz,i) 
+        <a href="cpl.html#LOOP">REPEAT</a>
+        <span class=comment>! boundary conditions</span>
+        <a href="cpl.html#IF">IF</a> first <a href="cpl.html#IF">THEN</a>
+          D2wmat(0)=d040; D2wmat(-1)=d140
+          zetamat(0)=d040; zetamat(-1)=derivatives(1).d4
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#IF">IF</a> last <a href="cpl.html#IF">THEN</a>
+          D2wmat(nz)=d04n; D2wmat(nz+1)=d14n
+          zetamat(nz)=d04n; zetamat(nz+1)=derivatives(nz-1).d4
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        bcLUdecompStep D2wmat; bcLUdecompStep zetamat
+        <a href="cpl.html#IF">IF</a> first <a href="cpl.html#IF">THEN</a> u(0)=0; u(-1)=0
+        <a href="cpl.html#IF">IF</a> last <a href="cpl.html#IF">THEN</a> u(nz)=0; u(nz+1)=0
+        bcLDivStep(u.<a href="cpl.html#REAL">REAL</a>,zetamat); bcLDivStep(u.<a href="complex.html#Top">IMAG</a>,zetamat)
+        <a href="cpl.html#IF">IF</a> ix=0 <a href="cpl.html#AND">AND</a> iy=0 <a href="cpl.html#IF">THEN</a>
+          <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(meanflowx)&gt;1E-10 <a href="cpl.html#OR">OR</a> <a href="cpl.html#ABS">ABS</a>(meanflowy)&gt;1E-10 <a href="cpl.html#IF">THEN</a>
+            ucor<a href="cpl.html#Deferred-assignment">==</a>w.<a href="cpl.html#REAL">REAL</a>; <a href="cpl.html#DO">DO</a> ucor(iz)=1 <a href="cpl.html#FOR">FOR</a> iz=nzl <a href="cpl.html#TO">TO</a> nzh
+            ucor(nzl-2)=0; ucor(nzl-1)=0; ucor(nzh+1)=0; ucor(nzh+2)=0
+            bcLDivStep(ucor,zetamat)
+          <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        <a href="cpl.html#ELSE">ELSE</a>
+          <a href="cpl.html#IF">IF</a> first <a href="cpl.html#IF">THEN</a> w(0)=0;  w(-1)=0
+          <a href="cpl.html#IF">IF</a> last <a href="cpl.html#IF">THEN</a> w(nz)=0; w(nz+1)=0
+          bcLDivStep(w.<a href="cpl.html#REAL">REAL</a>,D2wmat); bcLDivStep(w.<a href="complex.html#Top">IMAG</a>,D2wmat)
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+        s1n=rotnext(s1r); <a href="cpl.html#IF">IF</a> s1n=s2r <a href="cpl.html#IF">THEN</a> FlushLDivStep; SLEEP <a href="cpl.html#UNTIL">UNTIL</a> s1n#s2r
+        s1r=s1n; WAKEUP
+      <a href="cpl.html#LOOP">REPEAT</a>
+      FlushLDivStep
+    <a href="cpl.html#END">END</a> LDiv
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a> <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy
+      <a href="cpl.html#IF">IF</a> s2r=s1r <a href="cpl.html#IF">THEN</a> FlushUDivStep; SLEEP <a href="cpl.html#UNTIL">UNTIL</a> s2r#s1r
+      <a href="cpl.html#WITH">WITH</a> rotbuf(s2r),V(ix,iy)
+      bcUDivStep(u.<a href="cpl.html#REAL">REAL</a>,zetamat); bcUDivStep(u.<a href="complex.html#Top">IMAG</a>,zetamat)
+      <a href="cpl.html#IF">IF</a> ix=0 <a href="cpl.html#AND">AND</a> iy=0 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(meanflowx)&gt;1E-10 <a href="cpl.html#OR">OR</a> <a href="cpl.html#ABS">ABS</a>(meanflowy)&gt;1E-10 <a href="cpl.html#IF">THEN</a> bcUDivStep(w.<a href="cpl.html#REAL">REAL</a>,zetamat)
+      <a href="cpl.html#ELSE">ELSE</a>
+        bcUDivStep(w.<a href="cpl.html#REAL">REAL</a>,D2wmat); bcUDivStep(w.<a href="complex.html#Top">IMAG</a>,D2wmat)
+      <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      s2r=rotnext(s2r); WAKEUP
+    <a href="cpl.html#LOOP">REPEAT</a>
+    FlushUDivStep
+  <a href="cpl.html#END">END</a> wzetasolve
+  <a href="cpl.html#MODULE">MODULE</a> wzeta2uvw
+    <a href="parallel.html#PARALLEL">PARALLEL</a> <a href="cpl.html#MODULE">MODULE</a> derive
+      <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a> <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy <a href="cpl.html#EXCEPT">EXCEPT</a> ix=0 <a href="cpl.html#AND">AND</a> iy=0
+        <a href="cpl.html#WITH">WITH</a> V(ix,iy)
+        deriv(w.<a href="cpl.html#REAL">REAL</a>,v.<a href="cpl.html#REAL">REAL</a>); deriv(w.<a href="complex.html#Top">IMAG</a>,v.<a href="complex.html#Top">IMAG</a>)
+      <a href="cpl.html#LOOP">REPEAT</a>
+      FlushLDivStep
+    <a href="cpl.html#END">END</a> derive
+    <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a> <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy <a href="cpl.html#EXCEPT">EXCEPT</a> ix=0 <a href="cpl.html#AND">AND</a> iy=0
+      ialpha=I&lowast;alpha0&lowast;ix; ibeta=I&lowast;beta0&lowast;iy
+      k2=(alpha0&lowast;ix)<a href="cpl.html#compound-index">**</a>2+(beta0&lowast;iy)<a href="cpl.html#compound-index">**</a>2
+      <a href="cpl.html#WITH">WITH</a> V(ix,iy)
+      bcUDivStep(v.<a href="cpl.html#REAL">REAL</a>,D0mat); bcUDivStep(v.<a href="complex.html#Top">IMAG</a>,D0mat)
+      <a href="cpl.html#DO">DO</a> temp=(ialpha&lowast;v(iz)-ibeta&lowast;u(iz))/k2
+        v(iz)=(ibeta&lowast;v(iz)+ialpha&lowast;u(iz))/k2 
+        u(iz)=temp
+      <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
+    <a href="cpl.html#LOOP">REPEAT</a>
+    FlushUDivStep
+  <a href="cpl.html#END">END</a> wzeta2uvw
+  <a href="cpl.html#WITH">WITH</a> V(0,0)
+  <span class=comment>! Mean flow in the two homogeneous directions, and forcing term  </span>
+  v=u.<a href="complex.html#Top">IMAG</a>; u.<a href="complex.html#Top">IMAG</a>=0
+  ucor<a href="cpl.html#Deferred-assignment">==</a>w.<a href="cpl.html#REAL">REAL</a>
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(meanflowx)&gt;1E-10 <a href="cpl.html#IF">THEN</a> u.<a href="cpl.html#REAL">REAL</a>=<a href="cpl.html#Assignment">~</a>+(meanflowx-zintegr(u.<a href="cpl.html#REAL">REAL</a>))/zintegr(ucor)&lowast;ucor
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(meanflowy)&gt;1E-10 <a href="cpl.html#IF">THEN</a> v.<a href="cpl.html#REAL">REAL</a>=<a href="cpl.html#Assignment">~</a>+(meanflowy-zintegr(v.<a href="cpl.html#REAL">REAL</a>))/zintegr(ucor)&lowast;ucor
+  w=0
+<a href="cpl.html#END">END</a> linsolve
+</pre></body></html>
