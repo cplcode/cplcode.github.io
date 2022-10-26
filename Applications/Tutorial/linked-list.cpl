@@ -2,8 +2,8 @@
 ! =================================================
 !
 ! works on a sparse array in which each row is a singly linked list
-! of possibly non-adjacent cell nodes, with missing cells treated as
-! containing a value of zero.
+! (a "pencil") of possibly non-adjacent cell nodes, with missing
+! cells treated as containing a value of zero.
 
 USE gnuplot
 
