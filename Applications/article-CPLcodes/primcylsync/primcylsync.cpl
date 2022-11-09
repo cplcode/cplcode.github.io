@@ -1,0 +1,429 @@
+USE fft
+USE rbmat
+USE parallel
+USE symbolic
+! USE rtchecks
+version=="20-9-2008"
+datafile=="cyl.in"
+nsmp=4
+#define timelog(str)
+
+INTEGER iproc,nproc
+IF COMMANDLINE.HI=0 THEN iproc=1; nproc=1 ELSE
+  iproc=atoi(COMMANDLINE(1)); nproc=atoi(COMMANDLINE(2))
+END IF
+baseport=IPPORT_USERRESERVED+111
+FILE prev,next
+IF iproc<nproc THEN
+  next=TCPSERVER(baseport+iproc)
+  setvbuf(next,NULL,_IONBF,0)
+END IF
+IF iproc>1 THEN
+  prev=TCPCLIENT(COMMANDLINE(3),baseport+iproc-1)
+  setvbuf(prev,NULL,_IONBF,0)
+END IF
+realfirst==(prev=NULL FILE); last==(next=NULL FILE); has_terminal==last
+BOOLEAN first=realfirst
+
+#ifndef timelog
+  #include <time.h>
+  LOGFILE=CREATE("/tmp/timelog." iproc)
+  setvbuf(LOGFILE,malloc(1000000),_IOFBF,1000000)
+  long oldtim=0
+  SUBROUTINE timelog(STRING here)
+    struct timeval tim
+    gettimeofday(tim,NULL)
+    LOGFILE here,(tim.tv_usec-oldtim) MOD 1000000
+!     FLUSH LOGFILE
+    oldtim=tim.tv_usec
+  END timelog
+#endif
+
+STRING input_file
+INTEGER CONSTANT nx,ny,nz
+REAL CONSTANT alpha0,htcoef,Re,ymax=1,ymin=0,t_max,dt_field
+REAL meanpx=0, meanflowx=0, deltat, time
+
+FILE dati=OPEN(datafile)
+READ BY NAME FROM dati nx,ny,nz,alpha0,htcoef,Re; ni=1/Re
+DO WHILE READ BY NAME FROM dati meanpx OR meanflowx
+READ BY NAME FROM dati deltat, t_max, dt_field
+READ BY NAME FROM dati input_file
+CLOSE dati
+IF has_terminal THEN
+  WRITE BY NAME nproc,nsmp
+  WRITE BY NAME nx,ny,nz,htcoef,2*PI/alpha0,Re
+  WRITE BY NAME deltat,t_max,dt_field
+  WRITE BY NAME input_file
+END IF
+
+! nyl=ROUND(SQRT((iproc-1)/nproc)*ny); nyh=ROUND(SQRT(iproc/nproc)*ny)-1
+nyl=ROUND(((iproc-1)/nproc)*ny); nyh=ROUND((iproc/nproc)*ny)-1
+
+REAL y(0..ny)
+INTEGER iy0(-nz..nz)
+FILE field_file
+endofheader=1024
+
+IF input_file#"" THEN
+  field_file = OPEN(input_file)
+  POSITION field_file,endofheader
+  READ BINARY FROM field_file y,iy0(0..nz)
+ELSE
+!  DO y(i)=ymin+ymax*i/ny FOR ALL i
+  DO y(i)=ymin+(ymax-ymin)*tanh(htcoef*(i/ny))/tanh(htcoef) FOR ALL i
+  LOOP FOR m=0 TO nz
+    iy0(m)=-1; DO INC iy0(m) UNTIL y(iy0(m)+3)*(nz-0.5) >= (m-1)*ymax
+iy0(m)=0
+  REPEAT
+END IF
+DO iy0(-m)=iy0(m) FOR m=1 TO nz
+
+STRUCTURE(REAL d0,d1,rdrd) derivatives(MAX(1,nyl-1)..MIN(ny-1,nyh+1),-1..1)
+REAL d1n(-1..1),dc2(0..nz,0..1,-1..1)
+MODULE setup_derivatives
+  REAL M(0..2,0..2),t(0..2)
+  LOOP FOR iy=derivatives.LO TO derivatives.HI WITH derivatives(iy)
+    DO M(i,j)=(y(iy-1+j)-y(iy))^(2-i) FOR ALL i,j; LUdecomp M
+    d1(-1+(*))=M\(0.,1,0)
+    r1==y(iy-1+j)
+    DO M(i,j)=D_r1[(r1-y(iy))^(3-i)] FOR ALL i,j; LUdecomp M
+    DO t(i)=SUM d1(j)*(y(iy+j)-y(iy))^(3-i) FOR ALL j FOR ALL i
+    d0(-1+(*))=M\t
+    DO M(i,j)=(y(iy-1+j)-y(iy))^(2-i) FOR ALL i,j; LUdecomp M
+    r==y(iy+j)
+    t=0; DO t(i)=SUM d0(j)*r*D_r(r*D_r[(r-y(iy))^(2-i)]) FOR ALL j FOR i=0 TO 1
+    rdrd(-1+(*))=M\t
+  REPEAT
+  DO M(i,j)=(y(ny-2+j)-y(ny))**(2-i) FOR ALL i,j; LUdecomp M
+  d1n(-1+(*))=M\(0.,1,0)
+  LOOP FOR m=0 TO 1 AND iz=m TO dc2.HI
+!(
+    DO M(1+i,j)=y[j+iy0(iz)]^(iz-m+2*i) FOR i=0 TO 1 AND ALL j
+    M(0)=(1.,0,0)
+    LUdecomp M
+    dc4(iz,m,-1+(*))=M\(1.,0,0)
+!)
+    dc2(iz,m,-1)=0; dc2(iz,m,0)=1; dc2(iz,m,1)=-[y(iy0(m))/y(iy0(m)+1)]^(iz-m)
+  REPEAT
+  dc2(0,1)=dc2(2,1)
+END setup_derivatives
+
+SUBROUTINE yz_integr(REAL RESULT^, f(*))
+  LOOP FOR iy=[nyl DIV 2]*2+1 TO nyh BY 2
+   yp1=y(iy+1)-y(iy); ym1=y(iy-1)-y(iy)
+   a1=-1/3*ym1+1/6*yp1+1/6*yp1*yp1/ym1
+   a3=+1/3*yp1-1/6*ym1-1/6*ym1*ym1/yp1
+   a2=yp1-ym1-a1-a3
+   RESULT= ~ + a1*f(iy-1)*y(iy-1) + a2*f(iy)*y(iy) + a3*f(iy+1)*y(iy+1)
+  REPEAT
+END yz_integr
+
+maxtimelevels=1
+VELOCITY=STRUCTURED ARRAY(u,v,w) OF COMPLEX
+SHARED ARRAY(0..nx,-nz..nz) OF POINTER TO ARRAY(*) OF VELOCITY V
+SHARED ARRAY(0..nx,-nz..nz) OF POINTER TO ARRAY(*,1..maxtimelevels) OF VELOCITY oldrhs
+LOOP FOR ALL ix,m
+  IF iy0(m)>nyh THEN V(ix,m)=NULL ELSE
+    V(ix,m)=NEW SHARED ARRAY(MAX(iy0(m),nyl-1)..nyh+1) OF VELOCITY
+    oldrhs(ix,m)=NEW SHARED ARRAY(MAX(iy0(m)+1,nyl-1)..MIN(nyh+1,ny-1),1..maxtimelevels) OF VELOCITY
+    oldrhs(ix,m,*)=0
+  END IF
+REPEAT
+
+INTEGER nxd=3*nx DIV 2 - 1; DO INC nxd UNTIL FFTfit(nxd)
+INTEGER nzd(nyl..nyh+1)
+LOOP FOR ALL iy
+  nzd(iy)=nz+1; DO DEC nzd(iy) UNTIL nzd(iy)=0 OR iy>=iy0(nzd(iy))
+  nzd(iy)=3*~-1; DO INC nzd(iy) UNTIL FFTfit(nzd(iy))
+REPEAT LOOP
+
+MOMFLUX=STRUCTURED ARRAY(u,v,w,uu,uv,vv,uw,vw,ww) OF COMPLEX
+SHARED ARRAY(0..nxd-1,0..nzd(HI)-1,0..2) OF MOMFLUX VVd
+SHARED ARRAY(0..nxd-1,0..nzd(HI)-1) OF VELOCITY Vdmem
+
+INTEGER ismp
+
+SUBROUTINE convolutions(INTEGER iy)
+  Vd=^Vdmem[*,0..nzd(iy)-1]; VVplane=^VVd[*,0..nzd(iy)-1,iy MOD (HI+1)]
+  LOOP FOR ix=ismp*(nx+1) DIV nsmp TO (ismp+1)*(nx+1) DIV nsmp -1
+    POINTER INTO VVplane(ix,*),V(ix,*) izd1=0
+    DO VVplane(ix,izd1,0..2)=V(ix,izd1,iy); INC izd1 WHILE izd1<=V.HI2 AND V(ix,izd1)#NULL AND iy>=V(ix,izd1).LO
+    POINTER INTO VVplane(ix,HI+1+*),V(ix,*) izd2=-1
+    DO VVplane(ix,HI+1+izd2,0..2)=V(ix,izd2,iy); DEC izd2 WHILE izd2>=V.LO2 AND V(ix,izd2)#NULL AND iy>=V(ix,izd2).LO
+    VVplane(ix,izd1..HI+1+izd2)=0
+    WITH VVplane(ix,*): IFTU(u,Vd(ix,*).u); IFTU(v,Vd(ix,*).v); IFTU(w,Vd(ix,*).w)
+  REPEAT LOOP
+  IF ismp=0 THEN Vd(nx+1..HI)=0
+  SYNC(ismp,nsmp)
+  DO
+    WITH Vd(*,m): RFTU(u); RFTU(v); RFTU(w)
+    DO WITH Vd(ix,m) 
+      VVplane(ix,m).uu.REAL=u.REAL*u.REAL; VVplane(ix,m).uu.IMAG=u.IMAG*u.IMAG
+      VVplane(ix,m).uv.REAL=u.REAL*v.REAL; VVplane(ix,m).uv.IMAG=u.IMAG*v.IMAG
+      VVplane(ix,m).vv.REAL=v.REAL*v.REAL; VVplane(ix,m).vv.IMAG=v.IMAG*v.IMAG
+      VVplane(ix,m).vw.REAL=v.REAL*w.REAL; VVplane(ix,m).vw.IMAG=v.IMAG*w.IMAG
+      VVplane(ix,m).ww.REAL=w.REAL*w.REAL; VVplane(ix,m).ww.IMAG=w.IMAG*w.IMAG
+      VVplane(ix,m).uw.REAL=u.REAL*w.REAL; VVplane(ix,m).uw.IMAG=u.IMAG*w.IMAG
+    FOR ALL ix
+    WITH VVplane(*,m): HFTU(uu); HFTU(uv); HFTU(vv); HFTU(vw); HFTU(ww); HFTU(uw)
+  FOR m=ismp*(HI+1) DIV nsmp TO (ismp+1)*(HI+1) DIV nsmp -1
+  SYNC(ismp,nsmp)
+  DO WITH VVplane(ix,*): FFTU(uu); FFTU(uv); FFTU(vv); FFTU(vw); FFTU(ww); FFTU(uw)
+  FOR ix=ismp*(nx+1) DIV nsmp TO (ismp+1)*(nx+1) DIV nsmp -1
+  SYNC(ismp,nsmp)
+END convolutions
+
+cont==d0*(alpha*r*u+m*w)-d1*r*iv
+Dtuv==ni*lapl*u-alpha*d0*r2*ip
+Dtuc==-I*alpha*d0*r2*uu-(d1*r2-d0*r)*uv-I*m*d0*r*uw
+Dtvv==ni*[(lapl-d0)*iv+2*m*d0*w]-(d1*r2-2*d0*r)*ip
+Dtvc==-I*alpha*d0*r2*uv-(d1*r2-d0*r)*vv-I*m*d0*r*vw+d0*r*ww
+Dtwv==ni*[(lapl-d0)*w+2*m*d0*iv]-m*d0*r*ip
+Dtwc==-I*alpha*d0*r2*uw-d1*r2*vw-I*m*d0*r*ww
+
+SUBROUTINE buildrhs[SUBROUTINE(COMPLEX rhs^,old^(*),unknown,implicit_part,explicit_part) timescheme]
+PARALLEL LOOP FOR ismp=0 TO nsmp-1
+LOOP FOR iy=nyl-1 TO MIN(ny-1,nyh+1)
+  IF iy+1<=nyh OR last THEN convolutions(iy+1)
+  LOOP FOR ix=ismp*(nx+1) DIV nsmp TO (ismp+1)*(nx+1) DIV nsmp -1 AND m=-nz TO nz EXCEPT V(ix,m)=NULL OR iy<V(ix,m).LO
+  IF iy<=iy0(m) THEN V(ix,m,iy)=0 ELSE
+    alpha=alpha0*ix
+    VELOCITY impl=0, expl=0, D0V=0
+    LOOP FOR j=-1 TO 1 EXCEPT iy+j<nyl OR iy+j>nyh AND NOT last
+      WITH VVd[ix,IF m>=0 THEN m ELSE m+nzd(iy+j),(iy+j) MOD (HI+1)],derivatives(iy,j)
+      iv=I*v; ip=0; r=y(iy+j); r2=r*r; lapl=rdrd-d0*(r2*alpha^2+m^2)
+      D0V.u=~+d0*r2*u; D0V.v=~+d0*r2*iv; D0V.w=~+d0*r2*w
+      impl.u=~+Dtuv; impl.v=~+Dtvv; impl.w=~+Dtwv
+      expl.u=~+Dtuc; expl.v=~+I*Dtvc; expl.w=~+Dtwc
+      IF ix=0 AND m=0 THEN expl.u=~+d0*r2*meanpx
+    REPEAT
+    timescheme{V(ix,m,iy).u,oldrhs(ix,m,iy).u,D0V.u,impl.u,expl.u}
+    timescheme{V(ix,m,iy).v,oldrhs(ix,m,iy).v,D0V.v,impl.v,expl.v}
+    timescheme{V(ix,m,iy).w,oldrhs(ix,m,iy).w,D0V.w,impl.w,expl.w}
+  END IF
+  REPEAT
+REPEAT
+REPEAT
+END buildrhs
+
+npckt=40
+ppos=0;upos=1;vpos=2;wpos=3;nvars=4
+USE parbmat
+
+SHARED ARRAY(0..npckt-1) OF STRUCTURE[REAL Ap(0..nvars-1,-(2*nvars-1)..2*nvars-1)
+          COMPLEX xp(0..2*nvars-1)] packet1
+SHARED ARRAY(0..npckt-1) OF STRUCTURE[COMPLEX xp(0..2*nvars-1)] packet2
+SHARED ARRAY(0..2*nproc-2,0..npckt-1) OF STRUCTURE[REAL A(nvars*nyl..(nyh+2)*nvars-1,-(2*nvars-1)..2*nvars-1)
+  COMPLEX var(nvars*(nyl-1)..(nyh+2)*nvars-1)] rotbuf
+
+SHARED TYPEOF(rotbuf(0,0).A) ucorrA
+SHARED ARRAY(nvars*(nyl-1)..(nyh+2)*nvars-1) OF REAL ucorr
+
+SUBROUTINE Step1[INTEGER ix,m; REAL lambda; REAL A^(*,-(2*nvars-1)..2*nvars-1);
+    COMPLEX var^(*); TYPEOF(packet1(0)) packet^]
+  first=(iy0(m)>=nyl); ny1=MAX[iy0(m)+1,nyl]
+  alpha=ix*alpha0
+  LOOP FOR iy=ny1-1 TO nyh+1
+    var(nvars*iy+ppos)=0
+    var(nvars*iy+upos+(0..2))=V(ix,m,iy)
+  REPEAT
+  A(*)=0
+  LOOP FOR iy=ny1 TO nyh AND j=-1 TO 1 WITH derivatives(iy,j)
+    u==var(upos); iv==var(vpos); w==var(wpos); ip==var(ppos)
+    r=y(iy+j); r2=r*r; lapl=rdrd-d0*(r2*alpha^2+m^2)
+    AA=^A(nvars*iy+*,nvars*j+*)
+    INLINE LOOP FOR jv IN (ppos,upos,vpos,wpos)
+      AA(ppos,jv-ppos)=D(cont,var(jv))
+      AA(upos,jv-upos)=D(d0*r2*u-lambda*Dtuv,var(jv))
+      AA(vpos,jv-vpos)=D(d0*r2*iv-lambda*Dtvv,var(jv))
+      AA(wpos,jv-wpos)=D(d0*r2*w-lambda*Dtwv,var(jv))
+    REPEAT
+  REPEAT
+  IF first THEN
+    A(ppos+LO,nvars*(-1..1))=dc2(ABS(m),0)
+    A(upos+LO,nvars*(-1..1))=dc2(ABS(m),0)
+    A(vpos+LO,nvars*(-1..1))=dc2(ABS(m),1)
+    A(wpos+LO,nvars*(-1..1))=dc2(ABS(m),1)
+  END IF
+  IF last AND NOT (ix=0 AND m=0) THEN
+    INLINE LOOP FOR vv IN (upos,wpos)
+      piv=A(vv+nvars*(ny-1),ppos-vv+nvars)/A(vpos+nvars*(ny-1),ppos-vpos+nvars)
+      A(vv+nvars*(ny-1),(-nvars..2*nvars-1)-vv)=~-piv*A(vpos+nvars*(ny-1),(-nvars..2*nvars-1)-vpos)
+      var(vv+nvars*(ny-1))=~-piv*var(vpos+nvars*(ny-1))
+    REPEAT
+    A(vpos+nvars*(ny-1))=0; A(vpos+nvars*(ny-1),(-1..1)*nvars)=d1n
+    var(vpos+nvars*(ny-1))=-I*alpha*V(ix,m,ny).u-I*m*V(ix,m,ny).w/y(ny)-[d1n(1)+1/y(ny)]*V(ix,m,ny).v
+  END IF
+  WITH packet
+  LUdecompStep(A,Ap)
+  LeftLUDivStep1(A,var.REAL,xp.REAL)
+  LeftLUDivStep1(A,var.IMAG,xp.IMAG)
+  IF ix=0 AND m=0 AND ABS(meanflowx)>1E-10 THEN ucorrA(*)=A
+END Step1
+
+SUBROUTINE Step2(INTEGER ix,m; REAL A^(*,-(2*nvars-1)..2*nvars-1);
+    COMPLEX var^(*); TYPEOF(packet2(0)) packet^)
+  first=(iy0(m)>=nyl); ny1=MAX[iy0(m)+1,nyl]
+  WITH packet
+  LeftLUDivStep2(var.REAL,xp.REAL,A)
+  LeftLUDivStep2(var.IMAG,xp.IMAG,A)
+  V(ix,m,ny1-1..nyh+1).u=var(nvars*(ny1-1..nyh+1)+upos)
+  V(ix,m,ny1-1..nyh+1).v=-I*var(nvars*(ny1-1..nyh+1)+vpos)
+  V(ix,m,ny1-1..nyh+1).w=var(nvars*(ny1-1..nyh+1)+wpos)
+END Step2
+
+SUBROUTINE linsolve(REAL lambda)
+timelog('0')
+PARALLEL LOOP FOR ismp=0 TO nsmp-1
+  INTEGER ix1=0,m1=-nz,ix2=0,m2=-nz
+  LOOP FOR count=1 TO [(nx+1)*(2*nz+1)-1] DIV npckt + 2*nproc-1
+    IF ismp=0 AND NOT last THEN WRITE BINARY TO next packet2
+    SYNC(ismp,nsmp)
+    IF count>=nproc-iproc+1 THEN LOOP FOR ipc=0 TO npckt-1
+      IF ix1<=nx AND V(ix1,m1)#NULL AND ipc MOD nsmp=ismp THEN
+        WITH rotbuf[(count-[nproc-iproc+1]) MOD (HI+1),ipc]
+        Step1(ix1,m1,lambda,
+          A(MAX(iy0(m1),nyl)*nvars..HI),var([MAX(iy0(m1),nyl)-1]*nvars..HI),
+	  packet1(ipc))
+      END IF
+      INC m1; IF m1>nz THEN m1=-nz; INC ix1
+    REPEAT
+    IF NOT realfirst THEN
+      SYNC(ismp,nsmp)
+      IF ismp=0 THEN READ BINARY FROM prev packet2
+      IF ismp=0 THEN WRITE BINARY TO prev packet1
+      SYNC(ismp,nsmp)
+    END IF
+    IF count>=nproc+iproc-1 THEN LOOP FOR ipc=0 TO npckt-1
+      IF ix2<=nx AND V(ix2,m2)#NULL AND ipc MOD nsmp=ismp THEN
+        WITH rotbuf[(count-[nproc+iproc-1]) MOD (HI+1),ipc]
+        Step2(ix2,m2,
+          A(MAX(iy0(m2),nyl)*nvars..HI),var([MAX(iy0(m2),nyl)-1]*nvars..HI),
+	  packet2(ipc))
+      END IF
+      INC m2; IF m2>nz THEN m2=-nz; INC ix2
+    REPEAT
+    SYNC(ismp,nsmp)
+    IF ismp=0 AND NOT last THEN READ BINARY FROM next packet1
+  REPEAT
+REPEAT
+IF ABS(meanflowx)>1E-10 THEN
+  ucorr=0
+  DO ucorr(nvars*iy+upos)=SUM derivatives(iy,j).d0*y(iy+j)^2 FOR ALL j FOR iy=MAX(1,nyl) TO nyh
+  IF NOT last THEN READ BINARY FROM next packet1(0).xp
+  LeftLUDivStep1(ucorrA,ucorr,packet1(0).xp.REAL)
+  IF NOT realfirst THEN WRITE BINARY TO prev packet1(0).xp
+  IF NOT realfirst THEN READ BINARY FROM prev packet2(0).xp
+  LeftLUDivStep2(ucorr,packet2(0).xp.REAL,ucorrA)
+  IF NOT last THEN WRITE BINARY TO next packet2(0).xp
+  STRUCTURE(REAL uc,u) fr
+  IF realfirst THEN fr=0 ELSE READ BINARY FROM prev fr
+  yz_integr[fr.u,V(0,0).u.REAL]
+  yz_integr[fr.uc,ucorr(nvars*(*)+upos)]
+  IF NOT last THEN WRITE BINARY TO next fr; READ BINARY FROM next fr
+  IF NOT realfirst THEN WRITE BINARY TO prev fr
+  coeff=(meanflowx-fr.u)/fr.uc
+  WITH V(0,0): u.REAL=~+ucorr(nvars*(u.LO..u.HI)+upos)*coeff
+END IF
+END linsolve
+
+SUBROUTINE simple(COMPLEX rhs^,old^(*),unkn,impl,expl)
+  rhs=unkn+deltat*expl
+END simple
+INTEGER CONSTANT simple_coeff=1
+
+SUBROUTINE RK1_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+!  rhs=unkn+deltat*[9.6*impl+32*expl-old(1)]/60
+!  old(1)=17*expl-impl
+  rhs=unkn+deltat*[16*impl+32*expl-old(1)]/60
+  old(1)=17*expl
+END RK1_rai
+REAL CONSTANT RK1_rai_coeff=16/60
+
+SUBROUTINE RK2_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+!  rhs=unkn+deltat*[3*impl+25*expl-old(1)]/60
+!  old(1)=25*(expl-impl)
+  rhs=unkn+deltat*[4*impl+25*expl-old(1)]/60
+  old(1)=25*expl
+END RK2_rai
+REAL CONSTANT RK2_rai_coeff=4/60
+
+SUBROUTINE RK3_rai(COMPLEX rhs^,old^(*),unkn,impl,expl)
+!  rhs=unkn+deltat*[-15*impl+45*expl-old(1)]/60
+!  old(1)=-25.6*impl
+  rhs=unkn+deltat*[10*impl+45*expl-old(1)]/60
+  old(1)=0
+END RK3_rai
+REAL CONSTANT RK3_rai_coeff=10/60
+
+ssize_t startpos(1..ny)
+MODULE setupstartpos
+  startpos(1)=endofheader+SIZEOF(y)+SIZEOF(iy0(0..nz))
+  INTEGER iz=1
+  LOOP FOR iy=1 TO ny-1
+    LOOP WHILE iz<nz AND iy>=iy0(iz+1): INC iz
+    startpos(iy+1)=startpos(iy)+SIZEOF[ARRAY(0..nx,-iz..iz) OF VELOCITY]
+  REPEAT
+END setupstartpos
+
+IF input_file="" THEN
+  IF last THEN
+    DO WITH V(ix,iz)
+      DO u(iy)=0.001*CGAUSS(); v(iy)=0.001*CGAUSS(); w(iy)=0.001*CGAUSS() FOR iy=MAX(V(ix,iz).LO,V(ix,iz).HI-3) TO V(ix,iz).HI
+    FOR ix=LO TO HI AND iz=LO TO HI
+    DO V(0,-iz,iy).u=CONJG(V(0,iz,iy).u);V(0,-iz,iy).v=CONJG(V(0,iz,iy).v);V(0,-iz,iy).w=CONJG(V(0,iz,iy).w) FOR iz=1 TO nz AND iy=V(0,iz).LO TO V(0,iz).HI
+    DO WITH V(0,0,iy): v=0; u.IMAG=0; w.IMAG=0 FOR ALL iy
+  ELSE DO V(ix,iz,*)=0 FOR ALL ix,iz EXCEPT V(ix,iz)=NULL
+ELSE
+  LOOP FOR iy=MAX(1,nyl-1) TO nyh+1
+    POSITION field_file,startpos(iy)
+    LOOP FOR ix=LO TO HI AND iz=LO TO HI EXCEPT iy<iy0(iz)
+      IF V(ix,iz)=NULL THEN
+        VELOCITY dum; READ BINARY FROM field_file dum
+      ELSE READ BINARY FROM field_file V(ix,iz,iy)
+    REPEAT
+  REPEAT
+  CLOSE field_file
+END IF
+
+INTEGER cnt=0
+FILE time_file
+IF last THEN time_file=CREATE("Runtime.dat")
+IF last THEN DO V(ix,iz,ny)=0 FOR ALL ix,iz ! oppure forzamento esterno dentro timeloop !
+
+LOOP timeloop WHILE time < t_max-deltat/2
+!  buildrhs(simple); linsolve(simple_coeff*deltat)
+ buildrhs(RK1_rai); linsolve(RK1_rai_coeff*deltat)
+ buildrhs(RK2_rai); linsolve(RK2_rai_coeff*deltat)
+ buildrhs(RK3_rai); linsolve(RK3_rai_coeff*deltat)
+
+  oldtime=time; time=~+deltat
+  IF last THEN
+    E=SQRT{SUM NORM[d1n(j)*V(ix,iz,ny-1+j)] FOR ALL ix,iz,j EXCEPT ix=0 AND iz=0}
+    u_yn=d1n*V(0,0,ny-1+*).u.REAL
+    WRITE              time, -u_yn, E:1.15 ! , V(0,0,0).u.REAL \n ./.
+!    WRITE TO time_file time, -u_yn, E:1.15 ! , V(0,0,0).u.REAL
+!    FLUSH time_file
+  END IF
+  IF FLOOR((time+deltat/2)/dt_field) > FLOOR((oldtime+deltat/2)/dt_field) THEN
+    cnt=~+1
+    field_file = OPEN("vfield"cnt".dat")
+    IF realfirst THEN
+      WRITE TO field_file "! pipe DNS; symbcyl version " version
+      WRITE BY NAME TO field_file nx,ny,nz
+      WRITE BY NAME TO field_file alpha0,htcoef,Re
+      WRITE BY NAME TO field_file meanpx,meanflowx
+      WRITE BY NAME TO field_file deltat, t_max, dt_field
+      WRITE TO field_file "input_file=" datafile
+      DO WRITE TO field_file UNTIL POSITION(field_file)=endofheader
+      WRITE BINARY TO field_file y,iy0(0..nz)
+    ELSE POSITION field_file,startpos(MAX(1,nyl))
+    LOOP FOR iy=MAX(1,nyl) TO (IF last THEN ny ELSE nyh)
+      LOOP FOR ix=LO TO HI AND iz=LO TO HI EXCEPT iy<iy0(iz)
+        WRITE BINARY TO field_file V(ix,iz,iy)
+      REPEAT
+    REPEAT
+    CLOSE field_file
+  END IF
+REPEAT timeloop
