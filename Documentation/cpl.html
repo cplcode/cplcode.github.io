@@ -270,6 +270,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#cpl-i-commands">quit:cpl i commands</a>:</td><td>exit interactive cpl</td></tr>
 <tr><td><a href="matrix.html#Top">rbmat:(matrix)</a>:</td><td>Real square and Banded Matrix operations</td></tr>
 <tr><td><a href="editor.html#Top">readline:(editor)</a>:</td><td>Own implementation of readline input editor</td></tr>
+<tr><td><a href="#realignment">realignment</a>:</td><td>assignment to an ARRAY of different lower bound</td></tr>
 <tr><td><a href="#rtchecks">rtchecks</a>:</td><td>Run Time bounds Checking</td></tr>
 <tr><td><a href="editor.html#full-screen">save:(editor)full-screen</a>:</td><td>Save the session log or current screen to a file</td></tr>
 <tr><td><a href="graphics.html#gnuplot">set:(graphics)gnuplot</a>:</td><td>set command for gnuplot, passed as is </td></tr>
@@ -1000,8 +1001,6 @@ Therefore the order in which the elements of the array are stored in memory is s
 
 Variable dimensions are allowed wherever constant dimensions are; the compiler automatically decides for static or dynamic allocation of memory space as needed. Arrays can contain elements of any primitive or compound type and can in turn appear as fields in structures or be pointed at by pointers.
 
-When an ARRAY is assigned in a single = statement to another of the same base type and number of elements, its lower bound is implicitly realigned. A similar realignment takes place for function arguments. Assigning to a different base type triggers a compilation error. Mismatch in the number of elements is flagged by <a href="#rtchecks">rtchecks</a>.
-
 The special dimension &lowast; can only appear in the declaration of an ARRAY formal parameter (<a href="#array-parameters">array parameters</a>) or of a POINTER TO ARRAY, and declares a special type of pointer that remembers the current dimensions of the array together with its address. A formal parameter or pointer of this type can be dynamically assigned arrays of different length and still provide runtime range checking and <a href="#FOR-ALL">FOR ALL</a> looping when requested. The actual upper and lower bounds of an array index can always be recovered through functions <a href="#HI">HI</a> and <a href="#LO">LO</a>, and the total number of elements through function <a href="#LENGTH">LENGTH</a>. In the case of multidimensional arrays, these functions apply to the first index only; <a href="#subarray">subarray</a> selection can be used in order to extract the bounds of other indices. Alternatively, LO1, LO2, LO3 and HI1, HI2, HI3 can be used to refer to the first three indices.
 
 ARRAY elements are accessed through INTEGER indices in brackets as usual, e.g.:
@@ -1029,6 +1028,7 @@ Therefore, a notation such as arr(4) is allowed, and has type ARRAY(2..9) OF REA
 <tr><td><a href="#subarray">subarray</a>:</td><td>subarray selection</td></tr>
 <tr><td><a href="#compound-index">compound index</a>:</td><td>sequential access to a multidimensional array</td></tr>
 <tr><td><a href="#ARRAY-operations">ARRAY operations</a>:</td><td>linear space</td></tr>
+<tr><td><a href="#realignment">realignment</a>:</td><td>assignment to an ARRAY of different lower bound</td></tr>
 <tr><td><a href="#Einstein-convention">Einstein convention</a>:</td><td>implicit index iteration</td></tr>
 <tr><td><a href="#INTO">Pointer arithmetics:INTO</a>:</td><td></td></tr>
 </table></nav>
@@ -1533,11 +1533,11 @@ The function ROUND returns the nearest INTEGER to a given REAL value.
 </div><div class=page id="subarray">
 Page: (cpl)subarray, Next: <a href="#compound-index">compound index</a>, Prev: <a href="#Builtin">Builtin</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Subarray selection</h4>
-A portion of an array can be selected by specifying new dimensions. For example, if the declaration is REAL arr(1..10), the notation
+A portion of an array can be selected by specifying new dimensions. For example, if the original declaration is REAL arr(1..10), the notation
 
 	arr(2..5)
 
-denotes an array formed by the elements from 2 to 5 of array arr (which has larger dimensions). The whole range can also be selected, by the special dimension &lowast;. For instance, if the declaration is REAL arr(1..7,-2..2,3..8),
+denotes an array formed by the elements from 2 to 5 of array arr (which has larger dimensions). The whole range can also be selected, by the special dimension &lowast;. For instance, if the original declaration is REAL arr(1..7,-2..2,3..8),
 
 	arr(2..5,&lowast;,6)
 
@@ -1579,7 +1579,7 @@ then V(&lowast;&lowast;&lowast;&lowast;) is a onedimensional <q>view</q> of the 
 
 Compound indices are restricted to arrays (or portions of them) that are contiguous in memory. This generally precludes their use after subarray operations that permute, stride, or restrict the range of indices. 
 </div><div class=page id="ARRAY-operations">
-Page: (cpl)ARRAY operations, Next: <a href="#Einstein-convention">Einstein convention</a>, Prev: <a href="#compound-index">compound index</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)ARRAY operations, Next: <a href="#realignment">realignment</a>, Prev: <a href="#compound-index">compound index</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Linear-space ARRAY operations</h4>
 Linear-space operations are supported on arrays. That is, congruent ARRAYs of any number of dimensions can be added to or subtracted from each other and multiplied or divided by a scalar inside an expression, as well as appear on the left side of an assignment.
 
@@ -1592,8 +1592,14 @@ Some <a href="#Builtin">Builtin</a> functions operate on whole arrays. A larger 
 Matrix transposition is provided as the <a href="#subarray">TRANSPOSED:subarray</a>. operation.
 
 All ARRAY operations can also be applied to <a href="#STORED">STORED</a> ARRAYs and <a href="#STRUCTURED">STRUCTURED</a> ARRAYs. 
+</div><div class=page id="realignment">
+Page: (cpl)realignment, Next: <a href="#Einstein-convention">Einstein convention</a>, Prev: <a href="#ARRAY-operations">ARRAY operations</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h4>Assignment to an ARRAY of different lower bound</h4>
+When an ARRAY is assigned in a compound = statement to another of the same base type and number of elements, its lower bound is implicitly re-aligned. A similar realignment takes place for function arguments. Assigning to a different base type triggers a compilation error. Mismatch in the number of elements is flagged by <a href="#rtchecks">rtchecks</a>.
+
+Realignment also takes place for <a href="#matrix">matrix</a> operations. 
 </div><div class=page id="Einstein-convention">
-Page: (cpl)Einstein convention, Next: <a href="#OPERATOR">OPERATOR</a>, Prev: <a href="#ARRAY-operations">ARRAY operations</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)Einstein convention, Next: <a href="#OPERATOR">OPERATOR</a>, Prev: <a href="#realignment">realignment</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Implicit looping over array indices</h4>
 When indices in an expression are prefixed with a <q>$</q> character, the Einstein convention is implied. In a contraction or in a product the Einstein index must appear exactly twice, and the result will be summed over <a href="#ALL">ALL</a> values of this index; in a sum or in an assignment, Einstein indices must appear exactly once in each and all terms including the l.h.s., and the assignment will be repeated over <a href="#ALL">ALL</a> values of these indices. For example:
 
