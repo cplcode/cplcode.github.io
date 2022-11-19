@@ -1595,7 +1595,7 @@ All ARRAY operations can also be applied to <a href="#STORED">STORED</a> ARRAYs 
 </div><div class=page id="realignment">
 Page: (cpl)realignment, Next: <a href="#Einstein-convention">Einstein convention</a>, Prev: <a href="#ARRAY-operations">ARRAY operations</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Assignment to an ARRAY of different lower bound</h4>
-When an ARRAY is assigned in a compound = statement to another of the same base type and number of elements, its lower bound is implicitly re-aligned. A similar realignment takes place for function arguments. Assigning to a different base type triggers a compilation error. Mismatch in the number of elements is flagged by <a href="#rtchecks">rtchecks</a>.
+When an ARRAY is assigned in a compound = statement to another of the same base type and number of elements, its lower bound is implicitly realigned. A similar realignment of the lower bound takes place for function arguments, provided that base type and total number of elements match. Assigning to a different base type triggers a compile-time error; mismatch in the number of elements is flagged by <a href="#rtchecks">rtchecks</a> at run time.
 
 Realignment also takes place for <a href="#matrix">matrix</a> operations. 
 </div><div class=page id="Einstein-convention">
