@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html itemscope itemtype="https://schema.org/FAQPage" lang=en>
+<head>
+    <meta charset="utf-8">
+    <title>Compiler and Programming Language FAQ</title>
+    <meta name="author" content="Paolo Luchini">
+    <meta name="copyright" content="Copyright 2020 Paolo Luchini">
+    <meta name="description" content="CPL is a Compiler and Programming Language providing Concealed Pointer Lookup, Consistent Procedure Linkage and Coactive Parameter Lists. It was Conceived by Paolo Luchini during 1993-2022. Documentation and distribution offered for download includes an incremental extensible compiler, interactive interpreter and ide text editor. Arrays are fully bounds-checked. Subarray selections are transparent to structure fields. Functions can be nested and provide coactive parameter lists (overloading) and optional parameters. Parentheses, brackets and braces can be used like in mathematics. Libraries provide matrix operations, gnuplot graphics and symbolic manipulation blended into the extensible language syntax.">
+    <meta name="keywords" content="cpl, CPL, numerical, scientific, computation, computational, code, program, programmer, incremental, extensible, programming language, dream programming language, source-to-source, compiler, command interpreter, ide, text editor, fri, FRI, make, interactive, edit, nested function, optional parameter, bounds-checked array, parenthesis, bracket, brace, matrix, plotting, symbolic manipulation">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="author" href="https://CPLcode.net/Paolo.Luchini">
+    <link rel="author" href="https://scholar.google.com/citations?user=thlSP34AAAAJ">
+    <link rel="canonical" href="https://CPLcode.net/FAQ">
+    <link rel="stylesheet" href="singlecol.css">
+    <style>
+    h1 {text-align:center; font-size:1.5em}
+    h2 {font-size:1.3em}
+    </style>
+  </head>
+<body translate="no">
+  <a href="./"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
+<h1>
+    Compiler and Programming Language FAQ
+  </h1>
+<div class=page>
+<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+  <h2 itemprop="name">What's the meaning of CPL?</h2>
+  <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+    <div itemprop="text">
+    <ul>
+      <li>Concealed Pointer Lookup</li>
+      <li>Coactive Parameter Lists</li>
+      <li>Consistent Procedure Linkage</li>
+      <li>Compiler and Programming Language</li>
+      <li>Conceived by Paolo Luchini</li>
+    </ul>
+    </div>
+  </div>
+</div>
+<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+  <h2 itemprop="name">How is your programming language compiled?</h2>
+  <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+    <div itemprop="text">
+      <a href="/">CPL</a> was thought out as a compiled language from the very beginning; when used for computationally intensive tasks, it inherits the speed of compiled C. The basic command <a href="Documentation/cpl.html#cpl">cpl make</a>, used as
+<br><pre>
+        cpl make &lt;program&gt;[.cpl] [&lt;option&gt;]
+</pre>
+is all that is needed to compile and link the source file
+&lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run
+by its name just like any other executable. As an alternative, the straight
+<a href="Documentation/cpl.html#cpl-run">cpl run</a> command compiles and then runs &lt;program&gt; in one shot.
+    </div>
+  </div>
+</div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Does your programming language use brackets like in Mathematics?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      <a href="/">CPL</a> uses brackets just as you were taught in school. All three kinds of round, square, and curly <a href="Documentation/cpl.html#Parentheses">brackets</a> are available for grouping arithmetic (or other) expressions. While to alternate parentheses, brackets and braces is optional, to do so eases the human eye's reading and proofreading nested formulas and enhances automatic error catching.
+      <br><p>The provided <a href="Documentation/editor.html#full-screen">text editor</a> can automatically match and alternate bracket styles for you.</p>
+      </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Can array size be specified by a variable?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      <a href="/">CPL</a> <a href="Documentation/cpl.html#ARRAY">arrays</a> allow variable dimensions wherever constant dimensions are; the compiler
+statically or dynamically allocates memory space and frees it on exit from the enclosing code block as needed.
+<br><p>Lower and upper bounds can be queried through the <a href="Documentation/cpl.html#LO">LO</a> and <a href="Documentation/cpl.html#HI">HI</a> builtin functions, and are run-time checked by the <a href="Documentation/cpl.html#rtchecks">rtchecks</a> module.</p>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>
