@@ -23,22 +23,38 @@
     Compiler and Programming Language FAQ
   </h1>
 <div class=page>
-<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-  <h2 itemprop="name">What's the meaning of CPL?</h2>
-  <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-    <div itemprop="text">
-    <ul>
-      <li>Concealed Pointer Lookup</li>
-      <li>Coactive Parameter Lists</li>
-      <li>Consistent Procedure Linkage</li>
-      <li>Compiler and Programming Language</li>
-      <li>Conceived by Paolo Luchini</li>
-    </ul>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Does your programming language use brackets like in Mathematics?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      <a href="/">CPL</a> uses brackets just as you were taught in school. All three kinds of round, square, and curly <a href="Documentation/cpl.html#Parentheses">brackets</a> are available for grouping arithmetic (or other) expressions. While to alternate parentheses, brackets and braces is optional, to do so eases the human eye's reading and proofreading nested formulas and enhances automatic error catching.
+      <br><p>The provided <a href="Documentation/editor.html#full-screen">text editor</a> can automatically match and alternate bracket styles for you.</p>
+      </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Do you offer symbolic manipulation?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+The <a href="Documentation/symbolic.html#Top">symbolic.cpl</a> library adds symbolic differentiation capabilities to <a href="/">CPL</a>.
+Symbolic differentiation is seamlessly integrated in the compiler, and is
+performed at compile time: any desired symbolic derivatives are worked out
+during compilation, and inlined in the generated code.
+      </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Is variable array size supported?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      <a href="/">CPL</a> <a href="Documentation/cpl.html#ARRAY">arrays</a> allow variable (run-time specified) lower and upper bounds wherever they allow constant ones; the compiler
+statically or dynamically allocates memory space as needed and frees it on exit from the enclosing code block.
+<br><p>Bounds can be queried through the <a href="Documentation/cpl.html#LO">LO</a> and <a href="Documentation/cpl.html#HI">HI</a> builtin functions, and are run-time checked by the <a href="Documentation/cpl.html#rtchecks">rtchecks</a> module.</p>
     </div>
   </div>
 </div>
 <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-  <h2 itemprop="name">How is your programming language compiled?</h2>
+  <h2 itemprop="name">Is your programming language compiled?</h2>
   <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
     <div itemprop="text">
       <a href="/">CPL</a> was thought out as a compiled language from the very beginning; when used for computationally intensive tasks, it inherits the speed of compiled C. The basic command <a href="Documentation/cpl.html#cpl">cpl make</a>, used as
@@ -52,22 +68,17 @@ by its name just like any other executable. As an alternative, the straight
     </div>
   </div>
 </div>
-  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 itemprop="name">Does your programming language use brackets like in Mathematics?</h2>
-    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-      <div itemprop="text">
-      <a href="/">CPL</a> uses brackets just as you were taught in school. All three kinds of round, square, and curly <a href="Documentation/cpl.html#Parentheses">brackets</a> are available for grouping arithmetic (or other) expressions. While to alternate parentheses, brackets and braces is optional, to do so eases the human eye's reading and proofreading nested formulas and enhances automatic error catching.
-      <br><p>The provided <a href="Documentation/editor.html#full-screen">text editor</a> can automatically match and alternate bracket styles for you.</p>
-      </div>
-    </div>
-  </div>
-  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 itemprop="name">Can array size be specified by a variable?</h2>
-    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-      <div itemprop="text">
-      <a href="/">CPL</a> <a href="Documentation/cpl.html#ARRAY">arrays</a> allow variable dimensions wherever constant dimensions are; the compiler
-statically or dynamically allocates memory space and frees it on exit from the enclosing code block as needed.
-<br><p>Lower and upper bounds can be queried through the <a href="Documentation/cpl.html#LO">LO</a> and <a href="Documentation/cpl.html#HI">HI</a> builtin functions, and are run-time checked by the <a href="Documentation/cpl.html#rtchecks">rtchecks</a> module.</p>
+<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+  <h2 itemprop="name">What's the meaning of <q>CPL</q>?</h2>
+  <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+    <div itemprop="text">
+    <ul>
+      <li>Concealed Pointer Lookup</li>
+      <li>Coactive Parameter Lists</li>
+      <li>Consistent Procedure Linkage</li>
+      <li>Compiler and Programming Language</li>
+      <li>Conceived by Paolo Luchini</li>
+    </ul>
     </div>
   </div>
 </div>
