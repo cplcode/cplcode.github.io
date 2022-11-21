@@ -72,10 +72,18 @@
     nav {position:fixed; width:100%}
     nav a:hover{background-color:DarkGrey}
     .button {
+      position:relative;
       background-color:#CA9510;
       }
     .button:hover {
       background-color:GoldenRod;
+      }
+    .slanted {
+      display:inline-block;
+      position: absolute;
+      left:2px;
+      color: red;
+      transform: rotate(-40deg);
       }
     .title {
       background-image:url('images/Policastro.jpg');
@@ -141,7 +149,7 @@
       <a href="What-is-CPL" title="What is CPL and why you should be interested">What is CPL?</a>
       <a href="Applications/" title="Tutorial and contributed applications">Applications</a>
       <a href="Documentation/cpl.html#Top" title="CPL reference manual">Documentation</a>
-      <a class=button href="Download" title="Download instructions">Download</a>
+      <a class=button href="Download" title="Download instructions"><span class=slanted>free</span>Download</a>
       <a href="About" title="About the author and copyright">About</a>
     </nav>
     <br><br><br><br><br><br>
