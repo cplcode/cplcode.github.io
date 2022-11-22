@@ -67,6 +67,7 @@ The <a href="/">CPL</a> compiler's most distinctive feature is its incremental e
       <a href="/">CPL</a> <a href="Documentation/cpl.html#ARRAY">arrays</a> allow variable (run-time specified) lower and upper bounds wherever they allow constant ones; the compiler
 statically or dynamically allocates memory space as needed and frees it on exit from the enclosing code block.
 <br><p>Bounds can be queried through the <a href="Documentation/cpl.html#LO">LO</a> and <a href="Documentation/cpl.html#HI">HI</a> builtin functions, and are run-time checked by the <a href="Documentation/cpl.html#rtchecks">rtchecks</a> module.</p>
+ <p>A rich set of <a href="Documentation/cpl.html#subarray">subarray selections</a>, commuting with structure fields, is efficiently supported.</p>
       </div>
     </div>
   </div>
@@ -89,7 +90,7 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <h2 itemprop="name">Do you provide an interactive environment?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-  The <a href="Documentation/cpl.html#cpl-i">interactive CPL interpreter</a> accepts expressions, statements or commands at a console prompt. Any <a href="/">CPL</a> or  <a href="Documentation/cpl.html#C-interface">C</a> or <a href="Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be loaded into the interpreter and executed from the command prompt, either alone or embedded in another CPL command or expression. Unix-shell commands are accepted as well.
+  The <a href="Documentation/cpl.html#cpl-i">interactive CPL interpreter</a> accepts expressions, statements or commands at a console prompt. Any <a href="/">CPL</a> or  <a href="Documentation/cpl.html#C-interface">C</a> or <a href="Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be loaded into the interpreter and have its functions executed from the command prompt, either alone or embedded in a CPL command or expression. Unix-shell commands are transparently accepted as well.
       </div>
     </div>
   </div>
@@ -98,8 +99,8 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
   <a href="/">CPL</a> includes a text <a href="Documentation/editor.html#Top">editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key. <a href="Documentation/cpl.html#cpl-i">Interactive cpl</a> and the <a href="Documentation/editor.html#Top">editor</a> are actually a single integrated environment: the cpl and editor screens can be swapped at the touch of a key. Both tools
-  display in a terminal with its minimalist graphical appeal, but in exchange allow swift use in remote connections, and even in
-  a smartphone's ssh client if one feels the need for it.
+  display in a terminal with its minimalist graphical appearance, but in exchange allow swift use in a remote connection, and even in
+  a smartphone's ssh client if in a pinch one feels the need for it.
       </div>
     </div>
   </div>
