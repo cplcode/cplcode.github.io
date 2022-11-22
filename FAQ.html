@@ -27,8 +27,16 @@
     <h2 itemprop="name">Does your programming language use brackets like in Mathematics?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-      <a href="/">CPL</a> uses brackets just as you were taught in school. All three kinds of round, square, and curly <a href="Documentation/cpl.html#Parentheses">brackets</a> are available for grouping arithmetic (or other) expressions. While to alternate parentheses, brackets and braces is optional, to do so eases the human eye's reading and proofreading nested formulas and enhances automatic error catching.
+      <a href="/">CPL</a> uses brackets just as you were taught in school. All three kinds of round, square, and curly <a href="Documentation/cpl.html#Parentheses">brackets</a> are interchangeably available for grouping arithmetic (or other) expressions. While to alternate parentheses, brackets and braces is optional, to do so eases the human eye's reading and proofreading nested formulas and enhances automatic error catching.
       <br><p>The provided <a href="Documentation/editor.html#full-screen">text editor</a> can automatically match and alternate bracket styles for you.</p>
+      </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Is this an object-oriented language?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+In its own way. <a href="/">CPL</a> avoids the concept of function definitions contained inside classes, but allows polimorphic functions that are specified by the (often <a href="Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more than one of their arguments. It also allows subtyping and inheritance through <a href="Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, as well as some <a href="Documentation/cpl.html#DYNAMIC">DYNAMIC</a> object-oriented features. 
       </div>
     </div>
   </div>
@@ -44,10 +52,11 @@ during compilation, and inlined in the generated code.
     </div>
   </div>
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 itemprop="name">Is CPL an object-oriented language?</h2>
+    <h2 itemprop="name">What about linear algebra and graphics?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-In its own way. <a href="/">CPL</a> avoids the concept of classes that contain their own functions, but allows polimorphic functions that are specified by the (often <a href="Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more than one of their arguments. It also allows subtyping and inheritance through <a href="Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, as well as some <a href="Documentation/cpl.html#DYNAMIC">DYNAMIC</a> object-oriented features. 
+The <a href="/">CPL</a> compiler's most distinctive feature is its incremental extensibility. The <a href="Documentation/cpl.html#Library">included libraries</a> thus provide <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">gnuplot graphics</a>, and <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>, just to name three examples, all blended into the <a href="Documentation/cpl.html#Syntax">language syntax</a>.<br>
+<p>Additionally, any function provided by an external <a href="Documentation/cpl.html#C-interface">C</a> or <a href="Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be seamlessly called in a CPL program with no performance penalty.</p>
       </div>
     </div>
   </div>
@@ -58,38 +67,57 @@ In its own way. <a href="/">CPL</a> avoids the concept of classes that contain t
       <a href="/">CPL</a> <a href="Documentation/cpl.html#ARRAY">arrays</a> allow variable (run-time specified) lower and upper bounds wherever they allow constant ones; the compiler
 statically or dynamically allocates memory space as needed and frees it on exit from the enclosing code block.
 <br><p>Bounds can be queried through the <a href="Documentation/cpl.html#LO">LO</a> and <a href="Documentation/cpl.html#HI">HI</a> builtin functions, and are run-time checked by the <a href="Documentation/cpl.html#rtchecks">rtchecks</a> module.</p>
+      </div>
     </div>
   </div>
-</div>
-<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-  <h2 itemprop="name">Is your programming language compiled?</h2>
-  <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-    <div itemprop="text">
-      <a href="/">CPL</a> was thought out as a compiled language from the very beginning; when used for computationally intensive tasks, it inherits the speed of compiled C. The basic command <a href="Documentation/cpl.html#cpl">cpl make</a>, used as
-<br><pre>
-        cpl make &lt;program&gt;[.cpl] [&lt;option&gt;]
-</pre>
-is all that is needed to compile and link the source file
-&lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run
-by its name just like any other executable. As an alternative, the straight
-<a href="Documentation/cpl.html#cpl-run">cpl run</a> command compiles and then runs &lt;program&gt; in one shot.
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Is your programming language compiled?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+        <a href="/">CPL</a> was thought out as a compiled language from the very beginning; when used for computationally intensive tasks, it inherits the speed of compiled C. The basic <a href="Documentation/cpl.html#cpl">cpl make</a> command, used as
+  <br><pre>
+          cpl make &lt;program&gt;[.cpl] [&lt;option&gt;]
+  </pre>
+  is all that is needed to compile and link the source file
+  &lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run
+  by its name just like any other executable. As an alternative, the straight
+  <a href="Documentation/cpl.html#cpl-run">cpl run</a> command compiles and then runs &lt;program&gt; in one shot.
+      </div>
     </div>
   </div>
-</div>
-<div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-  <h2 itemprop="name">What's the meaning of <q>CPL</q>?</h2>
-  <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-    <div itemprop="text">
-    <ul>
-      <li>Concealed Pointer Lookup</li>
-      <li>Coactive Parameter Lists</li>
-      <li>Consistent Procedure Linkage</li>
-      <li>Compiler and Programming Language</li>
-      <li>Conceived by Paolo Luchini</li>
-    </ul>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Do you provide an interactive environment?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+  The <a href="Documentation/cpl.html#cpl-i">interactive CPL interpreter</a> accepts expressions, statements or commands at a console prompt. Any <a href="/">CPL</a> or  <a href="Documentation/cpl.html#C-interface">C</a> or <a href="Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be loaded into the interpreter and executed from the command prompt, either alone or embedded in another CPL command or expression. Unix-shell commands are accepted as well.
+      </div>
     </div>
   </div>
-</div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Do you provide a code editor?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+  <a href="/">CPL</a> includes a text <a href="Documentation/editor.html#Top">editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key. <a href="Documentation/cpl.html#cpl-i">Interactive cpl</a> and the editor are actually a single integrated environment: the cpl and editor screens can be swapped at the touch of a key. Both tools
+  display in a terminal with its diminutive graphical appeal, but in exchange allow swift use in remote connections, and even in
+  a smartphone's ssh client if one feels the need for it.
+      </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">What's the meaning of <q>CPL</q>?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      <ul>
+        <li>Concealed Pointer Lookup</li>
+        <li>Coactive Parameter Lists</li>
+        <li>Consistent Procedure Linkage</li>
+        <li>Compiler and Programming Language</li>
+        <li>Conceived by Paolo Luchini</li>
+      </ul>
+      </div>
+    </div>
+  </div>
+
 </div>
 </body>
 </html>
