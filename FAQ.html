@@ -19,7 +19,7 @@
   </head>
 <body translate="no">
   <a href="./"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
-<h1>
+<h1 itemprop="name">
     Compiler and Programming Language FAQ
   </h1>
 <div class=page>
@@ -40,6 +40,14 @@ The <a href="Documentation/symbolic.html#Top">symbolic.cpl</a> library adds symb
 Symbolic differentiation is seamlessly integrated in the compiler, and is
 performed at compile time: any desired symbolic derivatives are worked out
 during compilation, and inlined in the generated code.
+      </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Is CPL an object-oriented language?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+In its own way. <a href="/">CPL</a> avoids the concept of classes that contain their own functions, but allows polimorphic functions that are specified by the (often <a href="Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more than one of their arguments. It also allows subtyping and inheritance through <a href="Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, as well as some <a href="Documentation/cpl.html#DYNAMIC">DYNAMIC</a> object-oriented features. 
       </div>
     </div>
   </div>
