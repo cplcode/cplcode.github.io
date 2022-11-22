@@ -36,7 +36,7 @@
     <h2 itemprop="name">Is this an object-oriented language?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-In its own way. <a href="/">CPL</a> avoids the concept of function definitions contained inside classes, but allows polimorphic functions that are specified by the (often <a href="Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more than one of their arguments. It also allows subtyping and inheritance through <a href="Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, as well as some <a href="Documentation/cpl.html#DYNAMIC">DYNAMIC</a> object-oriented features. 
+In its own way. <a href="/">CPL</a> avoids the concept of function definitions contained inside classes in favour of polimorphic functions that are specified by the (often <a href="Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more than one of their arguments. It also caters for subtyping and inheritance through <a href="Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, and for dynamic object typing through <a href="Documentation/cpl.html#DYNAMIC">DYNAMIC</a> pointers. 
       </div>
     </div>
   </div>
@@ -72,6 +72,15 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     </div>
   </div>
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Are function prototypes enforced?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      Function prototypes exist in most languages and allow many programming errors to be caught at compile time. They are also essential to disambiguating overloaded functions. Inconveniently C and FORTRAN and many other compiled languages require dedicated <q>header</q> or <q>interface</q> files that duplicate the definitions contained in the program proper.<br>
+      <p><a href="/">CPL</a> checks prototype coherence at compile time by accessing the <a href="Documentation/cpl.html#USE">USEd</a> files as they were headers, and issues compilation errors if needed. The prototype-enforcing process is totally transparent to the user who no longer needs to write separate header files.</p>
+      </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
     <h2 itemprop="name">Is your programming language compiled?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
@@ -98,8 +107,8 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <h2 itemprop="name">Do you provide a code editor?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-  <a href="/">CPL</a> includes a text <a href="Documentation/editor.html#Top">editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key. <a href="Documentation/cpl.html#cpl-i">Interactive cpl</a> and the <a href="Documentation/editor.html#Top">editor</a> are actually a single integrated environment: the cpl and editor screens can be swapped at the touch of a key. Both tools
-  display in a terminal with its minimalist graphical appearance, but in exchange allow swift use in a remote connection, and even in
+  <a href="/">CPL</a> includes a text <a href="Documentation/editor.html#Top">editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key. <a href="Documentation/cpl.html#cpl-i">Interactive cpl</a> and the <a href="Documentation/editor.html#Top">editor</a> are actually a single integrated environment: its cpl and editor views can be swapped at the touch of a key. Both tools
+  display in a terminal with its minimalist graphical appearance, but in exchange allow for swift use in a remote connection, and even in
   a smartphone's ssh client if in a pinch one feels the need for it.
       </div>
     </div>
