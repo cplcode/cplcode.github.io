@@ -36,7 +36,16 @@
     <h2 itemprop="name">Is this an object-oriented language?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-In its own way. <a href="/">CPL</a> avoids the concept of function definitions contained inside classes in favour of polimorphic functions that are specified by the (often <a href="Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more than one of their arguments. It also caters for subtyping and inheritance through <a href="Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, and for dynamic object typing through <a href="Documentation/cpl.html#DYNAMIC">DYNAMIC</a> pointers. 
+In its own way. <a href="/">CPL</a> avoids the inclusion of function definitions inside classes in favour of overloaded, polymorphic functions that are specified by the (oftentimes <a href="Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more than one of their arguments. It caters for subtyping and inheritance through <a href="Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, and for dynamically typed objects through <a href="Documentation/cpl.html#DYNAMIC">DYNAMIC</a> pointers. 
+      </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Are function prototypes enforced?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      Function prototypes exist in most languages and allow many programming errors to be caught at compile time. They are also essential to disambiguating overloaded functions. However, C and FORTRAN and many other compiled languages require dedicated <q>header</q> or <q>interface</q> files that inconveniently duplicate the definitions contained in the program proper.<br>
+      <p><a href="/">CPL</a> checks prototype coherence at compile time by accessing the <a href="Documentation/cpl.html#USE">USEd</a> files as they were headers, and issues compilation errors if needed. The prototype-enforcing process is totally transparent to the user who no longer needs to write separate header files.</p>
       </div>
     </div>
   </div>
@@ -68,15 +77,6 @@ The <a href="/">CPL</a> compiler's most distinctive feature is its incremental e
 statically or dynamically allocates memory space as needed and frees it on exit from the enclosing code block.
 <br><p>Bounds can be queried through the <a href="Documentation/cpl.html#LO">LO</a> and <a href="Documentation/cpl.html#HI">HI</a> builtin functions, and are run-time checked by the <a href="Documentation/cpl.html#rtchecks">rtchecks</a> module.</p>
  <p>A rich set of <a href="Documentation/cpl.html#subarray">subarray selections</a>, commuting with structure fields, is efficiently supported.</p>
-      </div>
-    </div>
-  </div>
-  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 itemprop="name">Are function prototypes enforced?</h2>
-    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-      <div itemprop="text">
-      Function prototypes exist in most languages and allow many programming errors to be caught at compile time. They are also essential to disambiguating overloaded functions. Inconveniently C and FORTRAN and many other compiled languages require dedicated <q>header</q> or <q>interface</q> files that duplicate the definitions contained in the program proper.<br>
-      <p><a href="/">CPL</a> checks prototype coherence at compile time by accessing the <a href="Documentation/cpl.html#USE">USEd</a> files as they were headers, and issues compilation errors if needed. The prototype-enforcing process is totally transparent to the user who no longer needs to write separate header files.</p>
       </div>
     </div>
   </div>
