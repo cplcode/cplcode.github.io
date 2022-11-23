@@ -18,7 +18,7 @@
     </style>
   </head>
 <body translate="no">
-  <a href="./"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
+  <a href="/"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
 <br><br><br>
 <h1 itemprop="name">
     Compiler and Programming Language FAQ
@@ -28,8 +28,8 @@
     <h2 itemprop="name">Does your programming language use brackets like in Mathematics?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-      <a href="/">CPL</a> uses brackets just as you were taught in school. All three kinds of round, square, and curly <a href="Documentation/cpl.html#Parentheses">brackets</a> are interchangeably available for grouping arithmetic (or other) expressions. While to alternate parentheses, brackets and braces is optional, to do so eases the human eye's reading and proofreading nested formulas and enhances automatic error catching.
-      <br><p>The provided <a href="Documentation/editor.html#full-screen">text editor</a> can automatically match and alternate bracket styles for you.</p>
+      <a href="https://CPLcode.net">CPL</a> uses brackets just as you were taught in school. All three kinds of round, square, and curly <a href="https://CPLcode.net/Documentation/cpl.html#Parentheses">brackets</a> are interchangeably available for grouping arithmetic (or other) expressions. While to alternate parentheses, brackets and braces is optional, to do so eases the human eye's reading and proofreading nested formulas and enhances automatic error catching.
+      <br><p>The provided <a href="https://CPLcode.net/Documentation/editor.html#full-screen">text editor</a> can automatically match and alternate bracket styles for you.</p>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@
     <h2 itemprop="name">Is this an object-oriented language?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-In its own way. <a href="/">CPL</a> avoids the inclusion of function definitions inside classes in favour of overloaded, polymorphic functions that are specified by the (oftentimes <a href="Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more than one of their arguments. It caters for subtyping and inheritance through <a href="Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, and for dynamically typed objects through <a href="Documentation/cpl.html#DYNAMIC">DYNAMIC</a> pointers. 
+In its own way. <a href="https://CPLcode.net">CPL</a> avoids the inclusion of function definitions inside classes in favour of overloaded, polymorphic functions that are specified by the (oftentimes <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more than one of their arguments. It caters for subtyping and inheritance through <a href="https://CPLcode.net/Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, and for dynamically typed objects through <a href="https://CPLcode.net/Documentation/cpl.html#DYNAMIC">DYNAMIC</a> pointers. 
       </div>
     </div>
   </div>
@@ -46,7 +46,7 @@ In its own way. <a href="/">CPL</a> avoids the inclusion of function definitions
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       Function prototypes exist in most languages and allow many programming errors to be caught at compile time. They are also essential to disambiguating overloaded functions. However, C and FORTRAN and many other compiled languages require dedicated <q>header</q> or <q>interface</q> files that inconveniently duplicate the definitions contained in the program proper.<br>
-      <p><a href="/">CPL</a> checks prototype coherence by polling the <a href="Documentation/cpl.html#USE">USEd</a> files in stead of headers, and issues compile-time errors accordingly. The prototype-enforcing process is totally transparent to the user who no longer needs to write separate header files (but may if he wants to).</p>
+      <p><a href="https://CPLcode.net">CPL</a> checks prototype coherence by polling the <a href="https://CPLcode.net/Documentation/cpl.html#USE">USEd</a> files in stead of headers, and issues compile-time errors accordingly. The prototype-enforcing process is totally transparent to the user who no longer needs to write separate header files (but may if he wants to).</p>
       </div>
     </div>
   </div>
@@ -54,7 +54,7 @@ In its own way. <a href="/">CPL</a> avoids the inclusion of function definitions
     <h2 itemprop="name">Do you offer symbolic manipulation?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-The <a href="Documentation/symbolic.html#Top">symbolic.cpl</a> library adds symbolic differentiation capabilities to <a href="/">CPL</a>.
+The <a href="https://CPLcode.net/Documentation/symbolic.html#Top">symbolic.cpl</a> library adds symbolic differentiation capabilities to <a href="https://CPLcode.net">CPL</a>.
 Symbolic differentiation is seamlessly integrated in the compiler, and is
 performed at compile time: any desired symbolic derivatives are worked out
 during compilation, and inlined in the generated code.
@@ -65,8 +65,8 @@ during compilation, and inlined in the generated code.
     <h2 itemprop="name">What about linear algebra and graphics?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-The <a href="/">CPL</a> compiler's most distinctive feature is its incremental extensibility. The <a href="Documentation/cpl.html#Library">included libraries</a> thus provide <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">gnuplot graphics</a>, and <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>, just to name three examples, all blended into the <a href="Documentation/cpl.html#Syntax">language syntax</a>.<br>
-<p>Additionally, any function provided by an external <a href="Documentation/cpl.html#C-interface">C</a> or <a href="Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be seamlessly called in a CPL program with no performance penalty.</p>
+The <a href="https://CPLcode.net">CPL</a> compiler's most distinctive feature is its incremental extensibility. The <a href="https://CPLcode.net/Documentation/cpl.html#Library">included libraries</a> thus provide <a href="https://CPLcode.net/Documentation/matrix.html#Top">matrix operations</a>, <a href="https://CPLcode.net/Documentation/graphics.html#Top">gnuplot graphics</a>, and <a href="https://CPLcode.net/Documentation/symbolic.html#Top">symbolic manipulation</a>, just to name three examples, all blended into the <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">language syntax</a>.<br>
+<p>Additionally, any function provided by an external <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> or <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be seamlessly called in a CPL program with no performance penalty.</p>
       </div>
     </div>
   </div>
@@ -74,10 +74,10 @@ The <a href="/">CPL</a> compiler's most distinctive feature is its incremental e
     <h2 itemprop="name">Is variable array size supported?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-      <a href="/">CPL</a> <a href="Documentation/cpl.html#ARRAY">arrays</a> allow variable (run-time specified) lower and upper bounds wherever they allow constant ones; the compiler
+      <a href="https://CPLcode.net">CPL</a> <a href="https://CPLcode.net/Documentation/cpl.html#ARRAY">arrays</a> allow variable (run-time specified) lower and upper bounds wherever they allow constant ones; the compiler
 statically or dynamically allocates memory space as needed and frees it on exit from the enclosing code block.
-<br><p>Bounds can be queried through the <a href="Documentation/cpl.html#LO">LO</a> and <a href="Documentation/cpl.html#HI">HI</a> builtin functions, and are run-time checked by the <a href="Documentation/cpl.html#rtchecks">rtchecks</a> module.</p>
- <p>A rich set of <a href="Documentation/cpl.html#subarray">subarray selections</a>, commuting with structure fields, is efficiently supported.</p>
+<br><p>Bounds can be queried through the <a href="https://CPLcode.net/Documentation/cpl.html#LO">LO</a> and <a href="https://CPLcode.net/Documentation/cpl.html#HI">HI</a> builtin functions, and are run-time checked by the <a href="https://CPLcode.net/Documentation/cpl.html#rtchecks">rtchecks</a> module.</p>
+ <p>A rich set of <a href="https://CPLcode.net/Documentation/cpl.html#subarray">subarray selections</a>, commuting with structure fields, is efficiently supported.</p>
       </div>
     </div>
   </div>
@@ -85,14 +85,14 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <h2 itemprop="name">Is your programming language compiled?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-        <a href="/">CPL</a> was conceived as a compiled language from the outset; when used for computational tasks, it inherits the speed of compiled C. The basic <a href="Documentation/cpl.html#cpl">cpl make</a> command, used as
+        <a href="https://CPLcode.net">CPL</a> was conceived as a compiled language from the outset; when used for computational tasks, it inherits the speed of compiled C. The basic <a href="https://CPLcode.net/Documentation/cpl.html#cpl">cpl make</a> command, used as
   <pre>
   cpl make &lt;program&gt;[.cpl] [&lt;option&gt;]
   </pre>
   is all that is needed to compile and link the source file
   &lt;program&gt;.cpl into the executable file &lt;program&gt;, which you can then run
   by its name just like any other executable. As a shortcut, the straight
-  <a href="Documentation/cpl.html#cpl-run">cpl run</a> command compiles and then runs &lt;program&gt; in one.
+  <a href="https://CPLcode.net/Documentation/cpl.html#cpl-run">cpl run</a> command compiles and then runs &lt;program&gt; in one.
       </div>
     </div>
   </div>
@@ -100,7 +100,7 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <h2 itemprop="name">Do you provide an interactive environment?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-  The <a href="Documentation/cpl.html#cpl-i">interactive CPL interpreter</a> accepts expressions, statements or commands at a console prompt. Any <a href="/">CPL</a> or  <a href="Documentation/cpl.html#C-interface">C</a> or <a href="Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be loaded into the interpreter and have its functions executed from the command prompt, either alone or embedded in a CPL command or expression. Unix-shell commands are transparently accepted as well.
+  The <a href="https://CPLcode.net/Documentation/cpl.html#cpl-i">interactive CPL interpreter</a> accepts expressions, statements or commands at a console prompt. Any <a href="https://CPLcode.net/Documentation/cpl.html#Top">CPL</a> or <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> or <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be loaded into the interpreter and have its functions invoked from the command prompt, either alone or embedded in a CPL command or expression. Unix-shell commands are transparently accepted as well.
       </div>
     </div>
   </div>
@@ -108,7 +108,7 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <h2 itemprop="name">Do you provide a code editor?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-  <a href="/">CPL</a> includes a text <a href="Documentation/editor.html#Top">editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key. <a href="Documentation/cpl.html#cpl-i">Interactive cpl</a> and the <a href="Documentation/editor.html#Top">editor</a> are actually a single integrated environment: command-line and editor realizations can be swapped at the touch of a key. Both views
+  <a href="https://CPLcode.net">CPL</a> includes a text <a href="https://CPLcode.net/Documentation/editor.html#Top">editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key. <a href="https://CPLcode.net/Documentation/cpl.html#cpl-i">Interactive cpl</a> and the <a href="https://CPLcode.net/Documentation/editor.html#Top">editor</a> are actually a single integrated environment: command-line and editor realizations can be swapped at the touch of a key. Both views
   display in a terminal with its minimalist graphical look; by so doing they allow for swift use over a remote connection, and even in
   a smartphone's ssh client if in a pinch one feels the need for it.
       </div>
