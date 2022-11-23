@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="singlecol.css">
     <style>
     h1 {text-align:center; font-size:1.5em}
-    h2 {font-size:1.3em}
+    h2 {font-size:1.2em}
     </style>
   </head>
 <body translate="no">
@@ -46,7 +46,7 @@ In its own way. <a href="/">CPL</a> avoids the inclusion of function definitions
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       Function prototypes exist in most languages and allow many programming errors to be caught at compile time. They are also essential to disambiguating overloaded functions. However, C and FORTRAN and many other compiled languages require dedicated <q>header</q> or <q>interface</q> files that inconveniently duplicate the definitions contained in the program proper.<br>
-      <p><a href="/">CPL</a> checks prototype coherence at compile time by accessing the <a href="Documentation/cpl.html#USE">USEd</a> files as they were headers, and issues compilation errors if needed. The prototype-enforcing process is totally transparent to the user who no longer needs to write separate header files.</p>
+      <p><a href="/">CPL</a> checks prototype coherence by polling the <a href="Documentation/cpl.html#USE">USEd</a> files in stead of headers, and issues compile-time errors accordingly. The prototype-enforcing process is totally transparent to the user who no longer needs to write separate header files (but may if he wants to).</p>
       </div>
     </div>
   </div>
@@ -85,14 +85,14 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <h2 itemprop="name">Is your programming language compiled?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-        <a href="/">CPL</a> was thought out as a compiled language from the very beginning; when used for computationally intensive tasks, it inherits the speed of compiled C. The basic <a href="Documentation/cpl.html#cpl">cpl make</a> command, used as
+        <a href="/">CPL</a> was conceived as a compiled language from the outset; when used for computational tasks, it inherits the speed of compiled C. The basic <a href="Documentation/cpl.html#cpl">cpl make</a> command, used as
   <pre>
   cpl make &lt;program&gt;[.cpl] [&lt;option&gt;]
   </pre>
   is all that is needed to compile and link the source file
   &lt;program&gt;.cpl into the executable file &lt;program&gt;, which you can then run
-  by its name just like any other executable. As an alternative, the straight
-  <a href="Documentation/cpl.html#cpl-run">cpl run</a> command compiles and then runs &lt;program&gt; in one shot.
+  by its name just like any other executable. As a shortcut, the straight
+  <a href="Documentation/cpl.html#cpl-run">cpl run</a> command compiles and then runs &lt;program&gt; in one.
       </div>
     </div>
   </div>
@@ -108,8 +108,8 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <h2 itemprop="name">Do you provide a code editor?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-  <a href="/">CPL</a> includes a text <a href="Documentation/editor.html#Top">editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key. <a href="Documentation/cpl.html#cpl-i">Interactive cpl</a> and the <a href="Documentation/editor.html#Top">editor</a> are actually a single integrated environment: its command-line and editor realizations can be swapped at the touch of a key. Both views
-  display in a terminal with its minimalist graphical appearance, but in exchange allow for swift use in a remote connection, and even in
+  <a href="/">CPL</a> includes a text <a href="Documentation/editor.html#Top">editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key. <a href="Documentation/cpl.html#cpl-i">Interactive cpl</a> and the <a href="Documentation/editor.html#Top">editor</a> are actually a single integrated environment: command-line and editor realizations can be swapped at the touch of a key. Both views
+  display in a terminal with its minimalist graphical look; by so doing they allow for swift use over a remote connection, and even in
   a smartphone's ssh client if in a pinch one feels the need for it.
       </div>
     </div>
