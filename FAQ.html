@@ -97,7 +97,7 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     </div>
   </div>
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 itemprop="name">Do you provide an interactive environment?</h2>
+    <h2 itemprop="name">Do your programming tools include an interactive execution environment?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
   The <a href="https://CPLcode.net/Documentation/cpl.html#cpl-i">interactive CPL interpreter</a> accepts expressions, statements or commands at a console prompt. Any <a href="https://CPLcode.net/Documentation/cpl.html#Top">CPL</a> or <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> or <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be loaded into the interpreter and have its functions invoked from the command prompt, either alone or embedded in a greater CPL command or expression. Unix-shell commands are transparently accepted as well.
@@ -120,6 +120,14 @@ statically or dynamically allocates memory space as needed and frees it on exit 
       <div itemprop="text">
   <a href="https://CPLcode.net">CPL</a> provides the same computational performance as FORTRAN or C (it eventually delegates low-level optimization to the system's C compiler, while all of its own constructions are carefully selected not to interfere with such optimization), but adds a higher-level <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">syntax</a> and is generally more compact and intuitive to use. CPL enforces function prototypes without header or interface files. Both <a href="https://CPLcode.net/Documentation/cpl.html#mpicpl">MPI</a> and <a href="https://CPLcode.net/Documentation/cpl.html#OpenMP">OpenMP</a> parallelizations are catered for, as well as CPL's own <a href="https://CPLcode.net/Documentation/cpl.html#parallel">parallel</a> module. Third-party <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> and <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> libraries (say, LAPACK or FFTW) are easily integrated into CPL programs.
       </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Is CPL a good alternative to C++ for writing reusable code?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+   Code reusability may generally denote a careful programming style with meaningful variable names and easily interpretable constructions, something which is advisable in any language or, more specifically in the context of object-oriented programming, the reuse of properties of a base class in the derived classes. <a href="https://CPLcode.net">CPL</a>'s <q>classes</q> only contain data and not functions, and are therefore ordinary <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTUREs</a>. The key to reusability is that derived <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTUREs</a>, containing the data of a base type plus their own, can be implicitly converted to their base type. All CPL <a href="https://CPLcode.net/Documentation/cpl.html#FUNCTION">functions</a> are polymorphic and activated by the type of their arguments, and therefore can automatically be reused on the derived type. Since functions do not belong to a specific class, reusability can be applied to more than one argument at the same time and is thus much more general. When only the first argument is involved, a C++-like dot notation can be used for compatibility.
+  </div>
     </div>
   </div>
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
