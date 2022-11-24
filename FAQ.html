@@ -17,7 +17,7 @@
     h2 {font-size:1.2em}
     </style>
   </head>
-<body translate="no">
+<body>
   <a href="/"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
 <br><br><br>
 <h1 itemprop="name">
@@ -29,7 +29,7 @@
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       <a href="https://CPLcode.net">CPL</a> uses brackets just as you were taught in school. All three kinds of round, square, and curly <a href="https://CPLcode.net/Documentation/cpl.html#Parentheses">brackets</a> are interchangeably available for grouping arithmetic (or other) expressions. While to alternate parentheses, brackets and braces is optional, to do so eases the human eye's reading and proofreading nested formulas and enhances automatic error catching.
-      <br><p>The provided <a href="https://CPLcode.net/Documentation/editor.html#full-screen">text editor</a> can automatically match and alternate bracket styles for you.</p>
+      <br><p>The provided <a href="https://CPLcode.net/Documentation/editor.html#full-screen">code editor</a> can automatically match and alternate bracket styles for you.</p>
       </div>
     </div>
   </div>
@@ -100,7 +100,7 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <h2 itemprop="name">Do you provide an interactive environment?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-  The <a href="https://CPLcode.net/Documentation/cpl.html#cpl-i">interactive CPL interpreter</a> accepts expressions, statements or commands at a console prompt. Any <a href="https://CPLcode.net/Documentation/cpl.html#Top">CPL</a> or <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> or <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be loaded into the interpreter and have its functions invoked from the command prompt, either alone or embedded in a CPL command or expression. Unix-shell commands are transparently accepted as well.
+  The <a href="https://CPLcode.net/Documentation/cpl.html#cpl-i">interactive CPL interpreter</a> accepts expressions, statements or commands at a console prompt. Any <a href="https://CPLcode.net/Documentation/cpl.html#Top">CPL</a> or <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> or <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be loaded into the interpreter and have its functions invoked from the command prompt, either alone or embedded in a greater CPL command or expression. Unix-shell commands are transparently accepted as well.
       </div>
     </div>
   </div>
@@ -109,8 +109,24 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
   <a href="https://CPLcode.net">CPL</a> includes a text <a href="https://CPLcode.net/Documentation/editor.html#Top">editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key. <a href="https://CPLcode.net/Documentation/cpl.html#cpl-i">Interactive cpl</a> and the <a href="https://CPLcode.net/Documentation/editor.html#Top">editor</a> comprise a single integrated development environment: command-line and editor faces can be swapped at the touch of a key. Both views
-  display in a terminal with its minimalist graphical look; by so doing they allow for swift use over a remote connection, and even in
+  display inside a terminal with its minimalist look and feel; by so doing they allow for swift use over a remote connection, and even in
   a smartphone's ssh client if in a pinch one feels the need for it.
+      </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Is CPL a good alternative to FORTRAN and C for high performance computing?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+  <a href="https://CPLcode.net">CPL</a> provides the same computational performance as FORTRAN or C (it eventually delegates low-level optimization to the system's C compiler, while all of its own constructions are carefully selected not to interfere with such optimization), but adds a higher-level <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">syntax</a> and is generally more compact and intuitive to use. CPL enforces function prototypes without header or interface files. Both <a href="https://CPLcode.net/Documentation/cpl.html#mpicpl">MPI</a> and <a href="https://CPLcode.net/Documentation/cpl.html#OpenMP">OpenMP</a> parallelizations are catered for, as well as CPL's own <a href="https://CPLcode.net/Documentation/cpl.html#parallel">parallel</a> module. Third-party <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> and <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> libraries (say, LAPACK or FFTW) are easily integrated into CPL programs.
+      </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Is CPL a good alternative to MATLAB for learning numerical algorithms in college and graduate school?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+  Although not interoperable with MATLAB, <a href="https://CPLcode.net">CPL</a> provides similar ease of use. <a href="https://CPLcode.net">CPL</a> encourages compiled code and explicitly declared <a href="https://CPLcode.net/Documentation/cpl.html#VARIABLE">variables</a> (but not <a href="https://CPLcode.net/Documentation/cpl.html#CONSTANT">constants</a>). <a href="https://CPLcode.net">CPL</a> is <a href="https://CPLcode.net/Download">free</a>.
       </div>
     </div>
   </div>
