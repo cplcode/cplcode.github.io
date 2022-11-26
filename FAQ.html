@@ -18,7 +18,7 @@
     </style>
   </head>
 <body>
-  <a href="/"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
+  <a href="./"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
 <br><br><br>
 <h1 itemprop="name">
     Compiler and Programming Language FAQ
@@ -28,7 +28,7 @@
     <h2 itemprop="name">Does your programming language use brackets like in Mathematics?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-      <a href="https://CPLcode.net">CPL</a> uses brackets just as you were taught in school. All three kinds of round, square, and curly <a href="https://CPLcode.net/Documentation/cpl.html#Parentheses">brackets</a> are interchangeably available for grouping arithmetic (or other) expressions. While to alternate parentheses, brackets and braces is optional, to do so eases the human eye's reading and proofreading nested formulas and enhances automatic error catching.
+      <a href="https://CPLcode.net">CPL</a> uses brackets just as you were taught in school. All three kinds of round, square, and curly <a href="https://CPLcode.net/Documentation/cpl.html#Parentheses">brackets</a> are interchangeably available for grouping arithmetic (or other) expressions, but each must be matched by its own kind. While to alternate parentheses, brackets and braces is optional, to do so eases the human eye's reading and proofreading nested formulas and enhances automatic error catching.
       <br><p>The provided <a href="https://CPLcode.net/Documentation/editor.html#full-screen">code editor</a> can automatically match and alternate bracket styles for you.</p>
       </div>
     </div>
@@ -37,7 +37,7 @@
     <h2 itemprop="name">Is this an object-oriented language?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-In its own way. <a href="https://CPLcode.net">CPL</a> avoids the inclusion of function definitions inside classes in favour of overloaded, polymorphic functions that are specified by the (oftentimes <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more than one of their arguments. It caters for subtyping and inheritance through <a href="https://CPLcode.net/Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, and for dynamically typed objects through <a href="https://CPLcode.net/Documentation/cpl.html#DYNAMIC">DYNAMIC</a> pointers. 
+In its own way. <a href="https://CPLcode.net">CPL</a> avoids the inclusion of function definitions inside classes in favour of <a href="https://CPLcode.net/Documentation/cpl.html#Coactive-Parameter-Lists">overloaded, polymorphic functions</a> that are specified by the (oftentimes <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more than one of their arguments. It caters for subtyping and inheritance through <a href="https://CPLcode.net/Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, and for dynamically typed objects through <a href="https://CPLcode.net/Documentation/cpl.html#DYNAMIC">DYNAMIC</a> pointers. 
       </div>
     </div>
   </div>
@@ -85,7 +85,7 @@ The <a href="https://CPLcode.net">CPL</a> compiler's most distinctive feature is
     <h2 itemprop="name">Is the process of including a C library straightforward?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-The <a href="https://CPLcode.net">CPL</a> compiler can read and make sense of a C header file. After a single C-like <a href="https://CPLcode.net/Documentation/cpl.html#C-interface"><q>#include&nbsp;&hellip;</q></a> directive, functions declared in the header transparently become available as CPL <a href="https://CPLcode.net/Documentation/cpl.html#FUNCTION">functions</a> with CPL syntax, prototype checking included.
+The <a href="https://CPLcode.net">CPL</a> compiler can read and make sense of a C header file. After a single C-like <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">#include</a> directive, functions declared in the header become transparently available as CPL <a href="https://CPLcode.net/Documentation/cpl.html#FUNCTION">functions</a> with CPL syntax, prototype checking included.
       </div>
     </div>
   </div>
@@ -136,7 +136,16 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <h2 itemprop="name">Is CPL a good alternative to FORTRAN and C for high performance computing?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-  <a href="https://CPLcode.net">CPL</a> provides the same computational performance as FORTRAN or C (it eventually delegates low-level optimization to the system's C compiler, while all of its own constructions are carefully selected not to interfere with such optimization), but adds a higher-level <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">syntax</a> and is generally more compact and intuitive to use. CPL enforces function prototypes without header or interface files. Both <a href="https://CPLcode.net/Documentation/cpl.html#mpicpl">MPI</a> and <a href="https://CPLcode.net/Documentation/cpl.html#OpenMP">OpenMP</a> parallelizations are catered for, as well as CPL's own <a href="https://CPLcode.net/Documentation/cpl.html#parallel">parallel</a> module. Third-party <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> and <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> libraries (say, LAPACK or FFTW) are easily integrated into CPL programs.
+  <a href="https://CPLcode.net">CPL</a> provides the same computational performance as FORTRAN or C (it eventually delegates low-level optimization to the system's C compiler, while all of its own constructions are carefully crafted not to interfere with such optimization), but adds a higher-level <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">syntax</a> and is generally more compact and intuitive to use. CPL enforces function prototypes without needing header or interface files. Both <a href="https://CPLcode.net/Documentation/cpl.html#mpicpl">MPI</a> and <a href="https://CPLcode.net/Documentation/cpl.html#OpenMP">OpenMP</a> parallelizations are catered for, as well as CPL's own <a href="https://CPLcode.net/Documentation/cpl.html#parallel">parallel</a> module. Third-party <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> and <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> libraries (say LAPACK, for instance) are easily integrated into CPL programs.
+      </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Does this programming language have pointers?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      C and FORTRAN have a diametrically opposite approach to pointers (variables that contain the memory address of other variables). C's foundation iself sits in pointers, with the declared purpose to maximize efficiency through a close correspondence to machine language, but with the drawback of a somewhat unfriendly notation with its omnipresent &lowast;'s and &amp;'s. C allows pointer arithmetics, with greatest flexibility but also vulnerability to programming errors. The original FORTRAN 77 banned pointers completely, forcing the programmer to replace them with array elements even when this sounded unnatural like in linked lists; subsequent versions of FORTRAN reintroduced pointers of a restricted nature, with no pointer arithmetics, but widespread FORTRAN libraries still rarely use pointers.<br>
+      <p><a href="https://CPLcode.net">CPL</a> tries to strike a middle ground by making frequent use of C-like <a href="https://CPLcode.net/Documentation/cpl.html#POINTER">pointers</a> but rendering most referencing and dereferencing annotations unnecessary through <a href="https://CPLcode.net/Documentation/cpl.html#Concealed-Pointer-Lookup">implicit type conversion</a>. <a href="https://CPLcode.net/Documentation/cpl.html#INTO">Pointer arithmetics</a> is allowed but restricted to stay within the memory space of a single allocated compound variable, and enforced to do so when  <a href="https://CPLcode.net/Documentation/cpl.html#rtchecks">run-time error checking</a> is on.</p>
       </div>
     </div>
   </div>
@@ -144,7 +153,7 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <h2 itemprop="name">Is CPL a good alternative to C++ for writing reusable code?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-   Code reusability may generally denote a careful programming style with meaningful variable names and straightforward constructions, something which is advisable in any language or, more specifically in the context of object-oriented programming, the reuse of properties of a base class in the derived classes. <a href="https://CPLcode.net">CPL</a>'s <q>classes</q> only contain data and not functions, and are therefore ordinary <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTUREs</a>. The key to reusability is that derived <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTUREs</a>, containing the data of a base type plus their own, can be implicitly converted to their base type. All CPL <a href="https://CPLcode.net/Documentation/cpl.html#FUNCTION">functions</a> are <a href="https://CPLcode.net/Documentation/cpl.html#Coactive-Parameter-Lists">polymorphic</a> and coactivated by the type of their arguments, and therefore can automatically be reused on the derived type (or just their name can be reused to define a more specific function, as one sees fit). Since functions do not belong to a specific class, reusability can be applied to more than one argument (possibly at the same time) and is thus more general. When only the first argument is involved, a C++-like dot notation can be used for compatibility.
+   Code reusability may generally denote a careful programming style with meaningful variable names and straightforward constructions, something which is advisable in any language or, more specifically in the context of object-oriented programming, the reuse of properties of a base class in the derived classes. <a href="https://CPLcode.net">CPL</a>'s <q>classes</q> only contain data and not functions, and are therefore ordinary <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTUREs</a>. The key to reusability is in that derived <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTUREs</a>, containing the data of a base type plus their own, can be implicitly converted to their base type. All CPL <a href="https://CPLcode.net/Documentation/cpl.html#FUNCTION">functions</a> are <a href="https://CPLcode.net/Documentation/cpl.html#Coactive-Parameter-Lists">polymorphic</a> and coactivated by the type of their arguments, and therefore can automatically be reused on the derived type (or just their name can be reused to declare a more specific function, as one sees fit). Since functions do not belong to a specific class, reusability can be applied to more than one argument, possibly at the same time. When only the first argument is involved, a C++-like dot notation can be used if it sounds more appropriate to the application.
   </div>
     </div>
   </div>
@@ -152,7 +161,7 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <h2 itemprop="name">Is yours a good language for embedded programming and robotics?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-The <a href="https://CPLcode.net">CPL</a> tools (compiler, interpreter and editor) comprise an extremely compact package (1.5 Mbytes uncompressed) and can natively run on any embedded system large enough to already host a barebones unix system and native C compiler. In addition, of course, to being used offline as a cross-compiler. The ability to <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">#include</a> and transparently use a C library makes existing robotic capabilities easily accessible in this compact high-level <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">language</a>.
+The <a href="https://CPLcode.net">CPL</a> tools (compiler, interpreter and editor) comprise an extremely compact package (1.5 Mbytes uncompressed) and can natively run on any embedded system large enough to already host a barebones unix system and native C compiler. In addition, of course, to being available offline as a cross-compiler. The ability to <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">#include</a> and transparently use a C library makes existing, provided with the hardware, robotic interfaces easily accessible in this compact high-level <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">language</a>.
       </div>
     </div>
   </div>
@@ -160,7 +169,7 @@ The <a href="https://CPLcode.net">CPL</a> tools (compiler, interpreter and edito
     <h2 itemprop="name">Is CPL a good alternative to MATLAB for learning numerical algorithms in college and graduate school?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-  Although not interoperable with MATLAB, <a href="https://CPLcode.net">CPL</a> provides similar ease of use. <a href="https://CPLcode.net">CPL</a> encourages compiled code and explicitly declared <a href="https://CPLcode.net/Documentation/cpl.html#VARIABLE">variables</a> (but not <a href="https://CPLcode.net/Documentation/cpl.html#CONSTANT">constants</a>). <a href="https://CPLcode.net">CPL</a> is <a href="https://CPLcode.net/Download">free</a>.
+  Although not interoperable with MATLAB, <a href="https://CPLcode.net">CPL</a> provides a similar level of ease of use. <a href="https://CPLcode.net">CPL</a> encourages compiled code and explicitly declared <a href="https://CPLcode.net/Documentation/cpl.html#VARIABLE">variables</a> (but not <a href="https://CPLcode.net/Documentation/cpl.html#CONSTANT">constants</a>). <a href="https://CPLcode.net">CPL</a> is <a href="https://CPLcode.net/Download">free</a>.
       </div>
     </div>
   </div>
