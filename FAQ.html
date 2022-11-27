@@ -46,7 +46,7 @@ In its own way. <a href="https://CPLcode.net">CPL</a> avoids the inclusion of fu
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       Function prototypes exist in most languages and allow many programming errors to be caught at compile time. They are also essential to disambiguating overloaded functions. However, prototype checking in C and FORTRAN and many other compiled languages requires dedicated <q>header</q> or <q>interface</q> files that inconveniently duplicate the definitions contained in the program proper.<br>
-      <p><a href="https://CPLcode.net">CPL</a> checks prototype coherence by polling the <a href="https://CPLcode.net/Documentation/cpl.html#USE">USEd</a> files in stead of headers, and issues compile-time errors accordingly. The prototype-enforcing process is totally transparent to the user who no longer needs to write separate header files (but may if he wants to).</p>
+      <p><a href="https://CPLcode.net">CPL</a> checks prototype coherence by polling the <a href="https://CPLcode.net/Documentation/cpl.html#USE">USEd</a> files in stead of headers, and issues compile-time errors accordingly. The prototype-enforcing process is totally transparent to the user who no longer needs to write separate header files (but may if one wants to).</p>
       </div>
     </div>
   </div>
@@ -54,7 +54,7 @@ In its own way. <a href="https://CPLcode.net">CPL</a> avoids the inclusion of fu
     <h2 itemprop="name">Do you offer symbolic manipulation?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-The <a href="https://CPLcode.net/Documentation/symbolic.html#Top">symbolic.cpl</a> library adds symbolic differentiation capabilities.
+The <a href="https://CPLcode.net/Documentation/symbolic.html#Top">symbolic.cpl</a> library provides symbolic differentiation capabilities.
 <!--
 Symbolic differentiation is seamlessly integrated in the compiler, and is
 performed at compile time: any desired symbolic derivatives are worked out
@@ -93,7 +93,7 @@ The <a href="https://CPLcode.net">CPL</a> compiler can read and make sense of a 
     <h2 itemprop="name">Is variable array size supported?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-      <a href="https://CPLcode.net">CPL</a> <a href="https://CPLcode.net/Documentation/cpl.html#ARRAY">arrays</a> allow variable (run-time specified) and independent lower and upper bounds wherever they allow constant ones; the compiler
+      <a href="https://CPLcode.net">CPL</a> <a href="https://CPLcode.net/Documentation/cpl.html#ARRAY">arrays</a> allow variable (<i>i.e.</i>, run-time specified) and independent lower and upper bounds of each index wherever they allow constant ones; the compiler
 statically or dynamically allocates memory space as needed and frees it on exit from the enclosing code block.
 <br><p>Array bounds can be queried through the <a href="https://CPLcode.net/Documentation/cpl.html#LO">LO</a> and <a href="https://CPLcode.net/Documentation/cpl.html#HI">HI</a> builtin functions, and are run-time checked by the <a href="https://CPLcode.net/Documentation/cpl.html#rtchecks">rtchecks</a> module.</p>
  <p>A rich set of <a href="https://CPLcode.net/Documentation/cpl.html#subarray">subarray selections</a>, commuting with structure fields, is efficiently supported.</p>
@@ -114,7 +114,7 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     </div>
   </div>
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 itemprop="name">Can a CPL program be simply run, like a scripting language?</h2>
+    <h2 itemprop="name">Can a CPL program be simply run, like in a scripting language?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
 The straight
@@ -162,7 +162,7 @@ The straight
     <h2 itemprop="name">Is CPL a good alternative to C++ for writing reusable code?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-   Code reusability may generally denote a careful programming style with meaningful variable names and straightforward constructions, something which is to advise in any language or, in the context of object-oriented programming, it specifically denotes the reuse of properties of a base class in the derived classes. <a href="https://CPLcode.net">CPL</a>'s <q>classes</q> only contain data and not functions, and are therefore ordinary <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTUREs</a>. The key to their reusability is in that derived <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTUREs</a>, containing the data of a base type plus their own, can be implicitly converted to their base type. All CPL <a href="https://CPLcode.net/Documentation/cpl.html#FUNCTION">functions</a> are <a href="https://CPLcode.net/Documentation/cpl.html#Coactive-Parameter-Lists">polymorphic</a> and coactivated by the type of their arguments, and therefore can automatically be reused on the derived type (or just their name can be reused to declare a more specific function, as one sees fit). Since functions do not belong to a specific class, reusability can be applied to more than one argument, possibly at the same time. When only the first argument is involved, a C++-like dot notation can be used if it sounds more adapt to the application.
+   Code reusability may generally denote a careful programming style with meaningful variable names and straightforward constructions, something which is to advise in any language; in the context of object-oriented programming, it specifically denotes the reuse of properties of a base class in the derived classes. <a href="https://CPLcode.net">CPL</a>'s <q>classes</q> only contain data and not functions, and are therefore ordinary <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTUREs</a>. The key to their reusability is in that derived <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTUREs</a>, containing the data of a base type plus their own, can be implicitly converted to their base type. All CPL <a href="https://CPLcode.net/Documentation/cpl.html#FUNCTION">functions</a> are <a href="https://CPLcode.net/Documentation/cpl.html#Coactive-Parameter-Lists">polymorphic</a> and coactivated by the type of their arguments, and therefore can automatically be reused on the derived type without modification (or just their name can be reused to declare a more specific function, as one sees fit). Since functions do not belong to a single class, reusability can be applied to more than one argument, possibly at the same time. When only the first argument is involved, a C++-like dot notation is available to be used where it sounds more adapt to the application.
   </div>
     </div>
   </div>
@@ -178,7 +178,7 @@ The <a href="https://CPLcode.net">CPL</a> tools (compiler, interpreter and edito
     <h2 itemprop="name">Is CPL a good alternative to MATLAB for learning numerical algorithms in college and graduate school?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-  Although not interoperable with MATLAB, <a href="https://CPLcode.net">CPL</a> provides a similar level of ease of use and fast learning curve. <a href="https://CPLcode.net">CPL</a> encourages compiled code and explicitly declared <a href="https://CPLcode.net/Documentation/cpl.html#VARIABLE">variables</a> (but not <a href="https://CPLcode.net/Documentation/cpl.html#CONSTANT">constants</a>). <a href="https://CPLcode.net">CPL</a> is <a href="https://CPLcode.net/Download">free</a>.
+  Although not interoperable with <a href="https://www.mathworks.com/products/matlab.html">MATLAB</a>, <a href="https://CPLcode.net">CPL</a> provides a similar level of ease of use and fast learning curve. <a href="https://CPLcode.net">CPL</a> encourages compiled code and explicitly declared <a href="https://CPLcode.net/Documentation/cpl.html#VARIABLE">variables</a> (but not <a href="https://CPLcode.net/Documentation/cpl.html#CONSTANT">constants</a>). <a href="https://CPLcode.net">CPL</a> is <a href="https://CPLcode.net/Download">free</a>.
       </div>
     </div>
   </div>
