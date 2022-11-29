@@ -114,11 +114,11 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     </div>
   </div>
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 itemprop="name">Can a CPL program be simply run, like in a scripting language?</h2>
+    <h2 itemprop="name">Can a CPL program be just run, like in a scripting language?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
 The straight
-  <a href="https://CPLcode.net/Documentation/cpl.html#cpl-run">cpl run</a> command compiles and then runs a plain-text CPL source file at once.
+  <a href="https://CPLcode.net/Documentation/cpl.html#cpl-run">cpl run</a> command runs a plain-text CPL source file at once, compiling it first each time it detects a modification.
   <br><p>If invoked from a <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a> it makes <a href="https://CPLcode.net">CPL</a> code transparently executable as it was a script, but at compiled-code speed.
       </div>
     </div>
@@ -153,8 +153,8 @@ The straight
     <h2 itemprop="name">Does this programming language have pointers?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-      C and FORTRAN have a diametrically opposite approach to pointers (variables that contain the memory address of other variables). C's foundation iself sits in pointers, with the declared purpose to maximize efficiency through a close correspondence to machine language, but with the drawback of a somewhat unwieldy notation with its omnipresent &lowast;'s and &amp;'s. C allows pointer arithmetics, with greatest flexibility but also vulnerability to programming errors. The original FORTRAN 77 on the other hand banned pointers entirely, passing function arguments by reference only and forcing the programmer to replace pointers with array indices even when this sounded unnatural, as in linked lists for example; subsequent versions of FORTRAN introduced pointers of a restricted nature, with no pointer arithmetics, but widely available FORTRAN libraries still rarely use pointers.<br>
-      <p><a href="https://CPLcode.net">CPL</a> treads a middle ground by making frequent use of C-like <a href="https://CPLcode.net/Documentation/cpl.html#POINTER">pointers</a> but concealing the near totality of referencing and dereferencing operations under <a href="https://CPLcode.net/Documentation/cpl.html#Concealed-Pointer-Lookup">implicit type conversion</a>. <a href="https://CPLcode.net/Documentation/cpl.html#INTO">Pointer arithmetics</a> is allowed but restricted to the allocated memory space of a single compound variable, and enforced to stay there when  <a href="https://CPLcode.net/Documentation/cpl.html#rtchecks">run-time error checking</a> is on.</p>
+      C and FORTRAN have a diametrically opposite approach to pointers (variables that contain the memory address of other variables). Pointers sit at the very foundation of the C language, with the intended purpose to maximize efficiency through a close correspondence to machine language, but with the drawback of a somewhat unwieldy notation sprinkled all over with &lowast;'s and &amp;'s. Pointer declarations decide whether a function argument is passed by value or by reference. Arithmetics is allowed on pointers, with greatest flexibility but also vulnerability to programming errors. The original FORTRAN 77 on the other hand banned pointers entirely, passing function arguments by reference only and forcing the programmer to replace pointers with array indices even when this sounded unnatural, as in linked lists for example; subsequent versions of FORTRAN introduced pointers of a restricted nature, with no pointer arithmetics, but widely available FORTRAN libraries still rarely use pointers.<br>
+      <p><a href="https://CPLcode.net">CPL</a> treads a middle ground by making C-like use of <a href="https://CPLcode.net/Documentation/cpl.html#POINTER">pointers</a> possible, but concealing the near totality of referencing and dereferencing operations under <a href="https://CPLcode.net/Documentation/cpl.html#Concealed-Pointer-Lookup">implicit type conversion</a>. Pointer <i>declarations</i> decide whether a function argument is passed by value or by reference, but no special notation has to be used in function <i>calls</i>. <a href="https://CPLcode.net/Documentation/cpl.html#INTO">Pointer arithmetics</a> is allowed but restricted to the allocated memory space of a single compound variable, and confined to stay there when <a href="https://CPLcode.net/Documentation/cpl.html#rtchecks">run-time error checking</a> is on.</p>
       </div>
     </div>
   </div>
