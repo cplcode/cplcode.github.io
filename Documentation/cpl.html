@@ -455,7 +455,7 @@ When round brackets are used in the statement prototypes contained in this manua
 </div><div class=page id="C-preprocessor">
 Page: (cpl)C preprocessor, Next: <a href="#Source-file">Source file</a>, Prev: <a href="#Parentheses">Parentheses</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Macro definition and conditional compilation</h3>
-C preprocessor #define and #if constructs (see <a href="/usr/share/info/cpp.html#Top">(/usr/share/info/cpp)</a>.) are used in a CPL program to define macros and alter the flow of compilation. For file inclusion see <a href="#USE">USE</a>, <a href="#INCLUDE">INCLUDE</a>, and <a href="#C-interface">C interface</a>.  
+C preprocessor #define and #if constructs (<a href="https://manpages.debian.org/cpp">manpages.debian.org/cpp</a>) are used in a CPL program to define macros and alter the flow of compilation. For file inclusion see <a href="#USE">USE</a>, <a href="#INCLUDE">INCLUDE</a>, and <a href="#C-interface">C interface</a>.  
 </div><div class=page id="Source-file">
 Page: (cpl)Source file, Next: <a href="#MODULE">MODULE</a>, Prev: <a href="#C-preprocessor">C preprocessor</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Source files</h3>
@@ -1075,7 +1075,7 @@ alone on a new line, where DELIMITER can be any word that is not to be part of t
 
 Where appropriate, a single-character literal is implicitly converted to a CHAR constant, which is in turn implicitly converted to an INTEGER ASCII code. Strings may also be concatenated among themselves and with variables, see <a href="#String">conversion:String</a>.
 
-Standard C functions returning a char&lowast; (see <a href="/usr/share/info/libc.html#-String-and-Array-Utilities">(/usr/share/info/libc) String and Array Utilities</a>) are also interpreted as generating a STRING value. Just as for all <a href="#C-interface">C interface</a> calls, it is the programmer's responsibility to ensure that such C library functions are used consistently and to free any possible malloc-ated space where appropriate.
+Standard C functions returning a char&lowast; (<a href="https://manpages.debian.org/string">manpages.debian.org/string</a>) are also interpreted as generating a STRING value. Just as for all <a href="#C-interface">C interface</a> calls, it is the programmer's responsibility to ensure that such C library functions are used consistently and to free any possible malloc-ated space where appropriate.
 
 As an experimental feature, and an exception to the general rule for ARRAY(&lowast;), STRING VARIABLEs may also be declared and assigned a value. In the present implementation STRINGs embedded as STRUCTURE fields or ARRAY elements may generate unwanted effects when the container is assigned as a whole.
 
@@ -1346,7 +1346,7 @@ Page: (cpl)String, Next: <a href="#Looping-operator">Looping operator</a>, Prev:
 STRINGs written one after the other with no intervening operator (whitespace is allowed, but newlines must be escaped), either in literal (quoted) form or through their names, are concatenated into a single <a href="#STRING">STRING</a>. If all of the STRINGs are literals (i.e., known at compile time), the result will also be a literal, otherwise it will be a dynamically allocated ARRAY(&lowast;) OF CHAR which is transparently freed at the end of the enclosing code block.
 
 <h4>String conversion</h4>
-In addition to STRINGs, values of different type may appear in a concatenation, provided the first item is an actual STRING (possibly <q></q>); they are then implicitly converted to strings just as if they appeared in a <a href="#WRITE">WRITE</a> statement. Please pay attention that a numeric parenthesis that is concatenated after a string will be interpreted as an ARRAY subscript, since the STRING is a legitimate ARRAY OF CHAR, unless space is placed between the string and the parenthesis. Conversion of a string into a numeric value must be handled explicitly through <a href="/usr/share/info/libc.html#String">(/usr/share/info/libc)String</a>.
+In addition to STRINGs, values of different type may appear in a concatenation, provided the first item is an actual STRING (possibly <q></q>); they are then implicitly converted to strings just as if they appeared in a <a href="#WRITE">WRITE</a> statement. Please pay attention that a numeric parenthesis that is concatenated after a string will be interpreted as an ARRAY subscript, since the STRING is a legitimate ARRAY OF CHAR, unless space is placed between the string and the parenthesis. Conversion of a string into a numeric value must be handled explicitly through existing (<a href="https://manpages.debian.org/string">manpages.debian.org/string</a>) functions.
 
 When a string literal is defined in &lt;&lt; DELIMITER notation (see <a href="#STRING">STRING</a>), a variable included as DELIMITER &lt;variable&gt; DELIMITER is concatenated within the string being defined just as above (whereas DELIMITER &lt;newline&gt; ends the definition).
 
@@ -2117,7 +2117,17 @@ or
 
 	&lt;index&gt; = &lt;ubound&gt; DOWN TO &lt;lbound&gt; [BY &lt;step&gt;]
 
-&lt;index&gt; is incremented by &lt;step&gt; in each iteration in the first case and decremented in the second. The loop terminates when &lt;index&gt; exceeds &lt;ubound&gt; in the first case or drops below &lt;lbound&gt; in the second. If BY &lt;step&gt; is omitted, BY 1 is assumed. &lt;lbound&gt;, &lt;ubound&gt; and &lt;step&gt; can all be arbitrary expressions; notice that a zero or negative &lt;step&gt; in either case generates a non-terminating loop.
+&lt;index&gt; is incremented by &lt;step&gt; in each iteration in the first case and decremented in the second. The loop terminates when &lt;index&gt; exceeds &lt;ubound&gt; in the first case or drops below &lt;lbound&gt; in the second. If BY &lt;step&gt; is omitted, BY 1 is assumed. &lt;lbound&gt;, &lt;ubound&gt; and &lt;step&gt; can all be arbitrary expressions.
+
+Notice that a zero or negative &lt;step&gt; in either case would generate a non-terminating loop, which is presumably not what is wanted. To obviate this, when &lt;step&gt; is a compile-time constant and is negative, <q>DOWN TO</q> is implied. Therefore
+
+	FOR &lt;index&gt; = &lt;ubound&gt; TO &lt;lbound&gt; BY -1
+
+and
+
+	FOR &lt;index&gt; = &lt;ubound&gt; DOWN TO &lt;lbound&gt;
+
+are actually equivalent.
 
 Both INTEGER and REAL types are allowed, as well as other types (for instance <a href="#INTO:">POINTER:INTO:</a>) for which increment and comparison make sense. &lt;index&gt; may be an already existing variable or be implicitly declared by the loop itself (see <a href="#Declarations">Declarations</a>). In the latter case it acquires the type of the loop bounds and behaves like a <a href="#CONSTANT">CONSTANT</a> within the body of the loop. If the index is REAL, the BY specification cannot be omitted.
 
