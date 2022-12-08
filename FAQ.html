@@ -28,8 +28,9 @@
     <h2 itemprop="name">Does your programming language use brackets like in Mathematics?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-      <a href="https://CPLcode.net">CPL</a> uses brackets just as you were taught in school. All three kinds of round, square, and curly <a href="https://CPLcode.net/Documentation/cpl.html#Parentheses">brackets</a> are interchangeably available for grouping arithmetic (or other) expressions, but each must be matched by its own kind. To alternate parentheses, brackets and braces, though optional, is beneficial to the human eye's reading and proofreading nested formulas and enhances automatic error catching.
-      <br><p>The provided <a href="https://CPLcode.net/Documentation/editor.html#full-screen">code editor</a> can automatically alternate bracket styles and match bracket pairs for you.</p>
+      Brackets, or braces, are a syntactic construct in many programming languages. They are typically assigned different semantic meanings. In the C language parentheses or round brackets () are used to group arithmetic expressions or function arguments, square brackets [] are used for array subscripting, and braces or curly brackets {} delimit compound statements or definitions.<br>
+      <p><a href="https://CPLcode.net">CPL</a> uses brackets just as you were taught in school. All three kinds of round, square, and curly <a href="https://CPLcode.net/Documentation/cpl.html#Parentheses">brackets</a> are interchangeably available for grouping arithmetic expressions or any other of the above usages, but each must be matched by its own kind. To alternate parentheses, brackets and braces, though optional, is beneficial to the human eye's reading and proofreading nested formulas and enhances automatic error catching.</p>
+      <p>The provided <a href="https://CPLcode.net/Documentation/editor.html#full-screen">code editor</a> can automatically alternate bracket styles and match bracket pairs for you.</p>
       </div>
     </div>
   </div>
@@ -37,12 +38,13 @@
     <h2 itemprop="name">Is this an object-oriented language?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-In its own way. <a href="https://CPLcode.net">CPL</a> avoids the inclusion of function definitions inside classes in favour of <a href="https://CPLcode.net/Documentation/cpl.html#Coactive-Parameter-Lists">overloaded, polymorphic functions</a> that are qualified by the (oftentimes <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more than one of their arguments. It caters for subtyping and inheritance through <a href="https://CPLcode.net/Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, and for dynamically typed objects through <a href="https://CPLcode.net/Documentation/cpl.html#DYNAMIC">DYNAMIC</a> pointers. 
+An object-oriented language (OOL) implements objects and their associated procedures within the software programming context, and encourages reuse of these objects within the same and other programs. Java, C++ and Smalltalk are popular examples of object-oriented languages. They typically bind related data and functions into a <q>class</q> object.<br>
+<p><a href="https://CPLcode.net">CPL</a> supports the object paradigm but avoids the inclusion of function definitions inside classes in favour of <a href="https://CPLcode.net/Documentation/cpl.html#Coactive-Parameter-Lists">overloaded, polymorphic functions</a> that are qualified by the (oftentimes <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more of their arguments. It caters for subtyping and inheritance through <a href="https://CPLcode.net/Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, and for dynamically typed objects through <a href="https://CPLcode.net/Documentation/cpl.html#DYNAMIC">DYNAMIC</a> pointers.</p>
       </div>
     </div>
   </div>
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 itemprop="name">Are function prototypes enforced?</h2>
+    <h2 itemprop="name">Where must a function prototype be declared?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       Function prototypes exist in most languages and allow many programming errors to be caught at compile time. They are also essential to disambiguating overloaded functions. However, prototype checking in C and FORTRAN and many other compiled languages requires dedicated <q>header</q> or <q>interface</q> files that inconveniently duplicate the definitions contained in the program proper.<br>
@@ -117,9 +119,10 @@ statically or dynamically allocates memory space as needed and frees it on exit 
     <h2 itemprop="name">Can a CPL program be just run, like in a scripting language?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-The straight
-  <a href="https://CPLcode.net/Documentation/cpl.html#cpl-run">cpl run</a> command runs a plain-text CPL source file at once, compiling it first each time it detects a modification.
-  <br><p>If invoked from a <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a> it makes <a href="https://CPLcode.net">CPL</a> code transparently executable as it was a script, but at compiled-code speed.
+A scripting language or script language is a programming language that is usually interpreted at run time rather than compiled. In general, scripting languages are easier to learn and faster to code in than more structured and compiled languages such as C and C++.<br>
+<p>Although <a href="https://CPLcode.net">CPL</a> <i>is</i> compiled, the straight
+  <a href="https://CPLcode.net/Documentation/cpl.html#cpl-run">cpl run</a> command makes it act just like a scripting language, by directly running a plain-text CPL source file while transparently compiling it when and only when it detects a modification.</p>
+  <p>If invoked from a <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a>, <a href="https://CPLcode.net/Documentation/cpl.html#cpl-run">cpl run</a> makes <a href="https://CPLcode.net">CPL</a> code executable as a script, but at compiled-code speed.</p>
       </div>
     </div>
   </div>
