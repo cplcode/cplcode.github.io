@@ -42,52 +42,51 @@ p=p.next</span>
 </div></div></div>
 
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 itemprop="name">Is CPL easy to use?</h2>
+    <h3 itemprop="name">Is CPL easy to use?</h3>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-      <div itemprop="text">
-<p>CPL aims for the ease of use of interpreted languages like <a href="https://www.mathworks.com/products/matlab.html">MATLAB</a> or <a href="https://www.python.org/">Python</a>, without giving up the error-catching benefits of mandatorily declared variables and the sheer speed of compiled execution. CPL was thought out as an easy-to-use compiled language from the very beginning; in computationally intensive tasks, it inherits the speed of compiled C.
+      <p itemprop="text">
+CPL aims for the ease of use of interpreted languages like <a href="https://www.mathworks.com/products/matlab.html">MATLAB</a> or <a href="https://www.python.org/">Python</a>, without giving up the error-catching benefits of mandatorily declared variables and the sheer speed of compiled execution. CPL was thought out as an easy-to-use compiled language from the very beginning; in computationally intensive tasks, it inherits the speed of compiled C.
   <span class=leftinset>&gt; cpl make Helloworld
 &gt; ./Helloworld
 Hello world!</span>
 In fact, its  <a href="Documentation/cpl.html#cpl">compiler</a> is implemented as a nimble and fast source-to-source translator which then invokes the system C compiler; this action, as well as the re-making of any modified modules, occurs behind the scenes at a single <a href="Documentation/cpl.html#cpl"><code>cpl make</code></a> command. Even this command can be spared, if desired, by embedding <a href="Documentation/cpl.html#cpl-run"><code>cpl run</code></a> in the program itself for immediate execution. Later in development the <a href="Documentation/cpl.html#cpl-i"><code>interactive cpl</code></a> interpreter was added, with the ability to run a combination of interpreted and compiled CPL modules, as well as any function provided by an existing CPL or C library, directly from its console.</p>
-</div></div></div>
+</div></div>
 
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 itemprop="name">Are CPL arrays versatile and bounds checked?</h2>
+    <h3 itemprop="name">Are CPL arrays versatile and bounds checked?</h3>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-      <div itemprop="text">
+      <p itemprop="text">
 
-<p>CPL <a href="Documentation/cpl.html#ARRAY">ARRAYs</a>
+CPL <a href="Documentation/cpl.html#ARRAY">ARRAYs</a>
 <span class=rightinset>STRUCTURE(REAL a,b,c) s(-2..8)
 REAL v(-9..15,1..7)
 s(-1..5).a=2&lowast;v(-2..4,6)
 
 var=SUM [v(i,j)-m]^2 FOR ALL i,j</span>
 allow variable lower and upper bounds of each index, and are (on demand) fully bounds-checked. An ample set of <a href="Documentation/cpl.html#subarray">subarray selections</a>, commuting with structure fields, is efficiently supported.<br>A gamut of <a href="Documentation/cpl.html#ALL">loop shortcuts</a> is enabled by the implicit handling of array bounds.</p>
-</div></div></div>
+</div></div>
 
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 itemprop="name">Can CPL syntax be extended with external libraries?</h2>
+    <h3 itemprop="name">Can CPL syntax be extended with external libraries?</h3>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-      <div itemprop="text">
-
-<p>The CPL compiler's most distinctive feature is its incremental extensibility. The <a href="Documentation/cpl.html#Library">included libraries</a> thus provide <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">gnuplot graphics</a>, and <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>,
+<p itemprop="text">
+The CPL compiler's most distinctive feature is its incremental extensibility. The <a href="Documentation/cpl.html#Library">included libraries</a> thus provide <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">gnuplot graphics</a>, and <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>,
   <span class=leftinset>USE lapack-eigenvalues
 A=[(1.,2.),(3.,4.)]
 WRITE eigenvalues(A)</span>
 just to name three examples, all blended into the <a href="Documentation/cpl.html#Syntax">language syntax</a>.
 Additionally, any function provided by an external <a href="Documentation/cpl.html#C-interface">C</a> or <a href="Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be seamlessly called in a CPL program (or from the  <a href="Documentation/cpl.html#icpl"><code>cpl i</code></a> command prompt), giving access to a large number of public and proprietary libraries alike. And to encapsulate a (e.g. <a href="http://www.netlib.org/lapack/">LAPACK</a>) call in a CPL wrapper, as exemplified in this <a href="Applications/Tutorial/lapack.html">lapack Tutorial</a>, simplifies syntax and exacts no performance penalty.</p>
-</div></div></div>
+</div></div>
 
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 itemprop="name">Does CPL use brackets intuitively?</h2>
+    <h3 itemprop="name">Does CPL use brackets intuitively?</h3>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-      <div itemprop="text">
+      <p itemprop="text">
 
-  <p>A hallmark aesthetic touch of CPL is the availability of all three kinds of round, square, and curly <a href="Documentation/cpl.html#Parentheses">brackets</a> for grouping arithmetic (or other) expressions,
+  A hallmark aesthetic touch of CPL is the availability of all three kinds of round, square, and curly <a href="Documentation/cpl.html#Parentheses">brackets</a> for grouping arithmetic (or other) expressions,
 <span class=rightinset>p(i)=EXP(-{[x(i)-mu]/sigma}^2/2)</span>
-just as you were taught in school. While to alternate parentheses, brackets and braces is optional and might be unessential to some users, to do so eases the human eye's reading and proofreading nested formulas; and it enhances automatic error catching too. The provided <a href="Documentation/editor.html#full-screen">text editor</a> can automatically alternate bracket styles and match bracket pairs for you.</p> 
-</div></div></div>
+just as you were taught in school. While to alternate parentheses, brackets and braces is optional and might be unessential to some users, to do so eases the human eye's reading and proofreading nested formulas; and it enhances automatic error catching too. The provided <a href="Documentation/editor.html#full-screen">text editor</a> can automatically alternate bracket styles and match bracket pairs for you.</p>
+</div></div>
 <p>For more information see the full <a href=Documentation/cpl.html#Top>Documentation</a> and the <a href="FAQ">Frequently Asked Questions</a>.</p>
 <p>Or, just <a href="Download">download CPL</a> and try! It's free.</p>
     <footer>
