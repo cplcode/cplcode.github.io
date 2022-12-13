@@ -38,7 +38,7 @@ p=&amp;(&lowast;&lowast;p).next;
  <span style="font-size:1.5em">&dArr; &dArr; &dArr;</span>
 p.col=j
 p=p.next</span>
-    (but in fact even more similar to the once popular <a href="https://en.wikipedia.org/wiki/Pascal_(programming_language)">Pascal</a> and <a href="https://en.wikipedia.org/wiki/Modula-2">Modula-2</a>, for those who remember them), with some unique features. It was born out of the effort to provide the pointer flexibility of C without the hindrance of &lowast;'s and &amp;'s, the function overloading of C++ without the scaffolding of classes, and the cross-file prototype checking of Modula-2 (and most modern languages) without the need for dedicated header or interface files.</p>
+    (but in fact even more similar to the once popular <a href="https://en.wikipedia.org/wiki/Pascal_(programming_language)">Pascal</a> and <a href="https://en.wikipedia.org/wiki/Modula-2">Modula-2</a>, for those who remember them), with some unique features. It was born out of the effort to provide the pointer flexibility of C without the bookkeeping of &lowast;'s and &amp;'s, the function overloading of C++ without the burden of classes, and the cross-file prototype checking of Modula-2 (and most modern languages) without the need for dedicated header or interface files.</p>
 </div></div></div>
 
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
@@ -49,7 +49,7 @@ CPL aims for the ease of use of interpreted languages like <a href="https://www.
   <span class=leftinset>&gt; cpl make Helloworld
 &gt; ./Helloworld
 Hello world!</span>
-In fact, its  <a href="Documentation/cpl.html#cpl">compiler</a> is implemented as a nimble and fast source-to-source translator which then invokes the system C compiler; this action, as well as the re-making of any modified modules, occurs behind the scenes at a single <a href="Documentation/cpl.html#cpl"><code>cpl make</code></a> command. Even this command can be spared, if desired, by embedding <a href="Documentation/cpl.html#cpl-run"><code>cpl run</code></a> in the program itself for immediate execution. Later in development the <a href="Documentation/cpl.html#cpl-i"><code>interactive cpl</code></a> interpreter was added, with the ability to run a combination of interpreted and compiled CPL modules, as well as any function provided by an existing CPL or C library, directly from its console.</p>
+In fact, its  <a href="Documentation/cpl.html#cpl">compiler</a> is implemented as a nimble and fast source-to-source translator which then invokes the system C compiler; this action, as well as the re-making of any modified modules, occurs behind the scenes at a single <a href="Documentation/cpl.html#cpl"><code>cpl make</code></a> command. Even this command can be spared, if desired, by embedding <a href="Documentation/cpl.html#cpl-run"><code>cpl run</code></a> in the program itself for immediate execution. For additional flexibility the <a href="Documentation/cpl.html#cpl-i"><code>interactive cpl</code></a> interpreter is provided, with the ability to run a combination of interpreted and compiled CPL modules, as well as any function provided by an existing CPL or C library, directly from its console.</p>
 </div></div>
 
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
