@@ -66,7 +66,7 @@
 
 </div><div class=page id="Top">
 Page: (graphics)Top, Next: <a href="#nographics">nographics</a>, Prev: <a href="matrix.html#Top">(matrix)</a>, Up: <a href="cpl.html#Library">(cpl)Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> <h3>Plotting library</h3>
+<hr> <h1>Plotting library</h1>
 The graphics.cpl library provides basic plotting instructions by linking a CPL program to GNU plotutils.
 
 The same programming interface is also shared by <a href="#nographics">nographics</a> and <a href="#gnuplot">gnuplot</a>
@@ -207,11 +207,16 @@ In addition the following commands are available in gnuplot.cpl only:
 </td></tr>
 <tr><td colspan="2">          plot x:SIN[x(n)] w l, where x is an ARRAY OF REAL. </td></tr>
 <tr><td><a href="#SPLOT">SPLOT</a>:</td><td>plot a surface with default settings</td></tr>
-<tr><td><a href="#REALTABLE(POINTER-TO-FILE)">REALTABLE(POINTER TO FILE)</a>:</td><td>reads a matrix of REALs from a file in table</td></tr>
-<tr><td colspan="2">          format, with automatic dimensioning. </td></tr>
-<tr><td><a href="#WRITE-TABLE-[TO-POINTER-TO-FILE]">WRITE TABLE [TO POINTER TO FILE]</a>:</td><td>accepts the same syntax as <q>plot</q>, but</td></tr>
-<tr><td colspan="2">          writes out the corresponding data in table format. </td></tr>
-<tr><td><a href="#OPENMOVIE-<filename>">OPENMOVIE &lt;filename&gt;</a>:</td><td>pipes the output of gnuplot to ffmpeg and the output</td></tr>
+<tr><td colspan="2"> REALTABLE(POINTER TO FILE): reads a matrix of REALs from a file in table
+</td></tr>
+<tr><td colspan="2">          format, with automatic dimensioning.
+</td></tr>
+<tr><td colspan="2"> WRITE TABLE [TO POINTER TO FILE]: accepts the same syntax as <q>plot</q>, but
+</td></tr>
+<tr><td colspan="2">          writes out the corresponding data in table format.
+</td></tr>
+<tr><td colspan="2"> OPENMOVIE &lt;filename&gt;: pipes the output of gnuplot to ffmpeg and the output
+</td></tr>
 <tr><td colspan="2">          of ffmpeg to &lt;filename&gt;, in such a way that a movie is produced from
 </td></tr>
 <tr><td colspan="2">          whatever graphic commands follow. </td></tr>

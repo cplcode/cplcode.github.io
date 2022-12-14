@@ -66,7 +66,7 @@
 
 </div><div class=page id="Top">
 Page: (fri)Top, Next: <a href="#FRI-architecture">FRI architecture</a>, Up: <a href="cpl.html#cpl">(cpl)cpl</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> <h3>The FRI interpreter</h3>
+<hr> <h1>The FRI interpreter</h1>
 The design of most compilers passes through a formal description of the language that is compiled by a parser generator like yacc into a C program. At the heart of CPL's extensibility there is a different structure, where a formal description of the language is never compiled to generate the compiler, but rather interpreted each time a compilation is run. The engine that does this is named fri, the Formal Rule Interpreter. If yacc is a compiler-compiler, fri may be called a compiler-interpreter.
 
 In fact, fri is a quite general pattern-matching engine with its own FRI meta-language, and only <q>learns</q> about CPL when it reads the cpl file every time the compiler is invoked. Translators for many other languages can in principle be written in it. The interpreted nature of the CPL compiler, in addition to having allowed a smooth continued development and fine-tuning over the years, has the effect that its syntax can be extended on the fly by the compiled program itself with a few lines of FRI code written in a <a href="cpl.html#FRI-SECTION">(cpl)FRI SECTION</a>. This abilility is used by <a href="cpl.html#Library">(cpl)Library</a> modules in order to define, for instance, complex-number notation, matrix-algebra operations or symbolic manipulations.
