@@ -155,11 +155,13 @@
     <br><br><br><br><br><br>
     <img src="images/CPL-logo.png" width=132 alt="CPL">
     <br>
-    <h1 class=banner>Compiler and Programming Language</h1>
-    <h1 class=banner>Conceived by Paolo Luchini</h1>
-    <h1 class=banner>Concealed Pointer Lookup</h1>
-    <h1 class=banner>Coactive Parameter Lists</h1>
-    <h1 class=banner>Consistent Procedure Linkage</h1>
+    <h1>
+    <span class=banner>Concealed Pointer Lookup</span>
+    <span class=banner>Coactive Parameter Lists</span>
+    <span class=banner>Consistent Procedure Linkage</span>
+    <span class=banner>Compiler and Programming Language</span>
+    <span class=banner>Conceived by Paolo Luchini</span>
+    </h1>
     <div class=grad></div>
   </div>
   <div class=container>
@@ -188,15 +190,15 @@
     &nbsp;Please <a href="share">share</a>&nbsp;
   </p>
   <script>
-    var i=0;
+    var i=3;
     var x = document.getElementsByClassName("banner");
-    x[0].style.display="block";
+    x[i].style.display="block";
     var tid;
     function changebanner(){
       x[i].style.display="none";
       i++; if(i>=x.length){i=0;}
       x[i].style.display="block";
-      if(i==0)clearInterval(tid);
+      if(i==3)clearInterval(tid);
     }
     function startCircling(){tid=setInterval(changebanner,3000);}
     setTimeout(startCircling,2000);
