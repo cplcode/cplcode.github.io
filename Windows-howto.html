@@ -24,7 +24,7 @@
     <dt>1 - Enable WSL:</dt>
     <dd>To enable the Windows Subsystem for Linux (WSL) of Microsoft Windows 10 and onwards, you can use a sequence of Powershell terminal commands detailed <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target=_blank>here</a>, or alternately open the Control Panel, then Programs and Features, then Turn Windows Features On or Off, and tick the box for Windows Subsystem for Linux.</dd>
     <dt>2 - Install Debian on WSL:</dt>
-    <dd>Open Microsoft Store, enter <q>debian</q> in search box, install the free Debian app (or your favourite other Linux distribution, there are a few); launch the app.</dd>
+    <dd>Open Microsoft Store, enter <q>debian</q> in search box, install the free Debian app (or your favourite other Linux distribution, MS has a few); launch the app.</dd>
     <dt>3 - Bring Debian up to date. In your newly opened Debian terminal execute the following click-to-copy commands:</dt>
     <dd><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">sudo apt update
 sudo apt upgrade</pre>
@@ -42,7 +42,7 @@ sudo apt upgrade</pre>
     <dl>
     <dt>6 - link the gnuplot executable to your Debian home. After you have downloaded and installed gnuplot for Windows, in a Debian terminal paste and execute:
     <pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">ln -s '/mnt/c/Program Files/gnuplot/bin/gnuplot.exe' bin/gnuplot</pre></dt>
-    <dd>Now you can access gnuplot as just <code>gnuplot</code> in your Debian terminal, and graph-drawing CPL programs will transparently find and use it just as well.</dd>
+    <dd>Now you can access gnuplot as just <code>gnuplot</code> in your Debian terminal, and graph-drawing CPL programs will transparently find and use it as well.</dd>
     </dl>
     
     <p><strong>Windows 11 GUI update:</strong> Starting with Windows 11 Build 22000, WSL supports graphical user interfaces and applications. More details <a href="https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps">here</a>.</p>
