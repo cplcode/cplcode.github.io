@@ -1,6 +1,6 @@
 
 - compile with cpl make scddns -fopenmp
-- if -fopenmp is omitted, the serial version is obtained
+- if -fopenmp is omitted, the serial version is obtained instead of the OpenMP version
 - run as scddns [<input file>]
 - <input file> defaults to scddns0.dat if omitted
 - the input file contains a number of parameters of the form name=value, optionally followed by a velocity field as binary data

@@ -8,9 +8,9 @@ year MOD 4 = 0 AND NOT year MOD 100 = 0 THEN
 ELSE WRITE "is not a leap year."
 ! Notes:
 ! Both THEN and ELSE, independently of each other, can be followed by
-! statements on the same line, with no termination required, or by a block
-! of statements terminating at the next END IF or ELSE.
-! OR boolean operator takes precedence over AND boolean operator.
+! statements on the same line, with termination implied by the end of line,
+! or by a multi-line block of statements terminated by the next END IF or ELSE.
+! The OR boolean operator takes precedence over the AND boolean operator.
 ! Continuation on the next line is implicitly understood where a mandatory
 ! argument is required (e.g., after OR here)
 

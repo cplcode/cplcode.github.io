@@ -19,31 +19,33 @@
   <a href="./"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
   <div class=page>
     <h1>CPL-on-Debian-on-Windows howto</h1>
-    <h3>Step-by-step instructions to use CPL, Linux within Microsoft Windows</h3>
+    <h3>Step-by-step instructions to use CPL, Linux in Microsoft Windows</h3>
     <dl>
     <dt>1 - Enable WSL:</dt>
-    <dd>To enable the Windows Subsystem for Linux (WSL) of Microsoft Windows 10 and onwards, you can use a sequence of Powershell terminal commands detailed <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target=_blank>here</a>, or alternately open the Control Panel, then Programs and Features, then Turn Windows Features On or Off, and tick the box for Windows Subsystem for Linux.</dd>
+    <dd>To enable the Windows Subsystem for Linux (WSL) of Microsoft Windows 10 and onwards you can use a sequence of Powershell terminal commands detailed <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target=_blank>here</a>, or alternately open the Control Panel, then Programs and Features, then Turn Windows Features On or Off, and tick the box for Windows Subsystem for Linux.</dd>
     <dt>2 - Install Debian on WSL:</dt>
     <dd>Open Microsoft Store, enter <q>debian</q> in search box, install the free Debian app (or your favourite other Linux distribution, MS has a few); launch the app.</dd>
-    <dt>3 - Bring Debian up to date. In your newly opened Debian terminal execute the following click-to-copy commands:</dt>
+    </dl>
+    <p>In your newly opened Debian terminal execute the following click-to-copy commands.</p>
+    <dl>
+    <dt>3 - Bring Debian up to date:</dt>
     <dd><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">sudo apt update
 sudo apt upgrade</pre>
     </dd>
     <dt>4 - Install needed packages gcc, make, info, curl:</dt>
     <dd><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">sudo apt install gcc make info curl</pre>
     </dd>
-    <dt>5 - Download and unpack the CPL archive:
-    <pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">curl -fsS -o /tmp/unpack-cpl.sh https://CPLcode.net/version-archive/unpack-cpl.sh && sh /tmp/unpack-cpl.sh</pre></dt>
-    <dd>You may need to close and re-open the Debian terminal window before the newly installed commands become available at the command prompt. You can open as many Debian windows as you like; for instance, one to edit and one to execute your new CPL program.
-    </dd>
+    <dt>5 - Download and unpack the CPL archive:</dt>
+    <dd><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">curl -fsS -o /tmp/unpack-cpl.sh https://CPLcode.net/version-archive/unpack-cpl.sh && sh /tmp/unpack-cpl.sh</pre></dd>
     </dl>
+    <p>You may need to close and re-open the Debian terminal window before the newly installed commands become available at the command prompt. You can open as many Debian windows as you like; for instance, one to edit and one to execute your new CPL program.</p>
     <p>You are all set!</p>
     <p><strong>Notice about graphics:</strong> Under Windows 10, Microsoft's Windows Subsystem for Linux provides a terminal-only experience of a Linux distribution, deprived of its Graphical User Interface. The CPL compiler, interpreter and editor all natively run in a terminal and will fit in seamlessly, but if your CPL program draws graphics and needs the additional <code>gnuplot</code> package, installing it via Debian (as in <code>apt install gnuplot</code>) will not do. Instead you may want to install the Windows version of gnuplot, available from the <a href="https://sourceforge.net/projects/gnuplot/">official gnuplot site</a>, and then</p>
     <dl>
-    <dt>6 - link the gnuplot executable to your Debian home. After you have downloaded and installed gnuplot for Windows, in a Debian terminal paste and execute:
-    <pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">ln -s '/mnt/c/Program Files/gnuplot/bin/gnuplot.exe' bin/gnuplot</pre></dt>
-    <dd>Now you can access gnuplot as just <code>gnuplot</code> in your Debian terminal, and graph-drawing CPL programs will transparently find and use it as well.</dd>
+    <dt>6 - link the gnuplot executable to your Debian home. After you have downloaded and installed gnuplot for Windows, in a Debian terminal paste and execute:</dt>
+    <dd><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">ln -s '/mnt/c/Program Files/gnuplot/bin/gnuplot.exe' bin/gnuplot</pre></dd>
     </dl>
+    <p>Now you can access gnuplot as just <code>gnuplot</code> in your Debian terminal, and graph-drawing CPL programs will automatically find and use it as well.</p>
     
     <p><strong>Windows 11 GUI update:</strong> Starting with Windows 11 Build 22000, WSL supports graphical user interfaces and applications. More details <a href="https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps">here</a>.</p>
     <div id=snackbar>copied.</div>
