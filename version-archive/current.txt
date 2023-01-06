@@ -1,2 +1,2 @@
-2022-12-29
-minor corrections.
+2023-01-06
+Added history to the editor's insertion buffer. Added capability to redefine keywords enables the multilingual localization package, where an example is provided in the Neapolitan dialect.

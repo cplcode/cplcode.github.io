@@ -135,7 +135,7 @@ The full-screen editor can work on multiple screens, in addition to the session 
 
 A file is opened in a new screen with the <q>edit</q> iteractive cpl command (also available in the menu, or as Esc e, or as the <q>edit</q> symbolic link from a unix shell), and closed with the <q>close</q> menu command (aka Esc c or Ctrl-c or Esc q or Ctrl-q). Capitalized <q>Edit</q>, or Esc E, or right-clicking the <q>edit</q> menu button, opens the file to be edited in a separate terminal window. The optional +&lt;linenumber&gt; parameter at the end of the <q>edit</q> or <q>Edit</q> commands opens the file at the given line number. The bottom status line contains the name of the currently displayed file and the current line number. A star trailing the file name denotes whether the in-memory buffer has been modified since last saved (and warns that changes would be lost if not saved again). Closing an unsaved file elicits a prompt asking for confirmation before exit.
 
-<q>add</q> and <q>save</q> (Esc a and Esc s) respectively add (insert) a file at the current cursor position and save the current in-memory buffer to a file, with the original file name as a default. Ctrl-s immediately saves the in-memory buffer to the original file name. In case some text was just selected, Esc s instead opens a <q>save selection as</q> prompt which saves the current selection to a file.
+<q>load</q> and <q>save</q> (Esc a and Esc s) respectively load (insert) a file at the current cursor position and save the current in-memory buffer to a file, with the original file name as a default. Ctrl-s immediately saves the in-memory buffer to the original file name. In case some text was just selected, Esc s instead opens a <q>save selection as</q> prompt which saves the current selection to a file.
 
 <q>run</q> (Esc r) runs the current screen as a CPL program, after saving all unsaved screens so that other possibly USEd files are up to date. By contrast, switching into line mode always runs the session log, independent of which screen is currently in view.
 
@@ -159,6 +159,8 @@ Selection of a text area is achieved either by keeping the left mouse button pre
 
 Whenever text is selected, the Insert key (or Esc i, or Ctrl-v for those who are accustomed to it) inserts (pastes) the selected text at the current cursor position; no <q>copy</q> operation is needed as buffer coincides with selection. The Backspace or Delete key (also aliased to Esc d, Esc x, Ctrl-x) erases the selected text if pressed immediately after a selection. (At any other time these keys erase a single character, the preceding one for Backspace.) Deleted text remains invisibly selected and can be re-inserted after its deletion, up until a new selection is performed. Typing a new character, or pressing Insert, immediately after a selection without any intervening cursor movement replaces the current selection. In this case the function of Insert changes to inserting the butlast selection. Esc m moves (cuts and pastes) the butlast onto the last selection. Pressing the middle mouse button achieves the same purpose as Esc i; the right mouse button the same purpose as Esc m.
 
+A special feature of the CPL editor is a history insertion buffer: right after an insertion, pressing Esc i or Insert again replaces it by the historically former selection. Pressing Esc i or Insert multiple times rotates through the last three selections.
+
 In the way of example, in order to:
 
  delete:           select, delete;
@@ -169,6 +171,7 @@ In the way of example, in order to:
  cut and replace:  select, delete, move, select, insert.
  type again:       type something, move, insert;
  type and replace: type something, move, select, insert.
+ insert the former selection: select, move, select, move, insert, insert.
 
 Esc !, respectively Esc @, turns the current selection to all uppercase or to all lowercase letters.
 
