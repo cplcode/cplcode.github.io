@@ -1,3 +1,5 @@
+Multilingual programming CPL library
+
 In order to compile a CPL program using Neapolitan keywords, just put "USE napulitano" at its beginning; the napulitano.cpl file is self-explanatory and serves as its own usage instructions.
 
 The tonap.fri script translates a standard CPL program to its Neapolitan version. For instance, copy your favourite program and the napulitano.cpl file to a test directory and then: tonap.fri program.cpl >program.nap; cpl make program.nap
