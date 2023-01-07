@@ -4,4 +4,4 @@ In order to compile a CPL program using Neapolitan keywords, just put "USE napul
 
 The tonap.fri script translates a standard CPL program to its Neapolitan version. For instance, copy your favourite program and the napulitano.cpl file to a test directory and then: tonap.fri program.cpl >program.nap; cpl make program.nap
 
-Using napulitano.cpl and tonap.fri as examples, you can easily develop your own localization. This being a programming language, please consider that identifiers including keywords are restrained to using ASCII alphanumeric characters plus "_".
+Using napulitano.cpl and tonap.fri as examples, you can easily develop your own localization. Please consider that identifiers, including keywords, are restrained to using ASCII alphanumeric characters plus "_".
