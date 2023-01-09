@@ -1,7 +1,7 @@
 ! examples of matrix operations
 ! =============================
-USE rtchecks
 USE cbmat
+USE rtchecks
 
 COMPLEX M(0..4,0..4),t(0..4),x(0..4)
 DO M(i,j)=(1.+j*I)**(i) FOR ALL i,j

@@ -159,7 +159,7 @@ Selection of a text area is achieved either by keeping the left mouse button pre
 
 Whenever text is selected, the Insert key (or Esc i, or Ctrl-v for those who are accustomed to it) inserts (pastes) the selected text at the current cursor position; no <q>copy</q> operation is needed as buffer coincides with selection. The Backspace or Delete key (also aliased to Esc d, Esc x, Ctrl-x) erases the selected text if pressed immediately after a selection. (At any other time these keys erase a single character, the preceding one for Backspace.) Deleted text remains invisibly selected and can be re-inserted after its deletion, up until a new selection is performed. Typing a new character, or pressing Insert, immediately after a selection without any intervening cursor movement replaces the current selection. In this case the function of Insert changes to inserting the butlast selection. Esc m moves (cuts and pastes) the butlast onto the last selection. Pressing the middle mouse button achieves the same purpose as Esc i; the right mouse button the same purpose as Esc m.
 
-A special feature of the CPL editor is a history insertion buffer: right after an insertion, pressing Esc i or Insert again replaces it by the historically former selection. Pressing Esc i or Insert multiple times rotates through the last three selections.
+A special feature of the CPL editor is a selection history buffer: right after an insertion, pressing Esc i or Insert again replaces it by the historically former selection. Pressing Esc i or Insert multiple times rotates through the last three selections.
 
 In the way of example, in order to:
 
