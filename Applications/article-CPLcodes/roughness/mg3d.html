@@ -91,7 +91,7 @@ weq<a href="cpl.html#Deferred-assignment">==</a>laplacian(w)/dx/dx-[p(0,0,1)-p(0
   <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#END">END</a> smooth
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> mg(<a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> VARS ff<a href="cpl.html#REAL-operator">^</a>,frsd; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> boundarypoint bcond(&lowast;,&lowast;,&lowast;))
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> mg(<a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> VARS ff<a href="cpl.html#REAL-operator">^</a>,frsd; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> boundarypoint bcond<a href="cpl.html#REAL-operator">^</a>(&lowast;,&lowast;,&lowast;))
   nxc=ff.<a href="cpl.html#HI">HI1</a> <a href="cpl.html#DIV">DIV</a> 2; nyc=ff.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#DIV">DIV</a> 2; nzc=ff.<a href="cpl.html#HI">HI3</a> <a href="cpl.html#DIV">DIV</a> 2
   <a href="cpl.html#ARRAY">ARRAY</a>(-1..nxc+1,-1..nyc+1,0..nzc) <a href="cpl.html#OF">OF</a> VARS cf=0,crhs=0
   cbcond=<a href="cpl.html#REAL-operator">^</a>bcond(2&lowast;(&lowast;),2&lowast;(&lowast;),2&lowast;(&lowast;))

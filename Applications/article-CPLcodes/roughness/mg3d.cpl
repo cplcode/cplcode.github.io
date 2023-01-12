@@ -79,7 +79,7 @@ SUBROUTINE smooth(ARRAY(*,*,*) OF VARS field^,rhs; POINTER TO boundarypoint bcon
   REPEAT
 END smooth
 
-SUBROUTINE mg(ARRAY(*,*,*) OF VARS ff^,frsd; POINTER TO boundarypoint bcond(*,*,*))
+SUBROUTINE mg(ARRAY(*,*,*) OF VARS ff^,frsd; POINTER TO boundarypoint bcond^(*,*,*))
   nxc=ff.HI1 DIV 2; nyc=ff.HI2 DIV 2; nzc=ff.HI3 DIV 2
   ARRAY(-1..nxc+1,-1..nyc+1,0..nzc) OF VARS cf=0,crhs=0
   cbcond=^bcond(2*(*),2*(*),2*(*))
