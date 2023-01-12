@@ -1,2 +1,2 @@
-2023-01-09
-Added selection history to the editor. Added capability to redefine keywords. New multilingual localization package, where an example is provided in the Neapolitan dialect.
+2023-01-12
+Added selection history to the editor. Added capability to redefine keywords. New multilingual localization package, with an example provided for the Neapolitan dialect.
