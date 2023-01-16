@@ -413,7 +413,7 @@ ssize_t startpos(1..ny)
   oldtime=time; time=<a href="cpl.html#Assignment">~</a>+deltat
   <a href="cpl.html#IF">IF</a> last <a href="cpl.html#IF">THEN</a>
     E=<a href="cpl.html#Builtin">SQRT</a>{<a href="cpl.html#Looping-operator">SUM</a> NORM[d1n(j)&lowast;V(ix,iz,ny-1+j)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iz,j <a href="cpl.html#EXCEPT">EXCEPT</a> ix=0 <a href="cpl.html#AND">AND</a> iz=0}
-    u_yn=d1n&lowast;V(0,0,ny-1+&lowast;).u.<a href="cpl.html#REAL">REAL</a>
+    u_yn=d1n&lowast;V[0,0,ny-1+(-1..1)].u.<a href="cpl.html#REAL">REAL</a>
     <a href="cpl.html#WRITE">WRITE</a>              time, -u_yn, E:1.15 <span class=comment>! , V(0,0,0).u.REAL \n ./.</span>
 <span class=comment>!    WRITE TO time_file time, -u_yn, E:1.15 <span class=comment>! , V(0,0,0).u.REAL</span></span>
 <span class=comment>!    FLUSH time_file</span>

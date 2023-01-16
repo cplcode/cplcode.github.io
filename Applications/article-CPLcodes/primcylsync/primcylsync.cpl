@@ -401,7 +401,7 @@ LOOP timeloop WHILE time < t_max-deltat/2
   oldtime=time; time=~+deltat
   IF last THEN
     E=SQRT{SUM NORM[d1n(j)*V(ix,iz,ny-1+j)] FOR ALL ix,iz,j EXCEPT ix=0 AND iz=0}
-    u_yn=d1n*V(0,0,ny-1+*).u.REAL
+    u_yn=d1n*V[0,0,ny-1+(-1..1)].u.REAL
     WRITE              time, -u_yn, E:1.15 ! , V(0,0,0).u.REAL \n ./.
 !    WRITE TO time_file time, -u_yn, E:1.15 ! , V(0,0,0).u.REAL
 !    FLUSH time_file
