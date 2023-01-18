@@ -2245,6 +2245,8 @@ where &lt;INTEGER&gt; is any expression of type INTEGER and tag1, tag2,... tagn 
 </div><div class=page id="CASE-LOOP">
 Page: (cpl)CASE LOOP,  Next: <a href="#EXIT">EXIT</a>,  Prev: <a href="#CASE">CASE</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Multiple-choice loop</h3>
+Sometimes the need arises to program a state machine or automaton, composed of a set of code blocks (<q>states</q>) to be executed in an a priori unknown sequence where each block decides its immediate follower. For such needs CPL provides a multiple-choice loop.
+
 A multiple-choice loop is specified as
 
         CASE LOOP OF
@@ -2257,12 +2259,12 @@ A multiple-choice loop is specified as
         REPEAT &lt;label&gt;
         END CASE
 
-At the end (or in the interior, possibly inside an inner IF or CASE statement) of each labelled block, execution may continue at any other label as specified by the REPEAT statement. If the end of a block is reached without an intervening REPEAT statement, the CASE LOOP ends.
+At the end of each labelled block (or in its interior, possibly inside an inner IF or CASE statement), execution may continue at any other label as specified by the REPEAT statement. If the end of a block is reached without an intervening REPEAT statement, the CASE LOOP ends.
 
-The CASE LOOP construction is functionally equivalent to a CASE in a LOOP, e.g.
+While this construction may look like unstructured code allowing an arbitrary goto (and is actually implemented using one), it is actually just as structured as, and functionally equivalent to, a CASE inside a LOOP:
 
         ENUM(label1,label2,...labeln,exit) repeat=label1
-        LOOP WHILE repeat#exit
+        LOOP
           next=repeat; repeat=exit
           CASE next OF
           label1: &lt;block&gt;
@@ -2273,9 +2275,9 @@ The CASE LOOP construction is functionally equivalent to a CASE in a LOOP, e.g.
           labeln: &lt;block&gt;
             repeat=&lt;label&gt;
           END CASE
-        REPEAT
+        REPEAT WHILE repeat#exit
 
-CASE LOOP maintains statements in the same order, but is easier to read and is implemented without auxiliary variables. 
+In particular notice that jumping inside a block, rather than at its beginning, is not allowed. CASE LOOP maintains statements in the same order as the above compound code, but it is more efficient and easier to read. 
 </div><div class=page id="EXIT">
 Page: (cpl)EXIT,  Next: <a href="#END">END</a>,  Prev: <a href="#CASE">CASE</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> EXIT &lt;name&gt; transfers control past the end of the loop, module, function or subroutine labelled &lt;name&gt;. EXIT may be nested in an inner scope, such as a further loop or an IF statement.
