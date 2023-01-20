@@ -2261,7 +2261,7 @@ A multiple-choice loop is specified as
 
 At the end of each labelled block (or in its interior, possibly inside an inner IF or CASE statement), execution may continue at any other label as specified by the REPEAT statement. If the end of a block is reached without an intervening REPEAT statement, the CASE LOOP ends.
 
-While this construction may look like unstructured code allowing an arbitrary goto (and is actually implemented using one), it is actually just as structured as, and functionally equivalent to, a CASE inside a LOOP:
+While this construction may look like unstructured code allowing an arbitrary goto (and is in fact implemented using one), it is actually just as structured as, and functionally equivalent to, a CASE inside a LOOP:
 
         ENUM(label1,label2,...labeln,exit) repeat=label1
         LOOP
@@ -2277,7 +2277,7 @@ While this construction may look like unstructured code allowing an arbitrary go
           END CASE
         REPEAT WHILE repeat#exit
 
-In particular notice that jumping inside a block, rather than at its beginning, is not allowed. CASE LOOP maintains statements in the same order as the above compound code, but it is more efficient and easier to read. 
+In particular notice that jumping inside a block, as opposed to its beginning, is not allowed. CASE LOOP maintains statements in the same order as the above compound code, but it is more efficient and easier to read. 
 </div><div class=page id="EXIT">
 Page: (cpl)EXIT,  Next: <a href="#END">END</a>,  Prev: <a href="#CASE">CASE</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> EXIT &lt;name&gt; transfers control past the end of the loop, module, function or subroutine labelled &lt;name&gt;. EXIT may be nested in an inner scope, such as a further loop or an IF statement.
