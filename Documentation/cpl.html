@@ -2247,40 +2247,40 @@ Page: (cpl)CASE LOOP,  Next: <a href="#EXIT">EXIT</a>,  Prev: <a href="#CASE">CA
 <hr> <h3>Multiple-choice loop</h3>
 Sometimes the need arises to program a state machine or automaton, composed of a set of code blocks (<q>states</q>) to be executed in an a priori unknown sequence where each block decides its immediate follower. For such needs CPL provides a multiple-choice loop.
 
-A multiple-choice loop is specified as
+A multiple-choice loop is a hybrid between a <a href="#CASE">CASE</a> and a <a href="#LOOP">LOOP</a>, specified as
 
         CASE LOOP OF
-        label1: &lt;block&gt;
-        REPEAT &lt;label&gt;
-        label2: &lt;block&gt;
-        REPEAT &lt;label&gt;
+        name1: &lt;block&gt;
+        REPEAT &lt;name&gt;
+        name2: &lt;block&gt;
+        REPEAT &lt;name&gt;
         ..............
-        labeln: &lt;block&gt;
-        REPEAT &lt;label&gt;
+        namen: &lt;block&gt;
+        REPEAT &lt;name&gt;
         END CASE
 
-At the end of each labelled block (or in its interior, possibly inside an inner IF or CASE statement), execution may continue at any other label as specified by the REPEAT statement. Each labelled block is independent and local variables get out of scope when this happens (but variables of an outer, enclosing block are as always shared). If the end of a block is reached without an intervening REPEAT statement, the CASE LOOP ends.
+At the end of each named block (or in its interior, possibly inside an inner IF or CASE statement), execution may continue at any other name as specified by the REPEAT statement. Each named block is its own scope, and local variables cease to exist at the REPEAT (like at an <a href="#EXIT">EXIT</a>) statement (but variables of an outer, enclosing scope are, as always, shared). If the end of a block is reached without an intervening REPEAT statement, the CASE LOOP ends.
 
-While this construction may look like unstructured code allowing an arbitrary goto (and is in fact implemented using one), it actually maintains statements in the same order as, and is therefore no less or more structured than, a CASE inside a LOOP:
+While this construct may look like unstructured code allowing an arbitrary goto (and is in fact implemented using one), it actually maintains statements in the same order as, and is thus no less or more structured than, a CASE inside a LOOP:
 
-        ENUM(label1,label2,...labeln,exit) repeat=label1
+        ENUM(name1,name2,...namen,exit) repeat=name1
         LOOP
           next=repeat; repeat=exit
           CASE next OF
-          label1: &lt;block&gt;
-            repeat=&lt;label&gt;
-          label2: &lt;block&gt;
-            repeat=&lt;label&gt;
+          name1: &lt;block&gt;
+            repeat=&lt;name&gt;
+          name2: &lt;block&gt;
+            repeat=&lt;name&gt;
           ..............
-          labeln: &lt;block&gt;
-            repeat=&lt;label&gt;
+          namen: &lt;block&gt;
+            repeat=&lt;name&gt;
           END CASE
         REPEAT WHILE repeat#exit
 
-In particular notice that jumping to the inside of a labelled block, as opposed to its beginning, is not allowed. The two code excerpts above are functionally equivalent, but the first is more efficient and easier to write and read. 
+In particular notice that jumping to the inside of a named block, as opposed to its beginning, is not allowed. The two constructs above are functionally equivalent, but the first is more efficient and easier to write and read. 
 </div><div class=page id="EXIT">
 Page: (cpl)EXIT,  Next: <a href="#END">END</a>,  Prev: <a href="#CASE">CASE</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> EXIT &lt;name&gt; transfers control past the end of the loop, module, function or subroutine labelled &lt;name&gt;. EXIT may be nested in an inner scope, such as a further loop or an IF statement.
+<hr> EXIT &lt;name&gt; transfers control past the end of the LOOP, MODULE, FUNCTION or SUBROUTINE labelled &lt;name&gt;, terminating the corresponding scope and deallocating local variables. EXIT may be nested in an inner scope, such as a further loop or an IF statement.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
