@@ -175,7 +175,7 @@ In the way of example, in order to:
 
 Esc !, respectively Esc @, turns the current selection to all uppercase or to all lowercase letters.
 
-The copy-and-paste functionality of the underlying xterm-compatible terminal is also available, and necessary if you want to copy some text to/from other X windows. This is accessed by pressing Shift together with the corresponding mouse button (left button to select, center button to paste). In addition, if the xsel program is installed, Esc ' copies the current selection to the X clipboard. Shift-Insert pastes from the X clipboard at the current cursor position. 
+The copy-and-paste functionality of the underlying xterm-compatible terminal is also available, and necessary if you want to copy some text to/from other X windows. This is accessed by pressing Shift together with the corresponding mouse button (left button to select, center button to paste). Shift-Insert pastes from the X clipboard at the current cursor position. Notice that when the editor is run remotely, the X clipboard involved is the one on the machine where the terminal is running, which probably is what is wanted anyway. In addition, if the xsel program is installed, Esc ' copies the current selection to the X clipboard (on the remote machine, unfortunately, when not the same; for those who know, this feature could be done properly once OSC 52 becomes widely available). 
 </div><div class=page id="Indentation-and-completion">
 Page: (editor)Indentation and completion, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>CPL syntax-sensitive indentation and completion</h4>
