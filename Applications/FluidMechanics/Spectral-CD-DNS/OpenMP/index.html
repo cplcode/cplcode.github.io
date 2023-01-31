@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Index of FluidMechanics/Spectral-CD-DNS/OpenMP/</title>
 <style> body{font-family:ui-monospace,monospace,sans-serif;font-size:1em}
-body span{border-bottom:solid LightGrey 1px;}
+h1{font:inherit;border-bottom:solid LightGrey 1px;display:inline}
 .cpl{color:green}
 .htmlink{color:Blue}
 .pdf{color:hotpink}
@@ -10,7 +10,7 @@ a{color:Blue}
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head><body translate="no">
-<span>Index of <strong>FluidMechanics/Spectral-CD-DNS/OpenMP/</strong></span>
+<h1>Index of <strong>FluidMechanics/Spectral-CD-DNS/OpenMP/</strong></h1>
 <p>README: <br>- compile with cpl make scddns -fopenmp<br>- if -fopenmp is omitted, the serial version is obtained instead of the OpenMP version<br>- run as scddns [&lt;input file&gt;]<br>- &lt;input file&gt; defaults to scddns0.dat if omitted<br>- the input file contains a number of parameters of the form name=value, optionally followed by a velocity field as binary data<br>- alternately an additional parameter of the form Vfield=&lt;filename&gt; can specify an input file from which to take the binary data. This other file may contain different dimensions nx,ny,nz (as well as different values of other parameters such as the Reynolds number), and in such case the initial velocity field is automatically interpolated.<br>- if no binary data or alternate file are present, a random initial field is generated.<br>- output velocity fields, sequentially numbered as scddns&lt;num&gt;.dat, are in the same format as the input file; any one of them can be used to restart the computation.<br></p><ul>
 <li><a href="../" class=directory>../</a></li>
 <li><a href="scddns0.dat" rel=nofollow>scddns0.dat</a></li>
