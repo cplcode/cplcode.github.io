@@ -159,7 +159,7 @@ Selection of a text area is achieved either by keeping the left mouse button pre
 
 Whenever text is selected, the Insert key (or Esc i, or Ctrl-v for those who are accustomed to it) inserts (pastes) the selected text at the current cursor position; no <q>copy</q> operation is needed as buffer coincides with selection. The Backspace or Delete key (also aliased to Esc d, Esc x, Ctrl-x) erases the selected text if pressed immediately after a selection. (At any other time these keys erase a single character, the preceding one for Backspace.) Deleted text remains invisibly selected and can be re-inserted after its deletion, up until a new selection is performed. Typing a new character, or pressing Insert, immediately after a selection without any intervening cursor movement replaces the current selection. In this case the function of Insert changes to inserting the butlast selection. Esc m moves (cuts and pastes) the butlast onto the last selection. Pressing the middle mouse button achieves the same purpose as Esc i; the right mouse button the same purpose as Esc m.
 
-A special feature of the CPL editor is a selection history buffer: right after an insertion, pressing Esc i or Insert again replaces the current selection by the historically former selection. Pressing Esc i or Insert multiple times cycles through the last three selections. In practice, if after you type Insert what you see is not what you want, just try typing Insert again before undoing.
+A special feature of the CPL editor is a selection history buffer: right after an insertion, pressing Esc i or Insert again replaces the current selection by the historically former selection. Pressing Esc i or Insert multiple times cycles through the last three selections.
 
 In the way of example, in order to:
 
@@ -173,9 +173,11 @@ In the way of example, in order to:
  type and replace: type something, move, select, insert.
  insert the former selection: select, move, select, move, insert, insert.
 
-Esc !, respectively Esc @, turns the current selection to all uppercase or to all lowercase letters.
+If so many rules look complicated, just think of it as <q>when you want to set down something that you have recently selected, written or deleted, try to press Insert, and if what you see is not what you want, press Insert again.</q>
 
-The copy-and-paste functionality of the underlying xterm-compatible terminal is also available, and necessary if you want to copy some text to/from other X windows. This is accessed by pressing Shift together with the corresponding mouse button (left button to select, center button to paste). Shift-Insert pastes from the X clipboard at the current cursor position. Notice that when the editor is run remotely, the X clipboard involved is the one on the machine where the terminal is running, which probably is what is wanted anyway. In addition, if the xsel program is installed, Esc ' copies the current selection to the X clipboard (on the remote machine, unfortunately, when not the same; for those who know, this feature could be done properly once OSC 52 becomes widely available). 
+The copy-and-paste functionality of the underlying xterm-compatible terminal is also available, and necessary if you want to copy some text to/from other X windows. This is accessed by pressing Shift together with the corresponding mouse button (left button to select, center button to paste). Shift-Insert pastes from the X clipboard at the current cursor position. Notice that when the editor is run remotely, the X clipboard involved is the one on the machine where the terminal is running, which probably is what is wanted anyway. In addition, if the xsel program is installed, Esc ' copies the current selection to the X clipboard (on the remote machine, unfortunately, when not the same; for those who know, this feature could be done properly once OSC 52 becomes widely available).
+
+Esc !, respectively Esc @, turns the current selection to all uppercase or to all lowercase letters. 
 </div><div class=page id="Indentation-and-completion">
 Page: (editor)Indentation and completion, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>CPL syntax-sensitive indentation and completion</h4>
