@@ -140,9 +140,23 @@ A scripting language or script language is a programming language that is usuall
     <h2 itemprop="name">And a code editor?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-  <a href="https://CPLcode.net">CPL</a> includes a <a href="https://CPLcode.net/Documentation/editor.html#Top">text editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key. <a href="https://CPLcode.net/Documentation/cpl.html#cpl-i">Interactive cpl</a> and the <a href="https://CPLcode.net/Documentation/editor.html#Top">editor</a> in fact comprise a single integrated development environment: its command-console and editor faces can be switched at the touch of a key. Both views
+  <a href="https://CPLcode.net">CPL</a> includes a <a href="https://CPLcode.net/Documentation/editor.html#Top">text editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key, unlimited undo and a multiple insertion buffer. <a href="https://CPLcode.net/Documentation/cpl.html#cpl-i">Interactive cpl</a> and the <a href="https://CPLcode.net/Documentation/editor.html#Top">editor</a> in fact comprise a single integrated development environment: its command-console and editor faces can be switched at the touch of a key. Both views
   display inside a terminal, with its minimalist look and feel; by so doing they allow for swift use over a remote connection, and even in
   a smartphone's ssh client if in a pinch one feels the need for it.
+      </div>
+    </div>
+  </div>
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 itemprop="name">Does the editor offer autocompletion, unlimited undo and a multiple selection buffer?</h2>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      The <a href="https://CPLcode.net/Documentation/editor.html#Top">CPL editor</a> features Tab autocompletion and CPL syntax autocompletion. Pressing Tab autocompletes the current keyword or identifier. Successive tabs move forward along
+ the list of available completions; Shift-Tab moves backwards. A hint is shown, when appropriate, of what autocompletion is available. Pressing Enter (new line) triggers the autocompletion of recognized compound CPL statements.
+      <p>Unlimited undo and redo functionality is supported, of a more extended kind than in most editors. Memory of the undone edits is retained
+even when further edits take place after an undo, but the user can choose whether to see them selectively.</p>
+      <p>The <a href="https://CPLcode.net/Documentation/editor.html#Top">CPL editor</a> features a multiple-selection buffer: right after an insertion,
+    pressing Esc i or Insert again replaces the current selection by the
+    historically former selection. You can recall and insert anything that you have recently selected, written or deleted; just try pressing Insert, and if what you see is not what you want, press Insert again.</p>
       </div>
     </div>
   </div>
