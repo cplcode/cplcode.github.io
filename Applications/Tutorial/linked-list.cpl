@@ -10,7 +10,7 @@ USE gnuplot
 TYPE CELL=STRUCTURE(POINTER TO CELL next; INTEGER col; REAL var, rhs)
 !   declare a new STRUCTURE type. Keyword "TYPE" is optional here
 
-POINTER TO CELL RowStart(0..20) !   declare row pointers
+POINTER TO CELL RowStart(0..20) !   declare array of row pointers
 LOOP FOR ALL i !   allocate and initialize to zero the sparse-array structures
   POINTER TO POINTER TO CELL p=RowStart(i)
   LOOP FOR j=i TO i+20

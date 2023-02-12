@@ -348,7 +348,7 @@ If you have no access to /usr/local/, or prefer to avoid root privileges even if
 Page: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#multi-user">multi-user</a>, Up: <a href="#Installation">Installation</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Common installation problems and their solution</h3>
 <h4>cpl: command not found</h4>
-If the initial setup did not report any errors, and <q>$HOME/fri/cpl</q> or <q>/usr/local/fri/cpl</q> do work, this is likely to be a PATH problem. cpl setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may find it easier to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions for how to modify the PATH variable.
+If the initial setup did not report any errors, and <q>$HOME/fri/cpl</q> or <q>/usr/local/fri/cpl</q> do work, this is likely to be a PATH problem. cpl setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may find it easier to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions (man sh) for how to modify the PATH variable.
 
 <h4>My program compiles but does not execute</h4>
 Is . in your PATH? Many Linux distributions do not by default have your current working directory in the set of automatically searched file paths. Solutions:
@@ -401,7 +401,7 @@ The <q>edit</q> command is used as an alias by more than one editor, including v
 If to have <q>edit</q> pop up a different editor is your preferred behaviour, just delete the bin/edit symbolic link. You will still be able to access the cpl editor as <q>cpl edit</q>.
 
 <h4>My .cpl source files get rejected when sent as email attachments</h4>
-A number of popular email servers automatically reject files with the .cpl extension (amid a list of about 50 extensions, even when included in compressed archives) because this extension is shared with MS Windows Control PaneL files. This precaution is overkill insofar as it is based on extension only, but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .cplcode or .txt) extension before sending, and rename them back on the receiving end; or else do as you would for a large attachment: upload your file(s) to a cloud service and email its shareable link. 
+A number of popular email servers automatically reject files with the .cpl extension (amid a list of about 50 extensions, even when included in compressed archives) because this extension is shared with MS Windows Control PaneL files. This precaution is overkill insofar as it is based on extension only, but we cannot change the server policy; a possible remedy is to rename your files to another (e.g., .cplcode or .txt) extension before sending, and rename them back on the receiving end; or else do as you would for a large attachment: upload your files to a cloud service and email their shareable link. 
 </div><div class=page id="Syntax">
 Page: (cpl)Syntax,  Next: <a href="#Functions">Functions</a>,  Prev: <a href="#Installation">Installation</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>The CPL programming language syntax</h2>

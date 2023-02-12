@@ -22,7 +22,7 @@
 <a href="cpl.html#TYPE">TYPE</a> CELL=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL next; <a href="cpl.html#INTEGER">INTEGER</a> col; <a href="cpl.html#REAL">REAL</a> var, rhs)
 <span class=comment>!   declare a new STRUCTURE type. Keyword "TYPE" is optional here</span>
 
-<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL RowStart(0..20) <span class=comment>!   declare row pointers</span>
+<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL RowStart(0..20) <span class=comment>!   declare array of row pointers</span>
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>!   allocate and initialize to zero the sparse-array structures</span>
   <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> CELL p=RowStart(i)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> j=i <a href="cpl.html#TO">TO</a> i+20
