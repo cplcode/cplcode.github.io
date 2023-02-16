@@ -483,7 +483,7 @@ Separately compiled source files can be used with the statement
 
 <q>.cpl</q> is automatically appended if &lt;filename&gt; contains no dot. In addition, the directory of the USEd file becomes the present working directory for other references nested in it.
 
-The USEd file is logically treated as if it were inserted in the program sequence in place of the <q>USE</q> statement, i.e. just as if <a href="#INCLUDE">INCLUDE</a> were in place. However, in reality the file is either compiled into a separate object file or, if a more recent object file of the same name already exists, not compiled at all. In the latter case the CPL compiler reads the outermost block only from the USEd source file and skips the inner block contents altogether, generating the same effect as a Modula-2 definition file or a C header file.
+The USEd file is logically treated as if it were inserted in the program sequence in place of the <q>USE</q> statement, i.e. just as if <a href="#INCLUDE">INCLUDE</a> were in place. However, in reality the file is either compiled into a separate object file or, if a more recent object file of the same name already exists, not compiled at all. In the latter case the CPL compiler reads the outermost block only from the USEd source file and skips the inner block contents altogether, producing the same effect as a Modula-2 definition file or a C header file.
 
 In case actual headers must be generated in order to save space (or to distribute a library without source code) it is possible to USE a source file with empty subroutine bodies, since the compiler would not read the subroutine bodies anyway, provided the object file is artificially given a more recent date (for instance, through <a href="https://manpages.debian.org/touch.html">manpages.debian.org/touch.html</a>). Missing this, empty subroutines will be recompiled with obviously unwanted results.
 
@@ -1076,9 +1076,9 @@ alone on a new line, where DELIMITER can be any word that is not to be part of t
 
 Where appropriate, a single-character literal is implicitly converted to a CHAR constant, which is in turn implicitly converted to an INTEGER ASCII code. Strings may also be concatenated among themselves and with variables, see <a href="#String">conversion:String</a>.
 
-Standard C functions returning a char&lowast; (<a href="https://manpages.debian.org/string">manpages.debian.org/string</a>) are also interpreted as generating a STRING value. Just as for all <a href="#C-interface">C interface</a> calls, it is the programmer's responsibility to ensure that such C library functions are used consistently and to free any possible malloc-ated space where appropriate.
+Standard C functions returning a char&lowast; (<a href="https://manpages.debian.org/string">manpages.debian.org/string</a>) are also interpreted as producing a STRING value. Just as for all C library functions, it is the programmer's responsibility to ensure that such functions are used consistently and to free any malloc-ated space where appropriate.
 
-As an experimental feature, and an exception to the general rule for ARRAY(&lowast;), STRING VARIABLEs may also be declared and assigned a value. In the present implementation STRINGs embedded as STRUCTURE fields or ARRAY elements may generate unwanted effects when the container is assigned as a whole.
+As an experimental feature, and an exception to the general rule for ARRAY(&lowast;), STRING VARIABLEs may also be declared and assigned a value. Memory space for such strings is automatically allocated and freed without the programmer's intervention.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>Predefined strings are:</th></tr>

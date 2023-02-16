@@ -1,6 +1,6 @@
 WRITE "Hello world!"
 
-! that's all, folks: a single-liner that doesn't require many explanations.
+! that's all, folks: a one-liner that doesn't require many explanations.
 
 ! If this is your first CPL program, download this (or any of the other
 ! tutorial examples) to a working directory in your computer, compile it
