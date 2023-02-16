@@ -1,2 +1,2 @@
-2023-02-13
-minor corrections.
+2023-02-16
+assignment of compound types containing STRING fields.
