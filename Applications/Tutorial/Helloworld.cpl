@@ -1,11 +1,15 @@
+#!/usr/bin/env cpl
+
 WRITE "Hello world!"
 
 ! that's all, folks: a one-liner that doesn't require many explanations.
 
 ! If this is your first CPL program, download this (or any of the other
-! tutorial examples) to a working directory in your computer, compile it
-! with the command "cpl make Helloworld", then execute "./Helloworld".
-! Or, compile and execute all at once with "cpl run Helloworld".
+! tutorial examples) to a working directory in your computer, and then either
+! 1) compile it with "cpl make Helloworld", then execute "./Helloworld"; or
+! 2) compile and execute all at once with "cpl run Helloworld"; or
+! 3) when #!/usr/bin/env cpl appears on the first line and the execute
+!    permission is turned on, you can just execute Helloworld.cpl itself.
 
 ! In case of trouble, please read "Troubleshooting" at the end of the Tutorial.
 
