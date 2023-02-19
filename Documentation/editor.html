@@ -121,7 +121,7 @@ Most used editing keys:
  - Tab: autocomplete keyword or identifier. Successive tabs move forward along
    the list of available completions; Shift-Tab moves backwards.
  - Enter: Enter new line, and trigger possible autocompletion of CPL syntax
- - Esc =: Autoindent current line or selection (<a href="#Indentation-and-completion">Indentation and completion</a>)
+ - Esc =: Autoindent current line or selection (<a href="#Indent-and-complete">Indent and complete</a>)
  - F1, Esc `: switch in and out of command-line mode.
  - F2, Esc -, Ctrl-: repeat last command.
  - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
@@ -147,13 +147,13 @@ Most prompts and menus can be aborted by pressing Esc &lowast;twice&lowast;.
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#Select">Select</a>:</td><td>text selection, insertion and deletion</td></tr>
-<tr><td><a href="#Indentation-and-completion">Indentation and completion</a>:</td><td>CPL syntax-sensitive indentation and completion</td></tr>
+<tr><td><a href="#Indent-and-complete">Indent and complete</a>:</td><td>CPL syntax-sensitive indentation and completion</td></tr>
 <tr><td><a href="#Find">Find</a>:</td><td>find and replace functionality</td></tr>
 <tr><td><a href="#Undo">Undo</a>:</td><td>and redo</td></tr>
 </table></nav>
 
 </div><div class=page id="Select">
-Page: (editor)Select, Next: <a href="#Indentation-and-completion">Indentation and completion</a>, Prev: <a href="#full-screen">full-screen</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (editor)Select, Next: <a href="#Indent-and-complete">Indent and complete</a>, Prev: <a href="#full-screen">full-screen</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Select, Insert and Delete</h4>
 Selection of a text area is achieved either by keeping the left mouse button pressed while sweeping, or by pressing shift together with arrow keys. Selection can apply to the text enclosed between the starting and ending selected positions or to a rectangular tile with the given corners (a.k.a. selection by columns). Esc t toggles in and out of tile mode. Esc w or double-clicking the mouse selects the word under the cursor; if applied to an opening or closing bracket, Esc w or double clicking selects the entire parenthesis. Esc # or triple clicking selects the line under the cursor. Esc <q>s</q>, or clicking save, when some text is selected saves the current selection rather than the entire file. When some text is selected, the character count of the selection is displayed in the status line in place of the current line number.
 
@@ -178,8 +178,8 @@ If so many rules look complicated, just remember that you can recall and insert 
 The copy-and-paste functionality of the underlying xterm-compatible terminal is also available, and necessary if you want to copy some text to/from other windows. This is accessed by pressing Shift together with the corresponding mouse button (left button to select, center button to paste). Shift-Insert also pastes from the clipboard at the current cursor position. Notice that when the editor is run remotely, involved is the one of the two clipboards that resides on the machine where the terminal is running, which probably is what you want anyway. In addition, if the xsel program is installed, Esc ' copies the current selection to the clipboard (on the remote machine, unfortunately, when not the same; for those who know, this feature to be done properly would require OSC 52 support; writing only would be enough).
 
 Esc !, respectively Esc @, turns the current selection to all uppercase or to all lowercase letters. 
-</div><div class=page id="Indentation-and-completion">
-Page: (editor)Indentation and completion, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+</div><div class=page id="Indent-and-complete">
+Page: (editor)Indent and complete, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>CPL syntax-sensitive indentation and completion</h4>
 When a .cpl file is being edited, pressing Enter at the end of a freshly modified line automatically:
 
