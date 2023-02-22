@@ -1064,17 +1064,17 @@ Page: (cpl)STRING, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#A
 <hr> <h3>STRINGs</h3>
 Type declaration STRING is a synonym for ARRAY(&lowast;) OF <a href="#CHAR">CHAR</a>, and can be used wherever the last can. In particular, a STRING can be subscripted or <a href="#subarray">subarray</a> extracted, and its bounds and length are available through functions <a href="#LO">LO</a>, <a href="#HI">HI</a>, and <a href="#LENGTH">LENGTH</a>. STRING valued constants (which are always indexed starting from 0) can be generated either at compile time, as quoted strings of characters, or dynamically through <a href="#String">String</a> concatenation, and can either be given a name through <a href="#CONSTANT">implicit:CONSTANT</a>. declaration or passed as actual parameters to function calls and further string concatenations.
 
-Quoted strings of characters, also known as literals, are delimited by either double or single quotes, in matching pairs. A single quote may appear inside a literal delimited by double quotes and vice versa. In addition, C escape sequences are literals, but contrary to C must be unquoted.  The empty string <q></q> is also a valid (zero-character-long) STRING value. Finally, in bash-like syntax, multi-line literals may be introduced by
+Quoted strings of characters, also known as literals, are delimited by double quotes. They are 8-bit safe and can contain any character, including UTF-8 or similar multibyte characters, except <q>, newline and null. In addition, C escape sequences are literals, but contrary to C must be unquoted. A </q> character or a newline can be included in a literal as a concatenated escape sequence outside quotes. As an additional bash-like notation, multi-line literals containing quotes and newlines may alternatively be introduced by
 
-	&lt;&lt; DELIMITER
+	&lt;&lt;DELIMITER
 
 and ended by
 
 	DELIMITER
 
-alone on a new line, where DELIMITER can be any word that is not to be part of the literal itself.
+alone on a new line, where DELIMITER can be any word that is not to be part of the literal itself. The null character is used for termination and cannot appear anywhere inside a STRING. The empty string <q></q> is also a valid (zero-character-long) STRING value.
 
-Where appropriate, a single-character literal is implicitly converted to a CHAR constant, which is in turn implicitly converted to an INTEGER ASCII code. Strings may also be concatenated among themselves and with variables, see <a href="#String">conversion:String</a>.
+Where appropriate, a single-byte literal is implicitly converted to a CHAR constant, which is in turn implicitly converted to an INTEGER ASCII code. Strings may also be concatenated among themselves and with variables, see <a href="#String">conversion:String</a>.
 
 Standard C functions returning a char&lowast; (<a href="https://manpages.debian.org/string">manpages.debian.org/string</a>) are also interpreted as producing a STRING value. Just as for all C library functions, it is the programmer's responsibility to ensure that such functions are used consistently and to free any malloc-ated space where appropriate.
 
@@ -2506,7 +2506,7 @@ This has the effect of dynamically adding new statement constructions and for al
 </div><div class=page id="cpl-info">
 Page: (cpl)cpl info,  Next: <a href="#mpicpl">mpicpl</a>,  Prev: <a href="#FRI-SECTION">FRI SECTION</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>info manual</h3>
-A CPL manual in info format is available through GNU info. Its reading command is encapsulated as <q>cpl info</q>. Typing <q>cpl info</q> with no arguments brings you to the head of the file you are now reading. Typing <q>cpl info &lt;keyword&gt;</q> brings you help about a specific CPL keyword. 
+A CPL manual in info format is available through GNU info. Its reading command is encapsulated as <q>cpl info</q>. Typing <q>cpl info</q> with no arguments takes you to the head of the file you are now reading. Typing <q>cpl info &lt;keyword&gt;</q> brings you help about a specific CPL keyword. 
 </div><div class=page id="mpicpl">
 Page: (cpl)mpicpl,  Next: <a href="#cpl-i">cpl i</a>,  Prev: <a href="#cpl-info">cpl info</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Compile mpi program</h3>
@@ -2520,7 +2520,7 @@ The interactive CPL interpreter, accepting expressions, statements or commands a
 
 	cpl i
 
-(or just <q>cpl</q> when there are no arguments). Interactive cpl's syntax is totally compatible with CPL's. Any valid CPL statement is executable at the cpl&gt; prompt. As an extension, when an expression is typed alone at the cpl&gt; prompt a WRITE statement is implied, thus e.g. <q>2+2</q> is equivalent to <q>WRITE 2+2</q> and outputs <q>4</q>. In addition when a command is not recognized, it gets passed to the unix shell before giving up. A shell command can also be given explicitly by prefixing it with <q>:</q>. <q>?</q> brings you to this manual. 
+(or just <q>cpl</q> when there are no arguments). Interactive cpl's syntax is totally compatible with CPL's. Any valid CPL statement is executable at the cpl&gt; prompt. As an extension, when an expression is typed alone at the cpl&gt; prompt a WRITE statement is implied, thus e.g. <q>2+2</q> is equivalent to <q>WRITE 2+2</q> and outputs <q>4</q>. In addition when a command is not recognized, it gets passed to the unix shell before giving up. A shell command can also be given explicitly by prefixing it with <q>:</q>. <q>?</q> brings this manual to you. 
  <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
@@ -2559,7 +2559,7 @@ Page: (cpl)cpl i commands,  Next: <a href="#Library">Library</a>,  Prev: <a href
 </td></tr>
 <tr><td colspan="2">When either an interpreted or a compiled program is running under interactive </td></tr>
 <tr><td colspan="2">cpl, <a href="#command-interpretation">command interpretation</a> becomes available inside the program, and </td></tr>
-<tr><td colspan="2">typing ctrl-C brings up an <a href="#interactive-session">interactive session</a> instead of stopping it.
+<tr><td colspan="2">typing ctrl-C opens up an <a href="#interactive-session">interactive session</a> instead of stopping it.
 
 </td></tr>
 <tr><td colspan="2">Console input functionality is extended under <a href="#cpl-i">cpl i</a>. An interactive cpl </td></tr>

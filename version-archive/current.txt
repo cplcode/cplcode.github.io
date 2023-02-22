@@ -1,2 +1,2 @@
-2023-02-21
-new UTF-8 support in both the language and editor: literal strings and INLINE descriptors can contain UTF-8 characters, and the editor can manage and align single-width UTF-8 characters displayed by the terminal.
+2023-02-22
+minor corrections.
