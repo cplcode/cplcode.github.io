@@ -17,28 +17,38 @@
   </head>
   <body translate="no">
   <a href="./"><img id=seal src="images/CPL-logo.png" alt="CPL"></a>
-  <div class=page>
-    <h1>CPL-on-Macintosh howto</h1>
+  <div class=page itemscope itemtype="https://schema.org/HowTo">
+    <h1 itemprop="name">CPL-on-Macintosh howto</h1>
     <p>Apple macOS or OS X is a proprietary unix operating system, derived from the old BSD unix, and has all the requirements for CPL tools and programs to run natively on it. However the classical unix programming tools are not part of the base system, but they are offered by Apple as a separate <q>Xcode</q> development environment. In addition, although Xcode includes a compiler named <code>gcc</code>, this is an Apple-modified version (also known as <code>clang</code>) and lacks some gcc extensions used by CPL. Unmodified <code>gcc</code> can be installed through a third-party package manager such as <a href="http://brew.sh">Homebrew</a>. Hence come the following</p>
-    <h3>Step by step instructions to use CPL on Apple macOS</h3>
+    <h3 itemprop="headline">Step by step instructions to use CPL on Apple macOS</h3>
     <p>(partly modelled after <a href="https://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/">https://osxdaily.com/2014/02/12/install-command-line-tools-mac-os-x/</a>)</p>
-    <dl>
-    <dt>1 - Open a terminal:</dt>
-    <dd> If you do not already have the terminal icon in your Dock, enter <q>terminal</q> in the search box and click <q>terminal.app</q>.</dd>
-    <dt>2 - Install Command Line Tools:</dt>
-    <dd><p>In a terminal execute the following click-to-copy line:</p>
+    <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+    <dt itemprop="name">1 - Open a terminal:</dt>
+    <dd itemprop="text"> If you do not already have the terminal icon in your Dock, enter <q>terminal</q> in the search box and click <q>terminal.app</q>.</dd>
+    </dl>
+    <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+    <dt itemprop="name">2 - Install Command Line Tools:</dt>
+    <dd itemprop="text"><p>In a terminal execute the following click-to-copy line:</p>
     <pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">xcode-select --install</pre>
     <p>A dialog box will pop up asking if you want to install the Command Line Developer Tools. Accept. If the box does not appear, you probably have them already. Alternately you can install the full Xcode development environment from the App Store, but only do so if you want this much larger package for its own purposes.</p></dd>
-    <dt>3 - Install the Homebrew package manager:</dt>
-    <dd>Follow instructions on the <a href="https://brew.sh">brew.sh</a> website.</dd>
-    <dt>4 - Install original <code>gcc</code> (the one provided by Apple is an alias for their own <code>clang</code>):</dt>
-    <dd><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">brew install gcc</pre>
+    </dl>
+    <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+    <dt itemprop="name">3 - Install the Homebrew package manager:</dt>
+    <dd itemprop="text">Follow instructions on the <a href="https://brew.sh">brew.sh</a> website.</dd>
+    </dl>
+    <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+    <dt itemprop="name">4 - Install original <code>gcc</code> (the one provided by Apple is an alias for their own <code>clang</code>):</dt>
+    <dd itemprop="text"><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">brew install gcc</pre>
     </dd>
-    <dt>5 - Download and unpack the CPL archive, with the <code>CC</code> environment variable pointing at the brew-installed C compiler (currently named <code>gcc-12</code>):
-    <pre class=copyable title="click to copy" onClick="CopyToClipboard(this)" id="unpack">curl -fsS -o /tmp/unpack-cpl.sh https://CPLcode.net/version-archive/unpack-cpl.sh && env CC=gcc-12 sh /tmp/unpack-cpl.sh</pre></dt>
-    <dd></dd>
-    <dt>6 - To activate CPL graphics, install gnuplot. You can do it via Homebrew:</dt>
-    <dd><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">brew install gnuplot</pre>
+    </dl>
+    <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+    <dt itemprop="name">5 - Download and unpack the CPL archive, with the <code>CC</code> environment variable pointing at the brew-installed C compiler (currently named <code>gcc-12</code>):</dt>
+    <dd itemprop="text"><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)" id="unpack">curl -fsS -o /tmp/unpack-cpl.sh https://CPLcode.net/version-archive/unpack-cpl.sh && env CC=gcc-12 sh /tmp/unpack-cpl.sh</pre></dt>
+    </dd>
+    </dl>
+    <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
+    <dt itemprop="name">6 - To activate CPL graphics, install gnuplot. You can do it via Homebrew:</dt>
+    <dd itemprop="text"><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">brew install gnuplot</pre>
     <p>or alternately find contributed macOS binaries on <a href="http://gnuplot.info">the official gnuplot site</a>.</p></dd>
     </dl>
     <p><strong>You are all set!</strong> Please notice that you may have to repeat steps 2 and 4 after a macOS system update. Also notice that running a macOS-compiled CPL executable on bare macOS does not need any of the above procedure (except for installing gnuplot if graphics are wanted). You only need to install the CPL tools if you want to edit, compile or interpret a CPL program.</p>
