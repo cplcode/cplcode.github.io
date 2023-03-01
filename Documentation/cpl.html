@@ -1211,13 +1211,13 @@ A function variable may be specified through the type declarator
 	FUNCTION( &lt;argument declarations&gt; )-&gt;&lt;type&gt; or else
 	&lt;type&gt; FUNCTION( &lt;argument declarations&gt; )
 
-the first form being mandatory when the result &lt;type&gt; is a pointer type and thus ambiguity can arise.
+the first form being mandatory when the result has a pointer or array &lt;type&gt; and thus ambiguity can arise.
 
 These type declarators can be used, just like all other type declarators, to declare variables and formal parameters, or as a part of new compound types. In addition to being assigned or compared to each other, subroutine variables can be assigned the name of a compatible subroutine as their value or as the actual parameter, and can later be called with the same syntax as normal (constant) subroutines and functions. 
 </div><div class=page id="Implicit-function-declaration">
 Page: (cpl)Implicit function declaration, Next: <a href="#Type-identity">Type identity</a>, Prev: <a href="#Subroutine-type">Subroutine type</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Implicit declaration of functions or subroutines</h3>
-Where a subroutine or function variable is expected (in an assignment or as an actual parameter to a call expecting a function-type argument), in alternative to the name of an existing function the implicit definition of a function can be passed. Such an implicit declaration is formed by the body of the function as it would appear after the = sign in a short-form declaration (<a href="#FUNCTION">short form:FUNCTION</a>), with the formal parameters identified by the names defined in their original function-variable declaration. For example,
+Where a subroutine or function variable is expected (in an assignment or as an actual parameter to a call expecting a function-type argument), in alternative to the name of an existing function the implicit definition of a function can be passed. Such an implicit declaration is formed by the body of the function as it would appear after the = sign in a (<a href="#FUNCTION">short form:FUNCTION</a>) declaration, with the formal parameters identified by the names declared in their original function-variable declaration. For example,
 
 	SUBROUTINE PLOT(FUNCTION(REAL x)-&gt;REAL f; REAL x1..x2)
 
