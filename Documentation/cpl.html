@@ -961,7 +961,7 @@ Conversely, any function of a single argument can be called either as
 	function(argument) or as
 	argument.function
 
-(familiar to those who are accustomed to <a href="#object-oriented-features">object-oriented features</a>).
+(familiar to those who are accustomed to <a href="#DYNAMIC">object-oriented features:DYNAMIC</a>.).
 
 A structure declaration may also contain one or more <a href="#anonymous">anonymous</a> fields. 
 
@@ -1042,23 +1042,20 @@ Therefore, a notation such as arr(4) is allowed, and has type ARRAY(2..9) OF REA
 
 </div><div class=page id="HI">
 Page: (cpl)HI,  Next: <a href="#LO">LO</a>,  Prev: <a href="#ARRAY">ARRAY</a>,  Up: <a href="#ARRAY">ARRAY</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> HI:			upper bound of an array index
-
-The function HI applied to an ARRAY returns the upper bound of its first index. HI1 is a synonym for HI; HI2 and HI3 return the upper bound of the second and third index respectively. Further indices can be accessed by <a href="#subarray">subarray</a> selection.
+<hr> <h4>Upper bound of an array index</h4>
+Function HI applied to an ARRAY returns the upper bound of its first index. HI1 is a synonym for HI; HI2 and HI3 return the upper bound of the second and third index respectively. Further indices can be accessed by <a href="#subarray">subarray</a> selection.
 
 The argument of HI is implicit (i.e., HI may be written without any argument as if <a href="#WITH">WITH</a> were in action) when HI is used inside the index itself as in arr(HI-3) or in the specification of a <a href="#FOR">FOR</a> loop. 
 </div><div class=page id="LO">
 Page: (cpl)LO,  Next: <a href="#LENGTH">LENGTH</a>,  Prev: <a href="#HI">HI</a>,  Up: <a href="#ARRAY">ARRAY</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> LO:			lower bound of an array index
-
-The function LO applied to an ARRAY returns the lower bound of its first index. LO1 is a synonym for LO; LO2 and LO3 return the lower bound of the second and third index respectively. Further indices can be accessed by <a href="#subarray">subarray</a> selection.
+<hr> <h4>Lower bound of an array index</h4>
+Function LO applied to an ARRAY returns the lower bound of its first index. LO1 is a synonym for LO; LO2 and LO3 return the lower bound of the second and third index respectively. Further indices can be accessed by <a href="#subarray">subarray</a> selection.
 
 The argument of LO is implicit (i.e., LO may be written without any argument as if <a href="#WITH">WITH</a> were in action) when LO is used inside the index itself as in arr(LO+2) or in the specification of a <a href="#FOR">FOR</a> loop. 
 </div><div class=page id="LENGTH">
 Page: (cpl)LENGTH,  Prev: <a href="#LO">LO</a>,  Up: <a href="#ARRAY">ARRAY</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> LENGTH:			number of elements of an array
-
-The function LENGTH applied to an ARRAY returns its number of elements. LENGTH is equivalent to HI-LO+1. In a multidimensional ARRAY, the number of values of the first index only is returned. 
+<hr> <h4>Number of elements of an array</h4>
+Function LENGTH applied to an ARRAY returns its number of elements. LENGTH is equivalent to HI-LO+1. In a multidimensional ARRAY, the number of values of the first index only is returned. 
 </div><div class=page id="STRING">
 Page: (cpl)STRING, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#ARRAY">ARRAY</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>STRINGs</h3>
@@ -1231,7 +1228,7 @@ is a valid call and implicitly declares f(x) = SIN(x^2) for the scope of PLOT. F
 </div><div class=page id="Type-identity">
 Page: (cpl)Type identity, Prev: <a href="#Implicit-function-declaration">Implicit function declaration</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Type identity</h3>
-When are two VARIABLEs of the same TYPE? Pascal-like strongly typed languages only consider variables of the same type when they are declared by the same typename or they appear in the same compound declaration. In other words, repeated compound declarations are not considered the same type even when they are equal, just as are not considered the same type two different typenames with similar definitions. C, on the other hand, handles typenames as bare aliases, and compares their definitions directly. None of these languages has runtime-dimensioned arrays. CPL takes the C approach when possible, and compares type definitions, but explicitly considers two different typenames different even when they correspond to the same declaration. Generally, it is good practice to declare variables that must be of the same type in a single declaration, or through a single typename, or through <a href="#TYPEOF">TYPEOF</a>. This is particularly true with runtime-dimensioned arrays (ARRAYs whose bounds are specified by a VARIABLE and are only known at run time). In fact, since a VARIABLE may take on different values in different parts of the program, multiple declarations of this type are necessarily considered different.
+When are two VARIABLEs of the same TYPE? Pascal-like strongly typed languages only consider variables of the same type when they are declared by the same typename or they appear in the same compound declaration. In other words, repeated compound declarations are not considered the same type even when they are equal, just as are not considered the same type two different typenames with similar definitions. C, on the other hand, handles typenames as bare aliases, and compares their definitions directly. None of these languages has runtime-dimensioned arrays. CPL takes the C approach when possible, and compares type definitions, but explicitly considers two different typenames different even when they correspond to the same declaration. Generally, it is good practice to declare variables that must be of the same type in a single declaration, or through a single typename, or through <a href="#TYPE">TYPEOF:TYPE</a>. This is particularly true with runtime-dimensioned arrays (ARRAYs whose bounds are specified by a VARIABLE and are only known at run time). In fact, since a VARIABLE may take on different values in different parts of the program, multiple declarations of this type are necessarily considered different.
 
 In order to test whether a variable is of a given type the <a href="#IS">IS</a> comparison operator is available. 
 </div><div class=page id="Statements">
@@ -1312,22 +1309,19 @@ Page: (cpl)BOOLEAN ops, Next: <a href="#Conditional-expressions">Conditional exp
 
 </div><div class=page id="AND">
 Page: (cpl)AND,  Next: <a href="#OR">OR</a>,  Prev: <a href="#BOOLEAN-ops">BOOLEAN ops</a>,  Up: <a href="#BOOLEAN-ops">BOOLEAN ops</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> AND:		boolean AND operator
-
+<hr> <h4>AND:		boolean AND operator</h4>
 Takes precedence over OR but not NOT.
 
 AND may also appear in a FOR clause (<a href="#FOR-AND">FOR AND</a>) and in <a href="#READ">READ</a>. 
 </div><div class=page id="OR">
 Page: (cpl)OR,  Next: <a href="#NOT">NOT</a>,  Prev: <a href="#AND">AND</a>,  Up: <a href="#BOOLEAN-ops">BOOLEAN ops</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> OR:		boolean OR operator
-
+<hr> <h4>OR:		boolean OR operator</h4>
 Has lower precedence than either AND or NOT.
 
 OR may also appear in a <a href="#READ">READ</a> statement. 
 </div><div class=page id="NOT">
 Page: (cpl)NOT,  Prev: <a href="#OR">OR</a>,  Up: <a href="#BOOLEAN-ops">BOOLEAN ops</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> NOT:		boolean NOT operator
-
+<hr> <h4>NOT:		boolean NOT operator</h4>
 Has higher precedence than either AND or OR. 
 </div><div class=page id="Conditional-expressions">
 Page: (cpl)Conditional expressions, Next: <a href="#Bitwise">Bitwise</a>, Prev: <a href="#BOOLEAN-ops">BOOLEAN ops</a>,  Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
@@ -2250,37 +2244,37 @@ Sometimes the need arises to program a state machine or automaton, composed of a
 A multiple-choice loop is a hybrid between a <a href="#CASE">CASE</a> and a <a href="#LOOP">LOOP</a>, specified as
 
         CASE LOOP OF
-        name1: &lt;block&gt;
-        REPEAT &lt;name&gt;
-        name2: &lt;block&gt;
-        REPEAT &lt;name&gt;
+        label1: &lt;block&gt;
+        REPEAT &lt;label&gt;
+        label2: &lt;block&gt;
+        REPEAT &lt;label&gt;
         ..............
-        namen: &lt;block&gt;
-        REPEAT &lt;name&gt;
+        labeln: &lt;block&gt;
+        REPEAT &lt;label&gt;
         END CASE
 
-At the end of each named block (or in its interior, typically within an IF or CASE statement), execution may continue at any other name as specified by the REPEAT statement. Each named block is its own scope, and local variables cease to exist at the REPEAT (like at an <a href="#EXIT">EXIT</a>) statement (but variables of an outer, enclosing scope are, as always, shared). If the end of a block is reached without an intervening REPEAT statement, the CASE LOOP ends.
+At the end of each labelled block (or nested in its interior, typically within an IF or CASE statement), execution may continue at any other label as specified by the REPEAT statement. Each labelled block is its own scope, and local variables cease to exist at the REPEAT (like at an <a href="#EXIT">EXIT</a>) statement (but variables of an outer, enclosing scope are, as always, shared). If the end of a block is reached without an intervening REPEAT statement, the CASE LOOP ends.
 
 While this construct may look like unstructured code allowing an arbitrary goto (and is in fact implemented using one), it maintains statements and labels in the same order as, and is thus no less or more structured than, a CASE inside a LOOP:
 
-        ENUM(name1,name2,...namen,exit) repeat=name1
+        ENUM(label1,label2,...labeln,exit) repeat=label1
         LOOP
           next=repeat; repeat=exit
           CASE next OF
-          name1: &lt;block&gt;
-            repeat=&lt;name&gt;
-          name2: &lt;block&gt;
-            repeat=&lt;name&gt;
+          label1: &lt;block&gt;
+            repeat=&lt;label&gt;
+          label2: &lt;block&gt;
+            repeat=&lt;label&gt;
           ..............
-          namen: &lt;block&gt;
-            repeat=&lt;name&gt;
+          labeln: &lt;block&gt;
+            repeat=&lt;label&gt;
           END CASE
         REPEAT WHILE repeat#exit
 
-In particular notice that jumping to the inside of a named block, as opposed to its beginning, is not allowed. The two constructs above are functionally equivalent, but the first is more efficient and easier to write and read. 
+In particular notice that jumping to the inside of a labelled block, as opposed to its beginning, is not allowed. The two constructs above are functionally equivalent, but the first is more efficient and easier to write and read. 
 </div><div class=page id="EXIT">
 Page: (cpl)EXIT,  Next: <a href="#END">END</a>,  Prev: <a href="#CASE">CASE</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> EXIT &lt;name&gt; transfers control past the end of the LOOP, MODULE, FUNCTION or SUBROUTINE labelled &lt;name&gt;, terminating the corresponding scope and deallocating local variables. EXIT may be nested in an inner scope, such as a further loop or an IF statement.
+<hr> EXIT &lt;name&gt; transfers control past the end of the LOOP, MODULE, FUNCTION or SUBROUTINE named &lt;name&gt;, terminating the corresponding scope and deallocating local variables. EXIT may be nested in an inner scope, such as a further loop or an IF statement.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -2294,7 +2288,8 @@ Page: (cpl)EXIT,  Next: <a href="#END">END</a>,  Prev: <a href="#CASE">CASE</a>,
 
 </div><div class=page id="END">
 Page: (cpl)END,  Next: <a href="#STOP">STOP</a>,  Prev: <a href="#EXIT">EXIT</a>,  Up: <a href="#Control">Control</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> END &lt;name&gt; terminates the body of a module, function or subroutine named &lt;name&gt;. END IF, END CASE, END WITH, END C SECTION, END FRI SECTION and END TRAP terminate the corresponding statements.
+<hr> <h3>END &lt;name&gt;</h3>
+terminates the body of a module, function or subroutine named &lt;name&gt;. END IF, END CASE, END WITH, END C SECTION, END FRI SECTION and END TRAP terminate the corresponding statements.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>

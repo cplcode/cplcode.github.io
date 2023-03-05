@@ -140,7 +140,7 @@ A file is opened in a new screen with the <q>edit</q> iteractive cpl command (al
 
 <q>run</q> (Esc r) runs the current screen as a CPL program, after saving all unsaved screens so that other possibly USEd files are up to date. By contrast, switching into line mode always runs the session log, independent of which screen is currently in view.
 
-<q>option</q> (Esc o) opens a menu of editor options.
+<q>options</q> (Esc o) opens a menu of editor options.
 
 Most prompts and menus can be aborted by pressing Esc &lowast;twice&lowast;.
 
@@ -151,6 +151,7 @@ Most prompts and menus can be aborted by pressing Esc &lowast;twice&lowast;.
 <tr><td><a href="#Indent-and-complete">Indent and complete</a>:</td><td>CPL syntax-sensitive indentation and completion</td></tr>
 <tr><td><a href="#Find">Find</a>:</td><td>find and replace functionality</td></tr>
 <tr><td><a href="#Undo">Undo</a>:</td><td>and redo</td></tr>
+<tr><td><a href="#options">options</a>:</td><td>editor options</td></tr>
 </table></nav>
 
 </div><div class=page id="Select">
@@ -219,7 +220,7 @@ In order to find and replace, find a given text, exit Esc mode, and start typing
 
 Esc Enter repeats whatever the last command was, possibly the last (forward or backward) find or the last replace-and-find-again. 
 </div><div class=page id="Undo">
-Page: (editor)Undo, Prev: <a href="#Find">Find</a>, Next: <a href="#character-set">character set</a>, Up: <a href="#full-screen">full-screen</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (editor)Undo, Prev: <a href="#Find">Find</a>, Next: <a href="#options">options</a>, Up: <a href="#full-screen">full-screen</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Undo and redo</h4>
 Unlimited undo and redo functionality is supported, activated by Esc u and Esc U respectively (or Esc z and Esc Z as alternates, or Ctrl-z and Ctrl-y, but with the variation detailed below). As a distinctive feature of this editor (shared by emacs, with some distinctions, but almost no others), memory of the undone edits is retained even when further edits take place after an undo.
 
@@ -232,6 +233,10 @@ In the CPL editor you can think of undo and redo commands as not changing anythi
 For added flexibility, Esc z or Ctrl-z provides the traditional undo with no repetition of previously undone edits, while Esc u or Ctrl-u provides the full undo. History is not lost with either, and redo is always full.
 
 Multi-line movements (PgUp, PgDn, Ctrl-Home, Ctrl-End, find and go to line) can also be undone, using the Esc b (back) key. Memory is only kept up to the most recent text modification. Esc U, Esc Z, Esc B and  Ctrl-y redo (reverse undo) whatever was undone interchangeably. 
+</div><div class=page id="options">
+Page: (editor)options, Prev: <a href="#Undo">Undo</a>, Next: <a href="#character-set">character set</a>, Up: <a href="#full-screen">full-screen</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h3>Editor options</h3>
+<q>options</q> (Esc o) opens a submenu of editor options. Lines can be selected by up and down arrows or by the mouse, and activated/deactivated by pressing y or left arrow for yes, or n or right arrow for no, or toggled by the space bar. Enter exits the menu. As a quick shortcut, the initial of each option toggles it and exits the menu at once.  
 </div><div class=page id="character-set">
 Page: (editor)character set,  Prev: <a href="#full-screen">full-screen</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Character set</h2>
