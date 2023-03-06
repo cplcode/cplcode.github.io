@@ -236,9 +236,20 @@ Multi-line movements (PgUp, PgDn, Ctrl-Home, Ctrl-End, find and go to line) can 
 </div><div class=page id="options">
 Page: (editor)options, Prev: <a href="#Undo">Undo</a>, Next: <a href="#character-set">character set</a>, Up: <a href="#full-screen">full-screen</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Editor options</h3>
-<q>options</q> (Esc o) opens a submenu of editor options. Lines can be selected by up and down arrows or by the mouse, and activated/deactivated by pressing y or left arrow for yes, or n or right arrow for no, or toggled by the space bar. Enter exits the menu. As a quick shortcut, the initial of each option toggles it and exits the menu at once.  
+<q>options</q> (Esc o) opens a submenu of editor options. Lines can be selected by up and down arrows or by the mouse, and activated/deactivated by pressing y or left arrow for yes, or n or right arrow for no, or toggled by the space bar. Enter exits the menu. As a quick shortcut, the initial of each option toggles it and exits the menu at once.
+
+<nav><table>
+<tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
+<tr><td colspan="2"> </td></tr>
+<tr><td><a href="#hex-editor">hex editor</a>:</td><td>The <q>show bytes</q> option toggles hex editor mode.</td></tr>
+</table></nav>
+
+</div><div class=page id="hex-editor">
+Page: (editor)hex editor, Prev: <a href="#options">options</a>, Next: <a href="#character-set">character set</a>, Up: <a href="#options">options</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h4>Hex editor mode</h4>
+The <q>show bytes</q> option toggles hex editor mode. In this mode individual bytes are displayed (non-printing ones as □), instead of being interpreted as Unicode, and at the same time a sliding window shows the hex representation of the line under the cursor. Typing in hexadecimal numbers modifies the byte under the cursor; other alphanumeric keys are mum. Space can be used to add a new byte. 
 </div><div class=page id="character-set">
 Page: (editor)character set,  Prev: <a href="#full-screen">full-screen</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Character set</h2>
-The cpl editor is 8-bit safe, and correctly aligns UTF-8 Unicode characters displayed by the underlying console. Double-width Unicode characters are handled as well. 
+The cpl editor is 8-bit safe, and correctly aligns UTF-8 Unicode characters displayed by the underlying console. Double-width Unicode characters are handled as well. The hex representation of a binary file can be obtained in alternative by the <a href="#hex-editor">hex editor</a> toggle. 
 </div></body></html>
