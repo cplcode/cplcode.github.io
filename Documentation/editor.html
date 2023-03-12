@@ -167,7 +167,7 @@ When some text is selected, the character count of the selection is displayed in
 
 Whenever text is selected, the Insert key (or Esc i, or Ctrl-v for those who are accustomed to it) inserts (pastes) the selected text at the current cursor position; no <q>copy</q> operation is needed as buffer coincides with selection. The Backspace and Delete keys (also aliased to Esc d, Esc x, Ctrl-x) erase the selected text if pressed immediately after a selection. At any other time these keys erase a single character, the preceding one for Backspace. Deleted text remains buffered and can be re-inserted after its deletion. Typing a new character, or pressing Insert, immediately after a selection without any intervening cursor movement replaces the current selection. In this case the function of Insert changes to inserting the butlast selection. Esc m moves (cuts and pastes) the butlast onto the last selection. Pressing the middle mouse button achieves the same purpose as Esc i; the right mouse button the same purpose as Esc m.
 
-The CPL editor features a multiple-selection buffer: right after an insertion, pressing Esc i or Insert again replaces the current selection by the historically former selection. Pressing Esc i or Insert multiple times cycles through the last three selections.
+The CPL editor features a multiple-selection buffer: right after an insertion, pressing Esc i or Insert again replaces the current selection by the historically former selection. Pressing Esc i or Insert multiple times cycles through the last three selections. In case you want to insert the same selection more than once, exit Esc mode or press End in between.
 
 In the way of example, in order to:
 
