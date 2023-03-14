@@ -16,7 +16,7 @@
 <span class=comment>! CPL library providing a QUATERNION type and operations upon it.</span>
 <span class=comment>!</span>
 <span class=comment>!( Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
+  of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
@@ -81,8 +81,14 @@ QUATERNION <a href="cpl.html#FUNCTION">FUNCTION</a> <a href="cpl.html#Builtin">L
 
 <a href="cpl.html#ARRAY">ARRAY</a>(1..3,1..3) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> rotation(QUATERNION x)
   u=x/<a href="cpl.html#ABS">ABS</a>(x)
-  <a href="cpl.html#RESULT">RESULT</a>(1,1)=1-2&lowast;(u.JMAG<a href="cpl.html#REAL-operator">^</a>2+u.KMAG<a href="cpl.html#REAL-operator">^</a>2); <a href="cpl.html#RESULT">RESULT</a>(1,2)=2&lowast;(u.<a href="complex.html#Top">IMAG</a>&lowast;u.JMAG-u.<a href="cpl.html#REAL">REAL</a>&lowast;u.KMAG); <a href="cpl.html#RESULT">RESULT</a>(1,3)=2&lowast;(u.<a href="complex.html#Top">IMAG</a>&lowast;u.KMAG+u.<a href="cpl.html#REAL">REAL</a>&lowast;u.JMAG)
-  <a href="cpl.html#RESULT">RESULT</a>(2,1)=2&lowast;(u.<a href="complex.html#Top">IMAG</a>&lowast;u.JMAG+u.<a href="cpl.html#REAL">REAL</a>&lowast;u.KMAG); <a href="cpl.html#RESULT">RESULT</a>(2,2)=1-2&lowast;(u.<a href="complex.html#Top">IMAG</a><a href="cpl.html#REAL-operator">^</a>2+u.KMAG<a href="cpl.html#REAL-operator">^</a>2); <a href="cpl.html#RESULT">RESULT</a>(2,3)=2&lowast;(u.JMAG&lowast;u.KMAG-u.<a href="cpl.html#REAL">REAL</a>&lowast;u.<a href="complex.html#Top">IMAG</a>)
-  <a href="cpl.html#RESULT">RESULT</a>(3,1)=2&lowast;(u.<a href="complex.html#Top">IMAG</a>&lowast;u.KMAG-u.<a href="cpl.html#REAL">REAL</a>&lowast;u.JMAG); <a href="cpl.html#RESULT">RESULT</a>(3,2)=2&lowast;(u.JMAG&lowast;u.KMAG+u.<a href="cpl.html#REAL">REAL</a>&lowast;u.<a href="complex.html#Top">IMAG</a>); <a href="cpl.html#RESULT">RESULT</a>(3,3)=1-2&lowast;(u.<a href="complex.html#Top">IMAG</a><a href="cpl.html#REAL-operator">^</a>2+u.JMAG<a href="cpl.html#REAL-operator">^</a>2)
+  <a href="cpl.html#RESULT">RESULT</a>(1,1)=1-2&lowast;(u.JMAG<a href="cpl.html#REAL-operator">^</a>2+u.KMAG<a href="cpl.html#REAL-operator">^</a>2)
+  <a href="cpl.html#RESULT">RESULT</a>(1,2)=2&lowast;(u.<a href="complex.html#Top">IMAG</a>&lowast;u.JMAG-u.<a href="cpl.html#REAL">REAL</a>&lowast;u.KMAG)
+  <a href="cpl.html#RESULT">RESULT</a>(1,3)=2&lowast;(u.<a href="complex.html#Top">IMAG</a>&lowast;u.KMAG+u.<a href="cpl.html#REAL">REAL</a>&lowast;u.JMAG)
+  <a href="cpl.html#RESULT">RESULT</a>(2,1)=2&lowast;(u.<a href="complex.html#Top">IMAG</a>&lowast;u.JMAG+u.<a href="cpl.html#REAL">REAL</a>&lowast;u.KMAG)
+  <a href="cpl.html#RESULT">RESULT</a>(2,2)=1-2&lowast;(u.<a href="complex.html#Top">IMAG</a><a href="cpl.html#REAL-operator">^</a>2+u.KMAG<a href="cpl.html#REAL-operator">^</a>2)
+  <a href="cpl.html#RESULT">RESULT</a>(2,3)=2&lowast;(u.JMAG&lowast;u.KMAG-u.<a href="cpl.html#REAL">REAL</a>&lowast;u.<a href="complex.html#Top">IMAG</a>)
+  <a href="cpl.html#RESULT">RESULT</a>(3,1)=2&lowast;(u.<a href="complex.html#Top">IMAG</a>&lowast;u.KMAG-u.<a href="cpl.html#REAL">REAL</a>&lowast;u.JMAG)
+  <a href="cpl.html#RESULT">RESULT</a>(3,2)=2&lowast;(u.JMAG&lowast;u.KMAG+u.<a href="cpl.html#REAL">REAL</a>&lowast;u.<a href="complex.html#Top">IMAG</a>)
+  <a href="cpl.html#RESULT">RESULT</a>(3,3)=1-2&lowast;(u.<a href="complex.html#Top">IMAG</a><a href="cpl.html#REAL-operator">^</a>2+u.JMAG<a href="cpl.html#REAL-operator">^</a>2)
 <a href="cpl.html#END">END</a> rotation
 </pre></body></html>
