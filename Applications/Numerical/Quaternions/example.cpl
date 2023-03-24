@@ -7,5 +7,6 @@ WRITE a*a,a^2
 R=rotation(c)
 a=(0.,1,2,3)
 c=c/ABS(c)
-WRITE R*a(1..3) ! a rotation of the vector composed of the last three elements of a 
+WRITE R*a(1..3)
+! a rotation of the vector composed of the last three elements of a 
 WRITE c*a*CONJG(c) ! the same rotation in quaternion notation
