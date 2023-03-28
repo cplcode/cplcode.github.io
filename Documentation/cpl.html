@@ -735,7 +735,9 @@ In the calling statement, optional parameters follow all standard positional par
 
 	test(3,w=1E2,y=1)
 
-is a possible calling statement, equivalent to test(3,y=1,z=3,w=1E2). Optional parameters cannot be used to disambiguate overloaded function names in <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>. 
+is a possible calling statement, equivalent to test(3,y=1,z=3,w=1E2). If there is only one optional parameter, its name can unambiguously be omitted just like that of an ordinary parameter.
+
+Optional parameters by their very nature cannot be used to disambiguate overloaded function names in <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>. 
 </div><div class=page id="nested-functions">
 Page: (cpl)nested functions, Next: <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>, Prev: <a href="#OPTIONAL">OPTIONAL</a>, Up: <a href="#Functions">Functions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Nested functions</h3>
