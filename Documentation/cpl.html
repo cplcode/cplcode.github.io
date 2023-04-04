@@ -729,13 +729,13 @@ The parameter list of a function or subroutine can include optional items. In th
 
 	SUBROUTINE test(INTEGER x; OPTIONAL INTEGER y=0,z=3; REAL w=3.14)
 
-Within the body of the function, optional parameters obey the same rules as ordinary formal parameters; on entry they acquire the value of each corresponding actual parameter if one is specified in the calling statement, or their default value otherwise.
+Within the body of the function, optional parameters obey the same rules as positional parameters; on entry they acquire the value of each corresponding actual parameter if one is specified in the calling statement, or their default value otherwise.
 
-In the calling statement, optional parameters follow all standard positional parameters (if there are any) and can appear in any order (or not appear at all); they are identified by name rather than by position. In the above example,
+In the calling statement, optional parameters follow all positional parameters (if there are any) and can appear in any order (or not appear at all); they are identified by name or type rather than by position. In &lt;name&gt;=&lt;value&gt; notation,
 
 	test(3,w=1E2,y=1)
 
-is a possible calling statement, equivalent to test(3,y=1,z=3,w=1E2). If there is only one optional parameter, its name can unambiguously be omitted just like that of an ordinary parameter.
+is a possible calling statement for the above example, equivalent to test(3,y=1,z=3,w=1E2). Alternately, if an optional parameter can be unambiguously identified through its type (a typical use case is when parameters have different <a href="#ENUM">ENUM</a> types, or when there is just one optional parameter), &lt;name&gt;= can be omitted (but doesn't have to, for the sake of clarity) and the notation becomes similar to a positional parameter.
 
 Optional parameters by their very nature cannot be used to disambiguate overloaded function names in <a href="#Coactive-Parameter-Lists">Coactive Parameter Lists</a>. 
 </div><div class=page id="nested-functions">
@@ -937,11 +937,11 @@ The memory size in bytes of a type or variable (useful when using the <a href="#
 </div><div class=page id="ENUM">
 Page: (cpl)ENUM, Next: <a href="#STRUCTURE">STRUCTURE</a>, Prev: <a href="#TYPE">TYPE</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Enumerated type</h3>
-Not really a compound type, ENUM (much like C enum) variables take a limited set of explicitly enumerated values. The syntax of this type declaration is
+Not really a compound type, ENUM (much like Pascal enumerated type or C enum) variables take a finite set of explicitly enumerated labels as values. The syntax of this type declaration is
 
 	ENUM(&lt;id1&gt;,&lt;id2&gt;,...)
 
-and can directly declare variables or be assigned to a new type name like all other TYPEs. &lt;id1&gt;, &lt;id2&gt;, etc. are thereby declared as constants to which variables of the given type can be set or compared. The purpose of ENUM variables is to flag a specified set of alternatives, while forbidding out-of-range values which could arise if INTEGERs were used for this purpose. No other operations than assignment and comparison are defined on them. 
+and can directly declare variables or be assigned to a new type name like all other TYPEs. &lt;id1&gt;, &lt;id2&gt;, etc. are thereby declared as constants to which variables of the given type can be set or compared. The purpose of ENUM variables is to flag an alternative within a predefined set, while forbidding out-of-range values which could arise if INTEGERs were used for this purpose. No other operations than assignment and comparison are defined on them. 
 </div><div class=page id="STRUCTURE">
 Page: (cpl)STRUCTURE, Next: <a href="#ARRAY">ARRAY</a>, Prev: <a href="#ENUM">ENUM</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>STRUCTUREs</h3>
