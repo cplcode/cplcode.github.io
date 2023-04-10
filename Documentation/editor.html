@@ -120,8 +120,7 @@ Most used editing keys:
  - Backspace: erase left; Delete (Esc d): erase at cursor
  - Shift-Delete (Esc D): erase line
  - Up arrow (Esc j), down arrow (Esc k): previous, next line.
- - PgUp (Esc p), PgDn (Esc n): move to prev or next paragraph of the same or
-   lesser indentation.
+ - PgUp (Esc p), PgDn (Esc n): move to prev or next paragraph of the same or lesser indentation.
  - Esc f (Ctrl-f, Esc /), Esc F (Esc ?): Find forwards, respectively backwards.
  - Tab: autocomplete keyword or identifier. Successive tabs move forward along
    the list of available completions; Shift-Tab moves backwards.
@@ -192,17 +191,10 @@ Page: (editor)Indent and complete, Next: <a href="#Find">Find</a>, Prev: <a href
 When a .cpl file is being edited, pressing Enter at the end of a freshly modified line automatically:
 
  1) indents the new line according to the contents of the previous line;
- 2) if the line is the opening of a new program block, like a subroutine, loop
-    or IF statement, it inserts the corresponding closing statement and the
-    appropriate indentation for the block's contents;
- 3) it converts to upper case some CPL keywords when they are recognized as
-    having been entered in lower case;
- 4) open brackets are automatically provided with a matching closing bracket;
-    typing of the closing bracket is optional, and silently ignored if brackets
-    match;
- 5) since CPL allows the usage of the three kinds of brackets like in
-    mathematics (<a href="cpl.html#Parentheses">(cpl)Parentheses</a>), the editor automatically alternates
-    the three kinds even if only one kind is typed in.
+ 2) if the line is the opening of a new program block, like a SUBROUTINE, LOOP or IF statement, it inserts the corresponding closing statement and the appropriate indentation for the block's contents;
+ 3) it converts to upper case some CPL keywords when they are recognized as having been entered in lower case;
+ 4) open brackets are automatically provided with a matching closing bracket; typing of the closing bracket is optional, and silently ignored if brackets match;
+ 5) since CPL allows the usage of the three kinds of brackets like in mathematics (<a href="cpl.html#Parentheses">(cpl)Parentheses</a>), the editor automatically alternates the three kinds even if only one kind is typed in.
 
 Where needed, the following explicit indentation commands are available:
 
@@ -216,13 +208,13 @@ Parentheses and quote completion also operates, automatically adding closed pare
 </div><div class=page id="Find">
 Page: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#full-screen">full-screen</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Find and replace</h4>
-<q>find</q> (Esc f or Ctrl-f or Esc /) and <q>goto</q> (Esc g or Esc +) seek the cursor to a given string or to a given line number. Esc F (or Esc ?, or clicking <q>find</q> with the right mouse button) seeks backwards. The search is caseinsensitive if the first character of the search string is a lowercase letter, case-sensitive otherwise. The found string is automatically selected. If some text is selected when one of this keys is pressed, the selected text will appear as a proposed search string.
+<q>find</q> (Esc f or Ctrl-f or Esc /) and <q>goto</q> (Esc g or Esc +) seek the cursor to a given string or to a given line number. Esc F (or Esc ?, or clicking <q>find</q> with the right mouse button) seeks backwards. The search is caseinsensitive if the first character of the search string is a lowercase letter, case-sensitive otherwise. The found string is automatically selected.
 
-Esc , (lowercase &lt;) repeats the last find backwards. Esc . (lowercase &gt;) repeats the last find forwards. Finding with an empty argument also repeats the last find, possibly changing its direction.
+Esc , (lowercase &lt;) repeats the last find backwards. Esc . (lowercase &gt;) repeats the last find forwards. Finding with an empty argument also repeats the last find, possibly changing its direction. If some text is selected when one of this keys is pressed, the selected text will be searched.
 
-In order to find and replace, find a given text, exit Esc mode, and start typing the replacement. Esc &gt; is a shortcut for pressing Insert and Esc . one after the other, and thus serves as replace-and-find-again. Keeping  Esc &gt; pressed is a means to perform multiple replacements, possibly to the end of file. Esc &lt; likewise replaces-and-finds backwards.
+In order to find and replace, find a given text, exit Esc mode, and start typing the replacement. Just typed text automatically goes to the insertion buffer; therefore after you search again, pressing Insert will insert the same replacement. Esc &gt; is a shortcut for pressing Insert and Esc . one after the other, and thus serves as replace-and-find-again. Keeping  Esc &gt; pressed is a means to perform multiple replacements, possibly to the end of file. Esc &lt; likewise replaces-and-finds backwards.
 
-Esc Enter repeats whatever the last command was, possibly the last (forward or backward) find or the last replace-and-find-again. 
+Esc Enter repeats the most recent command, for instance the last (forward or backward) find or the last replace-and-find-again. 
 </div><div class=page id="Undo">
 Page: (editor)Undo, Prev: <a href="#Find">Find</a>, Next: <a href="#options">options</a>, Up: <a href="#full-screen">full-screen</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Undo and redo</h4>
