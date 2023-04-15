@@ -351,7 +351,7 @@ If you have no access to /usr/local/, or prefer to avoid root privileges even if
 Page: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#multi-user">multi-user</a>, Up: <a href="#Installation">Installation</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Common installation problems and their solution</h3>
 <h4>cpl: command not found</h4>
-If the initial setup did not report any errors, and <q>$HOME/fri/cpl</q> or <q>/usr/local/fri/cpl</q> do work, this is likely to be a PATH problem. cpl setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may find it easier to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions (man sh) for how to modify the PATH variable.
+If the initial setup did not report any errors, and <q>$HOME/fri/cpl</q> or <q>/usr/local/fri/cpl</q> do work, this is likely to be a PATH problem. cpl setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may find it easier to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions (man sh) for how to modify the PATH environment variable.
 
 <h4>My program compiles but does not execute</h4>
 Is . in your PATH? Many Linux distributions do not by default have your current working directory in the set of automatically searched file paths. Solutions:
@@ -359,7 +359,7 @@ Is . in your PATH? Many Linux distributions do not by default have your current 
  2) modify your PATH environment variable (look up instructions for your shell)
  3) use <a href="#cpl">cpl</a> as your shell (either <q>cpl Helloworld</q> or just <q>cpl</q> and then <q>Helloworld</q>).
   <h4>Why should I be concerned with compilation, anyway?</h4>
-If you are more at ease with the single-command execution usually provided by an interpreter, just use <a href="#cpl">cpl</a> as you would your interpreter. Compilation will happen automatically in the background. You can even put <q>#!/usr/bin/env cpl</q> at the top of your CPL source file, and make it executable under the unix interpreter convention.
+If you are more at ease with the single-command execution usually provided by an interpreter, just use <a href="#cpl">cpl</a> as you would your interpreter. Compilation will happen automatically in the background. You can even put <q>#!/usr/bin/env cpl</q> at the top of your CPL source file, and thus make it executable under the unix interpreter convention.
 
 <h4>I want to use a specialized C compiler</h4>
 In order to apply a non-default C compiler to your CPL program, define the CC environment variable, either for the duration of the session as in
