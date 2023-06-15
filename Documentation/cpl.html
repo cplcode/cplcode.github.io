@@ -506,11 +506,11 @@ Page: (cpl)C interface, Next: <a href="#C-SECTION">C SECTION</a>, Prev: <a href=
 <hr> <h4>C interface</h4>
 The directive
 
-	#include <q>file</q>
+	#include <q>file</q> [link options]
 
 or
 
-	#include &lt;file&gt;
+	#include &lt;file&gt; [link options]
 
 in addition to being copied into the generated C code has a special meaning. <q>file</q> is expected to contain a C header or program, which is scanned for declarations by the CPL compiler. The declarations and prototypes contained in the C file thus become transparently available to the including CPL program.
 
@@ -518,20 +518,25 @@ An include directory path (similar to the <q>-I</q> C compiler directive) can be
 
 	#includedir <q>path</q>
 
-The name of the corresponding object file or other linking options can be transmitted to the linker with
+The name of the corresponding object file or other linking options that need to be transmitted to the loader can follow (unquoted) the filename on the same line, or alternately be given in a separate
 
-	#link <q>linking options</q>
+	#link link options
 
-A C code excerpt may also appear directly in the CPL source file if encapsulated in a <a href="#C-SECTION">C SECTION</a>.
+directive.
 
-The standard libc headers
+A C code excerpt may also appear embedded in the CPL source file in the form of a <a href="#C-SECTION">C SECTION</a>.
 
+A few common libc headers, namely
+
+	unistd.h
 	stdlib.h
 	stdio.h
 	fcntl.h
 	math.h
 	limits.h
+	float.h
 	string.h
+	time.h
 	setjmp.h
 	errno.h
 	signal.h
