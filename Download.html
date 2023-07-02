@@ -22,6 +22,7 @@
       width: 1em;
       border-radius: 50%;
       display: inline-block;
+      vertical-align:middle;
     }
   </style>
   <script src="clipboard.js">
@@ -44,7 +45,7 @@
 <p>as your host operating system.</p>
 </div>
 </div>
-<p itemprop="step" itemscope itemtype="https://schema.org/HowToStep"><span itemprop="name">A <a href="Documentation/cpl.html#Q&A">Troubleshooting</a> guide, the <a href="FAQ">Frequently Asked Questions</a>, and of course the full <a href="Documentation/cpl.html#Top">Documentation</a>, are available.</span> <span itemprop="text">For a quick start browse the <a href=Applications/Tutorial>Programming Tutorial</a>, download <code>Helloworld.cpl</code>, and go <q><strong>cpl run Helloworld</strong></q>!</span></p>
+<p itemprop="step" itemscope itemtype="https://schema.org/HowToStep"><span itemprop="name">A <a href="Documentation/cpl.html#Q&A">Troubleshooting</a> guide, the <a href="FAQ">Frequently Asked Questions</a>, and of course the full <a href="Documentation/cpl.html#Top">Documentation</a>, are available.</span> <span itemprop="text">For a quick start browse the <a href=Applications/Tutorial>Programming Tutorial</a>, download <a href="../Applications/Tutorial/Helloworld.cpl" rel=nofollow download><code>Helloworld.cpl</code></a>, and go <q><strong>cpl run Helloworld</strong></q>!</span></p>
 
 <h2>System requirements</h2>
     <p>The CPL compiler, interpreter and editor come in a self-extracting archive which unpacks to its own directory in user space and requires no privileges. Symbolic links to the relevant commands are placed in the user's <code>bin</code> directory for the purpose of appearing in the execution <code>PATH</code>. Alternately, if the <code>unpack-cpl</code> script is run by <code>root</code>, the unpacked directory is placed under <code>/usr/local</code> and the executable links under <code>/usr/local/bin</code> for the sake of all users; <code>root</code> privileges are in this case only summoned to modify the <code>/usr/local</code> directory. The tools can as well be installed in a single user's space and made available to other users as needed; a provided script generates the relevant links.</p>
@@ -60,11 +61,10 @@
     <h2>Code maturity</h2>
     <p>CPL is under active development; its tools sit at different levels of maturity. On a crude scale:</p>
     <table>
-    <tr><td class=circle style="background-color:green"></td> <td><a href="Documentation/cpl.html#cpl.fri"><code>cpl.fri</code></a>, <a href="Documentation/fri.html#Top"><code>fri</code></a>, and their driver script <a href="Documentation/cpl.html#cpl"><code>cpl</code></a> were being developed for decades. They now only undergo unfrequent changes.</td></tr>
-    <tr><td class=circle style="background-color:gold"></td> <td><a href="Documentation/cpl.html#cpl-i"><code>Interactive cpl</code></a> is best classified as experimental. It may not always behave precisely as intended, but it does offer some powerful features.</td></tr>
-    <tr><td class=circle style="background-color:orange"></td> <td><a href="Documentation/editor.html#full-screen"><code>cpl edit</code></a> is the newest addition to the family. It may on rare occasions crash and lose your last edits, so be advised to save often (as everybody should do anyway). Nevertheless it is the editor of choice for the maintenance of CPL itself, writing this website included.</td></tr>
+    <tr><td class=circle style="background-color:green"></td> <td>&nbsp;stable. <a href="Documentation/cpl.html#cpl.fri"><code>cpl.fri</code></a>, <a href="Documentation/fri.html#Top"><code>fri</code></a>, and their driver script <a href="Documentation/cpl.html#cpl"><code>cpl</code></a> were being developed for decades. They now only undergo unfrequent changes. The <a href="Documentation/editor.html#full-screen"><code>cpl editor</code></a>, despite being the newest addition to the family, is also fairly well debugged. It is the editor of choice for the maintenance of CPL itself, writing this website included.</td></tr>
+    <tr><td class=circle style="background-color:gold"></td> <td>&nbsp;experimental. <a href="Documentation/cpl.html#cpl-i"><code>Interactive cpl</code></a> may still undergo significant changes, but it already offers some powerful features in its present version.</td></tr>
+    <tr><td class=circle style="background-color:red"></td> <td>&nbsp;incomplete. Only some of the optional CPL <a href="Documentation/cpl.html#Library">libraries</a> currently fall in this category. See comments in each.</td></tr>
     </table>
-    <p> On a finer scale, the optional CPL <a href="Documentation/cpl.html#Library">libraries</a> provided in the package also come with different levels of maturity. See comments in each.</p>
     <p>Mature or not as the code is, bugs will happen. If you believe you found a bug, or an inconsistency between the compiler's behaviour and its documentation, you will do an appreciable service to the CPL community by filing a bug report with <img src="images/bugreports.png" class=em alt="(.....)"> . With your description please enclose a code snippet, as short as possible but complete enough that it compiles as is, and triggers the alleged non-conforming behaviour.</p> 
 
   <div id=snackbar>copied.</div>
