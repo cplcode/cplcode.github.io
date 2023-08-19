@@ -22,13 +22,13 @@
     <h3 itemprop="headline">Step-by-step instructions to use CPL, Linux in Microsoft Windows</h3>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
     <dt itemprop="name">1 - Enable WSL:</dt>
-    <dd itemprop="text">To enable the Windows Subsystem for Linux (WSL) of Microsoft Windows 10 and onwards you can use a sequence of Powershell terminal commands detailed <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target=_blank>here</a>, or alternately open the Control Panel, then Programs and Features, then Turn Windows Features On or Off, and tick the box for Windows Subsystem for Linux.</dd>
+    <dd itemprop="text">To enable the Windows Subsystem for Linux (WSL) of Microsoft Windows 10 or 11 you can use the <q>wsl --install -d debian</q> terminal command as detailed <a href="https://learn.microsoft.com/en-us/windows/wsl/install" target=_blank>here</a>, or alternately open the Control Panel, then Programs and Features, then Turn Windows Features On or Off, and tick the box for Windows Subsystem for Linux.</dd>
     </dl>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
     <dt itemprop="name">2 - Install Debian on WSL:</dt>
-    <dd itemprop="text">Open Microsoft Store, enter <q>debian</q> in search box, install the free Debian app (or Ubuntu, or your favourite other Linux distribution, MS has a few); launch the app.</dd>
+    <dd itemprop="text">Open Microsoft Store, enter <q>debian</q> in search box, install the free Debian app (or Ubuntu, or your favourite other Linux distribution, MS has a few); launch the app. Skip this step if you used <q>-d debian</q> above.</dd>
     </dl>
-    <p>In your newly opened Linux terminal enter the following commands. (Left-click to copy, right-click to paste.)</p>
+    <p>In your newly opened Linux terminal enter the following commands. (Left-click in the orange box to copy, right-click in your terminal to paste.)</p>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
     <dt itemprop="name">3 - Bring Debian up to date:</dt>
     <dd itemprop="text"><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">sudo apt update && sudo apt upgrade
@@ -51,7 +51,7 @@
 <p><strong itemprop="name">Possible quirks and their remedies:</strong> <span itemprop="itemListElement" itemscope itemtype="https://schema.org/HowToTip"><span itemprop="text">The first time you run it, the Debian terminal may refuse to start, and instruct you to install additional components provided by Microsoft. Just follow such instructions.</span></span></p>
 <p itemprop="itemListElement" itemscope itemtype="https://schema.org/HowToTip"><span itemprop="text">You may need to close and re-open the Debian window before the newly installed commands become available at the command prompt. You can open as many Debian terminals as you like; for instance, one to edit and one to run your new CPL program.</span></p>
     <p itemprop="itemListElement" itemscope itemtype="https://schema.org/HowToTip"><span itemprop="text">When using the cpl editor, or for any other purpose, you may prefer black text on a white background; you can personalize colors in the Properties menu of the Debian console.</span></p>
-    <p itemprop="itemListElement" itemscope itemtype="https://schema.org/HowToTip"> <span itemprop="text">Mouse clicks over the right bottom corner of the Debian window are used by Windows and are not transmitted to the running program; this makes the |Info| button of the cpl editor nonfunctional. You can still access the same info manual and context-sensitive help in the editor by the Esc I key sequence, or outside the editor by the <q>cpl info edit</q> command.</span></p>
+    <p itemprop="itemListElement" itemscope itemtype="https://schema.org/HowToTip"> <span itemprop="text">Mouse clicks over the right bottom corner of the Debian window are used by Windows and are not transmitted to the running program; this makes the |Info| button of the cpl editor nonfunctional. You can still access the same info manual and context-sensitive help in the editor by the <q>Esc I</q> key sequence, or outside the editor by the <q>cpl info edit</q> command.</span></p>
 </div>
 <div itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
 <p><strong itemprop="name">Notice about graphics:</strong> <span itemprop="itemListElement" itemscope itemtype="https://schema.org/HowToDirection"><span itemprop="text">Under Windows 10, Microsoft's Windows Subsystem for Linux provides a terminal-only experience of a Linux distribution, deprived of its Graphical User Interface. The CPL compiler, interpreter and editor all natively run in a terminal and will fit in seamlessly, but if your CPL program draws graphics and needs the additional <code>gnuplot</code> package to do so, installing it via Debian (as in <code>apt install gnuplot</code>) will not work. Instead you may want to install the Windows version of gnuplot, freely available from <a href="https://sourceforge.net/projects/gnuplot/" target=_blank>gnuplot's own repository</a>, and then</span></span></p>
