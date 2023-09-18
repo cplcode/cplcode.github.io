@@ -148,12 +148,12 @@ END updatebcond
 
 SUBROUTINE calcbcond(POINTER TO POINTER TO boundarypoint bp; INTEGER vcomp; REAL x,y,z)
 IF InBody(x,y,z) THEN updatebcond(bp,vcomp,0) ELSE IF NOT staircase THEN
-  IF InBody(x-dx,y,z) THEN updatebcond(bp,vcomp,x-Bisection[InBody(*,y,z),x-dx,x])
-  IF InBody(x+dx,y,z) THEN updatebcond(bp,vcomp,Bisection[InBody(*,y,z),x,x+dx]-x)
-  IF InBody(x,y-dx,z) THEN updatebcond(bp,vcomp,y-Bisection[InBody(x,*,z),y-dx,y])
-  IF InBody(x,y+dx,z) THEN updatebcond(bp,vcomp,Bisection[InBody(x,*,z),y,y+dx]-y)
-  IF InBody(x,y,z-dx) THEN updatebcond(bp,vcomp,z-Bisection[InBody(x,y,*),z-dx,z])
-  IF InBody(x,y,z+dx) THEN updatebcond(bp,vcomp,Bisection[InBody(x,y,*),z,z+dx]-z)
+  IF InBody(x-dx,y,z) THEN updatebcond(bp,vcomp,x-Bisection[InBody(s,y,z),x-dx,x])
+  IF InBody(x+dx,y,z) THEN updatebcond(bp,vcomp,Bisection[InBody(s,y,z),x,x+dx]-x)
+  IF InBody(x,y-dx,z) THEN updatebcond(bp,vcomp,y-Bisection[InBody(x,s,z),y-dx,y])
+  IF InBody(x,y+dx,z) THEN updatebcond(bp,vcomp,Bisection[InBody(x,s,z),y,y+dx]-y)
+  IF InBody(x,y,z-dx) THEN updatebcond(bp,vcomp,z-Bisection[InBody(x,y,s),z-dx,z])
+  IF InBody(x,y,z+dx) THEN updatebcond(bp,vcomp,Bisection[InBody(x,y,s),z,z+dx]-z)
 END IF
 END calcbcond
 
@@ -165,7 +165,7 @@ LOOP FOR ix=nx DOWN TO 1 AND iy=ny DOWN TO 1 AND iz=nz-1 DOWN TO 1
     bcond(ix,iy,iz)=NULL
   ELSE
     IF InBody[ix*dx,iy*dx,(iz-1)*dx] AND NOT InBody(ix*dx,iy*dx,iz*dx) THEN
-      h=Bisection[InBody(ix*dx,iy*dx,*),(iz-1)*dx,iz*dx]-baseline
+      h=Bisection[InBody(ix*dx,iy*dx,s),(iz-1)*dx,iz*dx]-baseline
       mh=~+h
       mh2=~+h^2
     END IF

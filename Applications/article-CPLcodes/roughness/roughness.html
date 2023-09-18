@@ -160,12 +160,12 @@ rhs(&lowast;,0,&lowast;)=rhs(&lowast;,<a href="cpl.html#HI">HI</a>-1,&lowast;); 
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> calcbcond(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> boundarypoint bp; <a href="cpl.html#INTEGER">INTEGER</a> vcomp; <a href="cpl.html#REAL">REAL</a> x,y,z)
 <a href="cpl.html#IF">IF</a> InBody(x,y,z) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,0) <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> staircase <a href="cpl.html#IF">THEN</a>
-  <a href="cpl.html#IF">IF</a> InBody(x-dx,y,z) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,x-Bisection[InBody(&lowast;,y,z),x-dx,x])
-  <a href="cpl.html#IF">IF</a> InBody(x+dx,y,z) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,Bisection[InBody(&lowast;,y,z),x,x+dx]-x)
-  <a href="cpl.html#IF">IF</a> InBody(x,y-dx,z) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,y-Bisection[InBody(x,&lowast;,z),y-dx,y])
-  <a href="cpl.html#IF">IF</a> InBody(x,y+dx,z) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,Bisection[InBody(x,&lowast;,z),y,y+dx]-y)
-  <a href="cpl.html#IF">IF</a> InBody(x,y,z-dx) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,z-Bisection[InBody(x,y,&lowast;),z-dx,z])
-  <a href="cpl.html#IF">IF</a> InBody(x,y,z+dx) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,Bisection[InBody(x,y,&lowast;),z,z+dx]-z)
+  <a href="cpl.html#IF">IF</a> InBody(x-dx,y,z) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,x-Bisection[InBody(s,y,z),x-dx,x])
+  <a href="cpl.html#IF">IF</a> InBody(x+dx,y,z) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,Bisection[InBody(s,y,z),x,x+dx]-x)
+  <a href="cpl.html#IF">IF</a> InBody(x,y-dx,z) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,y-Bisection[InBody(x,s,z),y-dx,y])
+  <a href="cpl.html#IF">IF</a> InBody(x,y+dx,z) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,Bisection[InBody(x,s,z),y,y+dx]-y)
+  <a href="cpl.html#IF">IF</a> InBody(x,y,z-dx) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,z-Bisection[InBody(x,y,s),z-dx,z])
+  <a href="cpl.html#IF">IF</a> InBody(x,y,z+dx) <a href="cpl.html#IF">THEN</a> updatebcond(bp,vcomp,Bisection[InBody(x,y,s),z,z+dx]-z)
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a> calcbcond
 
@@ -177,7 +177,7 @@ rhs(&lowast;,0,&lowast;)=rhs(&lowast;,<a href="cpl.html#HI">HI</a>-1,&lowast;); 
     bcond(ix,iy,iz)=<a href="cpl.html#POINTER">NULL</a>
   <a href="cpl.html#ELSE">ELSE</a>
     <a href="cpl.html#IF">IF</a> InBody[ix&lowast;dx,iy&lowast;dx,(iz-1)&lowast;dx] <a href="cpl.html#AND">AND</a> <a href="cpl.html#NOT">NOT</a> InBody(ix&lowast;dx,iy&lowast;dx,iz&lowast;dx) <a href="cpl.html#IF">THEN</a>
-      h=Bisection[InBody(ix&lowast;dx,iy&lowast;dx,&lowast;),(iz-1)&lowast;dx,iz&lowast;dx]-baseline
+      h=Bisection[InBody(ix&lowast;dx,iy&lowast;dx,s),(iz-1)&lowast;dx,iz&lowast;dx]-baseline
       mh=<a href="cpl.html#Assignment">~</a>+h
       mh2=<a href="cpl.html#Assignment">~</a>+h<a href="cpl.html#REAL-operator">^</a>2
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
