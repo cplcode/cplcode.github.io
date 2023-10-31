@@ -1,0 +1,1 @@
+estimates the mean of a time series together with an error bar of the estimate itself. Autocorrelation of the time series is accounted for. Useful for the finite time sampling of an experiment or direct numerical simulation. Please read MeanandVar.pdf for more details.

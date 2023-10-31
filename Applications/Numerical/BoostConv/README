@@ -1,0 +1,1 @@
+improves (or even enables) the convergence of a pre-existing, linear or nonlinear, iterative algorithm. Its reverse-calling interface only requires the insertion of a single line in the original code. Please read BoostConv.pdf for more details.

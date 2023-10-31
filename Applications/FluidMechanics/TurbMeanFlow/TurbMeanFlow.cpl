@@ -2,11 +2,12 @@
 ! out of interpolations of the universal law of the wall
 ! and of the particular laws of the wake of various parallel geometries.
 ! Ref.: P. Luchini, Eur. J. Mech. B/Fluids 71, 15-34 (2018).
+! Ref.: P. Luchini, arXiv preprint arXiv:2310.11542 submitted to the Journal of Fluid Mechanics (2023).
 ! The wake functions exhibit a linear leading term with coefficient 0, 1, 2
 ! which equals the dimensionless pressure gradient,
 ! in accordance with P. Luchini, Phys. Rev. Letters 118, 224501 (2017).
 !
-! TurbMeanFlow.cpl -- Copyright 2018-2021 Paolo Luchini
+! TurbMeanFlow.cpl -- Copyright 2018-2023 Paolo Luchini
 ! http://CPLcode.net/Applications/FluidMechanics/TurbMeanFlow
 
 !( Permission is hereby granted, free of charge, to use and copy this software
@@ -42,5 +43,5 @@ END Moody
   USE TurbMeanFlow
   set logscale xy
   set grid
-  plot [1000:1E6] Moody(logx,0) w l, Moody(logx,0.001) w l, Moody(logx,0.002) w l, Moody(logx,0.005) w l, Moody(logx,0.01) w l, Moody(logx,0.02) w l, Moody(logx,0.05) w l                                                                      
+  plot [1000:1E6] Moody(logx,0) w l, Moody(logx,0.001) w l, Moody(logx,0.002) w l, Moody(logx,0.005) w l, Moody(logx,0.01) w l, Moody(logx,0.02) w l, Moody(logx,0.05) w l    
   !)
