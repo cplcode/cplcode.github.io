@@ -1,2 +1,2 @@
-2023-12-27
-Complete overhaul of the editor's undo subsystem. Now binary-file compatible and with new unified semantics.
+2024-01-03
+minor corrections.

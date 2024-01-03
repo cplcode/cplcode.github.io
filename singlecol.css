@@ -38,7 +38,7 @@
         padding-left:0.75em; padding-right:0.75em;
         padding-bottom:1em;
         min-height:calc(100% - 1em);
-}
+      }
       code,pre,.leftinset,.rightinset {
         font-size: 1em;
         font-family:-apple-system,ui-monospace,monospace,serif;
