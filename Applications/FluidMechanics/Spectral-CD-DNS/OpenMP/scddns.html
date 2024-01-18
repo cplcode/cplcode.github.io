@@ -51,8 +51,8 @@ SOFTWARE. !)</span>
 <span class=comment>! Define wall-normal mesh</span>
 <span class=comment>! Alternative Options for uniform or channel-type with two walls and finer spacing near the walls</span>
 <a href="cpl.html#REAL">REAL</a> z(-1..nz+1)
-<span class=comment>!DO z(i)=zmax&lowast;i/nz FOR ALL i <span class=comment>! Uniform mesh</span></span>
-<a href="cpl.html#DO">DO</a> z(i)=zmin+0.5&lowast;(zmax-zmin)&lowast;{tanh[htcoeff&lowast;(2&lowast;i/nz-1)]/tanh(htcoeff)+0.5&lowast;(zmax-zmin)} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>! Channel with two walls</span>
+<span class=comment>!DO z(i)=zmin+(zmax-zmin)&lowast;i/nz FOR ALL i <span class=comment>! Uniform mesh</span></span>
+<a href="cpl.html#DO">DO</a> z(i)=zmin+0.5&lowast;(zmax-zmin)&lowast;{tanh[htcoeff&lowast;(2&lowast;i/nz-1)]/tanh(htcoeff)+1} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>! Channel with two walls</span>
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> nx,ny,nz,2&lowast;PI/alpha0,2&lowast;PI/beta0,Re
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> deltat,t_max,dt_save
 
@@ -63,7 +63,7 @@ VELOCITY=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">C
 <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> V(ix,iy,iz)
   eps=0.002; u=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#Builtin">EXP</a>[<a href="cpl.html#RAND">RAND</a>()&lowast;2&lowast;PI&lowast;I]; v=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#Builtin">EXP</a>[<a href="cpl.html#RAND">RAND</a>()&lowast;2&lowast;PI&lowast;I]; w=<a href="cpl.html#Assignment">~</a>+eps&lowast;<a href="cpl.html#Builtin">EXP</a>[<a href="cpl.html#RAND">RAND</a>()&lowast;2&lowast;PI&lowast;I]
 <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a> <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1
-<a href="cpl.html#DO">DO</a> V(0,0,iz).u.<a href="cpl.html#REAL">REAL</a>=(z(iz)-zmin)&lowast;(zmax-z(iz)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
+<a href="cpl.html#DO">DO</a> V(0,0,iz).u.<a href="cpl.html#REAL">REAL</a>=1.2&lowast;z(iz)<a href="cpl.html#REAL-operator">^</a>(1/7); V(0,0,nz-iz).u.<a href="cpl.html#REAL">REAL</a>=V(0,0,iz).u.<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FOR">FOR</a> iz=0 <a href="cpl.html#TO">TO</a> nz <a href="cpl.html#DIV">DIV</a> 2
 <span class=comment>! Read the initial velocity field if present</span>
 <a href="cpl.html#IF">IF</a> Vfield#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a>
   <a href="cpl.html#INTEGER">INTEGER</a> oldnx=nx, oldny=ny, oldnz=nz

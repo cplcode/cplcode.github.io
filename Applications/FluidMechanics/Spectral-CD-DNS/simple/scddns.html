@@ -46,8 +46,8 @@ SOFTWARE. !)</span>
 <span class=comment>! Define wall-normal mesh</span>
 <span class=comment>! Alternative Options for uniform or channel-type with two walls and finer spacing near the walls</span>
 <a href="cpl.html#REAL">REAL</a> z(-1..nz+1)
-<span class=comment>! DO z(i)=zmax&lowast;i/nz FOR ALL i <span class=comment>! Uniform mesh</span></span>
-<a href="cpl.html#DO">DO</a> z(i)=zmin+0.5&lowast;(zmax-zmin)&lowast;{tanh[htcoeff&lowast;(2&lowast;i/nz-1)]/tanh(htcoeff)+0.5&lowast;(zmax-zmin)} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>! Channel with two walls</span>
+<span class=comment>!DO z(i)=zmin+(zmax-zmin)&lowast;i/nz FOR ALL i <span class=comment>! Uniform mesh</span></span>
+<a href="cpl.html#DO">DO</a> z(i)=zmin+0.5&lowast;(zmax-zmin)&lowast;{tanh[htcoeff&lowast;(2&lowast;i/nz-1)]/tanh(htcoeff)+1} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>! Channel with two walls</span>
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> nx,ny,nz,2&lowast;PI/alpha0,2&lowast;PI/beta0,Re
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> deltat,t_max,dt_save
 

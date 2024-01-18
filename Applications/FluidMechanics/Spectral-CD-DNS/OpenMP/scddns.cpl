@@ -39,8 +39,8 @@ REPEAT
 ! Define wall-normal mesh
 ! Alternative Options for uniform or channel-type with two walls and finer spacing near the walls
 REAL z(-1..nz+1)
-!DO z(i)=zmax*i/nz FOR ALL i ! Uniform mesh
-DO z(i)=zmin+0.5*(zmax-zmin)*{tanh[htcoeff*(2*i/nz-1)]/tanh(htcoeff)+0.5*(zmax-zmin)} FOR ALL i ! Channel with two walls
+!DO z(i)=zmin+(zmax-zmin)*i/nz FOR ALL i ! Uniform mesh
+DO z(i)=zmin+0.5*(zmax-zmin)*{tanh[htcoeff*(2*i/nz-1)]/tanh(htcoeff)+1} FOR ALL i ! Channel with two walls
 WRITE BY NAME nx,ny,nz,2*PI/alpha0,2*PI/beta0,Re
 WRITE BY NAME deltat,t_max,dt_save
 
@@ -51,7 +51,7 @@ ARRAY(0..nx,-ny..ny,-1..nz+1) OF VELOCITY V=0
 DO WITH V(ix,iy,iz)
   eps=0.002; u=~+eps*EXP[RAND()*2*PI*I]; v=~+eps*EXP[RAND()*2*PI*I]; w=~+eps*EXP[RAND()*2*PI*I]
 FOR ix=1 TO HI AND ALL iy AND iz=1 TO nz-1
-DO V(0,0,iz).u.REAL=(z(iz)-zmin)*(zmax-z(iz)) FOR ALL iz
+DO V(0,0,iz).u.REAL=1.2*z(iz)^(1/7); V(0,0,nz-iz).u.REAL=V(0,0,iz).u.REAL FOR iz=0 TO nz DIV 2
 ! Read the initial velocity field if present
 IF Vfield#NULL THEN
   INTEGER oldnx=nx, oldny=ny, oldnz=nz
