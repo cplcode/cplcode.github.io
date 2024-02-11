@@ -1163,7 +1163,7 @@ In addition, situations where the type of an object is not decided at compile ti
 
 A function call in which such a pointer appears is transparently switched at run time to the function defined for the type of the actual parameters, or an error is thrown if no such function exists.
 
-Pointers to variables of any except ARRAY(&lowast;) and STORED type can be assigned to a DYNAMIC POINTER. If the scope of assignment is to be restricted, the declaration becomes
+Pointers to variables of any but ARRAY(&lowast;) and STORED type can be assigned to a DYNAMIC POINTER. If the scope of assignment is to be restricted, the declaration becomes
 
 	DYNAMIC POINTER TO &lt;type declarator&gt;
 
