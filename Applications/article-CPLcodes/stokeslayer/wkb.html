@@ -51,17 +51,17 @@ dt=(tfin-tin)/nt
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 
-<span class=comment>!(</span>
-STREAM WriteProfile=<a href="cpl.html#CREATE">CREATE</a>("profile")
+<span class=comment>!(
+FILE WriteProfile=CREATE("profile")
 WriteProfile 0,0,0
-<a href="cpl.html#DO">DO</a> WriteProfile y(i),<a href="cpl.html#ABS">ABS</a>(I&lowast;alfa&lowast;psi(i)),<a href="cpl.html#Builtin">ARG</a>(I&lowast;alfa&lowast;psi(i)) <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+DO WriteProfile y(i),ABS(I&lowast;alfa&lowast;psi(i)),ARG(I&lowast;alfa&lowast;psi(i)) FOR i=1 TO ny-1
 WriteProfile
 WriteProfile 0,0,0
-<a href="cpl.html#DO">DO</a> WriteProfile (y(i)+y(i-1))/2, <a href="cpl.html#ABS">ABS</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), <a href="cpl.html#Builtin">ARG</a>([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) <a href="cpl.html#FOR">FOR</a> i=2 <a href="cpl.html#TO">TO</a> ny-1
+DO WriteProfile (y(i)+y(i-1))/2, ABS([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), ARG([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) FOR i=2 TO ny-1
 WriteProfile
 WriteProfile 0,0,0
-<a href="cpl.html#DO">DO</a> WriteProfile y(i),<a href="cpl.html#ABS">ABS</a>(zstar(i)/(y(i+1)-y(i))&lowast;2),<a href="cpl.html#Builtin">ARG</a>(zstar(i)/(y(i+1)-y(i))&lowast;2) <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
-)
+DO WriteProfile y(i),ABS(zstar(i)/(y(i+1)-y(i))&lowast;2),ARG(zstar(i)/(y(i+1)-y(i))&lowast;2) FOR i=1 TO ny-1
+!)</span>
 <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a> TEXTMODE
 
 </pre></body></html>

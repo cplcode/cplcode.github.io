@@ -40,7 +40,7 @@ REPEAT LOOP
 REPEAT LOOP
 
 !(
-STREAM WriteProfile=CREATE("profile")
+FILE WriteProfile=CREATE("profile")
 WriteProfile 0,0,0
 DO WriteProfile y(i),ABS(I*alfa*psi(i)),ARG(I*alfa*psi(i)) FOR i=1 TO ny-1
 WriteProfile
@@ -49,6 +49,6 @@ DO WriteProfile (y(i)+y(i-1))/2, ABS([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), ARG([psi(
 WriteProfile
 WriteProfile 0,0,0
 DO WriteProfile y(i),ABS(zstar(i)/(y(i+1)-y(i))*2),ARG(zstar(i)/(y(i+1)-y(i))*2) FOR i=1 TO ny-1
-)
+!)
 IF PlotOn THEN TEXTMODE
 

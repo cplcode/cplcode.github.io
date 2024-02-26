@@ -5,7 +5,7 @@ IF PlotOn THEN GRAPHICSMODE
 
 !(
 DO zeta(i)=EXP(-y(i)) FOR ALL i 
-)
+!)
 zeta=0
 
 zetaold=zeta
