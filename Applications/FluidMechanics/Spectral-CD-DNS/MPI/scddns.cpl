@@ -195,7 +195,7 @@ bcLUdecomp D0mat
 
 REAL FUNCTION zintegr(REAL f(*))
   RESULT=0
-  LOOP FOR iz=1 TO nz-1 BY 2 
+  LOOP FOR iz=0 TO nz BY 2 
     zp1=z(iz+1)-z(iz); zm1=z(iz-1)-z(iz) 
     a1=-1/3*zm1+1/6*zp1+1/6*zp1*zp1/zm1
     a3=+1/3*zp1-1/6*zm1-1/6*zm1*zm1/zp1
