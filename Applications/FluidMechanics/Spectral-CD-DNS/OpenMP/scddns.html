@@ -122,7 +122,7 @@ VELOCITY=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">C
 <a href="cpl.html#INLINE">INLINE</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D2(<a href="complex.html#Top">COMPLEX</a> f(&lowast;))=D2(f.<a href="cpl.html#REAL">REAL</a>)+I&lowast;D2(f.<a href="complex.html#Top">IMAG</a>)
 <a href="cpl.html#INLINE">INLINE</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D4(<a href="complex.html#Top">COMPLEX</a> f(&lowast;))=D4(f.<a href="cpl.html#REAL">REAL</a>)+I&lowast;D4(f.<a href="complex.html#Top">IMAG</a>)
 
-<span class=comment>! Temporary two-dimensional storage for the non-linear terms, and expanded arrays for de-aliases FFTs.</span>
+<span class=comment>! Temporary two-dimensional storage for the non-linear terms, and expanded arrays for de-aliased FFTs.</span>
 MOMFLUX=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">COMPLEX</a> uu,uv,vv,vw,ww,uw)
 MOMFLUX VV(0..nx,-ny..ny,-2..2)=0
 <a href="cpl.html#INTEGER">INTEGER</a> nxd=3&lowast;nx <a href="cpl.html#DIV">DIV</a> 2 -1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> nxd <a href="cpl.html#UNTIL">UNTIL</a> FFTfit(nxd)

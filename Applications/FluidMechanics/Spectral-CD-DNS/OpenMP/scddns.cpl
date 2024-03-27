@@ -110,7 +110,7 @@ INLINE COMPLEX FUNCTION D1(COMPLEX f(*))=D1(f.REAL)+I*D1(f.IMAG)
 INLINE COMPLEX FUNCTION D2(COMPLEX f(*))=D2(f.REAL)+I*D2(f.IMAG)
 INLINE COMPLEX FUNCTION D4(COMPLEX f(*))=D4(f.REAL)+I*D4(f.IMAG)
 
-! Temporary two-dimensional storage for the non-linear terms, and expanded arrays for de-aliases FFTs.
+! Temporary two-dimensional storage for the non-linear terms, and expanded arrays for de-aliased FFTs.
 MOMFLUX=STRUCTURE(COMPLEX uu,uv,vv,vw,ww,uw)
 MOMFLUX VV(0..nx,-ny..ny,-2..2)=0
 INTEGER nxd=3*nx DIV 2 -1; DO INC nxd UNTIL FFTfit(nxd)
