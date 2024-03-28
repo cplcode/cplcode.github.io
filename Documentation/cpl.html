@@ -545,19 +545,19 @@ are pre-included in all CPL programs and need not (but may) be included again.
 </div><div class=page id="C-SECTION">
 Page: (cpl)C SECTION, Next: <a href="#FORTRAN-interface">FORTRAN interface</a>, Prev: <a href="#C-interface">C interface</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>C SECTION</h4>
-C code excerpts can be inserted in a CPL program through the statement
+C code excerpts can be inserted amidst a CPL program through the statement
 
 	C SECTION
 	&lt;C code&gt;
 	END C SECTION
 
-This has the same effect as recalling with #include a file that contains &lt;C code&gt;. That is, the identifiers declared in the C SECTION become transparently available to the CPL program.
+This has the same effect as recalling with #include a file that contains &lt;C code&gt;; that is, the C SECTION is scanned by cpl and any identifiers declared in it become transparently available to the CPL program.
 
-As an alternative, C code may also be inserted between <q>&lt;&lowast;</q> and <q>&lowast;&gt;</q> as:
+Alternately, C code may also be inserted between <q>&lt;&lowast;</q> and <q>&lowast;&gt;</q> as in:
 
 	&lt;&lowast; C code &lowast;&gt;
 
-In this case, anything that appears between <q>&lt;&lowast;</q> and <q>&lowast;&gt;</q> is copied verbatim in the generated C code without any intervention of the CPL compiler. It is up to the programmer to ensure that the resulting code makes sense, so this construction should only be used as a last resort. 
+The text that appears between <q>&lt;&lowast;</q> and <q>&lowast;&gt;</q> is copied verbatim into the generated C file without the CPL compiler verifying its syntax or extracting any identifiers. It is up to the programmer to ensure that the resulting code makes sense, thus this construction should only be used as a last resort. 
 </div><div class=page id="FORTRAN-interface">
 Page: (cpl)FORTRAN interface, Next: <a href="#MODULE">MODULE</a>, Prev: <a href="#C-SECTION">C SECTION</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Use of FORTRAN subroutine calls</h4>
