@@ -555,7 +555,7 @@ This has the same effect as recalling with #include a file that contains &lt;C c
 
 Alternately, C code may also be inserted between <q>&lt;&lowast;</q> and <q>&lowast;&gt;</q> as in:
 
-	&lt;&lowast; C code &lowast;&gt;
+	&lt;&lowast; some text &lowast;&gt;
 
 The text that appears between <q>&lt;&lowast;</q> and <q>&lowast;&gt;</q> is copied verbatim into the generated C file without the CPL compiler verifying its syntax or extracting any identifiers. It is up to the programmer to ensure that the resulting code makes sense, thus this construction should only be used as a last resort. 
 </div><div class=page id="FORTRAN-interface">
@@ -2731,9 +2731,10 @@ parallel:
 
 Compile the parallel version as <q>cpl make &lt;program&gt; -fopenmp</q>.
 
-Notes:
- 1) If the parallel version is compiled without the -fopenmp option, #pragma is treated as a comment, that is you obtain the serial version of the program. This is intentional and conforming to C behaviour.
- 2) C compiler options, of which -fopenmp is one, must appear after &lt;program&gt; in order to be distinguished from cpl options (see <a href="#cpl">cpl</a>).
+Implementation notes:
+ 1) If a parallel program is compiled without the -fopenmp option, #pragma is treated as a comment, that is you obtain the serial version of the program. This is intentional and conforming to C behaviour.
+ 2) C compiler options, of which -fopenmp is one, must appear after &lt;program&gt; on the command line in order for them to be distinguished from cpl options (see <a href="#cpl">cpl</a>).
  3) The <q>omp for</q> directive can only be applied to a basic <q>LOOP FOR</q> construction (see <a href="#FOR">LOOP:FOR</a>.), which gets translated to <q>for</q> in the intermediate C code. Other types of LOOP or DO do not involve a <q>for</q> and are not recognized by OpenMP.
- 4) If an <q>omp parallel</q> directive needs to be applied to a block of code that is not implicitly delimited by the subsequent instruction, this block can be delimited by <q>MODULE ... END MODULE</q> (see <a href="#MODULE">MODULE</a>). 
+ 4) If an <q>omp parallel</q> or other directive needs to be applied to a block of code that is not implicitly delimited by the subsequent instruction, this block can be delimited by <q>MODULE ... END MODULE</q> (see <a href="#MODULE">MODULE</a>).
+ 5) As an aid to directives that explicitly affect individual variables, if a CPL identifier is recognized in the parenthesized part of a #pragma, it gets translated to the corresponding C identifier; if this identifies an array, its starting index and size are automatically included in an OpenMP-compatible syntax. All other parts of the #pragma are copied verbatim. 
 </div></body></html>
