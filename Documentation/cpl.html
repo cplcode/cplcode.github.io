@@ -67,7 +67,7 @@
 </div><div class=page id="Top">
 Page: (cpl)Top,  Next: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h1>CPL Reference Manual</h1>
-Documentation for the CPL programming language and its compiler, March 2024. Printable and citable version can be found at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
+Documentation for the CPL programming language and its compiler, March 2024. Printable and citable 2020 version is at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
 
   CPL = Concealed Pointer Lookup
   CPL = Coactive Parameter Lists
@@ -85,7 +85,6 @@ Documentation for the CPL programming language and its compiler, March 2024. Pri
 <tr><td><a href="editor.html#Top">(editor)Top</a>:</td><td>development text editor with word and syntax completion</td></tr>
 <tr><td><a href="#Library">Library</a>:</td><td>Ready to USE library of CPL modules</td></tr>
 <tr><td><a href="#Keyword-Index">Keyword Index</a>:</td><td>Keyword Index</td></tr>
-<tr><td><a href="#Q&A">Q&amp;A</a>:</td><td>Common installation problems and their solution</td></tr>
 </table></nav>
 
 </div><div class=page id="Keyword-Index">
@@ -557,7 +556,7 @@ Alternately, C code may also be inserted between <q>&lt;&lowast;</q> and <q>&low
 
 	&lt;&lowast; some text &lowast;&gt;
 
-The text that appears between <q>&lt;&lowast;</q> and <q>&lowast;&gt;</q> is copied verbatim into the generated C file without the CPL compiler verifying its syntax or extracting any identifiers. It is up to the programmer to ensure that the resulting code makes sense, thus this construction should only be used as a last resort. 
+The text that appears between <q>&lt;&lowast;</q> and <q>&lowast;&gt;</q> is copied verbatim into the generated C file without the CPL compiler verifying its syntax or extracting any identifiers. It is up to the programmer to ensure that the resulting code makes sense, thus this construction should only be used as a last resort for non-standard features. 
 </div><div class=page id="FORTRAN-interface">
 Page: (cpl)FORTRAN interface, Next: <a href="#MODULE">MODULE</a>, Prev: <a href="#C-SECTION">C SECTION</a>, Up: <a href="#Source-file">Source file</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Use of FORTRAN subroutine calls</h4>
@@ -926,7 +925,7 @@ or just
 
 	newid = &lt;compound type&gt;
 
-The new identifier can be used in subsequent declarations in the place of the r.h.s.
+The new identifier can be used in subsequent declarations in place of the r.h.s.
 
 The TYPE of an already declared variable or expression can always be recovered from the pseudo-function
 
@@ -2732,7 +2731,7 @@ parallel:
 Compile the parallel version as <q>cpl make &lt;program&gt; -fopenmp</q>.
 
 Implementation notes:
- 1) If a parallel program is compiled without the -fopenmp option, #pragma is treated as a comment, that is you obtain the serial version of the program. This is intentional and conforming to C behaviour.
+ 1) If a parallel program is compiled without the -fopenmp option, #pragma is treated as a comment, that is you obtain the serial version of the program. This is intended and conforming to C behaviour.
  2) C compiler options, of which -fopenmp is one, must appear after &lt;program&gt; on the command line in order for them to be distinguished from cpl options (see <a href="#cpl">cpl</a>).
  3) The <q>omp for</q> directive can only be applied to a basic <q>LOOP FOR</q> construction (see <a href="#FOR">LOOP:FOR</a>.), which gets translated to <q>for</q> in the intermediate C code. Other types of LOOP or DO do not involve a <q>for</q> and are not recognized by OpenMP.
  4) If an <q>omp parallel</q> or other directive needs to be applied to a block of code that is not implicitly delimited by the subsequent instruction, this block can be delimited by <q>MODULE ... END MODULE</q> (see <a href="#MODULE">MODULE</a>).
