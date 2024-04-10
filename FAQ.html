@@ -74,7 +74,7 @@ The <a href="https://CPLcode.net">CPL</a> compiler's most distinctive feature is
     <h2 id="Q5" itemprop="name">Is this a good language for GPU computing?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-      <a href="https://CPLcode.net">CPL</a> transparently supports <a href="https://CPLcode.net/Documentation/cpl.html#OpenMP">OpenMP and OpenACC</a> directives (or in fact any other directives that can be encapsulated in a #pragma), with automatic handling of array size and dimensions. GPU computing is then as easily available as in FORTRAN or C, with the added advantage of CPL's high-level syntax. GPU-precompiled libraries, or separately compiled GPU programs, can also be easily accessed through their <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C interface</a>.
+      <a href="https://CPLcode.net">CPL</a> transparently supports <a href="https://openmp.org" target=blank_>OpenMP</a> and <a href="https://openacc.org" target=blank_>OpenACC</a> directives (or in fact any other directives that can be <a href="https://CPLcode.net/Documentation/cpl.html#OpenMP">encapsulated in a #pragma</a>), with automatic handling of array size and dimensions. GPU computing is then as easily available as in FORTRAN or C, with the added advantage of CPL's high-level syntax. GPU-precompiled libraries, or separately compiled user GPU programs, can also be easily accessed through their <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C interface</a>.
       </div>
     </div>
   </div>
@@ -126,7 +126,7 @@ statically or dynamically allocates memory space as needed and frees it on exit 
 A scripting language or script language is a programming language that is usually interpreted at run time rather than compiled. In general, scripting languages are easier to learn and faster to code in than more structured and compiled languages such as C and C++.<br>
 <p>Although <a href="https://CPLcode.net">CPL</a> <i>is</i> compiled, the straight
   <a href="https://CPLcode.net/Documentation/cpl.html#cpl-run">cpl run</a> command makes it act just like a scripting language, directly running a plain-text CPL file by transparently compiling it when and only when it detects a modification.</p>
-  <p>If invoked from a <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)">hashbang</a>, <a href="https://CPLcode.net/Documentation/cpl.html#cpl-run">cpl run</a> makes <a href="https://CPLcode.net">CPL</a> code executable like a script, but at compiled-code speed.</p>
+  <p>If invoked from a <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)" target=blank_>hashbang</a>, <a href="https://CPLcode.net/Documentation/cpl.html#cpl-run">cpl run</a> makes <a href="https://CPLcode.net">CPL</a> code executable like a script, but at compiled-code speed.</p>
       </div>
     </div>
   </div>
