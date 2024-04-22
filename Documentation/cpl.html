@@ -1282,17 +1282,17 @@ Page: (cpl)Expressions, Next: <a href="#Assignment">Assignment</a>, Prev: <a hre
 </div><div class=page id="INTEGER-operator">
 Page: (cpl)INTEGER operator, Next: <a href="#REAL-operator">REAL operator</a>, Prev: <a href="#Expressions">Expressions</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>INTEGER operators:	+  -  &lowast;  DIV  MOD</h4>
-DIV is the INTEGER division operator, and produces a rounded-down INTEGER quotient. <q>/</q> is reserved for REALs, and produces a REAL result even when the operands are INTEGERs.
+DIV is the INTEGER division operator, and produces a truncated-towards-minusinfinity INTEGER quotient a DIV b = FLOOR(a/b) (see <a href="#FLOOR">FLOOR</a>). <q>a/b</q> is reserved for REALs, and produces a REAL result even with INTEGER operands a,b.
 
 MOD is the <q>modulo</q> infix operator. If a and b are INTEGERs,
 
 	a MOD b
 
-represents the remainder of the integer division of a by b.
+represents the remainder of the integer division of a by b, defined in such a way that (a DIV b)&lowast;b + (a MOD b) always equals a.
 
-Notice on the truncation of integer division: CPL requires that a MOD b must always be a positive number, regardless of the sign of a/b. This is so that modular arithmetics can be applied to negative as well as to positive numbers, for example in array index manipulations. Since b&lowast;(a DIV b) + a MOD b = a, consistently a DIV b must be rounded towards minus infinity, or a DIV b = FLOOR(a/b). Care should be taken when porting programs from languages that truncate negative division, such as FORTRAN or C.
+Notice on the truncation of integer division: CPL defines a DIV b = FLOOR(a/b) so that a MOD b has the same sign as b independently of the sign of a, and modular arithmetics can be applied to negative as well as to positive a's, for example in array index manipulations. This implies that a MOD b is negative for negative b, but this case has hardly any uses.
 
-Operators following the C convention of truncating integer division and signed modulo are available, if needed, as CDIV and CMOD respectively. 
+Care should be taken when porting programs from languages that truncate negative division towards zero, such as FORTRAN or C. Operators following the C convention of truncating integer division and signed modulo are available, if needed, as CDIV and CMOD respectively. 
 </div><div class=page id="REAL-operator">
 Page: (cpl)REAL operator, Next: <a href="#Comparison">Comparison</a>, Prev: <a href="#INTEGER-operator">INTEGER operator</a>, Up: <a href="#Expressions">Expressions</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>REAL operators:		+  -  &lowast;  /  ^ (or &lowast;&lowast;)</h4>
