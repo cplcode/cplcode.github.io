@@ -1,2 +1,2 @@
 2024-05-06
-Remote-connection capability added to the editor.
+minor corrections.
