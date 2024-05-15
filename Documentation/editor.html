@@ -99,8 +99,9 @@ Most used editing keys:
    partial line is entered, only lines containing it become visible. Previous
    commands are immutable; when a character is added or deleted in a previous
    command, this is copied to the most recent position before being modified.
- - Tab: autocomplete keyword or identifier. Successive tabs move forward along
-   the list of available completions; Shift-Tab moves backwards.
+ - Tab: autocomplete keyword or identifier or filename. Successive tabs move
+ forward along the list of available completions; Shift-Tab moves backwards.
+ Shift-Tab without a prior Tab displays a list of all available completions.
  - Enter: submit line.
  - F1, Esc `: switch to full-screen mode.
  - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
@@ -121,8 +122,9 @@ Most used editing keys:
  - Up arrow (Esc j), down arrow (Esc k): previous, next line.
  - PgUp (Esc p), PgDn (Esc n): move to prev or next paragraph of the same or lesser indentation.
  - Esc f (Ctrl-f, Esc /), Esc F (Esc ?): Find forwards, respectively backwards.
- - Tab: autocomplete keyword or identifier. Successive tabs move forward along
-   the list of available completions; Shift-Tab moves backwards.
+ - Tab: autocomplete keyword or identifier or filename. Successive tabs move
+ forward along the list of available completions; Shift-Tab moves backwards.
+ Shift-Tab without a prior Tab displays a list of all available completions.
  - Enter: Enter new line, and trigger possible autocompletion of CPL syntax
  - Esc =: Autoindent current line or selection (<a href="#Indent-and-complete">Indent and complete</a>)
  - F1, Esc `: switch in and out of command-line mode.
@@ -206,7 +208,7 @@ Where needed, the following explicit indentation commands are available:
  Esc ( : unindent the current selection by one space to the left,
  Esc = : even the margin of the current selection, or indent as to CPL syntax.
 
-In addition, word completion using the Tab key is available in full-screen just as well as in readline mode. Successive tabs move forward along the list of available completions; Shift-Tab moves backwards. A hint is shown under the cursor at the end of the current line, foreshowing in faint type the completion that pressing Tab would currently produce.
+In addition, word completion using the Tab key is available in full-screen just as well as in readline mode. Successive tabs move forward along the list of available completions; Shift-Tab moves backwards. Shift-Tab without a prior Tab displays a list of all available completions. A hint is shown under the cursor at the end of the current line, foreshowing in faint type the completion that pressing Tab would currently produce.
 
 Parentheses and quote completion also operates, automatically adding closed parentheses and quotes at the time they are opened. 
 </div><div class=page id="Find">
