@@ -58,7 +58,9 @@
       background-color:#dee2eb;
       margin:0;
     }
+    nav {position:fixed; width:100%}
     nav a{
+      position:relative;
       display:inline-block;
       width:7.5em;
       font-size:125%;
@@ -70,13 +72,14 @@
       margin:1%;
       margin-bottom:2%;
       }
-    nav {position:fixed; width:100%}
-    nav a:hover{background-color:DarkGrey}
-    .button {
-      position:relative;
+    nav a:hover {
+      background-color:DarkGrey;
+      z-index:5;
+      }
+    .goldbutton {
       background-color:#CA9510;
       }
-    .button:hover {
+    .goldbutton:hover {
       background-color:GoldenRod;
       }
     .slanted {
@@ -89,9 +92,9 @@
       .subscript {
       position: relative;
       right:-1em;
-      width:3em;
-      margin-left:-4.5em;
-      bottom:-1.3em;
+      width:3.5em;
+      margin-left:-5.1em;
+      bottom:-1.4em;
       font-size:100%;
       }
     .title {
@@ -156,9 +159,9 @@
   <div class=title>
     <nav>
       <a href="What-is-CPL" title="What is CPL and why you should be interested">What is CPL?</a><a class=subscript href="FAQ" title="Frequently Asked Questions">FAQ</a>
-      <a href="Applications" title="Tutorial and contributed applications">Applications</a>
+      <a href="Applications" title="Tutorial and contributed applications">Applications</a><a class=subscript href="Applications/Tutorial" title="Tutorial programming examples">Tutorial</a>
       <a href="Documentation/cpl.html#Top" title="CPL reference manual">Documentation</a>
-      <a class=button href="Download" title="Free download"><span class=slanted>free</span>Download</a>
+      <a class=goldbutton href="Download" title="Free download"><span class=slanted>free</span>Download</a>
       <a href="About" title="About the author and copyright">About</a>
     </nav>
     <br><br><br><br><br><br>
