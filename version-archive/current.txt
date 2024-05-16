@@ -1,2 +1,2 @@
-2024-05-15
-Tab-completion of remote filenames; in addition Shift-Tab now displays available completions (or filenames) in list form.
+2024-05-16
+minor corrections.
