@@ -41,12 +41,11 @@
     </div>
   </div>
   <div class=question tabindex=2 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q2" itemprop="name">Is this an object-oriented language, or does it provide polymorphic functions?</h2>
+    <h2 id="Q2" itemprop="name">Does this programming language have pointers?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-      An object-oriented language (OOL) implements objects and their associated procedures within the software programming context, and encourages reuse of these objects within the same and other programs. Java, C++ and Smalltalk are popular examples of object-oriented languages. They typically bind related data and functions into a <q>class</q> object.<br>
-      <p>Polymorphism, on the over hand, causes a function to behave differently based on the type of its arguments, not necessarily only of the object that calls/invokes it.</p>
-      <p><a href="https://CPLcode.net">CPL</a> supports the object paradigm but avoids the inclusion of function definitions inside classes in favour of <a href="https://CPLcode.net/Documentation/cpl.html#Coactive-Parameter-Lists">overloaded, polymorphic functions</a> that are qualified by the (oftentimes <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more of their arguments. It caters for subtyping and inheritance through <a href="https://CPLcode.net/Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, and for dynamically typed objects through <a href="https://CPLcode.net/Documentation/cpl.html#DYNAMIC">DYNAMIC</a> pointers.</p>
+      C and FORTRAN have a diametrically opposite approach to pointers (variables that contain the memory address of other variables). Pointers sit at the very foundation of the C language, with the intended purpose to maximize efficiency through a close correspondence to machine language, but with the drawback of a somewhat unwieldy notation sprinkled all over with &lowast;'s and &amp;'s. Pointer declarations decide whether a function argument is passed by value or by reference. Arithmetics is allowed on pointers, with greatest flexibility but also vulnerability to programming errors. The original FORTRAN 77 on the other hand banned pointers entirely, passing function arguments by reference only and forcing the programmer to replace pointers with array indices even when this sounded unnatural, as in linked lists for example; subsequent versions of FORTRAN introduced pointers of a restricted nature, with no pointer arithmetics, but widely available FORTRAN libraries still rarely use pointers.<br>
+      <p><a href="https://CPLcode.net">CPL</a> treads a middle ground by making C-like use of <a href="https://CPLcode.net/Documentation/cpl.html#POINTER">pointers</a> possible, but concealing the near totality of referencing and dereferencing operations under <a href="https://CPLcode.net/Documentation/cpl.html#Concealed-Pointer-Lookup">implicit type conversion</a>. Pointer <i>declarations</i> decide whether a function argument is passed by value or by reference, but no special notation has to be used in function <i>calls</i>. <a href="https://CPLcode.net/Documentation/cpl.html#INTO">Pointer arithmetics</a> is allowed within the allocated memory space of a declared compound variable, and enforced to stay there when <a href="https://CPLcode.net/Documentation/cpl.html#rtchecks">run-time error checking</a> is on.</p>
       </div>
     </div>
   </div>
@@ -62,41 +61,7 @@
     </div>
   </div>
   <div class=question tabindex=4 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q4" itemprop="name">What about linear algebra and graphics?</h2>
-    <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-      <div itemprop="text">
-The <a href="https://CPLcode.net">CPL</a> compiler's most distinctive feature is its incremental extensibility. The <a href="https://CPLcode.net/Documentation/cpl.html#Library">included libraries</a> provide <a href="https://CPLcode.net/Documentation/matrix.html#Top">matrix operations</a>, <a href="https://CPLcode.net/Documentation/graphics.html#Top">gnuplot graphics</a>, and <a href="https://CPLcode.net/Documentation/symbolic.html#Top">symbolic manipulation</a>, among other extensions, all blended into the <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">language syntax</a>.<br>
-<p>Additionally, any function provided by an external <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> or <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be seamlessly called in a CPL program with no performance penalty.</p>
-      </div>
-    </div>
-  </div>
-  <div class=question tabindex=5 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q5" itemprop="name">Is this a good language for GPU computing?</h2>
-    <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-      <div itemprop="text">
-      <a href="https://CPLcode.net">CPL</a> transparently supports <a href="https://openmp.org" target=blank_>OpenMP</a> and <a href="https://openacc.org" target=blank_>OpenACC</a> directives (or in fact any other directives that fit in a <a href="https://CPLcode.net/Documentation/cpl.html#OpenMP">#pragma</a>), with automatic handling of array size and dimensions. GPU computing is then as easily available as in FORTRAN or C, with the added advantage of CPL's high-level syntax. GPU-precompiled libraries, or separately compiled user GPU programs, can also be easily accessed through their <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C interface</a>.
-      </div>
-    </div>
-  </div>
-  <div class=question tabindex=6 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q6" itemprop="name">Is the process of including a C library straightforward?</h2>
-    <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-      <div itemprop="text">
-The <a href="https://CPLcode.net">CPL</a> compiler can read and make sense of a C header file. After a single C-like <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">#include</a> directive, global variables and functions declared in the header become transparently available as CPL global variables and <a href="https://CPLcode.net/Documentation/cpl.html#FUNCTION">functions</a> with CPL syntax, error checking included.
-      </div>
-    </div>
-  </div>
-  <div class=question tabindex=7 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q7" itemprop="name">Where must a function prototype be declared?</h2>
-    <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-      <div itemprop="text">
-      Function prototypes exist in most languages and allow many programming errors to be caught at compile time. They are also essential to disambiguating overloaded functions. However, prototype checking in C and FORTRAN and many other compiled languages requires dedicated <q>header</q> or <q>interface</q> files that inconveniently duplicate the definitions contained in the program proper.<br>
-      <p><a href="https://CPLcode.net">CPL</a> checks prototype coherence by polling the <a href="https://CPLcode.net/Documentation/cpl.html#USE">USE</a>d files in stead of headers, and issues compile-time errors accordingly. The prototype-enforcing process is totally transparent to the user who no longer needs to write separate header files (but may if one wants to).</p>
-      </div>
-    </div>
-  </div>
-  <div class=question tabindex=8 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q8" itemprop="name">Is variable array size supported?</h2>
+    <h2 id="Q4" itemprop="name">Is variable array size supported?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       <a href="https://CPLcode.net">CPL</a> <a href="https://CPLcode.net/Documentation/cpl.html#ARRAY">arrays</a> allow variable (<i>i.e.</i>, run-time specified) and independent lower and upper bounds of each index wherever they allow constant ones; the compiler
@@ -106,8 +71,52 @@ statically or dynamically allocates memory space as needed and frees it on exit 
       </div>
     </div>
   </div>
+  <div class=question tabindex=5 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q5" itemprop="name">What about linear algebra and graphics?</h2>
+    <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+The <a href="https://CPLcode.net">CPL</a> compiler's most distinctive feature is its incremental extensibility. The <a href="https://CPLcode.net/Documentation/cpl.html#Library">included libraries</a> provide <a href="https://CPLcode.net/Documentation/matrix.html#Top">matrix operations</a>, <a href="https://CPLcode.net/Documentation/graphics.html#Top">gnuplot graphics</a>, and <a href="https://CPLcode.net/Documentation/symbolic.html#Top">symbolic manipulation</a>, among other extensions, all blended into the <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">language syntax</a>.<br>
+<p>Additionally, any function provided by an external <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> or <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be seamlessly called in a CPL program with no performance penalty.</p>
+      </div>
+    </div>
+  </div>
+  <div class=question tabindex=6 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q6" itemprop="name">Is this a good language for GPU computing?</h2>
+    <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      <a href="https://CPLcode.net">CPL</a> transparently supports <a href="https://openmp.org" target=blank_>OpenMP</a> and <a href="https://openacc.org" target=blank_>OpenACC</a> directives (or in fact any other directives that fit in a <a href="https://CPLcode.net/Documentation/cpl.html#OpenMP">#pragma</a>), with automatic handling of array size and dimensions. GPU computing is then as easily available as in FORTRAN or C, with the added advantage of CPL's high-level syntax. GPU-precompiled libraries, or separately compiled user GPU programs, can also be easily accessed through their <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C interface</a>.
+      </div>
+    </div>
+  </div>
+  <div class=question tabindex=7 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q7" itemprop="name">Is the process of including a C library straightforward?</h2>
+    <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+The <a href="https://CPLcode.net">CPL</a> compiler can read and make sense of a C header file. After a single C-like <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">#include</a> directive, global variables and functions declared in the header become transparently available as CPL global variables and <a href="https://CPLcode.net/Documentation/cpl.html#FUNCTION">functions</a> with CPL syntax, error checking included.
+      </div>
+    </div>
+  </div>
+  <div class=question tabindex=8 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q8" itemprop="name">Where must a function prototype be declared?</h2>
+    <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      Function prototypes exist in most languages and allow many programming errors to be caught at compile time. They are also essential to disambiguating overloaded functions. However, prototype checking in C and FORTRAN and many other compiled languages requires dedicated <q>header</q> or <q>interface</q> files that inconveniently duplicate the definitions contained in the program proper.<br>
+      <p><a href="https://CPLcode.net">CPL</a> checks prototype coherence by polling the <a href="https://CPLcode.net/Documentation/cpl.html#USE">USE</a>d files in stead of headers, and issues compile-time errors accordingly. The prototype-enforcing process is totally transparent to the user who no longer needs to write separate header files (but may if one wants to).</p>
+      </div>
+    </div>
+  </div>
   <div class=question tabindex=9 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q9" itemprop="name">Is this programming language compiled?</h2>
+    <h2 id="Q9" itemprop="name">Is this an object-oriented language, or does it provide polymorphic functions?</h2>
+    <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      An object-oriented language (OOL) implements objects and their associated procedures within the software programming context, and encourages reuse of these objects within the same and other programs. Java, C++ and Smalltalk are popular examples of object-oriented languages. They typically bind related data and functions into a <q>class</q> object.<br>
+      <p>Polymorphism, on the over hand, causes a function to behave differently based on the type of its arguments, not necessarily only of the object that calls/invokes it.</p>
+      <p><a href="https://CPLcode.net">CPL</a> supports the object paradigm but avoids the inclusion of function definitions inside classes in favour of <a href="https://CPLcode.net/Documentation/cpl.html#Coactive-Parameter-Lists">overloaded, polymorphic functions</a> that are qualified by the (oftentimes <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTURE</a>) type of one or more of their arguments. It caters for subtyping and inheritance through <a href="https://CPLcode.net/Documentation/cpl.html#anonymous">anonymous</a> STRUCTURE fields, and for dynamically typed objects through <a href="https://CPLcode.net/Documentation/cpl.html#DYNAMIC">DYNAMIC</a> pointers.</p>
+      </div>
+    </div>
+  </div>
+  <div class=question tabindex=10 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q10" itemprop="name">Is this programming language compiled?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
         <a href="https://CPLcode.net">CPL</a> was conceived as a compiled language from the very outset; when used for intensive computational tasks, it inherits the speed of compiled C. The basic <a href="https://CPLcode.net/Documentation/cpl.html#cpl">cpl make</a> command, used as
@@ -119,8 +128,8 @@ statically or dynamically allocates memory space as needed and frees it on exit 
       </div>
     </div>
   </div>
-  <div class=question tabindex=10 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q10" itemprop="name">Can a CPL program be just run, like in a scripting language?</h2>
+  <div class=question tabindex=11 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q11" itemprop="name">Can a CPL program be just run, like in a scripting language?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
 A scripting language or script language is a programming language that is usually interpreted at run time rather than compiled. In general, scripting languages are easier to learn and faster to code in than more structured and compiled languages such as C and C++.<br>
@@ -130,8 +139,8 @@ A scripting language or script language is a programming language that is usuall
       </div>
     </div>
   </div>
-  <div class=question tabindex=11 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q11" itemprop="name">Do the programming tools include an interactive execution environment?</h2>
+  <div class=question tabindex=12 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q12" itemprop="name">Do the programming tools include an interactive execution environment?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       A software routine that accepts commands as input and causes them to be executed is a component of operating systems and many programming environments.<br>
@@ -139,8 +148,8 @@ A scripting language or script language is a programming language that is usuall
       </div>
     </div>
   </div>
-  <div class=question tabindex=12 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q12" itemprop="name">And a code editor?</h2>
+  <div class=question tabindex=13 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q13" itemprop="name">And a code editor?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
   <a href="https://CPLcode.net">CPL</a> includes a <a href="https://CPLcode.net/Documentation/editor.html#Top">text editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key, lossless undo and a multiple insertion buffer. <a href="https://CPLcode.net/Documentation/cpl.html#cpl-i">Interactive cpl</a> and the <a href="https://CPLcode.net/Documentation/editor.html#Top">editor</a> in fact comprise a single integrated development environment (IDE): its command-console and editor faces can be swapped at the touch of a key. Both views
@@ -150,8 +159,8 @@ A scripting language or script language is a programming language that is usuall
       </div>
     </div>
   </div>
-  <div class=question tabindex=13 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q13" itemprop="name">Does the editor offer autocompletion, unlimited lossless undo and a multiple selection buffer?</h2>
+  <div class=question tabindex=14 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q14" itemprop="name">Does the editor offer autocompletion, unlimited lossless undo and a multiple selection buffer?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       The <a href="https://CPLcode.net/Documentation/editor.html#Top">CPL editor</a> features Tab autocompletion, parenthesis autocompletion, and CPL syntax autocompletion. Pressing Tab autocompletes the current keyword or identifier. Successive tabs move forward along
@@ -163,28 +172,19 @@ A scripting language or script language is a programming language that is usuall
       </div>
     </div>
   </div>
-  <div class=question tabindex=14 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q14" itemprop="name">Can we start an editor on our local machine and edit a file on a remote server?</h2>
+  <div class=question tabindex=15 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q15" itemprop="name">Can we start an editor on our local machine and edit a file on a remote server?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       The <a href="https://CPLcode.net/Documentation/editor.html#Top">CPL editor</a> internally handles <a href="https://CPLcode.net/Documentation/editor.html#Load-and-save">remote connections</a> specified through extended filenames prefixed with the name of the server separated by a colon, as in my.server.com:example.cpl. The connection is secured by ssh, and only an ssh server is required on the remote end. 
       </div>
     </div>
   </div>
-  <div class=question tabindex=15 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q15" itemprop="name">Is CPL a good alternative to FORTRAN and C for high performance computing?</h2>
+  <div class=question tabindex=16 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q16" itemprop="name">Is CPL a good alternative to FORTRAN and C for high performance computing?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
   <a href="https://CPLcode.net">CPL</a> provides the same computational performance as FORTRAN or C (it eventually delegates low-level optimization to the system's C compiler, while all of its higher-level constructions are carefully crafted not to interfere with such optimization), but adds a more expressive <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">syntax</a> and is generally more compact and intuitive to use. CPL enforces function prototypes without needing header or interface files. Both <a href="https://CPLcode.net/Documentation/cpl.html#mpicpl">MPI</a> and <a href="https://CPLcode.net/Documentation/cpl.html#OpenMP">OpenMP</a> parallelizations are catered for, as well as CPL's own <a href="https://CPLcode.net/Documentation/cpl.html#parallel">parallel</a> module. Third-party <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> and <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> libraries (say LAPACK, for instance) are easily integrated into <a href="https://CPLcode.net">CPL</a> programs. GPU computing is transparently available through <a href="https://CPLcode.net/Documentation/cpl.html#OpenMP">OpenMP and OpenACC</a> directives.
-      </div>
-    </div>
-  </div>
-  <div class=question tabindex=16 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q16" itemprop="name">Does this programming language have pointers?</h2>
-    <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-      <div itemprop="text">
-      C and FORTRAN have a diametrically opposite approach to pointers (variables that contain the memory address of other variables). Pointers sit at the very foundation of the C language, with the intended purpose to maximize efficiency through a close correspondence to machine language, but with the drawback of a somewhat unwieldy notation sprinkled all over with &lowast;'s and &amp;'s. Pointer declarations decide whether a function argument is passed by value or by reference. Arithmetics is allowed on pointers, with greatest flexibility but also vulnerability to programming errors. The original FORTRAN 77 on the other hand banned pointers entirely, passing function arguments by reference only and forcing the programmer to replace pointers with array indices even when this sounded unnatural, as in linked lists for example; subsequent versions of FORTRAN introduced pointers of a restricted nature, with no pointer arithmetics, but widely available FORTRAN libraries still rarely use pointers.<br>
-      <p><a href="https://CPLcode.net">CPL</a> treads a middle ground by making C-like use of <a href="https://CPLcode.net/Documentation/cpl.html#POINTER">pointers</a> possible, but concealing the near totality of referencing and dereferencing operations under <a href="https://CPLcode.net/Documentation/cpl.html#Concealed-Pointer-Lookup">implicit type conversion</a>. Pointer <i>declarations</i> decide whether a function argument is passed by value or by reference, but no special notation has to be used in function <i>calls</i>. <a href="https://CPLcode.net/Documentation/cpl.html#INTO">Pointer arithmetics</a> is allowed within the allocated memory space of a declared compound variable, and enforced to stay there when <a href="https://CPLcode.net/Documentation/cpl.html#rtchecks">run-time error checking</a> is on.</p>
       </div>
     </div>
   </div>
