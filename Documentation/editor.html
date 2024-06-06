@@ -148,6 +148,7 @@ Most prompts and menus can be aborted by pressing Esc again.
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#Select">Select</a>:</td><td>text selection, insertion and deletion</td></tr>
 <tr><td><a href="#Indent-and-complete">Indent and complete</a>:</td><td>CPL syntax-sensitive indentation and completion</td></tr>
+<tr><td><a href="#Load-and-save">Load and save</a>:</td><td>Loading and saving files</td></tr>
 <tr><td><a href="#Find">Find</a>:</td><td>find and replace functionality</td></tr>
 <tr><td><a href="#Undo">Undo</a>:</td><td>and redo</td></tr>
 <tr><td><a href="#options">options</a>:</td><td>editor options</td></tr>
@@ -190,9 +191,9 @@ A file is opened in a new screen with the <q>edit</q> iteractive cpl command (al
 
 A local cpl editor can access files on remote servers supporting the ssh protocol. <q>edit</q>, <q>load</q> and <q>save</q> accept extended filenames prefixed with the name of the server separated by a colon, as in my.server.com:example.cpl, and transparently connect through ssh as required. The connection is stateless and closed again after each operation, and can thus survive temporary network interruptions.Tab completion and Shift-Tab listing are available on remote filenames.
 
-Authentication is managed by ssh, and for smoother operation should be set up as passwordless. A user name, if not implied, can be prefixed, separated by @ as in user@my.server.com:example.cpl. If a password is required it will be asked for during <q>edit</q>, <q>load</q> or <q>save</q>, but background services like filename completion and timestamp checking will be unavailable on remote servers.
+Authentication is managed by ssh, and for smoother operation should be set up as passwordless. A user name, if not implied, can be prefixed, separated by @ as in user@my.server.com:example.cpl. If a password is required it will be asked for during <q>edit</q>, <q>load</q> or <q>save</q>, but background services like filename completion and timestamping will only be unavailable on remote servers with passwordless authentication.
 
-When the filename entered after either <q>edit</q>, <q>load</q> or <q>save</q> begins with <q>./</q> or <q>../</q>, the PWD is assumed to be the one where the file currently on screen resides, and not the PWD of the underlying terminal. This is so that files in the same directory as the current file (or in its parent directory) can be accessed by these shortcuts even on remote servers. 
+When the filename entered after either <q>edit</q>, <q>load</q> or <q>save</q> begins with <q>./</q> or <q>../</q>, the PWD is assumed to be the directory where the file currently on screen resides, and not the PWD of the underlying terminal. This is so that files in the same directory as the current file (or in its parent directory) can be accessed by these shortcuts even on remote servers. 
 </div><div class=page id="Indent-and-complete">
 Page: (editor)Indent and complete, Next: <a href="#Find">Find</a>, Prev: <a href="#Select">Select</a>, Up: <a href="#full-screen">full-screen</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>CPL syntax-sensitive indentation and completion</h4>

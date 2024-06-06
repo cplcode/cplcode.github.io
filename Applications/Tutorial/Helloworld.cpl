@@ -7,7 +7,7 @@ WRITE "Hello world!"
 ! If this is your first CPL program, download this (or any of the other
 ! tutorial examples) to a working directory in your computer, and then either
 ! 1) compile it with "cpl make Helloworld", then execute "./Helloworld"; or
-! 2) compile and execute all at once with "cpl run Helloworld"; or
+! 2) compile and execute in one shot with "cpl run Helloworld"; or
 ! 3) when the optional #!/usr/bin/env cpl command fills the first line, and the
 ! execute permission is turned on, you can just execute Helloworld.cpl itself.
 
