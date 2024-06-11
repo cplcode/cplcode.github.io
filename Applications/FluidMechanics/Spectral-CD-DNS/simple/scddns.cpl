@@ -305,8 +305,8 @@ LOOP timeloop WHILE time < t_max-deltat/2
     INC count
     field = CREATE("scddns"count".dat")
     WRITE TO field "nx="nx,"ny="ny,"nz="nz,"alpha0="alpha0,"beta0="beta0,"htcoeff="htcoeff,"Re="1/nu
-    WRITE BY NAME TO field meanpx,meanflowx,meanpy,meanflowy
     WRITE BY NAME TO field deltat, t_max, dt_save
+    WRITE BY NAME TO field meanpx,meanflowx,meanpy,meanflowy
     WRITE BINARY TO field V
     CLOSE field
   END IF
