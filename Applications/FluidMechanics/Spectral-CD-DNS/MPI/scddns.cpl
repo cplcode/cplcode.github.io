@@ -56,7 +56,7 @@ REPEAT
 IF have00 THEN DO V(0,0,iz).u.REAL=1.2*z(iz)^(1/7); V(0,0,nz-iz).u.REAL=V(0,0,iz).u.REAL FOR iz=0 TO nz DIV 2
 
 ! Read the initial velocity field if present
-IF Vfield#NULL THEN
+IF Vfield#NULL STRING THEN
   INTEGER oldnx=nx, oldny=ny, oldnz=nz
   STRING oldVfield
   IF Vfield#"" THEN

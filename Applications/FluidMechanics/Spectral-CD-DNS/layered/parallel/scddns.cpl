@@ -54,7 +54,7 @@ DO WITH V(ix,iy,iz)
 FOR ix=1 TO HI AND ALL iy AND iz=nzl TO nzh
 DO V(0,0,iz).u.REAL=(z(iz)-zmin)*(zmax-z(iz)) FOR iz=V.LO3 TO V.HI3
 ! Read the initial velocity field if present
-IF Vfield#NULL THEN
+IF Vfield#NULL STRING THEN
   INTEGER oldnx=nx, oldny=ny, oldnz=nz
   STRING oldVfield
   IF Vfield#"" THEN

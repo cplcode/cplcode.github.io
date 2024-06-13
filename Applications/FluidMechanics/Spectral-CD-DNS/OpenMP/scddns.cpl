@@ -53,7 +53,7 @@ DO WITH V(ix,iy,iz)
 FOR ix=1 TO HI AND ALL iy AND iz=1 TO nz-1
 DO V(0,0,iz).u.REAL=1.2*z(iz)^(1/7); V(0,0,nz-iz).u.REAL=V(0,0,iz).u.REAL FOR iz=0 TO nz DIV 2
 ! Read the initial velocity field if present
-IF Vfield#NULL THEN
+IF Vfield#NULL STRING THEN
   INTEGER oldnx=nx, oldny=ny, oldnz=nz
   STRING oldVfield
   IF Vfield#"" THEN

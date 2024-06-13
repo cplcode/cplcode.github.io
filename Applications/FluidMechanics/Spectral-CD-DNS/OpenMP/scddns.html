@@ -65,7 +65,7 @@ VELOCITY=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">C
 <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a> <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1
 <a href="cpl.html#DO">DO</a> V(0,0,iz).u.<a href="cpl.html#REAL">REAL</a>=1.2&lowast;z(iz)<a href="cpl.html#REAL-operator">^</a>(1/7); V(0,0,nz-iz).u.<a href="cpl.html#REAL">REAL</a>=V(0,0,iz).u.<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FOR">FOR</a> iz=0 <a href="cpl.html#TO">TO</a> nz <a href="cpl.html#DIV">DIV</a> 2
 <span class=comment>! Read the initial velocity field if present</span>
-<a href="cpl.html#IF">IF</a> Vfield#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#IF">THEN</a>
+<a href="cpl.html#IF">IF</a> Vfield#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#STRING">STRING</a> <a href="cpl.html#IF">THEN</a>
   <a href="cpl.html#INTEGER">INTEGER</a> oldnx=nx, oldny=ny, oldnz=nz
   <a href="cpl.html#STRING">STRING</a> oldVfield
   <a href="cpl.html#IF">IF</a> Vfield#"" <a href="cpl.html#IF">THEN</a>
