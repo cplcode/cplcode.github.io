@@ -102,23 +102,23 @@ IF COMMANDLINE.HI>=3 THEN mv(1).ts=atoi(COMMANDLINE(3)); autots=NO
 REAL xx
 LOOP WHILE ungetc(getc(stdin),stdin)="#": READ
 LOOP FOR i=1 TO skip: READ
-LOOP WHILE READ xx
-  LOOP FOR i=2 TO startcolumn: READ xx
+LOOP foreachline
+  LOOP FOR i=1 TO startcolumn: IF NOT READ xx THEN EXIT foreachline
   LOOP FOR col=1 TO numcolumn
     meanandvar[mv(col),xx]
-    IF col<numcolumn THEN READ xx
+    IF col<numcolumn THEN IF NOT READ xx THEN EXIT foreachline
   REPEAT
   READ
-  IF mv(1).bs=0 THEN
+  IF TEST AND mv(1).bs=0 THEN
     WITH mv(1)
-    IF TEST AND nt-3*ts>0 THEN
+    IF nt-3*ts>0 THEN
       sigma=var
       sigma10=[bt(0)+bt(1)]/nt/(nt-2*ts)
       sigma0=bt(0)/nt/(nt-ts)
       WRITE nt,mean,sigma*nt,sigma10*nt,sigma0*nt,ts, IF sigma>0 THEN SQRT(sigma) ELSE 0, IF sigma10>0 THEN SQRT(sigma10) ELSE 0, IF bt(0)>0 THEN bt(1)/bt(0) ELSE 0
     END IF
   END IF
-REPEAT
+REPEAT foreachline
 IF NOT TEST THEN
   LOOP FOR col=LO TO HI
     sigma=mv(col).var

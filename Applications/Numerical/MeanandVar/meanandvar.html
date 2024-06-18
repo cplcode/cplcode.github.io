@@ -114,23 +114,23 @@ MEANANDVAR mv(1..numcolumn)=0
 <a href="cpl.html#REAL">REAL</a> xx
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> ungetc(getc(stdin),stdin)="#": <a href="cpl.html#READ">READ</a>
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> skip: <a href="cpl.html#READ">READ</a>
-<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#READ">READ</a> xx
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=2 <a href="cpl.html#TO">TO</a> startcolumn: <a href="cpl.html#READ">READ</a> xx
+<a href="cpl.html#LOOP">LOOP</a> foreachline
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> startcolumn: <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> <a href="cpl.html#READ">READ</a> xx <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> foreachline
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> col=1 <a href="cpl.html#TO">TO</a> numcolumn
     meanandvar[mv(col),xx]
-    <a href="cpl.html#IF">IF</a> col&lt;numcolumn <a href="cpl.html#IF">THEN</a> <a href="cpl.html#READ">READ</a> xx
+    <a href="cpl.html#IF">IF</a> col&lt;numcolumn <a href="cpl.html#IF">THEN</a> <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> <a href="cpl.html#READ">READ</a> xx <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> foreachline
   <a href="cpl.html#LOOP">REPEAT</a>
   <a href="cpl.html#READ">READ</a>
-  <a href="cpl.html#IF">IF</a> mv(1).bs=0 <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> TEST <a href="cpl.html#AND">AND</a> mv(1).bs=0 <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#WITH">WITH</a> mv(1)
-    <a href="cpl.html#IF">IF</a> TEST <a href="cpl.html#AND">AND</a> nt-3&lowast;ts&gt;0 <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#IF">IF</a> nt-3&lowast;ts&gt;0 <a href="cpl.html#IF">THEN</a>
       sigma=var
       sigma10=[bt(0)+bt(1)]/nt/(nt-2&lowast;ts)
       sigma0=bt(0)/nt/(nt-ts)
       <a href="cpl.html#WRITE">WRITE</a> nt,mean,sigma&lowast;nt,sigma10&lowast;nt,sigma0&lowast;nt,ts, <a href="cpl.html#IF">IF</a> sigma&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">SQRT</a>(sigma) <a href="cpl.html#ELSE">ELSE</a> 0, <a href="cpl.html#IF">IF</a> sigma10&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">SQRT</a>(sigma10) <a href="cpl.html#ELSE">ELSE</a> 0, <a href="cpl.html#IF">IF</a> bt(0)&gt;0 <a href="cpl.html#IF">THEN</a> bt(1)/bt(0) <a href="cpl.html#ELSE">ELSE</a> 0
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-<a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#LOOP">REPEAT</a> foreachline
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> TEST <a href="cpl.html#IF">THEN</a>
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> col=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
     sigma=mv(col).var
