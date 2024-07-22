@@ -1,2 +1,2 @@
-2024-07-18 is available.
-Integer overflow check added to rtchecks.
+2024-07-22 is available.
+Minor corrections.
