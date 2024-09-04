@@ -280,6 +280,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="graphics.html#gnuplot">set:(graphics)gnuplot</a>:</td><td>set command for gnuplot, passed as is </td></tr>
 <tr><td><a href="graphics.html#strlines">strlines:(graphics)strlines</a>:</td><td>Streamline plotting</td></tr>
 <tr><td><a href="#subarray">subarray</a>:</td><td>operations to extract a portion of an array</td></tr>
+<tr><td><a href="#subrange">subrange</a>:</td><td>integer subrange</td></tr>
 <tr><td><a href="symbolic.html#Top">symbolic:(symbolic)</a>:</td><td>Symbolic differentiation</td></tr>
 <tr><td><a href="parallel.html#Top">tcpserver:(parallel)</a>:</td><td>Open basic point-to-point tcp/ip socket</td></tr>
 <tr><td><a href="parallel.html#Top">tcpclient:(parallel)</a>:</td><td>Connect to tcp/ip socket from another machine</td></tr>
@@ -833,9 +834,10 @@ CPL is a type-checking language and requires that every VARIABLE be declared bef
 
 </td></tr>
 <tr><td><a href="#TYPE">TYPE</a>:</td><td>declaration of a new type identifier</td></tr>
-<tr><td><a href="#ENUM">ENUM</a>:</td><td>enumerated type</td></tr>
 <tr><td><a href="#STRUCTURE">STRUCTURE</a>:</td><td>compound type</td></tr>
 <tr><td><a href="#ARRAY">ARRAY</a>:</td><td>subscripted arrays</td></tr>
+<tr><td><a href="#subrange">subrange</a>:</td><td>integer subrange</td></tr>
+<tr><td><a href="#ENUM">ENUM</a>:</td><td>enumerated type</td></tr>
 <tr><td><a href="#STRING">STRING</a>:</td><td>strings of characters</td></tr>
 <tr><td><a href="#STRUCTURED">STRUCTURED</a>:</td><td>ARRAY     may appear as both a structure and an array</td></tr>
 <tr><td><a href="#POINTER">POINTER</a>:</td><td>pointer to a memory address</td></tr>
@@ -940,14 +942,6 @@ In order to test whether a variable is of a given type the <a href="#IS">IS</a> 
 The memory size in bytes of a type or variable (useful when using the <a href="#C-interface">C interface</a> or to estimate the memory requirements of the program) can be obtained from the pseudo-function
 
 	SIZEOF(&lt;typeorvariable&gt;) 
-</div><div class=page id="ENUM">
-Page: (cpl)ENUM, Next: <a href="#STRUCTURE">STRUCTURE</a>, Prev: <a href="#TYPE">TYPE</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> <h3>Enumerated type</h3>
-Not really a compound type, ENUM (much like Pascal enumerated type or C enum) variables take a finite set of explicitly enumerated labels as values. The syntax of this type declaration is
-
-	ENUM(&lt;id1&gt;,&lt;id2&gt;,...)
-
-and can directly declare variables or be assigned to a new type name like all other TYPEs. &lt;id1&gt;, &lt;id2&gt;, etc. are thereby declared as constants to which variables of the given type can be set or compared. The purpose of ENUM variables is to flag an alternative within a predefined set, while forbidding out-of-range values which could arise if INTEGERs were used for this purpose. No other operations than assignment and comparison are defined on them. 
 </div><div class=page id="STRUCTURE">
 Page: (cpl)STRUCTURE, Next: <a href="#ARRAY">ARRAY</a>, Prev: <a href="#ENUM">ENUM</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>STRUCTUREs</h3>
@@ -1005,7 +999,7 @@ STRUCTUREs may be defined that contain ARRAYs the size of which will only be kno
 
 Notice that this syntax is intentionally similar to the syntax for FUNCTIONs that contain ARRAYs of runtime-specified size as arguments. Compare <a href="#array-parameters">array parameters</a>. In fact, the set of arguments of a given function may usefully be thought of as a structure, although one that is invisible to the programmer and only exists as a conceptual model. 
 </div><div class=page id="ARRAY">
-Page: (cpl)ARRAY, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#STRUCTURE">STRUCTURE</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)ARRAY, Next: <a href="#subrange">subrange</a>, Prev: <a href="#STRUCTURE">STRUCTURE</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>ARRAYs</h3>
 The prefix type declarator for arrays is
 
@@ -1019,7 +1013,7 @@ Therefore the order in which the elements of the array are stored in memory is s
 
 Variable dimensions are allowed wherever constant dimensions are; the compiler automatically decides for static or dynamic allocation of memory space as needed. Arrays can contain elements of any primitive or compound type and can in turn appear as fields in structures or be pointed at by pointers.
 
-The special dimension &lowast; can only appear in the declaration of an ARRAY formal parameter (<a href="#array-parameters">array parameters</a>) or of a POINTER TO ARRAY, and declares a special type of pointer that remembers the current dimensions of the array together with its address. A formal parameter or pointer of this type can be dynamically assigned arrays of different length and still provide runtime range checking and <a href="#FOR-ALL">FOR ALL</a> looping when requested. The actual upper and lower bounds of an array index can always be recovered through functions <a href="#HI">HI</a> and <a href="#LO">LO</a>, and the total number of elements through function <a href="#LENGTH">LENGTH</a>. In the case of multidimensional arrays, these functions apply to the first index only; <a href="#subarray">subarray</a> selection can be used in order to extract the bounds of other indices. Alternatively, LO1, LO2, LO3 and HI1, HI2, HI3 can be used to refer to the first three indices.
+The special dimension &lowast; can only appear in the declaration of an ARRAY formal parameter (<a href="#array-parameters">array parameters</a>) or of a POINTER TO ARRAY, and declares a special type of pointer that remembers the current dimensions of the array together with its address. A formal parameter or pointer of this type can be dynamically assigned arrays of different length and still provide runtime range checking and <a href="#ALL">ALL</a> looping when requested. The actual upper and lower bounds of an array index can always be recovered through functions <a href="#HI">HI</a> and <a href="#LO">LO</a>, and the total number of elements through function <a href="#LENGTH">LENGTH</a>. In the case of multidimensional arrays, these functions apply to the first index only; <a href="#subarray">subarray</a> selection can be used in order to extract the bounds of other indices. Alternatively, LO1, LO2, LO3 and HI1, HI2, HI3 can be used to refer to the first three indices.
 
 ARRAY elements are accessed through INTEGER indices in brackets as usual, e.g.:
 
@@ -1053,22 +1047,41 @@ Therefore, a notation such as arr(4) is allowed, and has type ARRAY(2..9) OF REA
 
 </div><div class=page id="HI">
 Page: (cpl)HI,  Next: <a href="#LO">LO</a>,  Prev: <a href="#ARRAY">ARRAY</a>,  Up: <a href="#ARRAY">ARRAY</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> <h4>Upper bound of an array index</h4>
+<hr> <h4>Upper bound of an array index or subrange</h4>
 Function HI applied to an ARRAY returns the upper bound of its first index. HI1 is a synonym for HI; HI2 and HI3 return the upper bound of the second and third index respectively. Further indices can be accessed by <a href="#subarray">subarray</a> selection.
 
-The argument of HI is implicit (i.e., HI may be written without any argument as if <a href="#WITH">WITH</a> were in action) when HI is used inside the index itself as in arr(HI-3) or in the specification of a <a href="#FOR">FOR</a> loop. 
+The argument of HI is implicit (i.e., HI may be written without any argument as if <a href="#WITH">WITH</a> were in action) when HI is used inside the index itself as in arr(HI-3), in the specification of a <a href="#FOR">FOR</a> loop, or in arithmetic or comparison operations in which the first variable is an index, <a href="#subrange">subrange</a> or POINTER <a href="#INTO">INTO</a> which HI is defined for. 
 </div><div class=page id="LO">
 Page: (cpl)LO,  Next: <a href="#LENGTH">LENGTH</a>,  Prev: <a href="#HI">HI</a>,  Up: <a href="#ARRAY">ARRAY</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Lower bound of an array index</h4>
 Function LO applied to an ARRAY returns the lower bound of its first index. LO1 is a synonym for LO; LO2 and LO3 return the lower bound of the second and third index respectively. Further indices can be accessed by <a href="#subarray">subarray</a> selection.
 
-The argument of LO is implicit (i.e., LO may be written without any argument as if <a href="#WITH">WITH</a> were in action) when LO is used inside the index itself as in arr(LO+2) or in the specification of a <a href="#FOR">FOR</a> loop. 
+The argument of LO is implicit (i.e., LO may be written without any argument as if <a href="#WITH">WITH</a> were in action) when LO is used inside the index itself as in arr(LO+3), in the specification of a <a href="#FOR">FOR</a> loop, or in arithmetic or comparison operations in which the first variable is an index, <a href="#subrange">subrange</a> or POINTER <a href="#INTO">INTO</a> which LO is defined for. 
 </div><div class=page id="LENGTH">
 Page: (cpl)LENGTH,  Prev: <a href="#LO">LO</a>,  Up: <a href="#ARRAY">ARRAY</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Number of elements of an array</h4>
 Function LENGTH applied to an ARRAY returns its number of elements. LENGTH is equivalent to HI-LO+1. In a multidimensional ARRAY, the number of values of the first index only is returned. 
+</div><div class=page id="subrange">
+Page: (cpl)subrange, Next: <a href="#ENUM">ENUM</a>, Prev: <a href="#ARRAY">ARRAY</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h3>Integer subrange</h3>
+	INTEGER(&lt;lower bound&gt;..&lt;upper bound&gt;)
+
+is a type declaration that defines a subrange of INTEGERs, much like Pascal's ... . While for most purposes a subrange can work like an INTEGER, its use enables the <a href="#LO">LO</a>, <a href="#HI">HI</a> and <a href="#ALL">ALL</a> operators, and range violations are captured by <a href="#rtchecks">rtchecks</a>. Example:
+
+ INTEGER(1..5) i
+ LOOP FOR ALL i
+   IF i+1 &gt; HI THEN WRITE i
+ REPEAT 
+</div><div class=page id="ENUM">
+Page: (cpl)ENUM, Next: <a href="#STRING">STRING</a>, Prev: <a href="#subrange">subrange</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h3>Enumerated type</h3>
+ENUM (much like Pascal enumerated type or C enum) variables take a finite set of explicitly enumerated labels as values. The syntax of this type declaration is
+
+	ENUM(&lt;id1&gt;,&lt;id2&gt;,...)
+
+and can directly declare variables or be assigned to a new type name like all other TYPEs. &lt;id1&gt;, &lt;id2&gt;, etc. are thereby declared as constants to which variables of the given type can be set or compared. The purpose of ENUM variables is to flag an alternative within a predefined set, while forbidding out-of-range values which could arise if INTEGERs were used for this purpose. No other operations than assignment and comparison are defined on them, however LOOP FOR <a href="#ALL">ALL</a> works for ENUM indices. 
 </div><div class=page id="STRING">
-Page: (cpl)STRING, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#ARRAY">ARRAY</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)STRING, Next: <a href="#STRUCTURED">STRUCTURED</a>, Prev: <a href="#ENUM">ENUM</a>, Up: <a href="#Declarations">Declarations</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>STRINGs</h3>
 Type declaration STRING is a synonym for ARRAY(&lowast;) OF <a href="#CHAR">CHAR</a>, and can be used wherever the last can. In particular, a STRING can be subscripted or <a href="#subarray">subarray</a> extracted, and its bounds and length are available through functions <a href="#LO">LO</a>, <a href="#HI">HI</a>, and <a href="#LENGTH">LENGTH</a>. STRING valued constants (which are always indexed starting from 0) can be generated either at compile time, as quoted strings of characters, or dynamically through <a href="#String">String</a> concatenation, and can either be given a name through <a href="#CONSTANT">implicit:CONSTANT</a>. declaration or passed as actual parameters to function calls and further string concatenations.
 
@@ -2171,7 +2184,7 @@ which is equivalent to
 Page: (cpl)ALL,  Next: <a href="#TIMES">TIMES</a>,  Prev: <a href="#FOR-AND">FOR AND</a>,  Up: <a href="#FOR">FOR</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> LOOP FOR ALL &lt;index&gt; [,&lt;index&gt;]
 
-denotes a loop whose bounds are automatically determined as the bounds of the first ARRAY that &lt;index&gt; appears in. Its use should preferably be limited to short loops in which only arrays of the same dimensions appear and no index arithmetics are performed.
+denotes a loop whose bounds are automatically determined as the bounds of the first ARRAY that &lt;index&gt; appears in, or as the bounds of the index type if a <a href="#subrange">subrange</a> or a <a href="#ENUM">ENUM</a> index is used. ALL should preferably be reserved for short loops, and only arrays of the same dimensions must appear. Ambiguous uses of ALL, such that the same index appears in ARRAYs with nonequal dimensions, are flagged by <a href="#rtchecks">rtchecks</a>.
 
 ALL can be combined in a multiple loop with AND (<a href="#FOR-AND">FOR AND</a>), as well as contain multiple indices separated by a comma. In addition, the lower and upper bounds of the first array that the index is used in are also available as LO and HI respectively within the scope of the FOR clause, like in the example:
 

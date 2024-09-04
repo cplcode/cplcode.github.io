@@ -22,7 +22,7 @@ alpha(248)="o"
 DO alpha(i)="u" FOR i=249 TO 252
 
 FRI SECTION
-function "INTEGER"]= cut =[argument -> POINTER TO type * value =[ *]= cut =[function INTEGER "l" value "(ssize_t)" #1
+tryfunction "INTEGER"]= do bracket cut =[expr -> POINTER TO type =[ * value =[ *]= cut #2 sep =[item INTEGER "l" value "(ssize_t)" #1
 function "ITEM"]= cut =[argument -> INTEGER "l" value =[ *]= cut =[function POINTER TO type "item" value "(void *)" #1
 END FRI SECTION
 
