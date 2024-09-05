@@ -350,8 +350,8 @@ If you have no access to /usr/local/, or prefer to avoid root privileges even if
 </div><div class=page id="Q&A">
 Page: (cpl)Q&amp;A, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#multi-user">multi-user</a>, Up: <a href="#Installation">Installation</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Common installation problems and their solution</h3>
-<h4>cpl: command not found</h4>
-If the initial setup did not report any errors, and <q>$HOME/fri/cpl</q> or <q>/usr/local/fri/cpl</q> do work, this is likely to be a PATH problem. cpl setup makes commands available to the unix shell by placing symbolic links in either $HOME/bin or /usr/local/bin. Please check that these links have been created and are within reach of your PATH. If you have to modify the PATH manually, you may find it easier to put <q>$HOME/fri</q> or <q>/usr/local/fri</q> there. Please see your shell's instructions (man sh) for how to modify the PATH environment variable.
+<h4>cpl or edit command not found</h4>
+If the initial setup did not report any errors, and <q>$HOME/fri/cpl</q> or <q>/usr/local/fri/cpl</q> do work, this is likely to be a Unix PATH problem. cpl setup makes commands available to the Unix shell by placing symbolic links in either $HOME/bin or $HOME/.local/bin (if installed by a user), or /usr/local/bin (if installed by root). In many Linux distributions these directories are automatically placed in your PATH, but if they aren't, you may need to manually modify your .profile shell configuration. Please see your shell's instructions (man sh) for what is a PATH and how to do so.
 
 <h4>My program compiles but does not execute</h4>
 Is . in your PATH? Many Linux distributions do not by default have your current working directory in the set of automatically searched file paths. Solutions:
