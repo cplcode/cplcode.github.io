@@ -1,2 +1,2 @@
-2024-09-04 is available.
+2024-09-05 is available.
 Overhaul of the LOOP mechanism and addition of an INTEGER subrange type.
