@@ -1,2 +1,2 @@
-2024-09-07 is available.
-Overhaul of the LOOP mechanism and addition of an INTEGER subrange type.
+2024-09-10 is available.
+Minor corrections.
