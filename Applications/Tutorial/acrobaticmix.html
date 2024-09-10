@@ -293,4 +293,13 @@ st="" st a1
 testopt(3) <span class=comment>! 1 argument</span>
 testopt(2,z=4) <span class=comment>! 2 arguments</span>
 testopt(1,z=4,y=3) <span class=comment>! 3 arguments</span>
+
+<a href="cpl.html#INTEGER">INTEGER</a>(1..5) ri <span class=comment>! example of INTEGER subrange declaration</span>
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ri <span class=comment>! ALL can read its extremes from the subrange declaration</span>
+  <a href="cpl.html#IF">IF</a> ri+1 &gt; <a href="cpl.html#HI">HI</a> <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> ri <span class=comment>! and so can HI</span>
+<a href="cpl.html#LOOP">REPEAT</a>
+
+<a href="cpl.html#CHAR">CHAR</a> <a href="cpl.html#FUNCTION">FUNCTION</a> blip[<a href="cpl.html#INTEGER">INTEGER</a>(5..10) i]=st(i) <span class=comment>! function with subrange argument</span>
+<a href="cpl.html#WRITE">WRITE</a> blip(<a href="cpl.html#LO">LO</a>) <span class=comment>! LO can get its value from the subrange</span>
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> blip(i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>! and so can ALL</span>
 </pre></body></html>

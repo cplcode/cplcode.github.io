@@ -281,3 +281,12 @@ END testopt
 testopt(3) ! 1 argument
 testopt(2,z=4) ! 2 arguments
 testopt(1,z=4,y=3) ! 3 arguments
+
+INTEGER(1..5) ri ! example of INTEGER subrange declaration
+LOOP FOR ALL ri ! ALL can read its extremes from the subrange declaration
+  IF ri+1 > HI THEN WRITE ri ! and so can HI
+REPEAT
+
+CHAR FUNCTION blip[INTEGER(5..10) i]=st(i) ! function with subrange argument
+WRITE blip(LO) ! LO can get its value from the subrange
+DO WRITE blip(i) FOR ALL i ! and so can ALL
