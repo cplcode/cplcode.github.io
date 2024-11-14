@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <span class=comment>! BoostConv -- Copyright 2010 Paolo Luchini</span>
 <span class=comment>! http://CPLcode.net/Applications/Numerical/BoostConv/</span>
@@ -45,7 +45,7 @@ BoostConvWS=<a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#INTEGER
 ]
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> BoostConvWS defaultBoostConvWS=<a href="cpl.html#POINTER">NULL</a>
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> BoostConv[<a href="cpl.html#REAL">REAL</a> r<a href="cpl.html#REAL-operator">^</a>(&lowast;); <a href="cpl.html#OPTIONAL">OPTIONAL</a> BoostConvWS ws<a href="cpl.html#REAL-operator">^</a><a href="cpl.html#REAL-operator">^</a>=defaultBoostConvWS; <a href="cpl.html#INTEGER">INTEGER</a> length=10]
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> BoostConv[<a href="cpl.html#REAL">REAL</a> r<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>); <a href="cpl.html#OPTIONAL">OPTIONAL</a> BoostConvWS ws<a href="cpl.html#REAL-operator">^</a><a href="cpl.html#REAL-operator">^</a>=defaultBoostConvWS; <a href="cpl.html#INTEGER">INTEGER</a> length=10]
   <span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>
   <span class=comment>! Expedites the convergence of a pre-existing numerical iteration by</span>
   <span class=comment>! constructing a probable guess of the forthcoming next residual as a</span>
@@ -67,9 +67,9 @@ BoostConvWS=<a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#INTEGER
     <span class=comment>! allocate new workspace and exit</span>
     ws=<a href="cpl.html#NEW">NEW</a> BoostConvWS(length,r.<a href="cpl.html#LO">LO</a>,r.<a href="cpl.html#HI">HI</a>)
     <a href="cpl.html#WITH">WITH</a> ws <span class=comment>! zero history, and set first vector equal to the current residual</span>
-    in(&lowast;)=0
-    out(&lowast;)=0
-    dd(&lowast;)=1
+    in(<span class=low>*</span>)=0
+    out(<span class=low>*</span>)=0
+    dd(<span class=low>*</span>)=1
     rot=0
     rot2=0
     in(0)=r
@@ -102,10 +102,10 @@ rot=N-1
     <span class=comment>! in turn circulates at a lower rate. See description of the strategy.</span>
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> k
       in(rot,k)=r(k)
-      r(k)=<a href="cpl.html#Assignment">~</a>+c&lowast;out(&lowast;,k) <span class=comment>! The "out" array actually contains out-in at this point</span>
+      r(k)=<a href="cpl.html#Assignment">~</a>+c<span class=low>*</span>out(<span class=low>*</span>,k) <span class=comment>! The "out" array actually contains out-in at this point</span>
       out(rot,k)=r(k)
     <a href="cpl.html#LOOP">REPEAT</a>
-    <span class=comment>! Update in place the current residual r with r+c&lowast;(out-in), while making</span>
+    <span class=comment>! Update in place the current residual r with r+c<span class=low>*</span>(out-in), while making</span>
     <span class=comment>! copies of the original residual into in(rot) and of the boosted residual</span>
     <span class=comment>! into out(rot), in preparation for the next iteration.</span>
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>

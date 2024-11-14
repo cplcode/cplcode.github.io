@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#C-interface">#include</a> &lt;time.h&gt;
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
@@ -17,51 +17,51 @@
 <a href="cpl.html#FILE">FILE</a> INPUT=<a href="cpl.html#OPEN">OPEN</a>("stokes1.in")
 PlotOn=<a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FROM">FROM</a> INPUT
 provacostante=FALSE
-Re=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> INPUT <span class=comment>!  Re = Uref&lowast;sqrt(Tref/nu)</span>
+Re=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> INPUT <span class=comment>!  Re = Uref<span class=low>*</span>sqrt(Tref/nu)</span>
                    <span class=comment>!  u = u/Uref, v = v/Uref</span>
                    <span class=comment>!  t = t/Tref</span>
-                   <span class=comment>!  y = y/sqrt(nu&lowast;Tref)</span>
-                   <span class=comment>!  alfa = alfa &lowast; sqrt(nu&lowast;Tref)</span>
+                   <span class=comment>!  y = y/sqrt(nu<span class=low>*</span>Tref)</span>
+                   <span class=comment>!  alfa = alfa <span class=low>*</span> sqrt(nu<span class=low>*</span>Tref)</span>
 <a href="cpl.html#REAL">REAL</a> tin=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> INPUT; nt=<a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#FROM">FROM</a> INPUT; nt0=<a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#FROM">FROM</a> INPUT; <a href="cpl.html#REAL">REAL</a> tfin=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> INPUT
 ny=<a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#FROM">FROM</a> INPUT; ny0=<a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#FROM">FROM</a> INPUT; ymax=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> INPUT
 long nexttime
 <a href="cpl.html#REAL">REAL</a> t,dt
 <a href="cpl.html#REAL">REAL</a> y(-1..ny+1)
-<a href="cpl.html#DO">DO</a> y(i)=ymax&lowast;i&lowast;(0.5&lowast;i+ny0)/ny/(0.5&lowast;ny+ny0) <a href="cpl.html#FOR">FOR</a> i=-1 <a href="cpl.html#TO">TO</a> ny+1
+<a href="cpl.html#DO">DO</a> y(i)=ymax<span class=low>*</span>i<span class=low>*</span>(0.5<span class=low>*</span>i+ny0)/ny/(0.5<span class=low>*</span>ny+ny0) <a href="cpl.html#FOR">FOR</a> i=-1 <a href="cpl.html#TO">TO</a> ny+1
 <a href="cpl.html#REAL">REAL</a> alfa
 <a href="complex.html#Top">COMPLEX</a> sigma
 
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Energy(<a href="complex.html#Top">COMPLEX</a> f<a href="cpl.html#REAL-operator">^</a>(&lowast;))
-  a2=alfa&lowast;alfa
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Energy(<a href="complex.html#Top">COMPLEX</a> f<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>))
+  a2=alfa<span class=low>*</span>alfa
   <a href="cpl.html#RESULT">RESULT</a>=NORM(f(1))/y(1)+NORM(f(ny-1))/[y(ny)-y(ny-1)]
   <a href="cpl.html#DO">DO</a> <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#RESULT">RESULT</a>+NORM(f(i)-f(i-1))/[y(i)-y(i-1)] <a href="cpl.html#FOR">FOR</a> i=2 <a href="cpl.html#TO">TO</a> ny-1
-  <a href="cpl.html#DO">DO</a> <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#RESULT">RESULT</a>+a2&lowast;NORM(f(i))&lowast;[y(i+1)-y(i-1)]/2 <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#RESULT">RESULT</a>+a2<span class=low>*</span>NORM(f(i))<span class=low>*</span>[y(i+1)-y(i-1)]/2 <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
 <a href="cpl.html#END">END</a> Energy
 
 <a href="cpl.html#ARRAY">ARRAY</a>(1..ny-1,-2..2) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A,B,T
 <a href="cpl.html#ARRAY">ARRAY</a>(1..ny-1) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> psi,zeta,zetaold,zstar,zstar1,zstarnorm
 <a href="cpl.html#ARRAY">ARRAY</a>(0..ny) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> U,U2
 
-<a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sclrprod()=<a href="cpl.html#Looping-operator">SUM</a> zstar(i)&lowast;zeta(i)+zstar1(i)&lowast;(zeta(i)-zetaold(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+<a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sclrprod()=<a href="cpl.html#Looping-operator">SUM</a> zstar(i)<span class=low>*</span>zeta(i)+zstar1(i)<span class=low>*</span>(zeta(i)-zetaold(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
 
 pi2=3.544907702
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BaseFlow()
-  <a href="cpl.html#DO">DO</a> U(i)=erfc(y(i)/2/<a href="cpl.html#Builtin">SQRT</a>(t)); U2(i)=y(i)&lowast;<a href="cpl.html#Builtin">EXP</a>[-y(i)&lowast;y(i)/4/t]/pi2/t<a href="cpl.html#compound-index">**</a>1.5 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  <a href="cpl.html#DO">DO</a> U(i)=erfc(y(i)/2/<a href="cpl.html#Builtin">SQRT</a>(t)); U2(i)=y(i)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>[-y(i)<span class=low>*</span>y(i)/4/t]/pi2/t<a href="cpl.html#compound-index">**</a>1.5 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
 <a href="cpl.html#END">END</a> BaseFlow
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BuildMats()
-  a2=alfa&lowast;alfa
+  a2=alfa<span class=low>*</span>alfa
   A=0; B=0
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
     d1p=2/(y(i+2)-y(i)); d2pp1=d1p/(y(i+2)-y(i+1)); d2pm1=d1p/(y(i+1)-y(i)); d2p0=-d2pm1-d2pp1
     d1m=2/(y(i)-y(i-2)); d2mp1=d1m/(y(i)-y(i-1)); d2mm1=d1m/(y(i-1)-y(i-2)); d2m0=-d2mm1-d2mp1
     d1=2/(y(i+1)-y(i-1))
     <a href="cpl.html#REAL">REAL</a> d2p1=d1/(y(i+1)-y(i)), d2m1=d1/(y(i)-y(i-1)), d20=-d2m1-d2p1
-    d4p2=d2p1&lowast;d2pp1
-    d4p1=d2p1&lowast;d2p0+d20&lowast;d2p1
-    d40=d2p1&lowast;d2pm1+d20&lowast;d20+d2m1&lowast;d2mp1
-    d4m1=d2m1&lowast;d2m0+d20&lowast;d2m1
-    d4m2=d2m1&lowast;d2mm1
+    d4p2=d2p1<span class=low>*</span>d2pp1
+    d4p1=d2p1<span class=low>*</span>d2p0+d20<span class=low>*</span>d2p1
+    d40=d2p1<span class=low>*</span>d2pm1+d20<span class=low>*</span>d20+d2m1<span class=low>*</span>d2mp1
+    d4m1=d2m1<span class=low>*</span>d2m0+d20<span class=low>*</span>d2m1
+    d4m2=d2m1<span class=low>*</span>d2mm1
     d00=2/3; d0p1=-d2p1/3/d20; d0m1=-d2m1/3/d20
     d2p2=-d4p2/6/d20
     d2p1=d2p1-d4p1/6/d20
@@ -70,30 +70,30 @@ pi2=3.544907702
     d20=d20-d40/6/d20
 
     B(i,2)=-d2p2
-    B(i,1)=-d2p1+a2&lowast;d0p1
-    B(i,0)=-d20+a2&lowast;d00
-    B(i,-1)=-d2m1+a2&lowast;d0m1
+    B(i,1)=-d2p1+a2<span class=low>*</span>d0p1
+    B(i,0)=-d20+a2<span class=low>*</span>d00
+    B(i,-1)=-d2m1+a2<span class=low>*</span>d0m1
     B(i,-2)=-d2m2
-    A(i,2)=I&lowast;alfa&lowast;Re&lowast;U(i)&lowast;d2p2+d4p2-2&lowast;a2&lowast;d2p2
-    A(i,1)=I&lowast;alfa&lowast;Re&lowast;[U(i)&lowast;(d2p1-a2&lowast;d0p1)-U2(i)&lowast;d0p1]+d4p1-2&lowast;a2&lowast;d2p1+a2&lowast;a2&lowast;d0p1
-    A(i,0)=I&lowast;alfa&lowast;Re&lowast;[U(i)&lowast;(d20-a2&lowast;d00)-U2(i)&lowast;d00]+d40-2&lowast;a2&lowast;d20+a2&lowast;a2&lowast;d00
-    A(i,-1)=I&lowast;alfa&lowast;Re&lowast;[U(i)&lowast;(d2m1-a2&lowast;d0m1)-U2(i)&lowast;d0m1]+d4m1-2&lowast;a2&lowast;d2m1+a2&lowast;a2&lowast;d0m1
-    A(i,-2)=I&lowast;alfa&lowast;Re&lowast;U(i)&lowast;d2m2+d4m2-2&lowast;a2&lowast;d2m2
+    A(i,2)=I<span class=low>*</span>alfa<span class=low>*</span>Re<span class=low>*</span>U(i)<span class=low>*</span>d2p2+d4p2-2<span class=low>*</span>a2<span class=low>*</span>d2p2
+    A(i,1)=I<span class=low>*</span>alfa<span class=low>*</span>Re<span class=low>*</span>[U(i)<span class=low>*</span>(d2p1-a2<span class=low>*</span>d0p1)-U2(i)<span class=low>*</span>d0p1]+d4p1-2<span class=low>*</span>a2<span class=low>*</span>d2p1+a2<span class=low>*</span>a2<span class=low>*</span>d0p1
+    A(i,0)=I<span class=low>*</span>alfa<span class=low>*</span>Re<span class=low>*</span>[U(i)<span class=low>*</span>(d20-a2<span class=low>*</span>d00)-U2(i)<span class=low>*</span>d00]+d40-2<span class=low>*</span>a2<span class=low>*</span>d20+a2<span class=low>*</span>a2<span class=low>*</span>d00
+    A(i,-1)=I<span class=low>*</span>alfa<span class=low>*</span>Re<span class=low>*</span>[U(i)<span class=low>*</span>(d2m1-a2<span class=low>*</span>d0m1)-U2(i)<span class=low>*</span>d0m1]+d4m1-2<span class=low>*</span>a2<span class=low>*</span>d2m1+a2<span class=low>*</span>a2<span class=low>*</span>d0m1
+    A(i,-2)=I<span class=low>*</span>alfa<span class=low>*</span>Re<span class=low>*</span>U(i)<span class=low>*</span>d2m2+d4m2-2<span class=low>*</span>a2<span class=low>*</span>d2m2
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   A(1,0)=A(1,0)+A(1,-2)
   B(1,0)=B(1,0)+B(1,-2)
-  A(ny-1,0)=A(ny-1,0)+A(ny-1,2)&lowast;<a href="cpl.html#Builtin">EXP</a>(-alfa&lowast;(y(ny+1)-y(ny-1)))+A(ny-1,1)&lowast;<a href="cpl.html#Builtin">EXP</a>(-alfa&lowast;(y(ny)-y(ny-1)))
-  B(ny-1,0)=B(ny-1,0)+B(ny-1,2)&lowast;<a href="cpl.html#Builtin">EXP</a>(-alfa&lowast;(y(ny+1)-y(ny-1)))+B(ny-1,1)&lowast;<a href="cpl.html#Builtin">EXP</a>(-alfa&lowast;(y(ny)-y(ny-1)))
-  A(ny-2,1)=A(ny-2,1)+A(ny-2,2)&lowast;<a href="cpl.html#Builtin">EXP</a>(-alfa&lowast;(y(ny)-y(ny-1)))
-  B(ny-2,1)=B(ny-2,1)+B(ny-2,2)&lowast;<a href="cpl.html#Builtin">EXP</a>(-alfa&lowast;(y(ny)-y(ny-1)))
+  A(ny-1,0)=A(ny-1,0)+A(ny-1,2)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-alfa<span class=low>*</span>(y(ny+1)-y(ny-1)))+A(ny-1,1)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-alfa<span class=low>*</span>(y(ny)-y(ny-1)))
+  B(ny-1,0)=B(ny-1,0)+B(ny-1,2)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-alfa<span class=low>*</span>(y(ny+1)-y(ny-1)))+B(ny-1,1)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-alfa<span class=low>*</span>(y(ny)-y(ny-1)))
+  A(ny-2,1)=A(ny-2,1)+A(ny-2,2)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-alfa<span class=low>*</span>(y(ny)-y(ny-1)))
+  B(ny-2,1)=B(ny-2,1)+B(ny-2,2)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-alfa<span class=low>*</span>(y(ny)-y(ny-1)))
 <a href="cpl.html#END">END</a> BuildMats
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> Plot(<a href="complex.html#Top">COMPLEX</a> f<a href="cpl.html#REAL-operator">^</a>(&lowast;); <a href="cpl.html#REAL">REAL</a> h,height)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> Plot(<a href="complex.html#Top">COMPLEX</a> f<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>); <a href="cpl.html#REAL">REAL</a> h,height)
 <a href="graphics.html#RANGE">RANGE</a>(0,h,0,height)
 <a href="cpl.html#DO">DO</a> LINE(i,0,i,height) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> <a href="cpl.html#FLOOR">FLOOR</a>(h)
-<a href="cpl.html#DO">DO</a> LINE(0,yy,h,yy) <a href="cpl.html#FOR">FOR</a> yy=0 <a href="cpl.html#TO">TO</a> height+0.001 <a href="cpl.html#BY">BY</a> 0.2&lowast;height
+<a href="cpl.html#DO">DO</a> LINE(0,yy,h,yy) <a href="cpl.html#FOR">FOR</a> yy=0 <a href="cpl.html#TO">TO</a> height+0.001 <a href="cpl.html#BY">BY</a> 0.2<span class=low>*</span>height
 <a href="graphics.html#STARTLINE">STARTLINE</a>; <a href="cpl.html#DO">DO</a> <a href="graphics.html#DRAW">DRAW</a>(y(i),<a href="cpl.html#ABS">ABS</a>(f(i))) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> ny-1
-<a href="graphics.html#STARTLINE">STARTLINE</a>; <a href="cpl.html#DO">DO</a> <a href="graphics.html#DRAW">DRAW</a>(y(i),height&lowast;U(i)) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> ny-1
+<a href="graphics.html#STARTLINE">STARTLINE</a>; <a href="cpl.html#DO">DO</a> <a href="graphics.html#DRAW">DRAW</a>(y(i),height<span class=low>*</span>U(i)) <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> ny-1
 <a href="cpl.html#WRITE">WRITE</a> 
 <a href="cpl.html#END">END</a> Plot
 
@@ -101,11 +101,11 @@ pi2=3.544907702
 t=tin; <a href="cpl.html#INTEGER">INTEGER</a> it=0
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> it&lt;nt
   it=it+1
-  dt=tin+(tfin-tin)&lowast;it&lowast;(0.5&lowast;it+nt0)/nt/(0.5&lowast;nt+nt0)-t
+  dt=tin+(tfin-tin)<span class=low>*</span>it<span class=low>*</span>(0.5<span class=low>*</span>it+nt0)/nt/(0.5<span class=low>*</span>nt+nt0)-t
   t=t+dt
   BaseFlow(); BuildMats()
-  T=B+dt&lowast;A; LUdecomp T
-  psi=T\zeta; zeta=B&lowast;psi
+  T=B+dt<span class=low>*</span>A; LUdecomp T
+  psi=T\zeta; zeta=B<span class=low>*</span>psi
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#END">END</a> MarchForward1
 
@@ -115,32 +115,32 @@ t=tin; <a href="cpl.html#INTEGER">INTEGER</a> it=0
 nexttime=time(<a href="cpl.html#POINTER">NULL</a>)+2
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> it&lt;nt
   it=it+1
-  dt=tin+(tfin-tin)&lowast;it&lowast;(0.5&lowast;it+nt0)/nt/(0.5&lowast;nt+nt0)-t
+  dt=tin+(tfin-tin)<span class=low>*</span>it<span class=low>*</span>(0.5<span class=low>*</span>it+nt0)/nt/(0.5<span class=low>*</span>nt+nt0)-t
   t=t+dt
   zeta2old=zetaold; zetaold=zeta
   BaseFlow(); BuildMats()
-  T=A+(1.5/dt)&lowast;B; LUdecomp T
-  <a href="cpl.html#DO">DO</a> zeta(i)=(2&lowast;zetaold(i)-0.5&lowast;zeta2old(i))/dt <a href="cpl.html#FOR">FOR</a> i=zeta.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> zeta.<a href="cpl.html#HI">HI</a>
-  psi=T\zeta; zeta=B&lowast;psi
+  T=A+(1.5/dt)<span class=low>*</span>B; LUdecomp T
+  <a href="cpl.html#DO">DO</a> zeta(i)=(2<span class=low>*</span>zetaold(i)-0.5<span class=low>*</span>zeta2old(i))/dt <a href="cpl.html#FOR">FOR</a> i=zeta.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> zeta.<a href="cpl.html#HI">HI</a>
+  psi=T\zeta; zeta=B<span class=low>*</span>psi
 <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a>
   <a href="cpl.html#IF">IF</a> time(<a href="cpl.html#POINTER">NULL</a>)&gt;=nexttime <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#REAL">REAL</a> psimax=<a href="cpl.html#ABS">ABS</a>(psi(1))
     <a href="cpl.html#DO">DO</a> psimax=<a href="cpl.html#MAX">MAX</a>(psimax,<a href="cpl.html#ABS">ABS</a>(psi(i))) <a href="cpl.html#FOR">FOR</a> i=2 <a href="cpl.html#TO">TO</a> ny-1
     CLEARSCREEN
     sigma=0
-    <a href="cpl.html#DO">DO</a> sigma=sigma+<a href="complex.html#Top">CONJG</a>[psi(i)]&lowast;[1.5&lowast;zeta(i)-2&lowast;zetaold(i)+0.5&lowast;zeta2old(i)]&lowast;[y(i+1)-y(i-1)]/2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+    <a href="cpl.html#DO">DO</a> sigma=sigma+<a href="complex.html#Top">CONJG</a>[psi(i)]<span class=low>*</span>[1.5<span class=low>*</span>zeta(i)-2<span class=low>*</span>zetaold(i)+0.5<span class=low>*</span>zeta2old(i)]<span class=low>*</span>[y(i+1)-y(i-1)]/2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
     sigma=sigma/Energy(psi)/dt
     <a href="cpl.html#WRITE">WRITE</a> "time="t, "Energy="Energy(psi), "sigma="sigma
-    <a href="cpl.html#WRITE">WRITE</a> "ph.speed=" sigma/(I&lowast;alfa&lowast;Re)
+    <a href="cpl.html#WRITE">WRITE</a> "ph.speed=" sigma/(I<span class=low>*</span>alfa<span class=low>*</span>Re)
     Plot(psi,8,psimax)
     nexttime=time(<a href="cpl.html#POINTER">NULL</a>)+2
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <span class=comment>!(
 ELSE
   sigma=0
-  DO sigma=sigma+CONJG[psi(i)]&lowast;[1.5&lowast;zeta(i)-2&lowast;zetaold(i)+0.5&lowast;zeta2old(i)]&lowast;[y(i+1)-y(i-1)]/2 FOR i=zeta.LO TO zeta.HI
+  DO sigma=sigma+CONJG[psi(i)]<span class=low>*</span>[1.5<span class=low>*</span>zeta(i)-2<span class=low>*</span>zetaold(i)+0.5<span class=low>*</span>zeta2old(i)]<span class=low>*</span>[y(i+1)-y(i-1)]/2 FOR i=zeta.LO TO zeta.HI
   sigma=sigma/Energy(psi)/dt
-  WRITE "time="t, "Energy="Energy(psi), "sigma="sigma, "ph.speed=" sigma/(I&lowast;alfa&lowast;Re)
+  WRITE "time="t, "Energy="Energy(psi), "sigma="sigma, "ph.speed=" sigma/(I<span class=low>*</span>alfa<span class=low>*</span>Re)
 !)</span>
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
@@ -149,24 +149,24 @@ ELSE
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> MarchBackward1
 t=tfin; <a href="cpl.html#INTEGER">INTEGER</a> it=nt
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> it&gt;0
-  dt=t-tin-(tfin-tin)&lowast;(it-1)&lowast;(0.5&lowast;(it-1)+nt0)/nt/(0.5&lowast;nt+nt0)
+  dt=t-tin-(tfin-tin)<span class=low>*</span>(it-1)<span class=low>*</span>(0.5<span class=low>*</span>(it-1)+nt0)/nt/(0.5<span class=low>*</span>nt+nt0)
   BaseFlow(); BuildMats()
-  T=B+dt&lowast;A; LUdecomp T
-  zstar=zstar&lowast;B; zstar=zstar/T
+  T=B+dt<span class=low>*</span>A; LUdecomp T
+  zstar=zstar<span class=low>*</span>B; zstar=zstar/T
   it=it-1
   t=t-dt
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#END">END</a> MarchBackward1
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> MB2(<a href="cpl.html#INTEGER">INTEGER</a> it)
-  t=tin+(tfin-tin)&lowast;(it)&lowast;(0.5&lowast;(it)+nt0)/nt/(0.5&lowast;nt+nt0)
-  dt=t-tin-(tfin-tin)&lowast;(it-1)&lowast;(0.5&lowast;(it-1)+nt0)/nt/(0.5&lowast;nt+nt0)
+  t=tin+(tfin-tin)<span class=low>*</span>(it)<span class=low>*</span>(0.5<span class=low>*</span>(it)+nt0)/nt/(0.5<span class=low>*</span>nt+nt0)
+  dt=t-tin-(tfin-tin)<span class=low>*</span>(it-1)<span class=low>*</span>(0.5<span class=low>*</span>(it-1)+nt0)/nt/(0.5<span class=low>*</span>nt+nt0)
   BaseFlow(); BuildMats()
-  T=A+(1.5/dt)&lowast;B; LUdecomp T
+  T=A+(1.5/dt)<span class=low>*</span>B; LUdecomp T
   zstar1=zstar+zstar1
   zstar=zstar1-zstar
-  zstar1=zstar1&lowast;B; zstar1=zstar1/T
-  zstar1=zstar1&lowast;1.5/dt
+  zstar1=zstar1<span class=low>*</span>B; zstar1=zstar1/T
+  zstar1=zstar1<span class=low>*</span>1.5/dt
   zstar=zstar1-zstar
   zstar1=zstar1/3
   <a href="cpl.html#DO">DO</a> zstarnorm(i)=zstar(i)/(y(i+1)-y(i-1)) <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
@@ -193,15 +193,15 @@ nexttime=time(<a href="cpl.html#POINTER">NULL</a>)+2
   <a href="cpl.html#TYPE">TYPEOF</a>(zeta) zeta1
   BaseFlow; BuildMats
   <a href="cpl.html#DO">DO</a>
-    T=A+sigma&lowast;B; LUdecomp T
-    psi=T\zeta; zeta1=B&lowast;psi
-    zstar=zstar&lowast;B; zstar=zstar/T
-    dsigma=-(zstar&lowast;zeta)/(zstar&lowast;zeta1)
+    T=A+sigma<span class=low>*</span>B; LUdecomp T
+    psi=T\zeta; zeta1=B<span class=low>*</span>psi
+    zstar=zstar<span class=low>*</span>B; zstar=zstar/T
+    dsigma=-(zstar<span class=low>*</span>zeta)/(zstar<span class=low>*</span>zeta1)
     sigma=sigma+dsigma
     normfact=<a href="cpl.html#ABS">ABS</a>[zeta1(1)]/zeta1(1)/<a href="cpl.html#Builtin">SQRT</a>[Energy(psi)]
-    zeta=zeta1&lowast;normfact
-    psi=psi&lowast;normfact
-    zstar=zstar/(zstar&lowast;zeta)
+    zeta=zeta1<span class=low>*</span>normfact
+    psi=psi<span class=low>*</span>normfact
+    zstar=zstar/(zstar<span class=low>*</span>zeta)
     <a href="cpl.html#WRITE">WRITE</a> ":" ./.
   <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#ABS">ABS</a>(dsigma)&gt;1.E-8
     <a href="cpl.html#WRITE">WRITE</a> "." ./.

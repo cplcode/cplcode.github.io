@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a>
 <a href="cpl.html#USE">USE</a> lapack-eigenvalues
@@ -34,15 +34,15 @@ bc(field(0),tn(0),1)
     tn(i)=0; lincdresids(field(0),field(i),tn(i))
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> j=1 <a href="cpl.html#TO">TO</a> i-1
       dd=scp(tn(i),tn(j))
-      tn(i)=<a href="cpl.html#Assignment">~</a>-dd&lowast;tn(j)
-      field(i)=<a href="cpl.html#Assignment">~</a>-dd&lowast;field(j)
+      tn(i)=<a href="cpl.html#Assignment">~</a>-dd<span class=low>*</span>tn(j)
+      field(i)=<a href="cpl.html#Assignment">~</a>-dd<span class=low>*</span>field(j)
     <a href="cpl.html#LOOP">REPEAT</a>
     nn=abs(tn(i))
     tn(i)=<a href="cpl.html#Assignment">~</a>/nn
     field(i)=<a href="cpl.html#Assignment">~</a>/nn
     cc=scp(tn(0),tn(i))
-    tn(0)=<a href="cpl.html#Assignment">~</a>-cc&lowast;tn(i)
-    field(0)=<a href="cpl.html#Assignment">~</a>-cc&lowast;field(i)
+    tn(0)=<a href="cpl.html#Assignment">~</a>-cc<span class=low>*</span>tn(i)
+    field(0)=<a href="cpl.html#Assignment">~</a>-cc<span class=low>*</span>field(i)
     perr=abs(tn(0).p); uerr=abs(tn(0).u); verr=abs(tn(0).v); werr=abs(tn(0).w)
     <a href="cpl.html#IF">IF</a> has_terminal <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> count,i,perr,uerr,verr,werr \n ./.
   <a href="cpl.html#LOOP">REPEAT</a>
@@ -51,9 +51,9 @@ bc(field(0),tn(0),1)
   invsigma=INV(sigma)
   WRITE eigenvalues(invsigma)
 !)</span>
-<span class=comment>!  WRITE MAXABS(field(0).w(&lowast;,&lowast;,nz DIV 2 -1)+field(0).w(&lowast;,&lowast;,nz DIV 2))</span>
-  <span class=comment>!IF count MOD 10 =0 THEN SPLOT field(0).p(LO..HI,&lowast;,nz DIV 2)</span>
-<span class=comment>!  tn(1..neig)=invsigma&lowast;field(1..neig); tn(1..neig).p=0</span>
+<span class=comment>!  WRITE MAXABS(field(0).w(<span class=low>*</span>,<span class=low>*</span>,nz DIV 2 -1)+field(0).w(<span class=low>*</span>,<span class=low>*</span>,nz DIV 2))</span>
+  <span class=comment>!IF count MOD 10 =0 THEN SPLOT field(0).p(LO..HI,<span class=low>*</span>,nz DIV 2)</span>
+<span class=comment>!  tn(1..neig)=invsigma<span class=low>*</span>field(1..neig); tn(1..neig).p=0</span>
 <a href="cpl.html#LOOP">REPEAT</a>
 <span class=comment>!(
 DO tn(i,j,h,k,l)=RAND() FOR ALL i,j,h,k,l
@@ -65,8 +65,8 @@ LOOP FOR count=1 TO 100
   LOOP FOR i=1 TO neig
     LOOP FOR j=1 TO i-1
       dd=tn(i)|tn(j)
-      tn(i)=~-dd&lowast;tn(j)
-      field(i)=~-dd&lowast;field(j)
+      tn(i)=~-dd<span class=low>*</span>tn(j)
+      field(i)=~-dd<span class=low>*</span>field(j)
     REPEAT
     nn=MOD(tn(i))
     tn(i)=~/nn
@@ -85,10 +85,10 @@ REPEAT
 <span class=comment>!  WRITE invsigma</span>
   WRITE eigenvalues(invsigma)
   WRITE count,MAXABS(tn(0).p),MAXABS(tn(0).u),MAXABS(tn(0).v),MAXABS(tn(0).w)
-<span class=comment>!  WRITE MAXABS(field(0).w(&lowast;,&lowast;,nz DIV 2 -1)+field(0).w(&lowast;,&lowast;,nz DIV 2))</span>
-  <span class=comment>!IF count MOD 10 =0 THEN SPLOT field(0).p(LO..HI,&lowast;,nz DIV 2)</span>
+<span class=comment>!  WRITE MAXABS(field(0).w(<span class=low>*</span>,<span class=low>*</span>,nz DIV 2 -1)+field(0).w(<span class=low>*</span>,<span class=low>*</span>,nz DIV 2))</span>
+  <span class=comment>!IF count MOD 10 =0 THEN SPLOT field(0).p(LO..HI,<span class=low>*</span>,nz DIV 2)</span>
   tn(1..neig)=field(1..neig); tn(1..neig).p=0
-  field(1..neig)=sigma&lowast;field(1..neig)
+  field(1..neig)=sigma<span class=low>*</span>field(1..neig)
 REPEAT
 !)</span>
 </pre></body></html>

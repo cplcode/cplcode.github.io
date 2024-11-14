@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#ASK">ASK</a> <a href="cpl.html#INTEGER">INTEGER</a> prolo
 <a href="cpl.html#ASK">ASK</a> <a href="cpl.html#INTEGER">INTEGER</a> protra
@@ -30,15 +30,15 @@
     <a href="cpl.html#IF">IF</a> xx &gt; xs  <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=0
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 2 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   e5</span>
-    <a href="cpl.html#RESULT">RESULT</a>=(1-xx&lowast;4)<a href="cpl.html#compound-index">**</a>5
+    <a href="cpl.html#RESULT">RESULT</a>=(1-xx<span class=low>*</span>4)<a href="cpl.html#compound-index">**</a>5
     <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>= 0
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 3 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   v</span>
-    <a href="cpl.html#RESULT">RESULT</a>=1-xx&lowast;4
+    <a href="cpl.html#RESULT">RESULT</a>=1-xx<span class=low>*</span>4
     <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>= 0
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 4 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   coseno</span>
-    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Builtin">COS</a>(2&lowast;PI&lowast;xx)
+    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Builtin">COS</a>(2<span class=low>*</span>PI<span class=low>*</span>xx)
     <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>= 0
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a> 
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a> &lt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=0
@@ -52,39 +52,39 @@
     <a href="cpl.html#RESULT">RESULT</a>=rapp
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> prolo=2 <a href="cpl.html#IF">THEN</a>
     <span class=comment>!  Profilo iperbolico</span>
-    <a href="cpl.html#RESULT">RESULT</a>=rapp&lowast;(1.+tanh(ka&lowast;2./rapp&lowast;(fill&lowast;lz/2.-zz)))/2
+    <a href="cpl.html#RESULT">RESULT</a>=rapp<span class=low>*</span>(1.+tanh(ka<span class=low>*</span>2./rapp<span class=low>*</span>(fill<span class=low>*</span>lz/2.-zz)))/2
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> prolo=3 <a href="cpl.html#IF">THEN</a>
     
     <span class=comment>!  BE </span>
     
     tal=1
     cal=1/(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
-    sal=tal&lowast;cal
+    sal=tal<span class=low>*</span>cal
     r0=0.347826
     <span class=comment>!   r0=.7</span>
     <span class=comment>!     l0=0.5108695 </span>
     l0=fill
-    l2=(rapp-r0+tal&lowast;l0+r0&lowast;(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/tal
+    l2=(rapp-r0+tal<span class=low>*</span>l0+r0<span class=low>*</span>(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/tal
     l1=l2-(rapp-r0+r0/(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/tal
-    y1=rapp-r0+r0&lowast;cal
-    l1=r0&lowast;sal+l0
+    y1=rapp-r0+r0<span class=low>*</span>cal
+    l1=r0<span class=low>*</span>sal+l0
     l2=l1+y1/tal
     <span class=comment>!     WRITE 'z,y1,l0,l1,l2',zz,y1,l0,l1,l2 </span>
-    l3=l1+(rapp-2&lowast;r0&lowast;(1-cal))/tal
-    l4=l3+r0&lowast;sal
-    b1=(l2-fill+0.125-(nr+1)&lowast;rapp)/(l2-fill+0.125)<a href="cpl.html#compound-index">**</a>nr
-    b2=(nr&lowast;rapp-l2+fill-0.125)/(l2-fill+0.125)<a href="cpl.html#compound-index">**</a>(nr+1)
+    l3=l1+(rapp-2<span class=low>*</span>r0<span class=low>*</span>(1-cal))/tal
+    l4=l3+r0<span class=low>*</span>sal
+    b1=(l2-fill+0.125-(nr+1)<span class=low>*</span>rapp)/(l2-fill+0.125)<a href="cpl.html#compound-index">**</a>nr
+    b2=(nr<span class=low>*</span>rapp-l2+fill-0.125)/(l2-fill+0.125)<a href="cpl.html#compound-index">**</a>(nr+1)
     
     <a href="cpl.html#IF">IF</a> zz &lt;l0 <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#RESULT">RESULT</a> =rapp
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz &lt;l1 <a href="cpl.html#IF">THEN</a> 
       <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0<a href="cpl.html#compound-index">**</a>2-(zz-l0)<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;l2  <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a> = y1+tal&lowast;(l1-zz)
+      <a href="cpl.html#RESULT">RESULT</a> = y1+tal<span class=low>*</span>(l1-zz)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l2  <a href="cpl.html#IF">THEN</a> 
       <a href="cpl.html#RESULT">RESULT</a>=0
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l1  <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a> = y1+tal&lowast;(zz-lz+l1)
+      <a href="cpl.html#RESULT">RESULT</a> = y1+tal<span class=low>*</span>(zz-lz+l1)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l0  <a href="cpl.html#IF">THEN</a> 
       <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0<a href="cpl.html#compound-index">**</a>2-(zz-lz+l0)<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz &lt;lz  <a href="cpl.html#IF">THEN</a>
@@ -100,10 +100,10 @@
       RESULT=rapp
     ELSE IF zz&lt;l1 THEN
       zr=(zz-l0)/(l1-l0)
-      a1=(rapp-y1)&lowast;nr/(l1-l0) -tal
-      a2=nr&lowast;(nr-1)&lowast;(rapp-y1)/2/(l1-l0)&lowast;&lowast;2 -a1&lowast;nr/(l1-l0)
-      RESULT= rapp + zr&lowast;&lowast;nr&lowast;(y1-rapp+a1&lowast;(zz-l1)+ a2&lowast;(zz-l1)&lowast;&lowast;2)
-    ELSE IF zz &lt; l2 THENJ    RESULT=tal&lowast;(l2-zz)
+      a1=(rapp-y1)<span class=low>*</span>nr/(l1-l0) -tal
+      a2=nr<span class=low>*</span>(nr-1)<span class=low>*</span>(rapp-y1)/2/(l1-l0)<span class=low>*</span><span class=low>*</span>2 -a1<span class=low>*</span>nr/(l1-l0)
+      RESULT= rapp + zr<span class=low>*</span><span class=low>*</span>nr<span class=low>*</span>(y1-rapp+a1<span class=low>*</span>(zz-l1)+ a2<span class=low>*</span>(zz-l1)<span class=low>*</span><span class=low>*</span>2)
+    ELSE IF zz &lt; l2 THENJ    RESULT=tal<span class=low>*</span>(l2-zz)
   ELSE IF zz&gt; l2 THEN
     RESULT=0
   END IF   
@@ -114,31 +114,31 @@
   IF zz&lt;= fill-0.125  THEN RESULT=rapp
   IF zz&gt;fill-0.125  THEN 
     zr=(zz-fill+0.125)
-    RESULT=rapp+b1&lowast;zr&lowast;&lowast;nr+b2&lowast;zr&lowast;&lowast;(nr+1)
+    RESULT=rapp+b1<span class=low>*</span>zr<span class=low>*</span><span class=low>*</span>nr+b2<span class=low>*</span>zr<span class=low>*</span><span class=low>*</span>(nr+1)
   END IF
   !)</span>
 <span class=comment>!(   Raccordo inferiore o
   IF zz&gt;l1 THEN
-    a3=(-y1+l2-l1-a2&lowast;(l2-l1)&lowast;&lowast;2)/(l2-l1)&lowast;&lowast;3
-    RESULT=y1-(zz-l1)+a2&lowast;(zz-l1)&lowast;&lowast;2+a3&lowast;(zz-l1)&lowast;&lowast;3
+    a3=(-y1+l2-l1-a2<span class=low>*</span>(l2-l1)<span class=low>*</span><span class=low>*</span>2)/(l2-l1)<span class=low>*</span><span class=low>*</span>3
+    RESULT=y1-(zz-l1)+a2<span class=low>*</span>(zz-l1)<span class=low>*</span><span class=low>*</span>2+a3<span class=low>*</span>(zz-l1)<span class=low>*</span><span class=low>*</span>3
   END IF
   !)</span> 
-<span class=comment>!     IF zz&gt;l3 THEN RESULT=r0-(r0&lowast;&lowast;2-(zz-l4)&lowast;&lowast;2)&lowast;&lowast;0.5</span>
+<span class=comment>!     IF zz&gt;l3 THEN RESULT=r0-(r0<span class=low>*</span><span class=low>*</span>2-(zz-l4)<span class=low>*</span><span class=low>*</span>2)<span class=low>*</span><span class=low>*</span>0.5</span>
 <span class=comment>!     IF zz&gt;l4 THEN RESULT =0</span>
 
 <a href="cpl.html#END">END</a>    gz
 
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> fondo(<a href="cpl.html#REAL">REAL</a> xx,zz)
-  <a href="cpl.html#REAL">REAL</a> x1=xx-<a href="cpl.html#FLOOR">FLOOR</a>(xx), z1=zz-lz&lowast;<a href="cpl.html#FLOOR">FLOOR</a>(zz/lz)
+  <a href="cpl.html#REAL">REAL</a> x1=xx-<a href="cpl.html#FLOOR">FLOOR</a>(xx), z1=zz-lz<span class=low>*</span><a href="cpl.html#FLOOR">FLOOR</a>(zz/lz)
   <a href="cpl.html#IF">IF</a> x1&gt;0.5 <a href="cpl.html#IF">THEN</a> x1=1-x1
   <a href="cpl.html#IF">IF</a> z1&gt;lz/2 <a href="cpl.html#IF">THEN</a> z1=lz-z1 
-  <a href="cpl.html#RESULT">RESULT</a>=fx(x1)&lowast;gz(z1)+fx(0.5-x1)&lowast;gz(lz/2.-z1)
+  <a href="cpl.html#RESULT">RESULT</a>=fx(x1)<span class=low>*</span>gz(z1)+fx(0.5-x1)<span class=low>*</span>gz(lz/2.-z1)
 <a href="cpl.html#END">END</a> fondo
 
 <a href="cpl.html#FILE">FILE</a> wrfile=<a href="cpl.html#CREATE">CREATE</a>("profiloz")
 <a href="cpl.html#REAL">REAL</a> z=0
-<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> z&lt;2&lowast;lz
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> z&lt;2<span class=low>*</span>lz
   wrfile z,fondo(0,z)
   z=z+0.1
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>

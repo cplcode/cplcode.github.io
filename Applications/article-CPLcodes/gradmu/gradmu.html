@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#C-interface">#include</a> &lt;unistd.h&gt;
 
@@ -21,14 +21,14 @@ char filename[100], tempstring[100];
 <span class=comment>!DISCRETIZATION</span>
 
 ny=400
-nif=3&lowast;ny <a href="cpl.html#DIV">DIV</a> 8
+nif=3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 8
 <a href="cpl.html#REAL">REAL</a> y(-1..ny+1)
 <span class=comment>! uncomment for uniform discretization</span>
-<span class=comment>! DO y(iy)=2&lowast;iy/ny FOR ALL iy</span>
+<span class=comment>! DO y(iy)=2<span class=low>*</span>iy/ny FOR ALL iy</span>
 <span class=comment>! uncomment for nonuniform discretization with 0&lt;y&lt;2</span>
-<span class=comment>! DO y(iy)={0.05&lowast;iy/ny+((iy-nif)/ny)^3-(-nif/ny)^3}&lowast;2/{0.05+(1-nif/ny)^3-(-nif/ny)^3} FOR ALL iy</span>
+<span class=comment>! DO y(iy)={0.05<span class=low>*</span>iy/ny+((iy-nif)/ny)^3-(-nif/ny)^3}<span class=low>*</span>2/{0.05+(1-nif/ny)^3-(-nif/ny)^3} FOR ALL iy</span>
 <span class=comment>! uncomment for nonuniform discretization with y(nif)=1</span>
-<a href="cpl.html#DO">DO</a> y(iy)={0.05&lowast;iy/ny+((iy-nif)/ny)<a href="cpl.html#REAL-operator">^</a>3-(-nif/ny)<a href="cpl.html#REAL-operator">^</a>3}/{0.05&lowast;nif/ny-(-nif/ny)<a href="cpl.html#REAL-operator">^</a>3} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+<a href="cpl.html#DO">DO</a> y(iy)={0.05<span class=low>*</span>iy/ny+((iy-nif)/ny)<a href="cpl.html#REAL-operator">^</a>3-(-nif/ny)<a href="cpl.html#REAL-operator">^</a>3}/{0.05<span class=low>*</span>nif/ny-(-nif/ny)<a href="cpl.html#REAL-operator">^</a>3} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
 
 <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#ARRAY">ARRAY</a>(-1..1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> d0,d1,d2] derivatives(0..ny) = 0
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> ny <a href="cpl.html#WITH">WITH</a> derivatives(i)
@@ -37,11 +37,11 @@ nif=3&lowast;ny <a href="cpl.html#DIV">DIV</a> 8
   d2(0)=-(d2(1)+d2(-1))
 <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> vpos=1,cpos=2,nvars=2
-<a href="cpl.html#ARRAY">ARRAY</a>(1+nvars..ny&lowast;nvars,-(3&lowast;nvars-1)..3&lowast;nvars-1) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A,B,T
-<a href="cpl.html#ARRAY">ARRAY</a>(1+nvars..ny&lowast;nvars) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> f,f1
-v<a href="cpl.html#Deferred-assignment">==</a>f(vpos+(&lowast;)&lowast;nvars); c<a href="cpl.html#Deferred-assignment">==</a>f(cpos+(&lowast;)&lowast;nvars)
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> AA(<a href="cpl.html#INTEGER">INTEGER</a> pos1,pos2)=A(pos1+nvars&lowast;(&lowast;),pos2-pos1+nvars&lowast;(&lowast;))
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> BB(<a href="cpl.html#INTEGER">INTEGER</a> pos1,pos2)=B(pos1+nvars&lowast;(&lowast;),pos2-pos1+nvars&lowast;(&lowast;))
+<a href="cpl.html#ARRAY">ARRAY</a>(1+nvars..ny<span class=low>*</span>nvars,-(3<span class=low>*</span>nvars-1)..3<span class=low>*</span>nvars-1) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A,B,T
+<a href="cpl.html#ARRAY">ARRAY</a>(1+nvars..ny<span class=low>*</span>nvars) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> f,f1
+v<a href="cpl.html#Deferred-assignment">==</a>f(vpos+(<span class=low>*</span>)<span class=low>*</span>nvars); c<a href="cpl.html#Deferred-assignment">==</a>f(cpos+(<span class=low>*</span>)<span class=low>*</span>nvars)
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> AA(<a href="cpl.html#INTEGER">INTEGER</a> pos1,pos2)=A(pos1+nvars<span class=low>*</span>(<span class=low>*</span>),pos2-pos1+nvars<span class=low>*</span>(<span class=low>*</span>))
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> BB(<a href="cpl.html#INTEGER">INTEGER</a> pos1,pos2)=B(pos1+nvars<span class=low>*</span>(<span class=low>*</span>),pos2-pos1+nvars<span class=low>*</span>(<span class=low>*</span>))
 <a href="cpl.html#ARRAY">ARRAY</a>(0..ny) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> U,Uy,Uyy,Mu,Muy,Muyy
 
 graph=<a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FROM">FROM</a> PROMPT("Graphics (Y/N)?")
@@ -59,7 +59,7 @@ startp=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> PROMPT(
 endp=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> PROMPT("slope of viscosity profile : max value?")
 stepp=<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> PROMPT("slope of viscosity profile : step?")
 
-a2=alfa&lowast;alfa
+a2=alfa<span class=low>*</span>alfa
 <a href="complex.html#Top">COMPLEX</a> sigma
 
 <span class=comment>! Eigenvalues outfiles</span>
@@ -74,18 +74,18 @@ sprintf(filename, "results_%g_%g_%g-%g_%g_%g_%g-%g_%g-%g_evr.dat",alfa,Mu2,rmu,a
 
 <span class=comment>!SUBROUTINE baseflow()</span>
 <span class=comment>! uncomment for exponential profile</span>
-<span class=comment>!   DO Mu(iy)=Mu0&lowast;{0.9&lowast;EXP(-2&lowast;y(iy)&lowast;p)+0.1} FOR ALL iy</span>
+<span class=comment>!   DO Mu(iy)=Mu0<span class=low>*</span>{0.9<span class=low>*</span>EXP(-2<span class=low>*</span>y(iy)<span class=low>*</span>p)+0.1} FOR ALL iy</span>
 <span class=comment>! uncomment for tanh profile</span>
-<span class=comment>!   DO Mu(iy)=Mu0&lowast;[2.5-1.5&lowast;tanh(p&lowast;[y(iy)-y(nif)])]/4 FOR ALL iy</span>
-  <a href="cpl.html#DO">DO</a> Mu(iy)=Mu2&lowast;[1 + (1 - tanh( p &lowast; [y(iy)-y(nif)] )) / 2 &lowast; (rmu - 1)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+<span class=comment>!   DO Mu(iy)=Mu0<span class=low>*</span>[2.5-1.5<span class=low>*</span>tanh(p<span class=low>*</span>[y(iy)-y(nif)])]/4 FOR ALL iy</span>
+  <a href="cpl.html#DO">DO</a> Mu(iy)=Mu2<span class=low>*</span>[1 + (1 - tanh( p <span class=low>*</span> [y(iy)-y(nif)] )) / 2 <span class=low>*</span> (rmu - 1)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
   <a href="cpl.html#DO">DO</a> Uy(iy)=1/Mu(iy) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
-  U(0)=0; <a href="cpl.html#DO">DO</a> U(iy)=U(iy-1)+[Uy(iy)+Uy(iy-1)]/2&lowast;[y(iy)-y(iy-1)] <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny   
-<span class=comment>! uncomment for U(nif)=1; comment for Mu&lowast;Uy=1</span>
+  U(0)=0; <a href="cpl.html#DO">DO</a> U(iy)=U(iy-1)+[Uy(iy)+Uy(iy-1)]/2<span class=low>*</span>[y(iy)-y(iy-1)] <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny   
+<span class=comment>! uncomment for U(nif)=1; comment for Mu<span class=low>*</span>Uy=1</span>
   Uy=Uy/U(nif); U=U/U(nif)
   <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> derivatives(iy)
-    Uyy(iy)=d1(-1)&lowast;Uy(iy-1)+d1(1)&lowast;Uy(iy+1)
-    Muy(iy)=d1(-1)&lowast;Mu(iy-1)+d1(1)&lowast;Mu(iy+1)
-    Muyy(iy)=d2(-1)&lowast;Mu(iy-1)+d2(0)&lowast;Mu(iy)+d2(1)&lowast;Mu(iy+1)
+    Uyy(iy)=d1(-1)<span class=low>*</span>Uy(iy-1)+d1(1)<span class=low>*</span>Uy(iy+1)
+    Muy(iy)=d1(-1)<span class=low>*</span>Mu(iy-1)+d1(1)<span class=low>*</span>Mu(iy+1)
+    Muyy(iy)=d2(-1)<span class=low>*</span>Mu(iy-1)+d2(0)<span class=low>*</span>Mu(iy)+d2(1)<span class=low>*</span>Mu(iy+1)
   <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
 <span class=comment>!  DO Uyy(iy)=[Uy(iy+1)-Uy(iy-1)]/[y(iy+1)-y(iy-1)]</span>
 <span class=comment>!     Muy(iy)=[Mu(iy+1)-Mu(iy-1)]/[y(iy+1)-y(iy-1)] FOR iy=1 TO ny-1</span>
@@ -95,17 +95,17 @@ sprintf(filename, "results_%g_%g_%g-%g_%g_%g_%g-%g_%g-%g_evr.dat",alfa,Mu2,rmu,a
 <span class=comment>!SUBROUTINE buildmat()</span>
 A=0; B=0
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#WITH">WITH</a> derivatives(iy)
-  BB(vpos,vpos,iy,-1..1)=a2&lowast;d0-d2
-  AA(vpos,vpos,iy,-1..1)=I&lowast;alfa&lowast;[U(iy)&lowast;(d2-a2&lowast;d0)-Uyy(iy)&lowast;d0]
-  <a href="cpl.html#DO">DO</a> AA(vpos,vpos,iy,i+j)=<a href="cpl.html#Assignment">~</a>+d2(i)&lowast;Mu(iy+i)&lowast;derivatives(iy+i).d2(j) <a href="cpl.html#FOR">FOR</a> i=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 1
-  AA(vpos,vpos,iy,-1..1)=<a href="cpl.html#Assignment">~</a>-2&lowast;a2&lowast;[Mu(iy)&lowast;d2+Muy(iy)&lowast;d1]+a2&lowast;a2&lowast;Mu(iy)&lowast;d0
-  <a href="cpl.html#DO">DO</a> AA(vpos,cpos,iy,i)=I&lowast;alfa&lowast;d2(i)&lowast;Uy(iy+i) <a href="cpl.html#FOR">FOR</a> i=-1 <a href="cpl.html#TO">TO</a> 1
+  BB(vpos,vpos,iy,-1..1)=a2<span class=low>*</span>d0-d2
+  AA(vpos,vpos,iy,-1..1)=I<span class=low>*</span>alfa<span class=low>*</span>[U(iy)<span class=low>*</span>(d2-a2<span class=low>*</span>d0)-Uyy(iy)<span class=low>*</span>d0]
+  <a href="cpl.html#DO">DO</a> AA(vpos,vpos,iy,i+j)=<a href="cpl.html#Assignment">~</a>+d2(i)<span class=low>*</span>Mu(iy+i)<span class=low>*</span>derivatives(iy+i).d2(j) <a href="cpl.html#FOR">FOR</a> i=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 1
+  AA(vpos,vpos,iy,-1..1)=<a href="cpl.html#Assignment">~</a>-2<span class=low>*</span>a2<span class=low>*</span>[Mu(iy)<span class=low>*</span>d2+Muy(iy)<span class=low>*</span>d1]+a2<span class=low>*</span>a2<span class=low>*</span>Mu(iy)<span class=low>*</span>d0
+  <a href="cpl.html#DO">DO</a> AA(vpos,cpos,iy,i)=I<span class=low>*</span>alfa<span class=low>*</span>d2(i)<span class=low>*</span>Uy(iy+i) <a href="cpl.html#FOR">FOR</a> i=-1 <a href="cpl.html#TO">TO</a> 1
 <span class=comment>!<span class=comment>!<span class=comment>! ajoute' 1-2-2001 <span class=comment>!<span class=comment>!<span class=comment>!</span></span></span></span></span></span>
-  AA(vpos,vpos,iy,-1..1)=<a href="cpl.html#Assignment">~</a>+a2&lowast;Muyy(iy)&lowast;d0
-  AA(vpos,cpos,iy,-1..1)=<a href="cpl.html#Assignment">~</a>-I&lowast;alfa&lowast;a2&lowast;Uy(iy)&lowast;d0
+  AA(vpos,vpos,iy,-1..1)=<a href="cpl.html#Assignment">~</a>+a2<span class=low>*</span>Muyy(iy)<span class=low>*</span>d0
+  AA(vpos,cpos,iy,-1..1)=<a href="cpl.html#Assignment">~</a>-I<span class=low>*</span>alfa<span class=low>*</span>a2<span class=low>*</span>Uy(iy)<span class=low>*</span>d0
 <span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!<span class=comment>!</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>
   BB(cpos,cpos,iy,0)=-1
-  AA(cpos,cpos,iy,-1..1)=I&lowast;alfa&lowast;U(iy)&lowast;d0+<a href="symbolic.html#Top">D</a>&lowast;(d2-a2&lowast;d0)
+  AA(cpos,cpos,iy,-1..1)=I<span class=low>*</span>alfa<span class=low>*</span>U(iy)<span class=low>*</span>d0+<a href="symbolic.html#Top">D</a><span class=low>*</span>(d2-a2<span class=low>*</span>d0)
   AA(cpos,vpos,iy,0)=-Muy(iy)
 <a href="cpl.html#LOOP">REPEAT</a>
 AA(vpos,vpos,1,0)=<a href="cpl.html#Assignment">~</a>+AA(vpos,vpos,1,-2)
@@ -138,11 +138,11 @@ f=0; c=Uyy
 deltat=0.1/alfa
 <a href="cpl.html#REAL">REAL</a> t=0
 <a href="cpl.html#LOOP">LOOP</a> timeloop
-  T=B+deltat/2&lowast;A
+  T=B+deltat/2<span class=low>*</span>A
   LUdecomp T
-  f1=T\(B&lowast;f-deltat/2&lowast;A&lowast;f)
+  f1=T\(B<span class=low>*</span>f-deltat/2<span class=low>*</span>A<span class=low>*</span>f)
   t=<a href="cpl.html#Assignment">~</a>+deltat
-  sigma=(f1|f)/(f1|f1); sigma=(1-sigma)/(1+sigma)&lowast;2/deltat
+  sigma=(f1|f)/(f1|f1); sigma=(1-sigma)/(1+sigma)<span class=low>*</span>2/deltat
   f=f1
   <a href="cpl.html#IF">IF</a> graph <a href="cpl.html#IF">THEN</a>
    CLEARSCREEN
@@ -158,8 +158,8 @@ deltat=0.1/alfa
 
 <span class=comment>!SUBROUTINE eigenval()</span>
 <a href="cpl.html#DO">DO</a>
-  T=A+sigma&lowast;B; LUdecomp T
-  f1=T\B&lowast;f
+  T=A+sigma<span class=low>*</span>B; LUdecomp T
+  f1=T\B<span class=low>*</span>f
   norm=f1|f1
   ds=-(f1|f)/norm
   f=f1/<a href="cpl.html#Builtin">SQRT</a>(norm)

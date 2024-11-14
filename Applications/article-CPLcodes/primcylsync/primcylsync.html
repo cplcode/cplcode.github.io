@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#USE">USE</a> <a href="fft.html#Top">fft</a>
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a>
@@ -64,13 +64,13 @@ realfirst<a href="cpl.html#Deferred-assignment">==</a>(prev=<a href="cpl.html#PO
 <a href="cpl.html#CLOSE">CLOSE</a> dati
 <a href="cpl.html#IF">IF</a> has_terminal <a href="cpl.html#IF">THEN</a>
   <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> nproc,nsmp
-  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> nx,ny,nz,htcoef,2&lowast;PI/alpha0,Re
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> nx,ny,nz,htcoef,2<span class=low>*</span>PI/alpha0,Re
   <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> deltat,t_max,dt_field
   <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> input_file
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 
-<span class=comment>! nyl=ROUND(SQRT((iproc-1)/nproc)&lowast;ny); nyh=ROUND(SQRT(iproc/nproc)&lowast;ny)-1</span>
-nyl=<a href="cpl.html#ROUND">ROUND</a>(((iproc-1)/nproc)&lowast;ny); nyh=<a href="cpl.html#ROUND">ROUND</a>((iproc/nproc)&lowast;ny)-1
+<span class=comment>! nyl=ROUND(SQRT((iproc-1)/nproc)<span class=low>*</span>ny); nyh=ROUND(SQRT(iproc/nproc)<span class=low>*</span>ny)-1</span>
+nyl=<a href="cpl.html#ROUND">ROUND</a>(((iproc-1)/nproc)<span class=low>*</span>ny); nyh=<a href="cpl.html#ROUND">ROUND</a>((iproc/nproc)<span class=low>*</span>ny)-1
 
 <a href="cpl.html#REAL">REAL</a> y(0..ny)
 <a href="cpl.html#INTEGER">INTEGER</a> iy0(-nz..nz)
@@ -82,10 +82,10 @@ endofheader=1024
   <a href="cpl.html#POSITION">POSITION</a> field_file,endofheader
   <a href="cpl.html#READ">READ</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#FROM">FROM</a> field_file y,iy0(0..nz)
 <a href="cpl.html#ELSE">ELSE</a>
-<span class=comment>!  DO y(i)=ymin+ymax&lowast;i/ny FOR ALL i</span>
-  <a href="cpl.html#DO">DO</a> y(i)=ymin+(ymax-ymin)&lowast;tanh(htcoef&lowast;(i/ny))/tanh(htcoef) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+<span class=comment>!  DO y(i)=ymin+ymax<span class=low>*</span>i/ny FOR ALL i</span>
+  <a href="cpl.html#DO">DO</a> y(i)=ymin+(ymax-ymin)<span class=low>*</span>tanh(htcoef<span class=low>*</span>(i/ny))/tanh(htcoef) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> m=0 <a href="cpl.html#TO">TO</a> nz
-    iy0(m)=-1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> iy0(m) <a href="cpl.html#UNTIL">UNTIL</a> y(iy0(m)+3)&lowast;(nz-0.5) &gt;= (m-1)&lowast;ymax
+    iy0(m)=-1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> iy0(m) <a href="cpl.html#UNTIL">UNTIL</a> y(iy0(m)+3)<span class=low>*</span>(nz-0.5) &gt;= (m-1)<span class=low>*</span>ymax
 iy0(m)=0
   <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -97,57 +97,57 @@ iy0(m)=0
   <a href="cpl.html#REAL">REAL</a> M(0..2,0..2),t(0..2)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=derivatives.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> derivatives.<a href="cpl.html#HI">HI</a> <a href="cpl.html#WITH">WITH</a> derivatives(iy)
     <a href="cpl.html#DO">DO</a> M(i,j)=(y(iy-1+j)-y(iy))<a href="cpl.html#REAL-operator">^</a>(2-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
-    d1(-1+(&lowast;))=M\(0.,1,0)
+    d1(-1+(<span class=low>*</span>))=M\(0.,1,0)
     r1<a href="cpl.html#Deferred-assignment">==</a>y(iy-1+j)
     <a href="cpl.html#DO">DO</a> M(i,j)=D_r1[(r1-y(iy))<a href="cpl.html#REAL-operator">^</a>(3-i)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
-    <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d1(j)&lowast;(y(iy+j)-y(iy))<a href="cpl.html#REAL-operator">^</a>(3-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
-    d0(-1+(&lowast;))=M\t
+    <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d1(j)<span class=low>*</span>(y(iy+j)-y(iy))<a href="cpl.html#REAL-operator">^</a>(3-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+    d0(-1+(<span class=low>*</span>))=M\t
     <a href="cpl.html#DO">DO</a> M(i,j)=(y(iy-1+j)-y(iy))<a href="cpl.html#REAL-operator">^</a>(2-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
     r<a href="cpl.html#Deferred-assignment">==</a>y(iy+j)
-    t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;r&lowast;D_r(r&lowast;D_r[(r-y(iy))<a href="cpl.html#REAL-operator">^</a>(2-i)]) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 1
-    rdrd(-1+(&lowast;))=M\t
+    t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)<span class=low>*</span>r<span class=low>*</span>D_r(r<span class=low>*</span>D_r[(r-y(iy))<a href="cpl.html#REAL-operator">^</a>(2-i)]) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 1
+    rdrd(-1+(<span class=low>*</span>))=M\t
   <a href="cpl.html#LOOP">REPEAT</a>
   <a href="cpl.html#DO">DO</a> M(i,j)=(y(ny-2+j)-y(ny))<a href="cpl.html#compound-index">**</a>(2-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
-  d1n(-1+(&lowast;))=M\(0.,1,0)
+  d1n(-1+(<span class=low>*</span>))=M\(0.,1,0)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> m=0 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> iz=m <a href="cpl.html#TO">TO</a> dc2.<a href="cpl.html#HI">HI</a>
 <span class=comment>!(
-    DO M(1+i,j)=y[j+iy0(iz)]^(iz-m+2&lowast;i) FOR i=0 TO 1 AND ALL j
+    DO M(1+i,j)=y[j+iy0(iz)]^(iz-m+2<span class=low>*</span>i) FOR i=0 TO 1 AND ALL j
     M(0)=(1.,0,0)
     LUdecomp M
-    dc4(iz,m,-1+(&lowast;))=M\(1.,0,0)
+    dc4(iz,m,-1+(<span class=low>*</span>))=M\(1.,0,0)
 !)</span>
     dc2(iz,m,-1)=0; dc2(iz,m,0)=1; dc2(iz,m,1)=-[y(iy0(m))/y(iy0(m)+1)]<a href="cpl.html#REAL-operator">^</a>(iz-m)
   <a href="cpl.html#LOOP">REPEAT</a>
   dc2(0,1)=dc2(2,1)
 <a href="cpl.html#END">END</a> setup_derivatives
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> yz_integr(<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#REAL-operator">^</a>, f(&lowast;))
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=[nyl <a href="cpl.html#DIV">DIV</a> 2]&lowast;2+1 <a href="cpl.html#TO">TO</a> nyh <a href="cpl.html#BY">BY</a> 2
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> yz_integr(<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#RESULT">RESULT</a><a href="cpl.html#REAL-operator">^</a>, f(<span class=low>*</span>))
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=[nyl <a href="cpl.html#DIV">DIV</a> 2]<span class=low>*</span>2+1 <a href="cpl.html#TO">TO</a> nyh <a href="cpl.html#BY">BY</a> 2
    yp1=y(iy+1)-y(iy); ym1=y(iy-1)-y(iy)
-   a1=-1/3&lowast;ym1+1/6&lowast;yp1+1/6&lowast;yp1&lowast;yp1/ym1
-   a3=+1/3&lowast;yp1-1/6&lowast;ym1-1/6&lowast;ym1&lowast;ym1/yp1
+   a1=-1/3<span class=low>*</span>ym1+1/6<span class=low>*</span>yp1+1/6<span class=low>*</span>yp1<span class=low>*</span>yp1/ym1
+   a3=+1/3<span class=low>*</span>yp1-1/6<span class=low>*</span>ym1-1/6<span class=low>*</span>ym1<span class=low>*</span>ym1/yp1
    a2=yp1-ym1-a1-a3
-   <a href="cpl.html#RESULT">RESULT</a>= <a href="cpl.html#Assignment">~</a> + a1&lowast;f(iy-1)&lowast;y(iy-1) + a2&lowast;f(iy)&lowast;y(iy) + a3&lowast;f(iy+1)&lowast;y(iy+1)
+   <a href="cpl.html#RESULT">RESULT</a>= <a href="cpl.html#Assignment">~</a> + a1<span class=low>*</span>f(iy-1)<span class=low>*</span>y(iy-1) + a2<span class=low>*</span>f(iy)<span class=low>*</span>y(iy) + a3<span class=low>*</span>f(iy+1)<span class=low>*</span>y(iy+1)
   <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#END">END</a> yz_integr
 
 maxtimelevels=1
 VELOCITY=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>(u,v,w) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a>
-<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..nx,-nz..nz) <a href="cpl.html#OF">OF</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> VELOCITY V
-<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..nx,-nz..nz) <a href="cpl.html#OF">OF</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,1..maxtimelevels) <a href="cpl.html#OF">OF</a> VELOCITY oldrhs
+<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..nx,-nz..nz) <a href="cpl.html#OF">OF</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>) <a href="cpl.html#OF">OF</a> VELOCITY V
+<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..nx,-nz..nz) <a href="cpl.html#OF">OF</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>,1..maxtimelevels) <a href="cpl.html#OF">OF</a> VELOCITY oldrhs
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,m
   <a href="cpl.html#IF">IF</a> iy0(m)&gt;nyh <a href="cpl.html#IF">THEN</a> V(ix,m)=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#ELSE">ELSE</a>
     V(ix,m)=<a href="cpl.html#NEW">NEW</a> <a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(<a href="cpl.html#MAX">MAX</a>(iy0(m),nyl-1)..nyh+1) <a href="cpl.html#OF">OF</a> VELOCITY
     oldrhs(ix,m)=<a href="cpl.html#NEW">NEW</a> <a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(<a href="cpl.html#MAX">MAX</a>(iy0(m)+1,nyl-1)..<a href="cpl.html#MIN">MIN</a>(nyh+1,ny-1),1..maxtimelevels) <a href="cpl.html#OF">OF</a> VELOCITY
-    oldrhs(ix,m,&lowast;)=0
+    oldrhs(ix,m,<span class=low>*</span>)=0
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#LOOP">REPEAT</a>
 
-<a href="cpl.html#INTEGER">INTEGER</a> nxd=3&lowast;nx <a href="cpl.html#DIV">DIV</a> 2 - 1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> nxd <a href="cpl.html#UNTIL">UNTIL</a> FFTfit(nxd)
+<a href="cpl.html#INTEGER">INTEGER</a> nxd=3<span class=low>*</span>nx <a href="cpl.html#DIV">DIV</a> 2 - 1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> nxd <a href="cpl.html#UNTIL">UNTIL</a> FFTfit(nxd)
 <a href="cpl.html#INTEGER">INTEGER</a> nzd(nyl..nyh+1)
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
   nzd(iy)=nz+1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">DEC</a> nzd(iy) <a href="cpl.html#UNTIL">UNTIL</a> nzd(iy)=0 <a href="cpl.html#OR">OR</a> iy&gt;=iy0(nzd(iy))
-  nzd(iy)=3&lowast;<a href="cpl.html#Assignment">~</a>-1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> nzd(iy) <a href="cpl.html#UNTIL">UNTIL</a> FFTfit(nzd(iy))
+  nzd(iy)=3<span class=low>*</span><a href="cpl.html#Assignment">~</a>-1; <a href="cpl.html#DO">DO</a> <a href="cpl.html#Builtin">INC</a> nzd(iy) <a href="cpl.html#UNTIL">UNTIL</a> FFTfit(nzd(iy))
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 
 MOMFLUX=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>(u,v,w,uu,uv,vv,uw,vw,ww) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a>
@@ -157,58 +157,58 @@ MOMFLUX=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>(u,v,w,uu,uv,vv,uw,vw,
 <a href="cpl.html#INTEGER">INTEGER</a> ismp
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> convolutions(<a href="cpl.html#INTEGER">INTEGER</a> iy)
-  Vd=<a href="cpl.html#REAL-operator">^</a>Vdmem[&lowast;,0..nzd(iy)-1]; VVplane=<a href="cpl.html#REAL-operator">^</a>VVd[&lowast;,0..nzd(iy)-1,iy <a href="cpl.html#INTEGER-operator">MOD</a> (<a href="cpl.html#HI">HI</a>+1)]
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=ismp&lowast;(nx+1) <a href="cpl.html#DIV">DIV</a> nsmp <a href="cpl.html#TO">TO</a> (ismp+1)&lowast;(nx+1) <a href="cpl.html#DIV">DIV</a> nsmp -1
-    <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> VVplane(ix,&lowast;),V(ix,&lowast;) izd1=0
+  Vd=<a href="cpl.html#REAL-operator">^</a>Vdmem[<span class=low>*</span>,0..nzd(iy)-1]; VVplane=<a href="cpl.html#REAL-operator">^</a>VVd[<span class=low>*</span>,0..nzd(iy)-1,iy <a href="cpl.html#INTEGER-operator">MOD</a> (<a href="cpl.html#HI">HI</a>+1)]
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=ismp<span class=low>*</span>(nx+1) <a href="cpl.html#DIV">DIV</a> nsmp <a href="cpl.html#TO">TO</a> (ismp+1)<span class=low>*</span>(nx+1) <a href="cpl.html#DIV">DIV</a> nsmp -1
+    <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> VVplane(ix,<span class=low>*</span>),V(ix,<span class=low>*</span>) izd1=0
     <a href="cpl.html#DO">DO</a> VVplane(ix,izd1,0..2)=V(ix,izd1,iy); <a href="cpl.html#Builtin">INC</a> izd1 <a href="cpl.html#WHILE">WHILE</a> izd1&lt;=V.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#AND">AND</a> V(ix,izd1)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#AND">AND</a> iy&gt;=V(ix,izd1).<a href="cpl.html#LO">LO</a>
-    <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> VVplane(ix,<a href="cpl.html#HI">HI</a>+1+&lowast;),V(ix,&lowast;) izd2=-1
+    <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> VVplane(ix,<a href="cpl.html#HI">HI</a>+1+<span class=low>*</span>),V(ix,<span class=low>*</span>) izd2=-1
     <a href="cpl.html#DO">DO</a> VVplane(ix,<a href="cpl.html#HI">HI</a>+1+izd2,0..2)=V(ix,izd2,iy); <a href="cpl.html#Builtin">DEC</a> izd2 <a href="cpl.html#WHILE">WHILE</a> izd2&gt;=V.<a href="cpl.html#LO">LO2</a> <a href="cpl.html#AND">AND</a> V(ix,izd2)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#AND">AND</a> iy&gt;=V(ix,izd2).<a href="cpl.html#LO">LO</a>
     VVplane(ix,izd1..<a href="cpl.html#HI">HI</a>+1+izd2)=0
-    <a href="cpl.html#WITH">WITH</a> VVplane(ix,&lowast;): IFTU(u,Vd(ix,&lowast;).u); IFTU(v,Vd(ix,&lowast;).v); IFTU(w,Vd(ix,&lowast;).w)
+    <a href="cpl.html#WITH">WITH</a> VVplane(ix,<span class=low>*</span>): IFTU(u,Vd(ix,<span class=low>*</span>).u); IFTU(v,Vd(ix,<span class=low>*</span>).v); IFTU(w,Vd(ix,<span class=low>*</span>).w)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#IF">IF</a> ismp=0 <a href="cpl.html#IF">THEN</a> Vd(nx+1..<a href="cpl.html#HI">HI</a>)=0
   SYNC(ismp,nsmp)
   <a href="cpl.html#DO">DO</a>
-    <a href="cpl.html#WITH">WITH</a> Vd(&lowast;,m): RFTU(u); RFTU(v); RFTU(w)
+    <a href="cpl.html#WITH">WITH</a> Vd(<span class=low>*</span>,m): RFTU(u); RFTU(v); RFTU(w)
     <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> Vd(ix,m) 
-      VVplane(ix,m).uu.<a href="cpl.html#REAL">REAL</a>=u.<a href="cpl.html#REAL">REAL</a>&lowast;u.<a href="cpl.html#REAL">REAL</a>; VVplane(ix,m).uu.<a href="complex.html#Top">IMAG</a>=u.<a href="complex.html#Top">IMAG</a>&lowast;u.<a href="complex.html#Top">IMAG</a>
-      VVplane(ix,m).uv.<a href="cpl.html#REAL">REAL</a>=u.<a href="cpl.html#REAL">REAL</a>&lowast;v.<a href="cpl.html#REAL">REAL</a>; VVplane(ix,m).uv.<a href="complex.html#Top">IMAG</a>=u.<a href="complex.html#Top">IMAG</a>&lowast;v.<a href="complex.html#Top">IMAG</a>
-      VVplane(ix,m).vv.<a href="cpl.html#REAL">REAL</a>=v.<a href="cpl.html#REAL">REAL</a>&lowast;v.<a href="cpl.html#REAL">REAL</a>; VVplane(ix,m).vv.<a href="complex.html#Top">IMAG</a>=v.<a href="complex.html#Top">IMAG</a>&lowast;v.<a href="complex.html#Top">IMAG</a>
-      VVplane(ix,m).vw.<a href="cpl.html#REAL">REAL</a>=v.<a href="cpl.html#REAL">REAL</a>&lowast;w.<a href="cpl.html#REAL">REAL</a>; VVplane(ix,m).vw.<a href="complex.html#Top">IMAG</a>=v.<a href="complex.html#Top">IMAG</a>&lowast;w.<a href="complex.html#Top">IMAG</a>
-      VVplane(ix,m).ww.<a href="cpl.html#REAL">REAL</a>=w.<a href="cpl.html#REAL">REAL</a>&lowast;w.<a href="cpl.html#REAL">REAL</a>; VVplane(ix,m).ww.<a href="complex.html#Top">IMAG</a>=w.<a href="complex.html#Top">IMAG</a>&lowast;w.<a href="complex.html#Top">IMAG</a>
-      VVplane(ix,m).uw.<a href="cpl.html#REAL">REAL</a>=u.<a href="cpl.html#REAL">REAL</a>&lowast;w.<a href="cpl.html#REAL">REAL</a>; VVplane(ix,m).uw.<a href="complex.html#Top">IMAG</a>=u.<a href="complex.html#Top">IMAG</a>&lowast;w.<a href="complex.html#Top">IMAG</a>
+      VVplane(ix,m).uu.<a href="cpl.html#REAL">REAL</a>=u.<a href="cpl.html#REAL">REAL</a><span class=low>*</span>u.<a href="cpl.html#REAL">REAL</a>; VVplane(ix,m).uu.<a href="complex.html#Top">IMAG</a>=u.<a href="complex.html#Top">IMAG</a><span class=low>*</span>u.<a href="complex.html#Top">IMAG</a>
+      VVplane(ix,m).uv.<a href="cpl.html#REAL">REAL</a>=u.<a href="cpl.html#REAL">REAL</a><span class=low>*</span>v.<a href="cpl.html#REAL">REAL</a>; VVplane(ix,m).uv.<a href="complex.html#Top">IMAG</a>=u.<a href="complex.html#Top">IMAG</a><span class=low>*</span>v.<a href="complex.html#Top">IMAG</a>
+      VVplane(ix,m).vv.<a href="cpl.html#REAL">REAL</a>=v.<a href="cpl.html#REAL">REAL</a><span class=low>*</span>v.<a href="cpl.html#REAL">REAL</a>; VVplane(ix,m).vv.<a href="complex.html#Top">IMAG</a>=v.<a href="complex.html#Top">IMAG</a><span class=low>*</span>v.<a href="complex.html#Top">IMAG</a>
+      VVplane(ix,m).vw.<a href="cpl.html#REAL">REAL</a>=v.<a href="cpl.html#REAL">REAL</a><span class=low>*</span>w.<a href="cpl.html#REAL">REAL</a>; VVplane(ix,m).vw.<a href="complex.html#Top">IMAG</a>=v.<a href="complex.html#Top">IMAG</a><span class=low>*</span>w.<a href="complex.html#Top">IMAG</a>
+      VVplane(ix,m).ww.<a href="cpl.html#REAL">REAL</a>=w.<a href="cpl.html#REAL">REAL</a><span class=low>*</span>w.<a href="cpl.html#REAL">REAL</a>; VVplane(ix,m).ww.<a href="complex.html#Top">IMAG</a>=w.<a href="complex.html#Top">IMAG</a><span class=low>*</span>w.<a href="complex.html#Top">IMAG</a>
+      VVplane(ix,m).uw.<a href="cpl.html#REAL">REAL</a>=u.<a href="cpl.html#REAL">REAL</a><span class=low>*</span>w.<a href="cpl.html#REAL">REAL</a>; VVplane(ix,m).uw.<a href="complex.html#Top">IMAG</a>=u.<a href="complex.html#Top">IMAG</a><span class=low>*</span>w.<a href="complex.html#Top">IMAG</a>
     <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix
-    <a href="cpl.html#WITH">WITH</a> VVplane(&lowast;,m): HFTU(uu); HFTU(uv); HFTU(vv); HFTU(vw); HFTU(ww); HFTU(uw)
-  <a href="cpl.html#FOR">FOR</a> m=ismp&lowast;(<a href="cpl.html#HI">HI</a>+1) <a href="cpl.html#DIV">DIV</a> nsmp <a href="cpl.html#TO">TO</a> (ismp+1)&lowast;(<a href="cpl.html#HI">HI</a>+1) <a href="cpl.html#DIV">DIV</a> nsmp -1
+    <a href="cpl.html#WITH">WITH</a> VVplane(<span class=low>*</span>,m): HFTU(uu); HFTU(uv); HFTU(vv); HFTU(vw); HFTU(ww); HFTU(uw)
+  <a href="cpl.html#FOR">FOR</a> m=ismp<span class=low>*</span>(<a href="cpl.html#HI">HI</a>+1) <a href="cpl.html#DIV">DIV</a> nsmp <a href="cpl.html#TO">TO</a> (ismp+1)<span class=low>*</span>(<a href="cpl.html#HI">HI</a>+1) <a href="cpl.html#DIV">DIV</a> nsmp -1
   SYNC(ismp,nsmp)
-  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> VVplane(ix,&lowast;): FFTU(uu); FFTU(uv); FFTU(vv); FFTU(vw); FFTU(ww); FFTU(uw)
-  <a href="cpl.html#FOR">FOR</a> ix=ismp&lowast;(nx+1) <a href="cpl.html#DIV">DIV</a> nsmp <a href="cpl.html#TO">TO</a> (ismp+1)&lowast;(nx+1) <a href="cpl.html#DIV">DIV</a> nsmp -1
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> VVplane(ix,<span class=low>*</span>): FFTU(uu); FFTU(uv); FFTU(vv); FFTU(vw); FFTU(ww); FFTU(uw)
+  <a href="cpl.html#FOR">FOR</a> ix=ismp<span class=low>*</span>(nx+1) <a href="cpl.html#DIV">DIV</a> nsmp <a href="cpl.html#TO">TO</a> (ismp+1)<span class=low>*</span>(nx+1) <a href="cpl.html#DIV">DIV</a> nsmp -1
   SYNC(ismp,nsmp)
 <a href="cpl.html#END">END</a> convolutions
 
-cont<a href="cpl.html#Deferred-assignment">==</a>d0&lowast;(alpha&lowast;r&lowast;u+m&lowast;w)-d1&lowast;r&lowast;iv
-Dtuv<a href="cpl.html#Deferred-assignment">==</a>ni&lowast;lapl&lowast;u-alpha&lowast;d0&lowast;r2&lowast;ip
-Dtuc<a href="cpl.html#Deferred-assignment">==</a>-I&lowast;alpha&lowast;d0&lowast;r2&lowast;uu-(d1&lowast;r2-d0&lowast;r)&lowast;uv-I&lowast;m&lowast;d0&lowast;r&lowast;uw
-Dtvv<a href="cpl.html#Deferred-assignment">==</a>ni&lowast;[(lapl-d0)&lowast;iv+2&lowast;m&lowast;d0&lowast;w]-(d1&lowast;r2-2&lowast;d0&lowast;r)&lowast;ip
-Dtvc<a href="cpl.html#Deferred-assignment">==</a>-I&lowast;alpha&lowast;d0&lowast;r2&lowast;uv-(d1&lowast;r2-d0&lowast;r)&lowast;vv-I&lowast;m&lowast;d0&lowast;r&lowast;vw+d0&lowast;r&lowast;ww
-Dtwv<a href="cpl.html#Deferred-assignment">==</a>ni&lowast;[(lapl-d0)&lowast;w+2&lowast;m&lowast;d0&lowast;iv]-m&lowast;d0&lowast;r&lowast;ip
-Dtwc<a href="cpl.html#Deferred-assignment">==</a>-I&lowast;alpha&lowast;d0&lowast;r2&lowast;uw-d1&lowast;r2&lowast;vw-I&lowast;m&lowast;d0&lowast;r&lowast;ww
+cont<a href="cpl.html#Deferred-assignment">==</a>d0<span class=low>*</span>(alpha<span class=low>*</span>r<span class=low>*</span>u+m<span class=low>*</span>w)-d1<span class=low>*</span>r<span class=low>*</span>iv
+Dtuv<a href="cpl.html#Deferred-assignment">==</a>ni<span class=low>*</span>lapl<span class=low>*</span>u-alpha<span class=low>*</span>d0<span class=low>*</span>r2<span class=low>*</span>ip
+Dtuc<a href="cpl.html#Deferred-assignment">==</a>-I<span class=low>*</span>alpha<span class=low>*</span>d0<span class=low>*</span>r2<span class=low>*</span>uu-(d1<span class=low>*</span>r2-d0<span class=low>*</span>r)<span class=low>*</span>uv-I<span class=low>*</span>m<span class=low>*</span>d0<span class=low>*</span>r<span class=low>*</span>uw
+Dtvv<a href="cpl.html#Deferred-assignment">==</a>ni<span class=low>*</span>[(lapl-d0)<span class=low>*</span>iv+2<span class=low>*</span>m<span class=low>*</span>d0<span class=low>*</span>w]-(d1<span class=low>*</span>r2-2<span class=low>*</span>d0<span class=low>*</span>r)<span class=low>*</span>ip
+Dtvc<a href="cpl.html#Deferred-assignment">==</a>-I<span class=low>*</span>alpha<span class=low>*</span>d0<span class=low>*</span>r2<span class=low>*</span>uv-(d1<span class=low>*</span>r2-d0<span class=low>*</span>r)<span class=low>*</span>vv-I<span class=low>*</span>m<span class=low>*</span>d0<span class=low>*</span>r<span class=low>*</span>vw+d0<span class=low>*</span>r<span class=low>*</span>ww
+Dtwv<a href="cpl.html#Deferred-assignment">==</a>ni<span class=low>*</span>[(lapl-d0)<span class=low>*</span>w+2<span class=low>*</span>m<span class=low>*</span>d0<span class=low>*</span>iv]-m<span class=low>*</span>d0<span class=low>*</span>r<span class=low>*</span>ip
+Dtwc<a href="cpl.html#Deferred-assignment">==</a>-I<span class=low>*</span>alpha<span class=low>*</span>d0<span class=low>*</span>r2<span class=low>*</span>uw-d1<span class=low>*</span>r2<span class=low>*</span>vw-I<span class=low>*</span>m<span class=low>*</span>d0<span class=low>*</span>r<span class=low>*</span>ww
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> buildrhs[<a href="cpl.html#FUNCTION">SUBROUTINE</a>(<a href="complex.html#Top">COMPLEX</a> rhs<a href="cpl.html#REAL-operator">^</a>,old<a href="cpl.html#REAL-operator">^</a>(&lowast;),unknown,implicit_part,explicit_part) timescheme]
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> buildrhs[<a href="cpl.html#FUNCTION">SUBROUTINE</a>(<a href="complex.html#Top">COMPLEX</a> rhs<a href="cpl.html#REAL-operator">^</a>,old<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>),unknown,implicit_part,explicit_part) timescheme]
 <a href="parallel.html#PARALLEL">PARALLEL</a> <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ismp=0 <a href="cpl.html#TO">TO</a> nsmp-1
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=nyl-1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(ny-1,nyh+1)
   <a href="cpl.html#IF">IF</a> iy+1&lt;=nyh <a href="cpl.html#OR">OR</a> last <a href="cpl.html#IF">THEN</a> convolutions(iy+1)
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=ismp&lowast;(nx+1) <a href="cpl.html#DIV">DIV</a> nsmp <a href="cpl.html#TO">TO</a> (ismp+1)&lowast;(nx+1) <a href="cpl.html#DIV">DIV</a> nsmp -1 <a href="cpl.html#AND">AND</a> m=-nz <a href="cpl.html#TO">TO</a> nz <a href="cpl.html#EXCEPT">EXCEPT</a> V(ix,m)=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#OR">OR</a> iy&lt;V(ix,m).<a href="cpl.html#LO">LO</a>
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=ismp<span class=low>*</span>(nx+1) <a href="cpl.html#DIV">DIV</a> nsmp <a href="cpl.html#TO">TO</a> (ismp+1)<span class=low>*</span>(nx+1) <a href="cpl.html#DIV">DIV</a> nsmp -1 <a href="cpl.html#AND">AND</a> m=-nz <a href="cpl.html#TO">TO</a> nz <a href="cpl.html#EXCEPT">EXCEPT</a> V(ix,m)=<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#OR">OR</a> iy&lt;V(ix,m).<a href="cpl.html#LO">LO</a>
   <a href="cpl.html#IF">IF</a> iy&lt;=iy0(m) <a href="cpl.html#IF">THEN</a> V(ix,m,iy)=0 <a href="cpl.html#ELSE">ELSE</a>
-    alpha=alpha0&lowast;ix
+    alpha=alpha0<span class=low>*</span>ix
     VELOCITY impl=0, expl=0, D0V=0
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> j=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#EXCEPT">EXCEPT</a> iy+j&lt;nyl <a href="cpl.html#OR">OR</a> iy+j&gt;nyh <a href="cpl.html#AND">AND</a> <a href="cpl.html#NOT">NOT</a> last
       <a href="cpl.html#WITH">WITH</a> VVd[ix,<a href="cpl.html#IF">IF</a> m&gt;=0 <a href="cpl.html#IF">THEN</a> m <a href="cpl.html#ELSE">ELSE</a> m+nzd(iy+j),(iy+j) <a href="cpl.html#INTEGER-operator">MOD</a> (<a href="cpl.html#HI">HI</a>+1)],derivatives(iy,j)
-      iv=I&lowast;v; ip=0; r=y(iy+j); r2=r&lowast;r; lapl=rdrd-d0&lowast;(r2&lowast;alpha<a href="cpl.html#REAL-operator">^</a>2+m<a href="cpl.html#REAL-operator">^</a>2)
-      D0V.u=<a href="cpl.html#Assignment">~</a>+d0&lowast;r2&lowast;u; D0V.v=<a href="cpl.html#Assignment">~</a>+d0&lowast;r2&lowast;iv; D0V.w=<a href="cpl.html#Assignment">~</a>+d0&lowast;r2&lowast;w
+      iv=I<span class=low>*</span>v; ip=0; r=y(iy+j); r2=r<span class=low>*</span>r; lapl=rdrd-d0<span class=low>*</span>(r2<span class=low>*</span>alpha<a href="cpl.html#REAL-operator">^</a>2+m<a href="cpl.html#REAL-operator">^</a>2)
+      D0V.u=<a href="cpl.html#Assignment">~</a>+d0<span class=low>*</span>r2<span class=low>*</span>u; D0V.v=<a href="cpl.html#Assignment">~</a>+d0<span class=low>*</span>r2<span class=low>*</span>iv; D0V.w=<a href="cpl.html#Assignment">~</a>+d0<span class=low>*</span>r2<span class=low>*</span>w
       impl.u=<a href="cpl.html#Assignment">~</a>+Dtuv; impl.v=<a href="cpl.html#Assignment">~</a>+Dtvv; impl.w=<a href="cpl.html#Assignment">~</a>+Dtwv
-      expl.u=<a href="cpl.html#Assignment">~</a>+Dtuc; expl.v=<a href="cpl.html#Assignment">~</a>+I&lowast;Dtvc; expl.w=<a href="cpl.html#Assignment">~</a>+Dtwc
-      <a href="cpl.html#IF">IF</a> ix=0 <a href="cpl.html#AND">AND</a> m=0 <a href="cpl.html#IF">THEN</a> expl.u=<a href="cpl.html#Assignment">~</a>+d0&lowast;r2&lowast;meanpx
+      expl.u=<a href="cpl.html#Assignment">~</a>+Dtuc; expl.v=<a href="cpl.html#Assignment">~</a>+I<span class=low>*</span>Dtvc; expl.w=<a href="cpl.html#Assignment">~</a>+Dtwc
+      <a href="cpl.html#IF">IF</a> ix=0 <a href="cpl.html#AND">AND</a> m=0 <a href="cpl.html#IF">THEN</a> expl.u=<a href="cpl.html#Assignment">~</a>+d0<span class=low>*</span>r2<span class=low>*</span>meanpx
     <a href="cpl.html#LOOP">REPEAT</a>
     timescheme{V(ix,m,iy).u,oldrhs(ix,m,iy).u,D0V.u,impl.u,expl.u}
     timescheme{V(ix,m,iy).v,oldrhs(ix,m,iy).v,D0V.v,impl.v,expl.v}
@@ -223,80 +223,80 @@ npckt=40
 ppos=0;upos=1;vpos=2;wpos=3;nvars=4
 <a href="cpl.html#USE">USE</a> parbmat
 
-<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..npckt-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#REAL">REAL</a> Ap(0..nvars-1,-(2&lowast;nvars-1)..2&lowast;nvars-1)
-          <a href="complex.html#Top">COMPLEX</a> xp(0..2&lowast;nvars-1)] packet1
-<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..npckt-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="complex.html#Top">COMPLEX</a> xp(0..2&lowast;nvars-1)] packet2
-<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..2&lowast;nproc-2,0..npckt-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#REAL">REAL</a> A(nvars&lowast;nyl..(nyh+2)&lowast;nvars-1,-(2&lowast;nvars-1)..2&lowast;nvars-1)
-  <a href="complex.html#Top">COMPLEX</a> var(nvars&lowast;(nyl-1)..(nyh+2)&lowast;nvars-1)] rotbuf
+<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..npckt-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#REAL">REAL</a> Ap(0..nvars-1,-(2<span class=low>*</span>nvars-1)..2<span class=low>*</span>nvars-1)
+          <a href="complex.html#Top">COMPLEX</a> xp(0..2<span class=low>*</span>nvars-1)] packet1
+<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..npckt-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="complex.html#Top">COMPLEX</a> xp(0..2<span class=low>*</span>nvars-1)] packet2
+<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..2<span class=low>*</span>nproc-2,0..npckt-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#REAL">REAL</a> A(nvars<span class=low>*</span>nyl..(nyh+2)<span class=low>*</span>nvars-1,-(2<span class=low>*</span>nvars-1)..2<span class=low>*</span>nvars-1)
+  <a href="complex.html#Top">COMPLEX</a> var(nvars<span class=low>*</span>(nyl-1)..(nyh+2)<span class=low>*</span>nvars-1)] rotbuf
 
 <a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#TYPE">TYPEOF</a>(rotbuf(0,0).A) ucorrA
-<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(nvars&lowast;(nyl-1)..(nyh+2)&lowast;nvars-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> ucorr
+<a href="parallel.html#SHARED">SHARED</a> <a href="cpl.html#ARRAY">ARRAY</a>(nvars<span class=low>*</span>(nyl-1)..(nyh+2)<span class=low>*</span>nvars-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> ucorr
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> Step1[<a href="cpl.html#INTEGER">INTEGER</a> ix,m; <a href="cpl.html#REAL">REAL</a> lambda; <a href="cpl.html#REAL">REAL</a> A<a href="cpl.html#REAL-operator">^</a>(&lowast;,-(2&lowast;nvars-1)..2&lowast;nvars-1);
-    <a href="complex.html#Top">COMPLEX</a> var<a href="cpl.html#REAL-operator">^</a>(&lowast;); <a href="cpl.html#TYPE">TYPEOF</a>(packet1(0)) packet<a href="cpl.html#REAL-operator">^</a>]
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> Step1[<a href="cpl.html#INTEGER">INTEGER</a> ix,m; <a href="cpl.html#REAL">REAL</a> lambda; <a href="cpl.html#REAL">REAL</a> A<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>,-(2<span class=low>*</span>nvars-1)..2<span class=low>*</span>nvars-1);
+    <a href="complex.html#Top">COMPLEX</a> var<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>); <a href="cpl.html#TYPE">TYPEOF</a>(packet1(0)) packet<a href="cpl.html#REAL-operator">^</a>]
   first=(iy0(m)&gt;=nyl); ny1=<a href="cpl.html#MAX">MAX</a>[iy0(m)+1,nyl]
-  alpha=ix&lowast;alpha0
+  alpha=ix<span class=low>*</span>alpha0
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=ny1-1 <a href="cpl.html#TO">TO</a> nyh+1
-    var(nvars&lowast;iy+ppos)=0
-    var(nvars&lowast;iy+upos+(0..2))=V(ix,m,iy)
+    var(nvars<span class=low>*</span>iy+ppos)=0
+    var(nvars<span class=low>*</span>iy+upos+(0..2))=V(ix,m,iy)
   <a href="cpl.html#LOOP">REPEAT</a>
-  A(&lowast;)=0
+  A(<span class=low>*</span>)=0
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=ny1 <a href="cpl.html#TO">TO</a> nyh <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#WITH">WITH</a> derivatives(iy,j)
     u<a href="cpl.html#Deferred-assignment">==</a>var(upos); iv<a href="cpl.html#Deferred-assignment">==</a>var(vpos); w<a href="cpl.html#Deferred-assignment">==</a>var(wpos); ip<a href="cpl.html#Deferred-assignment">==</a>var(ppos)
-    r=y(iy+j); r2=r&lowast;r; lapl=rdrd-d0&lowast;(r2&lowast;alpha<a href="cpl.html#REAL-operator">^</a>2+m<a href="cpl.html#REAL-operator">^</a>2)
-    AA=<a href="cpl.html#REAL-operator">^</a>A(nvars&lowast;iy+&lowast;,nvars&lowast;j+&lowast;)
+    r=y(iy+j); r2=r<span class=low>*</span>r; lapl=rdrd-d0<span class=low>*</span>(r2<span class=low>*</span>alpha<a href="cpl.html#REAL-operator">^</a>2+m<a href="cpl.html#REAL-operator">^</a>2)
+    AA=<a href="cpl.html#REAL-operator">^</a>A(nvars<span class=low>*</span>iy+<span class=low>*</span>,nvars<span class=low>*</span>j+<span class=low>*</span>)
     <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> jv <a href="cpl.html#IN">IN</a> (ppos,upos,vpos,wpos)
       AA(ppos,jv-ppos)=<a href="symbolic.html#Top">D</a>(cont,var(jv))
-      AA(upos,jv-upos)=<a href="symbolic.html#Top">D</a>(d0&lowast;r2&lowast;u-lambda&lowast;Dtuv,var(jv))
-      AA(vpos,jv-vpos)=<a href="symbolic.html#Top">D</a>(d0&lowast;r2&lowast;iv-lambda&lowast;Dtvv,var(jv))
-      AA(wpos,jv-wpos)=<a href="symbolic.html#Top">D</a>(d0&lowast;r2&lowast;w-lambda&lowast;Dtwv,var(jv))
+      AA(upos,jv-upos)=<a href="symbolic.html#Top">D</a>(d0<span class=low>*</span>r2<span class=low>*</span>u-lambda<span class=low>*</span>Dtuv,var(jv))
+      AA(vpos,jv-vpos)=<a href="symbolic.html#Top">D</a>(d0<span class=low>*</span>r2<span class=low>*</span>iv-lambda<span class=low>*</span>Dtvv,var(jv))
+      AA(wpos,jv-wpos)=<a href="symbolic.html#Top">D</a>(d0<span class=low>*</span>r2<span class=low>*</span>w-lambda<span class=low>*</span>Dtwv,var(jv))
     <a href="cpl.html#LOOP">REPEAT</a>
   <a href="cpl.html#LOOP">REPEAT</a>
   <a href="cpl.html#IF">IF</a> first <a href="cpl.html#IF">THEN</a>
-    A(ppos+<a href="cpl.html#LO">LO</a>,nvars&lowast;(-1..1))=dc2(<a href="cpl.html#ABS">ABS</a>(m),0)
-    A(upos+<a href="cpl.html#LO">LO</a>,nvars&lowast;(-1..1))=dc2(<a href="cpl.html#ABS">ABS</a>(m),0)
-    A(vpos+<a href="cpl.html#LO">LO</a>,nvars&lowast;(-1..1))=dc2(<a href="cpl.html#ABS">ABS</a>(m),1)
-    A(wpos+<a href="cpl.html#LO">LO</a>,nvars&lowast;(-1..1))=dc2(<a href="cpl.html#ABS">ABS</a>(m),1)
+    A(ppos+<a href="cpl.html#LO">LO</a>,nvars<span class=low>*</span>(-1..1))=dc2(<a href="cpl.html#ABS">ABS</a>(m),0)
+    A(upos+<a href="cpl.html#LO">LO</a>,nvars<span class=low>*</span>(-1..1))=dc2(<a href="cpl.html#ABS">ABS</a>(m),0)
+    A(vpos+<a href="cpl.html#LO">LO</a>,nvars<span class=low>*</span>(-1..1))=dc2(<a href="cpl.html#ABS">ABS</a>(m),1)
+    A(wpos+<a href="cpl.html#LO">LO</a>,nvars<span class=low>*</span>(-1..1))=dc2(<a href="cpl.html#ABS">ABS</a>(m),1)
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#IF">IF</a> last <a href="cpl.html#AND">AND</a> <a href="cpl.html#NOT">NOT</a> (ix=0 <a href="cpl.html#AND">AND</a> m=0) <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> vv <a href="cpl.html#IN">IN</a> (upos,wpos)
-      piv=A(vv+nvars&lowast;(ny-1),ppos-vv+nvars)/A(vpos+nvars&lowast;(ny-1),ppos-vpos+nvars)
-      A(vv+nvars&lowast;(ny-1),(-nvars..2&lowast;nvars-1)-vv)=<a href="cpl.html#Assignment">~</a>-piv&lowast;A(vpos+nvars&lowast;(ny-1),(-nvars..2&lowast;nvars-1)-vpos)
-      var(vv+nvars&lowast;(ny-1))=<a href="cpl.html#Assignment">~</a>-piv&lowast;var(vpos+nvars&lowast;(ny-1))
+      piv=A(vv+nvars<span class=low>*</span>(ny-1),ppos-vv+nvars)/A(vpos+nvars<span class=low>*</span>(ny-1),ppos-vpos+nvars)
+      A(vv+nvars<span class=low>*</span>(ny-1),(-nvars..2<span class=low>*</span>nvars-1)-vv)=<a href="cpl.html#Assignment">~</a>-piv<span class=low>*</span>A(vpos+nvars<span class=low>*</span>(ny-1),(-nvars..2<span class=low>*</span>nvars-1)-vpos)
+      var(vv+nvars<span class=low>*</span>(ny-1))=<a href="cpl.html#Assignment">~</a>-piv<span class=low>*</span>var(vpos+nvars<span class=low>*</span>(ny-1))
     <a href="cpl.html#LOOP">REPEAT</a>
-    A(vpos+nvars&lowast;(ny-1))=0; A(vpos+nvars&lowast;(ny-1),(-1..1)&lowast;nvars)=d1n
-    var(vpos+nvars&lowast;(ny-1))=-I&lowast;alpha&lowast;V(ix,m,ny).u-I&lowast;m&lowast;V(ix,m,ny).w/y(ny)-[d1n(1)+1/y(ny)]&lowast;V(ix,m,ny).v
+    A(vpos+nvars<span class=low>*</span>(ny-1))=0; A(vpos+nvars<span class=low>*</span>(ny-1),(-1..1)<span class=low>*</span>nvars)=d1n
+    var(vpos+nvars<span class=low>*</span>(ny-1))=-I<span class=low>*</span>alpha<span class=low>*</span>V(ix,m,ny).u-I<span class=low>*</span>m<span class=low>*</span>V(ix,m,ny).w/y(ny)-[d1n(1)+1/y(ny)]<span class=low>*</span>V(ix,m,ny).v
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#WITH">WITH</a> packet
   LUdecompStep(A,Ap)
   LeftLUDivStep1(A,var.<a href="cpl.html#REAL">REAL</a>,xp.<a href="cpl.html#REAL">REAL</a>)
   LeftLUDivStep1(A,var.<a href="complex.html#Top">IMAG</a>,xp.<a href="complex.html#Top">IMAG</a>)
-  <a href="cpl.html#IF">IF</a> ix=0 <a href="cpl.html#AND">AND</a> m=0 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ABS">ABS</a>(meanflowx)&gt;1E-10 <a href="cpl.html#IF">THEN</a> ucorrA(&lowast;)=A
+  <a href="cpl.html#IF">IF</a> ix=0 <a href="cpl.html#AND">AND</a> m=0 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ABS">ABS</a>(meanflowx)&gt;1E-10 <a href="cpl.html#IF">THEN</a> ucorrA(<span class=low>*</span>)=A
 <a href="cpl.html#END">END</a> Step1
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> Step2(<a href="cpl.html#INTEGER">INTEGER</a> ix,m; <a href="cpl.html#REAL">REAL</a> A<a href="cpl.html#REAL-operator">^</a>(&lowast;,-(2&lowast;nvars-1)..2&lowast;nvars-1);
-    <a href="complex.html#Top">COMPLEX</a> var<a href="cpl.html#REAL-operator">^</a>(&lowast;); <a href="cpl.html#TYPE">TYPEOF</a>(packet2(0)) packet<a href="cpl.html#REAL-operator">^</a>)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> Step2(<a href="cpl.html#INTEGER">INTEGER</a> ix,m; <a href="cpl.html#REAL">REAL</a> A<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>,-(2<span class=low>*</span>nvars-1)..2<span class=low>*</span>nvars-1);
+    <a href="complex.html#Top">COMPLEX</a> var<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>); <a href="cpl.html#TYPE">TYPEOF</a>(packet2(0)) packet<a href="cpl.html#REAL-operator">^</a>)
   first=(iy0(m)&gt;=nyl); ny1=<a href="cpl.html#MAX">MAX</a>[iy0(m)+1,nyl]
   <a href="cpl.html#WITH">WITH</a> packet
   LeftLUDivStep2(var.<a href="cpl.html#REAL">REAL</a>,xp.<a href="cpl.html#REAL">REAL</a>,A)
   LeftLUDivStep2(var.<a href="complex.html#Top">IMAG</a>,xp.<a href="complex.html#Top">IMAG</a>,A)
-  V(ix,m,ny1-1..nyh+1).u=var(nvars&lowast;(ny1-1..nyh+1)+upos)
-  V(ix,m,ny1-1..nyh+1).v=-I&lowast;var(nvars&lowast;(ny1-1..nyh+1)+vpos)
-  V(ix,m,ny1-1..nyh+1).w=var(nvars&lowast;(ny1-1..nyh+1)+wpos)
+  V(ix,m,ny1-1..nyh+1).u=var(nvars<span class=low>*</span>(ny1-1..nyh+1)+upos)
+  V(ix,m,ny1-1..nyh+1).v=-I<span class=low>*</span>var(nvars<span class=low>*</span>(ny1-1..nyh+1)+vpos)
+  V(ix,m,ny1-1..nyh+1).w=var(nvars<span class=low>*</span>(ny1-1..nyh+1)+wpos)
 <a href="cpl.html#END">END</a> Step2
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> linsolve(<a href="cpl.html#REAL">REAL</a> lambda)
 timelog('0')
 <a href="parallel.html#PARALLEL">PARALLEL</a> <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ismp=0 <a href="cpl.html#TO">TO</a> nsmp-1
   <a href="cpl.html#INTEGER">INTEGER</a> ix1=0,m1=-nz,ix2=0,m2=-nz
-  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> count=1 <a href="cpl.html#TO">TO</a> [(nx+1)&lowast;(2&lowast;nz+1)-1] <a href="cpl.html#DIV">DIV</a> npckt + 2&lowast;nproc-1
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> count=1 <a href="cpl.html#TO">TO</a> [(nx+1)<span class=low>*</span>(2<span class=low>*</span>nz+1)-1] <a href="cpl.html#DIV">DIV</a> npckt + 2<span class=low>*</span>nproc-1
     <a href="cpl.html#IF">IF</a> ismp=0 <a href="cpl.html#AND">AND</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next packet2
     SYNC(ismp,nsmp)
     <a href="cpl.html#IF">IF</a> count&gt;=nproc-iproc+1 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ipc=0 <a href="cpl.html#TO">TO</a> npckt-1
       <a href="cpl.html#IF">IF</a> ix1&lt;=nx <a href="cpl.html#AND">AND</a> V(ix1,m1)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#AND">AND</a> ipc <a href="cpl.html#INTEGER-operator">MOD</a> nsmp=ismp <a href="cpl.html#IF">THEN</a>
         <a href="cpl.html#WITH">WITH</a> rotbuf[(count-[nproc-iproc+1]) <a href="cpl.html#INTEGER-operator">MOD</a> (<a href="cpl.html#HI">HI</a>+1),ipc]
         Step1(ix1,m1,lambda,
-          A(<a href="cpl.html#MAX">MAX</a>(iy0(m1),nyl)&lowast;nvars..<a href="cpl.html#HI">HI</a>),var([<a href="cpl.html#MAX">MAX</a>(iy0(m1),nyl)-1]&lowast;nvars..<a href="cpl.html#HI">HI</a>),
+          A(<a href="cpl.html#MAX">MAX</a>(iy0(m1),nyl)<span class=low>*</span>nvars..<a href="cpl.html#HI">HI</a>),var([<a href="cpl.html#MAX">MAX</a>(iy0(m1),nyl)-1]<span class=low>*</span>nvars..<a href="cpl.html#HI">HI</a>),
           packet1(ipc))
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
       <a href="cpl.html#Builtin">INC</a> m1; <a href="cpl.html#IF">IF</a> m1&gt;nz <a href="cpl.html#IF">THEN</a> m1=-nz; <a href="cpl.html#Builtin">INC</a> ix1
@@ -311,7 +311,7 @@ timelog('0')
       <a href="cpl.html#IF">IF</a> ix2&lt;=nx <a href="cpl.html#AND">AND</a> V(ix2,m2)#<a href="cpl.html#POINTER">NULL</a> <a href="cpl.html#AND">AND</a> ipc <a href="cpl.html#INTEGER-operator">MOD</a> nsmp=ismp <a href="cpl.html#IF">THEN</a>
         <a href="cpl.html#WITH">WITH</a> rotbuf[(count-[nproc+iproc-1]) <a href="cpl.html#INTEGER-operator">MOD</a> (<a href="cpl.html#HI">HI</a>+1),ipc]
         Step2(ix2,m2,
-          A(<a href="cpl.html#MAX">MAX</a>(iy0(m2),nyl)&lowast;nvars..<a href="cpl.html#HI">HI</a>),var([<a href="cpl.html#MAX">MAX</a>(iy0(m2),nyl)-1]&lowast;nvars..<a href="cpl.html#HI">HI</a>),
+          A(<a href="cpl.html#MAX">MAX</a>(iy0(m2),nyl)<span class=low>*</span>nvars..<a href="cpl.html#HI">HI</a>),var([<a href="cpl.html#MAX">MAX</a>(iy0(m2),nyl)-1]<span class=low>*</span>nvars..<a href="cpl.html#HI">HI</a>),
           packet2(ipc))
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
       <a href="cpl.html#Builtin">INC</a> m2; <a href="cpl.html#IF">IF</a> m2&gt;nz <a href="cpl.html#IF">THEN</a> m2=-nz; <a href="cpl.html#Builtin">INC</a> ix2
@@ -322,7 +322,7 @@ timelog('0')
 <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(meanflowx)&gt;1E-10 <a href="cpl.html#IF">THEN</a>
   ucorr=0
-  <a href="cpl.html#DO">DO</a> ucorr(nvars&lowast;iy+upos)=<a href="cpl.html#Looping-operator">SUM</a> derivatives(iy,j).d0&lowast;y(iy+j)<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> iy=<a href="cpl.html#MAX">MAX</a>(1,nyl) <a href="cpl.html#TO">TO</a> nyh
+  <a href="cpl.html#DO">DO</a> ucorr(nvars<span class=low>*</span>iy+upos)=<a href="cpl.html#Looping-operator">SUM</a> derivatives(iy,j).d0<span class=low>*</span>y(iy+j)<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> iy=<a href="cpl.html#MAX">MAX</a>(1,nyl) <a href="cpl.html#TO">TO</a> nyh
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#FROM">FROM</a> next packet1(0).xp
   LeftLUDivStep1(ucorrA,ucorr,packet1(0).xp.<a href="cpl.html#REAL">REAL</a>)
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> realfirst <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> prev packet1(0).xp
@@ -332,39 +332,39 @@ timelog('0')
   <a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#REAL">REAL</a> uc,u) fr
   <a href="cpl.html#IF">IF</a> realfirst <a href="cpl.html#IF">THEN</a> fr=0 <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#READ">READ</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#FROM">FROM</a> prev fr
   yz_integr[fr.u,V(0,0).u.<a href="cpl.html#REAL">REAL</a>]
-  yz_integr[fr.uc,ucorr(nvars&lowast;(&lowast;)+upos)]
+  yz_integr[fr.uc,ucorr(nvars<span class=low>*</span>(<span class=low>*</span>)+upos)]
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next fr; <a href="cpl.html#READ">READ</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#FROM">FROM</a> next fr
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> realfirst <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> prev fr
   coeff=(meanflowx-fr.u)/fr.uc
-  <a href="cpl.html#WITH">WITH</a> V(0,0): u.<a href="cpl.html#REAL">REAL</a>=<a href="cpl.html#Assignment">~</a>+ucorr(nvars&lowast;(u.<a href="cpl.html#LO">LO</a>..u.<a href="cpl.html#HI">HI</a>)+upos)&lowast;coeff
+  <a href="cpl.html#WITH">WITH</a> V(0,0): u.<a href="cpl.html#REAL">REAL</a>=<a href="cpl.html#Assignment">~</a>+ucorr(nvars<span class=low>*</span>(u.<a href="cpl.html#LO">LO</a>..u.<a href="cpl.html#HI">HI</a>)+upos)<span class=low>*</span>coeff
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a> linsolve
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> simple(<a href="complex.html#Top">COMPLEX</a> rhs<a href="cpl.html#REAL-operator">^</a>,old<a href="cpl.html#REAL-operator">^</a>(&lowast;),unkn,impl,expl)
-  rhs=unkn+deltat&lowast;expl
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> simple(<a href="complex.html#Top">COMPLEX</a> rhs<a href="cpl.html#REAL-operator">^</a>,old<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>),unkn,impl,expl)
+  rhs=unkn+deltat<span class=low>*</span>expl
 <a href="cpl.html#END">END</a> simple
 <a href="cpl.html#INTEGER">INTEGER</a> <a href="cpl.html#CONSTANT">CONSTANT</a> simple_coeff=1
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> RK1_rai(<a href="complex.html#Top">COMPLEX</a> rhs<a href="cpl.html#REAL-operator">^</a>,old<a href="cpl.html#REAL-operator">^</a>(&lowast;),unkn,impl,expl)
-<span class=comment>!  rhs=unkn+deltat&lowast;[9.6&lowast;impl+32&lowast;expl-old(1)]/60</span>
-<span class=comment>!  old(1)=17&lowast;expl-impl</span>
-  rhs=unkn+deltat&lowast;[16&lowast;impl+32&lowast;expl-old(1)]/60
-  old(1)=17&lowast;expl
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> RK1_rai(<a href="complex.html#Top">COMPLEX</a> rhs<a href="cpl.html#REAL-operator">^</a>,old<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>),unkn,impl,expl)
+<span class=comment>!  rhs=unkn+deltat<span class=low>*</span>[9.6<span class=low>*</span>impl+32<span class=low>*</span>expl-old(1)]/60</span>
+<span class=comment>!  old(1)=17<span class=low>*</span>expl-impl</span>
+  rhs=unkn+deltat<span class=low>*</span>[16<span class=low>*</span>impl+32<span class=low>*</span>expl-old(1)]/60
+  old(1)=17<span class=low>*</span>expl
 <a href="cpl.html#END">END</a> RK1_rai
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#CONSTANT">CONSTANT</a> RK1_rai_coeff=16/60
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> RK2_rai(<a href="complex.html#Top">COMPLEX</a> rhs<a href="cpl.html#REAL-operator">^</a>,old<a href="cpl.html#REAL-operator">^</a>(&lowast;),unkn,impl,expl)
-<span class=comment>!  rhs=unkn+deltat&lowast;[3&lowast;impl+25&lowast;expl-old(1)]/60</span>
-<span class=comment>!  old(1)=25&lowast;(expl-impl)</span>
-  rhs=unkn+deltat&lowast;[4&lowast;impl+25&lowast;expl-old(1)]/60
-  old(1)=25&lowast;expl
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> RK2_rai(<a href="complex.html#Top">COMPLEX</a> rhs<a href="cpl.html#REAL-operator">^</a>,old<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>),unkn,impl,expl)
+<span class=comment>!  rhs=unkn+deltat<span class=low>*</span>[3<span class=low>*</span>impl+25<span class=low>*</span>expl-old(1)]/60</span>
+<span class=comment>!  old(1)=25<span class=low>*</span>(expl-impl)</span>
+  rhs=unkn+deltat<span class=low>*</span>[4<span class=low>*</span>impl+25<span class=low>*</span>expl-old(1)]/60
+  old(1)=25<span class=low>*</span>expl
 <a href="cpl.html#END">END</a> RK2_rai
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#CONSTANT">CONSTANT</a> RK2_rai_coeff=4/60
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> RK3_rai(<a href="complex.html#Top">COMPLEX</a> rhs<a href="cpl.html#REAL-operator">^</a>,old<a href="cpl.html#REAL-operator">^</a>(&lowast;),unkn,impl,expl)
-<span class=comment>!  rhs=unkn+deltat&lowast;[-15&lowast;impl+45&lowast;expl-old(1)]/60</span>
-<span class=comment>!  old(1)=-25.6&lowast;impl</span>
-  rhs=unkn+deltat&lowast;[10&lowast;impl+45&lowast;expl-old(1)]/60
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> RK3_rai(<a href="complex.html#Top">COMPLEX</a> rhs<a href="cpl.html#REAL-operator">^</a>,old<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>),unkn,impl,expl)
+<span class=comment>!  rhs=unkn+deltat<span class=low>*</span>[-15<span class=low>*</span>impl+45<span class=low>*</span>expl-old(1)]/60</span>
+<span class=comment>!  old(1)=-25.6<span class=low>*</span>impl</span>
+  rhs=unkn+deltat<span class=low>*</span>[10<span class=low>*</span>impl+45<span class=low>*</span>expl-old(1)]/60
   old(1)=0
 <a href="cpl.html#END">END</a> RK3_rai
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#CONSTANT">CONSTANT</a> RK3_rai_coeff=10/60
@@ -382,11 +382,11 @@ ssize_t startpos(1..ny)
 <a href="cpl.html#IF">IF</a> input_file="" <a href="cpl.html#IF">THEN</a>
   <a href="cpl.html#IF">IF</a> last <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> V(ix,iz)
-      <a href="cpl.html#DO">DO</a> u(iy)=0.001&lowast;CGAUSS(); v(iy)=0.001&lowast;CGAUSS(); w(iy)=0.001&lowast;CGAUSS() <a href="cpl.html#FOR">FOR</a> iy=<a href="cpl.html#MAX">MAX</a>(V(ix,iz).<a href="cpl.html#LO">LO</a>,V(ix,iz).<a href="cpl.html#HI">HI</a>-3) <a href="cpl.html#TO">TO</a> V(ix,iz).<a href="cpl.html#HI">HI</a>
+      <a href="cpl.html#DO">DO</a> u(iy)=0.001<span class=low>*</span>CGAUSS(); v(iy)=0.001<span class=low>*</span>CGAUSS(); w(iy)=0.001<span class=low>*</span>CGAUSS() <a href="cpl.html#FOR">FOR</a> iy=<a href="cpl.html#MAX">MAX</a>(V(ix,iz).<a href="cpl.html#LO">LO</a>,V(ix,iz).<a href="cpl.html#HI">HI</a>-3) <a href="cpl.html#TO">TO</a> V(ix,iz).<a href="cpl.html#HI">HI</a>
     <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a> <a href="cpl.html#AND">AND</a> iz=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
     <a href="cpl.html#DO">DO</a> V(0,-iz,iy).u=<a href="complex.html#Top">CONJG</a>(V(0,iz,iy).u);V(0,-iz,iy).v=<a href="complex.html#Top">CONJG</a>(V(0,iz,iy).v);V(0,-iz,iy).w=<a href="complex.html#Top">CONJG</a>(V(0,iz,iy).w) <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz <a href="cpl.html#AND">AND</a> iy=V(0,iz).<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> V(0,iz).<a href="cpl.html#HI">HI</a>
     <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> V(0,0,iy): v=0; u.<a href="complex.html#Top">IMAG</a>=0; w.<a href="complex.html#Top">IMAG</a>=0 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
-  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#DO">DO</a> V(ix,iz,&lowast;)=0 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iz <a href="cpl.html#EXCEPT">EXCEPT</a> V(ix,iz)=<a href="cpl.html#POINTER">NULL</a>
+  <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#DO">DO</a> V(ix,iz,<span class=low>*</span>)=0 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iz <a href="cpl.html#EXCEPT">EXCEPT</a> V(ix,iz)=<a href="cpl.html#POINTER">NULL</a>
 <a href="cpl.html#ELSE">ELSE</a>
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=<a href="cpl.html#MAX">MAX</a>(1,nyl-1) <a href="cpl.html#TO">TO</a> nyh+1
     <a href="cpl.html#POSITION">POSITION</a> field_file,startpos(iy)
@@ -405,15 +405,15 @@ ssize_t startpos(1..ny)
 <a href="cpl.html#IF">IF</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#DO">DO</a> V(ix,iz,ny)=0 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iz <span class=comment>! oppure forzamento esterno dentro timeloop <span class=comment>!</span></span>
 
 <a href="cpl.html#LOOP">LOOP</a> timeloop <a href="cpl.html#WHILE">WHILE</a> time &lt; t_max-deltat/2
-<span class=comment>!  buildrhs(simple); linsolve(simple_coeff&lowast;deltat)</span>
- buildrhs(RK1_rai); linsolve(RK1_rai_coeff&lowast;deltat)
- buildrhs(RK2_rai); linsolve(RK2_rai_coeff&lowast;deltat)
- buildrhs(RK3_rai); linsolve(RK3_rai_coeff&lowast;deltat)
+<span class=comment>!  buildrhs(simple); linsolve(simple_coeff<span class=low>*</span>deltat)</span>
+ buildrhs(RK1_rai); linsolve(RK1_rai_coeff<span class=low>*</span>deltat)
+ buildrhs(RK2_rai); linsolve(RK2_rai_coeff<span class=low>*</span>deltat)
+ buildrhs(RK3_rai); linsolve(RK3_rai_coeff<span class=low>*</span>deltat)
 
   oldtime=time; time=<a href="cpl.html#Assignment">~</a>+deltat
   <a href="cpl.html#IF">IF</a> last <a href="cpl.html#IF">THEN</a>
-    E=<a href="cpl.html#Builtin">SQRT</a>{<a href="cpl.html#Looping-operator">SUM</a> NORM[d1n(j)&lowast;V(ix,iz,ny-1+j)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iz,j <a href="cpl.html#EXCEPT">EXCEPT</a> ix=0 <a href="cpl.html#AND">AND</a> iz=0}
-    u_yn=d1n&lowast;V[0,0,ny-1+(-1..1)].u.<a href="cpl.html#REAL">REAL</a>
+    E=<a href="cpl.html#Builtin">SQRT</a>{<a href="cpl.html#Looping-operator">SUM</a> NORM[d1n(j)<span class=low>*</span>V(ix,iz,ny-1+j)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix,iz,j <a href="cpl.html#EXCEPT">EXCEPT</a> ix=0 <a href="cpl.html#AND">AND</a> iz=0}
+    u_yn=d1n<span class=low>*</span>V[0,0,ny-1+(-1..1)].u.<a href="cpl.html#REAL">REAL</a>
     <a href="cpl.html#WRITE">WRITE</a>              time, -u_yn, E:1.15 <span class=comment>! , V(0,0,0).u.REAL \n ./.</span>
 <span class=comment>!    WRITE TO time_file time, -u_yn, E:1.15 <span class=comment>! , V(0,0,0).u.REAL</span></span>
 <span class=comment>!    FLUSH time_file</span>

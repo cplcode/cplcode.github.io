@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#USE">USE</a> stokes1
 <span class=comment>! USE rtchecks</span>
@@ -16,35 +16,35 @@
 <a href="cpl.html#FILE">FILE</a> spectrum=<a href="cpl.html#CREATE">CREATE</a>("wspectr")
 <a href="cpl.html#ARRAY">ARRAY</a>(0..nt) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> psiwstar,uwstar
 <a href="cpl.html#ARRAY">ARRAY</a>(0..nt) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> tt
-<a href="cpl.html#DO">DO</a>  tt(it)=tin+(tfin-tin)&lowast;(it)&lowast;(0.5&lowast;(it)+nt0)/nt/(0.5&lowast;nt+nt0) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> it
+<a href="cpl.html#DO">DO</a>  tt(it)=tin+(tfin-tin)<span class=low>*</span>(it)<span class=low>*</span>(0.5<span class=low>*</span>(it)+nt0)/nt/(0.5<span class=low>*</span>nt+nt0) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> it
 no=200
 <a href="cpl.html#ARRAY">ARRAY</a>(0..no) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> omega
 <a href="cpl.html#TYPE">TYPEOF</a>(zstar) zstarold
 <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a> GRAPHICSMODE
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> ft(<a href="complex.html#Top">COMPLEX</a> f<a href="cpl.html#REAL-operator">^</a>(&lowast;),g<a href="cpl.html#REAL-operator">^</a>(&lowast;))
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> ft(<a href="complex.html#Top">COMPLEX</a> f<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>),g<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>))
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>(omega)
-    g(i)={<a href="cpl.html#Looping-operator">SUM</a> <a href="cpl.html#Builtin">EXP</a>[I&lowast;omega(i)&lowast;tt(j)]&lowast;f(j)&lowast;(tt(j+1)-tt(j-1)) <a href="cpl.html#FOR">FOR</a> j=<a href="cpl.html#LO">LO</a>(tt)+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>(tt)-1}/2
+    g(i)={<a href="cpl.html#Looping-operator">SUM</a> <a href="cpl.html#Builtin">EXP</a>[I<span class=low>*</span>omega(i)<span class=low>*</span>tt(j)]<span class=low>*</span>f(j)<span class=low>*</span>(tt(j+1)-tt(j-1)) <a href="cpl.html#FOR">FOR</a> j=<a href="cpl.html#LO">LO</a>(tt)+1 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>(tt)-1}/2
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#END">END</a> ft
 
-<a href="cpl.html#DO">DO</a> zeta(i)=y(i)&lowast;<a href="cpl.html#Builtin">EXP</a>(-y(i)&lowast;y(i)/tfin) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+<a href="cpl.html#DO">DO</a> zeta(i)=y(i)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-y(i)<span class=low>*</span>y(i)/tfin) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> alfa=0.3 <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> 0.05 <a href="cpl.html#BY">BY</a> 0.01
   t=tfin
-  sigma=(0.8&lowast;I)&lowast;alfa&lowast;Re
+  sigma=(0.8<span class=low>*</span>I)<span class=low>*</span>alfa<span class=low>*</span>Re
   zstar=zeta
   eigenval
   CLEARSCREEN
-  <a href="cpl.html#WRITE">WRITE</a> "Direct eigenfunction: ph. speed=" sigma/(I&lowast;alfa&lowast;Re)
+  <a href="cpl.html#WRITE">WRITE</a> "Direct eigenfunction: ph. speed=" sigma/(I<span class=low>*</span>alfa<span class=low>*</span>Re)
   Plot(psi,8,MAXABS(psi))
   zstar1=0
   nexttime=time(<a href="cpl.html#POINTER">NULL</a>)+5
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> it=nt <a href="cpl.html#FOR">DOWN</a> <a href="cpl.html#TO">TO</a> 1
     zstarold=zstar
     MB2(it)
-    psiwstar(it)={zstarold(1)&lowast;B(1,-1)+zstarold(2)&lowast;B(2,-2)-
-                 zstar(1)&lowast;[B(1,-1)+A(1,-1)&lowast;dt]-zstar(2)&lowast;[B(2,-2)+A(2,-2)&lowast;dt]}/dt
-    uwstar(it)=[zstarold(1)&lowast;B(1,-2)-zstar(1)&lowast;(B(1,-2)+dt&lowast;A(1,-2))]&lowast;(y(-1)-y(1))/dt
+    psiwstar(it)={zstarold(1)<span class=low>*</span>B(1,-1)+zstarold(2)<span class=low>*</span>B(2,-2)-
+                 zstar(1)<span class=low>*</span>[B(1,-1)+A(1,-1)<span class=low>*</span>dt]-zstar(2)<span class=low>*</span>[B(2,-2)+A(2,-2)<span class=low>*</span>dt]}/dt
+    uwstar(it)=[zstarold(1)<span class=low>*</span>B(1,-2)-zstar(1)<span class=low>*</span>(B(1,-2)+dt<span class=low>*</span>A(1,-2))]<span class=low>*</span>(y(-1)-y(1))/dt
     <a href="cpl.html#IF">IF</a> it <a href="cpl.html#INTEGER-operator">MOD</a>(nt <a href="cpl.html#DIV">DIV</a> 100) = 0 <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> profile alfa,t+dt,Energy(zstarnorm),<a href="cpl.html#ABS">ABS</a>(psiwstar(it)),
                <a href="cpl.html#Builtin">ARG</a>(psiwstar(it)),<a href="cpl.html#ABS">ABS</a>(uwstar(it)),<a href="cpl.html#Builtin">ARG</a>(uwstar(it))
@@ -52,7 +52,7 @@ no=200
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> profile
   <a href="complex.html#Top">COMPLEX</a> psiwstarft(0..no),uwstarft(0..no)
-  <a href="cpl.html#DO">DO</a> omega(i)=(0.5+0.5&lowast;i/no)&lowast;alfa&lowast;Re <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  <a href="cpl.html#DO">DO</a> omega(i)=(0.5+0.5<span class=low>*</span>i/no)<span class=low>*</span>alfa<span class=low>*</span>Re <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
   ft(psiwstar,psiwstarft)
   ft(uwstar,uwstarft)
   <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> spectrum alfa,omega(i),<a href="cpl.html#ABS">ABS</a>(psiwstarft(i)),<a href="cpl.html#Builtin">ARG</a>(psiwstarft(i)),

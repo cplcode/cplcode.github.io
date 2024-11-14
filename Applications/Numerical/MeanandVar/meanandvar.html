@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <span class=comment>! compile with -Dstandalone for standalone version</span>
 
@@ -50,25 +50,25 @@ MEANANDVAR=<a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#REAL">RE
   <a href="cpl.html#IF">IF</a> bs&gt;=ts <a href="cpl.html#IF">THEN</a>
     nt=<a href="cpl.html#Assignment">~</a>+bs
     mean=<a href="cpl.html#Assignment">~</a>+bm(0)/nt
-    bt(1)=<a href="cpl.html#Assignment">~</a>+bm(0)&lowast;bm(1)
-    bm(1)=bm(0)&lowast;(1-bs/nt)
-    bt(0)=<a href="cpl.html#Assignment">~</a>+bm(0)&lowast;bm(1)
-    <a href="cpl.html#IF">IF</a> bt(1)&gt;0.5&lowast;bt(0) <a href="cpl.html#AND">AND</a> autots <a href="cpl.html#AND">AND</a> nt&gt;bs <a href="cpl.html#IF">THEN</a> ts=<a href="cpl.html#CEILING">CEILING</a>(1.05&lowast;ts)
+    bt(1)=<a href="cpl.html#Assignment">~</a>+bm(0)<span class=low>*</span>bm(1)
+    bm(1)=bm(0)<span class=low>*</span>(1-bs/nt)
+    bt(0)=<a href="cpl.html#Assignment">~</a>+bm(0)<span class=low>*</span>bm(1)
+    <a href="cpl.html#IF">IF</a> bt(1)&gt;0.5<span class=low>*</span>bt(0) <a href="cpl.html#AND">AND</a> autots <a href="cpl.html#AND">AND</a> nt&gt;bs <a href="cpl.html#IF">THEN</a> ts=<a href="cpl.html#CEILING">CEILING</a>(1.05<span class=low>*</span>ts)
     bs=0
     bm(0)=0
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a> meanandvar
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> var(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>) <a href="cpl.html#WITH">WITH</a> mvp
-    <a href="cpl.html#IF">IF</a> nt-3&lowast;ts&lt;=0 <a href="cpl.html#IF">THEN</a> RETURN 0
-    <a href="cpl.html#RESULT">RESULT</a>=[bt(0)+2&lowast;bt(1)]/nt/(nt-3&lowast;ts)
-    <a href="cpl.html#IF">IF</a> bt(1)&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Assignment">~</a>&lowast;(1+0.234&lowast;[2&lowast;bt(1)/bt(0)]<a href="cpl.html#REAL-operator">^</a>3.17)
+    <a href="cpl.html#IF">IF</a> nt-3<span class=low>*</span>ts&lt;=0 <a href="cpl.html#IF">THEN</a> RETURN 0
+    <a href="cpl.html#RESULT">RESULT</a>=[bt(0)+2<span class=low>*</span>bt(1)]/nt/(nt-3<span class=low>*</span>ts)
+    <a href="cpl.html#IF">IF</a> bt(1)&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Assignment">~</a><span class=low>*</span>(1+0.234<span class=low>*</span>[2<span class=low>*</span>bt(1)/bt(0)]<a href="cpl.html#REAL-operator">^</a>3.17)
 <a href="cpl.html#END">END</a> var
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> rms(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)=<a href="cpl.html#IF">IF</a> mvp.var&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">SQRT</a>(mvp.var) <a href="cpl.html#ELSE">ELSE</a> 0
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sum(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)=mvp.mean&lowast;mvp.nt
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sumvar(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)=mvp.var&lowast;mvp.nt<a href="cpl.html#REAL-operator">^</a>2
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sumrms(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)=mvp.rms&lowast;mvp.nt
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sum(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)=mvp.mean<span class=low>*</span>mvp.nt
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sumvar(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)=mvp.var<span class=low>*</span>mvp.nt<a href="cpl.html#REAL-operator">^</a>2
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> sumrms(MEANANDVAR mvp<a href="cpl.html#REAL-operator">^</a>)=mvp.rms<span class=low>*</span>mvp.nt
 
 #ifdef standalone
 
@@ -123,11 +123,11 @@ MEANANDVAR mv(1..numcolumn)=0
   <a href="cpl.html#READ">READ</a>
   <a href="cpl.html#IF">IF</a> TEST <a href="cpl.html#AND">AND</a> mv(1).bs=0 <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#WITH">WITH</a> mv(1)
-    <a href="cpl.html#IF">IF</a> nt-3&lowast;ts&gt;0 <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#IF">IF</a> nt-3<span class=low>*</span>ts&gt;0 <a href="cpl.html#IF">THEN</a>
       sigma=var
-      sigma10=[bt(0)+bt(1)]/nt/(nt-2&lowast;ts)
+      sigma10=[bt(0)+bt(1)]/nt/(nt-2<span class=low>*</span>ts)
       sigma0=bt(0)/nt/(nt-ts)
-      <a href="cpl.html#WRITE">WRITE</a> nt,mean,sigma&lowast;nt,sigma10&lowast;nt,sigma0&lowast;nt,ts, <a href="cpl.html#IF">IF</a> sigma&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">SQRT</a>(sigma) <a href="cpl.html#ELSE">ELSE</a> 0, <a href="cpl.html#IF">IF</a> sigma10&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">SQRT</a>(sigma10) <a href="cpl.html#ELSE">ELSE</a> 0, <a href="cpl.html#IF">IF</a> bt(0)&gt;0 <a href="cpl.html#IF">THEN</a> bt(1)/bt(0) <a href="cpl.html#ELSE">ELSE</a> 0
+      <a href="cpl.html#WRITE">WRITE</a> nt,mean,sigma<span class=low>*</span>nt,sigma10<span class=low>*</span>nt,sigma0<span class=low>*</span>nt,ts, <a href="cpl.html#IF">IF</a> sigma&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">SQRT</a>(sigma) <a href="cpl.html#ELSE">ELSE</a> 0, <a href="cpl.html#IF">IF</a> sigma10&gt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#Builtin">SQRT</a>(sigma10) <a href="cpl.html#ELSE">ELSE</a> 0, <a href="cpl.html#IF">IF</a> bt(0)&gt;0 <a href="cpl.html#IF">THEN</a> bt(1)/bt(0) <a href="cpl.html#ELSE">ELSE</a> 0
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#LOOP">REPEAT</a> foreachline

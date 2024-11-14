@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <span class=comment>! Direct banded-matrix inversion of Poisson's equation</span>
 <span class=comment>! ====================================================</span>
@@ -17,11 +17,11 @@
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a> <span class=comment>! prepare for plotting</span>
 
 ny=20
-nx=3&lowast;ny
+nx=3<span class=low>*</span>ny
 dvar=ny+1  <span class=comment>! band width </span>
 <a href="cpl.html#REAL">REAL</a> base(0..nx,0..ny)=0,    <span class=comment>! 2D solution array</span>
   A(0..nx,0..ny,-dvar..dvar) <span class=comment>! banded matrix</span>
-A(<a href="cpl.html#compound-index">**</a>)=1  <span class=comment>! &lowast;&lowast; compounds the first two indices into 1; A is initialized to</span>
+A(<a href="cpl.html#compound-index">**</a>)=1  <span class=comment>! <span class=low>*</span><span class=low>*</span> compounds the first two indices into 1; A is initialized to</span>
          <span class=comment>! a 2D identity matrix in banded storage</span>
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx-1 <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
   A(ix,iy,0)=4  <span class=comment>! center of the laplacian stencil</span>

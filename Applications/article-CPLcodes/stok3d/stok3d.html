@@ -8,26 +8,26 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#USE">USE</a> mg3d.cpl
 <span class=comment>!  USE rtchecks.cpl</span>
 <span class=comment>! stok3d</span>
 <a href="cpl.html#FILE">FILE</a> ALTEZZE
 ALTEZZE=<a href="cpl.html#CREATE">CREATE</a>('sto')
-nx=2&lowast;8
-ny=nx&lowast;6
-<span class=comment>!     nz=nx&lowast;3 DIV 2 </span>
-nz=2&lowast;nx
+nx=2<span class=low>*</span>8
+ny=nx<span class=low>*</span>6
+<span class=comment>!     nz=nx<span class=low>*</span>3 DIV 2 </span>
+nz=2<span class=low>*</span>nx
 
 hmax=1.
 <span class=comment>! valore massimo di h compatibile con la memoria prevista</span>
 
 <a href="cpl.html#INTEGER">INTEGER</a> ny0
-ny0=<a href="cpl.html#FLOOR">FLOOR</a>(2&lowast;nx&lowast;hmax) +5
-<span class=comment>!   ny0=nx&lowast;2</span>
+ny0=<a href="cpl.html#FLOOR">FLOOR</a>(2<span class=low>*</span>nx<span class=low>*</span>hmax) +5
+<span class=comment>!   ny0=nx<span class=low>*</span>2</span>
 
-pi=<a href="cpl.html#Builtin">ATAN</a>(1)&lowast;4 
+pi=<a href="cpl.html#Builtin">ATAN</a>(1)<span class=low>*</span>4 
 pfo=0.5
 <span class=comment>! parametro formula</span>
 pbc=2
@@ -82,10 +82,10 @@ rap0=0.300- delth
 lx=1.
 
 h=lx/nx/2
-ly=ny&lowast;h
-lz=nz&lowast;h&lowast;4.
+ly=ny<span class=low>*</span>h
+lz=nz<span class=low>*</span>h<span class=low>*</span>4.
 eps=h/100
-dcor=2.05&lowast;h
+dcor=2.05<span class=low>*</span>h
 
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> tanh( <a href="cpl.html#REAL">REAL</a> xx)
@@ -101,15 +101,15 @@ dcor=2.05&lowast;h
     <a href="cpl.html#IF">IF</a> xx &gt; xs  <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=0
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 2 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   e5</span>
-    <a href="cpl.html#RESULT">RESULT</a>=(1-xx&lowast;4)<a href="cpl.html#compound-index">**</a>5
+    <a href="cpl.html#RESULT">RESULT</a>=(1-xx<span class=low>*</span>4)<a href="cpl.html#compound-index">**</a>5
     <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>= 0
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 3 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   v</span>
-    <a href="cpl.html#RESULT">RESULT</a>=1-xx&lowast;4
+    <a href="cpl.html#RESULT">RESULT</a>=1-xx<span class=low>*</span>4
     <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>= 0
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> protra = 4 <a href="cpl.html#IF">THEN</a> 
     <span class=comment>!   coseno</span>
-    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Builtin">COS</a>(2&lowast;pi&lowast;xx)
+    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Builtin">COS</a>(2<span class=low>*</span>pi<span class=low>*</span>xx)
     <a href="cpl.html#IF">IF</a> xx&gt;0.25 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>= 0
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a> 
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#RESULT">RESULT</a> &lt;0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=0
@@ -123,39 +123,39 @@ dcor=2.05&lowast;h
     <a href="cpl.html#RESULT">RESULT</a>=rapp
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> prolo=2 <a href="cpl.html#IF">THEN</a>
     <span class=comment>!  Profilo iperbolico</span>
-    <a href="cpl.html#RESULT">RESULT</a>=rapp&lowast;(1.+tanh(ka&lowast;2./rapp&lowast;(fill&lowast;lz/2.-zz)))/2
+    <a href="cpl.html#RESULT">RESULT</a>=rapp<span class=low>*</span>(1.+tanh(ka<span class=low>*</span>2./rapp<span class=low>*</span>(fill<span class=low>*</span>lz/2.-zz)))/2
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> prolo=3 <a href="cpl.html#IF">THEN</a>
     
     <span class=comment>!  BE </span>
     
     tal=1
     cal=1/(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
-    sal=tal&lowast;cal
+    sal=tal<span class=low>*</span>cal
     r0=0.347826
     <span class=comment>!   r0=0.7</span>
     <span class=comment>!     l0=0.5108695 </span>
     l0=fill
-    l2=(rapp-r0+tal&lowast;l0+r0&lowast;(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/tal
+    l2=(rapp-r0+tal<span class=low>*</span>l0+r0<span class=low>*</span>(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/tal
     l1=l2-(rapp-r0+r0/(1+tal<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/tal
-    y1=rapp-r0+r0&lowast;cal
-    l1=r0&lowast;sal+l0
+    y1=rapp-r0+r0<span class=low>*</span>cal
+    l1=r0<span class=low>*</span>sal+l0
     l2=l1+y1/tal
     <span class=comment>!     WRITE 'z,y1,l0,l1,l2',zz,y1,l0,l1,l2 </span>
-    l3=l1+(rapp-2&lowast;r0&lowast;(1-cal))/tal
-    l4=l3+r0&lowast;sal
-    b1=(l2-fill+0.125-(nr+1)&lowast;rapp)/(l2-fill+0.125)<a href="cpl.html#compound-index">**</a>nr
-    b2=(nr&lowast;rapp-l2+fill-0.125)/(l2-fill+0.125)<a href="cpl.html#compound-index">**</a>(nr+1)
+    l3=l1+(rapp-2<span class=low>*</span>r0<span class=low>*</span>(1-cal))/tal
+    l4=l3+r0<span class=low>*</span>sal
+    b1=(l2-fill+0.125-(nr+1)<span class=low>*</span>rapp)/(l2-fill+0.125)<a href="cpl.html#compound-index">**</a>nr
+    b2=(nr<span class=low>*</span>rapp-l2+fill-0.125)/(l2-fill+0.125)<a href="cpl.html#compound-index">**</a>(nr+1)
     
     <a href="cpl.html#IF">IF</a> zz &lt;l0 <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#RESULT">RESULT</a> =rapp
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz &lt;l1 <a href="cpl.html#IF">THEN</a> 
       <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0<a href="cpl.html#compound-index">**</a>2-(zz-l0)<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;l2  <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a> = y1+tal&lowast;(l1-zz)
+      <a href="cpl.html#RESULT">RESULT</a> = y1+tal<span class=low>*</span>(l1-zz)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l2  <a href="cpl.html#IF">THEN</a> 
       <a href="cpl.html#RESULT">RESULT</a>=0
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l1  <a href="cpl.html#IF">THEN</a> 
-      <a href="cpl.html#RESULT">RESULT</a> = y1+tal&lowast;(zz-lz+l1)
+      <a href="cpl.html#RESULT">RESULT</a> = y1+tal<span class=low>*</span>(zz-lz+l1)
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz&lt;lz-l0  <a href="cpl.html#IF">THEN</a> 
       <a href="cpl.html#RESULT">RESULT</a>=rapp-r0+(r0<a href="cpl.html#compound-index">**</a>2-(zz-lz+l0)<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
     <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> zz &lt;lz  <a href="cpl.html#IF">THEN</a>
@@ -171,10 +171,10 @@ dcor=2.05&lowast;h
       RESULT=rapp
     ELSE IF zz&lt;l1 THEN
       zr=(zz-l0)/(l1-l0)
-      a1=(rapp-y1)&lowast;nr/(l1-l0) -tal
-      a2=nr&lowast;(nr-1)&lowast;(rapp-y1)/2/(l1-l0)&lowast;&lowast;2 -a1&lowast;nr/(l1-l0)
-      RESULT= rapp + zr&lowast;&lowast;nr&lowast;(y1-rapp+a1&lowast;(zz-l1)+ a2&lowast;(zz-l1)&lowast;&lowast;2)
-    ELSE IF zz &lt; l2 THENJ    RESULT=tal&lowast;(l2-zz)
+      a1=(rapp-y1)<span class=low>*</span>nr/(l1-l0) -tal
+      a2=nr<span class=low>*</span>(nr-1)<span class=low>*</span>(rapp-y1)/2/(l1-l0)<span class=low>*</span><span class=low>*</span>2 -a1<span class=low>*</span>nr/(l1-l0)
+      RESULT= rapp + zr<span class=low>*</span><span class=low>*</span>nr<span class=low>*</span>(y1-rapp+a1<span class=low>*</span>(zz-l1)+ a2<span class=low>*</span>(zz-l1)<span class=low>*</span><span class=low>*</span>2)
+    ELSE IF zz &lt; l2 THENJ    RESULT=tal<span class=low>*</span>(l2-zz)
   ELSE IF zz&gt; l2 THEN
     RESULT=0
   END IF   
@@ -185,23 +185,23 @@ dcor=2.05&lowast;h
   IF zz&lt;= fill-.125  THEN RESULT=rapp
   IF zz&gt;fill-.125  THEN 
     zr=(zz-fill+0.125)
-    RESULT=rapp+b1&lowast;zr&lowast;&lowast;nr+b2&lowast;zr&lowast;&lowast;(nr+1)
+    RESULT=rapp+b1<span class=low>*</span>zr<span class=low>*</span><span class=low>*</span>nr+b2<span class=low>*</span>zr<span class=low>*</span><span class=low>*</span>(nr+1)
   END IF
   !)</span>
 <span class=comment>!(   Raccordo inferiore o
   IF zz&gt;l1 THEN
-    a3=(-y1+l2-l1-a2&lowast;(l2-l1)&lowast;&lowast;2)/(l2-l1)&lowast;&lowast;3
-    RESULT=y1-(zz-l1)+a2&lowast;(zz-l1)&lowast;&lowast;2+a3&lowast;(zz-l1)&lowast;&lowast;3
+    a3=(-y1+l2-l1-a2<span class=low>*</span>(l2-l1)<span class=low>*</span><span class=low>*</span>2)/(l2-l1)<span class=low>*</span><span class=low>*</span>3
+    RESULT=y1-(zz-l1)+a2<span class=low>*</span>(zz-l1)<span class=low>*</span><span class=low>*</span>2+a3<span class=low>*</span>(zz-l1)<span class=low>*</span><span class=low>*</span>3
   END IF
   !)</span> 
-<span class=comment>!     IF zz&gt;l3 THEN RESULT=r0-(r0&lowast;&lowast;2-(zz-l4)&lowast;&lowast;2)&lowast;&lowast;.5</span>
+<span class=comment>!     IF zz&gt;l3 THEN RESULT=r0-(r0<span class=low>*</span><span class=low>*</span>2-(zz-l4)<span class=low>*</span><span class=low>*</span>2)<span class=low>*</span><span class=low>*</span>.5</span>
 <span class=comment>!     IF zz&gt;l4 THEN RESULT =0</span>
 
 <a href="cpl.html#END">END</a>    gz
 
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> fondo(<a href="cpl.html#REAL">REAL</a> xx,zz)
-  <a href="cpl.html#RESULT">RESULT</a>=fx(xx)&lowast;gz(zz)+fx(0.5-xx)&lowast;gz(lz/2.-zz)
+  <a href="cpl.html#RESULT">RESULT</a>=fx(xx)<span class=low>*</span>gz(zz)+fx(0.5-xx)<span class=low>*</span>gz(lz/2.-zz)
 <a href="cpl.html#END">END</a> fondo
 
 
@@ -210,7 +210,7 @@ dcor=2.05&lowast;h
   <a href="cpl.html#REAL">REAL</a> f1,f2,xm,fm,x1c,x2c
   f1=fondo(x1,zz)-yy
   f2=fondo(x2,zz)-yy
-  <a href="cpl.html#IF">IF</a> f1&lowast;f2 &gt; 0 <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> f1<span class=low>*</span>f2 &gt; 0 <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(f1)  &lt;  <a href="cpl.html#ABS">ABS</a>(f2)  <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#RESULT">RESULT</a>=x1
     <a href="cpl.html#ELSE">ELSE</a>
@@ -221,9 +221,9 @@ dcor=2.05&lowast;h
   x1c=x1
   x2c=x2
   <a href="cpl.html#DO">DO</a>
-    xm=(f2&lowast;x1c-f1&lowast;x2c)/(f2-f1)   
+    xm=(f2<span class=low>*</span>x1c-f1<span class=low>*</span>x2c)/(f2-f1)   
     fm=fondo(xm,zz)-yy
-    <a href="cpl.html#IF">IF</a> fm&lowast;f1 &gt; 0 <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#IF">IF</a> fm<span class=low>*</span>f1 &gt; 0 <a href="cpl.html#IF">THEN</a>
       x1c=xm
       f1=fm
     <a href="cpl.html#ELSE">ELSE</a>
@@ -238,7 +238,7 @@ dcor=2.05&lowast;h
   <a href="cpl.html#REAL">REAL</a> f1,f2,zm,fm,z1c,z2c
   f1=fondo(xx,z1)-yy
   f2=fondo(xx,z2)-yy
-  <a href="cpl.html#IF">IF</a>(f1&lowast;f2 &gt; 0) <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a>(f1<span class=low>*</span>f2 &gt; 0) <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#IF">IF</a>(<a href="cpl.html#ABS">ABS</a>(f1) &lt; <a href="cpl.html#ABS">ABS</a>(f2)) <a href="cpl.html#IF">THEN</a>
       <a href="cpl.html#RESULT">RESULT</a> =z1
     <a href="cpl.html#ELSE">ELSE</a>
@@ -249,9 +249,9 @@ dcor=2.05&lowast;h
   z1c=z1
   z2c=z2
   <a href="cpl.html#DO">DO</a>
-    zm=(f2&lowast;z1c-f1&lowast;z2c)/(f2-f1)   
+    zm=(f2<span class=low>*</span>z1c-f1<span class=low>*</span>z2c)/(f2-f1)   
     fm=fondo(xx,zm)-yy
-    <a href="cpl.html#IF">IF</a> (fm&lowast;f1 &gt; 0) <a href="cpl.html#IF">THEN</a>
+    <a href="cpl.html#IF">IF</a> (fm<span class=low>*</span>f1 &gt; 0) <a href="cpl.html#IF">THEN</a>
       z1c=zm
       f1=fm
     <a href="cpl.html#ELSE">ELSE</a>
@@ -278,7 +278,7 @@ dcor=2.05&lowast;h
   <a href="cpl.html#ELSE">ELSE</a>
     talfa=salf/calf
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-  fp=(fondo(xv,zz)-fondo(xv+pv&lowast;eps,zz))/eps
+  fp=(fondo(xv,zz)-fondo(xv+pv<span class=low>*</span>eps,zz))/eps
   <a href="cpl.html#IF">IF</a> xx=0 <a href="cpl.html#IF">THEN</a>
     gp=0
   <a href="cpl.html#ELSE">ELSE</a>
@@ -287,7 +287,7 @@ dcor=2.05&lowast;h
   <a href="cpl.html#IF">IF</a> rapp=0 <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#RESULT">RESULT</a>=pi/2
   <a href="cpl.html#ELSE">ELSE</a>
-    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Builtin">ATAN</a>(fx0/rapp&lowast;(1-gp&lowast;talfa)<a href="cpl.html#compound-index">**</a>0.5)
+    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#Builtin">ATAN</a>(fx0/rapp<span class=low>*</span>(1-gp<span class=low>*</span>talfa)<a href="cpl.html#compound-index">**</a>0.5)
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <span class=comment>!(   caso lamina     
     RESULT=0.
@@ -301,14 +301,14 @@ dcor=2.05&lowast;h
     <a href="cpl.html#RESULT">RESULT</a>=0.5
   <a href="cpl.html#ELSE">ELSE</a>
     kn=0.5
-    s=<a href="cpl.html#Builtin">SIN</a>(2.&lowast;delta(xx,zz,calf,salf))
+    s=<a href="cpl.html#Builtin">SIN</a>(2.<span class=low>*</span>delta(xx,zz,calf,salf))
     <a href="cpl.html#DO">DO</a>
       kv=kn
       <a href="cpl.html#IF">IF</a> wp = 1 <a href="cpl.html#IF">THEN</a>
-        cot=((1.-s<a href="cpl.html#compound-index">**</a>2&lowast;kv<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5-1.)/s/kv 
+        cot=((1.-s<a href="cpl.html#compound-index">**</a>2<span class=low>*</span>kv<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5-1.)/s/kv 
         kn=(<a href="cpl.html#Builtin">ATAN</a>(1./cot)+pi)/(pi-delta(xx,zz,calf,salf))
       <a href="cpl.html#ELSE">ELSE</a>
-        cot=(1-(1.-s<a href="cpl.html#compound-index">**</a>2&lowast;kv<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/s/kv 
+        cot=(1-(1.-s<a href="cpl.html#compound-index">**</a>2<span class=low>*</span>kv<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5)/s/kv 
         kn=<a href="cpl.html#Builtin">ATAN</a>(1./cot)/(pi-delta(xx,zz,calf,salf))
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <a href="cpl.html#WHILE">WHILE</a>  <a href="cpl.html#ABS">ABS</a>(kv-kn) &gt; 0.0001 
@@ -333,26 +333,26 @@ dcor=2.05&lowast;h
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  kca=0 <a href="cpl.html#TO">TO</a>  nz
       
       <a href="cpl.html#IF">IF</a> ica &lt; 2   <a href="cpl.html#OR">OR</a>  ica &gt; nx-2   <a href="cpl.html#IF">THEN</a>
-        <span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast; btm(0,0) max btm &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+        <span class=comment>! <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span> btm(0,0) max btm <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span></span>
         
         <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jca=btm(ica,kca) <a href="cpl.html#TO">TO</a>  btm(0,0)+2
           
-          xx=ica&lowast;h
-          yy=jca&lowast;h
-          zz=kca&lowast;h
-          <a href="cpl.html#IF">IF</a> ica&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+          xx=ica<span class=low>*</span>h
+          yy=jca<span class=low>*</span>h
+          zz=kca<span class=low>*</span>h
+          <a href="cpl.html#IF">IF</a> ica<span class=low>*</span>h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
             xv=0.
           <a href="cpl.html#ELSE">ELSE</a>
             xv=0.5
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
           <a href="cpl.html#IF">IF</a> kca &gt; 0   <a href="cpl.html#IF">THEN</a>
             z1=0.
-            z2=2.&lowast;nz&lowast;h
+            z2=2.<span class=low>*</span>nz<span class=low>*</span>h
             d1=(xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-fondo(xv,z1))<a href="cpl.html#compound-index">**</a>2+(zz-z1)<a href="cpl.html#compound-index">**</a>2
             d2=(xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-fondo(xv,z2))<a href="cpl.html#compound-index">**</a>2+(zz-z2)<a href="cpl.html#compound-index">**</a>2
             <a href="cpl.html#DO">DO</a>
               <span class=comment>!   WRITE 'z1,z2',z1,z2</span>
-              zno=0.5&lowast;z1+0.5&lowast;z2
+              zno=0.5<span class=low>*</span>z1+0.5<span class=low>*</span>z2
               dm=(xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-fondo(xv,zno))<a href="cpl.html#compound-index">**</a>2+(zz-zno)<a href="cpl.html#compound-index">**</a>2
               dpm=(xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-fondo(xv,zno+eps))<a href="cpl.html#compound-index">**</a>2+(zz-zno-eps)<a href="cpl.html#compound-index">**</a>2-
       ((xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-fondo(xv,zno-eps))<a href="cpl.html#compound-index">**</a>2+(zz-zno+eps)<a href="cpl.html#compound-index">**</a>2)
@@ -376,7 +376,7 @@ dcor=2.05&lowast;h
           yv=fondo(xv,zno)
           dis=((xx-xv)<a href="cpl.html#compound-index">**</a>2+(yy-yv)<a href="cpl.html#compound-index">**</a>2+(zz-zno)<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
           
-          <a href="cpl.html#IF">IF</a> yv &gt; 1.05&lowast;h <a href="cpl.html#AND">AND</a> jca&gt;1 <a href="cpl.html#IF">THEN</a> 
+          <a href="cpl.html#IF">IF</a> yv &gt; 1.05<span class=low>*</span>h <a href="cpl.html#AND">AND</a> jca&gt;1 <a href="cpl.html#IF">THEN</a> 
             <span class=comment>!    IF  dis &lt; dcor    THEN</span>
             <a href="cpl.html#IF">IF</a>  dis &lt; dcor    <a href="cpl.html#IF">THEN</a>
               norma=((yy-yv)<a href="cpl.html#compound-index">**</a>2+(zz-zno)<a href="cpl.html#compound-index">**</a>2)<a href="cpl.html#compound-index">**</a>0.5
@@ -388,8 +388,8 @@ dcor=2.05&lowast;h
                 calf=<a href="cpl.html#ABS">ABS</a>((yy-yv)/norma)
                 salf=(zz-zno)/norma
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-              z3=(zz-zno)&lowast;calf-(yy-yv)&lowast;salf 
-              <span class=comment>!   IF ABS(z3) &lt;  0.9&lowast;h  THEN  </span>
+              z3=(zz-zno)<span class=low>*</span>calf-(yy-yv)<span class=low>*</span>salf 
+              <span class=comment>!   IF ABS(z3) &lt;  0.9<span class=low>*</span>h  THEN  </span>
               kid=kid+1
               vzn(kid)=zno
               vsalfa(kid)=salf
@@ -397,7 +397,7 @@ dcor=2.05&lowast;h
               nid(ica,jca,kca)=kid
               vdel(kid)=delta(xx,zno,calf,salf)
               vk1(kid)=kappa(xx,zno,calf,salf)
-              vk2(kid)=pi/(pi-vdel(kid))&lowast;(5.+wp)/4.
+              vk2(kid)=pi/(pi-vdel(kid))<span class=low>*</span>(5.+wp)/4.
               
               <span class=comment>!   END IF</span>
             <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -411,11 +411,11 @@ dcor=2.05&lowast;h
 
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> derc(<a href="cpl.html#REAL">REAL</a> fc,fs,fd,ds,dd,den)
-  <a href="cpl.html#RESULT">RESULT</a>=(fd&lowast;ds<a href="cpl.html#compound-index">**</a>2-fs&lowast;dd<a href="cpl.html#compound-index">**</a>2+fc&lowast;(dd<a href="cpl.html#compound-index">**</a>2-ds<a href="cpl.html#compound-index">**</a>2))/den/h
+  <a href="cpl.html#RESULT">RESULT</a>=(fd<span class=low>*</span>ds<a href="cpl.html#compound-index">**</a>2-fs<span class=low>*</span>dd<a href="cpl.html#compound-index">**</a>2+fc<span class=low>*</span>(dd<a href="cpl.html#compound-index">**</a>2-ds<a href="cpl.html#compound-index">**</a>2))/den/h
 <a href="cpl.html#END">END</a> derc
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> ders(<a href="cpl.html#REAL">REAL</a> f0,f1,f2,d1,d2,den)
-  <a href="cpl.html#RESULT">RESULT</a>=(f1&lowast;d2<a href="cpl.html#compound-index">**</a>2-f2&lowast;d1<a href="cpl.html#compound-index">**</a>2-f0&lowast;(d2<a href="cpl.html#compound-index">**</a>2-d1<a href="cpl.html#compound-index">**</a>2))/den/h
+  <a href="cpl.html#RESULT">RESULT</a>=(f1<span class=low>*</span>d2<a href="cpl.html#compound-index">**</a>2-f2<span class=low>*</span>d1<a href="cpl.html#compound-index">**</a>2-f0<span class=low>*</span>(d2<a href="cpl.html#compound-index">**</a>2-d1<a href="cpl.html#compound-index">**</a>2))/den/h
 <a href="cpl.html#END">END</a> ders
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> des(<a href="cpl.html#REAL">REAL</a> fl,fc,fr,frr,le,ri,rr)
@@ -423,17 +423,17 @@ dcor=2.05&lowast;h
   alr=le+ri
   alrr=alr+rr
   <a href="cpl.html#IF">IF</a> le&lt; pfo <a href="cpl.html#AND">AND</a> rr&gt;0  <a href="cpl.html#IF">THEN</a>
-    den =alr&lowast;alrr&lowast;rr
-    <a href="cpl.html#RESULT">RESULT</a>=(fr&lowast;alrr<a href="cpl.html#compound-index">**</a>2-frr&lowast;alr<a href="cpl.html#compound-index">**</a>2-fl&lowast;(alrr<a href="cpl.html#compound-index">**</a>2-alr<a href="cpl.html#compound-index">**</a>2))/h/den
+    den =alr<span class=low>*</span>alrr<span class=low>*</span>rr
+    <a href="cpl.html#RESULT">RESULT</a>=(fr<span class=low>*</span>alrr<a href="cpl.html#compound-index">**</a>2-frr<span class=low>*</span>alr<a href="cpl.html#compound-index">**</a>2-fl<span class=low>*</span>(alrr<a href="cpl.html#compound-index">**</a>2-alr<a href="cpl.html#compound-index">**</a>2))/h/den
   <a href="cpl.html#ELSE">ELSE</a>
-    den=le&lowast;ri&lowast;alr
-    <a href="cpl.html#RESULT">RESULT</a>=(fc&lowast;alr<a href="cpl.html#compound-index">**</a>2-fr&lowast;le<a href="cpl.html#compound-index">**</a>2-fl&lowast;(alr<a href="cpl.html#compound-index">**</a>2-le<a href="cpl.html#compound-index">**</a>2))/h/den
+    den=le<span class=low>*</span>ri<span class=low>*</span>alr
+    <a href="cpl.html#RESULT">RESULT</a>=(fc<span class=low>*</span>alr<a href="cpl.html#compound-index">**</a>2-fr<span class=low>*</span>le<a href="cpl.html#compound-index">**</a>2-fl<span class=low>*</span>(alr<a href="cpl.html#compound-index">**</a>2-le<a href="cpl.html#compound-index">**</a>2))/h/den
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a> des
 
 
 
-<span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+<span class=comment>! <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span></span>
 
 
 
@@ -445,12 +445,12 @@ dcor=2.05&lowast;h
   <a href="cpl.html#IF">IF</a>  xx = 0 <a href="cpl.html#IF">THEN</a> si=0
   <a href="cpl.html#IF">IF</a> xx &lt; 0  <a href="cpl.html#IF">THEN</a> si=-1
   <a href="cpl.html#IF">IF</a> xx &gt; 0  <a href="cpl.html#IF">THEN</a> si=1
-  rq=xx&lowast;xx+yy&lowast;yy     
+  rq=xx<span class=low>*</span>xx+yy<span class=low>*</span>yy     
   <a href="cpl.html#IF">IF</a>  yy = 0   <a href="cpl.html#IF">THEN</a>
-    tet=pi/2&lowast;si
+    tet=pi/2<span class=low>*</span>si
   <a href="cpl.html#ELSE">ELSE</a>
     tet=<a href="cpl.html#Builtin">ATAN</a>(xx/yy)
-    <a href="cpl.html#IF">IF</a> yy &lt; 0 <a href="cpl.html#IF">THEN</a> tet=tet+pi&lowast;si
+    <a href="cpl.html#IF">IF</a> yy &lt; 0 <a href="cpl.html#IF">THEN</a> tet=tet+pi<span class=low>*</span>si
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#RESULT">RESULT</a>=tet
 <a href="cpl.html#END">END</a> teta
@@ -458,59 +458,59 @@ dcor=2.05&lowast;h
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> fun1(<a href="cpl.html#REAL">REAL</a> fi1<a href="cpl.html#REAL-operator">^</a>,m11<a href="cpl.html#REAL-operator">^</a>,m21<a href="cpl.html#REAL-operator">^</a>,xx,yy)
   <a href="cpl.html#REAL">REAL</a> tet,e,a,d,b,fil,fis,k3,es,cot,s,c,r
-  r=(xx&lowast;xx+yy&lowast;yy)<a href="cpl.html#compound-index">**</a>0.5
+  r=(xx<span class=low>*</span>xx+yy<span class=low>*</span>yy)<a href="cpl.html#compound-index">**</a>0.5
   tet=teta(xx,yy)
   <a href="cpl.html#IF">IF</a> del &gt; 0 <a href="cpl.html#IF">THEN</a>
-    s=<a href="cpl.html#Builtin">SIN</a>(2&lowast;del)
-    c=<a href="cpl.html#Builtin">COS</a>(2&lowast;del)
-    k3=(pi-del)&lowast;k1
+    s=<a href="cpl.html#Builtin">SIN</a>(2<span class=low>*</span>del)
+    c=<a href="cpl.html#Builtin">COS</a>(2<span class=low>*</span>del)
+    k3=(pi-del)<span class=low>*</span>k1
     <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(pi/2-k3)  &lt; 0.005  <a href="cpl.html#IF">THEN</a>
       cot=0
     <a href="cpl.html#ELSE">ELSE</a>
       cot=1/<a href="cpl.html#Builtin">TAN</a>(k3)
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <a href="cpl.html#IF">IF</a> wp = 1  <a href="cpl.html#IF">THEN</a>
-      e=1-2&lowast;cot/(cot+<a href="cpl.html#Builtin">TAN</a>(del))
-      <span class=comment>!    d=1./(1.-e&lowast;(1.+k1)-k1&lowast;(s&lowast;cot+c)) </span>
-      d=cot/(cot&lowast;(1+e&lowast;(1+k1)+k1&lowast;c)-s&lowast;k1)
+      e=1-2<span class=low>*</span>cot/(cot+<a href="cpl.html#Builtin">TAN</a>(del))
+      <span class=comment>!    d=1./(1.-e<span class=low>*</span>(1.+k1)-k1<span class=low>*</span>(s<span class=low>*</span>cot+c)) </span>
+      d=cot/(cot<span class=low>*</span>(1+e<span class=low>*</span>(1+k1)+k1<span class=low>*</span>c)-s<span class=low>*</span>k1)
       b=1
-      a=4&lowast;d-1
+      a=4<span class=low>*</span>d-1
     <a href="cpl.html#ELSE">ELSE</a>
-      e=2.&lowast;<a href="cpl.html#Builtin">TAN</a>(del)&lowast;cot/(1.-cot&lowast;<a href="cpl.html#Builtin">TAN</a>(del))+1.
-      d=cot/(cot&lowast;(1-k1&lowast;c+e&lowast;(1+k1))+k1&lowast;s)
+      e=2.<span class=low>*</span><a href="cpl.html#Builtin">TAN</a>(del)<span class=low>*</span>cot/(1.-cot<span class=low>*</span><a href="cpl.html#Builtin">TAN</a>(del))+1.
+      d=cot/(cot<span class=low>*</span>(1-k1<span class=low>*</span>c+e<span class=low>*</span>(1+k1))+k1<span class=low>*</span>s)
       a=1
-      b=1-4&lowast;d
+      b=1-4<span class=low>*</span>d
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     es=1.+k1
     <a href="cpl.html#IF">IF</a> (wp = 1) <a href="cpl.html#IF">THEN</a>
-      fis=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">COS</a>((1.-k1)&lowast;tet)
-      fil=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">COS</a>(es&lowast;tet)
-      fi1=d&lowast;(fis+e&lowast;fil)
-      m11=a&lowast;r<a href="cpl.html#compound-index">**</a>k1&lowast;<a href="cpl.html#Builtin">SIN</a>(k1&lowast;tet)
-      m21=b&lowast;r<a href="cpl.html#compound-index">**</a>k1&lowast;<a href="cpl.html#Builtin">COS</a>(k1&lowast;tet)
+      fis=r<a href="cpl.html#compound-index">**</a>es<span class=low>*</span><a href="cpl.html#Builtin">COS</a>((1.-k1)<span class=low>*</span>tet)
+      fil=r<a href="cpl.html#compound-index">**</a>es<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(es<span class=low>*</span>tet)
+      fi1=d<span class=low>*</span>(fis+e<span class=low>*</span>fil)
+      m11=a<span class=low>*</span>r<a href="cpl.html#compound-index">**</a>k1<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(k1<span class=low>*</span>tet)
+      m21=b<span class=low>*</span>r<a href="cpl.html#compound-index">**</a>k1<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(k1<span class=low>*</span>tet)
     <a href="cpl.html#ELSE">ELSE</a>
-      fis=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">SIN</a>((1.-k1)&lowast;tet)
-      fil=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">SIN</a>(es&lowast;tet)
-      fi1=d&lowast;(fis+e&lowast;fil)
-      m11=a&lowast;r<a href="cpl.html#compound-index">**</a>k1&lowast;<a href="cpl.html#Builtin">COS</a>(k1&lowast;tet)
-      m21=b&lowast;r<a href="cpl.html#compound-index">**</a>k1&lowast;<a href="cpl.html#Builtin">SIN</a>(k1&lowast;tet)
+      fis=r<a href="cpl.html#compound-index">**</a>es<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>((1.-k1)<span class=low>*</span>tet)
+      fil=r<a href="cpl.html#compound-index">**</a>es<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(es<span class=low>*</span>tet)
+      fi1=d<span class=low>*</span>(fis+e<span class=low>*</span>fil)
+      m11=a<span class=low>*</span>r<a href="cpl.html#compound-index">**</a>k1<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(k1<span class=low>*</span>tet)
+      m21=b<span class=low>*</span>r<a href="cpl.html#compound-index">**</a>k1<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(k1<span class=low>*</span>tet)
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#ELSE">ELSE</a>
     <span class=comment>! Lamina</span>
     <a href="cpl.html#IF">IF</a> wp = -1 <a href="cpl.html#IF">THEN</a>
-      m11=r<a href="cpl.html#compound-index">**</a>0.5&lowast;<a href="cpl.html#Builtin">COS</a>(tet/2.)
+      m11=r<a href="cpl.html#compound-index">**</a>0.5<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(tet/2.)
       m21=0.
-      fis=r<a href="cpl.html#compound-index">**</a>1.5&lowast;<a href="cpl.html#Builtin">SIN</a>(tet&lowast;0.5)
-      fil=r<a href="cpl.html#compound-index">**</a>1.5&lowast;<a href="cpl.html#Builtin">SIN</a>(tet&lowast;1.5)
-      fi1=0.25&lowast;(fis+fil)
+      fis=r<a href="cpl.html#compound-index">**</a>1.5<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(tet<span class=low>*</span>0.5)
+      fil=r<a href="cpl.html#compound-index">**</a>1.5<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(tet<span class=low>*</span>1.5)
+      fi1=0.25<span class=low>*</span>(fis+fil)
     <a href="cpl.html#ELSE">ELSE</a>
       <span class=comment>!    m11=0.</span>
-      m11=-r<a href="cpl.html#compound-index">**</a>0.5&lowast;<a href="cpl.html#Builtin">SIN</a>(0.5&lowast;tet)/2
-      m21=r<a href="cpl.html#compound-index">**</a>0.5&lowast;<a href="cpl.html#Builtin">COS</a>(0.5&lowast;tet)
-      fis=r<a href="cpl.html#compound-index">**</a>1.5&lowast;<a href="cpl.html#Builtin">COS</a>(tet&lowast;0.5)
-      fil=r<a href="cpl.html#compound-index">**</a>1.5&lowast;<a href="cpl.html#Builtin">COS</a>(tet&lowast;1.5)
-      <span class=comment>!    fi1=.25&lowast;(fis+fil/3)</span>
-      fi1=(fis+fil&lowast;3)/8
+      m11=-r<a href="cpl.html#compound-index">**</a>0.5<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(0.5<span class=low>*</span>tet)/2
+      m21=r<a href="cpl.html#compound-index">**</a>0.5<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(0.5<span class=low>*</span>tet)
+      fis=r<a href="cpl.html#compound-index">**</a>1.5<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(tet<span class=low>*</span>0.5)
+      fil=r<a href="cpl.html#compound-index">**</a>1.5<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(tet<span class=low>*</span>1.5)
+      <span class=comment>!    fi1=.25<span class=low>*</span>(fis+fil/3)</span>
+      fi1=(fis+fil<span class=low>*</span>3)/8
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a>  fun1 
@@ -520,20 +520,20 @@ dcor=2.05&lowast;h
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> fun2(<a href="cpl.html#REAL">REAL</a> fi2<a href="cpl.html#REAL-operator">^</a>,m12<a href="cpl.html#REAL-operator">^</a>,m22<a href="cpl.html#REAL-operator">^</a>,m32<a href="cpl.html#REAL-operator">^</a>,xx,yy)
   <a href="cpl.html#REAL">REAL</a> tet,es,k23,r
   k23=pi/2./(pi-del)
-  r=(xx&lowast;xx+yy&lowast;yy)<a href="cpl.html#compound-index">**</a>0.5
+  r=(xx<span class=low>*</span>xx+yy<span class=low>*</span>yy)<a href="cpl.html#compound-index">**</a>0.5
   tet=teta(xx,yy)
   <a href="cpl.html#IF">IF</a> del &gt; 0 <a href="cpl.html#IF">THEN</a>
     es=k2-1.
     <a href="cpl.html#IF">IF</a> (wp = 1) <a href="cpl.html#IF">THEN</a>
-      fi2=-r<a href="cpl.html#compound-index">**</a>k2&lowast;<a href="cpl.html#Builtin">COS</a>(k2&lowast;tet)/k2 
-      m12=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">SIN</a>(es&lowast;tet)
-      m22=-r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">COS</a>(es&lowast;tet)
-      m32=r<a href="cpl.html#compound-index">**</a>k23&lowast;<a href="cpl.html#Builtin">COS</a>(k23&lowast;tet)
+      fi2=-r<a href="cpl.html#compound-index">**</a>k2<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(k2<span class=low>*</span>tet)/k2 
+      m12=r<a href="cpl.html#compound-index">**</a>es<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(es<span class=low>*</span>tet)
+      m22=-r<a href="cpl.html#compound-index">**</a>es<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(es<span class=low>*</span>tet)
+      m32=r<a href="cpl.html#compound-index">**</a>k23<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(k23<span class=low>*</span>tet)
     <a href="cpl.html#ELSE">ELSE</a>
-      fi2=r<a href="cpl.html#compound-index">**</a>k2&lowast;<a href="cpl.html#Builtin">SIN</a>(k2&lowast;tet)/k2 
-      m12=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">COS</a>(es&lowast;tet)
-      m22=r<a href="cpl.html#compound-index">**</a>es&lowast;<a href="cpl.html#Builtin">SIN</a>(es&lowast;tet)
-      m32=r<a href="cpl.html#compound-index">**</a>k2&lowast;<a href="cpl.html#Builtin">SIN</a>(k2&lowast;tet)
+      fi2=r<a href="cpl.html#compound-index">**</a>k2<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(k2<span class=low>*</span>tet)/k2 
+      m12=r<a href="cpl.html#compound-index">**</a>es<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(es<span class=low>*</span>tet)
+      m22=r<a href="cpl.html#compound-index">**</a>es<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(es<span class=low>*</span>tet)
+      m32=r<a href="cpl.html#compound-index">**</a>k2<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(k2<span class=low>*</span>tet)
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
     <span class=comment>! Caso lamina</span>
   <a href="cpl.html#ELSE">ELSE</a>
@@ -543,10 +543,10 @@ dcor=2.05&lowast;h
       m22=xx
       m32=xx
     <a href="cpl.html#ELSE">ELSE</a>
-      fi2=-2./3.&lowast;r<a href="cpl.html#compound-index">**</a>1.5&lowast;<a href="cpl.html#Builtin">COS</a>(1.5&lowast;tet)
-      m12=r<a href="cpl.html#compound-index">**</a>0.5&lowast;<a href="cpl.html#Builtin">SIN</a>(0.5&lowast;tet)
-      m22=-r<a href="cpl.html#compound-index">**</a>0.5&lowast;<a href="cpl.html#Builtin">COS</a>(0.5&lowast;tet)
-      m32=r<a href="cpl.html#compound-index">**</a>0.5&lowast;<a href="cpl.html#Builtin">COS</a>(0.5&lowast;tet)
+      fi2=-2./3.<span class=low>*</span>r<a href="cpl.html#compound-index">**</a>1.5<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(1.5<span class=low>*</span>tet)
+      m12=r<a href="cpl.html#compound-index">**</a>0.5<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(0.5<span class=low>*</span>tet)
+      m22=-r<a href="cpl.html#compound-index">**</a>0.5<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(0.5<span class=low>*</span>tet)
+      m32=r<a href="cpl.html#compound-index">**</a>0.5<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(0.5<span class=low>*</span>tet)
     <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#END">END</a> fun2
@@ -563,7 +563,7 @@ dcor=2.05&lowast;h
   <a href="cpl.html#REAL">REAL</a> b1,b2,b3,ai(1..neq,1..2),a6(1..neq),bi(1..neq)
   <a href="cpl.html#REAL">REAL</a> b6(1..neq),bl(1..neq),ail(1..neq),a11,a12,a21,a22
   <a href="cpl.html#REAL">REAL</a> f1l,f2l,fl,fip,fip1,fip2,xp,yp,erv
-  <a href="cpl.html#IF">IF</a> icor&lowast;h &lt; 0.25  <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> icor<span class=low>*</span>h &lt; 0.25  <a href="cpl.html#IF">THEN</a>
     xv=0
     ive=0
   <a href="cpl.html#ELSE">ELSE</a>
@@ -594,9 +594,9 @@ dcor=2.05&lowast;h
         <a href="cpl.html#IF">IF</a>  icor+iv &gt; -1 <a href="cpl.html#AND">AND</a> icor+iv &lt; nx+1     <a href="cpl.html#IF">THEN</a>
           <a href="cpl.html#IF">IF</a>   kcor+kv &lt; nz+1 <a href="cpl.html#AND">AND</a>  kcor+kv &gt; -1    <a href="cpl.html#IF">THEN</a>
             <a href="cpl.html#IF">IF</a>   jcor+jv &gt; btm(icor+iv,kcor+kv) -1 <a href="cpl.html#IF">THEN</a>
-              xc=(icor+iv)&lowast;h-xv
-              yc=((jcor+jv)&lowast;h-yv)&lowast;calfa+(h&lowast;kcor+kv&lowast;h-zn)&lowast;salfa
-              zc=-((jcor+jv)&lowast;h-yv)&lowast;salfa+(h&lowast;kcor+kv&lowast;h-zn)&lowast;calfa
+              xc=(icor+iv)<span class=low>*</span>h-xv
+              yc=((jcor+jv)<span class=low>*</span>h-yv)<span class=low>*</span>calfa+(h<span class=low>*</span>kcor+kv<span class=low>*</span>h-zn)<span class=low>*</span>salfa
+              zc=-((jcor+jv)<span class=low>*</span>h-yv)<span class=low>*</span>salfa+(h<span class=low>*</span>kcor+kv<span class=low>*</span>h-zn)<span class=low>*</span>calfa
               lun=1
               m1a=m1(icor+iv,jcor+jv,kcor+kv)
               m2a=m2(icor+iv,jcor+jv,kcor+kv)
@@ -611,8 +611,8 @@ dcor=2.05&lowast;h
               bi(ke)=m1a
               ail(k6)=m22
               a6(k6)=m32
-              b6(k6)=m3a&lowast;calfa-m2a&lowast;salfa
-              bl(k6)=m2a&lowast;calfa+m3a&lowast;salfa
+              b6(k6)=m3a<span class=low>*</span>calfa-m2a<span class=low>*</span>salfa
+              bl(k6)=m2a<span class=low>*</span>calfa+m3a<span class=low>*</span>salfa
               ke=ke+1
               ai(ke,1)=fi1/lun
               ai(ke,2)=fi2/lun
@@ -620,7 +620,7 @@ dcor=2.05&lowast;h
               ke=ke+1
               ai(ke,1)=m21
               ai(ke,2)=m22
-              bi(ke)=m2a&lowast;calfa+m3a&lowast;salfa
+              bi(ke)=m2a<span class=low>*</span>calfa+m3a<span class=low>*</span>salfa
             <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -640,7 +640,7 @@ dcor=2.05&lowast;h
   dc6=0.
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  ke=1 <a href="cpl.html#TO">TO</a> n6
     denc6=denc6+a6(ke)<a href="cpl.html#compound-index">**</a>2
-    dc6=dc6+a6(ke)&lowast;b6(ke)
+    dc6=dc6+a6(ke)<span class=low>*</span>b6(ke)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   c6=dc6/denc6
   
@@ -648,21 +648,21 @@ dcor=2.05&lowast;h
   dc6=0.
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  ke=1 <a href="cpl.html#TO">TO</a> n6
     denc6=denc6+ail(ke)<a href="cpl.html#compound-index">**</a>2
-    dc6=dc6+ail(ke)&lowast;bl(ke)
+    dc6=dc6+ail(ke)<span class=low>*</span>bl(ke)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   c2l=dc6/denc6
   
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  iv=1 <a href="cpl.html#TO">TO</a>  ne
-    a11=ai(iv,1)&lowast;ai(iv,1)+a11
-    a12=ai(iv,2)&lowast;ai(iv,1)+a12
-    a21=ai(iv,1)&lowast;ai(iv,2)+a21
-    a22=ai(iv,2)&lowast;ai(iv,2)+a22
-    b1=bi(iv)&lowast;ai(iv,1)+b1
-    b2=bi(iv)&lowast;ai(iv,2)+b2
+    a11=ai(iv,1)<span class=low>*</span>ai(iv,1)+a11
+    a12=ai(iv,2)<span class=low>*</span>ai(iv,1)+a12
+    a21=ai(iv,1)<span class=low>*</span>ai(iv,2)+a21
+    a22=ai(iv,2)<span class=low>*</span>ai(iv,2)+a22
+    b1=bi(iv)<span class=low>*</span>ai(iv,1)+b1
+    b2=bi(iv)<span class=low>*</span>ai(iv,2)+b2
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-  den=a11&lowast;a22-a12&lowast;a21
-  den1=b1&lowast;a22-b2&lowast;a12
-  den2=a11&lowast;b2-b1&lowast;a21
+  den=a11<span class=low>*</span>a22-a12<span class=low>*</span>a21
+  den1=b1<span class=low>*</span>a22-b2<span class=low>*</span>a12
+  den2=a11<span class=low>*</span>b2-b1<span class=low>*</span>a21
   c2=den1/den
   c4=den2/den
 <a href="cpl.html#END">END</a> costanti
@@ -672,7 +672,7 @@ dcor=2.05&lowast;h
   <a href="cpl.html#REAL">REAL</a> fi1,fi2,m11,m12,m21,m22,m32
   fun1(fi1,m11,m21,xx,yy)
   fun2(fi2,m12,m22,m32,xx,yy)
-  <a href="cpl.html#RESULT">RESULT</a>=c2&lowast;m11+c4&lowast;m12
+  <a href="cpl.html#RESULT">RESULT</a>=c2<span class=low>*</span>m11+c4<span class=low>*</span>m12
 <a href="cpl.html#END">END</a> m1loc
 
 
@@ -681,7 +681,7 @@ dcor=2.05&lowast;h
   <a href="cpl.html#REAL">REAL</a> fi1,fi2,m11,m12,m21,m22,m32
   fun1(fi1,m11,m21,xx,yy)
   fun2(fi2,m12,m22,m32,xx,yy)
-  <a href="cpl.html#RESULT">RESULT</a>=c2&lowast;m21+c4&lowast;m22
+  <a href="cpl.html#RESULT">RESULT</a>=c2<span class=low>*</span>m21+c4<span class=low>*</span>m22
 <a href="cpl.html#END">END</a> m2loc
 
 
@@ -689,7 +689,7 @@ dcor=2.05&lowast;h
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> m3loc(<a href="cpl.html#REAL">REAL</a> xx,yy)
   <a href="cpl.html#REAL">REAL</a> fi2,m12,m22,m32
   fun2(fi2,m12,m22,m32,xx,yy)
-  <a href="cpl.html#RESULT">RESULT</a>=c6&lowast;m32
+  <a href="cpl.html#RESULT">RESULT</a>=c6<span class=low>*</span>m32
 <a href="cpl.html#END">END</a> m3loc
 
 
@@ -698,19 +698,19 @@ dcor=2.05&lowast;h
   <a href="cpl.html#REAL">REAL</a> fi1,fi2,m11,m12,m21,m22,m32
   fun1(fi1,m11,m21,xx,yy)
   fun2(fi2,m12,m22,m32,xx,yy)
-  <a href="cpl.html#RESULT">RESULT</a>=c2&lowast;fi1+c4&lowast;fi2
+  <a href="cpl.html#RESULT">RESULT</a>=c2<span class=low>*</span>fi1+c4<span class=low>*</span>fi2
 <a href="cpl.html#END">END</a> filoc
 
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> fico(<a href="cpl.html#INTEGER">INTEGER</a> ic,jc,kc)
   <a href="cpl.html#REAL">REAL</a> xx,yy,xv
-  <a href="cpl.html#IF">IF</a> ic&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> ic<span class=low>*</span>h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
     xv=0
   <a href="cpl.html#ELSE">ELSE</a>
     xv=0.5
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-  xx=ic&lowast;h-xv
-  yy=(jc&lowast;h-fondo(xv,zn))&lowast;calfa+(kc&lowast;h-zn)&lowast;salfa
+  xx=ic<span class=low>*</span>h-xv
+  yy=(jc<span class=low>*</span>h-fondo(xv,zn))<span class=low>*</span>calfa+(kc<span class=low>*</span>h-zn)<span class=low>*</span>salfa
   <a href="cpl.html#RESULT">RESULT</a>=filoc(xx,yy)
 <a href="cpl.html#END">END</a> fico
 
@@ -719,13 +719,13 @@ dcor=2.05&lowast;h
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> m1co(<a href="cpl.html#INTEGER">INTEGER</a> ic,jc,kc)
   <a href="cpl.html#REAL">REAL</a> xx,yy,xv
-  <a href="cpl.html#IF">IF</a> ic&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> ic<span class=low>*</span>h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
     xv=0
   <a href="cpl.html#ELSE">ELSE</a>
     xv=0.5
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-  xx=ic&lowast;h-xv
-  yy=(jc&lowast;h-fondo(xv,zn))&lowast;calfa+(kc&lowast;h-zn)&lowast;salfa
+  xx=ic<span class=low>*</span>h-xv
+  yy=(jc<span class=low>*</span>h-fondo(xv,zn))<span class=low>*</span>calfa+(kc<span class=low>*</span>h-zn)<span class=low>*</span>salfa
   <a href="cpl.html#RESULT">RESULT</a>=m1loc(xx,yy)
 <a href="cpl.html#END">END</a> m1co
 
@@ -734,14 +734,14 @@ dcor=2.05&lowast;h
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> m2co(<a href="cpl.html#INTEGER">INTEGER</a> ic,jc,kc)
   <a href="cpl.html#REAL">REAL</a> xx,yy,xv
-  <a href="cpl.html#IF">IF</a> ic&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> ic<span class=low>*</span>h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
     xv=0
   <a href="cpl.html#ELSE">ELSE</a>
     xv=0.5
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-  xx=ic&lowast;h-xv
-  yy=(jc&lowast;h-fondo(xv,zn))&lowast;calfa+(kc&lowast;h-zn)&lowast;salfa
-  <a href="cpl.html#RESULT">RESULT</a>=m2loc(xx,yy)&lowast;calfa-m3loc(xx,yy)&lowast;salfa
+  xx=ic<span class=low>*</span>h-xv
+  yy=(jc<span class=low>*</span>h-fondo(xv,zn))<span class=low>*</span>calfa+(kc<span class=low>*</span>h-zn)<span class=low>*</span>salfa
+  <a href="cpl.html#RESULT">RESULT</a>=m2loc(xx,yy)<span class=low>*</span>calfa-m3loc(xx,yy)<span class=low>*</span>salfa
 <a href="cpl.html#END">END</a> m2co
 
 
@@ -749,14 +749,14 @@ dcor=2.05&lowast;h
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> m3co( <a href="cpl.html#INTEGER">INTEGER</a> ic,jc,kc)
   <a href="cpl.html#REAL">REAL</a> xx,yy,xv
-  <a href="cpl.html#IF">IF</a> ic&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> ic<span class=low>*</span>h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
     xv=0
   <a href="cpl.html#ELSE">ELSE</a>
     xv=0.5
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-  xx=ic&lowast;h-xv
-  yy=(jc&lowast;h-fondo(xv,zn))&lowast;calfa+(kc&lowast;h-zn)&lowast;salfa
-  <a href="cpl.html#RESULT">RESULT</a>=m2loc(xx,yy)&lowast;salfa+m3loc(xx,yy)&lowast;calfa
+  xx=ic<span class=low>*</span>h-xv
+  yy=(jc<span class=low>*</span>h-fondo(xv,zn))<span class=low>*</span>calfa+(kc<span class=low>*</span>h-zn)<span class=low>*</span>salfa
+  <a href="cpl.html#RESULT">RESULT</a>=m2loc(xx,yy)<span class=low>*</span>salfa+m3loc(xx,yy)<span class=low>*</span>calfa
   
 <a href="cpl.html#END">END</a> m3co
 
@@ -771,8 +771,8 @@ dcor=2.05&lowast;h
   <a href="cpl.html#ELSE">ELSE</a>
     ile=-1
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-  ifu=i+tra&lowast;ile
-  kfu=k+(1-tra)&lowast;ile
+  ifu=i+tra<span class=low>*</span>ile
+  kfu=k+(1-tra)<span class=low>*</span>ile
   ld=ad(ifu,j,kfu)-ad(i,j,k)
   <a href="cpl.html#IF">IF</a> co=0 <a href="cpl.html#IF">THEN</a>
     fr=fi(ifu,j,kfu)
@@ -789,7 +789,7 @@ dcor=2.05&lowast;h
     fu=fico(ifu,j+1,kfu)
     fuu=fico(ifu,j+2,kfu)
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-  <a href="cpl.html#RESULT">RESULT</a> =(fd/h+des(fd,fr,fu,fuu,ad(ifu,j,kfu),1,1)&lowast;ld)&lowast;ile
+  <a href="cpl.html#RESULT">RESULT</a> =(fd/h+des(fd,fr,fu,fuu,ad(ifu,j,kfu),1,1)<span class=low>*</span>ld)<span class=low>*</span>ile
 <a href="cpl.html#END">END</a> fxd
 
 
@@ -805,26 +805,26 @@ dcor=2.05&lowast;h
     ld=ar(i,j+1,k)
     lrd=ld-ar(i,j,k)
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-  ifu=i-tra&lowast;ile
-  kfu=k-(1-tra)&lowast;ile
+  ifu=i-tra<span class=low>*</span>ile
+  kfu=k-(1-tra)<span class=low>*</span>ile
   <a href="cpl.html#IF">IF</a> co=0 <a href="cpl.html#IF">THEN</a>
-    fr=fi(i+tra&lowast;ile,j+1,k+(1-tra)&lowast;ile)
-    <a href="cpl.html#IF">IF</a> btm(i+tra&lowast;ile,k+(1-tra&lowast;ile))&gt; j+1 <a href="cpl.html#IF">THEN</a> fr=0
-    frr=fi(i+2&lowast;tra&lowast;ile,j+1,k+2&lowast;(1-tra)&lowast;ile)
-    <a href="cpl.html#IF">IF</a> btm(i+2&lowast;tra&lowast;ile,k+2&lowast;(1-tra&lowast;ile))&gt; j+1 <a href="cpl.html#IF">THEN</a> frr=0
+    fr=fi(i+tra<span class=low>*</span>ile,j+1,k+(1-tra)<span class=low>*</span>ile)
+    <a href="cpl.html#IF">IF</a> btm(i+tra<span class=low>*</span>ile,k+(1-tra<span class=low>*</span>ile))&gt; j+1 <a href="cpl.html#IF">THEN</a> fr=0
+    frr=fi(i+2<span class=low>*</span>tra<span class=low>*</span>ile,j+1,k+2<span class=low>*</span>(1-tra)<span class=low>*</span>ile)
+    <a href="cpl.html#IF">IF</a> btm(i+2<span class=low>*</span>tra<span class=low>*</span>ile,k+2<span class=low>*</span>(1-tra<span class=low>*</span>ile))&gt; j+1 <a href="cpl.html#IF">THEN</a> frr=0
     fl=fi(ifu,j+1,kfu)
     <a href="cpl.html#IF">IF</a> btm(ifu,kfu)&gt; j+1  <a href="cpl.html#IF">THEN</a> fl=0
     fc=fi(i,j+1,k)
   <a href="cpl.html#ELSE">ELSE</a>
-    fr=fico(i+tra&lowast;ile,j+1,k+(1-tra)&lowast;ile)
-    <a href="cpl.html#IF">IF</a> btm(i+tra&lowast;ile,k+(1-tra&lowast;ile))&gt; j+1 <a href="cpl.html#IF">THEN</a> fr=0
-    frr=fico(i+2&lowast;tra&lowast;ile,j+1,k+2&lowast;(1-tra)&lowast;ile)
-    <a href="cpl.html#IF">IF</a> btm(i+2&lowast;tra&lowast;ile,k+2&lowast;(1-tra&lowast;ile))&gt; j+1 <a href="cpl.html#IF">THEN</a> frr=0
+    fr=fico(i+tra<span class=low>*</span>ile,j+1,k+(1-tra)<span class=low>*</span>ile)
+    <a href="cpl.html#IF">IF</a> btm(i+tra<span class=low>*</span>ile,k+(1-tra<span class=low>*</span>ile))&gt; j+1 <a href="cpl.html#IF">THEN</a> fr=0
+    frr=fico(i+2<span class=low>*</span>tra<span class=low>*</span>ile,j+1,k+2<span class=low>*</span>(1-tra)<span class=low>*</span>ile)
+    <a href="cpl.html#IF">IF</a> btm(i+2<span class=low>*</span>tra<span class=low>*</span>ile,k+2<span class=low>*</span>(1-tra<span class=low>*</span>ile))&gt; j+1 <a href="cpl.html#IF">THEN</a> frr=0
     fl=fico(ifu,j+1,kfu)
     <a href="cpl.html#IF">IF</a> btm(ifu,kfu)&gt; j+1  <a href="cpl.html#IF">THEN</a> fl=0
     fc=fico(i,j+1,k)
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-  <a href="cpl.html#RESULT">RESULT</a> =fl/h+des(fl,fc,fr,frr,ld,1,1)&lowast;lrd
+  <a href="cpl.html#RESULT">RESULT</a> =fl/h+des(fl,fc,fr,frr,ld,1,1)<span class=low>*</span>lrd
 <a href="cpl.html#END">END</a> fyl
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> notom1
@@ -834,7 +834,7 @@ dcor=2.05&lowast;h
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  kno=0 <a href="cpl.html#TO">TO</a> nz
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno=btm(ino,kno) <a href="cpl.html#TO">TO</a>  btf(ino,kno)-1
         alr=al(ino,jno,kno)+ar(ino,jno,kno)
-        den=al(ino,jno,kno)&lowast;ar(ino,jno,kno)&lowast;alr
+        den=al(ino,jno,kno)<span class=low>*</span>ar(ino,jno,kno)<span class=low>*</span>alr
         cl=0.
         cd=0.
         cr=0.
@@ -858,7 +858,7 @@ dcor=2.05&lowast;h
         
         
         <a href="cpl.html#IF">IF</a> ino=0 <a href="cpl.html#IF">THEN</a>
-          fll=wp&lowast;fi(ino+2,jno,kno)
+          fll=wp<span class=low>*</span>fi(ino+2,jno,kno)
           <a href="cpl.html#IF">IF</a> btm(ino+2,kno)&gt; jno <a href="cpl.html#IF">THEN</a> fll=0
         <a href="cpl.html#ELSE">ELSE</a>
           fll=fi(ino-2,jno,kno)
@@ -874,7 +874,7 @@ dcor=2.05&lowast;h
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         
         <a href="cpl.html#IF">IF</a> ino=nx <a href="cpl.html#IF">THEN</a>
-          frr=wp&lowast;fi(ino-2,jno,kno)
+          frr=wp<span class=low>*</span>fi(ino-2,jno,kno)
           <a href="cpl.html#IF">IF</a> btm(ino-2,kno)&gt; jno <a href="cpl.html#IF">THEN</a> frr=0
         <a href="cpl.html#ELSE">ELSE</a>
           frr=fi(ino+2,jno,kno)
@@ -904,7 +904,7 @@ dcor=2.05&lowast;h
         <a href="cpl.html#IF">IF</a> btm(ino-1,kno) &gt; jno <a href="cpl.html#IF">THEN</a>
           cl=bcl(ino,jno,kno)
           <a href="cpl.html#IF">IF</a>  al(ino,jno,kno) &lt; pfo   <a href="cpl.html#IF">THEN</a>
-            ml=ders(0,fr,frr,alr,alr+1,alr&lowast;(alr+1))
+            ml=ders(0,fr,frr,alr,alr+1,alr<span class=low>*</span>(alr+1))
           <a href="cpl.html#ELSE">ELSE</a>
             ml=ders(0,ficen,fr,al(ino,jno,kno),alr,den)
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -913,7 +913,7 @@ dcor=2.05&lowast;h
         <a href="cpl.html#IF">IF</a>  btm(ino+1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a>
           cr=bcr(ino,jno,kno)
           <a href="cpl.html#IF">IF</a>  ar(ino,jno,kno) &lt; pfo   <a href="cpl.html#IF">THEN</a>
-            mr=-ders(0,fl,fll,alr,alr+1,alr&lowast;(alr+1))
+            mr=-ders(0,fl,fll,alr,alr+1,alr<span class=low>*</span>(alr+1))
           <a href="cpl.html#ELSE">ELSE</a>
             mr=-ders(0,ficen,fl,ar(ino,jno,kno),alr,den)
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -923,7 +923,7 @@ dcor=2.05&lowast;h
         <span class=comment>! calcolo md</span>
         <a href="cpl.html#IF">IF</a> jno = btm(ino,kno)  <a href="cpl.html#IF">THEN</a>
           cd=bcd(ino,jno,kno)
-          tang=(fondo(ino&lowast;h-eps,kno&lowast;h)-fondo(ino&lowast;h+eps,h&lowast;kno))/2/eps
+          tang=(fondo(ino<span class=low>*</span>h-eps,kno<span class=low>*</span>h)-fondo(ino<span class=low>*</span>h+eps,h<span class=low>*</span>kno))/2/eps
           <a href="cpl.html#IF">IF</a> pbc=1 <a href="cpl.html#IF">THEN</a>
             md=fix
           <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc=2 <a href="cpl.html#IF">THEN</a>
@@ -952,12 +952,12 @@ dcor=2.05&lowast;h
           mf=fix        
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         
-        rhs(ino,jno,kno)=cl&lowast;ml+cr&lowast;mr+cd&lowast;md+cf&lowast;mf+cb&lowast;mb
+        rhs(ino,jno,kno)=cl<span class=low>*</span>ml+cr<span class=low>*</span>mr+cd<span class=low>*</span>md+cf<span class=low>*</span>mf+cb<span class=low>*</span>mb
       <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno=btf(ino,kno) <a href="cpl.html#TO">TO</a>  ny-1
         rhs(ino,jno,kno)=0.
       <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-      rhs(ino,ny,kno)=h/3&lowast;(1-wp)/2
+      rhs(ino,ny,kno)=h/3<span class=low>*</span>(1-wp)/2
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#END">END</a> notom1
@@ -1009,7 +1009,7 @@ dcor=2.05&lowast;h
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         
         ad1=ad(ino,jno,kno)+1.
-        den=ad(ino,jno,kno)&lowast;ad1
+        den=ad(ino,jno,kno)<span class=low>*</span>ad1
         <a href="cpl.html#IF">IF</a> ad(ino,jno,kno) &lt; pfo <a href="cpl.html#IF">THEN</a>
           fiy=ders(ficen,fu,fi(ino,jno+2,kno),1,2,2)
         <a href="cpl.html#ELSE">ELSE</a>
@@ -1017,7 +1017,7 @@ dcor=2.05&lowast;h
           <a href="cpl.html#IF">IF</a> jno = btm(ino,kno) <a href="cpl.html#IF">THEN</a> fd=0.
           fiy=derc(ficen,fd,fu,ad(ino,jno,kno),1,den)
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-        tang=(fondo(ino&lowast;h-eps,kno&lowast;h)-fondo(ino&lowast;h+eps,h&lowast;kno))/2/eps
+        tang=(fondo(ino<span class=low>*</span>h-eps,kno<span class=low>*</span>h)-fondo(ino<span class=low>*</span>h+eps,h<span class=low>*</span>kno))/2/eps
         <a href="cpl.html#IF">IF</a>  btm(ino-1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a>
           cl=bcl(ino,jno,kno)
           <a href="cpl.html#IF">IF</a> pbc=1 <a href="cpl.html#IF">THEN</a>
@@ -1052,7 +1052,7 @@ dcor=2.05&lowast;h
             md=0
           <a href="cpl.html#ELSE">ELSE</a> 
             <a href="cpl.html#IF">IF</a> ad(ino,jno,kno) &lt; pfo <a href="cpl.html#IF">THEN</a>
-              md=ders(0,fu,fi(ino,jno+2,kno),ad1,ad1+1,ad1&lowast;(ad1+1))
+              md=ders(0,fu,fi(ino,jno+2,kno),ad1,ad1+1,ad1<span class=low>*</span>(ad1+1))
             <a href="cpl.html#ELSE">ELSE</a>
               md=ders(0,ficen,fu,ad(ino,jno,kno),ad1,den)
             <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1079,7 +1079,7 @@ dcor=2.05&lowast;h
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         
-        rhs(ino,jno,kno)=cl&lowast;ml+cr&lowast;mr+cd&lowast;md+mb&lowast;cb+mf&lowast;cf
+        rhs(ino,jno,kno)=cl<span class=low>*</span>ml+cr<span class=low>*</span>mr+cd<span class=low>*</span>md+mb<span class=low>*</span>cb+mf<span class=low>*</span>cf
       <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno=btf(ino,kno) <a href="cpl.html#TO">TO</a>  ny-1
         rhs(ino,jno,kno)=0.
@@ -1099,7 +1099,7 @@ dcor=2.05&lowast;h
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  kno=0 <a href="cpl.html#TO">TO</a> nz
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno=btm(ino,kno) <a href="cpl.html#TO">TO</a> btf(ino,kno)-1
         abf=ab(ino,jno,kno)+af(ino,jno,kno)
-        den=ab(ino,jno,kno)&lowast;af(ino,jno,kno)&lowast;abf
+        den=ab(ino,jno,kno)<span class=low>*</span>af(ino,jno,kno)<span class=low>*</span>abf
         cb=0.
         cf=0.
         cl=0.
@@ -1151,7 +1151,7 @@ dcor=2.05&lowast;h
         <a href="cpl.html#IF">IF</a> btm(ino,kno-1)   &gt; jno <a href="cpl.html#IF">THEN</a>
           cb=bcb(ino,jno,kno)
           <a href="cpl.html#IF">IF</a>  ab(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno &lt; nz <a href="cpl.html#IF">THEN</a>
-            mb=ders(0,fff,fi(ino,jno,kno+2),abf,abf+1,abf&lowast;(abf+1))
+            mb=ders(0,fff,fi(ino,jno,kno+2),abf,abf+1,abf<span class=low>*</span>(abf+1))
           <a href="cpl.html#ELSE">ELSE</a>
             mb=ders(0,ficen,fff,ab(ino,jno,kno),abf,den)
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1162,7 +1162,7 @@ dcor=2.05&lowast;h
         <a href="cpl.html#IF">IF</a> btm(ino,kno+1)   &gt; jno <a href="cpl.html#IF">THEN</a>
           cf=bcf(ino,jno,kno)
           <a href="cpl.html#IF">IF</a>  af(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno &gt; 0  <a href="cpl.html#IF">THEN</a>
-            mf=-ders(0,fb,fi(ino,jno,kno-2),abf,abf+1,abf&lowast;(abf+1))
+            mf=-ders(0,fb,fi(ino,jno,kno-2),abf,abf+1,abf<span class=low>*</span>(abf+1))
           <a href="cpl.html#ELSE">ELSE</a>
             mf=-ders(0,ficen,fb,af(ino,jno,kno),abf,den)
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1173,7 +1173,7 @@ dcor=2.05&lowast;h
         
         <a href="cpl.html#IF">IF</a>  jno = btm(ino,kno)  <a href="cpl.html#IF">THEN</a>
           cd=bcd(ino,jno,kno)
-          tangz=(fondo(ino&lowast;h,kno&lowast;h-eps)-fondo(ino&lowast;h,h&lowast;kno+eps))/2/eps
+          tangz=(fondo(ino<span class=low>*</span>h,kno<span class=low>*</span>h-eps)-fondo(ino<span class=low>*</span>h,h<span class=low>*</span>kno+eps))/2/eps
           <a href="cpl.html#IF">IF</a> pbc =1 <a href="cpl.html#IF">THEN</a>
             md=fiz
           <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc =2 <a href="cpl.html#IF">THEN</a>
@@ -1182,9 +1182,9 @@ dcor=2.05&lowast;h
             <a href="cpl.html#IF">IF</a> ino=0 <a href="cpl.html#OR">OR</a> ino=nx <a href="cpl.html#IF">THEN</a> md=0
             <span class=comment>!(   IF ino=0 OR ino=nx THEN
                 IF tangz&gt;0 THEN
-                  md=(tangz/ad(ino,jno,kno+1))&lowast;&lowast;1.5/h&lowast;fff
+                  md=(tangz/ad(ino,jno,kno+1))<span class=low>*</span><span class=low>*</span>1.5/h<span class=low>*</span>fff
                 ELSE IF tangz&lt;0 THEN
-                  md=-(-tangz/ad(ino,jno,kno-1))&lowast;&lowast;1.5/h&lowast;fb
+                  md=-(-tangz/ad(ino,jno,kno-1))<span class=low>*</span><span class=low>*</span>1.5/h<span class=low>*</span>fb
                 ELSE
                   md=0
                 END IF
@@ -1218,12 +1218,12 @@ dcor=2.05&lowast;h
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         
-        rhs(ino,jno,kno)=cd&lowast;md+cb&lowast;mb+cf&lowast;mf+cl&lowast;ml+cr&lowast;mr
+        rhs(ino,jno,kno)=cd<span class=low>*</span>md+cb<span class=low>*</span>mb+cf<span class=low>*</span>mf+cl<span class=low>*</span>ml+cr<span class=low>*</span>mr
       <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno=btf(ino,kno) <a href="cpl.html#TO">TO</a> ny-1
         rhs(ino,jno,kno)=0.
       <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-      rhs(ino,ny,kno)=h/3&lowast;(wp+1)/2
+      rhs(ino,ny,kno)=h/3<span class=low>*</span>(wp+1)/2
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#END">END</a> notom3
@@ -1241,9 +1241,9 @@ dcor=2.05&lowast;h
         alr=al(ino,jno,kno)+ar(ino,jno,kno)
         abf=ab(ino,jno,kno)+af(ino,jno,kno)
         ad1=ad(ino,jno,kno)+1.
-        den1=al(ino,jno,kno)&lowast;ar(ino,jno,kno)&lowast;alr
-        den2=ad(ino,jno,kno)&lowast;ad1
-        den3=af(ino,jno,kno)&lowast;ab(ino,jno,kno)&lowast;abf
+        den1=al(ino,jno,kno)<span class=low>*</span>ar(ino,jno,kno)<span class=low>*</span>alr
+        den2=ad(ino,jno,kno)<span class=low>*</span>ad1
+        den3=af(ino,jno,kno)<span class=low>*</span>ab(ino,jno,kno)<span class=low>*</span>abf
         ficen=fi(ino,jno,kno)
         fu=fi(ino,jno+1,kno)
         ml=m1(ino-1,jno,kno)
@@ -1264,7 +1264,7 @@ dcor=2.05&lowast;h
         
         
         <a href="cpl.html#IF">IF</a> ino=0 <a href="cpl.html#IF">THEN</a>
-          fll=wp&lowast;fi(ino+2,jno,kno)
+          fll=wp<span class=low>*</span>fi(ino+2,jno,kno)
           <a href="cpl.html#IF">IF</a> btm(ino+2,kno)&gt; jno <a href="cpl.html#IF">THEN</a> fll=0
         <a href="cpl.html#ELSE">ELSE</a>
           fll=fi(ino-2,jno,kno)
@@ -1278,7 +1278,7 @@ dcor=2.05&lowast;h
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         
         <a href="cpl.html#IF">IF</a> ino=nx <a href="cpl.html#IF">THEN</a>
-          frr=wp&lowast;fi(ino-2,jno,kno)
+          frr=wp<span class=low>*</span>fi(ino-2,jno,kno)
           <a href="cpl.html#IF">IF</a> btm(ino-2,kno)&gt; jno <a href="cpl.html#IF">THEN</a> frr=0
         <a href="cpl.html#ELSE">ELSE</a>
           frr=fi(ino+2,jno,kno)
@@ -1287,7 +1287,7 @@ dcor=2.05&lowast;h
         
         <a href="cpl.html#IF">IF</a>   jno = btm(ino,kno) <a href="cpl.html#IF">THEN</a>    
           <a href="cpl.html#IF">IF</a> ad(ino,jno,kno) &lt; pfo <a href="cpl.html#IF">THEN</a>
-            md=ders(0,fu,fi(ino,jno+2,kno),ad1,ad1+1,ad1&lowast;(ad1+1))
+            md=ders(0,fu,fi(ino,jno+2,kno),ad1,ad1+1,ad1<span class=low>*</span>(ad1+1))
           <a href="cpl.html#ELSE">ELSE</a>
             md=ders(0,ficen,fu,ad(ino,jno,kno),ad1,den2)
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1295,21 +1295,21 @@ dcor=2.05&lowast;h
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         <a href="cpl.html#IF">IF</a>  btm(ino+1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a>
           <a href="cpl.html#IF">IF</a>  ar(ino,jno,kno) &lt; pfo    <a href="cpl.html#IF">THEN</a>
-            mr=-ders(0,fl,fll,alr,alr+1,alr&lowast;(alr+1))
+            mr=-ders(0,fl,fll,alr,alr+1,alr<span class=low>*</span>(alr+1))
           <a href="cpl.html#ELSE">ELSE</a>
             mr=-ders(0,ficen,fl,ar(ino,jno,kno),alr,den1)
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         <a href="cpl.html#IF">IF</a>  btm(ino-1,kno) &gt; jno  <a href="cpl.html#IF">THEN</a>
           <a href="cpl.html#IF">IF</a> al(ino,jno,kno) &lt; pfo   <a href="cpl.html#IF">THEN</a>
-            ml=ders(0,fr,frr,alr,alr+1,alr&lowast;(alr+1))
+            ml=ders(0,fr,frr,alr,alr+1,alr<span class=low>*</span>(alr+1))
           <a href="cpl.html#ELSE">ELSE</a>
             ml=ders(0,ficen,fr,al(ino,jno,kno),alr,den1)
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         <a href="cpl.html#IF">IF</a>  btm(ino,kno+1) &gt; jno  <a href="cpl.html#IF">THEN</a>
           <a href="cpl.html#IF">IF</a>  af(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno &gt; 0  <a href="cpl.html#IF">THEN</a>
-            mf=-ders(0,fi(ino,jno,kno-1),fi(ino,jno,kno-2),abf,abf+1,abf&lowast;(abf+1))
+            mf=-ders(0,fi(ino,jno,kno-1),fi(ino,jno,kno-2),abf,abf+1,abf<span class=low>*</span>(abf+1))
           <a href="cpl.html#ELSE">ELSE</a>
             mf=-ders(0,fi(ino,jno,kno),fi(ino,jno,kno-1),af(ino,jno,kno),abf,den3)
             <a href="cpl.html#IF">IF</a> af(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno=0  <a href="cpl.html#IF">THEN</a> mf=(fff-fb)/abf/h
@@ -1318,7 +1318,7 @@ dcor=2.05&lowast;h
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         <a href="cpl.html#IF">IF</a>  btm(ino,kno-1) &gt; jno  <a href="cpl.html#IF">THEN</a>
           <a href="cpl.html#IF">IF</a>  ab(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno &lt;  nz  <a href="cpl.html#IF">THEN</a>
-            mb=ders(0,fi(ino,jno,kno+1),fi(ino,jno,kno+2),abf,abf+1,abf&lowast;(abf+1))
+            mb=ders(0,fi(ino,jno,kno+1),fi(ino,jno,kno+2),abf,abf+1,abf<span class=low>*</span>(abf+1))
           <a href="cpl.html#ELSE">ELSE</a>
             mb=ders(0,fi(ino,jno,kno),fi(ino,jno,kno+1),ab(ino,jno,kno),abf,den3)
             <a href="cpl.html#IF">IF</a>  ab(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a>  kno =nz  <a href="cpl.html#IF">THEN</a> mb=(fff-fb)/abf/h
@@ -1346,17 +1346,17 @@ dcor=2.05&lowast;h
           <a href="cpl.html#IF">IF</a>(af(ino,jno,kno) &lt; pfo <a href="cpl.html#AND">AND</a> kno=0) <a href="cpl.html#OR">OR</a> (ab(ino,jno,kno) &lt; pfo  <a href="cpl.html#AND">AND</a> kno=nz ) <a href="cpl.html#IF">THEN</a>  m3z=(mf-mb)/abf/h  
           
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-        rhs(ino,jno,kno)=-(m1x+m2y+m3z)&lowast;coenoto(ino,jno,kno)&lowast;h&lowast;h
+        rhs(ino,jno,kno)=-(m1x+m2y+m3z)<span class=low>*</span>coenoto(ino,jno,kno)<span class=low>*</span>h<span class=low>*</span>h
       <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  jno=btf(ino,kno) <a href="cpl.html#TO">TO</a>  ny-1
-        rhs(ino,jno,kno)=-(m1(ino+1,jno,kno)-m1(ino-1,jno,kno)+m2(ino,jno+1,kno)-m2(ino,jno-1,kno)+m3(ino,jno,kno+1)-m3(ino,jno,kno-1))&lowast;h/12
+        rhs(ino,jno,kno)=-(m1(ino+1,jno,kno)-m1(ino-1,jno,kno)+m2(ino,jno+1,kno)-m2(ino,jno-1,kno)+m3(ino,jno,kno+1)-m3(ino,jno,kno-1))<span class=low>*</span>h/12
       <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-      rhs(ino,ny,kno)=-(m1(ino+1,ny,kno)-m1(ino-1,ny,kno)-2.&lowast;m2(ino,ny-1,kno)+m3(ino,ny,kno+1)-m3(ino,ny,kno-1))&lowast;h/12
+      rhs(ino,ny,kno)=-(m1(ino+1,ny,kno)-m1(ino-1,ny,kno)-2.<span class=low>*</span>m2(ino,ny-1,kno)+m3(ino,ny,kno+1)-m3(ino,ny,kno-1))<span class=low>*</span>h/12
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#END">END</a>  notofia
 
-<span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+<span class=comment>! <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span></span>
 
 
 
@@ -1369,13 +1369,13 @@ dcor=2.05&lowast;h
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k=0 <a href="cpl.html#TO">TO</a> nz
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  i=0 <a href="cpl.html#TO">TO</a> nx
       <a href="cpl.html#IF">IF</a>  i &lt; 2  <a href="cpl.html#OR">OR</a>  i &gt; nx-2 <a href="cpl.html#IF">THEN</a>
-        <a href="cpl.html#IF">IF</a> i&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#IF">IF</a> i<span class=low>*</span>h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
           xv=0.
         <a href="cpl.html#ELSE">ELSE</a>
           xv=0.5
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
         
-        <a href="cpl.html#IF">IF</a>  fondo(xv,k&lowast;h)&gt;2&lowast;h <a href="cpl.html#IF">THEN</a>  
+        <a href="cpl.html#IF">IF</a>  fondo(xv,k<span class=low>*</span>h)&gt;2<span class=low>*</span>h <a href="cpl.html#IF">THEN</a>  
           <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  j=btm(i,k) <a href="cpl.html#TO">TO</a> btm(0,0)+2
             ndis=nid(i,j,k)
             <a href="cpl.html#IF">IF</a>  ndis &gt; 0  <a href="cpl.html#IF">THEN</a> 
@@ -1387,7 +1387,7 @@ dcor=2.05&lowast;h
               salfa=vsalfa(ndis)
               costanti(i,j,k)
               alr=al(i,j,k)+ar(i,j,k)
-              den=al(i,j,k)&lowast;ar(i,j,k)&lowast;alr
+              den=al(i,j,k)<span class=low>*</span>ar(i,j,k)<span class=low>*</span>alr
               u=m1co(i,j+1,k)
               cen=m1co(i,j,k)
               ba=0.
@@ -1416,7 +1416,7 @@ dcor=2.05&lowast;h
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
               
               <a href="cpl.html#IF">IF</a> i=0 <a href="cpl.html#IF">THEN</a>
-                fll=wp&lowast;fico(i+2,j,k)
+                fll=wp<span class=low>*</span>fico(i+2,j,k)
                 <a href="cpl.html#IF">IF</a> btm(i+2,k)&gt; j <a href="cpl.html#IF">THEN</a> fll=0
               <a href="cpl.html#ELSE">ELSE</a>
                 fll=fico(i-2,j,k)
@@ -1432,7 +1432,7 @@ dcor=2.05&lowast;h
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
               
               <a href="cpl.html#IF">IF</a> i=nx <a href="cpl.html#IF">THEN</a>
-                frr=wp&lowast;fico(i-2,j,k)
+                frr=wp<span class=low>*</span>fico(i-2,j,k)
                 <a href="cpl.html#IF">IF</a> btm(i-2,k)&gt; j <a href="cpl.html#IF">THEN</a> frr=0
               <a href="cpl.html#ELSE">ELSE</a>
                 frr=fico(i+2,j,k)
@@ -1466,7 +1466,7 @@ dcor=2.05&lowast;h
                 cl=bcl(i,j,k)
                 lef=0.
                 <a href="cpl.html#IF">IF</a>  al(i,j,k)  &lt; pfo   <a href="cpl.html#IF">THEN</a>
-                  ml=ders(0,fr,frr,alr,alr+1,alr&lowast;(alr+1))
+                  ml=ders(0,fr,frr,alr,alr+1,alr<span class=low>*</span>(alr+1))
                 <a href="cpl.html#ELSE">ELSE</a>
                   ml=ders(0,ficen,fr,al(i,j,k),alr,den)
                 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1478,7 +1478,7 @@ dcor=2.05&lowast;h
                 cr=bcr(i,j,k)
                 rig=0.
                 <a href="cpl.html#IF">IF</a>  ar(i,j,k) &lt; pfo   <a href="cpl.html#IF">THEN</a>
-                  mr=-ders(0,fl,fll,alr,alr+1.,alr&lowast;(alr+1.))
+                  mr=-ders(0,fl,fll,alr,alr+1.,alr<span class=low>*</span>(alr+1.))
                 <a href="cpl.html#ELSE">ELSE</a>
                   mr=-ders(0,ficen,fl,ar(i,j,k),alr,den)
                 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1489,10 +1489,10 @@ dcor=2.05&lowast;h
               <a href="cpl.html#IF">IF</a> j &gt; btm(i,k)  <a href="cpl.html#IF">THEN</a>
                 d=m1co(i,j-1,k)
               <a href="cpl.html#ELSE">ELSE</a>
-                <span class=comment>! calcolo md  &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+                <span class=comment>! calcolo md  <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span></span>
                 cd=bcd(i,j,k)
                 d=0.
-                tang=(fondo(i&lowast;h-eps,k&lowast;h)-fondo(i&lowast;h+eps,h&lowast;k))/2/eps
+                tang=(fondo(i<span class=low>*</span>h-eps,k<span class=low>*</span>h)-fondo(i<span class=low>*</span>h+eps,h<span class=low>*</span>k))/2/eps
                 <a href="cpl.html#IF">IF</a> pbc=1 <a href="cpl.html#IF">THEN</a>
                   md=fix
                 <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc=2 <a href="cpl.html#IF">THEN</a>
@@ -1533,9 +1533,9 @@ dcor=2.05&lowast;h
                 fo=m1co(i,j,k+1)
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
               
-              rhs1=cl&lowast;ml+cd&lowast;md+cb&lowast;mb+cf&lowast;mf+cr&lowast;mr
-              rhs(i,j,k)=rhs(i,j,k)-left(i,j,k)&lowast;lef-right(i,j,k)&lowast;rig-
-      down(i,j,k)&lowast;d-up(i,j,k)&lowast;u-back(i,j,k)&lowast;ba-forw(i,j,k)&lowast;fo+cen-rhs1
+              rhs1=cl<span class=low>*</span>ml+cd<span class=low>*</span>md+cb<span class=low>*</span>mb+cf<span class=low>*</span>mf+cr<span class=low>*</span>mr
+              rhs(i,j,k)=rhs(i,j,k)-left(i,j,k)<span class=low>*</span>lef-right(i,j,k)<span class=low>*</span>rig-
+      down(i,j,k)<span class=low>*</span>d-up(i,j,k)<span class=low>*</span>u-back(i,j,k)<span class=low>*</span>ba-forw(i,j,k)<span class=low>*</span>fo+cen-rhs1
             <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
           <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1553,12 +1553,12 @@ dcor=2.05&lowast;h
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k=0 <a href="cpl.html#TO">TO</a> nz
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  i=0 <a href="cpl.html#TO">TO</a> nx
       <a href="cpl.html#IF">IF</a>  i &lt; 2  <a href="cpl.html#OR">OR</a>  i &gt; nx-2 <a href="cpl.html#IF">THEN</a>
-        <a href="cpl.html#IF">IF</a> i&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#IF">IF</a> i<span class=low>*</span>h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
           xv=0.
         <a href="cpl.html#ELSE">ELSE</a>
           xv=0.5
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-        <a href="cpl.html#IF">IF</a> fondo(xv,k&lowast;h)&gt;2&lowast;h <a href="cpl.html#IF">THEN</a> 
+        <a href="cpl.html#IF">IF</a> fondo(xv,k<span class=low>*</span>h)&gt;2<span class=low>*</span>h <a href="cpl.html#IF">THEN</a> 
           <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  j=btm(i,k) <a href="cpl.html#TO">TO</a> btm(0,0)+2
             ndis=nid(i,j,k)
             <a href="cpl.html#IF">IF</a>  ndis &gt; 0  <a href="cpl.html#IF">THEN</a> 
@@ -1570,7 +1570,7 @@ dcor=2.05&lowast;h
               salfa=vsalfa(ndis)
               costanti(i,j,k)
               ad1=ad(i,j,k)+1.
-              den=ad(i,j,k)&lowast;ad1
+              den=ad(i,j,k)<span class=low>*</span>ad1
               cl=0.
               cd=0.
               cr=0.
@@ -1625,13 +1625,13 @@ dcor=2.05&lowast;h
               
               <a href="cpl.html#IF">IF</a> j=btm(i,k) <a href="cpl.html#IF">THEN</a>
                 <a href="cpl.html#IF">IF</a> ad(i,j,k) &lt; pfo <a href="cpl.html#IF">THEN</a>
-                  fiy0=ders(0,fu,fico(i,j+2,k),ad1,ad1+1,ad1&lowast;(ad1+1))
+                  fiy0=ders(0,fu,fico(i,j+2,k),ad1,ad1+1,ad1<span class=low>*</span>(ad1+1))
                 <a href="cpl.html#ELSE">ELSE</a>
                   fiy0=ders(0,ficen,fu,ad(i,j,k),ad1,den)
                 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
               
-              tang=(fondo(i&lowast;h-eps,k&lowast;h)-fondo(i&lowast;h+eps,h&lowast;k))/2/eps
+              tang=(fondo(i<span class=low>*</span>h-eps,k<span class=low>*</span>h)-fondo(i<span class=low>*</span>h+eps,h<span class=low>*</span>k))/2/eps
               
               <a href="cpl.html#IF">IF</a>  btm(i-1,k) &gt; j  <a href="cpl.html#IF">THEN</a>
                 cl=bcl(i,j,k)
@@ -1704,9 +1704,9 @@ dcor=2.05&lowast;h
                 fo=m2co(i,j,k+1)
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
               
-              rhs1=cl&lowast;ml+cd&lowast;md+cb&lowast;mb+cf&lowast;mf+cr&lowast;mr
-              rhs(i,j,k)=rhs(i,j,k)-left(i,j,k)&lowast;lef-right(i,j,k)&lowast;rig-down(i,j,k) \
-              &lowast;d-up(i,j,k)&lowast;u-back(i,j,k)&lowast;ba-forw(i,j,k)&lowast;fo+cen-rhs1
+              rhs1=cl<span class=low>*</span>ml+cd<span class=low>*</span>md+cb<span class=low>*</span>mb+cf<span class=low>*</span>mf+cr<span class=low>*</span>mr
+              rhs(i,j,k)=rhs(i,j,k)-left(i,j,k)<span class=low>*</span>lef-right(i,j,k)<span class=low>*</span>rig-down(i,j,k) \
+              <span class=low>*</span>d-up(i,j,k)<span class=low>*</span>u-back(i,j,k)<span class=low>*</span>ba-forw(i,j,k)<span class=low>*</span>fo+cen-rhs1
             <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
           <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1722,12 +1722,12 @@ dcor=2.05&lowast;h
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k=0 <a href="cpl.html#TO">TO</a> nz
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  i=0 <a href="cpl.html#TO">TO</a> nx
       <a href="cpl.html#IF">IF</a>  i &lt; 2  <a href="cpl.html#OR">OR</a>  i &gt; nx-2 <a href="cpl.html#IF">THEN</a>
-        <a href="cpl.html#IF">IF</a> i&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#IF">IF</a> i<span class=low>*</span>h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
           xv=0.
         <a href="cpl.html#ELSE">ELSE</a>
           xv=0.5
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-        <a href="cpl.html#IF">IF</a> fondo(xv,h&lowast;k)&gt;2&lowast;h <a href="cpl.html#IF">THEN</a>  
+        <a href="cpl.html#IF">IF</a> fondo(xv,h<span class=low>*</span>k)&gt;2<span class=low>*</span>h <a href="cpl.html#IF">THEN</a>  
           <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  j=btm(i,k) <a href="cpl.html#TO">TO</a> btm(0,0)+2
             ndis=nid(i,j,k)
             
@@ -1742,7 +1742,7 @@ dcor=2.05&lowast;h
               <span class=comment>!   WRITE 'c6,i,j,k',c6,i,j,k</span>
               <span class=comment>!    IF (i=0 AND j=btm(0,0)) OR (i=nx AND j=btm(nx,0))THEN WRITE i,j,c6</span>
               abf=ab(i,j,k)+af(i,j,k)
-              den=ab(i,j,k)&lowast;af(i,j,k)&lowast;abf
+              den=ab(i,j,k)<span class=low>*</span>af(i,j,k)<span class=low>*</span>abf
               ad1=ad(i,j,k)+1
               cb=0.
               cf=0.
@@ -1794,7 +1794,7 @@ dcor=2.05&lowast;h
                 ba=0.
                 cb=bcb(i,j,k)
                 <a href="cpl.html#IF">IF</a>  ab(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a>  k &lt; nz  <a href="cpl.html#IF">THEN</a>
-                  mb=ders(0,fff,fico(i,j,k+2),abf,abf+1,abf&lowast;(abf+1))
+                  mb=ders(0,fff,fico(i,j,k+2),abf,abf+1,abf<span class=low>*</span>(abf+1))
                 <a href="cpl.html#ELSE">ELSE</a>
                   mb=ders(0,ficen,fff,ab(i,j,k),abf,den)
                 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1809,7 +1809,7 @@ dcor=2.05&lowast;h
                 fo=0.
                 cf=bcf(i,j,k)
                 <a href="cpl.html#IF">IF</a>  af(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a>  k &gt; 0  <a href="cpl.html#IF">THEN</a>
-                  mf=-ders(0,fb,fico(i,j,k-2),abf,abf+1,abf&lowast;(abf+1))
+                  mf=-ders(0,fb,fico(i,j,k-2),abf,abf+1,abf<span class=low>*</span>(abf+1))
                 <a href="cpl.html#ELSE">ELSE</a>
                   mf=-ders(0,ficen,fb,af(i,j,k),abf,den)
                 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1820,13 +1820,13 @@ dcor=2.05&lowast;h
               
               <span class=comment>!  IF      af(i,j,k) &lt; pfo AND   k=0  THEN mf=fiz</span>
               
-              <span class=comment>! calcolo md  &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+              <span class=comment>! calcolo md  <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span></span>
               <a href="cpl.html#IF">IF</a> j &gt; btm(i,k)  <a href="cpl.html#IF">THEN</a>
                 d=m3co(i,j-1,k)
               <a href="cpl.html#ELSE">ELSE</a>
                 d=0
                 cd=bcd(i,j,k)
-                tangz=(fondo(i&lowast;h,k&lowast;h-eps)-fondo(i&lowast;h,h&lowast;k+eps))/2/eps
+                tangz=(fondo(i<span class=low>*</span>h,k<span class=low>*</span>h-eps)-fondo(i<span class=low>*</span>h,h<span class=low>*</span>k+eps))/2/eps
                 <a href="cpl.html#IF">IF</a> pbc=1 <a href="cpl.html#IF">THEN</a>
                   md=fiz
                 <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> pbc=2 <a href="cpl.html#IF">THEN</a>
@@ -1835,9 +1835,9 @@ dcor=2.05&lowast;h
                   <a href="cpl.html#IF">IF</a> i=0 <a href="cpl.html#OR">OR</a> i=nx <a href="cpl.html#IF">THEN</a> md=0
                   <span class=comment>!(    IF i=0 OR i=nx THEN
                       IF tangz&gt;0 THEN
-                        md=(tangz/ad(i,j,k+1))&lowast;&lowast;1.5/h&lowast;fff
+                        md=(tangz/ad(i,j,k+1))<span class=low>*</span><span class=low>*</span>1.5/h<span class=low>*</span>fff
                       ELSE IF tangz&lt;0 THEN
-                        md=-(-tangz/ad(i,j,k-1))&lowast;&lowast;1.5/h&lowast;fb
+                        md=-(-tangz/ad(i,j,k-1))<span class=low>*</span><span class=low>*</span>1.5/h<span class=low>*</span>fb
                       ELSE
                         md=0
                       END IF
@@ -1847,7 +1847,7 @@ dcor=2.05&lowast;h
                 <a href="cpl.html#IF">IF</a> tangz=0 <a href="cpl.html#IF">THEN</a> md=0
                 <a href="cpl.html#IF">IF</a> k=0 <a href="cpl.html#AND">AND</a> wp=-1 <a href="cpl.html#IF">THEN</a> md=0
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-              <span class=comment>!   fine calcolo md &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+              <span class=comment>!   fine calcolo md <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span></span>
               
               <a href="cpl.html#IF">IF</a> btm(i-1,k) &gt; j  <a href="cpl.html#IF">THEN</a>
                 cl=bcl(i,j,k)
@@ -1876,9 +1876,9 @@ dcor=2.05&lowast;h
               <a href="cpl.html#ELSE">ELSE</a>
                 rig=m3co(i+1,j,k)
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-              rhs1=cl&lowast;ml+cd&lowast;md+cb&lowast;mb+cf&lowast;mf+mr&lowast;cr
-              rhs(i,j,k)=rhs(i,j,k)-left(i,j,k)&lowast;lef-right(i,j,k)&lowast;rig-down(i,j,k) \
-              &lowast;d-up(i,j,k)&lowast;u-back(i,j,k)&lowast;ba-forw(i,j,k)&lowast;fo+cen-rhs1
+              rhs1=cl<span class=low>*</span>ml+cd<span class=low>*</span>md+cb<span class=low>*</span>mb+cf<span class=low>*</span>mf+mr<span class=low>*</span>cr
+              rhs(i,j,k)=rhs(i,j,k)-left(i,j,k)<span class=low>*</span>lef-right(i,j,k)<span class=low>*</span>rig-down(i,j,k) \
+              <span class=low>*</span>d-up(i,j,k)<span class=low>*</span>u-back(i,j,k)<span class=low>*</span>ba-forw(i,j,k)<span class=low>*</span>fo+cen-rhs1
             <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
           <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1890,7 +1890,7 @@ dcor=2.05&lowast;h
 
 
 
-<span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+<span class=comment>! <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span></span>
 
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> corfi
@@ -1903,12 +1903,12 @@ dcor=2.05&lowast;h
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k=0 <a href="cpl.html#TO">TO</a> nz
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  i=0 <a href="cpl.html#TO">TO</a> nx
       <a href="cpl.html#IF">IF</a>  i &lt; 2  <a href="cpl.html#OR">OR</a>  i &gt; nx-2 <a href="cpl.html#IF">THEN</a>
-        <a href="cpl.html#IF">IF</a> i&lowast;h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#IF">IF</a> i<span class=low>*</span>h &lt; 0.25 <a href="cpl.html#IF">THEN</a>
           xv=0.
         <a href="cpl.html#ELSE">ELSE</a>
           xv=0.5
         <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-        <a href="cpl.html#IF">IF</a> fondo(xv,h&lowast;k)&gt;2&lowast;h <a href="cpl.html#IF">THEN</a>
+        <a href="cpl.html#IF">IF</a> fondo(xv,h<span class=low>*</span>k)&gt;2<span class=low>*</span>h <a href="cpl.html#IF">THEN</a>
           <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  j=btm(i,k) <a href="cpl.html#TO">TO</a> btm(0,0)+2
             ndis=nid(i,j,k)
             <a href="cpl.html#IF">IF</a>  ndis &gt; 0  <a href="cpl.html#IF">THEN</a> 
@@ -1922,9 +1922,9 @@ dcor=2.05&lowast;h
               alr=al(i,j,k)+ar(i,j,k)
               abf=ab(i,j,k)+af(i,j,k)
               ad1=ad(i,j,k)+1.
-              den1=al(i,j,k)&lowast;ar(i,j,k)&lowast;alr
-              den2=ad(i,j,k)&lowast;ad1
-              den3=af(i,j,k)&lowast;ab(i,j,k)&lowast;abf
+              den1=al(i,j,k)<span class=low>*</span>ar(i,j,k)<span class=low>*</span>alr
+              den2=ad(i,j,k)<span class=low>*</span>ad1
+              den3=af(i,j,k)<span class=low>*</span>ab(i,j,k)<span class=low>*</span>abf
               mr=m1co(i+1,j,k)
               rig=fico(i+1,j,k)
               fu=fico(i,j+1,k)
@@ -1940,7 +1940,7 @@ dcor=2.05&lowast;h
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
               
               <a href="cpl.html#IF">IF</a> i=0 <a href="cpl.html#IF">THEN</a>
-                fll=wp&lowast;fico(i+2,j,k)
+                fll=wp<span class=low>*</span>fico(i+2,j,k)
                 <a href="cpl.html#IF">IF</a> btm(i+2,k)&gt; j <a href="cpl.html#IF">THEN</a> fll=0
               <a href="cpl.html#ELSE">ELSE</a>
                 fll=fico(i-2,j,k)
@@ -1954,7 +1954,7 @@ dcor=2.05&lowast;h
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
               
               <a href="cpl.html#IF">IF</a> i=nx <a href="cpl.html#IF">THEN</a>
-                frr=wp&lowast;fico(i-2,j,k)
+                frr=wp<span class=low>*</span>fico(i-2,j,k)
                 <a href="cpl.html#IF">IF</a> btm(i-2,k)&gt; j <a href="cpl.html#IF">THEN</a> frr=0
               <a href="cpl.html#ELSE">ELSE</a>
                 frr=fico(i+2,j,k)
@@ -1967,7 +1967,7 @@ dcor=2.05&lowast;h
               <a href="cpl.html#ELSE">ELSE</a>
                 d=0.
                 <a href="cpl.html#IF">IF</a> ad(i,j,k) &lt; pfo <a href="cpl.html#IF">THEN</a>
-                  md=ders(0,fu,fico(i,j+2,k),ad1,ad1+1,ad1&lowast;(ad1+1))
+                  md=ders(0,fu,fico(i,j+2,k),ad1,ad1+1,ad1<span class=low>*</span>(ad1+1))
                 <a href="cpl.html#ELSE">ELSE</a>
                   md=ders(0,ficen,fu,ad(i,j,k),ad1,den2)
                 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1976,7 +1976,7 @@ dcor=2.05&lowast;h
               <a href="cpl.html#IF">IF</a>  btm(i+1,k) &gt; j  <a href="cpl.html#IF">THEN</a>
                 rig=0.
                 <a href="cpl.html#IF">IF</a> ar(i,j,k) &lt; pfo <a href="cpl.html#IF">THEN</a>
-                  mr=-ders(0,fl,fll,alr,alr+1,alr&lowast;(alr+1))
+                  mr=-ders(0,fl,fll,alr,alr+1,alr<span class=low>*</span>(alr+1))
                 <a href="cpl.html#ELSE">ELSE</a>
                   mr=-ders(0,ficen,fl,ar(i,j,k),alr,den1)
                 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1987,7 +1987,7 @@ dcor=2.05&lowast;h
               <a href="cpl.html#IF">IF</a>  btm(i-1,k) &gt; j <a href="cpl.html#IF">THEN</a>
                 lef=0.
                 <a href="cpl.html#IF">IF</a>  al(i,j,k) &lt; pfo   <a href="cpl.html#IF">THEN</a>
-                  ml=ders(0,fr,frr,alr,alr+1,alr&lowast;(alr+1))
+                  ml=ders(0,fr,frr,alr,alr+1,alr<span class=low>*</span>(alr+1))
                 <a href="cpl.html#ELSE">ELSE</a>
                   ml=ders(0,ficen,fr,al(i,j,k),alr,den1)
                 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -1998,7 +1998,7 @@ dcor=2.05&lowast;h
               <a href="cpl.html#IF">IF</a>  btm(i,k+1) &gt; j <a href="cpl.html#IF">THEN</a>
                 fo=0.
                 <a href="cpl.html#IF">IF</a>  af(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a>  k &gt; 0  <a href="cpl.html#IF">THEN</a>
-                  mf=-ders(0.,fico(i,j,k-1),fico(i,j,k-2),abf,abf+1,abf&lowast;(abf+1))
+                  mf=-ders(0.,fico(i,j,k-1),fico(i,j,k-2),abf,abf+1,abf<span class=low>*</span>(abf+1))
                 <a href="cpl.html#ELSE">ELSE</a>
                   mf=-ders(0.,fico(i,j,k),fico(i,j,k-1),af(i,j,k),abf,den3)
                 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -2011,7 +2011,7 @@ dcor=2.05&lowast;h
               <a href="cpl.html#IF">IF</a> btm(i,k-1) &gt;  j  <a href="cpl.html#IF">THEN</a>
                 ba=0.
                 <a href="cpl.html#IF">IF</a>  ab(i,j,k) &lt; pfo <a href="cpl.html#AND">AND</a>  k &lt; nz  <a href="cpl.html#IF">THEN</a>
-                  mb=ders(0.,fico(i,j,k+1),fico(i,j,k+2),abf,abf+1,abf&lowast;(abf+1))
+                  mb=ders(0.,fico(i,j,k+1),fico(i,j,k+2),abf,abf+1,abf<span class=low>*</span>(abf+1))
                 <a href="cpl.html#ELSE">ELSE</a>
                   mb=ders(0.,fico(i,j,k),fico(i,j,k+1),ab(i,j,k),abf,den3)
                 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -2041,9 +2041,9 @@ dcor=2.05&lowast;h
                 m3z=derc(m3co(i,j,k),mb,mf,ab(i,j,k),af(i,j,k),den3)
                 <a href="cpl.html#IF">IF</a>  ( af(i,j,k) &lt; pfo <a href="cpl.html#OR">OR</a> ab(i,j,k) &lt; pfo)  <a href="cpl.html#AND">AND</a> (k = nz <a href="cpl.html#OR">OR</a> k=0) <a href="cpl.html#IF">THEN</a> m3z=(mf-mb)/abf/h
               <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-              rhs(i,j,k)=rhs(i,j,k)+(m1x+m2y+m3z)&lowast;coenoto(i,j,k)&lowast;h&lowast;h+ficen-lef&lowast; \
-              left(i,j,k)-rig&lowast;right(i,j,k)-d&lowast;down(i,j,k)-fu&lowast;up(i,j,k)-fo&lowast; \
-              forw(i,j,k)-ba&lowast;back(i,j,k)
+              rhs(i,j,k)=rhs(i,j,k)+(m1x+m2y+m3z)<span class=low>*</span>coenoto(i,j,k)<span class=low>*</span>h<span class=low>*</span>h+ficen-lef<span class=low>*</span> \
+              left(i,j,k)-rig<span class=low>*</span>right(i,j,k)-d<span class=low>*</span>down(i,j,k)-fu<span class=low>*</span>up(i,j,k)-fo<span class=low>*</span> \
+              forw(i,j,k)-ba<span class=low>*</span>back(i,j,k)
             <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
             
           <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
@@ -2053,7 +2053,7 @@ dcor=2.05&lowast;h
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#END">END</a> corfi
 
-<span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;  FINE  SUBROUTINES  &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+<span class=comment>! <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span>  FINE  SUBROUTINES  <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span></span>
 
 <a href="cpl.html#LOOP">LOOP</a> kapp <a href="cpl.html#FOR">FOR</a>  fk=k0 <a href="cpl.html#TO">TO</a> numk 
   ka=fk
@@ -2061,7 +2061,7 @@ dcor=2.05&lowast;h
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  fr=1 <a href="cpl.html#TO">TO</a> numh
     rapp=rapp+delth
     <a href="cpl.html#LOOP">LOOP</a>  <a href="cpl.html#FOR">FOR</a>   ff=1 <a href="cpl.html#TO">TO</a> numf
-      fill=fil0+deltf&lowast;ff
+      fill=fil0+deltf<span class=low>*</span>ff
       
       <a href="cpl.html#WRITE">WRITE</a> 'ly,lz.fill,rapp,rapp/h',ly,lz,fill,rapp,rapp/h
       <a href="cpl.html#WRITE">WRITE</a>'kappa',ka
@@ -2119,9 +2119,9 @@ dcor=2.05&lowast;h
         <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
       <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   i=0 <a href="cpl.html#TO">TO</a> nx
-        x=i&lowast;h
+        x=i<span class=low>*</span>h
         <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k=0 <a href="cpl.html#TO">TO</a> nz
-          z=k&lowast;h
+          z=k<span class=low>*</span>h
           btm(i,k)=1+<a href="cpl.html#FLOOR">FLOOR</a>(fondo(x,z)/h)
           
           <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(1+fondo(x,z)/h- btm(i,k))&gt; 1-h/100 <a href="cpl.html#IF">THEN</a> btm(i,k)=btm(i,k)+1
@@ -2138,7 +2138,7 @@ dcor=2.05&lowast;h
         btm(i,nz+1)=btm(nx-i,nz-1)
       <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
       <span class=comment>!      calcolo di btf                       </span>
-      <span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;o&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;     </span>
+      <span class=comment>! <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span>o<span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span>     </span>
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k=0 <a href="cpl.html#TO">TO</a> nz
         <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  i=0 <a href="cpl.html#TO">TO</a> nx
           btf(i,k)=<a href="cpl.html#MAX">MAX</a>(btm(i,k)+1,btm(i-1,k),btm(i+1,k))
@@ -2148,11 +2148,11 @@ dcor=2.05&lowast;h
       <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a> 
       <a href="cpl.html#WRITE">WRITE</a> 'fine calcolo btf '  
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k=0 <a href="cpl.html#TO">TO</a> nz
-        z=k&lowast;h
+        z=k<span class=low>*</span>h
         <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   i=0 <a href="cpl.html#TO">TO</a> nx
-          x=h&lowast;i
+          x=h<span class=low>*</span>i
           <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   j=btm(i,k) <a href="cpl.html#TO">TO</a> btf(i,k)-1
-            y=h&lowast;j
+            y=h<span class=low>*</span>j
             <a href="cpl.html#IF">IF</a> j =btm(i,k) <a href="cpl.html#IF">THEN</a>  ad(i,j,k)=j-fondo(x,z)/h
             <a href="cpl.html#IF">IF</a> btm(i-1,k) &gt; j <a href="cpl.html#IF">THEN</a> al(i,j,k)=(x-vert(y,x,x-h,z))/h
             <a href="cpl.html#IF">IF</a> btm(i+1,k)  &gt; j <a href="cpl.html#IF">THEN</a> ar(i,j,k)=(vert(y,x,x+h,z)-x)/h
@@ -2163,9 +2163,9 @@ dcor=2.05&lowast;h
             <span class=comment>! condizione di simmetria rispetto all'asse x</span>
             <a href="cpl.html#IF">IF</a> z=0 <a href="cpl.html#IF">THEN</a> ab(i,j,k)=af(i,j,k)
             
-            deny=ad(i,j,k)&lowast;(1.+ad(i,j,k))
-            denx=al(i,j,k)&lowast;ar(i,j,k)&lowast;(al(i,j,k)+ar(i,j,k))
-            denz=af(i,j,k)&lowast;ab(i,j,k)&lowast;(af(i,j,k)+ab(i,j,k))
+            deny=ad(i,j,k)<span class=low>*</span>(1.+ad(i,j,k))
+            denx=al(i,j,k)<span class=low>*</span>ar(i,j,k)<span class=low>*</span>(al(i,j,k)+ar(i,j,k))
+            denz=af(i,j,k)<span class=low>*</span>ab(i,j,k)<span class=low>*</span>(af(i,j,k)+ab(i,j,k))
             dud=deny/2.
             dlr=denx/2.
             dbf=denz/2.
@@ -2178,14 +2178,14 @@ dcor=2.05&lowast;h
             azf=ab(i,j,k)
             azb=af(i,j,k)
             az0=azf+azb
-            deno=ax0&lowast;dbf&lowast;dud+ay0&lowast;dbf&lowast;dlr+az0&lowast;dlr&lowast;dud
-            bcl(i,j,k)=axl&lowast;dud&lowast;dbf/deno
-            bcd(i,j,k)=ayd&lowast;dlr&lowast;dbf/deno
-            bcr(i,j,k)=axr&lowast;dud&lowast;dbf/deno
-            bcu(i,j,k)=ayu&lowast;dlr&lowast;dbf/deno
-            bcb(i,j,k)=azb&lowast;dud&lowast;dlr/deno
-            bcf(i,j,k)=azf&lowast;dlr&lowast;dud/deno
-            coenoto(i,j,k)=dud&lowast;dlr&lowast;dbf/deno
+            deno=ax0<span class=low>*</span>dbf<span class=low>*</span>dud+ay0<span class=low>*</span>dbf<span class=low>*</span>dlr+az0<span class=low>*</span>dlr<span class=low>*</span>dud
+            bcl(i,j,k)=axl<span class=low>*</span>dud<span class=low>*</span>dbf/deno
+            bcd(i,j,k)=ayd<span class=low>*</span>dlr<span class=low>*</span>dbf/deno
+            bcr(i,j,k)=axr<span class=low>*</span>dud<span class=low>*</span>dbf/deno
+            bcu(i,j,k)=ayu<span class=low>*</span>dlr<span class=low>*</span>dbf/deno
+            bcb(i,j,k)=azb<span class=low>*</span>dud<span class=low>*</span>dlr/deno
+            bcf(i,j,k)=azf<span class=low>*</span>dlr<span class=low>*</span>dud/deno
+            coenoto(i,j,k)=dud<span class=low>*</span>dlr<span class=low>*</span>dbf/deno
           <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
           <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  j= btf(i,k) <a href="cpl.html#TO">TO</a> ny0
             bcl(i,j,k)=1./6.
@@ -2223,14 +2223,14 @@ dcor=2.05&lowast;h
       <span class=comment>!(        calcolo diagramma
         LOOP FOR k=0 TO 32
           <span class=comment>!    LOOP FOR k=0 TO 100</span>
-          <span class=comment>!   ALTEZZE k/100&lowast;lz/2&lowast;5/8, fondo(0,k/100&lowast;lz/2&lowast;5/8),btm(0,k).</span>
-          ALTEZZE k, fondo(0,k&lowast;h)/h,btm(0,k).
+          <span class=comment>!   ALTEZZE k/100<span class=low>*</span>lz/2<span class=low>*</span>5/8, fondo(0,k/100<span class=low>*</span>lz/2<span class=low>*</span>5/8),btm(0,k).</span>
+          ALTEZZE k, fondo(0,k<span class=low>*</span>h)/h,btm(0,k).
         REPEAT LOOP
         STOP
         !)</span>
-      <span class=comment>!&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+      <span class=comment>!<span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span></span>
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   fw=0 <a href="cpl.html#TO">TO</a> 1
-        wp=-1+fw&lowast;2 
+        wp=-1+fw<span class=low>*</span>2 
         <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   i=-1 <a href="cpl.html#TO">TO</a> nx+1
           <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>   j=0 <a href="cpl.html#TO">TO</a> ny
             <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a>  k=-1 <a href="cpl.html#TO">TO</a> nz+1
@@ -2246,7 +2246,7 @@ dcor=2.05&lowast;h
         <span class=comment>!( 
           LOOP FOR k=0 TO nz-3
             it=nid(0,btm(0,k),k)
-            WRITE 'it,z,zn',it,k&lowast;h,vzn(it),
+            WRITE 'it,z,zn',it,k<span class=low>*</span>h,vzn(it),
             'sa,ca,de,k1,k2',vsalfa(it),vcalfa(it),vdel(it),vk1(it),vk2(it)
             ALTEZZE k,vzn(it),vsalfa(it)
           REPEAT LOOP
@@ -2257,7 +2257,7 @@ dcor=2.05&lowast;h
         it=1
         <a href="cpl.html#DO">DO</a>
           
-          <a href="cpl.html#IF">IF</a> js=0 <a href="cpl.html#IF">THEN</a> prec=((wp+1)&lowast;m3(0,ny,0)+(1-wp)&lowast;m1(0,ny,0))/2
+          <a href="cpl.html#IF">IF</a> js=0 <a href="cpl.html#IF">THEN</a> prec=((wp+1)<span class=low>*</span>m3(0,ny,0)+(1-wp)<span class=low>*</span>m1(0,ny,0))/2
           <a href="cpl.html#IF">IF</a> it&lt;jsta <a href="cpl.html#IF">THEN</a> prec= 1000
           
           notom1
@@ -2283,31 +2283,31 @@ dcor=2.05&lowast;h
             js=js+1
           <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
           it=it+1
-          <a href="cpl.html#IF">IF</a> wp  = 1 <a href="cpl.html#IF">THEN</a> hlon=m3(0,ny,0)-ny&lowast;h+fondo(0.,0.)
-          <a href="cpl.html#IF">IF</a> wp =  -1 <a href="cpl.html#IF">THEN</a> htra=m1(0,ny,0)-ny&lowast;h+fondo(0.,0.)
-        <a href="cpl.html#UNTIL">UNTIL</a> <a href="cpl.html#ABS">ABS</a>(prec-((wp+1)&lowast;m3(0,ny,0)+(1-wp)&lowast;m1(0,ny,0))/2) &lt; 0.000001
+          <a href="cpl.html#IF">IF</a> wp  = 1 <a href="cpl.html#IF">THEN</a> hlon=m3(0,ny,0)-ny<span class=low>*</span>h+fondo(0.,0.)
+          <a href="cpl.html#IF">IF</a> wp =  -1 <a href="cpl.html#IF">THEN</a> htra=m1(0,ny,0)-ny<span class=low>*</span>h+fondo(0.,0.)
+        <a href="cpl.html#UNTIL">UNTIL</a> <a href="cpl.html#ABS">ABS</a>(prec-((wp+1)<span class=low>*</span>m3(0,ny,0)+(1-wp)<span class=low>*</span>m1(0,ny,0))/2) &lt; 0.000001
       <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-      <span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast; fine ciclo parita' &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;</span>
+      <span class=comment>! <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span> fine ciclo parita' <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span></span>
       
       dh=hlon-htra
       <a href="cpl.html#WRITE">WRITE</a> 'hlon,htra,dh',hlon,htra,dh
       fillm=fill
       fils=fill
       <a href="cpl.html#IF">IF</a> prolo =3 <a href="cpl.html#IF">THEN</a> 
-        fillm=(fill +rapp/2 +0.144074)&lowast;2/lz
-        fils=(fill+0.144074)&lowast;2/lz 
+        fillm=(fill +rapp/2 +0.144074)<span class=low>*</span>2/lz
+        fils=(fill+0.144074)<span class=low>*</span>2/lz 
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
       
       <span class=comment>! ALTEZZE rapp:15.10,fillm:15.10,dh:15.10,hlon:15.10,htra:15.10</span>
       ALTEZZE rapp:10.6,fils:10.6,fillm:10.6,dh:15.10,hlon:15.10,htra:15.10
-      &lt;&lowast; fflush(ALTEZZE_); &lowast;&gt;
+      &lt;<span class=low>*</span> fflush(ALTEZZE_); <span class=low>*</span>&gt;
       
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-    <span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;   fine ciclo fill  &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast; </span>
+    <span class=comment>! <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span>   fine ciclo fill  <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span> </span>
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-  <span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;  fine ciclo rapporto &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;      </span>
+  <span class=comment>! <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span>  fine ciclo rapporto <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span>      </span>
 <a href="cpl.html#LOOP">REPEAT</a> kapp 
-<span class=comment>! &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;  fine ciclo kappa &lowast;&lowast;&lowast;&lowast;&lowast;&lowast;&lowast;      </span>
+<span class=comment>! <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span>  fine ciclo kappa <span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span><span class=low>*</span>      </span>
 
 
 

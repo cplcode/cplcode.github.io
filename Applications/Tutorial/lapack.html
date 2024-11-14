@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <span class=comment>! Interface to some Lapack functions</span>
 <span class=comment>! ==================================</span>
@@ -25,14 +25,14 @@
 <span class=comment>! directive to the linker channeled through the C compiler.</span>
 <span class=comment>! On Debian the liblapack-dev package or one equivalent must have been installed</span>
 
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="complex.html#Top">COMPLEX</a> A(&lowast;,&lowast;))
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="complex.html#Top">COMPLEX</a> A(<span class=low>*</span>,<span class=low>*</span>))
   <span class=comment>! This function will produce a constant array if assigned to an undeclared id</span>
   <a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
   LA=<a href="cpl.html#LENGTH">LENGTH</a>(A)
   <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: matrix is not square"
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#FORTRAN-interface">STRIDEOF</a>[A(<a href="cpl.html#LO">LO</a>)]#1 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: matrix rows are not contiguous"
   <span class=comment>! A CPL matrix is allowed to be not contiguous, but a FORTRAN matrix must be.</span>
-  LWORK=3&lowast;LA
+  LWORK=3<span class=low>*</span>LA
   <a href="complex.html#Top">COMPLEX</a> WORK(1..LWORK)
   <a href="cpl.html#REAL">REAL</a> RWORK(1..LA)
   <a href="cpl.html#FORTRAN-interface">FORTRANCALL</a> zgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,A,<a href="cpl.html#FORTRAN-interface">STRIDEOF</a>(A),SDIM,<a href="cpl.html#RESULT">RESULT</a>,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,RWORK,<a href="cpl.html#POINTER">NULL</a>,info)
@@ -42,7 +42,7 @@
   <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "zgees: " info
 <a href="cpl.html#END">END</a> eigv   <span class=comment>! encapsulating zgees inside eigv turns on CPL prototype checking.</span>
 
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="cpl.html#REAL">REAL</a> A(&lowast;,&lowast;))
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#ARRAY">ARRAY</a>(A.<a href="cpl.html#LO">LO</a>..A.<a href="cpl.html#HI">HI</a>) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> eigv(<a href="cpl.html#REAL">REAL</a> A(<span class=low>*</span>,<span class=low>*</span>))
   <span class=comment>! same function name as above: correct instance of overloaded function</span>
   <span class=comment>! will be selected based on argument type</span>
   <a href="cpl.html#INTEGER">INTEGER</a> SDIM,info
@@ -50,13 +50,13 @@
   <a href="cpl.html#IF">IF</a> LA#<a href="cpl.html#LENGTH">LENGTH</a>(A(<a href="cpl.html#LO">LO</a>)) <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: matrix is not square"
   <a href="cpl.html#IF">IF</a> <a href="cpl.html#FORTRAN-interface">STRIDEOF</a>[A(<a href="cpl.html#LO">LO</a>)]#1 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: matrix rows are not contiguous" 
   <span class=comment>! A CPL matrix is allowed to be not contiguous, but a FORTRAN matrix must be.</span>
-  LWORK=3&lowast;LA
+  LWORK=3<span class=low>*</span>LA
   <a href="cpl.html#REAL">REAL</a> WORK(1..LWORK)
   <a href="cpl.html#REAL">REAL</a> WR(1..LA),WI(1..LA)
   <a href="cpl.html#FORTRAN-interface">FORTRANCALL</a> dgees("N","N",<a href="cpl.html#POINTER">NULL</a>,LA,A,<a href="cpl.html#FORTRAN-interface">STRIDEOF</a>(A),SDIM,WR,WI,<a href="cpl.html#POINTER">NULL</a>,LA,WORK,LWORK,<a href="cpl.html#POINTER">NULL</a>,info)
   <span class=comment>! interface to FORTRAN call, applied without any prototype checking.</span>
   <a href="cpl.html#IF">IF</a> info#0 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "dgees: " info
-  <a href="cpl.html#RESULT">RESULT</a>(&lowast;+<a href="cpl.html#LO">LO</a>-1).<a href="cpl.html#REAL">REAL</a>=WR; <a href="cpl.html#RESULT">RESULT</a>(&lowast;+<a href="cpl.html#LO">LO</a>-1).<a href="complex.html#Top">IMAG</a>=WI
+  <a href="cpl.html#RESULT">RESULT</a>(<span class=low>*</span>+<a href="cpl.html#LO">LO</a>-1).<a href="cpl.html#REAL">REAL</a>=WR; <a href="cpl.html#RESULT">RESULT</a>(<span class=low>*</span>+<a href="cpl.html#LO">LO</a>-1).<a href="complex.html#Top">IMAG</a>=WI
 <a href="cpl.html#END">END</a> eigv   <span class=comment>! encapsulating dgees inside eigv turns on CPL prototype checking.</span>
 
 <span class=comment>! Example: uncomment the text below, compile this file and execute.</span>

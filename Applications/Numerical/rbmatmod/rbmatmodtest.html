@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <span class=comment>! rbmatmodtest -- Copyright 2000 Paolo Luchini</span>
 <span class=comment>! http://CPLcode.net/Applications/Numerical/Multigrid/</span>
@@ -80,11 +80,11 @@ FlushStep1
 <span class=comment>! flush output buffer before switching from writing to reading on the next node</span>
 FlushStep2
 <span class=comment>! calculate maximum error in the solution of the linear system</span>
-<a href="cpl.html#REAL">REAL</a> err=<a href="cpl.html#MAX">MAX</a> <a href="cpl.html#ABS">ABS</a>{x(m,i)-<a href="cpl.html#Looping-operator">SUM</a> savemat(i,j)&lowast;t(m,i+j) <a href="cpl.html#FOR">FOR</a> j=-b <a href="cpl.html#TO">TO</a> b} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m <a href="cpl.html#AND">AND</a> i=0 <a href="cpl.html#TO">TO</a> N
+<a href="cpl.html#REAL">REAL</a> err=<a href="cpl.html#MAX">MAX</a> <a href="cpl.html#ABS">ABS</a>{x(m,i)-<a href="cpl.html#Looping-operator">SUM</a> savemat(i,j)<span class=low>*</span>t(m,i+j) <a href="cpl.html#FOR">FOR</a> j=-b <a href="cpl.html#TO">TO</a> b} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m <a href="cpl.html#AND">AND</a> i=0 <a href="cpl.html#TO">TO</a> N
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> err=<a href="cpl.html#MAX">MAX</a>(<a href="cpl.html#Assignment">~</a>,<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> prev)
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next err; FLUSH next <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#WRITE">WRITE</a> err
 <span class=comment>! parallel scalar product between t and y</span>
-<a href="cpl.html#REAL">REAL</a> sum1=<a href="cpl.html#Looping-operator">SUM</a> t(m,i)&lowast;y(m,i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m <a href="cpl.html#AND">AND</a> i=0 <a href="cpl.html#TO">TO</a> N
+<a href="cpl.html#REAL">REAL</a> sum1=<a href="cpl.html#Looping-operator">SUM</a> t(m,i)<span class=low>*</span>y(m,i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m <a href="cpl.html#AND">AND</a> i=0 <a href="cpl.html#TO">TO</a> N
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> sum1=<a href="cpl.html#Assignment">~</a>+<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> prev
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next sum1; FLUSH next <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#WRITE">WRITE</a> sum1
 <span class=comment>! parallel equivalent to y=y/mat (as defined in rbmat.cpl)</span>
@@ -93,9 +93,9 @@ FlushStep1
 <a href="cpl.html#DO">DO</a> RightLUDivStep2[y(m),mat] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m
 FlushStep2
 <span class=comment>! parallel scalar product between x and y</span>
-<a href="cpl.html#REAL">REAL</a> sum2=<a href="cpl.html#Looping-operator">SUM</a> x(m,i)&lowast;y(m,i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m <a href="cpl.html#AND">AND</a> i=0 <a href="cpl.html#TO">TO</a> N
+<a href="cpl.html#REAL">REAL</a> sum2=<a href="cpl.html#Looping-operator">SUM</a> x(m,i)<span class=low>*</span>y(m,i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> m <a href="cpl.html#AND">AND</a> i=0 <a href="cpl.html#TO">TO</a> N
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> first <a href="cpl.html#IF">THEN</a> sum2=<a href="cpl.html#Assignment">~</a>+<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FROM">FROM</a> prev
 <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> last <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#TO">TO</a> next sum2; FLUSH next <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#WRITE">WRITE</a> sum2
-<span class=comment>! If the two products match, the test has been successful: y&lowast;mat\x = y/mat&lowast;x <span class=comment>!</span></span>
+<span class=comment>! If the two products match, the test has been successful: y<span class=low>*</span>mat\x = y/mat<span class=low>*</span>x <span class=comment>!</span></span>
 <a href="cpl.html#IF">IF</a> err&lt;1E-7 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ABS">ABS</a>(1-sum2/sum1)&lt;1E-7 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> "success!"
 </pre></body></html>

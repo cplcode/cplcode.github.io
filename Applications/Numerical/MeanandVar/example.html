@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#USE">USE</a> meanandvar
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
@@ -20,7 +20,7 @@ srand[<a href="cpl.html#INTEGER">INTEGER</a>(time(<a href="cpl.html#POINTER">NUL
 
 <a href="cpl.html#REAL">REAL</a> procstate=0.5
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> process() <span class=comment>! simple first-order dynamical system with lorentzian spectrum</span>
-  procstate=0.9&lowast;<a href="cpl.html#Assignment">~</a>+0.1&lowast;<a href="cpl.html#RAND">RAND</a>()
+  procstate=0.9<span class=low>*</span><a href="cpl.html#Assignment">~</a>+0.1<span class=low>*</span><a href="cpl.html#RAND">RAND</a>()
   <a href="cpl.html#RESULT">RESULT</a>=procstate
 <a href="cpl.html#END">END</a> process
 
@@ -36,7 +36,7 @@ mvinit(accum) <span class=comment>! initialize mean and variance accumulator</sp
 <a href="graphics.html#DRAW">DRAW</a> 1E3,0.0834
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> 1000 <a href="cpl.html#TIMES">TIMES</a>
   <a href="cpl.html#DO">DO</a> meanandvar[accum,process()] <a href="cpl.html#FOR">FOR</a> 1000 <a href="cpl.html#TIMES">TIMES</a> <span class=comment>! accumulate samples</span>
-  <a href="graphics.html#DRAW">DRAW</a> accum.nt,accum.nt&lowast;accum.var
+  <a href="graphics.html#DRAW">DRAW</a> accum.nt,accum.nt<span class=low>*</span>accum.var
 <a href="cpl.html#LOOP">REPEAT</a>
 <a href="graphics.html#SHOWGRAPH">SHOWGRAPH</a>
 <a href="cpl.html#READ">READ</a> <span class=comment>! keep plot displayed until Enter is pressed</span>

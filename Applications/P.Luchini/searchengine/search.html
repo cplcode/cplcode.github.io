@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#C-interface">#include</a> &lt;sys/mman.h&gt;
 
@@ -17,7 +17,7 @@
 <a href="cpl.html#DO">DO</a> alpha(i)=i-"A"+"a" <a href="cpl.html#FOR">FOR</a> i="A" <a href="cpl.html#TO">TO</a> "Z"
 <a href="cpl.html#DO">DO</a> alpha(i)=i <a href="cpl.html#FOR">FOR</a> i="a" <a href="cpl.html#TO">TO</a> "z"
 alpha("?")="?"
-alpha("&lowast;")="&lowast;"
+alpha("<span class=low>*</span>")="<span class=low>*</span>"
 alpha("+")="+"
 <span class=comment>! alpha(".")="."</span>
 alpha("'")="'"
@@ -194,7 +194,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
         <a href="cpl.html#EXIT">EXIT</a> match
       <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
       fw(0)=locchr(sub); <a href="cpl.html#Builtin">INC</a> fw
-    "&lowast;": <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> (sub&gt;0 <a href="cpl.html#OR">OR</a> [locchr(0)#0 <a href="cpl.html#AND">AND</a> index(loc+2) <a href="cpl.html#Bitwise">BITAND</a> 0xff=0 <a href="cpl.html#AND">AND</a> alpha(word(1))#0]) <a href="cpl.html#AND">AND</a>
+    "<span class=low>*</span>": <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> (sub&gt;0 <a href="cpl.html#OR">OR</a> [locchr(0)#0 <a href="cpl.html#AND">AND</a> index(loc+2) <a href="cpl.html#Bitwise">BITAND</a> 0xff=0 <a href="cpl.html#AND">AND</a> alpha(word(1))#0]) <a href="cpl.html#AND">AND</a>
         alpha(word(1))#locchr(sub)
         fw(0)=locchr(sub); <a href="cpl.html#Builtin">INC</a> fw
         <a href="cpl.html#Builtin">INC</a> sub; <a href="cpl.html#IF">IF</a> sub&gt;locchr.<a href="cpl.html#HI">HI</a> <a href="cpl.html#OR">OR</a> sub&gt;0 <a href="cpl.html#AND">AND</a> locchr(sub)=0 <a href="cpl.html#IF">THEN</a>
@@ -324,7 +324,7 @@ DYNAMIC <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> WS_t
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> p(0)="+": <a href="cpl.html#Builtin">INC</a> nerr; <a href="cpl.html#Builtin">INC</a> p
     <a href="cpl.html#CASE">CASE</a> p(0) <a href="cpl.html#OF">OF</a>
     "?":
-    "&lowast;": <a href="cpl.html#Builtin">INC</a> p; <a href="cpl.html#IF">IF</a> alpha(p(0))=0 <a href="cpl.html#IF">THEN</a> RETURN TRUE
+    "<span class=low>*</span>": <a href="cpl.html#Builtin">INC</a> p; <a href="cpl.html#IF">IF</a> alpha(p(0))=0 <a href="cpl.html#IF">THEN</a> RETURN TRUE
       <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> alpha(s(0))#0
         <a href="cpl.html#IF">IF</a> alpha(s(0))=alpha(p(0)) <a href="cpl.html#AND">AND</a> Wmatch(s,p,nerr) <a href="cpl.html#IF">THEN</a> RETURN TRUE
         <a href="cpl.html#Builtin">INC</a> s

@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <span class=comment>! USE rtchecks</span>
 
@@ -34,8 +34,8 @@ alpha(248)="o"
 <a href="cpl.html#DO">DO</a> alpha(i)="u" <a href="cpl.html#FOR">FOR</a> i=249 <a href="cpl.html#TO">TO</a> 252
 
 <a href="cpl.html#FRI-SECTION">FRI SECTION</a>
-tryfunction "INTEGER"]= do bracket cut =[expr -&gt; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> type =[ &lowast; value =[ &lowast;]= cut #2 sep =[item <a href="cpl.html#INTEGER">INTEGER</a> "l" value "(ssize_t)" #1
-function "ITEM"]= cut =[argument -&gt; <a href="cpl.html#INTEGER">INTEGER</a> "l" value =[ &lowast;]= cut =[function <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> type "item" value "(void &lowast;)" #1
+tryfunction "INTEGER"]= do bracket cut =[expr -&gt; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> type =[ <span class=low>*</span> value =[ <span class=low>*</span>]= cut #2 sep =[item <a href="cpl.html#INTEGER">INTEGER</a> "l" value "(ssize_t)" #1
+function "ITEM"]= cut =[argument -&gt; <a href="cpl.html#INTEGER">INTEGER</a> "l" value =[ <span class=low>*</span>]= cut =[function <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> type "item" value "(void <span class=low>*</span>)" #1
 <a href="cpl.html#END">END</a> <a href="cpl.html#FRI-SECTION">FRI SECTION</a>
 
 <a href="cpl.html#TYPE">TYPE</a> item=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item brother,son
@@ -46,7 +46,7 @@ item NIL; <a href="cpl.html#WITH">WITH</a> NIL: brother=NIL; son=NIL; c(0)=255
 
 replim=atoi(<a href="cpl.html#COMMANDLINE">COMMANDLINE</a>(2))
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> SortIn(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item <a href="cpl.html#VARIABLE">VARIABLE</a> prev; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#CHAR">CHAR</a> buf; long ref)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> SortIn(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item <a href="cpl.html#VARIABLE">VARIABLE</a> prev; <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#CHAR">CHAR</a> buf; long ref)
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item loc=prev
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#INTO">INTO</a> buf pos=0
 <a href="cpl.html#LOOP">LOOP</a> sort
@@ -92,7 +92,7 @@ loc=prev
 <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#IF">IF</a> loc#NIL <a href="cpl.html#IF">THEN</a>
   <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT loc.c=(<a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT loc.c)+256
-  <a href="cpl.html#IF">IF</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT loc.c&gt;256&lowast;replim <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> SortIn
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#BINARY">BINARY</a> <a href="cpl.html#INTEGER">INTEGER</a> AT loc.c&gt;256<span class=low>*</span>replim <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> SortIn
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
 <a href="cpl.html#NEW">NEW</a> prev<a href="cpl.html#REAL-operator">^</a>
 prev.brother=NIL
@@ -190,7 +190,7 @@ SUBROUTINE WrTree(POINTER TO POINTER TO item head; BOOLEAN synth)
       REPEAT
     ELSE IF cur1=256 THEN
       WRITE BINARY TO index INTEGER(cur.son)
-    ELSE IF cur1&lt;=256&lowast;replim THEN
+    ELSE IF cur1&lt;=256<span class=low>*</span>replim THEN
       WRITE BINARY TO index INTEGER(POSITION(recindex))
       LOOP WHILE cur#NIL
         WRITE BINARY TO recindex INTEGER(cur.son)
@@ -234,7 +234,7 @@ index(1)=<a href="cpl.html#INTEGER">INTEGER</a>(root)
 <a href="cpl.html#LOOP">REPEAT</a>
 newnewloc=newloc
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> oldloc=2 <a href="cpl.html#TO">TO</a> newnewloc-2 <a href="cpl.html#BY">BY</a> 2
-  <a href="cpl.html#IF">IF</a> index(oldloc) <a href="cpl.html#Bitwise">BITAND</a> 0xff = 0 <a href="cpl.html#AND">AND</a> index(oldloc)&gt;256 <a href="cpl.html#AND">AND</a> index(oldloc)&lt;=256&lowast;replim <a href="cpl.html#IF">THEN</a>
+  <a href="cpl.html#IF">IF</a> index(oldloc) <a href="cpl.html#Bitwise">BITAND</a> 0xff = 0 <a href="cpl.html#AND">AND</a> index(oldloc)&gt;256 <a href="cpl.html#AND">AND</a> index(oldloc)&lt;=256<span class=low>*</span>replim <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> item cur=ITEM(index(oldloc+1))
     index(oldloc+1)=newloc
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> cur#NIL

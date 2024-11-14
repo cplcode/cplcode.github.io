@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a> 
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a> 
@@ -30,8 +30,8 @@
 <a href="complex.html#Top">COMPLEX</a> mu2=-0.01 
 <a href="complex.html#Top">COMPLEX</a> cu=0.2 
 <a href="complex.html#Top">COMPLEX</a> cd=-1; 
-<a href="complex.html#Top">COMPLEX</a> ni=2+0.2&lowast;I 
-<a href="complex.html#Top">COMPLEX</a> gamma=1+cd&lowast;I
+<a href="complex.html#Top">COMPLEX</a> ni=2+0.2<span class=low>*</span>I 
+<a href="complex.html#Top">COMPLEX</a> gamma=1+cd<span class=low>*</span>I
 
 <span class=comment>!--------------Parameters for storing results ---------</span>
 
@@ -48,29 +48,29 @@
 
 <a href="cpl.html#WRITE">WRITE</a> 
 <a href="cpl.html#WRITE">WRITE</a> "!-------Eigenvalues of Equation on infinite domain------" 
-h=<a href="cpl.html#Builtin">SQRT</a>(-2&lowast;mu2&lowast;gamma) 
+h=<a href="cpl.html#Builtin">SQRT</a>(-2<span class=low>*</span>mu2<span class=low>*</span>gamma) 
 <a href="complex.html#Top">COMPLEX</a> eigg=0; 
-eigg=mu0-cu<a href="cpl.html#REAL-operator">^</a>2 - ni<a href="cpl.html#REAL-operator">^</a>2 / (4&lowast;gamma) - 0.5&lowast;h 
+eigg=mu0-cu<a href="cpl.html#REAL-operator">^</a>2 - ni<a href="cpl.html#REAL-operator">^</a>2 / (4<span class=low>*</span>gamma) - 0.5<span class=low>*</span>h 
 <a href="cpl.html#WRITE">WRITE</a> "Autovalore 1=", eigg 
-eigg=mu0-cu<a href="cpl.html#REAL-operator">^</a>2 - ni<a href="cpl.html#REAL-operator">^</a>2 / (4&lowast;gamma) - 1.5&lowast;h 
+eigg=mu0-cu<a href="cpl.html#REAL-operator">^</a>2 - ni<a href="cpl.html#REAL-operator">^</a>2 / (4<span class=low>*</span>gamma) - 1.5<span class=low>*</span>h 
 <a href="cpl.html#WRITE">WRITE</a> "Autovalore 2=", eigg 
-eigg=mu0-cu<a href="cpl.html#REAL-operator">^</a>2 - ni<a href="cpl.html#REAL-operator">^</a>2 / (4&lowast;gamma) - 2.5&lowast;h 
+eigg=mu0-cu<a href="cpl.html#REAL-operator">^</a>2 - ni<a href="cpl.html#REAL-operator">^</a>2 / (4<span class=low>*</span>gamma) - 2.5<span class=low>*</span>h 
 <a href="cpl.html#WRITE">WRITE</a> "Autovalore 3=", eigg 
 <a href="cpl.html#WRITE">WRITE</a> "!------------------------------------------------------" 
 <a href="cpl.html#WRITE">WRITE</a>
 <a href="cpl.html#WRITE">WRITE</a>
 
 <span class=comment>! Function mu(x)</span>
-<a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> mu(<a href="cpl.html#REAL">REAL</a> x)=(mu0-cu<a href="cpl.html#REAL-operator">^</a>2)+mu2&lowast;x<a href="cpl.html#REAL-operator">^</a>2/2 
+<a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> mu(<a href="cpl.html#REAL">REAL</a> x)=(mu0-cu<a href="cpl.html#REAL-operator">^</a>2)+mu2<span class=low>*</span>x<a href="cpl.html#REAL-operator">^</a>2/2 
 <a href="cpl.html#INTEGER">INTEGER</a> nxi=nx <a href="cpl.html#DIV">DIV</a> 2
 <a href="cpl.html#REAL">REAL</a> dx=Lx/nxi 
 
 <span class=comment>! Spatial Domain of computations:  [-Lx1...Lx1]</span>
 
 <a href="cpl.html#ARRAY">ARRAY</a>(-nx..nx) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> x=0 
-<a href="cpl.html#DO">DO</a> x(i)=i&lowast;dx <a href="cpl.html#FOR">FOR</a> i=-nxi <a href="cpl.html#TO">TO</a> nxi
-<a href="cpl.html#DO">DO</a> x(i+1)=x(i)&lowast;alpha <a href="cpl.html#FOR">FOR</a> i=nxi <a href="cpl.html#TO">TO</a> nx-1
-<a href="cpl.html#DO">DO</a> x(-i-1)=x(-i)&lowast;alpha <a href="cpl.html#FOR">FOR</a> i=nxi <a href="cpl.html#TO">TO</a> (nx-1)
+<a href="cpl.html#DO">DO</a> x(i)=i<span class=low>*</span>dx <a href="cpl.html#FOR">FOR</a> i=-nxi <a href="cpl.html#TO">TO</a> nxi
+<a href="cpl.html#DO">DO</a> x(i+1)=x(i)<span class=low>*</span>alpha <a href="cpl.html#FOR">FOR</a> i=nxi <a href="cpl.html#TO">TO</a> nx-1
+<a href="cpl.html#DO">DO</a> x(-i-1)=x(-i)<span class=low>*</span>alpha <a href="cpl.html#FOR">FOR</a> i=nxi <a href="cpl.html#TO">TO</a> (nx-1)
 <a href="cpl.html#WRITE">WRITE</a> "Domain: [Lx1..Lx1]=]["x(-nx)".."x(nx)"] ---------------"
 <a href="cpl.html#WRITE">WRITE</a>
 <a href="cpl.html#WRITE">WRITE</a> "dx in uniform domain=" dx
@@ -80,12 +80,12 @@ eigg=mu0-cu<a href="cpl.html#REAL-operator">^</a>2 - ni<a href="cpl.html#REAL-op
 <a href="cpl.html#READ">READ</a>
 <span class=comment>!-----------------GL EQUATION WITH PERIODIC BC-----------------</span>
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> GL(<a href="complex.html#Top">COMPLEX</a> F<a href="cpl.html#REAL-operator">^</a>(&lowast;),A(&lowast;))    
-F(-nx)=gamma&lowast;[A(-nx+1)-2&lowast;A(-nx)+A(nx-1)]/(dx<a href="cpl.html#REAL-operator">^</a>2)-ni&lowast;[A(-nx+1)-A(nx-1)]/(2&lowast;dx)+mu(x(-nx))&lowast;A(-nx)-NORM(A(-nx))&lowast;A(-nx) 
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> GL(<a href="complex.html#Top">COMPLEX</a> F<a href="cpl.html#REAL-operator">^</a>(<span class=low>*</span>),A(<span class=low>*</span>))    
+F(-nx)=gamma<span class=low>*</span>[A(-nx+1)-2<span class=low>*</span>A(-nx)+A(nx-1)]/(dx<a href="cpl.html#REAL-operator">^</a>2)-ni<span class=low>*</span>[A(-nx+1)-A(nx-1)]/(2<span class=low>*</span>dx)+mu(x(-nx))<span class=low>*</span>A(-nx)-NORM(A(-nx))<span class=low>*</span>A(-nx) 
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=-nx+1 <a href="cpl.html#TO">TO</a> nx-1 
-F(ix)=gamma&lowast;[A(ix+1)-2&lowast;A(ix)+A(ix-1)]/(dx<a href="cpl.html#REAL-operator">^</a>2)-ni&lowast;[A(ix+1)-A(ix-1)]/(2&lowast;dx)+mu(x(ix))&lowast;A(ix)-NORM(A(ix))&lowast;A(ix) 
+F(ix)=gamma<span class=low>*</span>[A(ix+1)-2<span class=low>*</span>A(ix)+A(ix-1)]/(dx<a href="cpl.html#REAL-operator">^</a>2)-ni<span class=low>*</span>[A(ix+1)-A(ix-1)]/(2<span class=low>*</span>dx)+mu(x(ix))<span class=low>*</span>A(ix)-NORM(A(ix))<span class=low>*</span>A(ix) 
 <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a> 
-F(nx)=gamma&lowast;[A(-nx+1)-2&lowast;A(nx)+A(nx-1)]/(dx<a href="cpl.html#REAL-operator">^</a>2)-ni&lowast;[A(-nx+1)-A(nx-1)]/(2&lowast;dx)+mu(x(nx))&lowast;A(nx)-NORM(A(nx))&lowast;A(nx) 
+F(nx)=gamma<span class=low>*</span>[A(-nx+1)-2<span class=low>*</span>A(nx)+A(nx-1)]/(dx<a href="cpl.html#REAL-operator">^</a>2)-ni<span class=low>*</span>[A(-nx+1)-A(nx-1)]/(2<span class=low>*</span>dx)+mu(x(nx))<span class=low>*</span>A(nx)-NORM(A(nx))<span class=low>*</span>A(nx) 
 <a href="cpl.html#END">END</a> GL 
 
 <span class=comment>!-------------------------------------------------------------</span>
@@ -124,11 +124,11 @@ Res=k1.REALIFIED                                    <span class=comment>! Store 
 
 
 it=it+1 
-t=dt&lowast;it
-GL(k2,A+0.5&lowast;dt&lowast;k1)                             <span class=comment>! 2nd RK stage</span>
-GL(k3,A+0.5&lowast;dt&lowast;k2)                             <span class=comment>! 3rd RK stage</span>
-GL(k4,A+dt&lowast;k3)                                 <span class=comment>! 4th RK stage</span>
-A=A+dt&lowast;[k1+2&lowast;k2+2&lowast;k3+k4]/6                     <span class=comment>! Solution at t+dt</span>
+t=dt<span class=low>*</span>it
+GL(k2,A+0.5<span class=low>*</span>dt<span class=low>*</span>k1)                             <span class=comment>! 2nd RK stage</span>
+GL(k3,A+0.5<span class=low>*</span>dt<span class=low>*</span>k2)                             <span class=comment>! 3rd RK stage</span>
+GL(k4,A+dt<span class=low>*</span>k3)                                 <span class=comment>! 4th RK stage</span>
+A=A+dt<span class=low>*</span>[k1+2<span class=low>*</span>k2+2<span class=low>*</span>k3+k4]/6                     <span class=comment>! Solution at t+dt</span>
 
 <span class=comment>! --- BoostConv ---                            <span class=comment>! We call BostConv after t&gt;tboost every boostfreq time steps  </span></span>
 

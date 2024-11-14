@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <span class=comment>! scddns -- Copyright 2022 Paolo Luchini and Maurizio Quadrio</span>
 <span class=comment>! http://CPLcode.net/Applications/FluidMechanics/Spectral-CD-DNS</span>
@@ -50,8 +50,8 @@ SOFTWARE. !)</span>
 <a href="cpl.html#CLOSE">CLOSE</a> data
 
 <a href="cpl.html#REAL">REAL</a> z(-1..nz+1)
-<span class=comment>!DO z(i)=zmax&lowast;i/nz FOR ALL i <span class=comment>! Uniform mesh</span></span>
-<a href="cpl.html#DO">DO</a> z(i)=zmin+0.5&lowast;(zmax-zmin)&lowast;[tanh(htcoeff&lowast;(2&lowast;i/nz-1))/tanh(htcoeff)+0.5&lowast;(zmax-zmin)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>! Channel with two walls</span>
+<span class=comment>!DO z(i)=zmax<span class=low>*</span>i/nz FOR ALL i <span class=comment>! Uniform mesh</span></span>
+<a href="cpl.html#DO">DO</a> z(i)=zmin+0.5<span class=low>*</span>(zmax-zmin)<span class=low>*</span>[tanh(htcoeff<span class=low>*</span>(2<span class=low>*</span>i/nz-1))/tanh(htcoeff)+0.5<span class=low>*</span>(zmax-zmin)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <span class=comment>! Channel with two walls</span>
 
 <span class=comment>! Compute the FD coefficients, then set special cases at the boundaries</span>
 <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#ARRAY">ARRAY</a>(-2..2) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> d0,d1,d2,d4] derivatives(1..nz-1)
@@ -61,63 +61,63 @@ SOFTWARE. !)</span>
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#WITH">WITH</a> derivatives(iy)
     <a href="cpl.html#DO">DO</a> M(i,j)=(z(iy-2+j)-z(iy))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
     t=0; t(0)=24
-    d4(-2+(&lowast;))=M\t
-    <a href="cpl.html#DO">DO</a> M(i,j)=(5-i)&lowast;(6-i)&lowast;(7-i)&lowast;(8-i)&lowast;(z(iy-2+j)-z(iy))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
-    <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> {d4(j)&lowast;(z(iy+j)-z(iy))<a href="cpl.html#compound-index">**</a>(8-i)} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
-    d0(-2+(&lowast;))=M\t
+    d4(-2+(<span class=low>*</span>))=M\t
+    <a href="cpl.html#DO">DO</a> M(i,j)=(5-i)<span class=low>*</span>(6-i)<span class=low>*</span>(7-i)<span class=low>*</span>(8-i)<span class=low>*</span>(z(iy-2+j)-z(iy))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
+    <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> {d4(j)<span class=low>*</span>(z(iy+j)-z(iy))<a href="cpl.html#compound-index">**</a>(8-i)} <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+    d0(-2+(<span class=low>*</span>))=M\t
     <a href="cpl.html#DO">DO</a> M(i,j)=(z(iy-2+j)-z(iy))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
-    t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;(4-i)&lowast;(3-i)&lowast;(z(iy+j)-z(iy))<a href="cpl.html#compound-index">**</a>(2-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 2
-    d2(-2+(&lowast;))=M\t
-    t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;(4-i)&lowast;(z(iy+j)-z(iy))<a href="cpl.html#compound-index">**</a>(3-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 3
-    d1(-2+(&lowast;))=M\t
+    t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)<span class=low>*</span>(4-i)<span class=low>*</span>(3-i)<span class=low>*</span>(z(iy+j)-z(iy))<a href="cpl.html#compound-index">**</a>(2-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 2
+    d2(-2+(<span class=low>*</span>))=M\t
+    t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)<span class=low>*</span>(4-i)<span class=low>*</span>(z(iy+j)-z(iy))<a href="cpl.html#compound-index">**</a>(3-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> j <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 3
+    d1(-2+(<span class=low>*</span>))=M\t
   <a href="cpl.html#LOOP">REPEAT</a>
   <a href="cpl.html#DO">DO</a> M(i,j)=(z(-1+j)-z(0))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
-  t=0; t(3)=1; d140(-2+(&lowast;))=M\t
+  t=0; t(3)=1; d140(-2+(<span class=low>*</span>))=M\t
   <a href="cpl.html#DO">DO</a> M(i,j)=(z(-1+j)-z(-1))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
-  t=0; t(3)=1; d14m1(-2+(&lowast;))=M\t
+  t=0; t(3)=1; d14m1(-2+(<span class=low>*</span>))=M\t
   d04n=0; d04n(1)=1; d040=0; d040(-1)=1
   <a href="cpl.html#DO">DO</a> M(i,j)=(z(nz-3+j)-z(nz))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
-  t=0; t(3)=1; d14n(-2+(&lowast;))=M\t
+  t=0; t(3)=1; d14n(-2+(<span class=low>*</span>))=M\t
   <a href="cpl.html#DO">DO</a> M(i,j)=(z(nz-3+j)-z(nz+1))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,j; LUdecomp M
-  t=0; t(3)=1; d14np1(-2+(&lowast;))=M\t
+  t=0; t(3)=1; d14np1(-2+(<span class=low>*</span>))=M\t
 <a href="cpl.html#END">END</a> setup_derivatives
 
 <span class=comment>! Prepare compact-difference operators; D0 multiplies the whole expression and makes the scheme compact</span>
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D0(<a href="cpl.html#REAL">REAL</a> f(&lowast;)) = d0(-2)&lowast;f(-2)+d0(-1)&lowast;f(-1)+d0(0)&lowast;f(0)+d0(1)&lowast;f(1)+d0(2)&lowast;f(2)
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D1(<a href="cpl.html#REAL">REAL</a> f(&lowast;)) = d1(-2)&lowast;f(-2)+d1(-1)&lowast;f(-1)+d1(0)&lowast;f(0)+d1(1)&lowast;f(1)+d1(2)&lowast;f(2)
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D2(<a href="cpl.html#REAL">REAL</a> f(&lowast;)) = d2(-2)&lowast;f(-2)+d2(-1)&lowast;f(-1)+d2(0)&lowast;f(0)+d2(1)&lowast;f(1)+d2(2)&lowast;f(2)
-<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D4(<a href="cpl.html#REAL">REAL</a> f(&lowast;)) = d4(-2)&lowast;f(-2)+d4(-1)&lowast;f(-1)+d4(0)&lowast;f(0)+d4(1)&lowast;f(1)+d4(2)&lowast;f(2)
-<a href="cpl.html#INLINE">INLINE</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D0(<a href="complex.html#Top">COMPLEX</a> f(&lowast;))=D0(f.<a href="cpl.html#REAL">REAL</a>)+I&lowast;D0(f.<a href="complex.html#Top">IMAG</a>)
-<a href="cpl.html#INLINE">INLINE</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D1(<a href="complex.html#Top">COMPLEX</a> f(&lowast;))=D1(f.<a href="cpl.html#REAL">REAL</a>)+I&lowast;D1(f.<a href="complex.html#Top">IMAG</a>)
-<a href="cpl.html#INLINE">INLINE</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D2(<a href="complex.html#Top">COMPLEX</a> f(&lowast;))=D2(f.<a href="cpl.html#REAL">REAL</a>)+I&lowast;D2(f.<a href="complex.html#Top">IMAG</a>)
-<a href="cpl.html#INLINE">INLINE</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D4(<a href="complex.html#Top">COMPLEX</a> f(&lowast;))=D4(f.<a href="cpl.html#REAL">REAL</a>)+I&lowast;D4(f.<a href="complex.html#Top">IMAG</a>)
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D0(<a href="cpl.html#REAL">REAL</a> f(<span class=low>*</span>)) = d0(-2)<span class=low>*</span>f(-2)+d0(-1)<span class=low>*</span>f(-1)+d0(0)<span class=low>*</span>f(0)+d0(1)<span class=low>*</span>f(1)+d0(2)<span class=low>*</span>f(2)
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D1(<a href="cpl.html#REAL">REAL</a> f(<span class=low>*</span>)) = d1(-2)<span class=low>*</span>f(-2)+d1(-1)<span class=low>*</span>f(-1)+d1(0)<span class=low>*</span>f(0)+d1(1)<span class=low>*</span>f(1)+d1(2)<span class=low>*</span>f(2)
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D2(<a href="cpl.html#REAL">REAL</a> f(<span class=low>*</span>)) = d2(-2)<span class=low>*</span>f(-2)+d2(-1)<span class=low>*</span>f(-1)+d2(0)<span class=low>*</span>f(0)+d2(1)<span class=low>*</span>f(1)+d2(2)<span class=low>*</span>f(2)
+<a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D4(<a href="cpl.html#REAL">REAL</a> f(<span class=low>*</span>)) = d4(-2)<span class=low>*</span>f(-2)+d4(-1)<span class=low>*</span>f(-1)+d4(0)<span class=low>*</span>f(0)+d4(1)<span class=low>*</span>f(1)+d4(2)<span class=low>*</span>f(2)
+<a href="cpl.html#INLINE">INLINE</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D0(<a href="complex.html#Top">COMPLEX</a> f(<span class=low>*</span>))=D0(f.<a href="cpl.html#REAL">REAL</a>)+I<span class=low>*</span>D0(f.<a href="complex.html#Top">IMAG</a>)
+<a href="cpl.html#INLINE">INLINE</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D1(<a href="complex.html#Top">COMPLEX</a> f(<span class=low>*</span>))=D1(f.<a href="cpl.html#REAL">REAL</a>)+I<span class=low>*</span>D1(f.<a href="complex.html#Top">IMAG</a>)
+<a href="cpl.html#INLINE">INLINE</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D2(<a href="complex.html#Top">COMPLEX</a> f(<span class=low>*</span>))=D2(f.<a href="cpl.html#REAL">REAL</a>)+I<span class=low>*</span>D2(f.<a href="complex.html#Top">IMAG</a>)
+<a href="cpl.html#INLINE">INLINE</a> <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> D4(<a href="complex.html#Top">COMPLEX</a> f(<span class=low>*</span>))=D4(f.<a href="cpl.html#REAL">REAL</a>)+I<span class=low>*</span>D4(f.<a href="complex.html#Top">IMAG</a>)
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> bcLUdecomp[<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(-1..nz+1,-2..2) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> A]
-  A(0,-1..<a href="cpl.html#HI">HI</a>)=<a href="cpl.html#Assignment">~</a>-A(0,-2)/A(-1,-2)&lowast;A(-1,-1..<a href="cpl.html#HI">HI</a>)
-  A(1,-1..<a href="cpl.html#HI">HI</a>)=<a href="cpl.html#Assignment">~</a>-A(1,-2)/A(-1,-2)&lowast;A(-1,-1..<a href="cpl.html#HI">HI</a>)
-  A(1,0..<a href="cpl.html#HI">HI</a>)=<a href="cpl.html#Assignment">~</a>-A(1,-1)/A(0,-1)&lowast;A(0,0..<a href="cpl.html#HI">HI</a>)
-  A[2,-1+(0..<a href="cpl.html#HI">HI</a>)]=<a href="cpl.html#Assignment">~</a>-A(2,-2)/A(0,-1)&lowast;A(0,0..<a href="cpl.html#HI">HI</a>)
-  A(nz,<a href="cpl.html#LO">LO</a>..1)=<a href="cpl.html#Assignment">~</a>-A(nz,2)/A(nz+1,2)&lowast;A(nz+1,<a href="cpl.html#LO">LO</a>..1)
-  A(nz-1,<a href="cpl.html#LO">LO</a>..1)=<a href="cpl.html#Assignment">~</a>-A(nz-1,2)/A(nz+1,2)&lowast;A(nz+1,<a href="cpl.html#LO">LO</a>..1)
-  A(nz-1,<a href="cpl.html#LO">LO</a>..0)=<a href="cpl.html#Assignment">~</a>-A(nz-1,1)/A(nz,1)&lowast;A(nz,<a href="cpl.html#LO">LO</a>..0)
-  A[nz-2,1+(<a href="cpl.html#LO">LO</a>..0)]=<a href="cpl.html#Assignment">~</a>-A(nz-2,2)/A(nz,1)&lowast;A(nz,<a href="cpl.html#LO">LO</a>..0)
+  A(0,-1..<a href="cpl.html#HI">HI</a>)=<a href="cpl.html#Assignment">~</a>-A(0,-2)/A(-1,-2)<span class=low>*</span>A(-1,-1..<a href="cpl.html#HI">HI</a>)
+  A(1,-1..<a href="cpl.html#HI">HI</a>)=<a href="cpl.html#Assignment">~</a>-A(1,-2)/A(-1,-2)<span class=low>*</span>A(-1,-1..<a href="cpl.html#HI">HI</a>)
+  A(1,0..<a href="cpl.html#HI">HI</a>)=<a href="cpl.html#Assignment">~</a>-A(1,-1)/A(0,-1)<span class=low>*</span>A(0,0..<a href="cpl.html#HI">HI</a>)
+  A[2,-1+(0..<a href="cpl.html#HI">HI</a>)]=<a href="cpl.html#Assignment">~</a>-A(2,-2)/A(0,-1)<span class=low>*</span>A(0,0..<a href="cpl.html#HI">HI</a>)
+  A(nz,<a href="cpl.html#LO">LO</a>..1)=<a href="cpl.html#Assignment">~</a>-A(nz,2)/A(nz+1,2)<span class=low>*</span>A(nz+1,<a href="cpl.html#LO">LO</a>..1)
+  A(nz-1,<a href="cpl.html#LO">LO</a>..1)=<a href="cpl.html#Assignment">~</a>-A(nz-1,2)/A(nz+1,2)<span class=low>*</span>A(nz+1,<a href="cpl.html#LO">LO</a>..1)
+  A(nz-1,<a href="cpl.html#LO">LO</a>..0)=<a href="cpl.html#Assignment">~</a>-A(nz-1,1)/A(nz,1)<span class=low>*</span>A(nz,<a href="cpl.html#LO">LO</a>..0)
+  A[nz-2,1+(<a href="cpl.html#LO">LO</a>..0)]=<a href="cpl.html#Assignment">~</a>-A(nz-2,2)/A(nz,1)<span class=low>*</span>A(nz,<a href="cpl.html#LO">LO</a>..0)
   LUdecomp A(1..nz-1)
 <a href="cpl.html#END">END</a> bcLUdecomp
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> bcLeftDiv[<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> x; <a href="cpl.html#ARRAY">ARRAY</a>(-1..nz+1,-2..2) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> A]
-  x(0)=<a href="cpl.html#Assignment">~</a>-A(0,-2)/A(-1,-2)&lowast;x(-1)
-  x(1)=<a href="cpl.html#Assignment">~</a>-A(1,-2)/A(-1,-2)&lowast;x(-1)
-  x(1)=<a href="cpl.html#Assignment">~</a>-A(1,-1)/A(0,-1)&lowast;x(0)
-  x(2)=<a href="cpl.html#Assignment">~</a>-A(2,-2)/A(0,-1)&lowast;x(0)
-  x(nz)=<a href="cpl.html#Assignment">~</a>-A(nz,2)/A(nz+1,2)&lowast;x(nz+1)
-  x(nz-1)=<a href="cpl.html#Assignment">~</a>-A(nz-1,2)/A(nz+1,2)&lowast;x(nz+1)
-  x(nz-1)=<a href="cpl.html#Assignment">~</a>-A(nz-1,1)/A(nz,1)&lowast;x(nz)
-  x(nz-2)=<a href="cpl.html#Assignment">~</a>-A(nz-2,2)/A(nz,1)&lowast;x(nz)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> bcLeftDiv[<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> x; <a href="cpl.html#ARRAY">ARRAY</a>(-1..nz+1,-2..2) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> A]
+  x(0)=<a href="cpl.html#Assignment">~</a>-A(0,-2)/A(-1,-2)<span class=low>*</span>x(-1)
+  x(1)=<a href="cpl.html#Assignment">~</a>-A(1,-2)/A(-1,-2)<span class=low>*</span>x(-1)
+  x(1)=<a href="cpl.html#Assignment">~</a>-A(1,-1)/A(0,-1)<span class=low>*</span>x(0)
+  x(2)=<a href="cpl.html#Assignment">~</a>-A(2,-2)/A(0,-1)<span class=low>*</span>x(0)
+  x(nz)=<a href="cpl.html#Assignment">~</a>-A(nz,2)/A(nz+1,2)<span class=low>*</span>x(nz+1)
+  x(nz-1)=<a href="cpl.html#Assignment">~</a>-A(nz-1,2)/A(nz+1,2)<span class=low>*</span>x(nz+1)
+  x(nz-1)=<a href="cpl.html#Assignment">~</a>-A(nz-1,1)/A(nz,1)<span class=low>*</span>x(nz)
+  x(nz-2)=<a href="cpl.html#Assignment">~</a>-A(nz-2,2)/A(nz,1)<span class=low>*</span>x(nz)
   x(1..nz-1)=A(1..nz-1)\~
-  x(0)=-{A(0,0..2)&lowast;x[1+(0..2)]}/A(0,-1)
-  x(-1)=-{A(-1,-1..2)&lowast;x[1+(-1..2)]}/A(-1,-2)
-  x(nz)=-{A(nz,-2..0)&lowast;x[nz-1+(-2..0)]}/A(nz,1)
-  x(nz+1)=-{A(nz+1,-2..1)&lowast;x[nz-1+(-2..1)]}/A(nz+1,2)
+  x(0)=-{A(0,0..2)<span class=low>*</span>x[1+(0..2)]}/A(0,-1)
+  x(-1)=-{A(-1,-1..2)<span class=low>*</span>x[1+(-1..2)]}/A(-1,-2)
+  x(nz)=-{A(nz,-2..0)<span class=low>*</span>x[nz-1+(-2..0)]}/A(nz,1)
+  x(nz+1)=-{A(nz+1,-2..1)<span class=low>*</span>x[nz-1+(-2..1)]}/A(nz+1,2)
 <a href="cpl.html#END">END</a> bcLeftDiv
 
 <a href="cpl.html#ARRAY">ARRAY</a>(-1..nz+1,-2..2) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> D0mat=0, etamat=0, D2vmat=0
@@ -136,12 +136,12 @@ DERPRODS=<a href="cpl.html#STRUCTURE">STRUCTURE</a>(<a href="complex.html#Top">C
 
 REALVEL mean(0..nz)=0; SPECTRUM rms(0..nz)=0
 
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> deriv(<a href="cpl.html#ARRAY">ARRAY</a>(&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> f0,f1<a href="cpl.html#REAL-operator">^</a>)
-  f1(0)=<a href="cpl.html#Looping-operator">SUM</a> d140(i)&lowast;f0(1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
-  f1(-1)=<a href="cpl.html#Looping-operator">SUM</a> d14m1(i)&lowast;f0(1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
-  f1(nz)=<a href="cpl.html#Looping-operator">SUM</a> d14n(i)&lowast;f0(nz-1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
-  f1(nz+1)=<a href="cpl.html#Looping-operator">SUM</a> d14np1(i)&lowast;f0(nz-1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
-  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> derivatives(i) f1(i)=D1(f0(i+(&lowast;))) <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> deriv(<a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> f0,f1<a href="cpl.html#REAL-operator">^</a>)
+  f1(0)=<a href="cpl.html#Looping-operator">SUM</a> d140(i)<span class=low>*</span>f0(1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
+  f1(-1)=<a href="cpl.html#Looping-operator">SUM</a> d14m1(i)<span class=low>*</span>f0(1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
+  f1(nz)=<a href="cpl.html#Looping-operator">SUM</a> d14n(i)<span class=low>*</span>f0(nz-1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
+  f1(nz+1)=<a href="cpl.html#Looping-operator">SUM</a> d14np1(i)<span class=low>*</span>f0(nz-1+i) <a href="cpl.html#FOR">FOR</a> i=-2 <a href="cpl.html#TO">TO</a> 2
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> derivatives(i) f1(i)=D1(f0(i+(<span class=low>*</span>))) <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
   bcLeftDiv(f1,D0mat)
 <a href="cpl.html#END">END</a> deriv
 
@@ -161,7 +161,7 @@ nftot=nfmax-nfmin+1
   <a href="cpl.html#LOOP">REPEAT</a>
   <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#CHAR">CHAR</a> skip[1..<a href="cpl.html#POSITION">POSITION</a>(data)]; <a href="cpl.html#ARRAY">ARRAY</a>(0..oldnx,-oldny..oldny,-1..oldnz+1) <a href="cpl.html#OF">OF</a> VELOCITY oldV] image=data
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=<a href="cpl.html#MAX">MAX</a>(V.<a href="cpl.html#LO">LO1</a>,image.oldV.<a href="cpl.html#LO">LO1</a>) <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(V.<a href="cpl.html#HI">HI1</a>,image.oldV.<a href="cpl.html#HI">HI1</a>) <a href="cpl.html#AND">AND</a> iy=<a href="cpl.html#MAX">MAX</a>(V.<a href="cpl.html#LO">LO2</a>,image.oldV.<a href="cpl.html#LO">LO2</a>) <a href="cpl.html#TO">TO</a> <a href="cpl.html#MIN">MIN</a>(V.<a href="cpl.html#HI">HI2</a>,image.oldV.<a href="cpl.html#HI">HI2</a>)
-    <a href="cpl.html#DO">DO</a> V(ix,iy,iz)=image.oldV[ix,iy,-1+(oldnz+2)&lowast;(iz+1)<a href="cpl.html#DIV">DIV</a>(nz+2)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
+    <a href="cpl.html#DO">DO</a> V(ix,iy,iz)=image.oldV[ix,iy,-1+(oldnz+2)<span class=low>*</span>(iz+1)<a href="cpl.html#DIV">DIV</a>(nz+2)] <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#CLOSE">CLOSE</a> data
   
@@ -170,22 +170,22 @@ nftot=nfmax-nfmin+1
   <a href="cpl.html#LOOP">REPEAT</a>
   
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz=rms.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> rms.<a href="cpl.html#HI">HI</a> <a href="cpl.html#WITH">WITH</a> rms(iz)
-    uu= <a href="cpl.html#Assignment">~</a> + [NORM[V(0,&lowast;,iz).u] + 2&lowast;[<a href="cpl.html#Looping-operator">SUM</a> NORM[V(ix,&lowast;,iz).u] <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]] 
-    vv= <a href="cpl.html#Assignment">~</a> + [NORM[V(0,&lowast;,iz).v] + 2&lowast;[<a href="cpl.html#Looping-operator">SUM</a> NORM[V(ix,&lowast;,iz).v] <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]]  
-    ww= <a href="cpl.html#Assignment">~</a> + [NORM[V(0,&lowast;,iz).w] + 2&lowast;[<a href="cpl.html#Looping-operator">SUM</a> NORM[V(ix,&lowast;,iz).w] <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]]
-    uv= <a href="cpl.html#Assignment">~</a> + [2&lowast;[<a href="cpl.html#Looping-operator">SUM</a> (V(ix,&lowast;,iz).u | V(ix,&lowast;,iz).v).<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]]
-    uv= <a href="cpl.html#Assignment">~</a> + [V(0,&lowast;,iz).u | V(0,&lowast;,iz).v].<a href="cpl.html#REAL">REAL</a>
-    uw= <a href="cpl.html#Assignment">~</a> + [2&lowast;[<a href="cpl.html#Looping-operator">SUM</a> (V(ix,&lowast;,iz).u | V(ix,&lowast;,iz).w).<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]]
-    uw= <a href="cpl.html#Assignment">~</a> + [V(0,&lowast;,iz).u | V(0,&lowast;,iz).w].<a href="cpl.html#REAL">REAL</a>
-    vw= <a href="cpl.html#Assignment">~</a> + [2&lowast;[<a href="cpl.html#Looping-operator">SUM</a> (V(ix,&lowast;,iz).v | V(ix,&lowast;,iz).w).<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]]
-    vw= <a href="cpl.html#Assignment">~</a> + [V(0,&lowast;,iz).v | V(0,&lowast;,iz).w].<a href="cpl.html#REAL">REAL</a> 
+    uu= <a href="cpl.html#Assignment">~</a> + [NORM[V(0,<span class=low>*</span>,iz).u] + 2<span class=low>*</span>[<a href="cpl.html#Looping-operator">SUM</a> NORM[V(ix,<span class=low>*</span>,iz).u] <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]] 
+    vv= <a href="cpl.html#Assignment">~</a> + [NORM[V(0,<span class=low>*</span>,iz).v] + 2<span class=low>*</span>[<a href="cpl.html#Looping-operator">SUM</a> NORM[V(ix,<span class=low>*</span>,iz).v] <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]]  
+    ww= <a href="cpl.html#Assignment">~</a> + [NORM[V(0,<span class=low>*</span>,iz).w] + 2<span class=low>*</span>[<a href="cpl.html#Looping-operator">SUM</a> NORM[V(ix,<span class=low>*</span>,iz).w] <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]]
+    uv= <a href="cpl.html#Assignment">~</a> + [2<span class=low>*</span>[<a href="cpl.html#Looping-operator">SUM</a> (V(ix,<span class=low>*</span>,iz).u | V(ix,<span class=low>*</span>,iz).v).<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]]
+    uv= <a href="cpl.html#Assignment">~</a> + [V(0,<span class=low>*</span>,iz).u | V(0,<span class=low>*</span>,iz).v].<a href="cpl.html#REAL">REAL</a>
+    uw= <a href="cpl.html#Assignment">~</a> + [2<span class=low>*</span>[<a href="cpl.html#Looping-operator">SUM</a> (V(ix,<span class=low>*</span>,iz).u | V(ix,<span class=low>*</span>,iz).w).<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]]
+    uw= <a href="cpl.html#Assignment">~</a> + [V(0,<span class=low>*</span>,iz).u | V(0,<span class=low>*</span>,iz).w].<a href="cpl.html#REAL">REAL</a>
+    vw= <a href="cpl.html#Assignment">~</a> + [2<span class=low>*</span>[<a href="cpl.html#Looping-operator">SUM</a> (V(ix,<span class=low>*</span>,iz).v | V(ix,<span class=low>*</span>,iz).w).<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]]
+    vw= <a href="cpl.html#Assignment">~</a> + [V(0,<span class=low>*</span>,iz).v | V(0,<span class=low>*</span>,iz).w].<a href="cpl.html#REAL">REAL</a> 
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 
 <a href="cpl.html#LOOP">REPEAT</a> files 
 
 <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> mean(iz): u=<a href="cpl.html#Assignment">~</a>/nftot; v=<a href="cpl.html#Assignment">~</a>/nftot; w=<a href="cpl.html#Assignment">~</a>/nftot <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
 
-<a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> rms(iz): uu=<a href="cpl.html#Builtin">SQRT</a>{uu/nftot-mean(iz).u<a href="cpl.html#REAL-operator">^</a>2}; vv=<a href="cpl.html#Builtin">SQRT</a>{vv/nftot-mean(iz).v<a href="cpl.html#REAL-operator">^</a>2}; ww=<a href="cpl.html#Builtin">SQRT</a>{ww/nftot}; uv=uv/nftot-mean(iz).u&lowast;mean(iz).v; uw=uw/nftot; vw=vw/nftot <a href="cpl.html#FOR">FOR</a> iz=0 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> rms(iz): uu=<a href="cpl.html#Builtin">SQRT</a>{uu/nftot-mean(iz).u<a href="cpl.html#REAL-operator">^</a>2}; vv=<a href="cpl.html#Builtin">SQRT</a>{vv/nftot-mean(iz).v<a href="cpl.html#REAL-operator">^</a>2}; ww=<a href="cpl.html#Builtin">SQRT</a>{ww/nftot}; uv=uv/nftot-mean(iz).u<span class=low>*</span>mean(iz).v; uw=uw/nftot; vw=vw/nftot <a href="cpl.html#FOR">FOR</a> iz=0 <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
 
 <a href="cpl.html#FILE">FILE</a> out=<a href="cpl.html#CREATE">CREATE</a>("mean.dat")
 <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> out "# z        u        v"

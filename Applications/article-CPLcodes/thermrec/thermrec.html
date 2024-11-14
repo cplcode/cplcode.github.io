@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a>
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
@@ -33,11 +33,11 @@ UseContinuousAdjoint=<a href="cpl.html#BOOLEAN">NO</a>
 
 dx=(xmax-xmin)/nx
 domega=(omax-omin)/nomg
-<span class=comment>!domega=omax/(nomg+0.5); omin=0.5&lowast;domega</span>
-dbeta=bmax/(nbeta+0.5); bmin=0.5&lowast;dbeta
+<span class=comment>!domega=omax/(nomg+0.5); omin=0.5<span class=low>*</span>domega</span>
+dbeta=bmax/(nbeta+0.5); bmin=0.5<span class=low>*</span>dbeta
 
 <a href="cpl.html#ARRAY">ARRAY</a>(-1..ny+1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> y
-<a href="cpl.html#DO">DO</a> y(i)=ymax&lowast;i/ny&lowast;(0.8&lowast;i/ny+0.2) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+<a href="cpl.html#DO">DO</a> y(i)=ymax<span class=low>*</span>i/ny<span class=low>*</span>(0.8<span class=low>*</span>i/ny+0.2) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
 
 <a href="cpl.html#STRUCTURE">STRUCTURE</a>[<a href="cpl.html#ARRAY">ARRAY</a>(-2..2) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> d0,d1,d2,d3,d4] derivatives(1..ny-1)
 <a href="cpl.html#MODULE">MODULE</a> setup_derivatives
@@ -45,17 +45,17 @@ dbeta=bmax/(nbeta+0.5); bmin=0.5&lowast;dbeta
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#WITH">WITH</a> derivatives(iy)
   <a href="cpl.html#DO">DO</a> M(i,j)=(y(iy-2+j)-y(iy))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <a href="cpl.html#AND">AND</a> j=0 <a href="cpl.html#TO">TO</a> 4; LUdecomp M
   t=0; t(0)=24
-  d4(-2+(&lowast;))=M\t
-  <a href="cpl.html#DO">DO</a> M(i,j)=(5-i)&lowast;(6-i)&lowast;(7-i)&lowast;(8-i)&lowast;(y(iy-2+j)-y(iy))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <a href="cpl.html#AND">AND</a> j=0 <a href="cpl.html#TO">TO</a> 4; LUdecomp M
-  <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> {d4(j)&lowast;(y(iy+j)-y(iy))<a href="cpl.html#compound-index">**</a>(8-i)} <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
-  d0(-2+(&lowast;))=M\t
+  d4(-2+(<span class=low>*</span>))=M\t
+  <a href="cpl.html#DO">DO</a> M(i,j)=(5-i)<span class=low>*</span>(6-i)<span class=low>*</span>(7-i)<span class=low>*</span>(8-i)<span class=low>*</span>(y(iy-2+j)-y(iy))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <a href="cpl.html#AND">AND</a> j=0 <a href="cpl.html#TO">TO</a> 4; LUdecomp M
+  <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> {d4(j)<span class=low>*</span>(y(iy+j)-y(iy))<a href="cpl.html#compound-index">**</a>(8-i)} <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  d0(-2+(<span class=low>*</span>))=M\t
   <a href="cpl.html#DO">DO</a> M(i,j)=(y(iy-2+j)-y(iy))<a href="cpl.html#compound-index">**</a>(4-i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i <a href="cpl.html#AND">AND</a> j=0 <a href="cpl.html#TO">TO</a> 4; LUdecomp M
-  t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;(4-i)&lowast;(3-i)&lowast;(2-i)&lowast;(y(iy+j)-y(iy))<a href="cpl.html#compound-index">**</a>(1-i) <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 1
-  d3(-2+(&lowast;))=M\t
-  t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;(4-i)&lowast;(3-i)&lowast;(y(iy+j)-y(iy))<a href="cpl.html#compound-index">**</a>(2-i) <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 2
-  d2(-2+(&lowast;))=M\t
-  t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;(4-i)&lowast;(y(iy+j)-y(iy))<a href="cpl.html#compound-index">**</a>(3-i) <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 3
-  d1(-2+(&lowast;))=M\t
+  t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)<span class=low>*</span>(4-i)<span class=low>*</span>(3-i)<span class=low>*</span>(2-i)<span class=low>*</span>(y(iy+j)-y(iy))<a href="cpl.html#compound-index">**</a>(1-i) <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 1
+  d3(-2+(<span class=low>*</span>))=M\t
+  t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)<span class=low>*</span>(4-i)<span class=low>*</span>(3-i)<span class=low>*</span>(y(iy+j)-y(iy))<a href="cpl.html#compound-index">**</a>(2-i) <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 2
+  d2(-2+(<span class=low>*</span>))=M\t
+  t=0; <a href="cpl.html#DO">DO</a> t(i)=<a href="cpl.html#Looping-operator">SUM</a> d0(j)<span class=low>*</span>(4-i)<span class=low>*</span>(y(iy+j)-y(iy))<a href="cpl.html#compound-index">**</a>(3-i) <a href="cpl.html#FOR">FOR</a> j=-2 <a href="cpl.html#TO">TO</a> 2 <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> 3
+  d1(-2+(<span class=low>*</span>))=M\t
 <a href="cpl.html#LOOP">REPEAT</a>
 <a href="cpl.html#END">END</a> setup_derivatives
 
@@ -63,35 +63,35 @@ dbeta=bmax/(nbeta+0.5); bmin=0.5&lowast;dbeta
 <a href="cpl.html#ARRAY">ARRAY</a>(0..ny) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> U0,U1,U2,V
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BaseFlow()
   <a href="cpl.html#REAL">REAL</a> F(0..ny)
-  F(0)=0; U0(0)=0; U0(1)=0.332/<a href="cpl.html#Builtin">SQRT</a>(x)&lowast;y(1); U0(ny)=1
+  F(0)=0; U0(0)=0; U0(1)=0.332/<a href="cpl.html#Builtin">SQRT</a>(x)<span class=low>*</span>y(1); U0(ny)=1
   <a href="cpl.html#DO">DO</a>
-    U0(1)=U0(1)&lowast;U0(ny)<a href="cpl.html#compound-index">**</a>(-1.5)
+    U0(1)=U0(1)<span class=low>*</span>U0(ny)<a href="cpl.html#compound-index">**</a>(-1.5)
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1
       d1=2/[y(i+1)-y(i-1)]; d2p=d1/[y(i+1)-y(i)]; d2m=d1/[y(i)-y(i-1)]; d20=d2p+d2m
-      F(i)=F(i-1)+[U0(i-1)+U0(i)]&lowast;[y(i)-y(i-1)]/2
-      U0(i+1)={d20&lowast;U0(i)-[d2m-d1&lowast;F(i)/4/x]&lowast;U0(i-1)}/[d2p+d1&lowast;F(i)/4/x]
-      U1(i)=d1&lowast;[U0(i+1)-U0(i-1)]/2
-      U2(i)=d2p&lowast;U0(i+1)-d20&lowast;U0(i)+d2m&lowast;U0(i-1)
+      F(i)=F(i-1)+[U0(i-1)+U0(i)]<span class=low>*</span>[y(i)-y(i-1)]/2
+      U0(i+1)={d20<span class=low>*</span>U0(i)-[d2m-d1<span class=low>*</span>F(i)/4/x]<span class=low>*</span>U0(i-1)}/[d2p+d1<span class=low>*</span>F(i)/4/x]
+      U1(i)=d1<span class=low>*</span>[U0(i+1)-U0(i-1)]/2
+      U2(i)=d2p<span class=low>*</span>U0(i+1)-d20<span class=low>*</span>U0(i)+d2m<span class=low>*</span>U0(i-1)
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <span class=comment>!    WRITE "blasius:" U0(1)/y(1),U0(ny)</span>
   <a href="cpl.html#FOR">FOR</a> 2 <a href="cpl.html#TIMES">TIMES</a>
-  U2(0)=0; U2(ny)=0; F(ny)=F(ny-1)+[U0(ny-1)+U0(ny)]&lowast;[y(ny)-y(ny-1)]/2
-  <a href="cpl.html#DO">DO</a> V(i)=(y(i)&lowast;U0(i)-F(i))/2/<a href="cpl.html#Builtin">SQRT</a>(x)/Re <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> ny
+  U2(0)=0; U2(ny)=0; F(ny)=F(ny-1)+[U0(ny-1)+U0(ny)]<span class=low>*</span>[y(ny)-y(ny-1)]/2
+  <a href="cpl.html#DO">DO</a> V(i)=(y(i)<span class=low>*</span>U0(i)-F(i))/2/<a href="cpl.html#Builtin">SQRT</a>(x)/Re <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> ny
 <a href="cpl.html#END">END</a> BaseFlow
 
 <a href="cpl.html#REAL">REAL</a> omega,beta; <a href="complex.html#Top">COMPLEX</a> alpha
 <a href="cpl.html#ARRAY">ARRAY</a>(1..ny-1,-2..2) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> A,dA
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> BuildMats()
-  k2=alpha&lowast;alpha+beta&lowast;beta; k=<a href="cpl.html#Builtin">SQRT</a>(k2)
+  k2=alpha<span class=low>*</span>alpha+beta<span class=low>*</span>beta; k=<a href="cpl.html#Builtin">SQRT</a>(k2)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#WITH">WITH</a> derivatives(i)
 <a href="cpl.html#IF">IF</a> UseContinuousAdjoint <a href="cpl.html#IF">THEN</a>
-    A(i)=[y(i+1)-y(i-1)]/2&lowast;{[I&lowast;omega-I&lowast;alpha&lowast;U0(i)]&lowast;(k2&lowast;d0-d2)+2&lowast;I&lowast;alpha&lowast;U1(i)&lowast;d1+ni&lowast;(d4-2&lowast;k2&lowast;d2+k2&lowast;k2&lowast;d0)}
-    dA(i)=[y(i+1)-y(i-1)]/2&lowast;{-I&lowast;U0(i)&lowast;(k2&lowast;d0-d2)+2&lowast;I&lowast;U1(i)&lowast;d1+
-      [I&lowast;omega-I&lowast;alpha&lowast;U0(i)]&lowast;2&lowast;alpha&lowast;d0+ni&lowast;(-4&lowast;alpha&lowast;d2+4&lowast;alpha&lowast;k2&lowast;d0)}
+    A(i)=[y(i+1)-y(i-1)]/2<span class=low>*</span>{[I<span class=low>*</span>omega-I<span class=low>*</span>alpha<span class=low>*</span>U0(i)]<span class=low>*</span>(k2<span class=low>*</span>d0-d2)+2<span class=low>*</span>I<span class=low>*</span>alpha<span class=low>*</span>U1(i)<span class=low>*</span>d1+ni<span class=low>*</span>(d4-2<span class=low>*</span>k2<span class=low>*</span>d2+k2<span class=low>*</span>k2<span class=low>*</span>d0)}
+    dA(i)=[y(i+1)-y(i-1)]/2<span class=low>*</span>{-I<span class=low>*</span>U0(i)<span class=low>*</span>(k2<span class=low>*</span>d0-d2)+2<span class=low>*</span>I<span class=low>*</span>U1(i)<span class=low>*</span>d1+
+      [I<span class=low>*</span>omega-I<span class=low>*</span>alpha<span class=low>*</span>U0(i)]<span class=low>*</span>2<span class=low>*</span>alpha<span class=low>*</span>d0+ni<span class=low>*</span>(-4<span class=low>*</span>alpha<span class=low>*</span>d2+4<span class=low>*</span>alpha<span class=low>*</span>k2<span class=low>*</span>d0)}
 <a href="cpl.html#ELSE">ELSE</a>
-    A(i)=[y(i+1)-y(i-1)]/2&lowast;{[I&lowast;omega-I&lowast;alpha&lowast;U0(i)]&lowast;(k2&lowast;d0-d2)-I&lowast;alpha&lowast;U2(i)&lowast;d0+ni&lowast;(d4-2&lowast;k2&lowast;d2+k2&lowast;k2&lowast;d0)}
-    dA(i)=[y(i+1)-y(i-1)]/2&lowast;{-I&lowast;U0(i)&lowast;(k2&lowast;d0-d2)-I&lowast;U2(i)&lowast;d0+
-      [I&lowast;omega-I&lowast;alpha&lowast;U0(i)]&lowast;2&lowast;alpha&lowast;d0+ni&lowast;(-4&lowast;alpha&lowast;d2+4&lowast;alpha&lowast;k2&lowast;d0)}
+    A(i)=[y(i+1)-y(i-1)]/2<span class=low>*</span>{[I<span class=low>*</span>omega-I<span class=low>*</span>alpha<span class=low>*</span>U0(i)]<span class=low>*</span>(k2<span class=low>*</span>d0-d2)-I<span class=low>*</span>alpha<span class=low>*</span>U2(i)<span class=low>*</span>d0+ni<span class=low>*</span>(d4-2<span class=low>*</span>k2<span class=low>*</span>d2+k2<span class=low>*</span>k2<span class=low>*</span>d0)}
+    dA(i)=[y(i+1)-y(i-1)]/2<span class=low>*</span>{-I<span class=low>*</span>U0(i)<span class=low>*</span>(k2<span class=low>*</span>d0-d2)-I<span class=low>*</span>U2(i)<span class=low>*</span>d0+
+      [I<span class=low>*</span>omega-I<span class=low>*</span>alpha<span class=low>*</span>U0(i)]<span class=low>*</span>2<span class=low>*</span>alpha<span class=low>*</span>d0+ni<span class=low>*</span>(-4<span class=low>*</span>alpha<span class=low>*</span>d2+4<span class=low>*</span>alpha<span class=low>*</span>k2<span class=low>*</span>d0)}
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   A(1,0)=A(1,0)+A(1,-2)
@@ -100,10 +100,10 @@ dbeta=bmax/(nbeta+0.5); bmin=0.5&lowast;dbeta
   A(ny-1,0)=A(ny-1,0)+A(ny-1,2)
   dA(ny-1,0)=dA(ny-1,0)+dA(ny-1,2)
 <a href="cpl.html#ELSE">ELSE</a>
-  A(ny-1,0)=A(ny-1,0)+A(ny-1,2)&lowast;<a href="cpl.html#Builtin">EXP</a>(-k&lowast;(y(ny+1)-y(ny-1)))+A(ny-1,1)&lowast;<a href="cpl.html#Builtin">EXP</a>(-k&lowast;(y(ny)-y(ny-1)))
-  dA(ny-1,0)=dA(ny-1,0)+dA(ny-1,2)&lowast;<a href="cpl.html#Builtin">EXP</a>(-k&lowast;(y(ny+1)-y(ny-1)))+dA(ny-1,1)&lowast;<a href="cpl.html#Builtin">EXP</a>(-k&lowast;(y(ny)-y(ny-1)))
-  A(ny-2,1)=A(ny-2,1)+A(ny-2,2)&lowast;<a href="cpl.html#Builtin">EXP</a>(-k&lowast;(y(ny)-y(ny-1)))
-  dA(ny-2,1)=dA(ny-2,1)+dA(ny-2,2)&lowast;<a href="cpl.html#Builtin">EXP</a>(-k&lowast;(y(ny)-y(ny-1)))
+  A(ny-1,0)=A(ny-1,0)+A(ny-1,2)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-k<span class=low>*</span>(y(ny+1)-y(ny-1)))+A(ny-1,1)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-k<span class=low>*</span>(y(ny)-y(ny-1)))
+  dA(ny-1,0)=dA(ny-1,0)+dA(ny-1,2)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-k<span class=low>*</span>(y(ny+1)-y(ny-1)))+dA(ny-1,1)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-k<span class=low>*</span>(y(ny)-y(ny-1)))
+  A(ny-2,1)=A(ny-2,1)+A(ny-2,2)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-k<span class=low>*</span>(y(ny)-y(ny-1)))
+  dA(ny-2,1)=dA(ny-2,1)+dA(ny-2,2)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-k<span class=low>*</span>(y(ny)-y(ny-1)))
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
   LUdecomp A
 <a href="cpl.html#END">END</a> BuildMats
@@ -117,18 +117,18 @@ psi<a href="cpl.html#Deferred-assignment">==</a>ps(1..ny-1)
   <a href="cpl.html#DO">DO</a>
     BuildMats
 <a href="cpl.html#IF">IF</a> UseContinuousAdjoint <a href="cpl.html#IF">THEN</a>
-    psi=zeta/A; zetanew=psi&lowast;dA
-    zstar=dA&lowast;zstar; zstar=A\zstar
+    psi=zeta/A; zetanew=psi<span class=low>*</span>dA
+    zstar=dA<span class=low>*</span>zstar; zstar=A\zstar
 <a href="cpl.html#ELSE">ELSE</a>
-    psi=A\zeta; zetanew=dA&lowast;psi
-    zstar=zstar&lowast;dA; zstar=zstar/A
+    psi=A\zeta; zetanew=dA<span class=low>*</span>psi
+    zstar=zstar<span class=low>*</span>dA; zstar=zstar/A
 <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
-    dalpha=-(zstar&lowast;zeta)/(zstar&lowast;zetanew)
+    dalpha=-(zstar<span class=low>*</span>zeta)/(zstar<span class=low>*</span>zetanew)
     alpha=alpha+dalpha
     normfact=1/psi(1)
-    psi=psi&lowast;normfact
-    zeta=zetanew&lowast;normfact
-    zstar=zstar/(zstar&lowast;zeta)
+    psi=psi<span class=low>*</span>normfact
+    zeta=zetanew<span class=low>*</span>normfact
+    zstar=zstar/(zstar<span class=low>*</span>zeta)
     <a href="cpl.html#WRITE">WRITE</a> ":" ./.
   <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#ABS">ABS</a>(dalpha)&gt;1.E-8
   ps(-1)=ps(1); zst(-1)=zst(1)
@@ -136,43 +136,43 @@ psi<a href="cpl.html#Deferred-assignment">==</a>ps(1..ny-1)
 <a href="cpl.html#END">END</a> eigenval
 
 <span class=comment>!(
-v_y-I&lowast;alpha&lowast;u-I&lowast;beta&lowast;w=0
-(sigma-I&lowast;alpha&lowast;U0)&lowast;u+U0_y&lowast;v-I&lowast;alpha&lowast;p-ni&lowast;lapl(u)=-I&lowast;alpha&lowast;T11+T21_y-I&lowast;beta&lowast;T31
-(sigma-I&lowast;alpha&lowast;U0)&lowast;v+p_y-ni&lowast;lapl(v)=-I&lowast;alpha&lowast;T12+T22_y-I&lowast;beta&lowast;T32
-(sigma-I&lowast;alpha&lowast;U0)&lowast;w-I&lowast;beta&lowast;p-ni&lowast;lapl(w)=-I&lowast;alpha&lowast;T13+T23_y-I&lowast;beta&lowast;T33
+v_y-I<span class=low>*</span>alpha<span class=low>*</span>u-I<span class=low>*</span>beta<span class=low>*</span>w=0
+(sigma-I<span class=low>*</span>alpha<span class=low>*</span>U0)<span class=low>*</span>u+U0_y<span class=low>*</span>v-I<span class=low>*</span>alpha<span class=low>*</span>p-ni<span class=low>*</span>lapl(u)=-I<span class=low>*</span>alpha<span class=low>*</span>T11+T21_y-I<span class=low>*</span>beta<span class=low>*</span>T31
+(sigma-I<span class=low>*</span>alpha<span class=low>*</span>U0)<span class=low>*</span>v+p_y-ni<span class=low>*</span>lapl(v)=-I<span class=low>*</span>alpha<span class=low>*</span>T12+T22_y-I<span class=low>*</span>beta<span class=low>*</span>T32
+(sigma-I<span class=low>*</span>alpha<span class=low>*</span>U0)<span class=low>*</span>w-I<span class=low>*</span>beta<span class=low>*</span>p-ni<span class=low>*</span>lapl(w)=-I<span class=low>*</span>alpha<span class=low>*</span>T13+T23_y-I<span class=low>*</span>beta<span class=low>*</span>T33
 
-va_y=-I&lowast;alpha&lowast;ua-I&lowast;beta&lowast;wa
-(sigma_0-I&lowast;alpha&lowast;U0)&lowast;ua-I&lowast;alpha&lowast;ca-ni&lowast;lapl(ua)=0
-(sigma_0-I&lowast;alpha&lowast;U0)&lowast;va+U0_y&lowast;ua-ca_y-ni&lowast;lapl(va)=0
-(sigma_0-I&lowast;alpha&lowast;U0)&lowast;wa-I&lowast;beta&lowast;ca-ni&lowast;lapl(wa)=0
+va_y=-I<span class=low>*</span>alpha<span class=low>*</span>ua-I<span class=low>*</span>beta<span class=low>*</span>wa
+(sigma_0-I<span class=low>*</span>alpha<span class=low>*</span>U0)<span class=low>*</span>ua-I<span class=low>*</span>alpha<span class=low>*</span>ca-ni<span class=low>*</span>lapl(ua)=0
+(sigma_0-I<span class=low>*</span>alpha<span class=low>*</span>U0)<span class=low>*</span>va+U0_y<span class=low>*</span>ua-ca_y-ni<span class=low>*</span>lapl(va)=0
+(sigma_0-I<span class=low>*</span>alpha<span class=low>*</span>U0)<span class=low>*</span>wa-I<span class=low>*</span>beta<span class=low>*</span>ca-ni<span class=low>*</span>lapl(wa)=0
 
-(sigma-sigma_0)(ua&lowast;u+va&lowast;v+wa&lowast;w)=
-=ua&lowast;(-I&lowast;alpha&lowast;T11+T21_y-I&lowast;beta&lowast;T31)+va&lowast;(-I&lowast;alpha&lowast;T12+T22_y-I&lowast;beta&lowast;T32)+wa&lowast;(-I&lowast;alpha&lowast;T12+T22_y-I&lowast;beta&lowast;T32)=
--I&lowast;alpha&lowast;ua&lowast;T11-ua_y&lowast;T21-I&lowast;beta&lowast;ua&lowast;T31+
--I&lowast;alpha&lowast;va&lowast;T12-va_y&lowast;T22-I&lowast;beta&lowast;va&lowast;T32+
--I&lowast;alpha&lowast;wa&lowast;T13-wa_y&lowast;T23-I&lowast;beta&lowast;wa&lowast;T33
+(sigma-sigma_0)(ua<span class=low>*</span>u+va<span class=low>*</span>v+wa<span class=low>*</span>w)=
+=ua<span class=low>*</span>(-I<span class=low>*</span>alpha<span class=low>*</span>T11+T21_y-I<span class=low>*</span>beta<span class=low>*</span>T31)+va<span class=low>*</span>(-I<span class=low>*</span>alpha<span class=low>*</span>T12+T22_y-I<span class=low>*</span>beta<span class=low>*</span>T32)+wa<span class=low>*</span>(-I<span class=low>*</span>alpha<span class=low>*</span>T12+T22_y-I<span class=low>*</span>beta<span class=low>*</span>T32)=
+-I<span class=low>*</span>alpha<span class=low>*</span>ua<span class=low>*</span>T11-ua_y<span class=low>*</span>T21-I<span class=low>*</span>beta<span class=low>*</span>ua<span class=low>*</span>T31+
+-I<span class=low>*</span>alpha<span class=low>*</span>va<span class=low>*</span>T12-va_y<span class=low>*</span>T22-I<span class=low>*</span>beta<span class=low>*</span>va<span class=low>*</span>T32+
+-I<span class=low>*</span>alpha<span class=low>*</span>wa<span class=low>*</span>T13-wa_y<span class=low>*</span>T23-I<span class=low>*</span>beta<span class=low>*</span>wa<span class=low>*</span>T33
 
-A^2=kTmu&lowast;[4&lowast;|alpha|^2&lowast;|ua|^2+4&lowast;|va_y|^2+4&lowast;beta^2&lowast;|wa|^2+
-+|ua_y+I&lowast;alpha&lowast;va|^2+|beta&lowast;ua+alpha&lowast;wa|^2+|wa_y+I&lowast;beta&lowast;va|^2]
+A^2=kTmu<span class=low>*</span>[4<span class=low>*</span>|alpha|^2<span class=low>*</span>|ua|^2+4<span class=low>*</span>|va_y|^2+4<span class=low>*</span>beta^2<span class=low>*</span>|wa|^2+
++|ua_y+I<span class=low>*</span>alpha<span class=low>*</span>va|^2+|beta<span class=low>*</span>ua+alpha<span class=low>*</span>wa|^2+|wa_y+I<span class=low>*</span>beta<span class=low>*</span>va|^2]
 
-etaa=I&lowast;beta&lowast;ua-I&lowast;alpha&lowast;wa
-(alpha^2+beta^2)&lowast;ua=-I&lowast;beta&lowast;etaa+I&lowast;alpha&lowast;va_y
-(alpha^2+beta^2)&lowast;wa=I&lowast;alpha&lowast;etaa+I&lowast;beta&lowast;va_y
-(sigma_0-I&lowast;alpha&lowast;U0)&lowast;etaa-ni&lowast;lapl(etaa)=0
-(sigma_0-I&lowast;alpha&lowast;U0)&lowast;va_y-(alpha^2+beta^2)&lowast;ca-ni&lowast;lapl(va_y)=0
-(sigma_0-I&lowast;alpha&lowast;U0)&lowast;[va_yy-k^2&lowast;va]-2&lowast;I&lowast;alpha&lowast;U0_y&lowast;va_y-ni&lowast;lapl(lapl(va))=-U0_y&lowast;I&lowast;beta&lowast;etaa
+etaa=I<span class=low>*</span>beta<span class=low>*</span>ua-I<span class=low>*</span>alpha<span class=low>*</span>wa
+(alpha^2+beta^2)<span class=low>*</span>ua=-I<span class=low>*</span>beta<span class=low>*</span>etaa+I<span class=low>*</span>alpha<span class=low>*</span>va_y
+(alpha^2+beta^2)<span class=low>*</span>wa=I<span class=low>*</span>alpha<span class=low>*</span>etaa+I<span class=low>*</span>beta<span class=low>*</span>va_y
+(sigma_0-I<span class=low>*</span>alpha<span class=low>*</span>U0)<span class=low>*</span>etaa-ni<span class=low>*</span>lapl(etaa)=0
+(sigma_0-I<span class=low>*</span>alpha<span class=low>*</span>U0)<span class=low>*</span>va_y-(alpha^2+beta^2)<span class=low>*</span>ca-ni<span class=low>*</span>lapl(va_y)=0
+(sigma_0-I<span class=low>*</span>alpha<span class=low>*</span>U0)<span class=low>*</span>[va_yy-k^2<span class=low>*</span>va]-2<span class=low>*</span>I<span class=low>*</span>alpha<span class=low>*</span>U0_y<span class=low>*</span>va_y-ni<span class=low>*</span>lapl(lapl(va))=-U0_y<span class=low>*</span>I<span class=low>*</span>beta<span class=low>*</span>etaa
 
-A^2=kTmu&lowast;[4&lowast;|alpha|^4/|k|^4&lowast;|va_y|^2+4&lowast;|va_y|^2+4&lowast;beta^4/|k|^4&lowast;|va_y|^2+
-+|alpha|^2&lowast;|va_yy/k^2+va|^2+4&lowast;beta^2&lowast;alpha^2/|k|^4&lowast;|va_y|^2+beta^2&lowast;|va_yy/k^2+va|^2]=
-=kTmu&lowast;[|va_yy+k^2&lowast;va|^2&lowast;(|alpha|^2+beta^2)+4&lowast;|va_y|^2&lowast;(|alpha|^4+beta^4+|k|^4+beta^2&lowast;|alpha|^2)]/|k|^4=
-=kTmu&lowast;{|va_yy|^2&lowast;(|alpha|^2+beta^2)/|k|^4+|va|^2&lowast;(|alpha|^2+beta^2)+|va_y|^2&lowast;[4&lowast;|alpha|^4+4&lowast;beta^4+4&lowast;|k|^4+4&lowast;beta^2&lowast;|alpha|^2-2&lowast;Re(k^2)&lowast;(|alpha|^2+beta^2)]/|k|^4}
+A^2=kTmu<span class=low>*</span>[4<span class=low>*</span>|alpha|^4/|k|^4<span class=low>*</span>|va_y|^2+4<span class=low>*</span>|va_y|^2+4<span class=low>*</span>beta^4/|k|^4<span class=low>*</span>|va_y|^2+
++|alpha|^2<span class=low>*</span>|va_yy/k^2+va|^2+4<span class=low>*</span>beta^2<span class=low>*</span>alpha^2/|k|^4<span class=low>*</span>|va_y|^2+beta^2<span class=low>*</span>|va_yy/k^2+va|^2]=
+=kTmu<span class=low>*</span>[|va_yy+k^2<span class=low>*</span>va|^2<span class=low>*</span>(|alpha|^2+beta^2)+4<span class=low>*</span>|va_y|^2<span class=low>*</span>(|alpha|^4+beta^4+|k|^4+beta^2<span class=low>*</span>|alpha|^2)]/|k|^4=
+=kTmu<span class=low>*</span>{|va_yy|^2<span class=low>*</span>(|alpha|^2+beta^2)/|k|^4+|va|^2<span class=low>*</span>(|alpha|^2+beta^2)+|va_y|^2<span class=low>*</span>[4<span class=low>*</span>|alpha|^4+4<span class=low>*</span>beta^4+4<span class=low>*</span>|k|^4+4<span class=low>*</span>beta^2<span class=low>*</span>|alpha|^2-2<span class=low>*</span>Re(k^2)<span class=low>*</span>(|alpha|^2+beta^2)]/|k|^4}
 !)</span>
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> SpectRec(<a href="cpl.html#INTEGER">INTEGER</a> iy)
-k2=NORM(alpha)+beta&lowast;beta
+k2=NORM(alpha)+beta<span class=low>*</span>beta
 k4=NORM(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2)
-<a href="cpl.html#WITH">WITH</a> derivatives(iy) <a href="cpl.html#RESULT">RESULT</a>=NORM[<a href="cpl.html#Looping-operator">SUM</a> d2(j)&lowast;zst(iy+j) <a href="cpl.html#FOR">FOR</a> j=d2.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> d2.<a href="cpl.html#HI">HI</a>]&lowast;k2/k4+
-   k2&lowast;NORM[<a href="cpl.html#Looping-operator">SUM</a> d0(j)&lowast;zst(iy+j) <a href="cpl.html#FOR">FOR</a> j=d0.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> d0.<a href="cpl.html#HI">HI</a>]+
-   NORM[<a href="cpl.html#Looping-operator">SUM</a> d1(j)&lowast;zst(iy+j) <a href="cpl.html#FOR">FOR</a> j=d1.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> d1.<a href="cpl.html#HI">HI</a>]&lowast;2&lowast;k2&lowast;[([<a href="complex.html#Top">IMAG</a>(alpha)]<a href="cpl.html#REAL-operator">^</a>2+k2)/k4+4]
+<a href="cpl.html#WITH">WITH</a> derivatives(iy) <a href="cpl.html#RESULT">RESULT</a>=NORM[<a href="cpl.html#Looping-operator">SUM</a> d2(j)<span class=low>*</span>zst(iy+j) <a href="cpl.html#FOR">FOR</a> j=d2.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> d2.<a href="cpl.html#HI">HI</a>]<span class=low>*</span>k2/k4+
+   k2<span class=low>*</span>NORM[<a href="cpl.html#Looping-operator">SUM</a> d0(j)<span class=low>*</span>zst(iy+j) <a href="cpl.html#FOR">FOR</a> j=d0.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> d0.<a href="cpl.html#HI">HI</a>]+
+   NORM[<a href="cpl.html#Looping-operator">SUM</a> d1(j)<span class=low>*</span>zst(iy+j) <a href="cpl.html#FOR">FOR</a> j=d1.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> d1.<a href="cpl.html#HI">HI</a>]<span class=low>*</span>2<span class=low>*</span>k2<span class=low>*</span>[([<a href="complex.html#Top">IMAG</a>(alpha)]<a href="cpl.html#REAL-operator">^</a>2+k2)/k4+4]
 <a href="cpl.html#END">END</a> SpectRec
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> initef
@@ -200,12 +200,12 @@ LOOP WHILE IMAG(alpha)&gt;0
   x=x-dx
   BaseFlow(); eigenval()
   WRITE x,alpha
-  fact=(zstarold&lowast;zeta)/(zstar&lowast;zetaold)&lowast;EXP[-I&lowast;(alpha+alphaold)/2/ni&lowast;dx]
-  N=N+[IMAG(alpha)+IMAG(alphaold)]/2&lowast;Re&lowast;dx
-  zstar=fact&lowast;zstar
+  fact=(zstarold<span class=low>*</span>zeta)/(zstar<span class=low>*</span>zetaold)<span class=low>*</span>EXP[-I<span class=low>*</span>(alpha+alphaold)/2/ni<span class=low>*</span>dx]
+  N=N+[IMAG(alpha)+IMAG(alphaold)]/2<span class=low>*</span>Re<span class=low>*</span>dx
+  zstar=fact<span class=low>*</span>zstar
 REPEAT LOOP
-WRITE N,LOG[ABS(fact)],0.5&lowast;LOG[0.01&lowast;0.05&lowast;0.3&lowast;Re&lowast;SUM SpectRec(iy)&lowast;[y(iy+1)-y(iy-1)]/2 FOR iy=1 TO ny-1],
-      0.5&lowast;LOG(kTsurhoni2d/Re/Re)
+WRITE N,LOG[ABS(fact)],0.5<span class=low>*</span>LOG[0.01<span class=low>*</span>0.05<span class=low>*</span>0.3<span class=low>*</span>Re<span class=low>*</span>SUM SpectRec(iy)<span class=low>*</span>[y(iy+1)-y(iy-1)]/2 FOR iy=1 TO ny-1],
+      0.5<span class=low>*</span>LOG(kTsurhoni2d/Re/Re)
 STOP
 !)</span>
 <span class=comment>!(
@@ -221,22 +221,22 @@ LOOP FOR omega=omin TO omax+domega/2 BY domega
     x=x+dx
     BaseFlow(); eigenval()
     IF IMAG(alpha)&gt;0 THEN
-      IF IMAG(alphaold)&lt;0 THEN WRITE TO Nfile SQRT(x-dx)&lowast;Re,N
-      N=N+[IMAG(alpha)+IMAG(alphaold)]/2&lowast;Re&lowast;dx
-      WRITE TO Nfile SQRT(x)&lowast;Re,N
+      IF IMAG(alphaold)&lt;0 THEN WRITE TO Nfile SQRT(x-dx)<span class=low>*</span>Re,N
+      N=N+[IMAG(alpha)+IMAG(alphaold)]/2<span class=low>*</span>Re<span class=low>*</span>dx
+      WRITE TO Nfile SQRT(x)<span class=low>*</span>Re,N
     END IF
   REPEAT
   WRITE TO Nfile
 REPEAT
 
-<span class=comment>!<span class=comment>! N=5+6.8&lowast;(Re-1200)/1000</span></span>
+<span class=comment>!<span class=comment>! N=5+6.8<span class=low>*</span>(Re-1200)/1000</span></span>
 
 STOP
 !)</span>
 
 <a href="cpl.html#TYPE">TYPEOF</a>(zstar) zstarold; <a href="cpl.html#TYPE">TYPEOF</a>(zeta) zetaold
 <a href="complex.html#Top">COMPLEX</a> <a href="cpl.html#FUNCTION">FUNCTION</a> firstappr()
-  <a href="cpl.html#RESULT">RESULT</a>=(zstarold&lowast;zeta)/(zstar&lowast;zetaold)
+  <a href="cpl.html#RESULT">RESULT</a>=(zstarold<span class=low>*</span>zeta)/(zstar<span class=low>*</span>zetaold)
 <a href="cpl.html#END">END</a> firstappr
 
 Refile=<a href="cpl.html#CREATE">CREATE</a>("Refile.out")
@@ -254,31 +254,31 @@ Refile=<a href="cpl.html#CREATE">CREATE</a>("Refile.out")
     initef
     <a href="cpl.html#WRITE">WRITE</a> x,alpha
     <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> derivatives(iy)
-      vsqfin(iy)=NORM{[<a href="cpl.html#Looping-operator">SUM</a> d1(j)&lowast;ps(iy+j) <a href="cpl.html#FOR">FOR</a> j=d1.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> d1.<a href="cpl.html#HI">HI</a>]/alpha}
-       <span class=comment>! dovrebbe essere &lowast;alpha/k2</span>
+      vsqfin(iy)=NORM{[<a href="cpl.html#Looping-operator">SUM</a> d1(j)<span class=low>*</span>ps(iy+j) <a href="cpl.html#FOR">FOR</a> j=d1.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> d1.<a href="cpl.html#HI">HI</a>]/alpha}
+       <span class=comment>! dovrebbe essere <span class=low>*</span>alpha/k2</span>
     <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> x&gt;xmin+dx/2
       zstarold=zstar; zetaold=zeta; alphaold=alpha
       x=x-dx
       BaseFlow(); eigenval()
       <a href="cpl.html#WRITE">WRITE</a> x,alpha
-      fact=firstappr()&lowast;<a href="cpl.html#Builtin">EXP</a>[-I&lowast;(alpha+alphaold)/2/ni&lowast;dx]
-      zstar=fact&lowast;zstar
+      fact=firstappr()<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>[-I<span class=low>*</span>(alpha+alphaold)/2/ni<span class=low>*</span>dx]
+      zstar=fact<span class=low>*</span>zstar
       <a href="cpl.html#DO">DO</a> <a href="cpl.html#WITH">WITH</a> derivatives(iy)
         <a href="cpl.html#IF">IF</a> Re=1900 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ABS">ABS</a>(omega-0.044)&lt;1E-6 <a href="cpl.html#AND">AND</a> beta=bmin <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> xprofile x, SpectRec(10)
-        ampl=ampl+SpectRec(iy)&lowast;[y(iy+1)-y(iy-1)]&lowast;dx
+        ampl=ampl+SpectRec(iy)<span class=low>*</span>[y(iy+1)-y(iy-1)]<span class=low>*</span>dx
       <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
-  <span class=comment>!  PLOT ABS(zstar(&lowast;)),zstar.LO,zstar.HI</span>
+  <span class=comment>!  PLOT ABS(zstar(<span class=low>*</span>)),zstar.LO,zstar.HI</span>
   <span class=comment>!  WRITE ampl</span>
   <span class=comment>!  READ</span>
-    <a href="cpl.html#DO">DO</a> vprofile(iy)=<a href="cpl.html#Assignment">~</a>+ampl&lowast;vsqfin(iy)&lowast;kTsurhoni2d/(PI&lowast;PI)/(Re&lowast;Re)&lowast;domega&lowast;dbeta <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
+    <a href="cpl.html#DO">DO</a> vprofile(iy)=<a href="cpl.html#Assignment">~</a>+ampl<span class=low>*</span>vsqfin(iy)<span class=low>*</span>kTsurhoni2d/(PI<span class=low>*</span>PI)/(Re<span class=low>*</span>Re)<span class=low>*</span>domega<span class=low>*</span>dbeta <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
     <a href="cpl.html#IF">IF</a> Re=1900 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> outfile omega,beta,ampl
    <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
    <a href="cpl.html#IF">IF</a> Re=1900 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> outfile
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   <a href="cpl.html#IF">IF</a> Re=1900 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#CLOSE">CLOSE</a> outfile
-  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Refile Re,<a href="cpl.html#MAX">MAX</a> <a href="cpl.html#Builtin">SQRT</a>[vprofile(iy)] <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny,Re&lowast;Re
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> Refile Re,<a href="cpl.html#MAX">MAX</a> <a href="cpl.html#Builtin">SQRT</a>[vprofile(iy)] <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny,Re<span class=low>*</span>Re
   <a href="cpl.html#IF">IF</a> Re=1900 <a href="cpl.html#IF">THEN</a>
     profile=<a href="cpl.html#CREATE">CREATE</a>('yprofile.out')
     <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> profile y(iy),<a href="cpl.html#Builtin">SQRT</a>(vprofile(iy)) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny

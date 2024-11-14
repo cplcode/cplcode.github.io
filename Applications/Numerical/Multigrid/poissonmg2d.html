@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <span class=comment>! poissonmg2d -- Copyright 2002 Paolo Luchini</span>
 <span class=comment>! http://CPLcode.net/Applications/Numerical/Multigrid/</span>
@@ -38,14 +38,14 @@ SOFTWARE. !)</span>
   The array of unknowns has to be declared in the main program as
   var(0..nx,0..ny), with no ghost points. This routine does nothing.
   !)</span>
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> dirichlet(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> dirichlet(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>,<span class=low>*</span>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var)
 <a href="cpl.html#END">END</a> dirichlet
 
 <span class=comment>!( This routine imposes Neumann boundary conditions.
   The array of unknowns has to be declared in the main program as
   var(-1..nx+1,-1..ny+1), with one ghost plane on each of the 6 sides.
   !)</span>
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> neumann(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> neumann(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>,<span class=low>*</span>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var)
   nx=var.<a href="cpl.html#HI">HI</a>-1; ny=var(0).<a href="cpl.html#HI">HI</a>-1
   <a href="cpl.html#DO">DO</a> var(ix,-1)=var(ix,1); var(ix,ny+1)=var(ix,ny-1) <a href="cpl.html#FOR">FOR</a> ix=0 <a href="cpl.html#TO">TO</a> nx
   <a href="cpl.html#DO">DO</a> var(-1,iy)=var(1,iy); var(nx+1,iy)=var(nx-1,iy) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny
@@ -55,7 +55,7 @@ SOFTWARE. !)</span>
   The array of unknowns has to be declared in the main program as
   var(-1..nx,-1..ny), with one ghost plane in each periodic direction.
   !)</span>
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> biperiod(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> biperiod(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>,<span class=low>*</span>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var)
   nx=var.<a href="cpl.html#HI">HI</a>; ny=var(0).<a href="cpl.html#HI">HI</a>
   <a href="cpl.html#DO">DO</a> var(ix,-1)=var(ix,ny-1); var(ix,ny)=var(ix,0) <a href="cpl.html#FOR">FOR</a> ix=0 <a href="cpl.html#TO">TO</a> nx-1
   <a href="cpl.html#DO">DO</a> var(-1,iy)=var(nx-1,iy); var(nx,iy)=var(0,iy) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny-1
@@ -66,17 +66,17 @@ SOFTWARE. !)</span>
   makeghosts can be any one of the above routines used to impose boundary
   conditions, or you can construct your own hybrid.
   !)</span>
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> poissonrb(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var, rhs; <a href="cpl.html#FUNCTION">SUBROUTINE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> v) makeghosts)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> poissonrb(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>,<span class=low>*</span>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var, rhs; <a href="cpl.html#FUNCTION">SUBROUTINE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>,<span class=low>*</span>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> v) makeghosts)
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> parity=0 <a href="cpl.html#TO">TO</a> 1 
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=var.<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> var.<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iy=var(0).<a href="cpl.html#LO">LO</a>+1 + (ix+var(0).<a href="cpl.html#LO">LO</a>+1+parity) <a href="cpl.html#INTEGER-operator">MOD</a> 2 <a href="cpl.html#TO">TO</a> var(0).<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#BY">BY</a> 2
-      var(ix,iy)=(var(ix,iy+1)+var(ix,iy-1)+var(ix+1,iy)+var(ix-1,iy))&lowast;0.25+rhs(ix,iy)
+      var(ix,iy)=(var(ix,iy+1)+var(ix,iy-1)+var(ix+1,iy)+var(ix-1,iy))<span class=low>*</span>0.25+rhs(ix,iy)
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
     makeghosts(var)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#END">END</a> poissonrb
 
 <span class=comment>! Main multigrid routine. Same calling prototype as poissonrb.</span>
-<a href="cpl.html#FUNCTION">SUBROUTINE</a> poissonmg(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> fvar, frhs; <a href="cpl.html#FUNCTION">SUBROUTINE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var) makeghosts)
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> poissonmg(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>,<span class=low>*</span>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> fvar, frhs; <a href="cpl.html#FUNCTION">SUBROUTINE</a>(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>,<span class=low>*</span>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var) makeghosts)
   <span class=comment>! apply smoother</span>
   poissonrb(fvar,frhs,makeghosts)
   <span class=comment>! allocate variables for the next coarser grid</span>
@@ -84,8 +84,8 @@ SOFTWARE. !)</span>
   <span class=comment>! restriction</span>
   <a href="cpl.html#DO">DO</a> cvar(ixc,iyc)=0; crhs(ixc,iyc)=0 <a href="cpl.html#FOR">FOR</a> ixc=cvar.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> cvar.<a href="cpl.html#HI">HI</a> <a href="cpl.html#AND">AND</a> iyc=cvar(0).<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> cvar(0).<a href="cpl.html#HI">HI</a>
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ixc=cvar.<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> cvar.<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iyc=cvar(0).<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> cvar(0).<a href="cpl.html#HI">HI</a>-1
-    ixf=2&lowast;ixc; iyf=2&lowast;iyc
-    crhs(ixc,iyc)=[(fvar(ixf,iyf+1)+fvar(ixf,iyf-1)+fvar(ixf+1,iyf)+fvar(ixf-1,iyf))&lowast;0.25+frhs(ixf,iyf)-fvar(ixf,iyf)]&lowast;2
+    ixf=2<span class=low>*</span>ixc; iyf=2<span class=low>*</span>iyc
+    crhs(ixc,iyc)=[(fvar(ixf,iyf+1)+fvar(ixf,iyf-1)+fvar(ixf+1,iyf)+fvar(ixf-1,iyf))<span class=low>*</span>0.25+frhs(ixf,iyf)-fvar(ixf,iyf)]<span class=low>*</span>2
     cvar(ixc,iyc)=crhs(ixc,iyc)
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   makeghosts(cvar)
@@ -96,9 +96,9 @@ SOFTWARE. !)</span>
   <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#DO">DO</a> poissonrb(cvar,crhs,makeghosts) <a href="cpl.html#FOR">FOR</a> 20 <a href="cpl.html#TIMES">TIMES</a>
   <span class=comment>! prolongation</span>
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ixc=cvar.<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> cvar.<a href="cpl.html#HI">HI</a> <a href="cpl.html#AND">AND</a> iyc=cvar(0).<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> cvar(0).<a href="cpl.html#HI">HI</a>
-    ixf=2&lowast;ixc; iyf=2&lowast;iyc
-    <a href="cpl.html#IF">IF</a> iyf&lt;=fvar.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#IF">THEN</a> fvar(ixf-1,iyf)=fvar(ixf-1,iyf)+(cvar(ixc-1,iyc)+cvar(ixc,iyc))&lowast;0.5
-    <a href="cpl.html#IF">IF</a> ixf&lt;=fvar.<a href="cpl.html#HI">HI1</a> <a href="cpl.html#IF">THEN</a> fvar(ixf,iyf-1)=fvar(ixf,iyf-1)+(cvar(ixc,iyc-1)+cvar(ixc,iyc))&lowast;0.5
+    ixf=2<span class=low>*</span>ixc; iyf=2<span class=low>*</span>iyc
+    <a href="cpl.html#IF">IF</a> iyf&lt;=fvar.<a href="cpl.html#HI">HI2</a> <a href="cpl.html#IF">THEN</a> fvar(ixf-1,iyf)=fvar(ixf-1,iyf)+(cvar(ixc-1,iyc)+cvar(ixc,iyc))<span class=low>*</span>0.5
+    <a href="cpl.html#IF">IF</a> ixf&lt;=fvar.<a href="cpl.html#HI">HI1</a> <a href="cpl.html#IF">THEN</a> fvar(ixf,iyf-1)=fvar(ixf,iyf-1)+(cvar(ixc,iyc-1)+cvar(ixc,iyc))<span class=low>*</span>0.5
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
   makeghosts(fvar)
   <span class=comment>! apply smoother</span>
@@ -106,10 +106,10 @@ SOFTWARE. !)</span>
 <a href="cpl.html#END">END</a> poissonmg
 
 <span class=comment>! calculate maximum residual, for convergence test only</span>
-<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> mrsd(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(&lowast;,&lowast;) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var, rhs)
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> mrsd(<a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>,<span class=low>*</span>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> var, rhs)
   <a href="cpl.html#RESULT">RESULT</a>=0
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> ix=var.<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> var.<a href="cpl.html#HI">HI</a>-1 <a href="cpl.html#AND">AND</a> iy=var(0).<a href="cpl.html#LO">LO</a>+1 <a href="cpl.html#TO">TO</a> var(0).<a href="cpl.html#HI">HI</a>-1
-    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#MAX">MAX</a>(<a href="cpl.html#RESULT">RESULT</a>,<a href="cpl.html#ABS">ABS</a>[(var(ix,iy+1)+var(ix,iy-1)+var(ix+1,iy)+var(ix-1,iy))&lowast;0.25+rhs(ix,iy)-var(ix,iy)])
+    <a href="cpl.html#RESULT">RESULT</a>=<a href="cpl.html#MAX">MAX</a>(<a href="cpl.html#RESULT">RESULT</a>,<a href="cpl.html#ABS">ABS</a>[(var(ix,iy+1)+var(ix,iy-1)+var(ix+1,iy)+var(ix-1,iy))<span class=low>*</span>0.25+rhs(ix,iy)-var(ix,iy)])
   <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
 <a href="cpl.html#END">END</a> mrsd
 <span class=comment>! Usage example and test</span>

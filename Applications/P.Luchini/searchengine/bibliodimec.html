@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 database="/var/www/textsearch/Libridimec.txt"
 maxout=200
@@ -72,13 +72,13 @@ una sequenza di parole adiacenti racchiudendola tra virgolette.&lt;/P&gt;
 varianti maiuscole e/o accentate di ciascuna lettera. Lettere maiuscole e/o
 accentate espressamente incluse nella ricerca, invece, corrispondono solo a se
 stesse. Il simbolo &lt;B&gt;?&lt;/B&gt; indica un singolo carattere non specificato, e il
-simbolo &lt;B&gt;&lowast;&lt;/B&gt; una sequenza di zero o pi&amp;uacute caratteri inspecificati.&lt;/P&gt;
+simbolo &lt;B&gt;<span class=low>*</span>&lt;/B&gt; una sequenza di zero o pi&amp;uacute caratteri inspecificati.&lt;/P&gt;
 &lt;P&gt;Il sistema propone una lista di parole simili a quelle date, che differiscono
 per la sostituzione, omissione o aggiunta di un singolo carattere. Per includere
 nella ricerca anche le parole contenenti uno o pi&amp;uacute errori, premettere una
 o pi&amp;uacute volte il simbolo &lt;B&gt;+&lt;/B&gt;.&lt;/P&gt;
 &lt;P&gt;Qualora la ricerca risulti in un numero eccessivo di risultati, o in una
-catena troppo lunga di operazioni (tipicamente, uso di &lt;B&gt;&lowast;&lt;/B&gt; all'inizio di
+catena troppo lunga di operazioni (tipicamente, uso di &lt;B&gt;<span class=low>*</span>&lt;/B&gt; all'inizio di
 parola o troppi &lt;B&gt;+&lt;/B&gt;), verr&amp;agrave visualizzata una lista vuota o incompleta
 con il messaggio "Precisare meglio la richiesta".&lt;/P&gt;
 fineistruzioni
@@ -182,12 +182,12 @@ END writefull
 WRITE htmlheader
 POINTER TO CSTRING query=getenv("QUERY_STRING")
 IF query^#NULL AND query(0)#0 THEN uri2asc(query); CASE query(0) OF
-"q": &lt;&lowast;    setitimer(ITIMER_VIRTUAL,&amp;allowedtime_,NULL);  &lowast;&gt;
+"q": &lt;<span class=low>*</span>    setitimer(ITIMER_VIRTUAL,&amp;allowedtime_,NULL);  <span class=low>*</span>&gt;
      expired=NO
      fws=0
      PatternString=query+2
      MWS=Pattern(PatternString)
- &lt;&lowast;    setitimer(ITIMER_VIRTUAL,&amp;allowedtime_,NULL);  &lowast;&gt;
+ &lt;<span class=low>*</span>    setitimer(ITIMER_VIRTUAL,&amp;allowedtime_,NULL);  <span class=low>*</span>&gt;
      expired=NO
      IF foundwords#"" THEN WRITE "&lt;B&gt;Parole simili:&lt;/B&gt; " foundwords "&lt;BR&gt;"
      WRITE form1 query+2 form2

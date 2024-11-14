@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a>
 <a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
@@ -17,27 +17,27 @@
 <a href="cpl.html#ASK">ASK</a> <a href="cpl.html#INTEGER">INTEGER</a> nx,ny
 <a href="cpl.html#ASK">ASK</a> <a href="cpl.html#REAL">REAL</a> Reynolds
 <a href="cpl.html#ASK">ASK</a> <a href="cpl.html#REAL">REAL</a> gradp,waveampl,wavespeed
-gradph=gradp&lowast;4&lowast;nx/ny/ny
+gradph=gradp<span class=low>*</span>4<span class=low>*</span>nx/ny/ny
 Rh=Reynolds/ny/4
 <span class=comment>! deltat=0.2/(1+Rh)</span>
-deltat=0.1/(1+<a href="cpl.html#ABS">ABS</a>(wavespeed))/(1+2&lowast;Rh)
+deltat=0.1/(1+<a href="cpl.html#ABS">ABS</a>(wavespeed))/(1+2<span class=low>*</span>Rh)
 
 VFIELD=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>[u(0..nx+1,0..ny),
                         v(0..nx+1,1..ny),
                         p(0..nx+1,0..ny)] <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a>
 
-<a href="cpl.html#C-preprocessor">#define</a> laplacian(f) f(1,0)+f(0,1)+f(-1,0)+f(0,-1)-(4+betah<a href="cpl.html#REAL-operator">^</a>2)&lowast;f(0,0)
+<a href="cpl.html#C-preprocessor">#define</a> laplacian(f) f(1,0)+f(0,1)+f(-1,0)+f(0,-1)-(4+betah<a href="cpl.html#REAL-operator">^</a>2)<span class=low>*</span>f(0,0)
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> uconv(<a href="cpl.html#INTEGER">INTEGER</a> ix,iy)=[u(ix+1,iy)+u(ix,iy)]<a href="cpl.html#REAL-operator">^</a>2-[u(ix,iy)+u(ix-1,iy)]<a href="cpl.html#REAL-operator">^</a>2+
-  [u(ix,iy+1)+u(ix,iy)]&lowast;[v(ix,iy+1)+v(ix-1,iy+1)]-[u(ix,iy-1)+u(ix,iy)]&lowast;[v(ix,iy)+v(ix-1,iy)]
+  [u(ix,iy+1)+u(ix,iy)]<span class=low>*</span>[v(ix,iy+1)+v(ix-1,iy+1)]-[u(ix,iy-1)+u(ix,iy)]<span class=low>*</span>[v(ix,iy)+v(ix-1,iy)]
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> vconv(<a href="cpl.html#INTEGER">INTEGER</a> ix,iy)=[v(ix,iy+1)+v(ix,iy)]<a href="cpl.html#REAL-operator">^</a>2-[v(ix,iy-1)+v(ix,iy)]<a href="cpl.html#REAL-operator">^</a>2+
-  [v(ix+1,iy)+v(ix,iy)]&lowast;[u(ix+1,iy)+u(ix+1,iy-1)]-[v(ix-1,iy)+v(ix,iy)]&lowast;[u(ix,iy)+u(ix,iy-1)]
+  [v(ix+1,iy)+v(ix,iy)]<span class=low>*</span>[u(ix+1,iy)+u(ix+1,iy-1)]-[v(ix-1,iy)+v(ix,iy)]<span class=low>*</span>[u(ix,iy)+u(ix,iy-1)]
 <a href="cpl.html#INLINE">INLINE</a> <a href="cpl.html#FUNCTION">FUNCTION</a> cont(<a href="cpl.html#INTEGER">INTEGER</a> ix,iy)=u(ix+1,iy)-u(ix,iy)+v(ix,iy+1)-v(ix,iy)
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> resid(VFIELD Vnew<a href="cpl.html#REAL-operator">^</a>, V) <a href="cpl.html#WITH">WITH</a> V
   betah=0
   Vnew=0
-  <a href="cpl.html#DO">DO</a> Vnew.u(ix,iy)=laplacian(u(ix+&lowast;,iy+&lowast;))-Rh&lowast;uconv(ix,iy)-p(ix,iy)+p(ix-1,iy) <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
-  <a href="cpl.html#DO">DO</a> Vnew.v(ix,iy)=laplacian(v(ix+&lowast;,iy+&lowast;))-Rh&lowast;vconv(ix,iy)-p(ix,iy)+p(ix,iy-1) <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy=2 <a href="cpl.html#TO">TO</a> ny-1
+  <a href="cpl.html#DO">DO</a> Vnew.u(ix,iy)=laplacian(u(ix+<span class=low>*</span>,iy+<span class=low>*</span>))-Rh<span class=low>*</span>uconv(ix,iy)-p(ix,iy)+p(ix-1,iy) <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1
+  <a href="cpl.html#DO">DO</a> Vnew.v(ix,iy)=laplacian(v(ix+<span class=low>*</span>,iy+<span class=low>*</span>))-Rh<span class=low>*</span>vconv(ix,iy)-p(ix,iy)+p(ix,iy-1) <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy=2 <a href="cpl.html#TO">TO</a> ny-1
 <a href="cpl.html#END">END</a> resid
 
 <a href="cpl.html#REAL">REAL</a> vwall(0..nx+1)
@@ -61,10 +61,10 @@ VFIELD=<a href="cpl.html#STRUCTURED">STRUCTURED ARRAY</a>[u(0..nx+1,0..ny),
 
 VFIELD Vb=0, Vbn
 <a href="cpl.html#DO">DO</a> Vb.u(ix,0)=wavespeed; Vb.u(ix,ny)=wavespeed <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix
-<a href="cpl.html#DO">DO</a> vwall(ix) = waveampl&lowast;<a href="cpl.html#Builtin">SIN</a>(2&lowast;PI&lowast;ix/nx) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix
+<a href="cpl.html#DO">DO</a> vwall(ix) = waveampl<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(2<span class=low>*</span>PI<span class=low>*</span>ix/nx) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> ix
 <a href="cpl.html#LOOP">LOOP</a> main <a href="cpl.html#FOR">FOR</a> count=1 <a href="cpl.html#TO">TO</a> 10000000
 resid(Vbn,Vb)
-Vb=<a href="cpl.html#Assignment">~</a>+Vbn&lowast;deltat
+Vb=<a href="cpl.html#Assignment">~</a>+Vbn<span class=low>*</span>deltat
 Vb.u(0)=Vb.u(nx); Vb.u(nx+1)=Vb.u(1)
 Vb.v(0)=Vb.v(nx); Vb.v(nx+1)=Vb.v(1)
 <a href="cpl.html#DO">DO</a> pressit(Vb,0) <a href="cpl.html#FOR">FOR</a> 4 <a href="cpl.html#TIMES">TIMES</a>
@@ -78,9 +78,9 @@ Vb.v(0)=Vb.v(nx); Vb.v(nx+1)=Vb.v(1)
   pl=<a href="cpl.html#CREATE">CREATE</a>("plot.dat")
   <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#TO">TO</a> pl "# nx=" nx,ny,Reynolds,gradp,waveampl,wavespeed
   meanvel=[wavespeed+(<a href="cpl.html#Looping-operator">SUM</a> Vb.u(ix,iy) <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1)/nx]/ny-wavespeed
-  work=gradph&lowast;meanvel&lowast;ny+<a href="cpl.html#Looping-operator">SUM</a> Vb.p(ix,0)&lowast;vwall(ix) <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx
+  work=gradph<span class=low>*</span>meanvel<span class=low>*</span>ny+<a href="cpl.html#Looping-operator">SUM</a> Vb.p(ix,0)<span class=low>*</span>vwall(ix) <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx
   <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#TO">TO</a> pl "# mean vel.=" meanvel,meanvel/(2/3),work,work/8/(2/3)/(meanvel/2/3)<a href="cpl.html#REAL-operator">^</a>2
-  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> pl 2&lowast;iy/ny,[<a href="cpl.html#Looping-operator">SUM</a> Vb.u(ix,iy) <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]/nx-wavespeed,2&lowast;iy/ny&lowast;(2-2&lowast;iy/ny) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> pl 2<span class=low>*</span>iy/ny,[<a href="cpl.html#Looping-operator">SUM</a> Vb.u(ix,iy) <a href="cpl.html#FOR">FOR</a> ix=1 <a href="cpl.html#TO">TO</a> nx]/nx-wavespeed,2<span class=low>*</span>iy/ny<span class=low>*</span>(2-2<span class=low>*</span>iy/ny) <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny
   <a href="cpl.html#CLOSE">CLOSE</a> pl
   system "head plot.dat"
   STOP

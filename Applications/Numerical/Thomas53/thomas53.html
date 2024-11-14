@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <span class=comment>! Thomas53 -- Copyright 2002 Paolo Luchini</span>
 <span class=comment>! http://CPLcode.net/Applications/Numerical/Thomas53/</span>
@@ -40,7 +40,7 @@
 <a href="cpl.html#REAL">REAL</a> alpha,Re
 <a href="complex.html#Top">COMPLEX</a> c
 <a href="cpl.html#ASK">ASK</a> alpha,Re
-a2=alpha&lowast;alpha
+a2=alpha<span class=low>*</span>alpha
 
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> everything(<a href="cpl.html#INTEGER">INTEGER</a> N)
   yinf=2
@@ -53,10 +53,10 @@ a2=alpha&lowast;alpha
   d4(-2)=1/h/h/h/h; d4(-1)=-4/h/h/h/h; d4(0)=6/h/h/h/h; d4(1)=-4/h/h/h/h; d4(2)=1/h/h/h/h
   
   <a href="cpl.html#ARRAY">ARRAY</a>(-1..N+1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> y,U,Uyy
-  <a href="cpl.html#DO">DO</a> y(i)=h&lowast;i <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  <a href="cpl.html#DO">DO</a> y(i)=h<span class=low>*</span>i <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
   
   <a href="cpl.html#FUNCTION">SUBROUTINE</a> Poiseuille
-    <a href="cpl.html#DO">DO</a> U(i)=y(i)&lowast;[yinf-y(i)]; Uyy(i)=-2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+    <a href="cpl.html#DO">DO</a> U(i)=y(i)<span class=low>*</span>[yinf-y(i)]; Uyy(i)=-2 <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
   <a href="cpl.html#END">END</a> Poiseuille
   
   <a href="complex.html#Top">COMPLEX</a> A(1..N-1,-2..2), B(1..N-1,-2..2)
@@ -64,8 +64,8 @@ a2=alpha&lowast;alpha
   
   <a href="cpl.html#FUNCTION">SUBROUTINE</a> BuildMats
     <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=1 <a href="cpl.html#TO">TO</a> N-1 <a href="cpl.html#AND">AND</a> j=-2 <a href="cpl.html#TO">TO</a> 2
-      B(i,j)=d2(j)-a2&lowast;d0(j)
-      A(i,j)=(c-U(i))&lowast;B(i,j)+Uyy(i)&lowast;d0(j)+I/alpha/Re&lowast;[d4(j)-2&lowast;a2&lowast;d2(j)+a2&lowast;a2&lowast;d0(j)]
+      B(i,j)=d2(j)-a2<span class=low>*</span>d0(j)
+      A(i,j)=(c-U(i))<span class=low>*</span>B(i,j)+Uyy(i)<span class=low>*</span>d0(j)+I/alpha/Re<span class=low>*</span>[d4(j)-2<span class=low>*</span>a2<span class=low>*</span>d2(j)+a2<span class=low>*</span>a2<span class=low>*</span>d0(j)]
     <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
     B(1,0)=<a href="cpl.html#Assignment">~</a>-B(1,-1)/2+B(1,-2)
     A(1,0)=<a href="cpl.html#Assignment">~</a>-A(1,-1)/2+A(1,-2)
@@ -81,18 +81,18 @@ a2=alpha&lowast;alpha
     c=0.3
     <a href="cpl.html#DO">DO</a>
       BuildMats; LUdecomp A
-      zetaold=B&lowast;psi; psi=A\zetaold
-      zstar=psistar/A; psistar=zstar&lowast;B
-      dc=-(zstar&lowast;zetaold)/(psistar&lowast;psi)
+      zetaold=B<span class=low>*</span>psi; psi=A\zetaold
+      zstar=psistar/A; psistar=zstar<span class=low>*</span>B
+      dc=-(zstar<span class=low>*</span>zetaold)/(psistar<span class=low>*</span>psi)
       c=c+dc
-      psi=psi&lowast;<a href="cpl.html#ABS">ABS</a>[psi(1)]/psi(1)/<a href="cpl.html#INTEGER-operator">MOD</a>(psi)
-      zstar=zstar/(psistar&lowast;psi)
-      psistar=psistar/(psistar&lowast;psi)
+      psi=psi<span class=low>*</span><a href="cpl.html#ABS">ABS</a>[psi(1)]/psi(1)/<a href="cpl.html#INTEGER-operator">MOD</a>(psi)
+      zstar=zstar/(psistar<span class=low>*</span>psi)
+      psistar=psistar/(psistar<span class=low>*</span>psi)
     <a href="cpl.html#WHILE">WHILE</a> <a href="cpl.html#ABS">ABS</a>(dc)&gt;1.E-8
   <a href="cpl.html#END">END</a> eigenval
   
   Poiseuille
-  <a href="cpl.html#DO">DO</a> psi(i)=U(i)&lowast;(1-U(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+  <a href="cpl.html#DO">DO</a> psi(i)=U(i)<span class=low>*</span>(1-U(i)) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
   psistar=psi
   eigenval
 <a href="cpl.html#END">END</a> everything

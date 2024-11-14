@@ -8,7 +8,7 @@
 "name":"CPL",
 "disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
 "url":"https://cplcode.net"}
-}</script></head>
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <a href="cpl.html#USE">USE</a> stokes1
 
@@ -16,16 +16,16 @@
 <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a> GRAPHICSMODE
 nexttime=time(<a href="cpl.html#POINTER">NULL</a>)+2
 <a href="cpl.html#FILE">FILE</a> risultati=<a href="cpl.html#CREATE">CREATE</a>("risultati")
-<a href="cpl.html#DO">DO</a> psi(i)=y(i)&lowast;<a href="cpl.html#Builtin">EXP</a>(-y(i)&lowast;y(i)/tin); zstar(i)=psi(i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
+<a href="cpl.html#DO">DO</a> psi(i)=y(i)<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>(-y(i)<span class=low>*</span>y(i)/tin); zstar(i)=psi(i) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i
 alfa=0.07; <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> alfa&lt;1.2-0.0000001
-alfa=alfa&lowast;1.1
-sigma=(0.1+0.7&lowast;I)&lowast;alfa&lowast;Re
+alfa=alfa<span class=low>*</span>1.1
+sigma=(0.1+0.7<span class=low>*</span>I)<span class=low>*</span>alfa<span class=low>*</span>Re
 t=tin
 <a href="complex.html#Top">COMPLEX</a> ampl=1
 BaseFlow(); BuildMats()
-T=A+sigma&lowast;B; LUdecomp T
-zeta=B&lowast;psi
-<a href="cpl.html#DO">DO</a> psi=T\zeta; zeta=B&lowast;psi; zstar=zstar&lowast;B; zstar=zstar/T <a href="cpl.html#FOR">FOR</a> 5 <a href="cpl.html#TIMES">TIMES</a>
+T=A+sigma<span class=low>*</span>B; LUdecomp T
+zeta=B<span class=low>*</span>psi
+<a href="cpl.html#DO">DO</a> psi=T\zeta; zeta=B<span class=low>*</span>psi; zstar=zstar<span class=low>*</span>B; zstar=zstar/T <a href="cpl.html#FOR">FOR</a> 5 <a href="cpl.html#TIMES">TIMES</a>
 zetaold=zeta
 dt=(tfin-tin)/nt
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#WHILE">WHILE</a> t&lt;tfin-0.000001
@@ -33,17 +33,17 @@ dt=(tfin-tin)/nt
   zeta2old=zetaold; zetaold=zeta
   eigenval
   <a href="complex.html#Top">COMPLEX</a> c1=0
-  <a href="cpl.html#DO">DO</a> c1=c1+zstar(i)&lowast;[1.5&lowast;zeta(i)-2&lowast;zetaold(i)+0.5&lowast;zeta2old(i)]/dt <a href="cpl.html#FOR">FOR</a> i=zeta.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> zeta.<a href="cpl.html#HI">HI</a>
-<span class=comment>!  DO c1=c1+zstar(i)&lowast;[zeta(i)-zetaold(i)]/dt FOR i=zeta.LO TO zeta.HI</span>
-  ampl=ampl&lowast;<a href="cpl.html#Builtin">EXP</a>((sigma-c1)&lowast;dt)
-  <a href="cpl.html#IF">IF</a> t&gt;tin+2.5&lowast;dt <a href="cpl.html#IF">THEN</a> risultati Re&lowast;sqrt(t), alfa&lowast;sqrt(t), <a href="cpl.html#REAL">REAL</a>(sigma/(I&lowast;alfa&lowast;Re)), -<a href="complex.html#Top">IMAG</a>(sigma/(I&lowast;alfa&lowast;Re)), <a href="cpl.html#REAL">REAL</a>(sigma/(I&lowast;alfa&lowast;Re)-c1/(I&lowast;alfa&lowast;Re)), -<a href="complex.html#Top">IMAG</a>(sigma/(I&lowast;alfa&lowast;Re)-c1/(I&lowast;alfa&lowast;Re)), ampl
+  <a href="cpl.html#DO">DO</a> c1=c1+zstar(i)<span class=low>*</span>[1.5<span class=low>*</span>zeta(i)-2<span class=low>*</span>zetaold(i)+0.5<span class=low>*</span>zeta2old(i)]/dt <a href="cpl.html#FOR">FOR</a> i=zeta.<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> zeta.<a href="cpl.html#HI">HI</a>
+<span class=comment>!  DO c1=c1+zstar(i)<span class=low>*</span>[zeta(i)-zetaold(i)]/dt FOR i=zeta.LO TO zeta.HI</span>
+  ampl=ampl<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>((sigma-c1)<span class=low>*</span>dt)
+  <a href="cpl.html#IF">IF</a> t&gt;tin+2.5<span class=low>*</span>dt <a href="cpl.html#IF">THEN</a> risultati Re<span class=low>*</span>sqrt(t), alfa<span class=low>*</span>sqrt(t), <a href="cpl.html#REAL">REAL</a>(sigma/(I<span class=low>*</span>alfa<span class=low>*</span>Re)), -<a href="complex.html#Top">IMAG</a>(sigma/(I<span class=low>*</span>alfa<span class=low>*</span>Re)), <a href="cpl.html#REAL">REAL</a>(sigma/(I<span class=low>*</span>alfa<span class=low>*</span>Re)-c1/(I<span class=low>*</span>alfa<span class=low>*</span>Re)), -<a href="complex.html#Top">IMAG</a>(sigma/(I<span class=low>*</span>alfa<span class=low>*</span>Re)-c1/(I<span class=low>*</span>alfa<span class=low>*</span>Re)), ampl
 <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a>
   <a href="cpl.html#IF">IF</a> time(<a href="cpl.html#POINTER">NULL</a>)&gt;=nexttime <a href="cpl.html#IF">THEN</a>
     <a href="cpl.html#REAL">REAL</a> psimax=<a href="cpl.html#ABS">ABS</a>[psi(1)]
     <a href="cpl.html#DO">DO</a> psimax=<a href="cpl.html#MAX">MAX</a>(psimax,<a href="cpl.html#ABS">ABS</a>[psi(i)]) <a href="cpl.html#FOR">FOR</a> i=2 <a href="cpl.html#TO">TO</a> ny-1
     CLEARSCREEN; Plot(psi,8,psimax)
     <a href="cpl.html#WRITE">WRITE</a> "time=" t, "alfa=" alfa
-    <a href="cpl.html#WRITE">WRITE</a> "ph.speed=" sigma/(I&lowast;alfa&lowast;Re) " (" (sigma-c1)/(I&lowast;alfa&lowast;Re) ")"
+    <a href="cpl.html#WRITE">WRITE</a> "ph.speed=" sigma/(I<span class=low>*</span>alfa<span class=low>*</span>Re) " (" (sigma-c1)/(I<span class=low>*</span>alfa<span class=low>*</span>Re) ")"
     <a href="cpl.html#WRITE">WRITE</a> "amplitude=" ampl
     nexttime=time(<a href="cpl.html#POINTER">NULL</a>)+2
   <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
@@ -54,13 +54,13 @@ dt=(tfin-tin)/nt
 <span class=comment>!(
 FILE WriteProfile=CREATE("profile")
 WriteProfile 0,0,0
-DO WriteProfile y(i),ABS(I&lowast;alfa&lowast;psi(i)),ARG(I&lowast;alfa&lowast;psi(i)) FOR i=1 TO ny-1
+DO WriteProfile y(i),ABS(I<span class=low>*</span>alfa<span class=low>*</span>psi(i)),ARG(I<span class=low>*</span>alfa<span class=low>*</span>psi(i)) FOR i=1 TO ny-1
 WriteProfile
 WriteProfile 0,0,0
 DO WriteProfile (y(i)+y(i-1))/2, ABS([psi(i)-psi(i-1)]/[y(i)-y(i-1)]), ARG([psi(i)-psi(i-1)]/[y(i)-y(i-1)]) FOR i=2 TO ny-1
 WriteProfile
 WriteProfile 0,0,0
-DO WriteProfile y(i),ABS(zstar(i)/(y(i+1)-y(i))&lowast;2),ARG(zstar(i)/(y(i+1)-y(i))&lowast;2) FOR i=1 TO ny-1
+DO WriteProfile y(i),ABS(zstar(i)/(y(i+1)-y(i))<span class=low>*</span>2),ARG(zstar(i)/(y(i+1)-y(i))<span class=low>*</span>2) FOR i=1 TO ny-1
 !)</span>
 <a href="cpl.html#IF">IF</a> PlotOn <a href="cpl.html#IF">THEN</a> TEXTMODE
 
