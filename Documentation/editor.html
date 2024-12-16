@@ -119,8 +119,9 @@ Most used editing keys:
  - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file
  - Backspace: erase left; Delete (Esc d): erase at cursor
  - Shift-Delete (Esc D): erase line
+ - Insert (Esc i, Esc v, Ctrl-v): insert selection, see <a href="#Select">Select</a>.
  - Up arrow (Esc j), down arrow (Esc k): previous, next line.
- - PgUp (Esc p), PgDn (Esc n): move to prev or next paragraph of the same or lesser indentation.
+ - PgUp (Esc p), PgDn (Esc n): move to prev or next same indentation.
  - Esc f (Ctrl-f, Esc /), Esc F (Esc ?): Find forwards, respectively backwards.
  - Tab: autocomplete keyword or identifier or filename. Successive tabs move
  forward along the list of available completions; Shift-Tab moves backwards.
@@ -161,9 +162,9 @@ Selection of a text area is achieved either by keeping the left mouse button pre
 
 When some text is selected, the character count of the selection is displayed in the status line in place of the current line number. At the same time the Home and End keys, or their equivalent command letters, lead to the begining and end of the selection.
 
-Whenever text is selected, the Insert key (or Esc i, or Ctrl-v for those who are accustomed to it) inserts (pastes) the selected text at the current cursor position; no <q>copy</q> operation is needed as buffer coincides with selection. The Backspace and Delete keys (also aliased to Esc d, Esc x, Ctrl-x) erase the selected text if pressed immediately after a selection. At any other time these keys erase a single character, the preceding one for Backspace. Deleted text remains buffered and can be re-inserted after its deletion. Typing a new character, or pressing Insert, immediately after a selection without any intervening cursor movement replaces the current selection. In this case the function of Insert changes to inserting the butlast selection. Esc m moves (cuts and pastes) the butlast onto the last selection. Pressing the middle mouse button achieves the same purpose as Esc i; the right mouse button the same purpose as Esc m.
+Whenever text is selected, the Insert key (or Esc i, or Esc v, or Ctrl-v) inserts (pastes) the selected text at the current cursor position; no <q>copy</q> operation is needed as buffer coincides with selection. The Backspace and Delete keys (also aliased to Esc d, Esc x, Ctrl-x) erase the selected text if pressed immediately after a selection. At any other time these keys erase a single character, the preceding one for Backspace. Deleted text remains buffered and can be re-inserted after its deletion. Typing a new character, or pressing Insert, immediately after a selection without any intervening cursor movement replaces the current selection. In this case the function of Insert changes to inserting the butlast selection. Esc m moves (cuts and pastes) the butlast onto the last selection. Pressing the middle mouse button achieves the same purpose as Esc i; the right mouse button the same purpose as Esc m.
 
-The CPL editor features a multiple-selection buffer: right after an insertion, pressing Esc i or Insert again replaces the current selection by the historically former selection. Pressing Esc i or Insert multiple times cycles through the last three selections. In case you want to insert the same selection more than once, exit Esc mode or press End in between.
+The CPL editor features a multiple-selection buffer: right after an insertion pressing Esc i, or Insert, again replaces the current selection by a previous one. Pressing Esc i or Insert multiple times cycles through the last three selections. Esc v and Ctrl-v behave classically and only insert one selection, allowing you to repeat the same insertion more than once; the same effect can be gotten by exiting Esc mode or moving the cursor between two Insert actions.
 
 In the way of example, in order to:
 
