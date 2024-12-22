@@ -87,14 +87,14 @@ If full-screen mode is toggled on with no other file opened, the command history
 </div><div class=page id="readline">
 Page: (editor)readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Readline assisted console input</h3>
-Most used editing keys:
+Most frequent editing keys:
 
  - Left (Esc h), right arrow (Esc l): previous, next char
  - Home (Esc ^), end (Esc $): beginning, end of line
  - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file
  - Backspace: erase left
- - Delete (Esc d): erase right
- - Shift-delete (Esc D): erase line
+ - Delete (Esc d, Esc x): erase right
+ - Shift-delete (Esc D, Esc X): erase line
  - Up (Esc j), down arrow (Esc k): previous, next command in history. If a
    partial line is entered, only lines containing it become visible. Previous
    commands are immutable; when a character is added or deleted in a previous
@@ -112,16 +112,20 @@ Page: (editor)full-screen, Next: <a href="#character-set">character set</a>, Pre
  <h3>Full-screen editor</h3>
 The full-screen editor is accessed by pressing F1 or Esc ` or by the <q>edit</q> command in interactive cpl, as <q>cpl edit</q> in the shell, or also as <q>edit</q> in the shell if no other <q>edit</q> command takes precedence.
 
-Most used editing keys:
+Three equivalent editing styles are available: 1) specialized keys (arrows, Del, Ins, etc.), mouse clicks for selection,
+   and a mouse menu accessed by clicking on the bottom status line; 2) single-letter commands in a command mode toggled in and out by the Esc key; 3) pressing Alt together with a command letter without switching modes.
+   Ctrl-&lt;letter&gt; works too, with exceptions.
 
- - Left (Esc h), right arrow (Esc l): previous, next char
+Most frequent editing keys:
+
+ - Left arrow (Esc h), right arrow (Esc l): previous, next char
  - Home (Esc ^), End (Esc $): beginning, end of line or of selection
  - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file
- - Backspace: erase left; Delete (Esc d): erase at cursor
- - Shift-Delete (Esc D): erase line
+ - Backspace: erase left; Delete (Esc d, Esc x): erase at cursor
+ - Shift-Delete (Esc D, Esc X): erase line
  - Insert (Esc i, Esc v, Ctrl-v): insert selection, see <a href="#Select">Select</a>.
  - Up arrow (Esc j), down arrow (Esc k): previous, next line.
- - PgUp (Esc p), PgDn (Esc n): move to prev or next same indentation.
+ - PgUp (Esc p), PgDn (Esc n): prev or next line of the same indentation.
  - Esc f (Ctrl-f, Esc /), Esc F (Esc ?): Find forwards, respectively backwards.
  - Tab: autocomplete keyword or identifier or filename. Successive tabs move
  forward along the list of available completions; Shift-Tab moves backwards.
