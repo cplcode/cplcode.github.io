@@ -67,7 +67,7 @@
 </div><div class=page id="Top">
 Page: (cpl)Top,  Next: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h1>CPL Reference Manual</h1>
-Documentation for the CPL programming language and its compiler, September 2024. Printable and citable 2020 version is at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
+Documentation for the CPL programming language and its compiler, January 2025. Printable and citable 2020 version is at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
 
   CPL = Concealed Pointer Lookup
   CPL = Coactive Parameter Lists
@@ -314,7 +314,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 </div><div class=page id="Installation">
 Page: (cpl)Installation, Next: <a href="#Syntax">Syntax</a>, Prev: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Installation</h2>
-This is CPL, a high-level programming language designed and developed by Paolo Luchini. Copyright 1993-2024 Paolo Luchini <a href="http://CPLcode.net">CPLcode.net</a>
+This is CPL, a high-level programming language designed and developed by Paolo Luchini. Copyright 1993-2025 Paolo Luchini <a href="http://CPLcode.net">CPLcode.net</a>
 
 The tools that compose the cpl system are located in their own directory, and can be shared among users. This directory is initially named /usr/local/fri in a shared installation or ~/fri in a single user's home, but may be renamed if needed. None of the tools require root privileges nor write permission; it suffices for them to be readable and executable by every interested user.
 
@@ -1580,11 +1580,11 @@ Another form of subarray selection is index permutation, which in the particular
 
 	arr(&lowast;&lt;n&gt;,...)
 
-denotes the array obtained from arr by making the &lt;n&gt;-th index become the first and shifting forward all the others. Thus the transpose of a matrix A is A(&lowast;2,&lowast;), or just A(&lowast;2); the alternative notation
+denotes the array obtained from arr by making the &lt;n&gt;-th index become the first and shifting forward all the others. Thus the transpose of a matrix A is A(&lowast;2,&lowast;1), or just A(&lowast;2) since &lowast;1 is synonym with &lowast; and in the last position does nothing (but may be included for clarity); the alternative notation
 
 	TRANSPOSED(A)
 
-is also provided. &lt;n&gt; is currently limited to 2 or 3.
+is also provided. &lt;n&gt; is currently limited to 2, 3, 4. Multiple &lowast;&lt;n&gt; applied, separated by a comma, to an array with 3 or more dimensions take effect in left to right order, each acting upon the remaining indices to its right.
 
 Finally, a subarray can be extracted from an ARRAY of STRUCTUREs. If the declaration is, for instance,
 
