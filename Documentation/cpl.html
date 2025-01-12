@@ -577,7 +577,7 @@ These have the following effects:
  all arguments are passed by reference, according to FORTRAN convention;
  any arrays are replaced by a reference to their first element.
 
-The user must take care of the fact that FORTRAN has multidimensional array indices in the reverse order with respect to both C and cpl. Arrays to be passed as such arguments should be declared and used accordingly.
+The user must take care of the fact that FORTRAN has multidimensional array indices in the reverse order with respect to both C and CPL. Arrays to be passed as such arguments should be declared and used accordingly.
 
 For (e.g. LAPACK) library calls that require the number of elements used in actual memory storage for the rows of a matrix as an argument, the pseudofunction
 
@@ -585,13 +585,13 @@ For (e.g. LAPACK) library calls that require the number of elements used in actu
 
 provides the argument to be passed.
 
-Note that argument type checking is suppressed during a FORTRANCALL (as the necessary information is not available). Type checking can be restored, however, by wrapping every FORTRANCALL in a suitable &lowast; note INLINE:: SUBROUTINE.
+Note that argument type checking is suppressed during a FORTRANCALL (as the necessary information is not available). Type checking can be restored, however, by wrapping every FORTRANCALL in a suitable <a href="#INLINE">INLINE</a>SUBROUTINE.
 
 The name of the object file containing the FORTRAN compiled subroutines must be transmitted to the linker with
 
 	#link <q>linking options</q>
 
-together with any other linking options required (e.g., -lg2c to provide the FORTRAN run time library, if g77 was used as the FORTRAN compiler). 
+together with any other linking options required (e.g., -lgfortran to provide the FORTRAN run time library, if gfortran was used as the FORTRAN compiler). 
 </div><div class=page id="MODULE">
 Page: (cpl)MODULE, Next: <a href="#Functions">Functions</a>, Prev: <a href="#Source-file">Source file</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Separately scoped program block</h3>
