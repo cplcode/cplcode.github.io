@@ -85,6 +85,7 @@ The operands of matrix operations undergo automatic <a href="cpl.html#realignmen
 <tr><td><a href="#PLU">PLU</a>:</td><td>pivoting LU decomposition</td></tr>
 <tr><td><a href="#INVERT">INVERT</a>:</td><td>matrix inversion</td></tr>
 <tr><td><a href="#DET">DET</a>:</td><td>determinant of a matrix</td></tr>
+<tr><td><a href="#compact-notation">compact notation</a>:</td><td>infix vector and matrix operations</td></tr>
 </table></nav>
 
 </div><div class=page id="MatEqu">
@@ -163,7 +164,38 @@ Returns the inverse of square matrix &lt;mat&gt; in matrix &lt;RESULT&gt;. Uses 
 <h4>SUBROUTINE INVERT(number m^(&lowast;,&lowast;))</h4>
 Computes the inverse of square matrix &lt;mat&gt; in place. Uses <a href="#PLU">PLU</a> internally. 
 </div><div class=page id="DET">
-Page: (matrix)DET,  Prev: <a href="#INVERT">INVERT</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (matrix)DET,  Prev: <a href="#INVERT">INVERT</a>,  Next: <a href="#compact-notation">compact notation</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>number FUNCTION DET(ARRAY(&lowast;,&lowast;) OF number mat)</h4>
 Returns the determinant of square matrix &lt;mat&gt;. Uses <a href="#PLU">PLU</a> internally. 
+</div><div class=page id="compact-notation">
+Page: (matrix)compact notation, Prev: <a href="#DET">DET</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h4>infix vector and matrix operations</h4>
+and corresponding <a href="cpl.html#Einstein-convention">(cpl)Einstein convention</a> notation: (in what follows small letters denote 1D arrays, capital letters 2D arrays)
+
+	x &lowast; y  =  x($i)&lowast;y($i)
+
+	x | y  =  CONJG[x($i)]&lowast;y($i)
+
+        y = A &lowast; x  =&gt;  y($i) = A($i,$j)&lowast;x($j)
+
+        y = A | x  =&gt;  y($i) = CONJG[A($i,$j)]&lowast;x($j)
+
+	y = x &lowast; A  =&gt;  y($j) = x($i)&lowast;A($i,$j)
+	
+	y = x | A  =&gt;  y($j) = CONJG[x($i)]&lowast;A($i,$j)
+	
+	C = A &lowast; B  =&gt;  C($i,$j) = A($i,$k)&lowast;B($k,$j)
+	
+	C = A | B  =&gt;  C($i,$j) = CONJG[A($i,$k)]&lowast;B($k,$j)
+	
+	x = A \ y =&gt; LeftLUDiv(x,A,y)
+	
+	x = y / A =&gt; RightLUDiv(x,y,A)
+	
+	C = A \ B  =&gt;  C(&lowast;,$j) = A\B(&lowast;,$j)
+	
+	C = B / A  =&gt;  C($i,&lowast;)=B($i,&lowast;)/A
+	 (the last four only make sense if A has been obtained from <a href="#LUdecomp">LUdecomp</a> or <a href="#PLU">PLU</a>; <a href="#LUdecomp">LUdecomp</a> applies to both square and banded matrices)
+
+If you need a different index combination, or just more explicit clarity, you can use the <a href="cpl.html#Einstein-convention">(cpl)Einstein convention</a> directly. 
 </div></body></html>
