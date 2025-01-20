@@ -170,7 +170,7 @@ Returns the determinant of square matrix &lt;mat&gt;. Uses <a href="#PLU">PLU</a
 </div><div class=page id="infix-notation">
 Page: (matrix)infix notation, Prev: <a href="#DET">DET</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>infix vector and matrix operations</h4>
-and their equivalent <a href="cpl.html#Einstein-convention">(cpl)Einstein convention</a> notation: (in what follows small letters denote 1D arrays, capital letters 2D arrays)
+and their equivalent <a href="cpl.html#Einstein-convention">(cpl)Einstein convention</a> notation: (In the following examples small letters denote 1D arrays, capital letters 2D arrays. Actual names are, of course, at the user's discretion.)
 
 	x &lowast; y  =  x($i)&lowast;y($i)
 
@@ -195,7 +195,10 @@ and their equivalent <a href="cpl.html#Einstein-convention">(cpl)Einstein conven
 	C = A \ B  =&gt;  C(&lowast;,$j) = A\B(&lowast;,$j)
 	
 	C = B / A  =&gt;  C($i,&lowast;)=B($i,&lowast;)/A
-	 (the last four only make sense if A has been obtained from <a href="#LUdecomp">LUdecomp</a> or <a href="#PLU">PLU</a>; <a href="#LUdecomp">LUdecomp</a> applies to both square and banded matrices)
 
-If you need a different index combination, or just more explicit clarity, you can use the <a href="cpl.html#Einstein-convention">(cpl)Einstein convention</a> directly. 
+(The last four expressions only make sense if A has been obtained from <a href="#LUdecomp">LUdecomp</a> or <a href="#PLU">PLU</a>; <a href="#LUdecomp">LUdecomp</a> applies to both square and banded matrices.)
+
+The above operations can also be combined with linear-space <a href="cpl.html#ARRAY-operations">(cpl)ARRAY operations</a> already provided outside the rbmat and cbmat packages.
+
+For more general, or higher-dimensional, index contractions, or just for more explicit clarity, you can use the <a href="cpl.html#Einstein-convention">(cpl)Einstein convention</a> directly. 
 </div></body></html>
