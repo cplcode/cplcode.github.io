@@ -1582,11 +1582,11 @@ Another form of subarray selection is index permutation, which in the particular
 
 	arr(&lowast;&lt;n&gt;,...)
 
-denotes the array obtained from arr by making the &lt;n&gt;-th index become the first and shifting forward all the others. Thus the transpose of a matrix A is A(&lowast;2,&lowast;1), or just A(&lowast;2) since &lowast;1 is synonym with &lowast; and in the last position does nothing (but may be included for clarity); the alternative notation
+denotes the array whose &lt;n&gt;-th index is used as the first index of arr, and the other indices fill the remaining positions in order. &lt;n&gt; is currently limited to 2, 3, 4. Multiple &lowast;&lt;n&gt; applied, separated by a comma, to an array with 3 or more dimensions take effect in left to right order, each acting upon the remaining indices to its right. For example, the transpose of a matrix A is A(&lowast;2,&lowast;1), or just A(&lowast;2) since &lowast;1 is a synonym with &lowast; and in the last position does nothing (but may be included for clarity); the alternative notation
 
 	TRANSPOSED(A)
 
-is also provided. &lt;n&gt; is currently limited to 2, 3, 4. Multiple &lowast;&lt;n&gt; applied, separated by a comma, to an array with 3 or more dimensions take effect in left to right order, each acting upon the remaining indices to its right.
+is also provided.
 
 Finally, a subarray can be extracted from an ARRAY of STRUCTUREs. If the declaration is, for instance,
 
@@ -2753,7 +2753,7 @@ Compile the parallel version as <q>cpl make &lt;program&gt; -fopenmp</q>.
 Much of the same applies to OpenACC directives, another standard for parallel execution especially on GPUs, or in fact to any #pragma's that are construed similarly.
 
 Implementation notes:
- 1) If a parallel program is compiled without the -fopenmp option, #pragma is treated as a comment, that is you obtain the serial version of the program. This is intended and conforming to C behaviour.
+ 1) If a parallel program is compiled without the -fopenmp option, #pragma is treated as a comment, that is you obtain the serial version of the program. This is intended, and conforming to C, behaviour.
  2) C compiler options, of which -fopenmp is one, must appear after &lt;program&gt; on the command line in order for them to be distinguished from cpl options (see <a href="#cpl">cpl</a>).
  3) The <q>omp for</q> directive can only be applied to a basic <q>LOOP FOR</q> construction (see <a href="#FOR">LOOP:FOR</a>.), which gets translated to <q>for</q> in the intermediate C code. Other types of LOOP or DO do not involve a <q>for</q> and are not recognized by OpenMP.
  4) If an <q>omp parallel</q> or other directive needs to be applied to a block of code that is not implicitly delimited by the subsequent instruction, this block can be delimited by <q>MODULE ... END MODULE</q> (see <a href="#MODULE">MODULE</a>).
