@@ -1582,7 +1582,7 @@ Another form of subarray selection is index permutation, which in the particular
 
 	arr(&lowast;&lt;n&gt;,...)
 
-denotes the array whose &lt;n&gt;-th index is used as the first index of arr, and the other indices fill the remaining positions in order. &lt;n&gt; is currently limited to 2, 3, 4. Multiple &lowast;&lt;n&gt; applied, separated by a comma, to an array with 3 or more dimensions take effect in left to right order, each acting upon the remaining indices to its right. For example, the transpose of a matrix A is A(&lowast;2,&lowast;1), or just A(&lowast;2) since &lowast;1 is a synonym with &lowast; and in the last position does nothing (but may be included for clarity); the alternative notation
+denotes the array whose &lt;n&gt;-th index is used as the first index of arr, and the other indices fill the remaining positions in order. &lt;n&gt; is currently limited to 1, 2, 3, 4. Multiple &lowast;&lt;n&gt; applied, separated by a comma, to an array with 3 or more dimensions take effect in left to right order, each acting upon the remaining indices to its right. For example, the transpose of a matrix A is A(&lowast;2,&lowast;1), or just A(&lowast;2) since &lowast;1 is synonymous with &lowast;, and in the last position does nothing (but may be included for clarity); the alternative notation
 
 	TRANSPOSED(A)
 
