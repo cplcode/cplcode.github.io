@@ -1,2 +1,2 @@
-2025-02-03 is available.
-Removed incompatibility between rtchecks and #pragma directives (e.g. OpenMP).
+2025-02-04 is available.
+Minor corrections.
