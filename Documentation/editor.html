@@ -91,7 +91,7 @@ Most frequent editing keys:
 
  - Left (Esc h), right arrow (Esc l): previous, next char
  - Home (Esc ^), end (Esc $): beginning, end of line
- - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file
+ - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$): beginning, end of file
  - Backspace: erase left
  - Delete (Esc d, Esc x): erase right
  - Shift-delete (Esc D, Esc X): erase line
@@ -102,10 +102,12 @@ Most frequent editing keys:
  - Tab: autocomplete keyword or identifier or filename. Successive tabs move
  forward along the list of available completions; Shift-Tab moves backwards.
  Shift-Tab without a prior Tab displays a list of all available completions.
+ An actual tab character can be entered as Ctrl-A Tab.
  - Enter: submit line.
  - F1, Esc `: switch to full-screen mode.
  - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
- - Esc \, Ctrl-\: add next (special or control) character verbatim 
+ - Ctrl-a, Esc \, Ctrl-\: enter next (special or control) character verbatim,
+ or enter Unicode hex-code character. 
 </div><div class=page id="full-screen">
 Page: (editor)full-screen, Next: <a href="#character-set">character set</a>, Prev: <a href="#readline">readline</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr>
@@ -120,7 +122,7 @@ Most frequent editing keys:
 
  - Left arrow (Esc h), right arrow (Esc l): previous, next char
  - Home (Esc ^), End (Esc $): beginning, end of line or of selection
- - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$, Esc A): beginning, end of file
+ - Ctrl-Home (Ctrl-^), Ctrl-End (Ctrl-$): beginning, end of file
  - Backspace: erase left; Delete (Esc d, Esc x): erase at cursor
  - Shift-Delete (Esc D, Esc X): erase line
  - Insert (Esc i, Esc v, Ctrl-v): insert selection, see <a href="#Select">Select</a>.
@@ -130,11 +132,13 @@ Most frequent editing keys:
  - Tab: autocomplete keyword or identifier or filename. Successive tabs move
  forward along the list of available completions; Shift-Tab moves backwards.
  Shift-Tab without a prior Tab displays a list of all available completions.
+ An actual tab character can be entered as Ctrl-A Tab.
  - Enter: Enter new line, and trigger possible autocompletion of CPL syntax
  - Esc =: Autoindent current line or selection (<a href="#Indent-and-complete">Indent and complete</a>)
  - F1, Esc `: switch in and out of command-line mode.
  - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
- - Esc \, Ctrl-\: add next (special or control) character verbatim.
+ - Ctrl-a, Esc \, Ctrl-\: enter next (special or control) character verbatim,
+ or enter Unicode hex-code character.
 
 Selection is achieved by Shift-arrow keys (<a href="#Select">Select</a>), or by moving the mouse with its left button pressed. The center mouse button copies the current selection if the mouse is moved to a new position, or deletes it if the mouse sits on it. The right mouse button moves (cuts and pastes) the current selection.
 
