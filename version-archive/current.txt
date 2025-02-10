@@ -1,2 +1,2 @@
 2025-02-10 is available.
-Editor bug fixes and upgrades: paste by tiles, special-character input by Unicode number, mouse functionality in keyword- and file-completion selector panel.
+Editor bug fixes and upgrades: copy&paste by tiles, special-character input by Unicode number, mouse functionality in keyword- and file-completion selector panel.
