@@ -100,9 +100,9 @@ Most frequent editing keys:
    commands are immutable; when a character is added or deleted in a previous
    command, this is copied to the most recent position before being modified.
  - Tab: autocomplete keyword or identifier or filename. Successive tabs move
- forward along the list of available completions; Shift-Tab moves backwards.
- Shift-Tab without a prior Tab displays a list of all available completions.
- An actual tab character can be entered as Ctrl-A Tab.
+   forward along the list of available completions; Shift-Tab moves backwards.
+   Shift-Tab without a prior Tab displays a list of all available completions.
+   An actual tab character can be entered as Ctrl-A Tab.
  - Enter: submit line.
  - F1, Esc `: switch to full-screen mode.
  - Esc u, Esc U: Undo, respectively redo, the last modification. (<a href="#Undo">Undo</a>)
@@ -130,9 +130,9 @@ Most frequent editing keys:
  - PgUp (Esc p), PgDn (Esc n): prev or next line of the same indentation.
  - Esc f (Ctrl-f, Esc /), Esc F (Esc ?): Find forwards, respectively backwards.
  - Tab: autocomplete keyword or identifier or filename. Successive tabs move
- forward along the list of available completions; Shift-Tab moves backwards.
- Shift-Tab without a prior Tab displays a list of all available completions.
- An actual tab character can be entered as Ctrl-A Tab.
+   forward along the list of available completions; Shift-Tab moves backwards.
+   Shift-Tab without a prior Tab displays a list of all available completions.
+   An actual tab character can be entered as Ctrl-A Tab.
  - Enter: Enter new line, and trigger possible autocompletion of CPL syntax
  - Esc =: Autoindent current line or selection (<a href="#Indent-and-complete">Indent and complete</a>)
  - F1, Esc `: switch in and out of command-line mode.
@@ -220,9 +220,13 @@ Where needed, the following explicit indentation commands are available:
  Esc ( : unindent the current selection by one space to the left,
  Esc = : even the margin of the current selection, or indent as to CPL syntax.
 
-In addition, word completion using the Tab key is available in full-screen just as well as in readline mode. Successive tabs move forward along the list of available completions; Shift-Tab moves backwards. Shift-Tab without a prior Tab displays a list of all available completions. A hint is shown under the cursor at the end of the current line, foreshowing in faint type the completion that pressing Tab would currently produce.
+In addition, word completion using the Tab key is available in full-screen just as well as in readline mode. In unix-shell-like fashion, pressing Tab while typing completes the word being typed. Repeated tabs move forwards along the list of available completions; Shift-Tab moves backwards. The number of available completions and the sequential number of the current tab appear in the status line. If typing occurs at the end of the current line, a hint is shown in faint type of the completion that pressing Tab would currently produce. Available completions include CPL keywords as well as all words that have already been typed in the current session. In a context where a file name is required, such as edit or save command, files from the present working directory are offered as completions. When a remote access is specified, such as my.server.com:mydirectory/, and ssh is configured with passwordless access to that server, files from the remote directory as shown.
 
-Parentheses and quote completion also operates, automatically adding closed parentheses and quotes at the time they are opened. 
+Shift-Tab without a prior Tab displays a multi-column list of all available completions (or file names). The user can just keep typing, or press Tab one or more times to the intended word, or graphically select from the list using either the mouse or the arrow keys and then press Enter.
+
+An actual Tab character can be entered as Ctrl-A Tab. (Ctrl-A, Esc \ or Ctrl-\ generally produce the effect of entering the next control character verbatim.)
+
+Parentheses and quote autocompletion also operates, automatically adding closing parentheses and quotes at the time they are opened. 
 </div><div class=page id="Find">
 Page: (editor)Find,  Next: <a href="#Undo">Undo</a>,  Prev: <a href="#Select">Select</a>,  Up: <a href="#full-screen">full-screen</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Find and replace</h4>
