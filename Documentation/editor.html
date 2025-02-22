@@ -87,7 +87,7 @@ If full-screen mode is toggled on with no other file opened, the command history
 </div><div class=page id="readline">
 Page: (editor)readline, Next: <a href="#full-screen">full-screen</a>, Prev: <a href="#Top">Top</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Readline assisted console input</h3>
-Most frequent editing keys:
+Most frequently used editing keys:
 
  - Left (Esc h), right arrow (Esc l): previous, next char
  - Home (Esc ^), end (Esc $): beginning, end of line
@@ -101,7 +101,7 @@ Most frequent editing keys:
    command, this is copied to the most recent position before being modified.
  - Tab: autocomplete keyword or identifier or filename. Successive tabs move
    forward along the list of available completions; Shift-Tab moves backwards.
-   Shift-Tab without a prior Tab displays a list of all available completions.
+ - Shift-Tab without a prior Tab: display a chooser of available completions.
    An actual tab character can be entered as Ctrl-A Tab.
  - Enter: submit line.
  - F1, Esc `: switch to full-screen mode.
@@ -114,11 +114,11 @@ Page: (editor)full-screen, Next: <a href="#character-set">character set</a>, Pre
  <h3>Full-screen editor</h3>
 The full-screen editor is accessed by pressing F1 or Esc ` or by the <q>edit</q> command in interactive cpl, as <q>cpl edit</q> in the shell, or also as <q>edit</q> in the shell if no other <q>edit</q> command takes precedence.
 
-Three equivalent editing styles are available: 1) specialized keys (arrows, Del, Ins, etc.), mouse clicks for selection,
+Three interchangeable editing styles are simultaneously available: 1) specialized keys (arrows, Del, Ins, etc.), mouse clicks for selection,
    and a mouse menu accessed by clicking on the bottom status line; 2) single-letter commands in a command mode toggled in and out by the Esc key; 3) pressing Alt together with a command letter without switching modes.
    Ctrl-&lt;letter&gt; works too, with exceptions.
 
-Most frequent editing keys:
+Most frequently used editing keys:
 
  - Left arrow (Esc h), right arrow (Esc l): previous, next char
  - Home (Esc ^), End (Esc $): beginning, end of line or of selection
@@ -127,11 +127,11 @@ Most frequent editing keys:
  - Shift-Delete (Esc D, Esc X): erase line
  - Insert (Esc i, Esc v, Ctrl-v): insert selection, see <a href="#Select">Select</a>.
  - Up arrow (Esc j), down arrow (Esc k): previous, next line.
- - PgUp (Esc p), PgDn (Esc n): prev or next line of the same indentation.
+ - PgUp (Esc p), PgDn (Esc n): previous, next line of the same indentation.
  - Esc f (Ctrl-f, Esc /), Esc F (Esc ?): Find forwards, respectively backwards.
  - Tab: autocomplete keyword or identifier or filename. Successive tabs move
    forward along the list of available completions; Shift-Tab moves backwards.
-   Shift-Tab without a prior Tab displays a list of all available completions.
+ - Shift-Tab without a prior Tab: display a chooser of available completions.
    An actual tab character can be entered as Ctrl-A Tab.
  - Enter: Enter new line, and trigger possible autocompletion of CPL syntax
  - Esc =: Autoindent current line or selection (<a href="#Indent-and-complete">Indent and complete</a>)
