@@ -1,2 +1,2 @@
-2025-02-22 is available.
-Origin of rare editor crash found and corrected.
+2025-02-24 is available.
+Minor corrections.
