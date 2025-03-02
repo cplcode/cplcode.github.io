@@ -74,8 +74,6 @@ Bash-like command completion and command history are traditionally provided by t
 
 With the exception of those control characters that are captured by the console (such as Ctrl-i, which is Tab, and Ctrl-h which is Backspace), Ctrl-&lt;key&gt; also works as an alternative to Esc followed by the same lower-case letter. As a further alternative, Alt-&lt;key&gt; in most terminals sends the sequence Esc &lt;key&gt;, and thus produces the same effect as switching command mode on and then pressing &lt;key&gt;. On macOS you may have to set <q>Use Option as Meta key</q> if you want the Option key to serve this purpose. See <a href="https://support.apple.com/en-bn/guide/terminal/trmlkbrd/mac">support.apple.com/en-bn/guide/terminal/trmlkbrd/mac</a>
 
-If full-screen mode is toggled on with no other file opened, the command history shows up in the full-screen editor, and the Enter key is now entered as a regular newline. On return to readline mode (when F1 or Esc ` is pressed again), the modified command history is replayed through interactive cpl as if this list of commands had been given afresh when it was launched. Other editing keys work just as in readline mode, except that history lines are now edited in place.
-
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
 <tr><td colspan="2"> </td></tr>
