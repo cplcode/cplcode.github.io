@@ -75,7 +75,7 @@ The fft.cpl library handles fast Fourier transforms. All of the following routin
 	SUBROUTINE FFT(COMPLEX Rin^(&lowast;), Rout^(&lowast;)) computes
 	Rout(j) = [SUM Rin(i)&lowast;EXP(-2&lowast;PI&lowast;I&lowast;i&lowast;j/Rin.LENGTH) FOR ALL i]/Rin.LENGTH
 
-These sums are actually computed by a fast-Fourier-transform algorithm which only works when Rin.LENGTH is the product of a power of two and possibly a single factor of three. The
+These sums are actually computed by a fast-Fourier-transform algorithm which only works when Rin.LENGTH is the product of a power of two and possibly a single factor of three. Notice that the normalizing 1/Rin.LENGTH factor sits in the direct transform, whereas the inverse transform is a simple Fourier sum (the commonest convention for a Fourier series). The
 
 	BOOLEAN FUNCTION FFTfit(INTEGER VARIABLE N)
 
@@ -95,5 +95,7 @@ The output of RFT and the input of HFT is formally a COMPLEX ARRAY (so that eith
 
 For instance, the REAL ARRAY hidden in the COMPLEX ARRAY Rout may be accessed as REALIFIED(Rout), or equivalently as Rout.REALIFIED.
 
-The variants IFTU, RFTU, FFTU and HFTU of the above routines achieve a slightly shorter computation time by leaving the output array of the first two (and accepting the input array of the last two) unordered. They are, nonetheless, mutually inverse transforms and can be usefully applied to perform convolutions. 
+The variants IFTU, RFTU, FFTU and HFTU of the above routines achieve a slightly shorter computation time by leaving the output array of the first two (and accepting the input array of the last two) unordered. They are, nonetheless, mutually inverse transforms and can be usefully applied to perform convolutions.
+
+Subroutines IFT, FFT, RFT, HFT are also defined for 2D and 3D arrays, in their simplest implementation as loops of the corresponding 1D transforms. 
 </div></body></html>
