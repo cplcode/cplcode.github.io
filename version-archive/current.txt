@@ -1,2 +1,2 @@
-2025-04-10 is available.
-Minor corrections.
+2025-04-15 is available.
+ARRAY formal parameters now accept non-contiguous arrays and subarrays.

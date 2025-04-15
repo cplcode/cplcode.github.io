@@ -141,7 +141,7 @@ POSITION(text,rec)
 READ FROM text linebuf
 WRITE "&lt;center&gt;&lt;H2&gt;Biblioteca del DIMEC&lt;/H2&gt;&lt;/center&gt;"
 WRITE "&lt;TABLE class=card align=center width=95% border=4 rules=rows&gt;"
-POINTER INTO linebuf field=0, fieldend=strchr(field,\t)
+POINTER INTO linebuf field=LO, fieldend=strchr(field,\t)
 IF fieldend^#NULL THEN fieldend(0)=0
 sysnum=field(0..HI)
 DO field=fieldend+1; fieldend=strchr(field,\t) FOR 2 TIMES
