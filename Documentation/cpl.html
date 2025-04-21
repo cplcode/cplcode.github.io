@@ -698,9 +698,9 @@ A third alternative syntax, similar to the one used for  variables of <a href="#
 	&lt;block&gt;
 	END name
 
-When this syntax is used, the result type may be, or contain, an ARRAY type with dimensions depending on the formal parameters themselves (see <a href="#array-parameters">array parameters</a>). Any formal parameter as well may depend on the formal parameters that precede it. For example:
+When this syntax is used, the result type may be, or contain, an ARRAY type with dimensions that are functions on the formal parameters themselves (see <a href="#array-parameters">array parameters</a>). Any formal parameter as well may depend on the formal parameters that come before it. For example:
 
-	FUNCTION transformarray[ARRAY(&lowast;) OF REAL v]-&gt;ARRAY(v.LO..v.HI) OF REAL .
+	FUNCTION transformarray[ARRAY(&lowast;) OF REAL v]-&gt;ARRAY(v.LO..v.HI) OF REAL
 
 Within a function's body, a variable named
 
