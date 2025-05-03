@@ -2283,7 +2283,7 @@ A multiple-choice loop is a hybrid between a <a href="#CASE">CASE</a> and a <a h
 
 At the end of each labelled block (or nested in its interior, typically within an IF or CASE statement), execution may continue at any other label as specified by the REPEAT statement. Each labelled block is its own scope, and local variables cease to exist at the REPEAT (like at an <a href="#EXIT">EXIT</a>) statement (but variables of an outer, enclosing scope are, as always, shared). If the end of a block is reached without an intervening REPEAT statement, the CASE LOOP ends.
 
-While this construct may look like unstructured code allowing an arbitrary goto (and is in fact implemented using one), it maintains statements and labels in the same order as, and is thus no less or more structured than, a CASE inside a LOOP:
+While this construct may look like unstructured code allowing an arbitrary goto (and is in fact implemented using one), it maintains statements and labels in the same order as, and is thus no less or more structured than, a CASE statement inside a LOOP:
 
         ENUM(label1,label2,...labeln,exit) repeat=label1
         LOOP

@@ -122,9 +122,8 @@ The <a href="https://CPLcode.net">CPL</a> compiler can read and make sense of a 
         <a href="https://CPLcode.net">CPL</a> was conceived as a compiled language from the very outset; when used for intensive computational tasks, it inherits the speed of compiled C. The basic <a href="https://CPLcode.net/Documentation/cpl.html#cpl">cpl make</a> command, used as
   <pre>
   cpl make &lt;program&gt;[.cpl] [&lt;option&gt;]</pre>
-  is all that is needed to compile and link the source file
-  &lt;program&gt;.cpl into the executable file &lt;program&gt;, which you can then run
-  by its name just like any other executable.
+  is all that is needed to compile and link the source file &lt;program&gt;.cpl and its dependencies into the executable file &lt;program&gt;,
+  which you can then run by its name just like any other executable.
       </div>
     </div>
   </div>
@@ -134,7 +133,7 @@ The <a href="https://CPLcode.net">CPL</a> compiler can read and make sense of a 
       <div itemprop="text">
 A scripting language or script language is a programming language that is usually interpreted at run time rather than compiled. In general, scripting languages are easier to learn and faster to code in than more structured and compiled languages such as C and C++.<br>
 <p>Although <a href="https://CPLcode.net">CPL</a> <i>is</i> compiled, the straight
-  <a href="https://CPLcode.net/Documentation/cpl.html#cpl-run">cpl run</a> command makes it act just like a scripting language, directly running a plain-text CPL file by transparently compiling it when and only when it detects a modification.</p>
+  <a href="https://CPLcode.net/Documentation/cpl.html#cpl-run">cpl run</a> command makes it act just like a scripting language, directly running a plain-text CPL file by transparently compiling it behind the scenes when and only when it detects a modification.</p>
   <p>If invoked from a <a href="https://en.wikipedia.org/wiki/Shebang_(Unix)" target=blank_>hashbang</a>, <a href="https://CPLcode.net/Documentation/cpl.html#cpl-run">cpl run</a> makes <a href="https://CPLcode.net">CPL</a> code executable like a script, but at compiled-code speed.</p>
       </div>
     </div>
@@ -143,8 +142,8 @@ A scripting language or script language is a programming language that is usuall
     <h2 id="Q12" itemprop="name">Do the programming tools include an interactive execution environment?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-      A software routine that accepts commands as input and causes them to be executed is a component of operating systems and many programming environments.<br>
-  <p>The <a href="https://CPLcode.net/Documentation/cpl.html#cpl-i">interactive CPL interpreter</a> accepts expressions, statements or commands at a console prompt. Any <a href="https://CPLcode.net/Documentation/cpl.html#Top">CPL</a> or <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> or <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be loaded into the interpreter and have its functions invoked from the command prompt, either alone or embedded in a greater CPL command or expression. Unix-shell commands are accepted as well, just as are functions from the system C library.</p>
+      An application that accepts commands at a prompt, and causes them to be executed, is a component of operating systems and many programming environments.<br>
+  <p>The <a href="https://CPLcode.net/Documentation/cpl.html#cpl-i">interactive CPL interpreter</a> accepts expressions, statements or commands at a console prompt. Any <a href="https://CPLcode.net/Documentation/cpl.html#Top">CPL</a> or <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> or <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be loaded into the interpreter and have its functions invoked from the command prompt, either alone or embedded in a compound CPL command or expression. Unix-shell commands are accepted as well, just as are functions from the system C library.</p>
       </div>
     </div>
   </div>
@@ -200,7 +199,7 @@ A scripting language or script language is a programming language that is usuall
     <h2 id="Q18" itemprop="name">Is this a good programming language for embedded systems and robotics?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-The <a href="https://CPLcode.net">CPL</a> tools (compiler, interpreter and editor) comprise an extremely compact package (1.5 Mbytes uncompressed) and can natively run on any embedded system large enough to already host a barebones unix system and native C compiler. In addition, of course, to being available offline for cross-compiling. The ability to <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">#include</a> and transparently use a C library makes existing, provided with the hardware, robotic interfaces easily accessible in this compact high-level <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">language</a>, which includes a construct to ease the programming of state machines.
+The <a href="https://CPLcode.net">CPL</a> tools (compiler, interpreter and editor) comprise an extremely compact package (1.5 Mbytes uncompressed) and can natively run on any embedded system large enough to already host a barebones unix system and native C compiler. In addition, of course, to being available offline for cross-compiling. The ability to <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">#include</a> and transparently use a C library makes existing, provided with the hardware, robotic interfaces easily accessible in this compact high-level <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">language</a>, which includes a <a href="https://CPLcode.net/Documentation/cpl.html#CASE-LOOP">construct</a> to ease the programming of state machines.
       </div>
     </div>
   </div>
