@@ -67,7 +67,7 @@
 </div><div class=page id="Top">
 Page: (cpl)Top,  Next: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h1>CPL Reference Manual</h1>
-Documentation for the CPL programming language and its compiler, May 2025. Printable and citable 2020 version is at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
+Documentation for the CPL programming language and its compiler, July 2025. Printable and citable 2020 version is at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
 
   CPL = Concealed Pointer Lookup
   CPL = Coactive Parameter Lists
@@ -1604,7 +1604,7 @@ This CPL address manipulation allows a multidimensional ARRAY to be accessed seq
 
 	ARRAY(0..4,1..5,-7..7,0..2) OF REAL V
 
-then V(&lowast;&lowast;&lowast;&lowast;) is a onedimensional <q>view</q> of the same array (as opposed to V(&lowast;,&lowast;,&lowast;,&lowast;) which represents its original arrangement). By the same token V(&lowast;,&lowast;&lowast;,&lowast;) is the three-dimensional array obtained by compounding the two central indices into one. Bounds of a compound index can be retrieved by the <a href="#LO">LO</a>. and <a href="#HI">HI</a>. functions as usual.
+then V(&lowast;&lowast;&lowast;&lowast;) is a onedimensional <q>view</q> of the same array (as opposed to V(&lowast;,&lowast;,&lowast;,&lowast;) which represents its original arrangement). By the same token V(&lowast;,&lowast;&lowast;,&lowast;) is the three-dimensional array obtained by compounding the two central indices into one. Bounds of a compound index are determined so that the <q>0</q> value of each index stays aligned with the <q>0</q> value of the compound index (whether or not a <q>0</q> element actually exists), and can be retrieved by the <a href="#LO">LO</a>. and <a href="#HI">HI</a>. functions as usual.
 
 Compound indices are restricted to arrays (or portions of them) that are contiguous in memory. This generally precludes their use after subarray operations that permute, stride, or restrict the range of indices. 
 </div><div class=page id="ARRAY-operations">
