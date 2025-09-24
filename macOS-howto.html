@@ -23,7 +23,7 @@
     <h3 itemprop="headline">Step by step instructions to use CPL on Apple macOS</h3>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
     <dt itemprop="name">1 - Open a terminal:</dt>
-    <dd itemprop="text"> Click the terminal icon in your Dock, or if you do not yet have such an icon enter <q>terminal</q> in the search box and click <q>terminal.app</q>.</dd>
+    <dd itemprop="text"> Click the terminal icon in your Dock, or if you lack such an icon enter <q>terminal</q> in the search box and click <q>terminal.app</q>.</dd>
     </dl>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
     <dt itemprop="name">2 - Install Command Line Tools:</dt>
@@ -49,9 +49,9 @@
     </dd>
     </dl>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
-    <dt itemprop="name">6 - Download and unpack the CPL archive, with the <code>CC</code> environment variable pointing at the brew-installed C compiler (currently named <code>gcc-14</code>, but subject to change):</dt>
-    <dd itemprop="text"><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)" id="unpack">curl -fsS -o /tmp/unpack-cpl.sh https://CPLcode.net/version-archive/unpack-cpl.sh && env CC=gcc-14 sh /tmp/unpack-cpl.sh</pre>
-    If your gcc version is not gcc-14, please replace gcc-14 by your own version before executing the above line. Also be aware that the plain <code>gcc</code> command invokes the Apple-modified gcc (aka <code>clang</code>) and not the Homebrew-installed one.
+    <dt itemprop="name">6 - Download and unpack the CPL archive, with the <code>CC</code> environment variable pointing at the brew-installed C compiler (currently named <code>gcc-15</code>, but subject to change):</dt>
+    <dd itemprop="text"><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)" id="unpack">curl -fsS -o /tmp/unpack-cpl.sh https://CPLcode.net/version-archive/unpack-cpl.sh && env CC=gcc-15 sh /tmp/unpack-cpl.sh</pre>
+    If your gcc version is not gcc-15, please replace gcc-15 by your own version before executing the above line. Also be aware that the plain <code>gcc</code> command invokes the Apple-modified gcc (aka <code>clang</code>) and not the Homebrew-installed one.
     </dd>
     </dl>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
@@ -60,10 +60,10 @@
     <p>or alternately find contributed macOS binaries on <a href="http://gnuplot.info">gnuplot's own website</a>.</p></dd>
     </dl>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
-    <dt itemprop="name">8 - In order to use the CPL editor effectively, you may want to tick the <q>Use Option as Meta key</q> box in your Mac Terminal Keyboard preferences.</dt>
+    <dt itemprop="name">8 - In order to use the CPL editor effectively, you may want to tick the <q style="color:purple">Use Option as Meta key</q> box in your Mac Terminal Keyboard preferences.</dt>
     <dd itemprop="text">This allows the Option key to be used for entering Alt-&lt;letter&gt; editor commands.</dd>
     </dl>
-    <p><strong>You are all set!</strong> Please notice that you may have to repeat steps 2 and 4 after a macOS version update. If you encounter problems, deleting the directory <code>/Library/Developer/CommandLineTools</code> before repeating step 2 may help. Also notice that running a macOS-compiled CPL executable on bare macOS does not need any of the above procedure (save installing gnuplot if graphics are wanted). You only need to install gcc and the CPL tools when you want to edit, compile or interpret a CPL program, not to just run it.</p>
+    <p><strong>You are all set!</strong> Please notice that you may have to repeat steps 2 and 4 after a macOS version update. If you encounter problems, try to delete directory <code>/Library/Developer/CommandLineTools</code> before repeating step 2. Also notice that running a macOS-compiled CPL executable on bare macOS does not need any of the above procedure (save installing gnuplot if graphics are wanted). You only need to install gcc and the CPL tools when you want to edit, compile or interpret a CPL program, not to just run it.</p>
     <div id=snackbar>copied.</div>
     <footer>
       <p><a href="./Download">Back</a></p>
