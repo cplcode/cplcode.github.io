@@ -1,0 +1,172 @@
+! USE rtchecks
+#define sawtooth
+INTEGER ny=40, nz=ROUND(3*ny), zplotbase=0; dy=1/ny; dz=dy
+
+#ifdef rectangular
+vertangle=PI/2
+vertdelta=PI/4
+verty=0.5
+width=0.1
+vertz=0.5000000001
+BOOLEAN FUNCTION InBody(REAL y,z)=ABS(y-verty)<=width AND z<=vertz
+#endif
+#ifdef triangular
+vertangle=PI/3
+vertdelta=0
+verty=0.5
+tanvert=TAN[(PI-vertangle)/2]
+vertz=verty*tanvert
+BOOLEAN FUNCTION InBody(REAL y,z)=z<=vertz-ABS(y-verty)*tanvert
+#endif
+#ifdef trapezoidal
+vertangle=PI/6
+vertdelta=0
+verty=0.5
+tanvert=TAN[(PI-vertangle)/2]
+vertz=0.5000000001
+BOOLEAN FUNCTION InBody(REAL y,z)=z<=vertz-ABS(y-verty)*tanvert
+#endif
+#ifdef sawtooth
+verty=0.5
+vertz=0.5000000001
+tanvert=2
+vertangle=atan(tanvert)
+vertdelta=vertangle/2
+BOOLEAN FUNCTION InBody(REAL y,z)=IF y<=verty THEN z<=vertz+(y-verty)/tanvert ELSE z<=vertz+(y-1-verty)/tanvert
+! vertangle=PI
+! vertdelta=0
+! BOOLEAN FUNCTION InBody(REAL y,z)=z<=vertz+2*[0.475-SQRT[(y-0.75)**2+0.1**2]-0.5*y]
+#endif
+#ifdef slipnoslip
+vertangle=0
+vertdelta=PI/2
+verty=0.5
+vertz=dz*0.5000000001
+width=0.25
+BOOLEAN FUNCTION InBody(REAL y,z)=ABS(y-verty)<=width AND z<=vertz
+#endif
+#ifdef cylinders
+vertangle=PI
+vertdelta=0
+verty=0.5
+vertz=0+SQRT(0.5/PI)
+nz=3*ny
+BOOLEAN FUNCTION InBody(REAL y,z)=z<=vertz AND (y-verty)^2+[z-ROUND(z)]^2<=0.5/PI
+zplotbase=0*ny
+#endif
+
+REAL FUNCTION Bisection[FUNCTION(REAL s)->BOOLEAN f; REAL VARIABLE s1, s2]
+  f1 = f(s1); f2 = f(s2)
+  IF f1 = f2 THEN ERROR "Bisection point not included in " s1 " " s2
+  LOOP halve
+    RESULT=(s1+s2)/2
+    IF ABS(s2-s1)<1E-10 THEN EXIT Bisection
+    IF f(RESULT)=f1 THEN s1=RESULT ELSE s2=RESULT
+  REPEAT halve
+END Bisection
+
+phiwall=2*PI-vertangle
+laplexp1=PI/phiwall
+REAL FUNCTION even(REAL y,z)
+  r2=(y-verty)^2+(z-vertz)^2
+  REAL theta=atan2(y-verty,z-vertz)-vertdelta
+  IF theta<-PI THEN theta=theta+2*PI
+  RESULT=r2^(laplexp1/2)*COS(laplexp1*theta)
+END even
+
+laplexp2=2*laplexp1
+REAL FUNCTION odd(REAL y,z)
+  r2=(y-verty)^2+(z-vertz)^2
+  REAL theta=atan2(y-verty,z-vertz)-vertdelta
+  IF theta<-PI THEN theta=theta+2*PI
+  RESULT=r2^(laplexp2/2)*SIN(laplexp2*theta)
+END odd
+
+REAL FUNCTION nocorr(REAL x,y)=1
+
+BOOLEAN FUNCTION stokdisp(REAL stokexp)=SIN(stokexp*phiwall)+stokexp*SIN(phiwall)>0
+stokexp=Bisection[stokdisp,0.49,1.01-(phiwall-PI)/2/PI]
+stokesB=-COS[(stokexp+1)*phiwall/2]/COS[(stokexp-1)*phiwall/2]
+REAL FUNCTION stokpsi(REAL y,z)
+  r2=(y-verty)^2+(z-vertz)^2
+  REAL theta=atan2(y-verty,z-vertz)-vertdelta
+  IF theta<-PI THEN theta=theta+2*PI
+  RESULT=r2^[(stokexp+1)/2]*(COS[(stokexp+1)*theta]+stokesB*COS[(stokexp-1)*theta])
+END stokpsi
+REAL FUNCTION stokv(REAL y,z)=[stokpsi(y,z+dz/2)-stokpsi(y,z-dz/2)]/dz
+REAL FUNCTION stokw(REAL y,z)=[stokpsi(y-dy/2,z)-stokpsi(y+dy/2,z)]/dy
+REAL FUNCTION stokp(REAL y,z)
+  r2=(y-verty)^2+(z-vertz)^2
+  IF r2<dz^2 THEN RESULT=0 ELSE
+    REAL theta=atan2(y-verty,z-vertz)-vertdelta
+    IF theta<-PI THEN theta=theta+2*PI
+    RESULT=stokesB*4*stokexp*r2^[(stokexp-1)/2]*SIN[(stokexp-1)*theta]
+  END IF
+END stokp
+
+REAL FUNCTION snsstokpsi(REAL y,z)
+  r2=(y-verty)^2+(z-vertz)^2
+  theta=atan2(y-verty,z-vertz)-vertdelta
+  RESULT=r2^(3/4)*[COS(0.5*theta)-COS[1.5*theta]]
+END snsstokpsi
+REAL FUNCTION snsstokv(REAL y,z)=[snsstokpsi(y,z+dz/2)-snsstokpsi(y,z-dz/2)]/dz
+REAL FUNCTION snsstokw(REAL y,z)=[snsstokpsi(y-dy/2,z)-snsstokpsi(y+dy/2,z)]/dy
+REAL FUNCTION snsstokp(REAL y,z)
+  r2=(y-verty)^2+(z-vertz)^2
+  IF r2<dz^2 THEN RESULT=0 ELSE
+    theta=atan2(y-verty,z-vertz)-vertdelta
+    RESULT=-2*r2^(-1/4)*SIN(0.5*theta)
+  END IF
+END snsstokp
+
+SUBROUTINE calcimbc[ARRAY(*,*) OF REAL imbc^; REAL dispy,dispz; FUNCTION(REAL y,z)->REAL locsol,locp]
+  LOOP FOR iy=imbc.LO1 TO imbc.HI1 AND iz=imbc.LO2+1 TO imbc.HI2-1
+    y=iy*dy+dispy; z=iz*dz+dispz
+    locloc=locsol(y,z)
+    IF InBody(y,z) THEN imbc(iy,iz)=~-1E20 ELSE IF ABS(locloc)>1E-6 THEN
+      imbc(iy,iz)=~+2/dy/dy+2/dz/dz+[locp(y+dispy,z)-locp(y-dispy,z)]/dy/locloc+[locp(y,z+dispz)-locp(y,z-dispz)]/dz/locloc
+      IF InBody[y-dy,z] THEN
+	d=y-Bisection[InBody(s,z),y-dy,y]
+	IF d=0 THEN imbc(iy,iz)=-1E20 ELSE
+	  imbc(iy,iz)=~-locsol(y-d,z)/locloc/d/dy
+        END IF
+      ELSE imbc(iy,iz)=~-locsol(y-dy,z)/locloc/dy/dy
+      IF InBody(y+dy,z) THEN
+	d=Bisection[InBody(s,z),y,y+dy]-y
+	IF d=0 THEN imbc(iy,iz)=-1E20 ELSE
+	  imbc(iy,iz)=~-locsol(y+d,z)/locloc/d/dy
+        END IF
+      ELSE imbc(iy,iz)=~-locsol(y+dy,z)/locloc/dy/dy
+      IF InBody[y,z-dz] THEN
+	d=z-Bisection[InBody(y,s),z-dz,z]
+	IF d=0 THEN imbc(iy,iz)=-1E20 ELSE
+	  imbc(iy,iz)=~-locsol(y,z-d)/locloc/d/dz
+        END IF
+      ELSE imbc(iy,iz)=~-locsol(y,z-dz)/locloc/dz/dz
+      IF InBody(y,z+dz) THEN
+	d=Bisection[InBody(y,s),z,z+dz]-z
+	IF d=0 THEN imbc(iy,iz)=-1E20 ELSE
+	  imbc(iy,iz)=~-locsol(y,z+d)/locloc/d/dz
+        END IF
+      ELSE imbc(iy,iz)=~-locsol(y,z+dz)/locloc/dz/dz
+    END IF
+  REPEAT
+END calcimbc
+
+ztop=nz*dz-vertz
+ztopm=ztop-dz/2
+
+REAL zz[0..ROUND(1.5*ny)],yy(0..ny-1)
+DO zz(iz)=iz*dz-vertz FOR ALL iz
+DO yy(iy)=iy*dy FOR ALL iy
+
+SUBROUTINE writetable[STRING filename; REAL f(*,*)]
+  file=CREATE(filename)
+  LOOP FOR iy=LO TO HI
+    DO WRITE TO file f(iz,iy), ./. FOR iz=zplotbase TO zplotbase+ROUND(1.5*ny)
+    WRITE TO file
+  REPEAT LOOP
+  DO WRITE TO file f(iz,0), ./. FOR iz=zplotbase TO zplotbase+ROUND(1.5*ny)
+  WRITE TO file
+  CLOSE file
+END writetable

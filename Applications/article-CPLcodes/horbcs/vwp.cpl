@@ -1,0 +1,192 @@
+#!/usr/bin/env cpl
+USE gnuplot
+USE rbmat
+USE imb
+! #define writeout
+
+p=0; v=1; w=2; cont=0; vmom=1; wmom=2
+REAL var1(0..nz,0..ny-1,0..2)=0, sA(0..nz,0..ny-1,0..2,-ny..ny,0..2)
+sA(***,**)=1/dz
+LOOP FOR iz=1 TO nz-1 AND iy=0 TO ny-1
+  cline=^sA(iz,iy,cont)
+  IF iy=0 THEN cline(ny-1,v-cont)=-1/dy ELSE cline(-1,v-cont)=-1/dy
+  cline(0,v-cont)=1/dy
+  cline(-ny,w-cont)=-1/dz
+  cline(0,w-cont)=1/dz
+  cline(0,p-cont)=0
+  vline=^sA(iz,iy,vmom)
+  IF iy=ny-1 THEN vline[-ny,3+p-vmom]=-1/dy ELSE vline(0,3+p-vmom)=-1/dy
+  vline(-1,3+p-vmom)=1/dy
+  IF iy=ny-1 THEN vline[-ny+1,v-vmom]=1/dy^2 ELSE vline(1,v-vmom)=1/dy^2
+  IF iy=0 THEN vline(ny-1,v-vmom)=1/dy^2 ELSE vline(-1,v-vmom)=1/dy^2
+  vline(ny,v-vmom)=1/dz^2;vline(-ny,v-vmom)=1/dz^2
+  vline(0,v-vmom)=-2/dy^2-2/dz^2
+  IF InBody[(iy+0.5)*dy,iz*dz] THEN vline(0,v-vmom)=-1E20
+  wline=^sA(iz,iy,wmom)
+  wline(ny-1,3+p-wmom)=-1/dz
+  wline(-1,3+p-wmom)=1/dz
+  IF iy=ny-1 THEN wline[-ny+1,w-wmom]=1/dy^2 ELSE wline(1,w-wmom)=1/dy^2
+  IF iy=0 THEN wline(ny-1,w-wmom)=1/dy^2 ELSE wline(-1,w-wmom)=1/dy^2
+  wline(ny,w-wmom)=1/dz^2;wline(-ny,w-wmom)=1/dz^2
+  wline(0,w-wmom)=-2/dy^2-2/dz^2
+  IF InBody[iy*dy,(iz+0.5)*dz] THEN wline(0,w-wmom)=-1E20
+REPEAT LOOP
+DO var1(nz,iy,vmom)=1
+  sA(nz,iy,cont,0,p-cont)=1
+  sA(nz,iy,vmom,-ny,v-vmom)=-1/dz
+  sA(nz,iy,wmom,-ny,w-wmom)=-1/dz
+  sA(nz,iy,wmom,IF iy=0 THEN ny-2 ELSE -2,3+v-wmom)=-1/dy
+  sA(nz,iy,wmom,-1,3+v-wmom)=1/dy
+  FOR ALL iy
+DO sA(0,iy,cont,ny,p-cont)=-1/dz FOR ALL iy
+
+#ifdef slipnoslip
+LOOP FOR ALL iy
+  IF NOT InBody[(iy+0.5)*dy,0] THEN sA(0,iy,vmom,ny,v-vmom)=-1/dz
+REPEAT LOOP
+calcimbc[sA(*2,*1,vmom,0,0)(ny DIV 2..ny-1),dy/2,0,snsstokv(y-width,z),snsstokp(y-width,z)]
+calcimbc[sA(*2,*1,vmom,0,0)(0..ny DIV 2-1),dy/2,0,-snsstokv(1-y-width,z),snsstokp(1-y-width,z)]
+calcimbc[sA(*2,*1,wmom,0,0)(ny DIV 2..ny-1),0,dz/2,snsstokw(y-width,z),snsstokp(y-width,z)]
+calcimbc[sA(*2,*1,wmom,0,0)(0..ny DIV 2-1),0,dz/2,snsstokw(1-y-width,z),snsstokp(1-y-width,z)]
+#else
+#ifdef rectangular
+calcimbc[sA(*2,*1,vmom,0,0)(ny DIV 2..ny-1),dy/2,0,stokv(y-width,z),stokp(y-width,z)]
+calcimbc[sA(*2,*1,vmom,0,0)(0..ny DIV 2-1),dy/2,0,-stokv(1-y-width,z),stokp(1-y-width,z)]
+calcimbc[sA(*2,*1,wmom,0,0)(ny DIV 2..ny-1),0,dz/2,stokw(y-width,z),stokp(y-width,z)]
+calcimbc[sA(*2,*1,wmom,0,0)(0..ny DIV 2-1),0,dz/2,stokw(1-y-width,z),stokp(1-y-width,z)]
+#else
+calcimbc[sA(*2,*1,vmom,0,0),dy/2,0,stokv,stokp]
+calcimbc[sA(*2,*1,wmom,0,0),0,dz/2,stokw,stokp]
+#endif
+#endif
+LUdecomp sA(***,**)
+var1(***)=sA(***,**)\~
+a1=[SUM var1(nz,iy,v) FOR ALL iy]/ny-ztop
+c2=[SUM var1(iz,iy,v) FOR iz=1 TO nz-1 AND ALL iy]/ny*dz-ztopm^2/2-a1*ztopm
+WRITE BY NAME a1,c2
+#ifdef writeout
+writetable["v11.dat",var1(*,*,v)]
+writetable["w11.dat",var1(*,*,w)]
+writetable["p01.dat",var1(*,*,p)]
+#else
+SPLOT var1(zplotbase+(0..3*ny DIV 2),*,v)
+!READ
+#endif
+
+TYPEOF(var1) var21=0
+DO var21(iz,iy,vmom)=[var1(iz,iy,p)+var1(iz,IF iy=ny-1 THEN 0 ELSE iy+1,p)]/2-[var1(iz,IF iy=ny-1 THEN 0 ELSE iy+1,v)-var1(iz,IF iy=0 THEN ny-1 ELSE iy-1,v)]/dy
+  var21(iz,iy,wmom)=-[var1(iz,IF iy=ny-1 THEN 0 ELSE iy+1,w)-var1(iz,IF iy=0 THEN ny-1 ELSE iy-1,w)]/dy
+  var21(iz,iy,cont)=-[var1(iz,IF iy=0 THEN ny-1 ELSE iy-1,v)+var1(iz,iy,v)]/2
+FOR iz=1 TO nz-1 AND ALL iy
+DO var21(nz,iy,cont)=-ztop
+  var21(nz,iy,wmom)=-[var1(nz,IF iy=0 THEN ny-1 ELSE iy-1,v)+var1(nz,iy,v)]/2
+FOR ALL iy
+var21(***)=sA(***,**)\~
+a2=[SUM var21(nz,iy,v) FOR ALL iy]/ny
+! c2=-[SUM var21(nz-1,iy,w) FOR ALL iy]/ny-ztopm^2/2-a1*ztopm
+c3=[SUM var21(iz,iy,v) FOR iz=1 TO nz-1 AND ALL iy]/ny*dz-a2*ztopm
+WRITE BY NAME a2,c3
+#ifdef writeout
+writetable["v21.dat",var21(*,*,v)]
+writetable["w21.dat",var21(*,*,w)]
+writetable["p11.dat",var21(*,*,p)]
+#else
+SPLOT var21(zplotbase+(0..3*ny DIV 2),*,v)
+!READ
+#endif
+
+TYPEOF(var1) var22=0
+DO var22(iz,iy,vmom)=1
+FOR iz=1 TO nz-1 AND ALL iy
+DO var22(nz,iy,vmom)=[ztop^2-(ztop-dz)^2]/2/dz
+FOR ALL iy
+var22(***)=sA(***,**)\~
+b2=[SUM var22(nz,iy,v) FOR ALL iy]/ny-ztop^2/2
+d3=[SUM var22(iz,iy,v) FOR iz=1 TO nz-1 AND ALL iy]/ny*dz-(ztopm^3-dz^2*ztopm/4)/6-b2*ztopm
+WRITE BY NAME b2,d3
+#ifdef writeout
+writetable["v22.dat",var22(*,*,v)]
+writetable["w22.dat",var22(*,*,w)]
+writetable["p12.dat",var22(*,*,p)]
+#else
+SPLOT var22(zplotbase+(0..3*ny DIV 2),*,v)
+!READ
+#endif
+
+TYPEOF(var1) var31=0
+DO var31(iz,iy,vmom)=[var21(iz,IF iy=0 THEN ny-1 ELSE iy-1,v)-var21(iz,IF iy=ny-1 THEN 0 ELSE iy+1,v)]/dy-var1(iz,iy,v)+[var21(iz,iy,p)+var21(iz,IF iy=ny-1 THEN 0 ELSE iy+1,p)]/2
+  var31(iz,iy,wmom)=[var21(iz,IF iy=0 THEN ny-1 ELSE iy-1,w)-var21(iz,IF iy=ny-1 THEN 0 ELSE iy+1,w)]/dy-var1(iz,iy,w)
+  var31(iz,iy,cont)=-[var21(iz,IF iy=0 THEN ny-1 ELSE iy-1,v)+var21(iz,iy,v)]/2
+FOR iz=1 TO nz-1 AND ALL iy
+DO var31(nz,iy,vmom)=-[ztop^3-(ztop-dz)^3]/3/dz-a1*[ztop^2-(ztop-dz)^2]/2/dz
+  var31(nz,iy,wmom)=-[var21(nz,IF iy=0 THEN ny-1 ELSE iy-1,v)+var21(nz,iy,v)]/2
+FOR ALL iy
+var31(***)=sA(***,**)\~
+a3=[SUM var31(nz,iy,v) FOR ALL iy]/ny+ztop^3/3+a1*ztop^2/2
+! c3=-[SUM var31(nz-1,iy,w) FOR ALL iy]/ny-a2*ztopm
+c4=[SUM var31(iz,iy,v) FOR iz=1 TO nz-1 AND ALL iy]/ny*dz+ztopm^4/12+a1*ztopm^3/6-a3*ztopm
+WRITE BY NAME a3,c4
+#ifdef writeout
+writetable["v31.dat",var31(*,*,v)]
+writetable["w31.dat",var31(*,*,w)]
+writetable["p21.dat",var31(*,*,p)]
+#else
+SPLOT var31(zplotbase+(0..3*ny DIV 2),*,v)
+!READ
+#endif
+
+TYPEOF(var1) var32=0
+DO var32(iz,iy,vmom)=[var22(iz,IF iy=0 THEN ny-1 ELSE iy-1,v)-var22(iz,IF iy=ny-1 THEN 0 ELSE iy+1,v)]/dy+[var22(iz,iy,p)+var22(iz,IF iy=ny-1 THEN 0 ELSE iy+1,p)]/2
+  var32(iz,iy,wmom)=[var22(iz,IF iy=0 THEN ny-1 ELSE iy-1,w)-var22(iz,IF iy=ny-1 THEN 0 ELSE iy+1,w)]/dy
+  var32(iz,iy,cont)=-[var22(iz,IF iy=0 THEN ny-1 ELSE iy-1,v)+var22(iz,iy,v)]/2
+FOR iz=1 TO nz-1 AND ALL iy
+DO var32(nz,iy,wmom)=-[var22(nz,IF iy=0 THEN ny-1 ELSE iy-1,v)+var22(nz,iy,v)]/2
+  var32(nz,iy,cont)=-ztop^2/2
+FOR ALL iy
+var32(***)=sA(***,**)\~
+b3=[SUM var32(nz,iy,v) FOR ALL iy]/ny
+! d3=-[SUM var32(nz-1,iy,w) FOR ALL iy]/ny-(ztopm^3-dz^2*ztopm/4)/6-b2*ztopm
+d4=[SUM var32(iz,iy,v) FOR iz=1 TO nz-1 AND ALL iy]/ny*dz-b3*ztopm
+WRITE BY NAME b3,d4
+#ifdef writeout
+writetable["v32.dat",var32(*,*,v)]
+writetable["w32.dat",var32(*,*,w)]
+writetable["p22.dat",var32(*,*,p)]
+#else
+SPLOT var32(zplotbase+(0..3*ny DIV 2),*,v)
+!READ
+#endif
+
+TYPEOF(var1) var33=0
+DO var33(iz,iy,vmom)=var1(iz,iy,vmom)
+  var33(iz,iy,wmom)=var1(iz,iy,wmom)
+FOR iz=1 TO nz-1 AND ALL iy
+DO var33(nz,iy,vmom)=[ztop^3-(ztop-dz)^3]/6/dz+a1*[ztop^2-(ztop-dz)^2]/2/dz
+FOR ALL iy
+var33(***)=sA(***,**)\~
+e3vzt=[SUM var33(nz,iy,v) FOR ALL iy]/ny-ztop^3/6-a1*ztop^2/2
+WRITE BY NAME e3vzt
+#ifdef writeout
+writetable["v33.dat",var33(*,*,v)]
+writetable["w33.dat",var33(*,*,w)]
+writetable["p23.dat",var33(*,*,p)]
+#else
+SPLOT var33(zplotbase+(0..3*ny DIV 2),*,v)
+!READ
+#endif
+
+TYPEOF(var1) var34=0
+DO var34(iz,iy,vmom)={[var1(iz,IF iy=ny-1 THEN 0 ELSE iy+1,v)+var1(iz,iy,v)]^2-[var1(iz,IF iy=0 THEN ny-1 ELSE iy-1,v)+var1(iz,iy,v)]^2}/4/dy+{[var1(iz,iy,w)+var1(iz,IF iy=ny-1 THEN 0 ELSE iy+1,w)]*[var1(iz,iy,v)+var1(iz+1,iy,v)]-[var1(iz-1,iy,w)+var1(iz-1,IF iy=ny-1 THEN 0 ELSE iy+1,w)]*[var1(iz,iy,v)+var1(iz-1,iy,v)]}/4/dz
+  var34(iz,iy,wmom)={[var1(iz,iy,v)+var1(iz+1,iy,v)]*[var1(iz,iy,w)+var1(iz,IF iy=ny-1 THEN 0 ELSE iy+1,w)]-[var1(iz,IF iy=0 THEN ny-1 ELSE iy-1,v)+var1(iz+1,IF iy=0 THEN ny-1 ELSE iy-1,v)]*[var1(iz,IF iy=0 THEN ny-1 ELSE iy-1,w)+var1(iz,iy,w)]}/4/dy+{[var1(iz,iy,w)+var1(iz+1,iy,w)]^2-[var1(iz-1,iy,w)+var1(iz,iy,w)]^2}/4/dz
+FOR iz=1 TO nz-1 AND ALL iy
+var34(***)=sA(***,**)\~
+e3nl=[SUM var34(nz,iy,v) FOR ALL iy]/ny
+WRITE BY NAME e3nl
+#ifdef writeout
+writetable["v34.dat",var34(*,*,v)]
+writetable["w34.dat",var34(*,*,w)]
+writetable["p24.dat",var34(*,*,p)]
+#else
+SPLOT var34(zplotbase+(0..3*ny DIV 2),*,v)
+!READ
+#endif

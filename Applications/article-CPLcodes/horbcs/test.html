@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>article-CPLcodes/horbcs/test.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/singlecol.css"><style>pre{margin-left:0.5em;margin-right:0.5em} .comment{color:HotPink} a:link,a:visited{color:MediumBlue;text-decoration:none} a:hover,a:active{text-decoration:underline}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"article-CPLcodes/horbcs/test.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
+<body translate="no"><pre>
+#<span class=comment>!/usr/bin/env cpl</span>
+<a href="cpl.html#USE">USE</a> ns3d
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
+<span class=comment>! #define writeout</span>
+
+<span class=comment>! ny=20; nz=3<span class=low>*</span>ny; dy=1/ny; dz=dy; ztop=nz<span class=low>*</span>dz</span>
+u=3; umom=3
+<a href="cpl.html#ARRAY">ARRAY</a>(0..20) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> eps,erru,errv,errw
+sz=<a href="cpl.html#FLOOR">FLOOR</a>(vertz/dz); dsz=sz<span class=low>*</span>dz-vertz
+<a href="cpl.html#ARRAY">ARRAY</a>(sz..nz) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> su,sv,sw,sp
+<a href="complex.html#Top">COMPLEX</a> cA(0..nz,0..ny-1,0..3,-ny..ny,0..3), cvar(0..nz,0..ny-1,0..3)
+uz0=[0.5+<a href="cpl.html#RAND">RAND</a>()]<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>[2<span class=low>*</span>PI<span class=low>*</span><a href="cpl.html#RAND">RAND</a>()<span class=low>*</span>I]; vz0=[0.5+<a href="cpl.html#RAND">RAND</a>()]<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>[2<span class=low>*</span>PI<span class=low>*</span><a href="cpl.html#RAND">RAND</a>()<span class=low>*</span>I]; p0=[0.5+<a href="cpl.html#RAND">RAND</a>()]<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>[2<span class=low>*</span>PI<span class=low>*</span><a href="cpl.html#RAND">RAND</a>()<span class=low>*</span>I]
+alphaw=[0.5+<a href="cpl.html#RAND">RAND</a>()]; omegaw=[0.5+<a href="cpl.html#RAND">RAND</a>()]; betaw=[0.5+<a href="cpl.html#RAND">RAND</a>()]
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> erru.<a href="cpl.html#HI">HI</a>
+  eps(i)=10<a href="cpl.html#REAL-operator">^</a>[4<span class=low>*</span>(i/eps.<a href="cpl.html#HI">HI</a>-1)]
+  alpha=alphaw<span class=low>*</span>eps(i)
+  omega=omegaw<span class=low>*</span>eps(i)<a href="cpl.html#REAL-operator">^</a>2
+  beta=betaw<span class=low>*</span>eps(i)
+
+  u0=h1<span class=low>*</span>uz0-I<span class=low>*</span>beta<span class=low>*</span>h2<span class=low>*</span>uz0-I<span class=low>*</span>alpha<span class=low>*</span>h2px<span class=low>*</span>p0-I<span class=low>*</span>alpha<span class=low>*</span>h2vxz<span class=low>*</span>vz0-beta<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>h3<span class=low>*</span>uz0-alpha<span class=low>*</span>beta<span class=low>*</span>h3pxy<span class=low>*</span>p0+h3uzt<span class=low>*</span>(alpha<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>uz0-h3vxyz<span class=low>*</span>alpha<span class=low>*</span>beta<span class=low>*</span>vz0-h3uxxz<span class=low>*</span>alpha<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>uz0
+  v0=a1<span class=low>*</span>vz0-I<span class=low>*</span>beta<span class=low>*</span>a2<span class=low>*</span>vz0-b2<span class=low>*</span>I<span class=low>*</span>beta<span class=low>*</span>p0-I<span class=low>*</span>alpha<span class=low>*</span>f2<span class=low>*</span>uz0-a3<span class=low>*</span>beta<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>vz0-beta<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>b3<span class=low>*</span>p0+e3vzt<span class=low>*</span>(alpha<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>vz0-f3uxyz<span class=low>*</span>alpha<span class=low>*</span>beta<span class=low>*</span>uz0-alpha<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>f3pxx<span class=low>*</span>p0-f3vxxz<span class=low>*</span>alpha<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>vz0
+  w0=c2<span class=low>*</span>I<span class=low>*</span>beta<span class=low>*</span>vz0-g2<span class=low>*</span>I<span class=low>*</span>alpha<span class=low>*</span>uz0+beta<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>c3<span class=low>*</span>vz0+d3<span class=low>*</span>beta<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>p0-alpha<span class=low>*</span>beta<span class=low>*</span>g3uxyz<span class=low>*</span>uz0-g3pxx<span class=low>*</span>alpha<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>p0-alpha<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>g3vxxz<span class=low>*</span>vz0
+
+  su(sz)=u0+uz0<span class=low>*</span>dsz+[-I<span class=low>*</span>alpha<span class=low>*</span>p0+(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>u0]<span class=low>*</span>dsz<a href="cpl.html#REAL-operator">^</a>2/2+[alpha<span class=low>*</span>(alpha<span class=low>*</span>uz0+beta<span class=low>*</span>vz0)+(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>uz0]<span class=low>*</span>dsz<a href="cpl.html#REAL-operator">^</a>3/6
+  sv(sz)=v0+vz0<span class=low>*</span>dsz+[-I<span class=low>*</span>beta<span class=low>*</span>p0+(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>v0]<span class=low>*</span>dsz<a href="cpl.html#REAL-operator">^</a>2/2+[beta<span class=low>*</span>(alpha<span class=low>*</span>uz0+beta<span class=low>*</span>vz0)+(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>vz0]<span class=low>*</span>dsz<a href="cpl.html#REAL-operator">^</a>3/6
+  sw(sz)=w0+(I<span class=low>*</span>alpha<span class=low>*</span>u0+I<span class=low>*</span>beta<span class=low>*</span>v0)<span class=low>*</span>(dsz+dz/2)+(I<span class=low>*</span>alpha<span class=low>*</span>uz0+I<span class=low>*</span>beta<span class=low>*</span>vz0)<span class=low>*</span>(dsz+dz/2)<a href="cpl.html#REAL-operator">^</a>2/2+(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2)<span class=low>*</span>p0<span class=low>*</span>[(dsz+dz/2)<a href="cpl.html#REAL-operator">^</a>3-dz<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>(dsz+dz/2)/4]/6
+  sp(sz+1)=p0+[(I<span class=low>*</span>alpha<span class=low>*</span>uz0+I<span class=low>*</span>beta<span class=low>*</span>vz0)-(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>w0]<span class=low>*</span>(dsz+dz)+(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2)<span class=low>*</span>p0<span class=low>*</span>(dsz+dz)<a href="cpl.html#REAL-operator">^</a>2/2
+  su(sz+1)=u0+uz0<span class=low>*</span>(dsz+dz)+[-I<span class=low>*</span>alpha<span class=low>*</span>p0+(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>u0]<span class=low>*</span>(dsz+dz)<a href="cpl.html#REAL-operator">^</a>2/2+[alpha<span class=low>*</span>(alpha<span class=low>*</span>uz0+beta<span class=low>*</span>vz0)+(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>uz0]<span class=low>*</span>(dsz+dz)<a href="cpl.html#REAL-operator">^</a>3/6
+  sv(sz+1)=v0+vz0<span class=low>*</span>(dsz+dz)+[-I<span class=low>*</span>beta<span class=low>*</span>p0+(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>v0]<span class=low>*</span>(dsz+dz)<a href="cpl.html#REAL-operator">^</a>2/2+[beta<span class=low>*</span>(alpha<span class=low>*</span>uz0+beta<span class=low>*</span>vz0)+(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>vz0]<span class=low>*</span>(dsz+dz)<a href="cpl.html#REAL-operator">^</a>3/6
+  sw(sz+1)=sw(sz)+dz<span class=low>*</span>[I<span class=low>*</span>alpha<span class=low>*</span>su(sz+1)+I<span class=low>*</span>beta<span class=low>*</span>sv(sz+1)]
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> n=sz+1 <a href="cpl.html#TO">TO</a> nz-1
+    su(n+1)=2<span class=low>*</span>su(n)-su(n-1)+dz<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>[(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>su(n)-I<span class=low>*</span>alpha<span class=low>*</span>sp(n)]
+    sv(n+1)=2<span class=low>*</span>sv(n)-sv(n-1)+dz<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>[(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>sv(n)-I<span class=low>*</span>beta<span class=low>*</span>sp(n)]
+    sw(n+1)=sw(n)+dz<span class=low>*</span>[I<span class=low>*</span>alpha<span class=low>*</span>su(n+1)+I<span class=low>*</span>beta<span class=low>*</span>sv(n+1)]
+    sp(n+1)=sp(n)+dz<span class=low>*</span>{[sw(n+1)-2<span class=low>*</span>sw(n)+sw(n-1)]/dz<a href="cpl.html#REAL-operator">^</a>2-(alpha<a href="cpl.html#REAL-operator">^</a>2+beta<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>sw(n)}
+  <a href="cpl.html#LOOP">REPEAT</a>
+
+  cA(<a href="cpl.html#compound-index">**</a><span class=low>*</span>,<a href="cpl.html#compound-index">**</a>)=1/dz; cvar(<a href="cpl.html#compound-index">**</a><span class=low>*</span>)=0
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> iy=0 <a href="cpl.html#TO">TO</a> ny-1
+    uline=<a href="cpl.html#REAL-operator">^</a>cA(iz,iy,umom)
+    uline(<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> -ny+1 <a href="cpl.html#ELSE">ELSE</a> 1,0)=1/dy<a href="cpl.html#REAL-operator">^</a>2-I<span class=low>*</span>beta/dy
+    uline(<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> -1,0)=1/dy<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>beta/dy
+    uline(ny,0)=1/dz<a href="cpl.html#REAL-operator">^</a>2
+    uline(-ny,0)=1/dz<a href="cpl.html#REAL-operator">^</a>2
+    uline(0,0)=-2/dy<a href="cpl.html#REAL-operator">^</a>2-2/dz<a href="cpl.html#REAL-operator">^</a>2-alpha<a href="cpl.html#REAL-operator">^</a>2-beta<a href="cpl.html#REAL-operator">^</a>2-I<span class=low>*</span>omega
+    uline(-1,4+p-umom)=I<span class=low>*</span>alpha
+    <a href="cpl.html#IF">IF</a> InBody(iy<span class=low>*</span>dy,iz<span class=low>*</span>dz) <a href="cpl.html#IF">THEN</a> uline(0,0)=-1E20
+    vline=<a href="cpl.html#REAL-operator">^</a>cA(iz,iy,vmom)
+    vline(<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> -ny+1 <a href="cpl.html#ELSE">ELSE</a> 1,0)=1/dy<a href="cpl.html#REAL-operator">^</a>2-I<span class=low>*</span>beta/dy
+    vline(<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> -1,0)=1/dy<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>beta/dy
+    vline(ny,0)=1/dz<a href="cpl.html#REAL-operator">^</a>2
+    vline(-ny,0)=1/dz<a href="cpl.html#REAL-operator">^</a>2
+    vline(0,0)=-2/dy<a href="cpl.html#REAL-operator">^</a>2-2/dz<a href="cpl.html#REAL-operator">^</a>2-alpha<a href="cpl.html#REAL-operator">^</a>2-beta<a href="cpl.html#REAL-operator">^</a>2-I<span class=low>*</span>omega
+    vline(<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> -ny <a href="cpl.html#ELSE">ELSE</a> 0,4+p-vmom)=I<span class=low>*</span>beta/2-1/dy
+    vline(-1,4+p-vmom)=I<span class=low>*</span>beta/2+1/dy
+    <a href="cpl.html#IF">IF</a> InBody[(iy+0.5)<span class=low>*</span>dy,iz<span class=low>*</span>dz] <a href="cpl.html#IF">THEN</a> vline(0,0)=-1E20
+    wline=<a href="cpl.html#REAL-operator">^</a>cA(iz,iy,wmom)
+    wline(<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> -ny+1 <a href="cpl.html#ELSE">ELSE</a> 1,0)=1/dy<a href="cpl.html#REAL-operator">^</a>2-I<span class=low>*</span>beta/dy
+    wline(<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> -1,0)=1/dy<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>beta/dy
+    wline(ny,0)=1/dz<a href="cpl.html#REAL-operator">^</a>2
+    wline(-ny,0)=1/dz<a href="cpl.html#REAL-operator">^</a>2
+    wline(0,0)=-2/dy<a href="cpl.html#REAL-operator">^</a>2-2/dz<a href="cpl.html#REAL-operator">^</a>2-alpha<a href="cpl.html#REAL-operator">^</a>2-beta<a href="cpl.html#REAL-operator">^</a>2-I<span class=low>*</span>omega
+    wline(ny-1,4+p-wmom)=-1/dz
+    wline(-1,4+p-wmom)=1/dz
+    <a href="cpl.html#IF">IF</a> InBody[iy<span class=low>*</span>dy,(iz+0.5)<span class=low>*</span>dz] <a href="cpl.html#IF">THEN</a> wline(0,0)=-1E20
+    cline=<a href="cpl.html#REAL-operator">^</a>cA(iz,iy,cont)
+    cline(0,u-cont)=-I<span class=low>*</span>alpha
+    cline(<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> -1,v-cont)=-I<span class=low>*</span>beta/2-1/dy
+    cline(0,v-cont)=-I<span class=low>*</span>beta/2+1/dy
+    cline(-ny,w-cont)=-1/dz
+    cline(0,w-cont)=1/dz
+    cline(0,p-cont)=0
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#DO">DO</a>
+    cA(nz,iy,cont,0,p-cont)=1; cvar(nz,iy,cont)=sp(nz)
+    cA(nz,iy,umom,-ny,0)=-1/dz; cvar(nz,iy,u)=[su(nz)-su(nz-1)]/dz
+    cA(nz,iy,vmom,-ny,0)=-1/dz; cvar(nz,iy,v)=(sv(nz)-sv(nz-1))/dz
+    cA(nz,iy,wmom,-ny,0)=-1/dz
+    cA(nz,iy,wmom,0,u-wmom)=-I<span class=low>*</span>alpha
+    cA(nz,iy,wmom,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-2 <a href="cpl.html#ELSE">ELSE</a> -2,4+v-wmom)=-I<span class=low>*</span>beta/2-1/dy
+    cA(nz,iy,wmom,-1,4+v-wmom)=-I<span class=low>*</span>beta/2+1/dy
+  <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+  <a href="cpl.html#DO">DO</a> cA(0,iy,cont,ny,p-cont)=-1/dz <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+
+#ifdef slipnoslip
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+    <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> InBody(iy<span class=low>*</span>dy,0) <a href="cpl.html#IF">THEN</a> cA(0,iy,umom,ny,0)=-1/dz
+    <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> InBody[(iy+0.5)<span class=low>*</span>dy,0] <a href="cpl.html#IF">THEN</a> cA(0,iy,vmom,ny,0)=-1/dz
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,umom,0,0)(ny <a href="cpl.html#DIV">DIV</a> 2..ny-1).<a href="cpl.html#REAL">REAL</a>,0,0,even(y-width,z),nocorr]
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,umom,0,0)(0..ny <a href="cpl.html#DIV">DIV</a> 2-1).<a href="cpl.html#REAL">REAL</a>,0,0,even(1-y-width,z),nocorr]
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,vmom,0,0)(ny <a href="cpl.html#DIV">DIV</a> 2..ny-1).<a href="cpl.html#REAL">REAL</a>,dy/2,0,snsstokv(y-width,z),snsstokp(y-width,z)]
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,vmom,0,0)(0..ny <a href="cpl.html#DIV">DIV</a> 2-1).<a href="cpl.html#REAL">REAL</a>,dy/2,0,-snsstokv(1-y-width,z),snsstokp(1-y-width,z)]
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,wmom,0,0)(ny <a href="cpl.html#DIV">DIV</a> 2..ny-1).<a href="cpl.html#REAL">REAL</a>,0,dz/2,snsstokw(y-width,z),snsstokp(y-width,z)]
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,wmom,0,0)(0..ny <a href="cpl.html#DIV">DIV</a> 2-1).<a href="cpl.html#REAL">REAL</a>,0,dz/2,snsstokw(1-y-width,z),snsstokp(1-y-width,z)]
+#else
+#ifdef rectangular
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,umom,0,0)(ny <a href="cpl.html#DIV">DIV</a> 2..ny-1).<a href="cpl.html#REAL">REAL</a>,0,0,even(y-width,z),nocorr]
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,umom,0,0)(0..ny <a href="cpl.html#DIV">DIV</a> 2-1).<a href="cpl.html#REAL">REAL</a>,0,0,even(1-y-width,z),nocorr]
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,vmom,0,0)(ny <a href="cpl.html#DIV">DIV</a> 2..ny-1).<a href="cpl.html#REAL">REAL</a>,dy/2,0,stokv(y-width,z),stokp(y-width,z)]
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,vmom,0,0)(0..ny <a href="cpl.html#DIV">DIV</a> 2-1).<a href="cpl.html#REAL">REAL</a>,dy/2,0,-stokv(1-y-width,z),stokp(1-y-width,z)]
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,wmom,0,0)(ny <a href="cpl.html#DIV">DIV</a> 2..ny-1).<a href="cpl.html#REAL">REAL</a>,0,dz/2,stokw(y-width,z),stokp(y-width,z)]
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,wmom,0,0)(0..ny <a href="cpl.html#DIV">DIV</a> 2-1).<a href="cpl.html#REAL">REAL</a>,0,dz/2,stokw(1-y-width,z),stokp(1-y-width,z)]
+#else
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,umom,0,0).<a href="cpl.html#REAL">REAL</a>,0,0,even,nocorr]
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,vmom,0,0).<a href="cpl.html#REAL">REAL</a>,dy/2,0,stokv,stokp]
+  calcimbc[cA(<span class=low>*</span>2,<span class=low>*</span>1,wmom,0,0).<a href="cpl.html#REAL">REAL</a>,0,dz/2,stokw,stokp]
+#endif
+#endif
+  LUdecomp cA(<a href="cpl.html#compound-index">**</a><span class=low>*</span>,<a href="cpl.html#compound-index">**</a>)
+  cvar(<a href="cpl.html#compound-index">**</a><span class=low>*</span>)=cA(<a href="cpl.html#compound-index">**</a><span class=low>*</span>,<a href="cpl.html#compound-index">**</a>)\~
+  rightun=[<a href="cpl.html#Looping-operator">SUM</a> cvar(nz,iy,u) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny
+  rightvn=[<a href="cpl.html#Looping-operator">SUM</a> cvar(nz,iy,v) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny
+  rightwnm1=[<a href="cpl.html#Looping-operator">SUM</a> cvar(nz-1,iy,w) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny
+  erru(i)=<a href="cpl.html#ABS">ABS</a>[rightun-su(nz)]
+  errv(i)=<a href="cpl.html#ABS">ABS</a>(rightvn-sv(nz))
+  errw(i)=<a href="cpl.html#ABS">ABS</a>(rightwnm1-sw(nz-1))
+  <span class=comment>! WRITE [rightwnm1-sw(nz-1)]/(alpha^2+beta^2)/vz0</span>
+<a href="cpl.html#LOOP">REPEAT</a>
+#ifdef writeout
+testerr=<a href="cpl.html#CREATE">CREATE</a>("testerr.dat")
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#TO">TO</a> testerr "#",uz0,vz0,p0,alphaw,betaw,omegaw
+<a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> testerr eps(i),erru(i),errv(i),errw(i) <a href="cpl.html#FOR">FOR</a> i=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
+<a href="cpl.html#CLOSE">CLOSE</a> testerr
+#else
+<a href="graphics.html#gnuplot">set</a> logscale xy
+<a href="graphics.html#gnuplot">set</a> grid
+<a href="graphics.html#gnuplot">set</a> yrange [1E-12:1E-2]
+<span class=comment>! plot eps:erru w l, eps:errv w l, eps:errw w l</span>
+<a href="graphics.html#plot">plot</a> eps:<a href="cpl.html#Builtin">SQRT</a>[erru(n)<a href="cpl.html#REAL-operator">^</a>2+errv(n)<a href="cpl.html#REAL-operator">^</a>2+errw(n)<a href="cpl.html#REAL-operator">^</a>2] w l
+<a href="cpl.html#READ">READ</a>
+#endif</pre></body></html>

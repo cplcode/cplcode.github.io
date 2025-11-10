@@ -1,0 +1,132 @@
+#!/usr/bin/env cpl
+USE ns3d
+USE cbmat
+! #define writeout
+
+! ny=20; nz=3*ny; dy=1/ny; dz=dy; ztop=nz*dz
+u=3; umom=3
+ARRAY(0..20) OF REAL eps,erru,errv,errw
+sz=FLOOR(vertz/dz); dsz=sz*dz-vertz
+ARRAY(sz..nz) OF COMPLEX su,sv,sw,sp
+COMPLEX cA(0..nz,0..ny-1,0..3,-ny..ny,0..3), cvar(0..nz,0..ny-1,0..3)
+uz0=[0.5+RAND()]*EXP[2*PI*RAND()*I]; vz0=[0.5+RAND()]*EXP[2*PI*RAND()*I]; p0=[0.5+RAND()]*EXP[2*PI*RAND()*I]
+alphaw=[0.5+RAND()]; omegaw=[0.5+RAND()]; betaw=[0.5+RAND()]
+LOOP FOR i=0 TO erru.HI
+  eps(i)=10^[4*(i/eps.HI-1)]
+  alpha=alphaw*eps(i)
+  omega=omegaw*eps(i)^2
+  beta=betaw*eps(i)
+
+  u0=h1*uz0-I*beta*h2*uz0-I*alpha*h2px*p0-I*alpha*h2vxz*vz0-beta^2*h3*uz0-alpha*beta*h3pxy*p0+h3uzt*(alpha^2+I*omega)*uz0-h3vxyz*alpha*beta*vz0-h3uxxz*alpha^2*uz0
+  v0=a1*vz0-I*beta*a2*vz0-b2*I*beta*p0-I*alpha*f2*uz0-a3*beta^2*vz0-beta^2*b3*p0+e3vzt*(alpha^2+I*omega)*vz0-f3uxyz*alpha*beta*uz0-alpha^2*f3pxx*p0-f3vxxz*alpha^2*vz0
+  w0=c2*I*beta*vz0-g2*I*alpha*uz0+beta^2*c3*vz0+d3*beta^2*p0-alpha*beta*g3uxyz*uz0-g3pxx*alpha^2*p0-alpha^2*g3vxxz*vz0
+
+  su(sz)=u0+uz0*dsz+[-I*alpha*p0+(alpha^2+beta^2+I*omega)*u0]*dsz^2/2+[alpha*(alpha*uz0+beta*vz0)+(alpha^2+beta^2+I*omega)*uz0]*dsz^3/6
+  sv(sz)=v0+vz0*dsz+[-I*beta*p0+(alpha^2+beta^2+I*omega)*v0]*dsz^2/2+[beta*(alpha*uz0+beta*vz0)+(alpha^2+beta^2+I*omega)*vz0]*dsz^3/6
+  sw(sz)=w0+(I*alpha*u0+I*beta*v0)*(dsz+dz/2)+(I*alpha*uz0+I*beta*vz0)*(dsz+dz/2)^2/2+(alpha^2+beta^2)*p0*[(dsz+dz/2)^3-dz^2*(dsz+dz/2)/4]/6
+  sp(sz+1)=p0+[(I*alpha*uz0+I*beta*vz0)-(alpha^2+beta^2+I*omega)*w0]*(dsz+dz)+(alpha^2+beta^2)*p0*(dsz+dz)^2/2
+  su(sz+1)=u0+uz0*(dsz+dz)+[-I*alpha*p0+(alpha^2+beta^2+I*omega)*u0]*(dsz+dz)^2/2+[alpha*(alpha*uz0+beta*vz0)+(alpha^2+beta^2+I*omega)*uz0]*(dsz+dz)^3/6
+  sv(sz+1)=v0+vz0*(dsz+dz)+[-I*beta*p0+(alpha^2+beta^2+I*omega)*v0]*(dsz+dz)^2/2+[beta*(alpha*uz0+beta*vz0)+(alpha^2+beta^2+I*omega)*vz0]*(dsz+dz)^3/6
+  sw(sz+1)=sw(sz)+dz*[I*alpha*su(sz+1)+I*beta*sv(sz+1)]
+  LOOP FOR n=sz+1 TO nz-1
+    su(n+1)=2*su(n)-su(n-1)+dz^2*[(alpha^2+beta^2+I*omega)*su(n)-I*alpha*sp(n)]
+    sv(n+1)=2*sv(n)-sv(n-1)+dz^2*[(alpha^2+beta^2+I*omega)*sv(n)-I*beta*sp(n)]
+    sw(n+1)=sw(n)+dz*[I*alpha*su(n+1)+I*beta*sv(n+1)]
+    sp(n+1)=sp(n)+dz*{[sw(n+1)-2*sw(n)+sw(n-1)]/dz^2-(alpha^2+beta^2+I*omega)*sw(n)}
+  REPEAT
+
+  cA(***,**)=1/dz; cvar(***)=0
+  LOOP FOR iz=1 TO nz-1 AND iy=0 TO ny-1
+    uline=^cA(iz,iy,umom)
+    uline(IF iy=ny-1 THEN -ny+1 ELSE 1,0)=1/dy^2-I*beta/dy
+    uline(IF iy=0 THEN ny-1 ELSE -1,0)=1/dy^2+I*beta/dy
+    uline(ny,0)=1/dz^2
+    uline(-ny,0)=1/dz^2
+    uline(0,0)=-2/dy^2-2/dz^2-alpha^2-beta^2-I*omega
+    uline(-1,4+p-umom)=I*alpha
+    IF InBody(iy*dy,iz*dz) THEN uline(0,0)=-1E20
+    vline=^cA(iz,iy,vmom)
+    vline(IF iy=ny-1 THEN -ny+1 ELSE 1,0)=1/dy^2-I*beta/dy
+    vline(IF iy=0 THEN ny-1 ELSE -1,0)=1/dy^2+I*beta/dy
+    vline(ny,0)=1/dz^2
+    vline(-ny,0)=1/dz^2
+    vline(0,0)=-2/dy^2-2/dz^2-alpha^2-beta^2-I*omega
+    vline(IF iy=ny-1 THEN -ny ELSE 0,4+p-vmom)=I*beta/2-1/dy
+    vline(-1,4+p-vmom)=I*beta/2+1/dy
+    IF InBody[(iy+0.5)*dy,iz*dz] THEN vline(0,0)=-1E20
+    wline=^cA(iz,iy,wmom)
+    wline(IF iy=ny-1 THEN -ny+1 ELSE 1,0)=1/dy^2-I*beta/dy
+    wline(IF iy=0 THEN ny-1 ELSE -1,0)=1/dy^2+I*beta/dy
+    wline(ny,0)=1/dz^2
+    wline(-ny,0)=1/dz^2
+    wline(0,0)=-2/dy^2-2/dz^2-alpha^2-beta^2-I*omega
+    wline(ny-1,4+p-wmom)=-1/dz
+    wline(-1,4+p-wmom)=1/dz
+    IF InBody[iy*dy,(iz+0.5)*dz] THEN wline(0,0)=-1E20
+    cline=^cA(iz,iy,cont)
+    cline(0,u-cont)=-I*alpha
+    cline(IF iy=0 THEN ny-1 ELSE -1,v-cont)=-I*beta/2-1/dy
+    cline(0,v-cont)=-I*beta/2+1/dy
+    cline(-ny,w-cont)=-1/dz
+    cline(0,w-cont)=1/dz
+    cline(0,p-cont)=0
+  REPEAT LOOP
+  DO
+    cA(nz,iy,cont,0,p-cont)=1; cvar(nz,iy,cont)=sp(nz)
+    cA(nz,iy,umom,-ny,0)=-1/dz; cvar(nz,iy,u)=[su(nz)-su(nz-1)]/dz
+    cA(nz,iy,vmom,-ny,0)=-1/dz; cvar(nz,iy,v)=(sv(nz)-sv(nz-1))/dz
+    cA(nz,iy,wmom,-ny,0)=-1/dz
+    cA(nz,iy,wmom,0,u-wmom)=-I*alpha
+    cA(nz,iy,wmom,IF iy=0 THEN ny-2 ELSE -2,4+v-wmom)=-I*beta/2-1/dy
+    cA(nz,iy,wmom,-1,4+v-wmom)=-I*beta/2+1/dy
+  FOR ALL iy
+  DO cA(0,iy,cont,ny,p-cont)=-1/dz FOR ALL iy
+
+#ifdef slipnoslip
+  LOOP FOR ALL iy
+    IF NOT InBody(iy*dy,0) THEN cA(0,iy,umom,ny,0)=-1/dz
+    IF NOT InBody[(iy+0.5)*dy,0] THEN cA(0,iy,vmom,ny,0)=-1/dz
+  REPEAT LOOP
+  calcimbc[cA(*2,*1,umom,0,0)(ny DIV 2..ny-1).REAL,0,0,even(y-width,z),nocorr]
+  calcimbc[cA(*2,*1,umom,0,0)(0..ny DIV 2-1).REAL,0,0,even(1-y-width,z),nocorr]
+  calcimbc[cA(*2,*1,vmom,0,0)(ny DIV 2..ny-1).REAL,dy/2,0,snsstokv(y-width,z),snsstokp(y-width,z)]
+  calcimbc[cA(*2,*1,vmom,0,0)(0..ny DIV 2-1).REAL,dy/2,0,-snsstokv(1-y-width,z),snsstokp(1-y-width,z)]
+  calcimbc[cA(*2,*1,wmom,0,0)(ny DIV 2..ny-1).REAL,0,dz/2,snsstokw(y-width,z),snsstokp(y-width,z)]
+  calcimbc[cA(*2,*1,wmom,0,0)(0..ny DIV 2-1).REAL,0,dz/2,snsstokw(1-y-width,z),snsstokp(1-y-width,z)]
+#else
+#ifdef rectangular
+  calcimbc[cA(*2,*1,umom,0,0)(ny DIV 2..ny-1).REAL,0,0,even(y-width,z),nocorr]
+  calcimbc[cA(*2,*1,umom,0,0)(0..ny DIV 2-1).REAL,0,0,even(1-y-width,z),nocorr]
+  calcimbc[cA(*2,*1,vmom,0,0)(ny DIV 2..ny-1).REAL,dy/2,0,stokv(y-width,z),stokp(y-width,z)]
+  calcimbc[cA(*2,*1,vmom,0,0)(0..ny DIV 2-1).REAL,dy/2,0,-stokv(1-y-width,z),stokp(1-y-width,z)]
+  calcimbc[cA(*2,*1,wmom,0,0)(ny DIV 2..ny-1).REAL,0,dz/2,stokw(y-width,z),stokp(y-width,z)]
+  calcimbc[cA(*2,*1,wmom,0,0)(0..ny DIV 2-1).REAL,0,dz/2,stokw(1-y-width,z),stokp(1-y-width,z)]
+#else
+  calcimbc[cA(*2,*1,umom,0,0).REAL,0,0,even,nocorr]
+  calcimbc[cA(*2,*1,vmom,0,0).REAL,dy/2,0,stokv,stokp]
+  calcimbc[cA(*2,*1,wmom,0,0).REAL,0,dz/2,stokw,stokp]
+#endif
+#endif
+  LUdecomp cA(***,**)
+  cvar(***)=cA(***,**)\~
+  rightun=[SUM cvar(nz,iy,u) FOR ALL iy]/ny
+  rightvn=[SUM cvar(nz,iy,v) FOR ALL iy]/ny
+  rightwnm1=[SUM cvar(nz-1,iy,w) FOR ALL iy]/ny
+  erru(i)=ABS[rightun-su(nz)]
+  errv(i)=ABS(rightvn-sv(nz))
+  errw(i)=ABS(rightwnm1-sw(nz-1))
+  ! WRITE [rightwnm1-sw(nz-1)]/(alpha^2+beta^2)/vz0
+REPEAT
+#ifdef writeout
+testerr=CREATE("testerr.dat")
+WRITE BY NAME TO testerr "#",uz0,vz0,p0,alphaw,betaw,omegaw
+DO WRITE TO testerr eps(i),erru(i),errv(i),errw(i) FOR i=LO TO HI
+CLOSE testerr
+#else
+set logscale xy
+set grid
+set yrange [1E-12:1E-2]
+! plot eps:erru w l, eps:errv w l, eps:errw w l
+plot eps:SQRT[erru(n)^2+errv(n)^2+errw(n)^2] w l
+READ
+#endif

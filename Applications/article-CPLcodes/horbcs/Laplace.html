@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>article-CPLcodes/horbcs/Laplace.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/singlecol.css"><style>pre{margin-left:0.5em;margin-right:0.5em} .comment{color:HotPink} a:link,a:visited{color:MediumBlue;text-decoration:none} a:hover,a:active{text-decoration:underline}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"article-CPLcodes/horbcs/Laplace.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
+<body translate="no"><pre>
+#<span class=comment>!/usr/bin/env cpl</span>
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a>
+<a href="cpl.html#USE">USE</a> imb
+<span class=comment>! #define writeout</span>
+
+<a href="cpl.html#REAL">REAL</a> phi1(0..nz,0..ny-1)=0, Aeven[0..nz,0..ny-1,-ny..ny], Aodd[0..nz,0..ny-1,-ny..ny]
+Aeven(<a href="cpl.html#compound-index">**</a>,<span class=low>*</span>)=1/dz
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=0 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1
+  line=<a href="cpl.html#REAL-operator">^</a>Aeven(iz,iy,<span class=low>*</span>)
+  <a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> line[-(ny-1)]=1/dy<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#ELSE">ELSE</a> line(1)=1/dy<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> line(ny-1)=1/dy<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#ELSE">ELSE</a> line(-1)=1/dy<a href="cpl.html#REAL-operator">^</a>2
+  line(ny)=1/dz<a href="cpl.html#REAL-operator">^</a>2;line(-ny)=1/dz<a href="cpl.html#REAL-operator">^</a>2
+  line(0)=-2/dy<a href="cpl.html#REAL-operator">^</a>2-2/dz<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#IF">IF</a> InBody(iy<span class=low>*</span>dy,iz<span class=low>*</span>dz) <a href="cpl.html#IF">THEN</a> line(0)=-1E20
+<a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#DO">DO</a> phi1(nz,iy)=1; Aeven(nz,iy,-ny)=-1/dz
+<a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+#ifdef slipnoslip
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> InBody(iy<span class=low>*</span>dy,0) <a href="cpl.html#IF">THEN</a> Aeven(0,iy,ny)=-1/dz
+<a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+Aodd=Aeven
+calcimbc[Aeven(<span class=low>*</span>2,<span class=low>*</span>1,0)(ny <a href="cpl.html#DIV">DIV</a> 2..ny-1),0,0,even(y-width,z),nocorr]
+calcimbc[Aeven(<span class=low>*</span>2,<span class=low>*</span>1,0)(0..ny <a href="cpl.html#DIV">DIV</a> 2-1),0,0,even(1-y-width,z),nocorr]
+#else
+Aodd=Aeven
+#ifdef rectangular
+calcimbc[Aeven(<span class=low>*</span>2,<span class=low>*</span>1,0)(ny <a href="cpl.html#DIV">DIV</a> 2..ny-1),0,0,even(y-width,z),nocorr]
+calcimbc[Aeven(<span class=low>*</span>2,<span class=low>*</span>1,0)(0..ny <a href="cpl.html#DIV">DIV</a> 2-1),0,0,even(1-y-width,z),nocorr]
+#else
+calcimbc[Aeven(<span class=low>*</span>2,<span class=low>*</span>1,0),0,0,even,nocorr]
+#endif
+#endif
+calcimbc[Aodd(<span class=low>*</span>2,<span class=low>*</span>1,0),0,0,nocorr,nocorr]
+LUdecomp Aeven(<a href="cpl.html#compound-index">**</a>)
+LUdecomp Aodd(<a href="cpl.html#compound-index">**</a>)
+phi1(<a href="cpl.html#compound-index">**</a>)=Aeven(<a href="cpl.html#compound-index">**</a>)\~
+h1=[<a href="cpl.html#Looping-operator">SUM</a> phi1(nz,iy) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny-ztop
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> h1
+#ifdef writeout
+writetable["u11.dat",phi1]
+#else
+<a href="graphics.html#SPLOT">SPLOT</a> phi1[zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2)]
+<span class=comment>!READ</span>
+#endif
+
+<a href="cpl.html#TYPE">TYPEOF</a>(phi1) phi21=0
+<a href="cpl.html#DO">DO</a> phi21(iz,iy)=[phi1(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1)-phi1(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1)]/dy
+<a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy
+phi21(<a href="cpl.html#compound-index">**</a>)=Aeven(<a href="cpl.html#compound-index">**</a>)\~
+h2=[<a href="cpl.html#Looping-operator">SUM</a> phi21(nz,iy) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> h2
+#ifdef writeout
+writetable["u21.dat",phi21]
+#else
+<a href="graphics.html#SPLOT">SPLOT</a> phi21[zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2)]
+<span class=comment>!READ</span>
+#endif
+
+<a href="cpl.html#TYPE">TYPEOF</a>(phi1) u22=0
+<a href="cpl.html#DO">DO</a> u22(iz,iy)=1
+<a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy
+<a href="cpl.html#DO">DO</a> u22(nz,iy)=[ztop<a href="cpl.html#REAL-operator">^</a>2-(ztop-dz)<a href="cpl.html#REAL-operator">^</a>2]/2/dz <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+u22(<a href="cpl.html#compound-index">**</a>)=Aeven(<a href="cpl.html#compound-index">**</a>)\~
+h2px=[<a href="cpl.html#Looping-operator">SUM</a> u22(nz,iy) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny-ztop<a href="cpl.html#REAL-operator">^</a>2/2
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> h2px
+#ifdef writeout
+writetable["u22.dat",u22]
+#else
+<a href="graphics.html#SPLOT">SPLOT</a> u22[zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2)]
+<span class=comment>!READ</span>
+#endif
+
+<a href="cpl.html#TYPE">TYPEOF</a>(phi1) phi31=0
+<a href="cpl.html#DO">DO</a> phi31(iz,iy)=[phi21(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1)-phi21(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1)]/dy-phi1(iz,iy)
+<a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy
+<a href="cpl.html#DO">DO</a> phi31(nz,iy)=-[ztop<a href="cpl.html#REAL-operator">^</a>3-(ztop-dz)<a href="cpl.html#REAL-operator">^</a>3]/6/dz-h1<span class=low>*</span>[ztop<a href="cpl.html#REAL-operator">^</a>2-(ztop-dz)<a href="cpl.html#REAL-operator">^</a>2]/2/dz
+<a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+phi31(<a href="cpl.html#compound-index">**</a>)=Aeven(<a href="cpl.html#compound-index">**</a>)\~
+h3=[<a href="cpl.html#Looping-operator">SUM</a> phi31(nz,iy) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny+ztop<a href="cpl.html#REAL-operator">^</a>3/6+h1<span class=low>*</span>ztop<a href="cpl.html#REAL-operator">^</a>2/2
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> h3
+#ifdef writeout
+writetable["u31.dat",phi31]
+#else
+<a href="graphics.html#SPLOT">SPLOT</a> phi31[zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2)]
+<span class=comment>!READ</span>
+#endif
+<span class=comment>!(
+TYPEOF(phi1) u3pxy=0
+DO u3pxy(iz,iy)=[u22(iz,IF iy=0 THEN ny-1 ELSE iy-1)-u22(iz,IF iy=ny-1 THEN 0 ELSE iy+1)]/dy
+FOR iz=1 TO nz-1 AND ALL iy
+u3pxy(<span class=low>*</span><span class=low>*</span>)=Aodd(<span class=low>*</span><span class=low>*</span>)\~
+h3pxy=[SUM u3pxy(nz,iy) FOR ALL iy]/ny
+WRITE BY NAME h3pxy
+#ifdef writeout
+writetable["u3pxy.dat",u3pxy]
+#else
+SPLOT u3pxy[zplotbase+(0..3<span class=low>*</span>ny DIV 2)]
+<span class=comment>!READ</span>
+#endif
+
+TYPEOF(phi1) u3pxz=0
+DO u3pxz(iz,iy)=iz<span class=low>*</span>dz-vertz
+FOR iz=1 TO nz-1 AND ALL iy
+DO u3pxz(nz,iy)=[ztop^3-(ztop-dz)^3]/6/dz FOR ALL iy
+u3pxz(<span class=low>*</span><span class=low>*</span>)=Aeven(<span class=low>*</span><span class=low>*</span>)\~
+h3pxz=[SUM u3pxz(nz,iy) FOR ALL iy]/ny-ztop^3/6
+WRITE BY NAME h3pxz
+#ifdef writeout
+writetable["u3pxz.dat",u3pxz]
+#else
+SPLOT u3pxz[zplotbase+(0..3<span class=low>*</span>ny DIV 2)]
+<span class=comment>!READ</span>
+#endif
+!)</span>
+<a href="cpl.html#TYPE">TYPEOF</a>(phi1) u33=0
+<a href="cpl.html#DO">DO</a> u33(iz,iy)=phi1(iz,iy)
+<a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy
+<a href="cpl.html#DO">DO</a> u33(nz,iy)=[ztop<a href="cpl.html#REAL-operator">^</a>3-(ztop-dz)<a href="cpl.html#REAL-operator">^</a>3]/6/dz+h1<span class=low>*</span>[ztop<a href="cpl.html#REAL-operator">^</a>2-(ztop-dz)<a href="cpl.html#REAL-operator">^</a>2]/2/dz
+<a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+u33(<a href="cpl.html#compound-index">**</a>)=Aeven(<a href="cpl.html#compound-index">**</a>)\~
+h3uzt=[<a href="cpl.html#Looping-operator">SUM</a> u33(nz,iy) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny-ztop<a href="cpl.html#REAL-operator">^</a>3/6-h1<span class=low>*</span>ztop<a href="cpl.html#REAL-operator">^</a>2/2
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> h3uzt
+#ifdef writeout
+writetable["u33.dat",u33]
+#else
+<a href="graphics.html#SPLOT">SPLOT</a> u33[zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2)]
+<span class=comment>!READ</span>
+#endif
+</pre></body></html>

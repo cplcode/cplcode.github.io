@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>article-CPLcodes/horbcs/vwp.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/singlecol.css"><style>pre{margin-left:0.5em;margin-right:0.5em} .comment{color:HotPink} a:link,a:visited{color:MediumBlue;text-decoration:none} a:hover,a:active{text-decoration:underline}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"article-CPLcodes/horbcs/vwp.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
+<body translate="no"><pre>
+#<span class=comment>!/usr/bin/env cpl</span>
+<a href="cpl.html#USE">USE</a> <a href="graphics.html#gnuplot">gnuplot</a>
+<a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">rbmat</a>
+<a href="cpl.html#USE">USE</a> imb
+<span class=comment>! #define writeout</span>
+
+p=0; v=1; w=2; cont=0; vmom=1; wmom=2
+<a href="cpl.html#REAL">REAL</a> var1(0..nz,0..ny-1,0..2)=0, sA(0..nz,0..ny-1,0..2,-ny..ny,0..2)
+sA(<a href="cpl.html#compound-index">**</a><span class=low>*</span>,<a href="cpl.html#compound-index">**</a>)=1/dz
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> iy=0 <a href="cpl.html#TO">TO</a> ny-1
+  cline=<a href="cpl.html#REAL-operator">^</a>sA(iz,iy,cont)
+  <a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> cline(ny-1,v-cont)=-1/dy <a href="cpl.html#ELSE">ELSE</a> cline(-1,v-cont)=-1/dy
+  cline(0,v-cont)=1/dy
+  cline(-ny,w-cont)=-1/dz
+  cline(0,w-cont)=1/dz
+  cline(0,p-cont)=0
+  vline=<a href="cpl.html#REAL-operator">^</a>sA(iz,iy,vmom)
+  <a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> vline[-ny,3+p-vmom]=-1/dy <a href="cpl.html#ELSE">ELSE</a> vline(0,3+p-vmom)=-1/dy
+  vline(-1,3+p-vmom)=1/dy
+  <a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> vline[-ny+1,v-vmom]=1/dy<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#ELSE">ELSE</a> vline(1,v-vmom)=1/dy<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> vline(ny-1,v-vmom)=1/dy<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#ELSE">ELSE</a> vline(-1,v-vmom)=1/dy<a href="cpl.html#REAL-operator">^</a>2
+  vline(ny,v-vmom)=1/dz<a href="cpl.html#REAL-operator">^</a>2;vline(-ny,v-vmom)=1/dz<a href="cpl.html#REAL-operator">^</a>2
+  vline(0,v-vmom)=-2/dy<a href="cpl.html#REAL-operator">^</a>2-2/dz<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#IF">IF</a> InBody[(iy+0.5)<span class=low>*</span>dy,iz<span class=low>*</span>dz] <a href="cpl.html#IF">THEN</a> vline(0,v-vmom)=-1E20
+  wline=<a href="cpl.html#REAL-operator">^</a>sA(iz,iy,wmom)
+  wline(ny-1,3+p-wmom)=-1/dz
+  wline(-1,3+p-wmom)=1/dz
+  <a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> wline[-ny+1,w-wmom]=1/dy<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#ELSE">ELSE</a> wline(1,w-wmom)=1/dy<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> wline(ny-1,w-wmom)=1/dy<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#ELSE">ELSE</a> wline(-1,w-wmom)=1/dy<a href="cpl.html#REAL-operator">^</a>2
+  wline(ny,w-wmom)=1/dz<a href="cpl.html#REAL-operator">^</a>2;wline(-ny,w-wmom)=1/dz<a href="cpl.html#REAL-operator">^</a>2
+  wline(0,w-wmom)=-2/dy<a href="cpl.html#REAL-operator">^</a>2-2/dz<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#IF">IF</a> InBody[iy<span class=low>*</span>dy,(iz+0.5)<span class=low>*</span>dz] <a href="cpl.html#IF">THEN</a> wline(0,w-wmom)=-1E20
+<a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+<a href="cpl.html#DO">DO</a> var1(nz,iy,vmom)=1
+  sA(nz,iy,cont,0,p-cont)=1
+  sA(nz,iy,vmom,-ny,v-vmom)=-1/dz
+  sA(nz,iy,wmom,-ny,w-wmom)=-1/dz
+  sA(nz,iy,wmom,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-2 <a href="cpl.html#ELSE">ELSE</a> -2,3+v-wmom)=-1/dy
+  sA(nz,iy,wmom,-1,3+v-wmom)=1/dy
+  <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+<a href="cpl.html#DO">DO</a> sA(0,iy,cont,ny,p-cont)=-1/dz <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+
+#ifdef slipnoslip
+<a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+  <a href="cpl.html#IF">IF</a> <a href="cpl.html#NOT">NOT</a> InBody[(iy+0.5)<span class=low>*</span>dy,0] <a href="cpl.html#IF">THEN</a> sA(0,iy,vmom,ny,v-vmom)=-1/dz
+<a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+calcimbc[sA(<span class=low>*</span>2,<span class=low>*</span>1,vmom,0,0)(ny <a href="cpl.html#DIV">DIV</a> 2..ny-1),dy/2,0,snsstokv(y-width,z),snsstokp(y-width,z)]
+calcimbc[sA(<span class=low>*</span>2,<span class=low>*</span>1,vmom,0,0)(0..ny <a href="cpl.html#DIV">DIV</a> 2-1),dy/2,0,-snsstokv(1-y-width,z),snsstokp(1-y-width,z)]
+calcimbc[sA(<span class=low>*</span>2,<span class=low>*</span>1,wmom,0,0)(ny <a href="cpl.html#DIV">DIV</a> 2..ny-1),0,dz/2,snsstokw(y-width,z),snsstokp(y-width,z)]
+calcimbc[sA(<span class=low>*</span>2,<span class=low>*</span>1,wmom,0,0)(0..ny <a href="cpl.html#DIV">DIV</a> 2-1),0,dz/2,snsstokw(1-y-width,z),snsstokp(1-y-width,z)]
+#else
+#ifdef rectangular
+calcimbc[sA(<span class=low>*</span>2,<span class=low>*</span>1,vmom,0,0)(ny <a href="cpl.html#DIV">DIV</a> 2..ny-1),dy/2,0,stokv(y-width,z),stokp(y-width,z)]
+calcimbc[sA(<span class=low>*</span>2,<span class=low>*</span>1,vmom,0,0)(0..ny <a href="cpl.html#DIV">DIV</a> 2-1),dy/2,0,-stokv(1-y-width,z),stokp(1-y-width,z)]
+calcimbc[sA(<span class=low>*</span>2,<span class=low>*</span>1,wmom,0,0)(ny <a href="cpl.html#DIV">DIV</a> 2..ny-1),0,dz/2,stokw(y-width,z),stokp(y-width,z)]
+calcimbc[sA(<span class=low>*</span>2,<span class=low>*</span>1,wmom,0,0)(0..ny <a href="cpl.html#DIV">DIV</a> 2-1),0,dz/2,stokw(1-y-width,z),stokp(1-y-width,z)]
+#else
+calcimbc[sA(<span class=low>*</span>2,<span class=low>*</span>1,vmom,0,0),dy/2,0,stokv,stokp]
+calcimbc[sA(<span class=low>*</span>2,<span class=low>*</span>1,wmom,0,0),0,dz/2,stokw,stokp]
+#endif
+#endif
+LUdecomp sA(<a href="cpl.html#compound-index">**</a><span class=low>*</span>,<a href="cpl.html#compound-index">**</a>)
+var1(<a href="cpl.html#compound-index">**</a><span class=low>*</span>)=sA(<a href="cpl.html#compound-index">**</a><span class=low>*</span>,<a href="cpl.html#compound-index">**</a>)\~
+a1=[<a href="cpl.html#Looping-operator">SUM</a> var1(nz,iy,v) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny-ztop
+c2=[<a href="cpl.html#Looping-operator">SUM</a> var1(iz,iy,v) <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy]/ny<span class=low>*</span>dz-ztopm<a href="cpl.html#REAL-operator">^</a>2/2-a1<span class=low>*</span>ztopm
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> a1,c2
+#ifdef writeout
+writetable["v11.dat",var1(<span class=low>*</span>,<span class=low>*</span>,v)]
+writetable["w11.dat",var1(<span class=low>*</span>,<span class=low>*</span>,w)]
+writetable["p01.dat",var1(<span class=low>*</span>,<span class=low>*</span>,p)]
+#else
+<a href="graphics.html#SPLOT">SPLOT</a> var1(zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2),<span class=low>*</span>,v)
+<span class=comment>!READ</span>
+#endif
+
+<a href="cpl.html#TYPE">TYPEOF</a>(var1) var21=0
+<a href="cpl.html#DO">DO</a> var21(iz,iy,vmom)=[var1(iz,iy,p)+var1(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,p)]/2-[var1(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,v)-var1(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,v)]/dy
+  var21(iz,iy,wmom)=-[var1(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,w)-var1(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,w)]/dy
+  var21(iz,iy,cont)=-[var1(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,v)+var1(iz,iy,v)]/2
+<a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy
+<a href="cpl.html#DO">DO</a> var21(nz,iy,cont)=-ztop
+  var21(nz,iy,wmom)=-[var1(nz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,v)+var1(nz,iy,v)]/2
+<a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+var21(<a href="cpl.html#compound-index">**</a><span class=low>*</span>)=sA(<a href="cpl.html#compound-index">**</a><span class=low>*</span>,<a href="cpl.html#compound-index">**</a>)\~
+a2=[<a href="cpl.html#Looping-operator">SUM</a> var21(nz,iy,v) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny
+<span class=comment>! c2=-[SUM var21(nz-1,iy,w) FOR ALL iy]/ny-ztopm^2/2-a1<span class=low>*</span>ztopm</span>
+c3=[<a href="cpl.html#Looping-operator">SUM</a> var21(iz,iy,v) <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy]/ny<span class=low>*</span>dz-a2<span class=low>*</span>ztopm
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> a2,c3
+#ifdef writeout
+writetable["v21.dat",var21(<span class=low>*</span>,<span class=low>*</span>,v)]
+writetable["w21.dat",var21(<span class=low>*</span>,<span class=low>*</span>,w)]
+writetable["p11.dat",var21(<span class=low>*</span>,<span class=low>*</span>,p)]
+#else
+<a href="graphics.html#SPLOT">SPLOT</a> var21(zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2),<span class=low>*</span>,v)
+<span class=comment>!READ</span>
+#endif
+
+<a href="cpl.html#TYPE">TYPEOF</a>(var1) var22=0
+<a href="cpl.html#DO">DO</a> var22(iz,iy,vmom)=1
+<a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy
+<a href="cpl.html#DO">DO</a> var22(nz,iy,vmom)=[ztop<a href="cpl.html#REAL-operator">^</a>2-(ztop-dz)<a href="cpl.html#REAL-operator">^</a>2]/2/dz
+<a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+var22(<a href="cpl.html#compound-index">**</a><span class=low>*</span>)=sA(<a href="cpl.html#compound-index">**</a><span class=low>*</span>,<a href="cpl.html#compound-index">**</a>)\~
+b2=[<a href="cpl.html#Looping-operator">SUM</a> var22(nz,iy,v) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny-ztop<a href="cpl.html#REAL-operator">^</a>2/2
+d3=[<a href="cpl.html#Looping-operator">SUM</a> var22(iz,iy,v) <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy]/ny<span class=low>*</span>dz-(ztopm<a href="cpl.html#REAL-operator">^</a>3-dz<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>ztopm/4)/6-b2<span class=low>*</span>ztopm
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> b2,d3
+#ifdef writeout
+writetable["v22.dat",var22(<span class=low>*</span>,<span class=low>*</span>,v)]
+writetable["w22.dat",var22(<span class=low>*</span>,<span class=low>*</span>,w)]
+writetable["p12.dat",var22(<span class=low>*</span>,<span class=low>*</span>,p)]
+#else
+<a href="graphics.html#SPLOT">SPLOT</a> var22(zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2),<span class=low>*</span>,v)
+<span class=comment>!READ</span>
+#endif
+
+<a href="cpl.html#TYPE">TYPEOF</a>(var1) var31=0
+<a href="cpl.html#DO">DO</a> var31(iz,iy,vmom)=[var21(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,v)-var21(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,v)]/dy-var1(iz,iy,v)+[var21(iz,iy,p)+var21(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,p)]/2
+  var31(iz,iy,wmom)=[var21(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,w)-var21(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,w)]/dy-var1(iz,iy,w)
+  var31(iz,iy,cont)=-[var21(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,v)+var21(iz,iy,v)]/2
+<a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy
+<a href="cpl.html#DO">DO</a> var31(nz,iy,vmom)=-[ztop<a href="cpl.html#REAL-operator">^</a>3-(ztop-dz)<a href="cpl.html#REAL-operator">^</a>3]/3/dz-a1<span class=low>*</span>[ztop<a href="cpl.html#REAL-operator">^</a>2-(ztop-dz)<a href="cpl.html#REAL-operator">^</a>2]/2/dz
+  var31(nz,iy,wmom)=-[var21(nz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,v)+var21(nz,iy,v)]/2
+<a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+var31(<a href="cpl.html#compound-index">**</a><span class=low>*</span>)=sA(<a href="cpl.html#compound-index">**</a><span class=low>*</span>,<a href="cpl.html#compound-index">**</a>)\~
+a3=[<a href="cpl.html#Looping-operator">SUM</a> var31(nz,iy,v) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny+ztop<a href="cpl.html#REAL-operator">^</a>3/3+a1<span class=low>*</span>ztop<a href="cpl.html#REAL-operator">^</a>2/2
+<span class=comment>! c3=-[SUM var31(nz-1,iy,w) FOR ALL iy]/ny-a2<span class=low>*</span>ztopm</span>
+c4=[<a href="cpl.html#Looping-operator">SUM</a> var31(iz,iy,v) <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy]/ny<span class=low>*</span>dz+ztopm<a href="cpl.html#REAL-operator">^</a>4/12+a1<span class=low>*</span>ztopm<a href="cpl.html#REAL-operator">^</a>3/6-a3<span class=low>*</span>ztopm
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> a3,c4
+#ifdef writeout
+writetable["v31.dat",var31(<span class=low>*</span>,<span class=low>*</span>,v)]
+writetable["w31.dat",var31(<span class=low>*</span>,<span class=low>*</span>,w)]
+writetable["p21.dat",var31(<span class=low>*</span>,<span class=low>*</span>,p)]
+#else
+<a href="graphics.html#SPLOT">SPLOT</a> var31(zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2),<span class=low>*</span>,v)
+<span class=comment>!READ</span>
+#endif
+
+<a href="cpl.html#TYPE">TYPEOF</a>(var1) var32=0
+<a href="cpl.html#DO">DO</a> var32(iz,iy,vmom)=[var22(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,v)-var22(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,v)]/dy+[var22(iz,iy,p)+var22(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,p)]/2
+  var32(iz,iy,wmom)=[var22(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,w)-var22(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,w)]/dy
+  var32(iz,iy,cont)=-[var22(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,v)+var22(iz,iy,v)]/2
+<a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy
+<a href="cpl.html#DO">DO</a> var32(nz,iy,wmom)=-[var22(nz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,v)+var22(nz,iy,v)]/2
+  var32(nz,iy,cont)=-ztop<a href="cpl.html#REAL-operator">^</a>2/2
+<a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+var32(<a href="cpl.html#compound-index">**</a><span class=low>*</span>)=sA(<a href="cpl.html#compound-index">**</a><span class=low>*</span>,<a href="cpl.html#compound-index">**</a>)\~
+b3=[<a href="cpl.html#Looping-operator">SUM</a> var32(nz,iy,v) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny
+<span class=comment>! d3=-[SUM var32(nz-1,iy,w) FOR ALL iy]/ny-(ztopm^3-dz^2<span class=low>*</span>ztopm/4)/6-b2<span class=low>*</span>ztopm</span>
+d4=[<a href="cpl.html#Looping-operator">SUM</a> var32(iz,iy,v) <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy]/ny<span class=low>*</span>dz-b3<span class=low>*</span>ztopm
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> b3,d4
+#ifdef writeout
+writetable["v32.dat",var32(<span class=low>*</span>,<span class=low>*</span>,v)]
+writetable["w32.dat",var32(<span class=low>*</span>,<span class=low>*</span>,w)]
+writetable["p22.dat",var32(<span class=low>*</span>,<span class=low>*</span>,p)]
+#else
+<a href="graphics.html#SPLOT">SPLOT</a> var32(zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2),<span class=low>*</span>,v)
+<span class=comment>!READ</span>
+#endif
+
+<a href="cpl.html#TYPE">TYPEOF</a>(var1) var33=0
+<a href="cpl.html#DO">DO</a> var33(iz,iy,vmom)=var1(iz,iy,vmom)
+  var33(iz,iy,wmom)=var1(iz,iy,wmom)
+<a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy
+<a href="cpl.html#DO">DO</a> var33(nz,iy,vmom)=[ztop<a href="cpl.html#REAL-operator">^</a>3-(ztop-dz)<a href="cpl.html#REAL-operator">^</a>3]/6/dz+a1<span class=low>*</span>[ztop<a href="cpl.html#REAL-operator">^</a>2-(ztop-dz)<a href="cpl.html#REAL-operator">^</a>2]/2/dz
+<a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+var33(<a href="cpl.html#compound-index">**</a><span class=low>*</span>)=sA(<a href="cpl.html#compound-index">**</a><span class=low>*</span>,<a href="cpl.html#compound-index">**</a>)\~
+e3vzt=[<a href="cpl.html#Looping-operator">SUM</a> var33(nz,iy,v) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny-ztop<a href="cpl.html#REAL-operator">^</a>3/6-a1<span class=low>*</span>ztop<a href="cpl.html#REAL-operator">^</a>2/2
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> e3vzt
+#ifdef writeout
+writetable["v33.dat",var33(<span class=low>*</span>,<span class=low>*</span>,v)]
+writetable["w33.dat",var33(<span class=low>*</span>,<span class=low>*</span>,w)]
+writetable["p23.dat",var33(<span class=low>*</span>,<span class=low>*</span>,p)]
+#else
+<a href="graphics.html#SPLOT">SPLOT</a> var33(zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2),<span class=low>*</span>,v)
+<span class=comment>!READ</span>
+#endif
+
+<a href="cpl.html#TYPE">TYPEOF</a>(var1) var34=0
+<a href="cpl.html#DO">DO</a> var34(iz,iy,vmom)={[var1(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,v)+var1(iz,iy,v)]<a href="cpl.html#REAL-operator">^</a>2-[var1(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,v)+var1(iz,iy,v)]<a href="cpl.html#REAL-operator">^</a>2}/4/dy+{[var1(iz,iy,w)+var1(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,w)]<span class=low>*</span>[var1(iz,iy,v)+var1(iz+1,iy,v)]-[var1(iz-1,iy,w)+var1(iz-1,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,w)]<span class=low>*</span>[var1(iz,iy,v)+var1(iz-1,iy,v)]}/4/dz
+  var34(iz,iy,wmom)={[var1(iz,iy,v)+var1(iz+1,iy,v)]<span class=low>*</span>[var1(iz,iy,w)+var1(iz,<a href="cpl.html#IF">IF</a> iy=ny-1 <a href="cpl.html#IF">THEN</a> 0 <a href="cpl.html#ELSE">ELSE</a> iy+1,w)]-[var1(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,v)+var1(iz+1,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,v)]<span class=low>*</span>[var1(iz,<a href="cpl.html#IF">IF</a> iy=0 <a href="cpl.html#IF">THEN</a> ny-1 <a href="cpl.html#ELSE">ELSE</a> iy-1,w)+var1(iz,iy,w)]}/4/dy+{[var1(iz,iy,w)+var1(iz+1,iy,w)]<a href="cpl.html#REAL-operator">^</a>2-[var1(iz-1,iy,w)+var1(iz,iy,w)]<a href="cpl.html#REAL-operator">^</a>2}/4/dz
+<a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy
+var34(<a href="cpl.html#compound-index">**</a><span class=low>*</span>)=sA(<a href="cpl.html#compound-index">**</a><span class=low>*</span>,<a href="cpl.html#compound-index">**</a>)\~
+e3nl=[<a href="cpl.html#Looping-operator">SUM</a> var34(nz,iy,v) <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy]/ny
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> e3nl
+#ifdef writeout
+writetable["v34.dat",var34(<span class=low>*</span>,<span class=low>*</span>,v)]
+writetable["w34.dat",var34(<span class=low>*</span>,<span class=low>*</span>,w)]
+writetable["p24.dat",var34(<span class=low>*</span>,<span class=low>*</span>,p)]
+#else
+<a href="graphics.html#SPLOT">SPLOT</a> var34(zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2),<span class=low>*</span>,v)
+<span class=comment>!READ</span>
+#endif
+</pre></body></html>

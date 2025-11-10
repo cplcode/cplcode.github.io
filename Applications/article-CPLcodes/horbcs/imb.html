@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>article-CPLcodes/horbcs/imb.cpl</title><meta name="description" content="CPL listing"><base href="https://CPLcode.net/Documentation/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/singlecol.css"><style>pre{margin-left:0.5em;margin-right:0.5em} .comment{color:HotPink} a:link,a:visited{color:MediumBlue;text-decoration:none} a:hover,a:active{text-decoration:underline}</style>
+<script type="application/ld+json">{
+"@context":"http://schema.org",
+"@type":"SoftwareSourceCode",
+"name":"article-CPLcodes/horbcs/imb.cpl",
+"programmingLanguage":{
+"@type":"ComputerLanguage",
+"name":"CPL",
+"disambiguatingDescription":"Compiler and Programming Language Conceived by Paolo Luchini",
+"url":"https://cplcode.net"}
+}</script><style>.low{position:relative;top:0.4ex;}</style></head>
+<body translate="no"><pre>
+<span class=comment>! USE rtchecks</span>
+<a href="cpl.html#C-preprocessor">#define</a> sawtooth
+<a href="cpl.html#INTEGER">INTEGER</a> ny=40, nz=<a href="cpl.html#ROUND">ROUND</a>(3<span class=low>*</span>ny), zplotbase=0; dy=1/ny; dz=dy
+
+#ifdef rectangular
+vertangle=PI/2
+vertdelta=PI/4
+verty=0.5
+width=0.1
+vertz=0.5000000001
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FUNCTION">FUNCTION</a> InBody(<a href="cpl.html#REAL">REAL</a> y,z)=<a href="cpl.html#ABS">ABS</a>(y-verty)&lt;=width <a href="cpl.html#AND">AND</a> z&lt;=vertz
+#endif
+#ifdef triangular
+vertangle=PI/3
+vertdelta=0
+verty=0.5
+tanvert=<a href="cpl.html#Builtin">TAN</a>[(PI-vertangle)/2]
+vertz=verty<span class=low>*</span>tanvert
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FUNCTION">FUNCTION</a> InBody(<a href="cpl.html#REAL">REAL</a> y,z)=z&lt;=vertz-<a href="cpl.html#ABS">ABS</a>(y-verty)<span class=low>*</span>tanvert
+#endif
+#ifdef trapezoidal
+vertangle=PI/6
+vertdelta=0
+verty=0.5
+tanvert=<a href="cpl.html#Builtin">TAN</a>[(PI-vertangle)/2]
+vertz=0.5000000001
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FUNCTION">FUNCTION</a> InBody(<a href="cpl.html#REAL">REAL</a> y,z)=z&lt;=vertz-<a href="cpl.html#ABS">ABS</a>(y-verty)<span class=low>*</span>tanvert
+#endif
+#ifdef sawtooth
+verty=0.5
+vertz=0.5000000001
+tanvert=2
+vertangle=atan(tanvert)
+vertdelta=vertangle/2
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FUNCTION">FUNCTION</a> InBody(<a href="cpl.html#REAL">REAL</a> y,z)=<a href="cpl.html#IF">IF</a> y&lt;=verty <a href="cpl.html#IF">THEN</a> z&lt;=vertz+(y-verty)/tanvert <a href="cpl.html#ELSE">ELSE</a> z&lt;=vertz+(y-1-verty)/tanvert
+<span class=comment>! vertangle=PI</span>
+<span class=comment>! vertdelta=0</span>
+<span class=comment>! BOOLEAN FUNCTION InBody(REAL y,z)=z&lt;=vertz+2<span class=low>*</span>[0.475-SQRT[(y-0.75)<span class=low>*</span><span class=low>*</span>2+0.1<span class=low>*</span><span class=low>*</span>2]-0.5<span class=low>*</span>y]</span>
+#endif
+#ifdef slipnoslip
+vertangle=0
+vertdelta=PI/2
+verty=0.5
+vertz=dz<span class=low>*</span>0.5000000001
+width=0.25
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FUNCTION">FUNCTION</a> InBody(<a href="cpl.html#REAL">REAL</a> y,z)=<a href="cpl.html#ABS">ABS</a>(y-verty)&lt;=width <a href="cpl.html#AND">AND</a> z&lt;=vertz
+#endif
+#ifdef cylinders
+vertangle=PI
+vertdelta=0
+verty=0.5
+vertz=0+<a href="cpl.html#Builtin">SQRT</a>(0.5/PI)
+nz=3<span class=low>*</span>ny
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FUNCTION">FUNCTION</a> InBody(<a href="cpl.html#REAL">REAL</a> y,z)=z&lt;=vertz <a href="cpl.html#AND">AND</a> (y-verty)<a href="cpl.html#REAL-operator">^</a>2+[z-<a href="cpl.html#ROUND">ROUND</a>(z)]<a href="cpl.html#REAL-operator">^</a>2&lt;=0.5/PI
+zplotbase=0<span class=low>*</span>ny
+#endif
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Bisection[<a href="cpl.html#FUNCTION">FUNCTION</a>(<a href="cpl.html#REAL">REAL</a> s)-&gt;<a href="cpl.html#BOOLEAN">BOOLEAN</a> f; <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#VARIABLE">VARIABLE</a> s1, s2]
+  f1 = f(s1); f2 = f(s2)
+  <a href="cpl.html#IF">IF</a> f1 = f2 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#ERROR">ERROR</a> "Bisection point not included in " s1 " " s2
+  <a href="cpl.html#LOOP">LOOP</a> halve
+    <a href="cpl.html#RESULT">RESULT</a>=(s1+s2)/2
+    <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(s2-s1)&lt;1E-10 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#EXIT">EXIT</a> Bisection
+    <a href="cpl.html#IF">IF</a> f(<a href="cpl.html#RESULT">RESULT</a>)=f1 <a href="cpl.html#IF">THEN</a> s1=<a href="cpl.html#RESULT">RESULT</a> <a href="cpl.html#ELSE">ELSE</a> s2=<a href="cpl.html#RESULT">RESULT</a>
+  <a href="cpl.html#LOOP">REPEAT</a> halve
+<a href="cpl.html#END">END</a> Bisection
+
+phiwall=2<span class=low>*</span>PI-vertangle
+laplexp1=PI/phiwall
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> even(<a href="cpl.html#REAL">REAL</a> y,z)
+  r2=(y-verty)<a href="cpl.html#REAL-operator">^</a>2+(z-vertz)<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#REAL">REAL</a> theta=atan2(y-verty,z-vertz)-vertdelta
+  <a href="cpl.html#IF">IF</a> theta&lt;-PI <a href="cpl.html#IF">THEN</a> theta=theta+2<span class=low>*</span>PI
+  <a href="cpl.html#RESULT">RESULT</a>=r2<a href="cpl.html#REAL-operator">^</a>(laplexp1/2)<span class=low>*</span><a href="cpl.html#Builtin">COS</a>(laplexp1<span class=low>*</span>theta)
+<a href="cpl.html#END">END</a> even
+
+laplexp2=2<span class=low>*</span>laplexp1
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> odd(<a href="cpl.html#REAL">REAL</a> y,z)
+  r2=(y-verty)<a href="cpl.html#REAL-operator">^</a>2+(z-vertz)<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#REAL">REAL</a> theta=atan2(y-verty,z-vertz)-vertdelta
+  <a href="cpl.html#IF">IF</a> theta&lt;-PI <a href="cpl.html#IF">THEN</a> theta=theta+2<span class=low>*</span>PI
+  <a href="cpl.html#RESULT">RESULT</a>=r2<a href="cpl.html#REAL-operator">^</a>(laplexp2/2)<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(laplexp2<span class=low>*</span>theta)
+<a href="cpl.html#END">END</a> odd
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> nocorr(<a href="cpl.html#REAL">REAL</a> x,y)=1
+
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FUNCTION">FUNCTION</a> stokdisp(<a href="cpl.html#REAL">REAL</a> stokexp)=<a href="cpl.html#Builtin">SIN</a>(stokexp<span class=low>*</span>phiwall)+stokexp<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(phiwall)&gt;0
+stokexp=Bisection[stokdisp,0.49,1.01-(phiwall-PI)/2/PI]
+stokesB=-<a href="cpl.html#Builtin">COS</a>[(stokexp+1)<span class=low>*</span>phiwall/2]/<a href="cpl.html#Builtin">COS</a>[(stokexp-1)<span class=low>*</span>phiwall/2]
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> stokpsi(<a href="cpl.html#REAL">REAL</a> y,z)
+  r2=(y-verty)<a href="cpl.html#REAL-operator">^</a>2+(z-vertz)<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#REAL">REAL</a> theta=atan2(y-verty,z-vertz)-vertdelta
+  <a href="cpl.html#IF">IF</a> theta&lt;-PI <a href="cpl.html#IF">THEN</a> theta=theta+2<span class=low>*</span>PI
+  <a href="cpl.html#RESULT">RESULT</a>=r2<a href="cpl.html#REAL-operator">^</a>[(stokexp+1)/2]<span class=low>*</span>(<a href="cpl.html#Builtin">COS</a>[(stokexp+1)<span class=low>*</span>theta]+stokesB<span class=low>*</span><a href="cpl.html#Builtin">COS</a>[(stokexp-1)<span class=low>*</span>theta])
+<a href="cpl.html#END">END</a> stokpsi
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> stokv(<a href="cpl.html#REAL">REAL</a> y,z)=[stokpsi(y,z+dz/2)-stokpsi(y,z-dz/2)]/dz
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> stokw(<a href="cpl.html#REAL">REAL</a> y,z)=[stokpsi(y-dy/2,z)-stokpsi(y+dy/2,z)]/dy
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> stokp(<a href="cpl.html#REAL">REAL</a> y,z)
+  r2=(y-verty)<a href="cpl.html#REAL-operator">^</a>2+(z-vertz)<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#IF">IF</a> r2&lt;dz<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=0 <a href="cpl.html#ELSE">ELSE</a>
+    <a href="cpl.html#REAL">REAL</a> theta=atan2(y-verty,z-vertz)-vertdelta
+    <a href="cpl.html#IF">IF</a> theta&lt;-PI <a href="cpl.html#IF">THEN</a> theta=theta+2<span class=low>*</span>PI
+    <a href="cpl.html#RESULT">RESULT</a>=stokesB<span class=low>*</span>4<span class=low>*</span>stokexp<span class=low>*</span>r2<a href="cpl.html#REAL-operator">^</a>[(stokexp-1)/2]<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>[(stokexp-1)<span class=low>*</span>theta]
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#END">END</a> stokp
+
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> snsstokpsi(<a href="cpl.html#REAL">REAL</a> y,z)
+  r2=(y-verty)<a href="cpl.html#REAL-operator">^</a>2+(z-vertz)<a href="cpl.html#REAL-operator">^</a>2
+  theta=atan2(y-verty,z-vertz)-vertdelta
+  <a href="cpl.html#RESULT">RESULT</a>=r2<a href="cpl.html#REAL-operator">^</a>(3/4)<span class=low>*</span>[<a href="cpl.html#Builtin">COS</a>(0.5<span class=low>*</span>theta)-<a href="cpl.html#Builtin">COS</a>[1.5<span class=low>*</span>theta]]
+<a href="cpl.html#END">END</a> snsstokpsi
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> snsstokv(<a href="cpl.html#REAL">REAL</a> y,z)=[snsstokpsi(y,z+dz/2)-snsstokpsi(y,z-dz/2)]/dz
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> snsstokw(<a href="cpl.html#REAL">REAL</a> y,z)=[snsstokpsi(y-dy/2,z)-snsstokpsi(y+dy/2,z)]/dy
+<a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> snsstokp(<a href="cpl.html#REAL">REAL</a> y,z)
+  r2=(y-verty)<a href="cpl.html#REAL-operator">^</a>2+(z-vertz)<a href="cpl.html#REAL-operator">^</a>2
+  <a href="cpl.html#IF">IF</a> r2&lt;dz<a href="cpl.html#REAL-operator">^</a>2 <a href="cpl.html#IF">THEN</a> <a href="cpl.html#RESULT">RESULT</a>=0 <a href="cpl.html#ELSE">ELSE</a>
+    theta=atan2(y-verty,z-vertz)-vertdelta
+    <a href="cpl.html#RESULT">RESULT</a>=-2<span class=low>*</span>r2<a href="cpl.html#REAL-operator">^</a>(-1/4)<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(0.5<span class=low>*</span>theta)
+  <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+<a href="cpl.html#END">END</a> snsstokp
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> calcimbc[<a href="cpl.html#ARRAY">ARRAY</a>(<span class=low>*</span>,<span class=low>*</span>) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> imbc<a href="cpl.html#REAL-operator">^</a>; <a href="cpl.html#REAL">REAL</a> dispy,dispz; <a href="cpl.html#FUNCTION">FUNCTION</a>(<a href="cpl.html#REAL">REAL</a> y,z)-&gt;<a href="cpl.html#REAL">REAL</a> locsol,locp]
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=imbc.<a href="cpl.html#LO">LO1</a> <a href="cpl.html#TO">TO</a> imbc.<a href="cpl.html#HI">HI1</a> <a href="cpl.html#AND">AND</a> iz=imbc.<a href="cpl.html#LO">LO2</a>+1 <a href="cpl.html#TO">TO</a> imbc.<a href="cpl.html#HI">HI2</a>-1
+    y=iy<span class=low>*</span>dy+dispy; z=iz<span class=low>*</span>dz+dispz
+    locloc=locsol(y,z)
+    <a href="cpl.html#IF">IF</a> InBody(y,z) <a href="cpl.html#IF">THEN</a> imbc(iy,iz)=<a href="cpl.html#Assignment">~</a>-1E20 <a href="cpl.html#ELSE">ELSE</a> <a href="cpl.html#IF">IF</a> <a href="cpl.html#ABS">ABS</a>(locloc)&gt;1E-6 <a href="cpl.html#IF">THEN</a>
+      imbc(iy,iz)=<a href="cpl.html#Assignment">~</a>+2/dy/dy+2/dz/dz+[locp(y+dispy,z)-locp(y-dispy,z)]/dy/locloc+[locp(y,z+dispz)-locp(y,z-dispz)]/dz/locloc
+      <a href="cpl.html#IF">IF</a> InBody[y-dy,z] <a href="cpl.html#IF">THEN</a>
+        d=y-Bisection[InBody(s,z),y-dy,y]
+        <a href="cpl.html#IF">IF</a> d=0 <a href="cpl.html#IF">THEN</a> imbc(iy,iz)=-1E20 <a href="cpl.html#ELSE">ELSE</a>
+          imbc(iy,iz)=<a href="cpl.html#Assignment">~</a>-locsol(y-d,z)/locloc/d/dy
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      <a href="cpl.html#ELSE">ELSE</a> imbc(iy,iz)=<a href="cpl.html#Assignment">~</a>-locsol(y-dy,z)/locloc/dy/dy
+      <a href="cpl.html#IF">IF</a> InBody(y+dy,z) <a href="cpl.html#IF">THEN</a>
+        d=Bisection[InBody(s,z),y,y+dy]-y
+        <a href="cpl.html#IF">IF</a> d=0 <a href="cpl.html#IF">THEN</a> imbc(iy,iz)=-1E20 <a href="cpl.html#ELSE">ELSE</a>
+          imbc(iy,iz)=<a href="cpl.html#Assignment">~</a>-locsol(y+d,z)/locloc/d/dy
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      <a href="cpl.html#ELSE">ELSE</a> imbc(iy,iz)=<a href="cpl.html#Assignment">~</a>-locsol(y+dy,z)/locloc/dy/dy
+      <a href="cpl.html#IF">IF</a> InBody[y,z-dz] <a href="cpl.html#IF">THEN</a>
+        d=z-Bisection[InBody(y,s),z-dz,z]
+        <a href="cpl.html#IF">IF</a> d=0 <a href="cpl.html#IF">THEN</a> imbc(iy,iz)=-1E20 <a href="cpl.html#ELSE">ELSE</a>
+          imbc(iy,iz)=<a href="cpl.html#Assignment">~</a>-locsol(y,z-d)/locloc/d/dz
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      <a href="cpl.html#ELSE">ELSE</a> imbc(iy,iz)=<a href="cpl.html#Assignment">~</a>-locsol(y,z-dz)/locloc/dz/dz
+      <a href="cpl.html#IF">IF</a> InBody(y,z+dz) <a href="cpl.html#IF">THEN</a>
+        d=Bisection[InBody(y,s),z,z+dz]-z
+        <a href="cpl.html#IF">IF</a> d=0 <a href="cpl.html#IF">THEN</a> imbc(iy,iz)=-1E20 <a href="cpl.html#ELSE">ELSE</a>
+          imbc(iy,iz)=<a href="cpl.html#Assignment">~</a>-locsol(y,z+d)/locloc/d/dz
+        <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+      <a href="cpl.html#ELSE">ELSE</a> imbc(iy,iz)=<a href="cpl.html#Assignment">~</a>-locsol(y,z+dz)/locloc/dz/dz
+    <a href="cpl.html#END">END</a> <a href="cpl.html#IF">IF</a>
+  <a href="cpl.html#LOOP">REPEAT</a>
+<a href="cpl.html#END">END</a> calcimbc
+
+ztop=nz<span class=low>*</span>dz-vertz
+ztopm=ztop-dz/2
+
+<a href="cpl.html#REAL">REAL</a> zz[0..<a href="cpl.html#ROUND">ROUND</a>(1.5<span class=low>*</span>ny)],yy(0..ny-1)
+<a href="cpl.html#DO">DO</a> zz(iz)=iz<span class=low>*</span>dz-vertz <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iz
+<a href="cpl.html#DO">DO</a> yy(iy)=iy<span class=low>*</span>dy <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> iy
+
+<a href="cpl.html#FUNCTION">SUBROUTINE</a> writetable[<a href="cpl.html#STRING">STRING</a> filename; <a href="cpl.html#REAL">REAL</a> f(<span class=low>*</span>,<span class=low>*</span>)]
+  file=<a href="cpl.html#CREATE">CREATE</a>(filename)
+  <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> iy=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
+    <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> file f(iz,iy), ./. <a href="cpl.html#FOR">FOR</a> iz=zplotbase <a href="cpl.html#TO">TO</a> zplotbase+<a href="cpl.html#ROUND">ROUND</a>(1.5<span class=low>*</span>ny)
+    <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> file
+  <a href="cpl.html#LOOP">REPEAT</a> <a href="cpl.html#LOOP">LOOP</a>
+  <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> file f(iz,0), ./. <a href="cpl.html#FOR">FOR</a> iz=zplotbase <a href="cpl.html#TO">TO</a> zplotbase+<a href="cpl.html#ROUND">ROUND</a>(1.5<span class=low>*</span>ny)
+  <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> file
+  <a href="cpl.html#CLOSE">CLOSE</a> file
+<a href="cpl.html#END">END</a> writetable
+</pre></body></html>

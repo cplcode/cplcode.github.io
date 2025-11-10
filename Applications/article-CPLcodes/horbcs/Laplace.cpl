@@ -1,0 +1,130 @@
+#!/usr/bin/env cpl
+USE gnuplot
+USE rbmat
+USE imb
+! #define writeout
+
+REAL phi1(0..nz,0..ny-1)=0, Aeven[0..nz,0..ny-1,-ny..ny], Aodd[0..nz,0..ny-1,-ny..ny]
+Aeven(**,*)=1/dz
+LOOP FOR iy=0 TO ny-1 AND iz=1 TO nz-1
+  line=^Aeven(iz,iy,*)
+  IF iy=ny-1 THEN line[-(ny-1)]=1/dy^2 ELSE line(1)=1/dy^2
+  IF iy=0 THEN line(ny-1)=1/dy^2 ELSE line(-1)=1/dy^2
+  line(ny)=1/dz^2;line(-ny)=1/dz^2
+  line(0)=-2/dy^2-2/dz^2
+  IF InBody(iy*dy,iz*dz) THEN line(0)=-1E20
+REPEAT LOOP
+DO phi1(nz,iy)=1; Aeven(nz,iy,-ny)=-1/dz
+FOR ALL iy
+#ifdef slipnoslip
+LOOP FOR ALL iy
+  IF NOT InBody(iy*dy,0) THEN Aeven(0,iy,ny)=-1/dz
+REPEAT LOOP
+Aodd=Aeven
+calcimbc[Aeven(*2,*1,0)(ny DIV 2..ny-1),0,0,even(y-width,z),nocorr]
+calcimbc[Aeven(*2,*1,0)(0..ny DIV 2-1),0,0,even(1-y-width,z),nocorr]
+#else
+Aodd=Aeven
+#ifdef rectangular
+calcimbc[Aeven(*2,*1,0)(ny DIV 2..ny-1),0,0,even(y-width,z),nocorr]
+calcimbc[Aeven(*2,*1,0)(0..ny DIV 2-1),0,0,even(1-y-width,z),nocorr]
+#else
+calcimbc[Aeven(*2,*1,0),0,0,even,nocorr]
+#endif
+#endif
+calcimbc[Aodd(*2,*1,0),0,0,nocorr,nocorr]
+LUdecomp Aeven(**)
+LUdecomp Aodd(**)
+phi1(**)=Aeven(**)\~
+h1=[SUM phi1(nz,iy) FOR ALL iy]/ny-ztop
+WRITE BY NAME h1
+#ifdef writeout
+writetable["u11.dat",phi1]
+#else
+SPLOT phi1[zplotbase+(0..3*ny DIV 2)]
+!READ
+#endif
+
+TYPEOF(phi1) phi21=0
+DO phi21(iz,iy)=[phi1(iz,IF iy=0 THEN ny-1 ELSE iy-1)-phi1(iz,IF iy=ny-1 THEN 0 ELSE iy+1)]/dy
+FOR iz=1 TO nz-1 AND ALL iy
+phi21(**)=Aeven(**)\~
+h2=[SUM phi21(nz,iy) FOR ALL iy]/ny
+WRITE BY NAME h2
+#ifdef writeout
+writetable["u21.dat",phi21]
+#else
+SPLOT phi21[zplotbase+(0..3*ny DIV 2)]
+!READ
+#endif
+
+TYPEOF(phi1) u22=0
+DO u22(iz,iy)=1
+FOR iz=1 TO nz-1 AND ALL iy
+DO u22(nz,iy)=[ztop^2-(ztop-dz)^2]/2/dz FOR ALL iy
+u22(**)=Aeven(**)\~
+h2px=[SUM u22(nz,iy) FOR ALL iy]/ny-ztop^2/2
+WRITE BY NAME h2px
+#ifdef writeout
+writetable["u22.dat",u22]
+#else
+SPLOT u22[zplotbase+(0..3*ny DIV 2)]
+!READ
+#endif
+
+TYPEOF(phi1) phi31=0
+DO phi31(iz,iy)=[phi21(iz,IF iy=0 THEN ny-1 ELSE iy-1)-phi21(iz,IF iy=ny-1 THEN 0 ELSE iy+1)]/dy-phi1(iz,iy)
+FOR iz=1 TO nz-1 AND ALL iy
+DO phi31(nz,iy)=-[ztop^3-(ztop-dz)^3]/6/dz-h1*[ztop^2-(ztop-dz)^2]/2/dz
+FOR ALL iy
+phi31(**)=Aeven(**)\~
+h3=[SUM phi31(nz,iy) FOR ALL iy]/ny+ztop^3/6+h1*ztop^2/2
+WRITE BY NAME h3
+#ifdef writeout
+writetable["u31.dat",phi31]
+#else
+SPLOT phi31[zplotbase+(0..3*ny DIV 2)]
+!READ
+#endif
+!(
+TYPEOF(phi1) u3pxy=0
+DO u3pxy(iz,iy)=[u22(iz,IF iy=0 THEN ny-1 ELSE iy-1)-u22(iz,IF iy=ny-1 THEN 0 ELSE iy+1)]/dy
+FOR iz=1 TO nz-1 AND ALL iy
+u3pxy(**)=Aodd(**)\~
+h3pxy=[SUM u3pxy(nz,iy) FOR ALL iy]/ny
+WRITE BY NAME h3pxy
+#ifdef writeout
+writetable["u3pxy.dat",u3pxy]
+#else
+SPLOT u3pxy[zplotbase+(0..3*ny DIV 2)]
+!READ
+#endif
+
+TYPEOF(phi1) u3pxz=0
+DO u3pxz(iz,iy)=iz*dz-vertz
+FOR iz=1 TO nz-1 AND ALL iy
+DO u3pxz(nz,iy)=[ztop^3-(ztop-dz)^3]/6/dz FOR ALL iy
+u3pxz(**)=Aeven(**)\~
+h3pxz=[SUM u3pxz(nz,iy) FOR ALL iy]/ny-ztop^3/6
+WRITE BY NAME h3pxz
+#ifdef writeout
+writetable["u3pxz.dat",u3pxz]
+#else
+SPLOT u3pxz[zplotbase+(0..3*ny DIV 2)]
+!READ
+#endif
+!)
+TYPEOF(phi1) u33=0
+DO u33(iz,iy)=phi1(iz,iy)
+FOR iz=1 TO nz-1 AND ALL iy
+DO u33(nz,iy)=[ztop^3-(ztop-dz)^3]/6/dz+h1*[ztop^2-(ztop-dz)^2]/2/dz
+FOR ALL iy
+u33(**)=Aeven(**)\~
+h3uzt=[SUM u33(nz,iy) FOR ALL iy]/ny-ztop^3/6-h1*ztop^2/2
+WRITE BY NAME h3uzt
+#ifdef writeout
+writetable["u33.dat",u33]
+#else
+SPLOT u33[zplotbase+(0..3*ny DIV 2)]
+!READ
+#endif

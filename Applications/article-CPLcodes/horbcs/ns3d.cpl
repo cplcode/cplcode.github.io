@@ -1,0 +1,148 @@
+#!/usr/bin/env cpl
+! #define writeout
+USE Laplace
+USE vwp
+
+TYPEOF(phi1) u23=0
+DO u23(iz,iy)=var1(iz,iy,p)
+FOR iz=1 TO nz-1 AND ALL iy
+u23(**)=Aeven(**)\~
+h2vxz=[SUM u23(nz,iy) FOR ALL iy]/ny
+WRITE BY NAME h2vxz
+#ifdef writeout
+writetable["u23.dat",u23]
+#else
+SPLOT u23(zplotbase+(0..3*ny DIV 2))
+!READ
+#endif
+
+TYPEOF(var1) var23=0
+DO var23(iz,iy,cont)=-phi1(iz,iy)
+FOR iz=1 TO nz-1 AND ALL iy
+DO var23(nz,iy,wmom)=-phi1(nz,iy)
+  var23(nz,iy,cont)=-ztop
+FOR ALL iy
+var23(***)=sA(***,**)\~
+f2=[SUM var23(nz,iy,v) FOR ALL iy]/ny
+g2=[SUM var23(nz-1,iy,w) FOR ALL iy]/ny+ztopm^2/2+h1*ztopm ! -dz^2/8
+WRITE BY NAME f2,g2
+#ifdef writeout
+writetable["v23.dat",var23(*,*,v)]
+writetable["w23.dat",var23(*,*,w)]
+writetable["p13.dat",var23(*,*,p)]
+#else
+SPLOT var23(zplotbase+(0..3*ny DIV 2),*,p)
+!READ
+#endif
+
+TYPEOF(phi1) u34=0
+DO u34(iz,iy)={var1(iz,iy,v)*[phi1(iz,iy)+phi1(iz,IF iy=ny-1 THEN 0 ELSE iy+1)]-var1(iz,IF iy=0 THEN ny-1 ELSE iy-1,v)*[phi1(iz,iy)+phi1(iz,IF iy=0 THEN ny-1 ELSE iy-1)]}/2/dy+{var1(iz,iy,w)*[phi1(iz,iy)+phi1(iz+1,iy)]-var1(iz-1,iy,w)*[phi1(iz,iy)+phi1(iz-1,iy)]}/2/dz
+FOR iz=1 TO nz-1 AND ALL iy
+u34(**)=Aeven(**)\~
+h3nl=[SUM u34(nz,iy) FOR ALL iy]/ny
+WRITE BY NAME h3nl
+#ifdef writeout
+writetable["u34.dat",u34]
+#else
+SPLOT u34(zplotbase+(0..3*ny DIV 2))
+!READ
+#endif
+
+TYPEOF(phi1) u35=0
+DO u35(iz,iy)=var21(iz,iy,p)-[u23(iz,IF iy=ny-1 THEN 0 ELSE iy+1)-u23(iz,IF iy=0 THEN ny-1 ELSE iy-1)]/dy
+FOR iz=1 TO nz-1 AND ALL iy
+DO u35(nz,iy)=[(ztop-dz)^3-ztop^3]/6/dz FOR ALL iy
+u35(**)=Aeven(**)\~
+h3vxyz=[SUM u35(nz,iy) FOR ALL iy]/ny+ztop^3/6
+WRITE BY NAME h3vxyz
+#ifdef writeout
+writetable["u35.dat",u35]
+#else
+SPLOT u35(zplotbase+(0..3*ny DIV 2))
+!READ
+#endif
+
+TYPEOF(phi1) u36=0
+DO u36(iz,iy)=var22(iz,iy,p)-[u22(iz,IF iy=ny-1 THEN 0 ELSE iy+1)-u22(iz,IF iy=0 THEN ny-1 ELSE iy-1)]/dy
+FOR iz=1 TO nz-1 AND ALL iy
+u36(**)=Aeven(**)\~
+h3pxy=[SUM u36(nz,iy) FOR ALL iy]/ny
+WRITE BY NAME h3pxy
+#ifdef writeout
+writetable["u36.dat",u36]
+#else
+SPLOT u36(zplotbase+(0..3*ny DIV 2))
+!READ
+#endif
+
+TYPEOF(phi1) u37=0
+DO u37(iz,iy)=var23(iz,iy,p)
+FOR iz=1 TO nz-1 AND ALL iy
+DO u37(nz,iy)=[(ztop-dz)^3-ztop^3]/6/dz FOR ALL iy
+u37(**)=Aeven(**)\~
+h3uxxz=[SUM u37(nz,iy) FOR ALL iy]/ny+ztop^3/6
+WRITE BY NAME h3uxxz
+#ifdef writeout
+writetable["u37.dat",u37]
+#else
+SPLOT u37(zplotbase+(0..3*ny DIV 2))
+!READ
+#endif
+
+TYPEOF(var1) var35=0
+DO var35(iz,iy,vmom)=[var23(iz,iy,p)+var23(iz,IF iy=ny-1 THEN 0 ELSE iy+1,p)]/2-[var23(iz,IF iy=ny-1 THEN 0 ELSE iy+1,v)-var23(iz,IF iy=0 THEN ny-1 ELSE iy-1,v)]/dy
+  var35(iz,iy,wmom)=-[var23(iz,IF iy=ny-1 THEN 0 ELSE iy+1,w)-var23(iz,IF iy=0 THEN ny-1 ELSE iy-1,w)]/dy
+  var35(iz,iy,cont)=-phi21(iz,iy)-[var23(iz,iy,v)+var23(iz,IF iy=0 THEN ny-1 ELSE iy-1,v)]/2
+FOR iz=1 TO nz-1 AND ALL iy
+DO var35(nz,iy,vmom)=-[ztop^3-(ztop-dz)^3]/dz/6
+  var35(nz,iy,wmom)=-phi21(nz,iy)-[var23(nz,iy,v)+var23(nz,IF iy=0 THEN ny-1 ELSE iy-1,v)]/2
+FOR ALL iy
+var35(***)=sA(***,**)\~
+f3uxyz=[SUM var35(nz,iy,v) FOR ALL iy]/ny+ztop^3/6
+g3uxyz=[SUM var35(nz-1,iy,w) FOR ALL iy]/ny+(h2+f2)*ztopm
+WRITE BY NAME f3uxyz,g3uxyz
+#ifdef writeout
+writetable["v35.dat",var35(*,*,v)]
+writetable["w35.dat",var35(*,*,w)]
+writetable["p25.dat",var35(*,*,p)]
+#else
+SPLOT var35(zplotbase+(0..3*ny DIV 2),*,p)
+!READ
+#endif
+
+TYPEOF(var1) var36=0
+DO var36(iz,iy,cont)=-u22(iz,iy)
+FOR iz=1 TO nz-1 AND ALL iy
+DO var36(nz,iy,wmom)=-u22(nz,iy)
+  var36(nz,iy,cont)=-ztop^2/2
+FOR ALL iy
+var36(***)=sA(***,**)\~
+f3pxx=[SUM var36(nz,iy,v) FOR ALL iy]/ny
+g3pxx=[SUM var36(nz-1,iy,w) FOR ALL iy]/ny+(ztopm^3-dz^2*ztopm/4)/6+h2px*ztopm
+WRITE BY NAME f3pxx,g3pxx
+#ifdef writeout
+writetable["v36.dat",var36(*,*,v)]
+writetable["w36.dat",var36(*,*,w)]
+writetable["p26.dat",var36(*,*,p)]
+#else
+SPLOT var36(zplotbase+(0..3*ny DIV 2),*,v)
+!READ
+#endif
+
+TYPEOF(var1) var37=0
+DO var37(iz,iy,cont)=-u23(iz,iy)
+FOR iz=1 TO nz-1 AND ALL iy
+DO var37(nz,iy,wmom)=-u23(nz,iy)
+FOR ALL iy
+var37(***)=sA(***,**)\~
+f3vxxz=[SUM var37(nz,iy,v) FOR ALL iy]/ny
+g3vxxz=[SUM var37(nz-1,iy,w) FOR ALL iy]/ny+h2vxz*ztopm
+WRITE BY NAME f3vxxz,g3vxxz
+#ifdef writeout
+writetable["v37.dat",var37(*,*,v)]
+writetable["w37.dat",var37(*,*,w)]
+writetable["p27.dat",var37(*,*,p)]
+#else
+SPLOT var37(zplotbase+(0..3*ny DIV 2),*,v)
+!READ
+#endif
