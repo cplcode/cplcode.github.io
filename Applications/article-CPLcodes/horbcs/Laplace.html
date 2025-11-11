@@ -98,34 +98,7 @@ writetable["u31.dat",phi31]
 <a href="graphics.html#SPLOT">SPLOT</a> phi31[zplotbase+(0..3<span class=low>*</span>ny <a href="cpl.html#DIV">DIV</a> 2)]
 <span class=comment>!READ</span>
 #endif
-<span class=comment>!(
-TYPEOF(phi1) u3pxy=0
-DO u3pxy(iz,iy)=[u22(iz,IF iy=0 THEN ny-1 ELSE iy-1)-u22(iz,IF iy=ny-1 THEN 0 ELSE iy+1)]/dy
-FOR iz=1 TO nz-1 AND ALL iy
-u3pxy(<span class=low>*</span><span class=low>*</span>)=Aodd(<span class=low>*</span><span class=low>*</span>)\~
-h3pxy=[SUM u3pxy(nz,iy) FOR ALL iy]/ny
-WRITE BY NAME h3pxy
-#ifdef writeout
-writetable["u3pxy.dat",u3pxy]
-#else
-SPLOT u3pxy[zplotbase+(0..3<span class=low>*</span>ny DIV 2)]
-<span class=comment>!READ</span>
-#endif
 
-TYPEOF(phi1) u3pxz=0
-DO u3pxz(iz,iy)=iz<span class=low>*</span>dz-vertz
-FOR iz=1 TO nz-1 AND ALL iy
-DO u3pxz(nz,iy)=[ztop^3-(ztop-dz)^3]/6/dz FOR ALL iy
-u3pxz(<span class=low>*</span><span class=low>*</span>)=Aeven(<span class=low>*</span><span class=low>*</span>)\~
-h3pxz=[SUM u3pxz(nz,iy) FOR ALL iy]/ny-ztop^3/6
-WRITE BY NAME h3pxz
-#ifdef writeout
-writetable["u3pxz.dat",u3pxz]
-#else
-SPLOT u3pxz[zplotbase+(0..3<span class=low>*</span>ny DIV 2)]
-<span class=comment>!READ</span>
-#endif
-!)</span>
 <a href="cpl.html#TYPE">TYPEOF</a>(phi1) u33=0
 <a href="cpl.html#DO">DO</a> u33(iz,iy)=phi1(iz,iy)
 <a href="cpl.html#FOR">FOR</a> iz=1 <a href="cpl.html#TO">TO</a> nz-1 <a href="cpl.html#AND">AND</a> <a href="cpl.html#ALL">ALL</a> iy

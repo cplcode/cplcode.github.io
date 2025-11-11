@@ -1,4 +1,5 @@
 ! USE rtchecks
+! #define writeout
 #define sawtooth
 INTEGER ny=40, nz=ROUND(3*ny), zplotbase=0; dy=1/ny; dz=dy
 
@@ -7,7 +8,7 @@ vertangle=PI/2
 vertdelta=PI/4
 verty=0.5
 width=0.1
-vertz=0.5000000001
+vertz=0.500000001
 BOOLEAN FUNCTION InBody(REAL y,z)=ABS(y-verty)<=width AND z<=vertz
 #endif
 #ifdef triangular
@@ -15,7 +16,7 @@ vertangle=PI/3
 vertdelta=0
 verty=0.5
 tanvert=TAN[(PI-vertangle)/2]
-vertz=verty*tanvert
+vertz=verty*tanvert+1E-8
 BOOLEAN FUNCTION InBody(REAL y,z)=z<=vertz-ABS(y-verty)*tanvert
 #endif
 #ifdef trapezoidal
@@ -23,12 +24,12 @@ vertangle=PI/6
 vertdelta=0
 verty=0.5
 tanvert=TAN[(PI-vertangle)/2]
-vertz=0.5000000001
+vertz=0.500000001
 BOOLEAN FUNCTION InBody(REAL y,z)=z<=vertz-ABS(y-verty)*tanvert
 #endif
 #ifdef sawtooth
 verty=0.5
-vertz=0.5000000001
+vertz=0.500000001
 tanvert=2
 vertangle=atan(tanvert)
 vertdelta=vertangle/2
@@ -41,7 +42,7 @@ BOOLEAN FUNCTION InBody(REAL y,z)=IF y<=verty THEN z<=vertz+(y-verty)/tanvert EL
 vertangle=0
 vertdelta=PI/2
 verty=0.5
-vertz=dz*0.5000000001
+vertz=dz*0.500000001
 width=0.25
 BOOLEAN FUNCTION InBody(REAL y,z)=ABS(y-verty)<=width AND z<=vertz
 #endif
@@ -107,7 +108,7 @@ END stokp
 REAL FUNCTION snsstokpsi(REAL y,z)
   r2=(y-verty)^2+(z-vertz)^2
   theta=atan2(y-verty,z-vertz)-vertdelta
-  RESULT=r2^(3/4)*[COS(0.5*theta)-COS[1.5*theta]]
+  RESULT=r2^(3/4)*[SIN(0.5*theta)+SIN[1.5*theta]]
 END snsstokpsi
 REAL FUNCTION snsstokv(REAL y,z)=[snsstokpsi(y,z+dz/2)-snsstokpsi(y,z-dz/2)]/dz
 REAL FUNCTION snsstokw(REAL y,z)=[snsstokpsi(y-dy/2,z)-snsstokpsi(y+dy/2,z)]/dy
@@ -115,40 +116,41 @@ REAL FUNCTION snsstokp(REAL y,z)
   r2=(y-verty)^2+(z-vertz)^2
   IF r2<dz^2 THEN RESULT=0 ELSE
     theta=atan2(y-verty,z-vertz)-vertdelta
-    RESULT=-2*r2^(-1/4)*SIN(0.5*theta)
+    RESULT=2*r2^(-1/4)*COS(0.5*theta)
   END IF
 END snsstokp
 
-SUBROUTINE calcimbc[ARRAY(*,*) OF REAL imbc^; REAL dispy,dispz; FUNCTION(REAL y,z)->REAL locsol,locp]
-  LOOP FOR iy=imbc.LO1 TO imbc.HI1 AND iz=imbc.LO2+1 TO imbc.HI2-1
+SUBROUTINE calcimbc[ARRAY(*,*) OF REAL center^; REAL dispy,dispz; FUNCTION(REAL y,z)->REAL locsol,locp]
+  LOOP FOR iy=center.LO1 TO center.HI1 AND iz=center.LO2+1 TO center.HI2-1
     y=iy*dy+dispy; z=iz*dz+dispz
     locloc=locsol(y,z)
-    IF InBody(y,z) THEN imbc(iy,iz)=~-1E20 ELSE IF ABS(locloc)>1E-6 THEN
-      imbc(iy,iz)=~+2/dy/dy+2/dz/dz+[locp(y+dispy,z)-locp(y-dispy,z)]/dy/locloc+[locp(y,z+dispz)-locp(y,z-dispz)]/dz/locloc
+    IF InBody(y,z) THEN center(iy,iz)=~-1E20 ELSE IF ABS(locloc)>1E-6 THEN
+      REAL imbc=(2/dy/dy+2/dz/dz)*locloc+[locp(y+dispy,z)-locp(y-dispy,z)]/dy+[locp(y,z+dispz)-locp(y,z-dispz)]/dz
       IF InBody[y-dy,z] THEN
 	d=y-Bisection[InBody(s,z),y-dy,y]
-	IF d=0 THEN imbc(iy,iz)=-1E20 ELSE
-	  imbc(iy,iz)=~-locsol(y-d,z)/locloc/d/dy
+	IF d=0 THEN imbc=-1E20 ELSE
+	  imbc=~-locsol(y-d,z)/d/dy
         END IF
-      ELSE imbc(iy,iz)=~-locsol(y-dy,z)/locloc/dy/dy
+      ELSE imbc=~-locsol(y-dy,z)/dy/dy
       IF InBody(y+dy,z) THEN
 	d=Bisection[InBody(s,z),y,y+dy]-y
-	IF d=0 THEN imbc(iy,iz)=-1E20 ELSE
-	  imbc(iy,iz)=~-locsol(y+d,z)/locloc/d/dy
+	IF d=0 THEN imbc=-1E20 ELSE
+	  imbc=~-locsol(y+d,z)/d/dy
         END IF
-      ELSE imbc(iy,iz)=~-locsol(y+dy,z)/locloc/dy/dy
+      ELSE imbc=~-locsol(y+dy,z)/dy/dy
       IF InBody[y,z-dz] THEN
 	d=z-Bisection[InBody(y,s),z-dz,z]
-	IF d=0 THEN imbc(iy,iz)=-1E20 ELSE
-	  imbc(iy,iz)=~-locsol(y,z-d)/locloc/d/dz
+	IF d=0 THEN imbc=-1E20 ELSE
+	  imbc=~-locsol(y,z-d)/d/dz
         END IF
-      ELSE imbc(iy,iz)=~-locsol(y,z-dz)/locloc/dz/dz
+      ELSE imbc=~-locsol(y,z-dz)/dz/dz
       IF InBody(y,z+dz) THEN
 	d=Bisection[InBody(y,s),z,z+dz]-z
-	IF d=0 THEN imbc(iy,iz)=-1E20 ELSE
-	  imbc(iy,iz)=~-locsol(y,z+d)/locloc/d/dz
+	IF d=0 THEN imbc=-1E20 ELSE
+	  imbc=~-locsol(y,z+d)/d/dz
         END IF
-      ELSE imbc(iy,iz)=~-locsol(y,z+dz)/locloc/dz/dz
+      ELSE imbc=~-locsol(y,z+dz)/dz/dz
+      center(iy,iz)=~+imbc/locloc
     END IF
   REPEAT
 END calcimbc

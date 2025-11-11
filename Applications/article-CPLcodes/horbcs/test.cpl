@@ -6,7 +6,7 @@ USE cbmat
 ! ny=20; nz=3*ny; dy=1/ny; dz=dy; ztop=nz*dz
 u=3; umom=3
 ARRAY(0..20) OF REAL eps,erru,errv,errw
-sz=FLOOR(vertz/dz); dsz=sz*dz-vertz
+sz=FLOOR(nz-ztop/dz); dsz=sz*dz-(nz*dz-ztop)
 ARRAY(sz..nz) OF COMPLEX su,sv,sw,sp
 COMPLEX cA(0..nz,0..ny-1,0..3,-ny..ny,0..3), cvar(0..nz,0..ny-1,0..3)
 uz0=[0.5+RAND()]*EXP[2*PI*RAND()*I]; vz0=[0.5+RAND()]*EXP[2*PI*RAND()*I]; p0=[0.5+RAND()]*EXP[2*PI*RAND()*I]

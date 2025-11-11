@@ -69,7 +69,7 @@ writetable["v11.dat",var1(*,*,v)]
 writetable["w11.dat",var1(*,*,w)]
 writetable["p01.dat",var1(*,*,p)]
 #else
-SPLOT var1(zplotbase+(0..3*ny DIV 2),*,v)
+SPLOT var1[zplotbase+(0..3*ny DIV 2),*,v]
 !READ
 #endif
 

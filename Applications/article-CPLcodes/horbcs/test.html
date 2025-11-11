@@ -18,7 +18,7 @@
 <span class=comment>! ny=20; nz=3<span class=low>*</span>ny; dy=1/ny; dz=dy; ztop=nz<span class=low>*</span>dz</span>
 u=3; umom=3
 <a href="cpl.html#ARRAY">ARRAY</a>(0..20) <a href="cpl.html#OF">OF</a> <a href="cpl.html#REAL">REAL</a> eps,erru,errv,errw
-sz=<a href="cpl.html#FLOOR">FLOOR</a>(vertz/dz); dsz=sz<span class=low>*</span>dz-vertz
+sz=<a href="cpl.html#FLOOR">FLOOR</a>(nz-ztop/dz); dsz=sz<span class=low>*</span>dz-(nz<span class=low>*</span>dz-ztop)
 <a href="cpl.html#ARRAY">ARRAY</a>(sz..nz) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> su,sv,sw,sp
 <a href="complex.html#Top">COMPLEX</a> cA(0..nz,0..ny-1,0..3,-ny..ny,0..3), cvar(0..nz,0..ny-1,0..3)
 uz0=[0.5+<a href="cpl.html#RAND">RAND</a>()]<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>[2<span class=low>*</span>PI<span class=low>*</span><a href="cpl.html#RAND">RAND</a>()<span class=low>*</span>I]; vz0=[0.5+<a href="cpl.html#RAND">RAND</a>()]<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>[2<span class=low>*</span>PI<span class=low>*</span><a href="cpl.html#RAND">RAND</a>()<span class=low>*</span>I]; p0=[0.5+<a href="cpl.html#RAND">RAND</a>()]<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>[2<span class=low>*</span>PI<span class=low>*</span><a href="cpl.html#RAND">RAND</a>()<span class=low>*</span>I]

@@ -86,34 +86,7 @@ writetable["u31.dat",phi31]
 SPLOT phi31[zplotbase+(0..3*ny DIV 2)]
 !READ
 #endif
-!(
-TYPEOF(phi1) u3pxy=0
-DO u3pxy(iz,iy)=[u22(iz,IF iy=0 THEN ny-1 ELSE iy-1)-u22(iz,IF iy=ny-1 THEN 0 ELSE iy+1)]/dy
-FOR iz=1 TO nz-1 AND ALL iy
-u3pxy(**)=Aodd(**)\~
-h3pxy=[SUM u3pxy(nz,iy) FOR ALL iy]/ny
-WRITE BY NAME h3pxy
-#ifdef writeout
-writetable["u3pxy.dat",u3pxy]
-#else
-SPLOT u3pxy[zplotbase+(0..3*ny DIV 2)]
-!READ
-#endif
 
-TYPEOF(phi1) u3pxz=0
-DO u3pxz(iz,iy)=iz*dz-vertz
-FOR iz=1 TO nz-1 AND ALL iy
-DO u3pxz(nz,iy)=[ztop^3-(ztop-dz)^3]/6/dz FOR ALL iy
-u3pxz(**)=Aeven(**)\~
-h3pxz=[SUM u3pxz(nz,iy) FOR ALL iy]/ny-ztop^3/6
-WRITE BY NAME h3pxz
-#ifdef writeout
-writetable["u3pxz.dat",u3pxz]
-#else
-SPLOT u3pxz[zplotbase+(0..3*ny DIV 2)]
-!READ
-#endif
-!)
 TYPEOF(phi1) u33=0
 DO u33(iz,iy)=phi1(iz,iy)
 FOR iz=1 TO nz-1 AND ALL iy
