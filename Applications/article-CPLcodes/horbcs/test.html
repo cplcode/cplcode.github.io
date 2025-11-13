@@ -11,6 +11,19 @@
 }</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 #<span class=comment>!/usr/bin/env cpl</span>
+
+<span class=comment>! Estimate the homogenisation error of a 3rd-order equivalent boundary condition</span>
+<span class=comment>! for the 3D Navier-Stokes equations past a riblet geometry defined in imb.cpl.</span>
+<span class=comment>! Ref.: P. Luchini, D. Chung, J. Fluid Mech., submitted (2025).</span>
+<span class=comment>! Ref.: P. Luchini, D. Chung, arXiv preprint arXiv:2506.22239.</span>
+<span class=comment>!</span>
+<span class=comment>! http://CPLcode.net/Applications/articleCPLcodes/horbcs/</span>
+<span class=comment>! test.cpl -- Copyright 2025 Paolo Luchini</span>
+
+<span class=comment>! Permission is hereby granted, free of charge, to use and copy this software</span>
+<span class=comment>! provided the present comments and citations are kept intact.</span>
+<span class=comment>! Just run this file after downloading CPL from http://CPLcode.net/Download</span>
+
 <a href="cpl.html#USE">USE</a> ns3d
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
 <span class=comment>! #define writeout</span>

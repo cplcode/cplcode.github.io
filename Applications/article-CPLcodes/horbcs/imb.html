@@ -11,6 +11,20 @@
 }</script><style>.low{position:relative;top:0.4ex;}</style></head>
 <body translate="no"><pre>
 <span class=comment>! USE rtchecks</span>
+
+<span class=comment>! Provides an immersed-boundary discretization for a riblet geometry.</span>
+<span class=comment>! Modify the BOOLEAN FUNCTION InBody(REAL y,z) to customize your own geometry.</span>
+<span class=comment>! Simply make this function TRUE inside the desired body. </span>
+<span class=comment>! Ref.: P. Luchini, D. Chung, J. Fluid Mech., submitted (2025).</span>
+<span class=comment>! Ref.: P. Luchini, D. Chung, arXiv preprint arXiv:2506.22239.</span>
+<span class=comment>!</span>
+<span class=comment>! http://CPLcode.net/Applications/articleCPLcodes/horbcs/</span>
+<span class=comment>! imb.cpl -- Copyright 2025 Paolo Luchini</span>
+
+<span class=comment>! Permission is hereby granted, free of charge, to use and copy this software</span>
+<span class=comment>! provided the present comments and citations are kept intact.</span>
+<span class=comment>! Do not run this file directly, it is used by the other codes in this suite.</span>
+
 <span class=comment>! #define writeout</span>
 <a href="cpl.html#C-preprocessor">#define</a> sawtooth
 <a href="cpl.html#INTEGER">INTEGER</a> ny=40, nz=<a href="cpl.html#ROUND">ROUND</a>(3<span class=low>*</span>ny), zplotbase=0; dy=1/ny; dz=dy
@@ -67,6 +81,8 @@ nz=3<span class=low>*</span>ny
 <a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FUNCTION">FUNCTION</a> InBody(<a href="cpl.html#REAL">REAL</a> y,z)=z&lt;=vertz <a href="cpl.html#AND">AND</a> (y-verty)<a href="cpl.html#REAL-operator">^</a>2+[z-<a href="cpl.html#ROUND">ROUND</a>(z)]<a href="cpl.html#REAL-operator">^</a>2&lt;=0.5/PI
 zplotbase=0<span class=low>*</span>ny
 #endif
+
+<span class=comment>! do not touch after this line</span>
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> Bisection[<a href="cpl.html#FUNCTION">FUNCTION</a>(<a href="cpl.html#REAL">REAL</a> s)-&gt;<a href="cpl.html#BOOLEAN">BOOLEAN</a> f; <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#VARIABLE">VARIABLE</a> s1, s2]
   f1 = f(s1); f2 = f(s2)

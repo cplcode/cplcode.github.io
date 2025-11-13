@@ -1,4 +1,18 @@
 ! USE rtchecks
+
+! Provides an immersed-boundary discretization for a riblet geometry.
+! Modify the BOOLEAN FUNCTION InBody(REAL y,z) to customize your own geometry.
+! Simply make this function TRUE inside the desired body. 
+! Ref.: P. Luchini, D. Chung, J. Fluid Mech., submitted (2025).
+! Ref.: P. Luchini, D. Chung, arXiv preprint arXiv:2506.22239.
+!
+! http://CPLcode.net/Applications/articleCPLcodes/horbcs/
+! imb.cpl -- Copyright 2025 Paolo Luchini
+
+! Permission is hereby granted, free of charge, to use and copy this software
+! provided the present comments and citations are kept intact.
+! Do not run this file directly, it is used by the other codes in this suite.
+
 ! #define writeout
 #define sawtooth
 INTEGER ny=40, nz=ROUND(3*ny), zplotbase=0; dy=1/ny; dz=dy
@@ -55,6 +69,8 @@ nz=3*ny
 BOOLEAN FUNCTION InBody(REAL y,z)=z<=vertz AND (y-verty)^2+[z-ROUND(z)]^2<=0.5/PI
 zplotbase=0*ny
 #endif
+
+! do not touch after this line
 
 REAL FUNCTION Bisection[FUNCTION(REAL s)->BOOLEAN f; REAL VARIABLE s1, s2]
   f1 = f(s1); f2 = f(s2)

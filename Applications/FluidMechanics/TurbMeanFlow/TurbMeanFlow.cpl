@@ -2,7 +2,8 @@
 ! out of interpolations of the universal law of the wall
 ! and of the particular laws of the wake of various parallel geometries.
 ! Ref.: P. Luchini, Eur. J. Mech. B/Fluids 71, 15-34 (2018).
-! Ref.: P. Luchini, arXiv preprint arXiv:2310.11542 submitted to the Journal of Fluid Mechanics (2023).
+! Ref.: P. Luchini, J. Fluid Mech. 979:R1 (2024) (open access).
+! Ref.: P. Luchini, arXiv preprint arXiv:2310.11542
 ! The wake functions exhibit a linear leading term with coefficient 0, 1, 2
 ! which equals the dimensionless pressure gradient,
 ! in accordance with P. Luchini, Phys. Rev. Letters 118, 224501 (2017).
