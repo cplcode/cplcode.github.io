@@ -17,7 +17,6 @@ USE ns3d
 USE cbmat
 ! #define writeout
 
-! ny=20; nz=3*ny; dy=1/ny; dz=dy; ztop=nz*dz
 u=3; umom=3
 ARRAY(0..20) OF REAL eps,erru,errv,errw
 sz=FLOOR(nz-ztop/dz); dsz=sz*dz-(nz*dz-ztop)
