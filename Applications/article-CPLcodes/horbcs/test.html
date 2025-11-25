@@ -19,10 +19,11 @@
 <span class=comment>!</span>
 <span class=comment>! http://CPLcode.net/Applications/articleCPLcodes/horbcs/</span>
 <span class=comment>! test.cpl -- Copyright 2025 Paolo Luchini</span>
+<span class=comment>! Just run this file after downloading CPL from http://CPLcode.net/Download</span>
 
 <span class=comment>! Permission is hereby granted, free of charge, to use and copy this software</span>
 <span class=comment>! provided the present comments and citations are kept intact.</span>
-<span class=comment>! Just run this file after downloading CPL from http://CPLcode.net/Download</span>
+<span class=comment>! If you modify this file, please say so under these comments.</span>
 
 <a href="cpl.html#USE">USE</a> ns3d
 <a href="cpl.html#USE">USE</a> <a href="matrix.html#Top">cbmat</a>
@@ -35,12 +36,12 @@ sz=<a href="cpl.html#FLOOR">FLOOR</a>(nz-ztop/dz); dsz=sz<span class=low>*</span
 <a href="cpl.html#ARRAY">ARRAY</a>(sz..nz) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> su,sv,sw,sp
 <a href="complex.html#Top">COMPLEX</a> cA(0..nz,0..ny-1,0..3,-ny..ny,0..3), cvar(0..nz,0..ny-1,0..3)
 uz0=[0.5+<a href="cpl.html#RAND">RAND</a>()]<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>[2<span class=low>*</span>PI<span class=low>*</span><a href="cpl.html#RAND">RAND</a>()<span class=low>*</span>I]; vz0=[0.5+<a href="cpl.html#RAND">RAND</a>()]<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>[2<span class=low>*</span>PI<span class=low>*</span><a href="cpl.html#RAND">RAND</a>()<span class=low>*</span>I]; p0=[0.5+<a href="cpl.html#RAND">RAND</a>()]<span class=low>*</span><a href="cpl.html#Builtin">EXP</a>[2<span class=low>*</span>PI<span class=low>*</span><a href="cpl.html#RAND">RAND</a>()<span class=low>*</span>I]
-alphaw=[0.5+<a href="cpl.html#RAND">RAND</a>()]; omegaw=[0.5+<a href="cpl.html#RAND">RAND</a>()]; betaw=[0.5+<a href="cpl.html#RAND">RAND</a>()]
+outeralpha=[0.5+<a href="cpl.html#RAND">RAND</a>()]; outeromega=[0.5+<a href="cpl.html#RAND">RAND</a>()]; outerbeta=[0.5+<a href="cpl.html#RAND">RAND</a>()]
 <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> i=0 <a href="cpl.html#TO">TO</a> erru.<a href="cpl.html#HI">HI</a>
   eps(i)=10<a href="cpl.html#REAL-operator">^</a>[4<span class=low>*</span>(i/eps.<a href="cpl.html#HI">HI</a>-1)]
-  alpha=alphaw<span class=low>*</span>eps(i)
-  omega=omegaw<span class=low>*</span>eps(i)<a href="cpl.html#REAL-operator">^</a>2
-  beta=betaw<span class=low>*</span>eps(i)
+  alpha=outeralpha<span class=low>*</span>eps(i)
+  omega=outeromega<span class=low>*</span>eps(i)<a href="cpl.html#REAL-operator">^</a>2
+  beta=outerbeta<span class=low>*</span>eps(i)
 
   u0=h1<span class=low>*</span>uz0-I<span class=low>*</span>beta<span class=low>*</span>h2<span class=low>*</span>uz0-I<span class=low>*</span>alpha<span class=low>*</span>h2px<span class=low>*</span>p0-I<span class=low>*</span>alpha<span class=low>*</span>h2vxz<span class=low>*</span>vz0-beta<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>h3<span class=low>*</span>uz0-alpha<span class=low>*</span>beta<span class=low>*</span>h3pxy<span class=low>*</span>p0+h3uzt<span class=low>*</span>(alpha<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>uz0-h3vxyz<span class=low>*</span>alpha<span class=low>*</span>beta<span class=low>*</span>vz0-h3uxxz<span class=low>*</span>alpha<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>uz0
   v0=a1<span class=low>*</span>vz0-I<span class=low>*</span>beta<span class=low>*</span>a2<span class=low>*</span>vz0-b2<span class=low>*</span>I<span class=low>*</span>beta<span class=low>*</span>p0-I<span class=low>*</span>alpha<span class=low>*</span>f2<span class=low>*</span>uz0-a3<span class=low>*</span>beta<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>vz0-beta<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>b3<span class=low>*</span>p0+e3vzt<span class=low>*</span>(alpha<a href="cpl.html#REAL-operator">^</a>2+I<span class=low>*</span>omega)<span class=low>*</span>vz0-f3uxyz<span class=low>*</span>alpha<span class=low>*</span>beta<span class=low>*</span>uz0-alpha<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>f3pxx<span class=low>*</span>p0-f3vxxz<span class=low>*</span>alpha<a href="cpl.html#REAL-operator">^</a>2<span class=low>*</span>vz0
@@ -144,12 +145,12 @@ alphaw=[0.5+<a href="cpl.html#RAND">RAND</a>()]; omegaw=[0.5+<a href="cpl.html#R
 <a href="cpl.html#LOOP">REPEAT</a>
 #ifdef writeout
 testerr=<a href="cpl.html#CREATE">CREATE</a>("testerr.dat")
-<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#TO">TO</a> testerr "#",uz0,vz0,p0,alphaw,betaw,omegaw
+<a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#BY">BY</a> <a href="cpl.html#NAME">NAME</a> <a href="cpl.html#TO">TO</a> testerr "#",uz0,vz0,p0,outeralpha,outerbeta,outeromega
 <a href="cpl.html#DO">DO</a> <a href="cpl.html#WRITE">WRITE</a> <a href="cpl.html#TO">TO</a> testerr eps(i),erru(i),errv(i),errw(i) <a href="cpl.html#FOR">FOR</a> i=<a href="cpl.html#LO">LO</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#HI">HI</a>
 <a href="cpl.html#CLOSE">CLOSE</a> testerr
 #else
 <a href="graphics.html#gnuplot">set</a> logscale xy
-<a href="graphics.html#gnuplot">set</a> grid
+<a href="graphics.html#gnuplot">set</a> grid xtics mytics
 <a href="graphics.html#gnuplot">set</a> yrange [1E-12:1E-2]
 <span class=comment>! plot eps:erru w l, eps:errv w l, eps:errw w l</span>
 <a href="graphics.html#plot">plot</a> eps:<a href="cpl.html#Builtin">SQRT</a>[erru(n)<a href="cpl.html#REAL-operator">^</a>2+errv(n)<a href="cpl.html#REAL-operator">^</a>2+errw(n)<a href="cpl.html#REAL-operator">^</a>2] w l

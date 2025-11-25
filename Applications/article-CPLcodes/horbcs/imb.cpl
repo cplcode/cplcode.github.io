@@ -8,10 +8,11 @@
 !
 ! http://CPLcode.net/Applications/articleCPLcodes/horbcs/
 ! imb.cpl -- Copyright 2025 Paolo Luchini
+! Do not run this file directly, it is used by the other codes in this suite.
 
 ! Permission is hereby granted, free of charge, to use and copy this software
 ! provided the present comments and citations are kept intact.
-! Do not run this file directly, it is used by the other codes in this suite.
+! If you modify this file, please say so under these comments.
 
 ! #define writeout
 #define sawtooth

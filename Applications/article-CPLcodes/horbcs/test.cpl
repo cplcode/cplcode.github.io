@@ -7,10 +7,11 @@
 !
 ! http://CPLcode.net/Applications/articleCPLcodes/horbcs/
 ! test.cpl -- Copyright 2025 Paolo Luchini
+! Just run this file after downloading CPL from http://CPLcode.net/Download
 
 ! Permission is hereby granted, free of charge, to use and copy this software
 ! provided the present comments and citations are kept intact.
-! Just run this file after downloading CPL from http://CPLcode.net/Download
+! If you modify this file, please say so under these comments.
 
 USE ns3d
 USE cbmat
@@ -23,12 +24,12 @@ sz=FLOOR(nz-ztop/dz); dsz=sz*dz-(nz*dz-ztop)
 ARRAY(sz..nz) OF COMPLEX su,sv,sw,sp
 COMPLEX cA(0..nz,0..ny-1,0..3,-ny..ny,0..3), cvar(0..nz,0..ny-1,0..3)
 uz0=[0.5+RAND()]*EXP[2*PI*RAND()*I]; vz0=[0.5+RAND()]*EXP[2*PI*RAND()*I]; p0=[0.5+RAND()]*EXP[2*PI*RAND()*I]
-alphaw=[0.5+RAND()]; omegaw=[0.5+RAND()]; betaw=[0.5+RAND()]
+outeralpha=[0.5+RAND()]; outeromega=[0.5+RAND()]; outerbeta=[0.5+RAND()]
 LOOP FOR i=0 TO erru.HI
   eps(i)=10^[4*(i/eps.HI-1)]
-  alpha=alphaw*eps(i)
-  omega=omegaw*eps(i)^2
-  beta=betaw*eps(i)
+  alpha=outeralpha*eps(i)
+  omega=outeromega*eps(i)^2
+  beta=outerbeta*eps(i)
 
   u0=h1*uz0-I*beta*h2*uz0-I*alpha*h2px*p0-I*alpha*h2vxz*vz0-beta^2*h3*uz0-alpha*beta*h3pxy*p0+h3uzt*(alpha^2+I*omega)*uz0-h3vxyz*alpha*beta*vz0-h3uxxz*alpha^2*uz0
   v0=a1*vz0-I*beta*a2*vz0-b2*I*beta*p0-I*alpha*f2*uz0-a3*beta^2*vz0-beta^2*b3*p0+e3vzt*(alpha^2+I*omega)*vz0-f3uxyz*alpha*beta*uz0-alpha^2*f3pxx*p0-f3vxxz*alpha^2*vz0
@@ -132,12 +133,12 @@ LOOP FOR i=0 TO erru.HI
 REPEAT
 #ifdef writeout
 testerr=CREATE("testerr.dat")
-WRITE BY NAME TO testerr "#",uz0,vz0,p0,alphaw,betaw,omegaw
+WRITE BY NAME TO testerr "#",uz0,vz0,p0,outeralpha,outerbeta,outeromega
 DO WRITE TO testerr eps(i),erru(i),errv(i),errw(i) FOR i=LO TO HI
 CLOSE testerr
 #else
 set logscale xy
-set grid
+set grid xtics mytics
 set yrange [1E-12:1E-2]
 ! plot eps:erru w l, eps:errv w l, eps:errw w l
 plot eps:SQRT[erru(n)^2+errv(n)^2+errw(n)^2] w l
