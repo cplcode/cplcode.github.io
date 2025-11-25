@@ -7,11 +7,11 @@
 !
 ! http://CPLcode.net/Applications/articleCPLcodes/horbcs/
 ! Laplace.cpl -- Copyright 2025 Paolo Luchini
-! Just run this file after downloading CPL from http://CPLcode.net/Download
+! Just run this file after downloading CPL from http://CPLcode.net
 
-! Permission is hereby granted, free of charge, to use and copy this software
-! provided the present comments and citations are kept intact.
-! If you modify this file, please say so under these comments.
+! Permission is hereby granted, free of charge and without any warranty, to use
+! and copy this software provided the present comments and citations
+! are kept intact. If you modify this file, please say so under these comments.
 
 USE gnuplot
 USE rbmat
