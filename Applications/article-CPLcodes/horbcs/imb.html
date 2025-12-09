@@ -95,8 +95,8 @@ zplotbase=0<span class=low>*</span>ny
   <a href="cpl.html#LOOP">REPEAT</a> halve
 <a href="cpl.html#END">END</a> Bisection
 
-phiwall=2<span class=low>*</span>PI-vertangle
-laplexp1=PI/phiwall
+extangle=2<span class=low>*</span>PI-vertangle
+laplexp1=PI/extangle
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> even(<a href="cpl.html#REAL">REAL</a> y,z)
   r2=(y-verty)<a href="cpl.html#REAL-operator">^</a>2+(z-vertz)<a href="cpl.html#REAL-operator">^</a>2
   <a href="cpl.html#REAL">REAL</a> theta=atan2(y-verty,z-vertz)-vertdelta
@@ -114,9 +114,9 @@ laplexp2=2<span class=low>*</span>laplexp1
 
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> nocorr(<a href="cpl.html#REAL">REAL</a> x,y)=1
 
-<a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FUNCTION">FUNCTION</a> stokdisp(<a href="cpl.html#REAL">REAL</a> stokexp)=<a href="cpl.html#Builtin">SIN</a>(stokexp<span class=low>*</span>phiwall)+stokexp<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(phiwall)&gt;0
-stokexp=Bisection[stokdisp,0.49,1.01-(phiwall-PI)/2/PI]
-stokesB=-<a href="cpl.html#Builtin">COS</a>[(stokexp+1)<span class=low>*</span>phiwall/2]/<a href="cpl.html#Builtin">COS</a>[(stokexp-1)<span class=low>*</span>phiwall/2]
+<a href="cpl.html#BOOLEAN">BOOLEAN</a> <a href="cpl.html#FUNCTION">FUNCTION</a> stokdisp(<a href="cpl.html#REAL">REAL</a> stokexp)=<a href="cpl.html#Builtin">SIN</a>(stokexp<span class=low>*</span>extangle)+stokexp<span class=low>*</span><a href="cpl.html#Builtin">SIN</a>(extangle)&gt;0
+stokexp=Bisection[stokdisp,0.49,1.01-(extangle-PI)/2/PI]
+stokesB=-<a href="cpl.html#Builtin">COS</a>[(stokexp+1)<span class=low>*</span>extangle/2]/<a href="cpl.html#Builtin">COS</a>[(stokexp-1)<span class=low>*</span>extangle/2]
 <a href="cpl.html#REAL">REAL</a> <a href="cpl.html#FUNCTION">FUNCTION</a> stokpsi(<a href="cpl.html#REAL">REAL</a> y,z)
   r2=(y-verty)<a href="cpl.html#REAL-operator">^</a>2+(z-vertz)<a href="cpl.html#REAL-operator">^</a>2
   <a href="cpl.html#REAL">REAL</a> theta=atan2(y-verty,z-vertz)-vertdelta
