@@ -1,2 +1,2 @@
-2025-12-09 is available.
-ENUM variables can now be written out of or read in from a file by tag name.
+2025-12-14 is available.
+Minor corrections.
