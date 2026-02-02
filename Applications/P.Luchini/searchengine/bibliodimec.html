@@ -118,7 +118,7 @@ IF Pmatch(linebuf,pattern) THEN
 END IF
 END writetitle
 
-SUBROUTINE wrfield(POINTER TO CSTRING line, name)
+SUBROUTINE wrfield(POINTER TO CSTRING line; STRING name)
   WRITE "&lt;TR&gt;&lt;TH align=right valign=top nowrap&gt;" name ":&lt;/TH&gt;&lt;TD&gt;"
   htmlwr line,NO
   WRITE "&lt;/TD&gt;&lt;/TR&gt;"
