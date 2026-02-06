@@ -116,7 +116,20 @@ The <a href="https://CPLcode.net">CPL</a> compiler can read and make sense of a 
     </div>
   </div>
   <div class=question tabindex=10 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q10" itemprop="name">Is this programming language compiled?</h2>
+    <h2 id="Q10" itemprop="name">Does CPL guard against static data races?</h2>
+    <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <div itemprop="text">
+      Protecting against <a href="https://CPLcode.net/Documentation/cpl.html#static-data-race">static data races</a> is a <q>better safe than sorry</q>
+   strategy championed by the Rust language. In function calls, a static data race occurs when the same actual argument is passed by
+   reference to more than one formal parameters at least one of which is
+   read-write. When this occurrence is
+   caught, the <a href="https://CPLcode.net">CPL</a> compiler emits a <q>static data race</q> warning.
+   <p>In addition, <a href="https://CPLcode.net">CPL</a> transparently handles the situation where multiple references to the same <a href="https://CPLcode.net/Documentation/cpl.html#ARRAY">ARRAY</a> or <a href="https://CPLcode.net/Documentation/cpl.html#STRING">STRING</a> occur in the same parameter list by deciding whether to pass such parameters by reference or by value internally.</p>
+      </div>
+    </div>
+  </div>
+  <div class=question tabindex=11 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q11" itemprop="name">Is this programming language compiled?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
         <a href="https://CPLcode.net">CPL</a> was conceived as a compiled language from the very outset; when used for intensive computational tasks, it inherits the speed of compiled C. The basic <a href="https://CPLcode.net/Documentation/cpl.html#cpl">cpl make</a> command, used as
@@ -127,8 +140,8 @@ The <a href="https://CPLcode.net">CPL</a> compiler can read and make sense of a 
       </div>
     </div>
   </div>
-  <div class=question tabindex=11 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q11" itemprop="name">Can a CPL program be just run, like in a scripting language?</h2>
+  <div class=question tabindex=12 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q12" itemprop="name">Can a CPL program be just run, like in a scripting language?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
 A scripting language or script language is a programming language that is usually interpreted at run time rather than compiled. In general, scripting languages are easier to learn and faster to code in than more structured and compiled languages such as C and C++.<br>
@@ -138,8 +151,8 @@ A scripting language or script language is a programming language that is usuall
       </div>
     </div>
   </div>
-  <div class=question tabindex=12 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q12" itemprop="name">Do the programming tools include an interactive execution environment?</h2>
+  <div class=question tabindex=13 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q13" itemprop="name">Do the programming tools include an interactive execution environment?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       An application that accepts commands at a prompt, and causes them to be executed, is a component of operating systems and many programming environments.<br>
@@ -147,8 +160,8 @@ A scripting language or script language is a programming language that is usuall
       </div>
     </div>
   </div>
-  <div class=question tabindex=13 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q13" itemprop="name">Do the programming tools include a code editor?</h2>
+  <div class=question tabindex=14 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q14" itemprop="name">Do the programming tools include a code editor?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
   <a href="https://CPLcode.net">CPL</a> includes a <a href="https://CPLcode.net/Documentation/editor.html#Top">text editor</a> for program development, equipped with word and syntax completion at the touch of the Tab key, lossless undo and a multiple insertion buffer. <a href="https://CPLcode.net/Documentation/cpl.html#cpl-i">Interactive cpl</a> and the <a href="https://CPLcode.net/Documentation/editor.html#Top">editor</a> in fact comprise a single integrated development environment (IDE): its command-console and editor faces can be swapped at the touch of a key. Both views
@@ -158,8 +171,8 @@ A scripting language or script language is a programming language that is usuall
       </div>
     </div>
   </div>
-  <div class=question tabindex=14 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q14" itemprop="name">Does the editor offer autocompletion, unlimited lossless undo and a multiple selection buffer?</h2>
+  <div class=question tabindex=15 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q15" itemprop="name">Does the editor offer autocompletion, unlimited lossless undo and a multiple selection buffer?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       The <a href="https://CPLcode.net/Documentation/editor.html#Top">CPL editor</a> features Tab autocompletion, parenthesis autocompletion, and CPL syntax autocompletion. Pressing Tab autocompletes the current keyword or identifier. Successive tabs move forward along
@@ -171,56 +184,56 @@ A scripting language or script language is a programming language that is usuall
       </div>
     </div>
   </div>
-  <div class=question tabindex=15 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q15" itemprop="name">Can we start an editor on our local machine and edit a file on a remote server?</h2>
+  <div class=question tabindex=16 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q16" itemprop="name">Can we start an editor on our local machine and edit a file on a remote server?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       The <a href="https://CPLcode.net/Documentation/editor.html#Top">CPL editor</a> internally handles <a href="https://CPLcode.net/Documentation/editor.html#Load-and-save">remote connections</a> specified through extended filenames prefixed with the name of the server separated by a colon, as in my.server.com:example.cpl. The connection is secured by ssh, and only an ssh server is required on the remote end. 
       </div>
     </div>
   </div>
-  <div class=question tabindex=16 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q16" itemprop="name">Is CPL a good alternative to FORTRAN and C for high performance computing?</h2>
+  <div class=question tabindex=17 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q17" itemprop="name">Is CPL a good alternative to FORTRAN and C for high performance computing?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
   <a href="https://CPLcode.net">CPL</a> provides the same computational performance as FORTRAN or C (it eventually delegates low-level optimization to the system's C compiler, while all of its higher-level constructions are carefully crafted not to interfere with such optimization), but adds a more expressive <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">syntax</a> and is generally more compact and intuitive to use. CPL enforces function prototypes without needing header or interface files. Both <a href="https://CPLcode.net/Documentation/cpl.html#mpicpl">MPI</a> and <a href="https://CPLcode.net/Documentation/cpl.html#OpenMP">OpenMP</a> parallelizations are catered for, as well as CPL's own <a href="https://CPLcode.net/Documentation/cpl.html#parallel">parallel</a> module. Third-party <a href="https://CPLcode.net/Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> and <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">C</a> libraries (say LAPACK, for instance) are easily integrated into <a href="https://CPLcode.net">CPL</a> programs. GPU computing is transparently available through <a href="https://CPLcode.net/Documentation/cpl.html#OpenMP">OpenMP and OpenACC</a> directives.
       </div>
     </div>
   </div>
-  <div class=question tabindex=17 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q17" itemprop="name">Is CPL a good alternative to C++ for writing reusable code?</h2>
+  <div class=question tabindex=18 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q18" itemprop="name">Is CPL a good alternative to C++ for writing reusable code?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
    Code reusability may generally denote a careful programming style with meaningful identifiers and recognizable constructions, something which is to be advised in any language; or, in the context of object-oriented programming, it specifically denotes the reuse of properties of a base class in the derived classes. <a href="https://CPLcode.net">CPL</a>'s <q>classes</q> only contain data and not functions, and are therefore ordinary <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTUREs</a>. They do offer reusability, however, in that derived <a href="https://CPLcode.net/Documentation/cpl.html#STRUCTURE">STRUCTUREs</a>, containing the data fields of a base type plus their own, can be implicitly converted to their base type. All CPL <a href="https://CPLcode.net/Documentation/cpl.html#FUNCTION">functions</a> are <a href="https://CPLcode.net/Documentation/cpl.html#Coactive-Parameter-Lists">polymorphic</a> and coactivated by the type of their arguments, and therefore functions declared with the base type as argument can automatically be reused on the derived type without modification (or just their name can be reused to declare a more specific function, as one sees fit). Since functions do not belong to a single class, reusability can be applied to more than one argument, possibly at the same time. When only the first argument is involved, a C++-like dot notation is available to be used where it sounds more adapt to the application.
   </div>
     </div>
   </div>
-  <div class=question tabindex=18 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q18" itemprop="name">Is this a good programming language for embedded systems and robotics?</h2>
+  <div class=question tabindex=19 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q19" itemprop="name">Is this a good programming language for embedded systems and robotics?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
 The <a href="https://CPLcode.net">CPL</a> tools (compiler, interpreter and editor) comprise an extremely compact package (1.5 Mbytes uncompressed) and can natively run on any embedded system large enough to already host a barebones unix system and native C compiler. In addition, of course, to being available offline for cross-compiling. The ability to <a href="https://CPLcode.net/Documentation/cpl.html#C-interface">#include</a> and transparently use a C library makes existing, provided with the hardware, robotic interfaces easily accessible in this compact high-level <a href="https://CPLcode.net/Documentation/cpl.html#Syntax">language</a>, which includes a <a href="https://CPLcode.net/Documentation/cpl.html#CASE-LOOP">construct</a> to ease the programming of state machines.
       </div>
     </div>
   </div>
-  <div class=question tabindex=19 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q19" itemprop="name">Is state machine programming made easy?</h2>
+  <div class=question tabindex=20 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q20" itemprop="name">Is state machine programming made easy?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
 A finite state machine or automaton is a mathematical abstraction used to design algorithms. In programming, it is a set of code blocks ("states") that can be executed in an a priori unknown sequence where each block decides its immediate follower. For such needs CPL provides a straightforward <a href="https://CPLcode.net/Documentation/cpl.html#CASE-LOOP">CASE LOOP</a> statement.
       </div>
     </div>
   </div>
-  <div class=question tabindex=20 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q20" itemprop="name">Is CPL a good alternative to MATLAB for learning numerical algorithms in college and graduate school?</h2>
+  <div class=question tabindex=21 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q21" itemprop="name">Is CPL a good alternative to MATLAB for learning numerical algorithms in college and graduate school?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
   Although not interoperable with <a href="https://www.mathworks.com/products/matlab.html">MATLAB</a>, <a href="https://CPLcode.net">CPL</a> provides a similar level of ease of use and fast learning curve. <a href="https://CPLcode.net">CPL</a> encourages compiled code and explicitly declared <a href="https://CPLcode.net/Documentation/cpl.html#VARIABLE">variables</a> (but not <a href="https://CPLcode.net/Documentation/cpl.html#CONSTANT">constants</a>). <a href="https://CPLcode.net">CPL</a> is <a href="https://CPLcode.net/Download">free</a>.
       </div>
     </div>
   </div>
-  <div class=question tabindex=21 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h2 id="Q21" itemprop="name">What's the meaning of <q>CPL</q>?</h2>
+  <div class=question tabindex=22 itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h2 id="Q22" itemprop="name">What's the meaning of <q>CPL</q>?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
       <ul>
