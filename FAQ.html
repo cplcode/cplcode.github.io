@@ -119,8 +119,8 @@ The <a href="https://CPLcode.net">CPL</a> compiler can read and make sense of a 
     <h2 id="Q10" itemprop="name">Does CPL guard against static data races?</h2>
     <div class=answer itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <div itemprop="text">
-      Protecting against <a href="https://CPLcode.net/Documentation/cpl.html#static-data-race">static data races</a> is a <q>better safe than sorry</q>
-   strategy championed by the Rust language. In function calls, a static data race occurs when the same actual argument is passed by
+      Protecting against static data races is a <q>better safe than sorry</q>
+   strategy championed by the Rust language. In function calls, a <a href="https://CPLcode.net/Documentation/cpl.html#static-data-race">static data race</a> occurs when the same actual argument is passed by
    reference to more than one formal parameters at least one of which is
    read-write. When this occurrence is
    caught, the <a href="https://CPLcode.net">CPL</a> compiler emits a <q>static data race</q> warning.
