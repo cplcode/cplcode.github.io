@@ -100,7 +100,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#MIN">ARGMIN:MIN</a>:</td><td>argument for minimum, function or looping operator</td></tr>
 <tr><td><a href="#ARRAY">ARRAY</a>:</td><td>subscripted arrays</td></tr>
 <tr><td><a href="#ASK">ASK</a>:</td><td>console prompting and reading</td></tr>
-<tr><td><a href="#Builtin">ARG:Builtin</a>:</td><td>argument of a complex number</td></tr>
+<tr><td><a href="#ARG">ARG</a>:</td><td>Builtin. argument of a complex number</td></tr>
 <tr><td><a href="#Builtin">ATAN:Builtin</a>:</td><td>arctangent</td></tr>
 <tr><td><a href="#BINARY">BINARY</a>:</td><td>binary format input/output</td></tr>
 <tr><td><a href="#Bitwise">BITAND:Bitwise</a>:</td><td>boolean operator</td></tr>
@@ -799,7 +799,7 @@ A static data race is the simple occurrence of the same <a href="#POINTER">POINT
 
 As far as CPL is concerned, a degree of protection is already afforded by the basic rule that subroutine parameters are implicitly <a href="#CONSTANT">CONSTANT</a> unless explicitly declared <a href="#VARIABLE">VARIABLE</a>. This implies that output parameters meant to be modified in the caller must be explicitly declared as POINTER TO ..., and everything else is read-only. Therefore, simple variables and  <a href="#STRUCTURE">STRUCTURE</a>s can only give rise to a data race when multiple <a href="#POINTER">POINTER</a> arguments refer to the same variable. When this occurrence is caught, the compiler emits a <q>static data race</q> warning. The simultaneous occurrence of one POINTER and several non-POINTER references to the same value does not pose any danger, since the latter are passed by value (copied) internally.
 
-With <a href="#ARRAY">ARRAY</a>s and <a href="#STRING">STRING</a>s the situation could be different, because even <a href="#CONSTANT">CONSTANT</a> parameters (the default) are internally passed by reference for efficiency. CPL transparently handles the condition where a single POINTER TO ARRAY parameter is followed by one or more ARRAY parameters with the same actual argument, by making a copy and passing a reference to the copy instead. This effectively makes the argument passed by value, creating an identity of semantic behaviour between ARRAY (or STRING) and non-ARRAY parameters and thus a consistent programmer's view. When this static data race cannot be transparently averted, a <q>static data race</q> warning is issued.
+With <a href="#ARRAY">ARRAY</a>s and <a href="#STRING">STRING</a>s the situation could be different, because even <a href="#CONSTANT">CONSTANT</a> parameters (the default) are internally passed by reference for efficiency. CPL transparently handles the condition where a single POINTER TO ARRAY parameter is followed by one or more ARRAY parameters with the same actual argument, by making a copy and passing a reference to the copy instead. This effectively makes the argument passed by value, creating a uniformity of semantic behaviour between ARRAY (or STRING) and non-ARRAY parameters and thus a consistent programmer's view. When this static data race cannot be transparently averted, a <q>static data race</q> warning is issued.
 
 As compared to, for instance, the Rust language, CPL's philosophy is more to catch the most insidious occurrences of static data races (those that occur in function calls), and handle them transparently, than to forbid the largest number of static data races (and provide an <q>unsafe</q> directive for when they cannot be avoided). Specifically, CPL does not check <a href="#POINTER">POINTER</a> variables other than <a href="#FUNCTION">FUNCTION</a> parameters for static data races, since explicitly declared POINTER variables are only seldom needed, and when they are (in connection with linked lists, for instance), multiple pointers to the same memory area are more often than not essential and must be wittingly handled by the programmer. More elementary pointer operations, like string manipulations for instance, are handled internally in a race-safe way that is invisible to the programmer. One should anyway be aware that runtime data races can also occur when ARRAY elements are accessed through multiple INTEGER indices (the way linked lists are emulated in those languages that do not support pointers, like old-style FORTRAN, and as a consequence in many legacy finite-element codes); the compiler's catching POINTER static data races would not guard against such occurrences, and only the programmer's vigilance can. 
 </div><div class=page id="RESULT">
@@ -1501,12 +1501,19 @@ Page: (cpl)Builtin, Next: <a href="#subarray">subarray</a>, Prev: <a href="#Loop
 </table></nav>
 
 </div><div class=page id="ABS">
-Page: (cpl)ABS,  Next: <a href="#CEILING">CEILING</a>,  Prev: <a href="#Builtin">Builtin</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)ABS,  Next: <a href="#ARG">ARG</a>,  Prev: <a href="#Builtin">Builtin</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> ABS:		absolute value
 
 Function ABS returns the absolute value of an INTEGER, REAL or COMPLEX number, or of an ARRAY of those. 
+</div><div class=page id="ARG">
+Page: (cpl)ARG,  Next: <a href="#CEILING">CEILING</a>,  Prev: <a href="#ABS">ABS</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> ARG:		argument
+
+Function ARG(COMPLEX x) returns the argument (a.k.a. phase) of a COMPLEX number x, in the interval -PI..PI.
+
+Function ARG(COMPLEX x; REAL oldarg^) returns the argument of a COMPLEX number x, in the interval where it is nearest to oldarg, and updates oldarg to the new argument. Useful for continuous phase plots. 
 </div><div class=page id="CEILING">
-Page: (cpl)CEILING,  Next: <a href="#FLOOR">FLOOR</a>,  Prev: <a href="#ABS">ABS</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)CEILING,  Next: <a href="#FLOOR">FLOOR</a>,  Prev: <a href="#ARG">ARG</a>,  Up: <a href="#Builtin">Builtin</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> CEILING:	larger or equal integer
 
 The function CEILING returns the larger or equal INTEGER to a given REAL value. 

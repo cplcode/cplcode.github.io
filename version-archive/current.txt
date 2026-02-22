@@ -1,2 +1,2 @@
-2026-02-06 is available.
-Rust-language style static-data-race safeguards added to function parameters. infocpl "static data race" for details.
+2026-02-22 is available.
+Minor corrections.
