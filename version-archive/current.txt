@@ -1,2 +1,2 @@
-2026-02-25 is available.
-Minor corrections.
+2026-03-08 is available.
+Revamped editor splash screen and menu.
