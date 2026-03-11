@@ -20,7 +20,7 @@
   <div class=page itemscope itemtype="https://schema.org/HowTo">
     <h1 itemprop="name">CPL-on-Macintosh howto</h1>
     <p>Apple macOS or OS X is a proprietary unix operating system, derived from the old BSD unix, and has all the requirements for CPL tools and programs to run natively on it. However the classical unix programming tools are not part of the base system, but they are offered by Apple as a separate <q>Xcode</q> development environment. In addition CPL needs the <code>gcc</code> compiler, and although Xcode includes a C compiler named <code>gcc</code>, this is an Apple-modified version (also known as <code>clang</code>) and lacks some necessary gcc extensions. Unmodified <code>gcc</code> can be installed through a third-party package manager such as <a href="http://brew.sh">Homebrew</a>. Hence come the following</p>
-    <h3 itemprop="headline">Step by step instructions to use CPL on Apple macOS</h3>
+    <h2 itemprop="headline">Step by step instructions to use CPL on Apple macOS</h2>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
     <dt itemprop="name">1 - Open a terminal:</dt>
     <dd itemprop="text"> Click the terminal icon in your Dock, or if you lack such an icon enter <q>terminal</q> in the search box and click <q>terminal.app</q>.</dd>
@@ -60,8 +60,8 @@
     <p>or alternately find contributed macOS binaries on <a href="http://gnuplot.info">gnuplot's own website</a>.</p></dd>
     </dl>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
-    <dt itemprop="name">8 - In order to use the CPL editor effectively, you may want to tick the <q style="color:purple">Use Option as Meta key</q> box in your Mac Terminal Keyboard preferences.</dt>
-    <dd itemprop="text">This allows the Option key to be used for entering Alt-&lt;letter&gt; editor commands.</dd>
+    <dt itemprop="name" id=MacTerminal>8 - In order to use the CPL editor effectively, you may want the Option key to work as Alt for the purpose of Alt-&lt;letter&gt; editor commands.</dt>
+    <dd>This and a few other useful key definitions are contained in the Terminal profile <a href="version-archive/Basic+editor%20keys.terminal" rel=nofollow download>Basic+editor keys</a>, which you can apply to your Mac Terminal by just double-clicking on it after download.</dd>
     </dl>
     <p><strong>You are all set!</strong> Please notice that you may have to repeat steps 2 and 4 after a macOS version update. If you encounter problems, try to delete directory <code>/Library/Developer/CommandLineTools</code> before repeating step 2. Also notice that running a macOS-compiled CPL executable on bare macOS does not need any of the above procedure (save installing gnuplot if graphics are wanted). You only need to install gcc and the CPL tools when you want to edit, compile or interpret a CPL program, not to just run it.</p>
     <div id=snackbar>copied.</div>
