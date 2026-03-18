@@ -43,9 +43,9 @@
     </dd>
     </dl>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
-    <dt itemprop="name">5 - Install the original <code>gcc</code> (the one provided by Apple is an alias for their own <code>clang</code>):</dt>
-    <dd itemprop="text"><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">brew install gcc</pre>
-    <p>You may have to close and re-open your terminal before the newly installed gcc becomes available.</p>
+    <dt itemprop="name">5 - Install the original <code>gcc</code> (the one provided by Apple is an alias for their own <code>clang</code>) and some other packages:</dt>
+    <dd itemprop="text"><pre class=copyable title="click to copy" onClick="CopyToClipboard(this)">brew install gcc curl make texinfo</pre>
+    <p>You may have to close and re-open your terminal before the newly installed packages become available.</p>
     </dd>
     </dl>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
@@ -61,7 +61,7 @@
     </dl>
     <dl itemprop="step" itemscope itemtype="https://schema.org/HowToStep">
     <dt itemprop="name" id=MacTerminal>8 - In order to use the CPL editor effectively, you may want the Option key to work as Alt for the purpose of Alt-&lt;letter&gt; editor commands.</dt>
-    <dd>This and a few other useful key definitions are contained in the Terminal profile <a href="version-archive/Basic+editor%20keys.terminal" rel=nofollow download>Basic+editor keys</a>, which you can apply to your Mac Terminal by just double-clicking on it after download.</dd>
+    <dd>Some useful key definitions including the above are contained in the Terminal profile <a href="version-archive/Basic+editor%20keys.terminal" rel=nofollow download>Basic+editor keys</a>. You can apply this profile to your Mac Terminal by downloading it and then double-clicking the downloaded file.</dd>
     </dl>
     <p><strong>You are all set!</strong> Please notice that you may have to repeat steps 2 and 4 after a macOS version update. If you encounter problems, try to delete directory <code>/Library/Developer/CommandLineTools</code> before repeating step 2. Also notice that running a macOS-compiled CPL executable on bare macOS does not need any of the above procedure (save installing gnuplot if graphics are wanted). You only need to install gcc and the CPL tools when you want to edit, compile or interpret a CPL program, not to just run it.</p>
     <div id=snackbar>copied.</div>
