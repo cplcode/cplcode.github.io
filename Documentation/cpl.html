@@ -2505,7 +2505,7 @@ The basic command
 
 cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri">cpl.fri</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="https://manpages.debian.org/make.html">manpages.debian.org/make.html</a>) on this makefile. Any arguments possibly present on the command line are passed on as options to the designated C compiler and linker, or to &lt;program&gt; itself if <q>run</q> was specified.
 
-The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line.
+The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line. If you need any CPL <a href="#Library">Library</a> to be recompiled using the same alternate C compiler, make a symbolic link to this library in the same directory where your main program is, and it will.
 
 The -D and -I compiler options are interpreted by cpl.fri itself, in addition to being passed on to the C compiler, and provide pre#defined constants and include directories to both.
 
@@ -2577,7 +2577,9 @@ Page: (cpl)mpicpl,  Next: <a href="#cpl-i">cpl i</a>,  Prev: <a href="#cpl-info"
 <hr> <h3>Compile mpi program</h3>
 	mpicpl [make] &lt;program&gt;[.cpl] [options]
 
-allows the compilation of MPI programs. It invokes cpl make with the required options, obtained from mpicc, and follows mpicc's same syntax (<a href="https://manpages.debian.org/mpicc.html">manpages.debian.org/mpicc.html</a>). 
+allows the compilation of MPI programs. It invokes cpl make with the required options, obtained from mpicc, and follows mpicc's same syntax (<a href="https://manpages.debian.org/mpicc.html">manpages.debian.org/mpicc.html</a>).
+
+Note: if you need any .cpl file from the CPL <a href="#Library">Library</a> to be recompiled using the same compiler as your main program, just make a symbolic link to this .cpl file in the same directory as your main program, and it will be recompiled as needed. 
 </div><div class=page id="cpl-i">
 Page: (cpl)cpl i,  Next: <a href="#Library">Library</a>,  Prev: <a href="#cpl-info">cpl info</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Interactive CPL</h2>
