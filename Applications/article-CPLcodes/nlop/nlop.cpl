@@ -58,10 +58,10 @@ END buildmat
 ARRAY(1..(ny+1)*nvars) OF COMPLEX tna
 tn==tna(1+nvars..ny*nvars)
 POINTER TO STORED ARRAY(0..nx-1) OF TYPEOF(Fmem) Fstore=CREATE("Fstore")
-REAL x=0
+REAL xx=0
 SUBROUTINE StepForward(INTEGER ix)
   Fstore(ix-1)=Fmem
-  x=x+dx
+  xx=xx+dx
   DO extrp=2*Fmem(i,im)-oldF(i,im); oldF(i,im)=Fmem(i,im); Fmem(i,im)=extrp FOR ALL i,im
   DO extrp=2*Cmem(i,iy,im)-oldC(i,iy,im); oldC(i,iy,im)=Cmem(i,iy,im); Cmem(i,iy,im)=extrp FOR ALL i,iy,im
   INTEGER count=0
@@ -83,7 +83,7 @@ SUBROUTINE StepForward(INTEGER ix)
     convolutions
     INC count
   REPEAT qn UNTIL maxerr<1E-4
-WRITE x,count
+WRITE xx,count
 PLOT u(n,0).REAL,0..ny
 END StepForward
 
@@ -120,8 +120,8 @@ SUBROUTINE StepBackward(INTEGER ix)
     REPEAT
     INC count
   REPEAT bqn UNTIL maxerr<1E-8
-  WRITE x,count
-  x=x-dx
+  WRITE xx,count
+  xx=xx-dx
   Fmem=Fstore(ix-1)
   Fmemadj=0
   LOOP FOR im=0 TO nm AND iy=1 TO ny-1 AND in=-nm TO nm AND j=-1 TO 1 AND jv=1 TO nvars
@@ -132,7 +132,7 @@ SUBROUTINE StepBackward(INTEGER ix)
       wmomadj(iy,in)*D(1/dx*uw(iy,in),F[jv,iy+j,im])
   REPEAT
   OPENGRAPH
-  SPLOT <ABS(vadj(x,y))/dy>,1..ny-1,0..nm
+  SPLOT <ABS(vadj(m,n))/dy>,1..ny-1,0..nm
 END StepBackward
 
 Fmem=0
@@ -170,7 +170,7 @@ WRITE SUM vadj(iy,im)*vinc(iy,im) FOR ALL iy AND im=1 TO nm+
 !)
 ! DO vadj(iy,im)=~+[wadj(iy+1,im)-wadj(iy-1,im)]/2/dy/(I*im*beta) FOR iy=1 TO ny-1 AND im=1 TO nm
 OPENGRAPH
-SPLOT <ABS(vadj(x,y))/dy>,1..ny-1,0..nm
+SPLOT <ABS(vadj(m,n))/dy>,1..ny-1,0..nm
 READ
 Fmem=0
 DO v(iy,im)=CONJG(vadj(iy,im))/dy FOR iy=1 TO ny-1 AND im=1 TO nm

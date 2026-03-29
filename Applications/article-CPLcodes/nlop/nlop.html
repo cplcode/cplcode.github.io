@@ -70,10 +70,10 @@ beta=0.45; nm=8; nx=100; ny=100; ymax=12; dy=ymax/ny; dx=1/nx
 <a href="cpl.html#ARRAY">ARRAY</a>(1..(ny+1)<span class=low>*</span>nvars) <a href="cpl.html#OF">OF</a> <a href="complex.html#Top">COMPLEX</a> tna
 tn<a href="cpl.html#Deferred-assignment">==</a>tna(1+nvars..ny<span class=low>*</span>nvars)
 <a href="cpl.html#POINTER">POINTER</a> <a href="cpl.html#TO">TO</a> <a href="cpl.html#STORED">STORED</a> <a href="cpl.html#ARRAY">ARRAY</a>(0..nx-1) <a href="cpl.html#OF">OF</a> <a href="cpl.html#TYPE">TYPEOF</a>(Fmem) Fstore=<a href="cpl.html#CREATE">CREATE</a>("Fstore")
-<a href="cpl.html#REAL">REAL</a> x=0
+<a href="cpl.html#REAL">REAL</a> xx=0
 <a href="cpl.html#FUNCTION">SUBROUTINE</a> StepForward(<a href="cpl.html#INTEGER">INTEGER</a> ix)
   Fstore(ix-1)=Fmem
-  x=x+dx
+  xx=xx+dx
   <a href="cpl.html#DO">DO</a> extrp=2<span class=low>*</span>Fmem(i,im)-oldF(i,im); oldF(i,im)=Fmem(i,im); Fmem(i,im)=extrp <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,im
   <a href="cpl.html#DO">DO</a> extrp=2<span class=low>*</span>Cmem(i,iy,im)-oldC(i,iy,im); oldC(i,iy,im)=Cmem(i,iy,im); Cmem(i,iy,im)=extrp <a href="cpl.html#FOR">FOR</a> <a href="cpl.html#ALL">ALL</a> i,iy,im
   <a href="cpl.html#INTEGER">INTEGER</a> count=0
@@ -95,7 +95,7 @@ tn<a href="cpl.html#Deferred-assignment">==</a>tna(1+nvars..ny<span class=low>*<
     convolutions
     <a href="cpl.html#Builtin">INC</a> count
   <a href="cpl.html#LOOP">REPEAT</a> qn <a href="cpl.html#UNTIL">UNTIL</a> maxerr&lt;1E-4
-<a href="cpl.html#WRITE">WRITE</a> x,count
+<a href="cpl.html#WRITE">WRITE</a> xx,count
 <a href="graphics.html#PLOT">PLOT</a> u(n,0).<a href="cpl.html#REAL">REAL</a>,0..ny
 <a href="cpl.html#END">END</a> StepForward
 
@@ -132,8 +132,8 @@ wmomadj<a href="cpl.html#Deferred-assignment">==</a>eqadj(wpos+nvars<span class=
     <a href="cpl.html#LOOP">REPEAT</a>
     <a href="cpl.html#Builtin">INC</a> count
   <a href="cpl.html#LOOP">REPEAT</a> bqn <a href="cpl.html#UNTIL">UNTIL</a> maxerr&lt;1E-8
-  <a href="cpl.html#WRITE">WRITE</a> x,count
-  x=x-dx
+  <a href="cpl.html#WRITE">WRITE</a> xx,count
+  xx=xx-dx
   Fmem=Fstore(ix-1)
   Fmemadj=0
   <a href="cpl.html#LOOP">LOOP</a> <a href="cpl.html#FOR">FOR</a> im=0 <a href="cpl.html#TO">TO</a> nm <a href="cpl.html#AND">AND</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> in=-nm <a href="cpl.html#TO">TO</a> nm <a href="cpl.html#AND">AND</a> j=-1 <a href="cpl.html#TO">TO</a> 1 <a href="cpl.html#AND">AND</a> jv=1 <a href="cpl.html#TO">TO</a> nvars
@@ -144,7 +144,7 @@ wmomadj<a href="cpl.html#Deferred-assignment">==</a>eqadj(wpos+nvars<span class=
       wmomadj(iy,in)<span class=low>*</span><a href="symbolic.html#Top">D</a>(1/dx<span class=low>*</span>uw(iy,in),F[jv,iy+j,im])
   <a href="cpl.html#LOOP">REPEAT</a>
   <a href="graphics.html#OPENGRAPH">OPENGRAPH</a>
-  <a href="graphics.html#SPLOT">SPLOT</a> &lt;<a href="cpl.html#ABS">ABS</a>(vadj(x,y))/dy&gt;,1..ny-1,0..nm
+  <a href="graphics.html#SPLOT">SPLOT</a> &lt;<a href="cpl.html#ABS">ABS</a>(vadj(m,n))/dy&gt;,1..ny-1,0..nm
 <a href="cpl.html#END">END</a> StepBackward
 
 Fmem=0
@@ -182,7 +182,7 @@ WRITE SUM vadj(iy,im)<span class=low>*</span>vinc(iy,im) FOR ALL iy AND im=1 TO 
 !)</span>
 <span class=comment>! DO vadj(iy,im)=~+[wadj(iy+1,im)-wadj(iy-1,im)]/2/dy/(I<span class=low>*</span>im<span class=low>*</span>beta) FOR iy=1 TO ny-1 AND im=1 TO nm</span>
 <a href="graphics.html#OPENGRAPH">OPENGRAPH</a>
-<a href="graphics.html#SPLOT">SPLOT</a> &lt;<a href="cpl.html#ABS">ABS</a>(vadj(x,y))/dy&gt;,1..ny-1,0..nm
+<a href="graphics.html#SPLOT">SPLOT</a> &lt;<a href="cpl.html#ABS">ABS</a>(vadj(m,n))/dy&gt;,1..ny-1,0..nm
 <a href="cpl.html#READ">READ</a>
 Fmem=0
 <a href="cpl.html#DO">DO</a> v(iy,im)=<a href="complex.html#Top">CONJG</a>(vadj(iy,im))/dy <a href="cpl.html#FOR">FOR</a> iy=1 <a href="cpl.html#TO">TO</a> ny-1 <a href="cpl.html#AND">AND</a> im=1 <a href="cpl.html#TO">TO</a> nm
