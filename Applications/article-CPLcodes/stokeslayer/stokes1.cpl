@@ -1,6 +1,7 @@
 #include <time.h>
 USE cbmat
-USE graphics ! requires running in xterm
+USE gnuplot
+! USE graphics ! requires running in xterm
 ! USE nograph
 FILE INPUT=OPEN("stokes1.in")
 PlotOn=BOOLEAN FROM INPUT

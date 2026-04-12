@@ -1,7 +1,6 @@
-#include <unistd.h>
-
 USE cbmat
-USE graphics
+!USE graphics
+USE gnuplot
 ! USE rtchecks
 
 char filename[100], tempstring[100];
