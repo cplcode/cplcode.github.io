@@ -2551,13 +2551,15 @@ Page: (cpl)cpl.fri,  Next: <a href="#FRI-SECTION">FRI SECTION</a>,  Prev: <a hre
 <hr> <h3>The CPL-to-C compiler</h3>
 The CPL compiler cpl.fri is not an executable file, but rather a formal description of the language that is interpreted by the Formal Rule Interpreter <a href="fri.html#Top">(fri)Top</a>. The cpl.fri file is made executable by the shell convention of having <q>#!/usr/bin/env fri</q> as its first line. Where this convention is understood, the CPL-to-C compilation command is
 
-	cpl.fri &lt;source.cpl&gt;
+	cpl.fri &lt;source.cpl&gt; &lt;outputdir&gt; [&lt;options&gt;]
 
 On systems where the #! convention does not work as expected, this command must be expanded into
 
-	fri cpl.fri &lt;source.cpl&gt;
+	fri cpl.fri &lt;source.cpl&gt; &lt;outputdir&gt; [&lt;options&gt;]
 
-All this is normally handled inside the <a href="#cpl">cpl</a> driver script; direct use of the cpl.fri command is not needed. 
+The command translates &lt;source.cpl&gt; and its dependencies (files <a href="#USE">USE</a>d inside it) into corresponding &lt;source.c&gt; files (skipping those for which a more recent .c file already exists) and places them in directory &lt;outputdir&gt;. It also generates a dependency list named &lt;source.d&gt; for use by a subsequent <q>make</q> command. gcc options -D and -I optionally present as &lt;options&gt; are taken into account by the CPL compiler, with all other options just ignored if present.
+
+All this is normally handled inside the <a href="#cpl">cpl</a> driver script, where &lt;outputdir&gt; is the hidden .cpl directory; direct use of the cpl.fri command is generally not needed. 
 </div><div class=page id="FRI-SECTION">
 Page: (cpl)FRI SECTION,  Next: <a href="#cpl-info">cpl info</a>,  Prev: <a href="#cpl.fri">cpl.fri</a>,  Up: <a href="#cpl">cpl</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Dynamic extension of the CPL language</h4>

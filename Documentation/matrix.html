@@ -65,7 +65,7 @@
 <body translate="no"><a href="../"><img id=seal src="../images/CPL-logo.png" alt="CPL"></a><div>
 
 </div><div class=page id="Top">
-Page: (matrix)Top,  Next: <a href="graphics.html#Top">(graphics)</a>,  Prev: <a href="fft.html#Top">(fft)</a>,  Up: <a href="cpl.html#Library">(cpl)Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (matrix)Top, Next: <a href="graphics.html#Top">(graphics)</a>, Prev: <a href="fft.html#Top">(fft)</a>, Up: <a href="cpl.html#Library">(cpl)Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h1>Matrix Operations</h1>
 The rbmat.cpl and cbmat.cpl libraries add matrix algebra to CPL. The same functions and operators are defined in both, for real and complex numbers respectively, and therefore their result type is indicated as just <q>number</q> in what follows. Wherever a square matrix is expected, a banded matrix in compact rectangular form may also be used; the latter is recognized from its dimensions not being equal, and is defined as having the value zero of its second index as the diagonal. Most of the following functions have an equivalent infix form that allows matrix operations to be specified in the usual algebraic notation.
 
@@ -106,7 +106,7 @@ Computes CONJG(a)&lowast;b
 
 Equivalent infix notation:	a | b 
 </div><div class=page id="LeftMult">
-Page: (matrix)LeftMult,  Next: <a href="#RightMult">RightMult</a>,  Prev: <a href="#DotProduct">DotProduct</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (matrix)LeftMult, Next: <a href="#RightMult">RightMult</a>, Prev: <a href="#DotProduct">DotProduct</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>SUBROUTINE LeftMult(ARRAY(&lowast;) OF number c^; ARRAY(&lowast;,&lowast;) OF number A; ARRAY(&lowast;) OF number b)</h4>
 Computes the left-hand product of matrix &lt;A&gt; by vector &lt;b&gt;, that is
 
@@ -127,20 +127,20 @@ Computes CONJG(a)&lowast;B
 
 Equivalent infix notation:	a | B 
 </div><div class=page id="LUdecomp">
-Page: (matrix)LUdecomp,  Next: <a href="#LeftLUDiv">LeftLUDiv</a>,  Prev: <a href="#RightMult">RightMult</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (matrix)LUdecomp, Next: <a href="#LeftLUDiv">LeftLUDiv</a>, Prev: <a href="#RightMult">RightMult</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>SUBROUTINE LUdecomp(POINTER TO ARRAY(&lowast;,&lowast;) OF number A)</h4>
 Computes the LU decomposition of (square or banded) matrix A in place.
 
  <h4>FUNCTION LU(A)</h4>
 Returns the LU decomposition of A, which remains untouched. 
 </div><div class=page id="LeftLUDiv">
-Page: (matrix)LeftLUDiv,  Next: <a href="#RightLUDiv">RightLUDiv</a>,  Prev: <a href="#LUdecomp">LUdecomp</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (matrix)LeftLUDiv, Next: <a href="#RightLUDiv">RightLUDiv</a>, Prev: <a href="#LUdecomp">LUdecomp</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>SUBROUTINE LeftLUDiv(POINTER TO ARRAY(&lowast;) OF number x; ARRAY(&lowast;,&lowast;) OF number A; ARRAY(&lowast;) OF number t)</h4>
 Computes the left-hand division of vector &lt;t&gt; by the previously LU-decomposed matrix &lt;A&gt;, that is A^-1&lowast;t. A must have been preventively treated with either <a href="#LUdecomp">LUdecomp</a> or <a href="#PLU">PLU</a>.
 
 Equivalent infix notation:	A \ t 
 </div><div class=page id="RightLUDiv">
-Page: (matrix)RightLUDiv,  Next: <a href="#Lanczos">Lanczos</a>,  Prev: <a href="#LeftLUDiv">LeftLUDiv</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (matrix)RightLUDiv, Next: <a href="#Lanczos">Lanczos</a>, Prev: <a href="#LeftLUDiv">LeftLUDiv</a>, Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>SUBROUTINE RightLUDiv(ARRAY(&lowast;) OF number x^,t; ARRAY(&lowast;,&lowast;) OF number A)</h4>
 Computes the right-hand division of vector &lt;t&gt; by the previously LU-decomposed matrix &lt;A&gt;, that is t&lowast;A^-1. A must have been preventively treated with either <a href="#LUdecomp">LUdecomp</a> or <a href="#PLU">PLU</a>.
 
