@@ -84,9 +84,12 @@ In addition to being used as a structure, a COMPLEX can appear in algebraic expr
 	ARG:	argument or phase
 	CONJG:	Conjugate (inlined)
 
-In addition to the ordinary + - &lowast; / ^ algebraic operations, an additional product operator is defined as
+In addition to the ordinary + - &lowast; / ^ algebraic operations, an additional binary operator is defined as
 
 	a | b = CONJG(a)&lowast;b
 
-CONJG(a) and this scalar-product operator are also defined when a and b are arrays of COMPLEX, just as all linear-space <a href="cpl.html#ARRAY-operations">(cpl)ARRAY operations</a> are. 
+CONJG(a) and this scalar-product operator are also defined when a and b are arrays of COMPLEX, just as all linear-space <a href="cpl.html#ARRAY-operations">(cpl)ARRAY operations</a> are.
+
+	a |
+	 as a unary operator is a shorthand for CONJG(a). 
 </div></body></html>
