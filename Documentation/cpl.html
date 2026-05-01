@@ -464,7 +464,9 @@ When round brackets are used in the statement prototypes contained in this manua
 </div><div class=page id="C-preprocessor">
 Page: (cpl)C preprocessor, Next: <a href="#Source-file">Source file</a>, Prev: <a href="#Parentheses">Parentheses</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Macro definition and conditional compilation</h3>
-C preprocessor #define and #if constructs (<a href="https://manpages.debian.org/cpp">manpages.debian.org/cpp</a>) are used in a CPL program to define macros and alter the flow of compilation. For file inclusion see <a href="#USE">USE</a>, <a href="#INCLUDE">INCLUDE</a>, and <a href="#C-interface">C interface</a>.  
+C preprocessor #define and #if constructs (<a href="https://manpages.debian.org/cpp">manpages.debian.org/cpp</a>) are available in a CPL program to define macros and alter the flow of compilation, with equality test, <q>defined</q> and logical but without arithmetic operators. The -D directive is understood by the CPL compiler and can be used to specify program variants on the command line.
+
+For file inclusion see <a href="#USE">USE</a>, <a href="#INCLUDE">INCLUDE</a>, and <a href="#C-interface">C interface</a>.  
 </div><div class=page id="Source-file">
 Page: (cpl)Source file, Next: <a href="#MODULE">MODULE</a>, Prev: <a href="#C-preprocessor">C preprocessor</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Source files</h3>
@@ -2474,7 +2476,7 @@ Page: (cpl)cpl,  Next: <a href="#cpl-run">cpl run</a>,  Prev: <a href="#Control"
 All tools that act upon a CPL <a href="#Source-file">Source file</a> are managed by a shell script named <q>cpl</q> (formerly <q>makecpl</q>).
 
 <h4>Usage</h4>
-	Compiler:  cpl make|remake|run &lt;program&gt;[.cpl] [&lt;option&gt;]
+	Compiler:  cpl make|remake|nomake|run &lt;program&gt;[.cpl] [&lt;option&gt;]
 	Interpreter:  cpl i [&lt;expression&gt;|&lt;program&gt;[.cpl]]
 	Editor:  cpl edit [&lt;file&gt;]
 	Info help:  cpl info [keyword]
@@ -2505,7 +2507,7 @@ The basic command
 
 cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri">cpl.fri</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="https://manpages.debian.org/make.html">manpages.debian.org/make.html</a>) on this makefile. Any arguments possibly present on the command line are passed on as options to the designated C compiler and linker, or to &lt;program&gt; itself if <q>run</q> was specified.
 
-The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line. If you need any CPL <a href="#Library">Library</a> to be recompiled using the same alternate C compiler, make a symbolic link to this library in the same directory where your main program is, and it will.
+The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line. More generally, macro assignments passed on the command line immediately after <q>cpl make</q> will be passed to the internal <q>make</q> invocation as is. If you need any CPL <a href="#Library">Library</a> to be recompiled using the same alternate C compiler and options, put a symbolic link to this library in the same directory where your main program is, and it will.
 
 The -D and -I compiler options are interpreted by cpl.fri itself, in addition to being passed on to the C compiler, and provide pre#defined constants and include directories to both.
 
@@ -2516,6 +2518,10 @@ Only those source files whose corresponding object file does not exist or is old
 	cpl remake &lt;program&gt;
 
 achieves this by deleting the object files first.
+
+	cpl nomake &lt;program&gt;
+
+skips the <q>make</q> passage, and only generates the intermediate C programs. This can be useful if cpl is invoked inside a larger Makefile that handles the second passage itself.
 
 	cpl followed by an unrecognized word (e.g. version|usage|help)
 
