@@ -75,7 +75,7 @@ The fft.cpl library handles fast Fourier transforms. All of the following routin
 	SUBROUTINE FFT(COMPLEX Rin^(&lowast;), Rout^(&lowast;)) computes
 	Rout(j) = [SUM Rin(i)&lowast;EXP(-2&lowast;PI&lowast;I&lowast;i&lowast;j/Rin.LENGTH) FOR ALL i]/Rin.LENGTH
 
-These sums are actually computed by a fast-Fourier-transform algorithm which only works when Rin.LENGTH is the product of a power of two and possibly a single factor of three. Notice that the normalizing 1/Rin.LENGTH factor sits in the direct transform, whereas the inverse transform is a simple Fourier sum (the commonest convention for a Fourier series). The
+These sums are actually computed by a fast-Fourier-transform algorithm which only works when Rin.LENGTH is the product of a power of two and possibly a single factor of three. The normalizing 1/Rin.LENGTH factor sits in the direct transform, whereas the inverse transform is a simple Fourier sum (the commonest convention for a Fourier series). When the discrete transform is used to approximate a continuous Fourier transform, the normalizing factor will have to be corrected explicitly. The
 
 	BOOLEAN FUNCTION FFTfit(INTEGER VARIABLE N)
 
@@ -94,6 +94,8 @@ The output of RFT and the input of HFT is formally a COMPLEX ARRAY (so that eith
 	REALIFIED(POINTER TO ARRAY(&lowast;) OF COMPLEX x)
 
 For instance, the REAL ARRAY hidden in the COMPLEX ARRAY Rout may be accessed as REALIFIED(Rout), or equivalently as Rout.REALIFIED.
+
+An additional complication arises from the fact that the HFT of a general array of 2N real numbers (encoded as a COMPLEX ARRAY of size 0..N-1), in addition to having an always real 0th Fourier component, contains an extra, also real, component of frequency N (or equivalently -N) which does not fit in the original array of size 0..N-1. For this reason RFT's and HFT's input/output array can either be of (even) size 0..N-1 or of (odd) size 0..N. When the even size is recognized, the component at frequency N is discarded by HFT and assumed zero by RFT. When the odd size is provided, the Nth array element is ignored in input by HFT and used to store the Nth frequency component on output, with the converse being enacted by RFT. It must be said that, while the default behaviour for even size 0..N-1 makes HFT and RFT not strictly reciprocal, to zero the Nth component (which has a neither positive nor negative frequency) is an appropriate action when the discrete Fourier transform is used to represent the truncation of a virtually infinite range of frequencies. An odd-sized array must be used in applications where the Nth component needs to be preserved.
 
 The variants IFTU, RFTU, FFTU and HFTU of the above routines achieve a slightly shorter computation time by leaving the output array of the first two (and accepting the input array of the last two) unordered. They are, nonetheless, mutually inverse transforms and can be usefully applied to perform convolutions.
 
