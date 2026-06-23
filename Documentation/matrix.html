@@ -69,7 +69,7 @@ Page: (matrix)Top, Next: <a href="graphics.html#Top">(graphics)</a>, Prev: <a hr
 <hr> <h1>Matrix Operations</h1>
 The rbmat.cpl and cbmat.cpl libraries add matrix algebra to CPL. The same functions and operators are defined in both, for real and complex numbers respectively, and therefore their result type is indicated as just <q>number</q> in what follows. Wherever a square matrix is expected, a banded matrix in compact rectangular form may also be used; the latter is recognized from its dimensions not being equal, and is defined as having the value zero of its second index as the diagonal. Most of the following functions have an equivalent infix form that allows matrix operations to be specified in the usual algebraic notation.
 
-The operands of matrix operations undergo automatic <a href="cpl.html#realignment">(cpl)realignment</a>.`
+The operands of matrix operations undergo automatic <a href="cpl.html#realignment">(cpl)realignment</a>.
 
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th></th></tr>
@@ -158,10 +158,10 @@ Page: (matrix)PLU,  Next: <a href="#INVERT">INVERT</a>,  Prev: <a href="#Lanczos
 Computes the LU decomposition of (necessarily square) matrix A with pivoting. Returns an appropriate INVMAT compound variable containing the LU decomposition of A, which can be passed to either <a href="#LeftLUDiv">LeftLUDiv</a> or <a href="#RightLUDiv">RightLUDiv</a> and must be explicitly freed by <a href="cpl.html#Top">FREE:(cpl)</a>NEW. once no longer needed. 
 </div><div class=page id="INVERT">
 Page: (matrix)INVERT,  Next: <a href="#DET">DET</a>,  Prev: <a href="#PLU">PLU</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
-<hr> <h4>SUBROUTINE INVERT(ARRAY(&lowast;,&lowast;) OF number mat^, RESULT^)</h4>
-Returns the inverse of square matrix &lt;mat&gt; in matrix &lt;RESULT&gt;. Uses <a href="#PLU">PLU</a> internally.
+<hr> <h4>ARRAY(&lowast;,&lowast;) OF number FUNCTION INVERT(ARRAY(&lowast;,&lowast;) OF number mat^)</h4>
+Returns the inverse of square matrix &lt;mat&gt;. Uses <a href="#PLU">PLU</a> internally.
 
-<h4>SUBROUTINE INVERT(number m^(&lowast;,&lowast;))</h4>
+<h4>SUBROUTINE INVERT(ARRAY(&lowast;,&lowast;) OF number mat^)</h4>
 Computes the inverse of square matrix &lt;mat&gt; in place. Uses <a href="#PLU">PLU</a> internally. 
 </div><div class=page id="DET">
 Page: (matrix)DET,  Prev: <a href="#INVERT">INVERT</a>,  Next: <a href="#infix-notation">infix notation</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
