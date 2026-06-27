@@ -309,6 +309,7 @@ Page: (cpl)Keyword Index,  Next: <a href="#Installation">Installation</a>,  Prev
 <tr><td><a href="#C-interface">#includedir:C interface</a>:</td><td></td></tr>
 <tr><td><a href="#C-interface">#link:C interface</a>:</td><td></td></tr>
 <tr><td><a href="#C-preprocessor">#undef:C preprocessor</a>:</td><td></td></tr>
+<tr><td><a href="#C-preprocessor">variadic:C preprocessor</a>:</td><td></td></tr>
 <tr><td><a href="#Einstein-convention">$:Einstein convention</a>:</td><td></td></tr>
 <tr><td><a href="#Comments">!:Comments</a>:</td><td></td></tr>
 <tr><td><a href="#?">?</a>:</td><td>interactive cpl help</td></tr>
@@ -334,7 +335,6 @@ The interactive CPL interpreter (if installed) accepts any CPL expression, state
 <tr><td colspan="2"> </td></tr>
 <tr><td><a href="#automatic-updates">automatic updates</a>:</td><td>Automatic updates</td></tr>
 <tr><td><a href="#multi-user">multi-user</a>:</td><td>Installation for multiple users</td></tr>
-<tr><td><a href="#cpl">cpl</a>:</td><td>Compilation tools and their usage</td></tr>
 <tr><td><a href="#Q&A">Q&amp;A</a>:</td><td>Common installation problems and their solution</td></tr>
 </table></nav>
 
@@ -464,7 +464,9 @@ When round brackets are used in the statement prototypes contained in this manua
 </div><div class=page id="C-preprocessor">
 Page: (cpl)C preprocessor, Next: <a href="#Source-file">Source file</a>, Prev: <a href="#Parentheses">Parentheses</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Macro definition and conditional compilation</h3>
-C preprocessor #define and #if constructs (<a href="https://manpages.debian.org/cpp">manpages.debian.org/cpp</a>) can be used in a CPL program to define macros and alter the flow of compilation, with C-style string equality, <q>defined</q> and logical, but no arithmetic, operators available. The -D option is understood by the CPL compiler and can be used to specify program variants on the command line.
+C preprocessor #define and #if constructs (<a href="https://manpages.debian.org/cpp">manpages.debian.org/cpp</a>) can be used in a CPL program to define macros and alter the flow of compilation, with C-style string equality, <q>defined</q> and logical, but no arithmetic, operators available. The -D option is understood by the CPL compiler and can be used to #define flags on the command line.
+
+Variadic macros are supported. Just as in the GNU C preprocessor, the <q>...</q> formal argument to a macro collects the remainder of the actual-argument list including any commas, and can be referred as __VA_ARGS__ (or more simply as ... again) in the macro's definition. Alternately, as in cpp, the variadic parameter can be named &lt;id&gt;... and later referred as &lt;id&gt;, for any yet unused identifier &lt;id&gt;.
 
 For file inclusion see <a href="#USE">USE</a>, <a href="#INCLUDE">INCLUDE</a>, and <a href="#C-interface">C interface</a>.  
 </div><div class=page id="Source-file">
