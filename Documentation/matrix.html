@@ -86,6 +86,7 @@ The operands of matrix operations undergo automatic <a href="cpl.html#realignmen
 <tr><td><a href="#INVERT">INVERT</a>:</td><td>matrix inversion</td></tr>
 <tr><td><a href="#DET">DET</a>:</td><td>determinant of a matrix</td></tr>
 <tr><td><a href="#infix-notation">infix notation</a>:</td><td>infix vector and matrix operations</td></tr>
+<tr><td><a href="#BANDED">BANDED</a>:</td><td>declaration identifying banded matrices</td></tr>
 </table></nav>
 
 </div><div class=page id="MatEqu">
@@ -168,7 +169,7 @@ Page: (matrix)DET,  Prev: <a href="#INVERT">INVERT</a>,  Next: <a href="#infix-n
 <hr> <h4>number FUNCTION DET(ARRAY(&lowast;,&lowast;) OF number mat)</h4>
 Returns the determinant of square matrix &lt;mat&gt;. Uses <a href="#PLU">PLU</a> internally. 
 </div><div class=page id="infix-notation">
-Page: (matrix)infix notation, Prev: <a href="#DET">DET</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (matrix)infix notation,  Prev: <a href="#DET">DET</a>,  Next: <a href="#BANDED">BANDED</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h4>Infix vector and matrix operations</h4>
 and their equivalent <a href="cpl.html#Einstein-convention">(cpl)Einstein convention</a> notation: (In the following examples small letters denote 1D arrays, capital letters 2D arrays. Actual, capitalized or not, names are at the user's discretion.)
 
@@ -201,4 +202,12 @@ and their equivalent <a href="cpl.html#Einstein-convention">(cpl)Einstein conven
 The above product operations can also be combined with linear-space <a href="cpl.html#ARRAY-operations">(cpl)ARRAY operations</a> already provided outside the rbmat and cbmat packages.
 
 For more general, or higher-dimensional, index contractions, or just for added clarity, you can always use the <a href="cpl.html#Einstein-convention">(cpl)Einstein convention</a> directly. 
+</div><div class=page id="BANDED">
+Page: (matrix)BANDED,  Prev: <a href="#infix-notation">infix notation</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h4>BANDED declaration identifying banded matrices</h4>
+keyword <q>BANDED</q> prepended to an ARRAY declaration identifies the ARRAY as a banded matrix in the scope of following infix matrix operations.
+
+A banded matrix is defined as an effectively square matrix sparsely stored in a rectangular ARRAY, where element i,j of the effective matrix appears in position i,j-i of the ARRAY (with the second index taking a range of negative and positive values).
+
+An explicit BANDED declaration is most of the time optional, because rectangular ARRAYs are automatically dealt with as banded matrices, but may be added for clarity. In vector-matrix right multiplication, however, an actual ambiguity arises, because right multiplication is allowed for both square and rectangular matrices. Right multiplication will be performed as rectangular unless the multiplicand is declared BANDED. 
 </div></body></html>

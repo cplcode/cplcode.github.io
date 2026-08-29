@@ -67,7 +67,7 @@
 </div><div class=page id="Top">
 Page: (cpl)Top,  Next: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h1>CPL Reference Manual</h1>
-Documentation for the CPL programming language and its compiler, June 2026. Printable and citable 2020 version is at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
+Documentation for the CPL programming language and its compiler, August 2026. Printable and citable 2020 version is at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
 
   CPL = Concealed Pointer Lookup
   CPL = Coactive Parameter Lists
@@ -464,9 +464,9 @@ When round brackets are used in the statement prototypes contained in this manua
 </div><div class=page id="C-preprocessor">
 Page: (cpl)C preprocessor, Next: <a href="#Source-file">Source file</a>, Prev: <a href="#Parentheses">Parentheses</a>, Up: <a href="#Syntax">Syntax</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Macro definition and conditional compilation</h3>
-C preprocessor #define and #if constructs (<a href="https://manpages.debian.org/cpp">manpages.debian.org/cpp</a>) can be used in a CPL program to define macros and alter the flow of compilation, with C-style string equality, <q>defined</q> and logical, but no arithmetic, operators available. The -D option is understood by the CPL compiler and can be used to #define flags on the command line.
+C preprocessor (<a href="https://www.man7.org/linux/man-pages/man1/cpp.1.html">www.man7.org/linux/man-pages/man1/cpp.1.html</a>) #define and #if constructs can be used in a CPL program to define macros and alter the flow of compilation, with C-style string equality, <q>defined</q> and logical, but no arithmetic, operators available. The -D option is understood by the CPL compiler and can be used to #define flags on the command line.
 
-Variadic macros are supported. Just as in the GNU C preprocessor, the <q>...</q> formal argument to a macro collects the remainder of the actual-argument list including any commas, and can be referred as __VA_ARGS__ (or more simply as ... again) in the macro's definition. Alternately, as in cpp, the variadic parameter can be named &lt;id&gt;... and later referred as &lt;id&gt;, for any yet unused identifier &lt;id&gt;.
+Variadic macros are supported. Just as in the GNU C preprocessor, the <q>...</q> formal argument to a macro collects the remainder of the actual-argument list including any commas, and can be referred to as __VA_ARGS__ (or more simply as ... again) in the macro's definition. Alternately, as in cpp, the variadic parameter can be named &lt;id&gt;... and later referred to as &lt;id&gt;, for any yet unused identifier &lt;id&gt;.
 
 For file inclusion see <a href="#USE">USE</a>, <a href="#INCLUDE">INCLUDE</a>, and <a href="#C-interface">C interface</a>.  
 </div><div class=page id="Source-file">
