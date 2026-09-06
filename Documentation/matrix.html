@@ -207,7 +207,7 @@ Page: (matrix)BANDED,  Prev: <a href="#infix-notation">infix notation</a>,  Up: 
 <hr> <h4>BANDED declaration identifying banded matrices</h4>
 keyword <q>BANDED</q> prepended to an ARRAY declaration identifies the ARRAY as a banded matrix in the scope of following infix matrix operations.
 
-A banded matrix is defined as an effectively square matrix sparsely stored in a rectangular ARRAY, where element i,j of the effective matrix appears in position i,j-i of the ARRAY (with the second index taking a range of negative and positive values).
+A banded matrix is defined as an effectively square matrix sparsely stored in a rectangular ARRAY, element i,j of which contains element i,i+j of the effective matrix (with index j usually taking a small range of negative and positive values, j=0 being the main diagonal).
 
-An explicit BANDED declaration is most of the time optional, because rectangular ARRAYs are automatically dealt with as banded matrices, but may be added for clarity. In vector-matrix right multiplication, however, an actual ambiguity arises, because right multiplication is allowed for both square and rectangular matrices. Right multiplication will be performed as rectangular unless the multiplicand is declared BANDED. 
+An explicit BANDED declaration is most of the time optional, because rectangular ARRAYs are automatically handled as banded matrices, but may be added for clarity. In vector-matrix right multiplication, however, an actual ambiguity arises, because right multiplication is allowed for both square and rectangular matrices. Right multiplication will be performed as rectangular unless the multiplicand matrix is declared BANDED. 
 </div></body></html>
