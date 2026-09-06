@@ -1,8 +1,9 @@
 #!/usr/bin/env cpl
 
-! Calculate the coefficients of a 3rd-order equivalent boundary condition
+! Calculates the coefficients of a 3rd-order equivalent boundary condition
 ! for the Laplace equation past a riblet geometry defined in imb.cpl.
-! Ref.: P. Luchini, D. Chung, J. Fluid Mech., submitted (2025).
+! Ref.: P. Luchini, D. Chung (2026) J. Fluid Mech. 1030, A2.
+! https://doi.org/10.1017/jfm.2026.11186.
 ! Ref.: P. Luchini, D. Chung, arXiv preprint arXiv:2506.22239.
 !
 ! http://CPLcode.net/Applications/articleCPLcodes/horbcs/
