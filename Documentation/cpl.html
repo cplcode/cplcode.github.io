@@ -67,7 +67,7 @@
 </div><div class=page id="Top">
 Page: (cpl)Top,  Next: <a href="#Keyword-Index">Keyword Index</a>, Up: <a href="../">CPLcode.net</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h1>CPL Reference Manual</h1>
-Documentation for the CPL programming language and its compiler, August 2026. Printable and citable 2020 version is at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
+Documentation for the CPL programming language and its compiler, September 2026. Printable and citable 2020 version is at <a href="http://arxiv.org/abs/2012.12143">arxiv.org/abs/2012.12143</a> . 
 
   CPL = Concealed Pointer Lookup
   CPL = Coactive Parameter Lists
@@ -84,6 +84,7 @@ Documentation for the CPL programming language and its compiler, August 2026. Pr
 <tr><td><a href="#cpl-i">cpl i</a>:</td><td>Interactive CPL</td></tr>
 <tr><td><a href="editor.html#Top">(editor)Top</a>:</td><td>development text editor with word and syntax completion</td></tr>
 <tr><td><a href="#Library">Library</a>:</td><td>Ready to USE library of CPL modules</td></tr>
+<tr><td><a href="#GPU">GPU</a>:</td><td>CPL programming on GPUs</td></tr>
 <tr><td><a href="#Keyword-Index">Keyword Index</a>:</td><td>Keyword Index</td></tr>
 </table></nav>
 
@@ -2479,37 +2480,37 @@ Page: (cpl)cpl,  Next: <a href="#cpl-run">cpl run</a>,  Prev: <a href="#Control"
 <hr> <h2>Compilation tools and their usage</h2>
 All tools that act upon a CPL <a href="#Source-file">Source file</a> are managed by a shell script named <q>cpl</q> (formerly <q>makecpl</q>).
 
-<h4>Usage</h4>
-	Compiler:  cpl make|remake|nomake|run &lt;program&gt;[.cpl] [&lt;option&gt;]
-	Interpreter:  cpl i [&lt;expression&gt;|&lt;program&gt;[.cpl]]
-	Editor:  cpl edit [&lt;file&gt;]
-	Info help:  cpl info [keyword]
-	Swap extension (for mail attachments):  cpl rename &lt;file list&gt;
-	Version and usage:  cpl version|usage|help (or any unrecognized word)
+<h3>Usage</h3>
+    Compiler:  cpl make|remake|nomake|run [&lt;option&gt;] &lt;program&gt;[.cpl] [&lt;option&gt;]
+    Interpreter:  cpl i [&lt;expression&gt;|&lt;program&gt;[.cpl]]
+    Editor:  cpl edit [&lt;file&gt;]
+    Info help:  cpl info [keyword]
+    Swap extension (for mail attachments):  cpl rename &lt;file list&gt;
+    Version and usage:  cpl version|usage|help (or any unrecognized word)
 
-<h4>Abbreviations</h4>
-	cplm == cpl m == cpl make
-	cpl (with arguments) == cpl run
-	cpl (with no arguments) == cpli == cpl i
-	edit == cple == cpl e == cpl edit
-	cpl ? == cpl info
+<h3>Abbreviations</h3>
+    cplm == cpl m == cpl make
+    cpl (with arguments) == cpl run
+    cpl (with no arguments) == cpli == cpl i
+    edit == cple == cpl e == cpl edit
+    cpl ? == cpl info
 
-<h4>Backward compatibility</h4>
-	makecpl == cpl make
-	makecpl -a == cpl remake
-	makecpl -r == cpl run
-	icpl == cpl i
-	infocpl == cpl info
-	makecpl (with no arguments) == cpl version|usage|help
+<h3>Backward compatibility</h3>
+    makecpl == cpl make
+    makecpl -a == cpl remake
+    makecpl -r == cpl run
+    icpl == cpl i
+    infocpl == cpl info
+    makecpl (with no arguments) == cpl version|usage|help
 
-<h4>Description</h4>
+<h3>Description</h3>
 The basic command
 
-	cpl make &lt;program&gt;[.cpl] [&lt;option&gt;]
+	cpl make [&lt;option&gt;] &lt;program&gt;[.cpl] [&lt;option&gt;]
 
 (or just <q>cplm</q>) is all that is needed to compile and link the source file &lt;program&gt;.cpl into the executable file &lt;program&gt; , which you can then run by its name just like any other executable. As an alternative, the straight <a href="#cpl-run">cpl run</a> command compiles and then runs &lt;program&gt; in one shot.
 
-cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri">cpl.fri</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="https://manpages.debian.org/make.html">manpages.debian.org/make.html</a>) on this makefile. Any arguments possibly present on the command line are passed on as options to the designated C compiler and linker, or to &lt;program&gt; itself if <q>run</q> was specified.
+cpl's task is achieved by first running the CPL-to-C compiler <a href="#cpl.fri">cpl.fri</a>, which compiles the given source and all other files <a href="#USE">USE</a>d by it into corresponding C programs, and simultaneously lists all of the generated files and any needed pre-existing objects in the makefile &lt;program&gt;.d, and then running make (<a href="https://manpages.debian.org/make.html">manpages.debian.org/make.html</a>) on this makefile. Any arguments beginning with <q>-</q>, possibly present on the command line before or after the designated program, are passed on as options to the designated C compiler and linker.
 
 The default C compiler is make's default; an alternate C compiler can be specified in the CC environment variable or as CC= on the command line. More generally, macro assignments passed on the command line immediately after <q>cpl make</q> will be passed to the internal <q>make</q> invocation as is. If you need any CPL <a href="#Library">Library</a> to be recompiled using the same alternate C compiler and options, put a symbolic link to this library in the same directory where your main program is, and it will.
 
@@ -2550,9 +2551,9 @@ If your system includes the curl command (on Debian you can install it as <q>apt
 </div><div class=page id="cpl-run">
 Page: (cpl)cpl run,  Next: <a href="#cpl.fri">cpl.fri</a>,  Prev: <a href="#cpl">cpl</a>,  Up: <a href="#cpl">cpl</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr>
-	cpl run &lt;program&gt;[.cpl] [&lt;argument&gt;]
+	cpl run [option] &lt;program&gt;[.cpl] [&lt;argument&gt;]
 
-(or just <q>cpl</q> if no confusion arises) compiles and runs &lt;program&gt; in one shot, or just runs it without re-compiling if an executable is found that is not older than its source code. &lt;argument&gt;'s are passed to &lt;program&gt; itself.
+(or just <q>cpl</q> if no confusion arises) compiles and runs &lt;program&gt; in one shot, or just runs it without re-compiling if an executable is found that is not older than its source code. Options preceding the program's name (recognized by an initial <q>-</q>) are passed to the C compiler and linker; &lt;argument&gt;'s following the program's name (with no special syntax) are passed to &lt;program&gt; itself.
 
 <h4>Unix interpreter directive (hashbang)</h4>
 Taking advantage of the unix interpreter directive, a CPL program that contains either <q>#!/full/path/to/cpl run</q> (with the appropriate full path) or <q>#!/usr/bin/env cpl</q> as its first line is directly executable, while maintaining its compiled form. Under the hood it undergoes automatic recompilation if and when modified. 
@@ -2587,9 +2588,9 @@ A CPL manual in info format is available through GNU info. Its reading command i
 </div><div class=page id="mpicpl">
 Page: (cpl)mpicpl,  Next: <a href="#cpl-i">cpl i</a>,  Prev: <a href="#cpl-info">cpl info</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>Compile mpi program</h3>
-	mpicpl [make] &lt;program&gt;[.cpl] [options]
+	mpicpl [make] [options] &lt;program&gt;[.cpl] [options]
 
-allows the compilation of MPI programs. It invokes cpl make with the required options, obtained from mpicc, and follows mpicc's same syntax (<a href="https://manpages.debian.org/mpicc.html">manpages.debian.org/mpicc.html</a>).
+allows the compilation of MPI programs. It invokes cpl make with the required MPI options, obtained from mpicc, and follows mpicc's same syntax (<a href="https://manpages.debian.org/mpicc.html">manpages.debian.org/mpicc.html</a>).
 
 Note: if you need any .cpl file from the CPL <a href="#Library">Library</a> to be recompiled using the same compiler as your main program, just make a symbolic link to this .cpl file in the same directory as your main program, and it will be recompiled as needed. 
 </div><div class=page id="cpl-i">
@@ -2705,7 +2706,7 @@ The inner session thus opened is signalled by an additional <q>&gt;</q> in the c
 	kill 	or 	stop
   kill the interrupted program and return to the session where it was invoked. 
 </div><div class=page id="Library">
-Page: (cpl)Library,  Prev: <a href="#cpl-i">cpl i</a>,  Next: <a href="#rtchecks">rtchecks</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)Library,  Prev: <a href="#cpl-i">cpl i</a>,  Next: <a href="#GPU">GPU</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h2>Ready to <a href="#USE">USE</a> library of CPL modules</h2>
 <nav><table>
 <tr><th>Menu: <input autocomplete="off" class="filter" type="text" onkeyup="tsearch()" onfocus="this.value='';tsearch()" placeholder="a-z" title="Filter menu items by initials"></th><th>The following libraries are included with CPL:</th></tr>
@@ -2786,7 +2787,7 @@ The matlib.cpl library is used by the m2cpl script in order to translate simple 
 
 Both matlib and m2cpl are in very preliminary development and only include the most basic functions. 
 </div><div class=page id="OpenMP">
-Page: (cpl)OpenMP,  Prev: <a href="#matlib">matlib</a>,  Up: <a href="#Library">Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+Page: (cpl)OpenMP,  Prev: <a href="#matlib">matlib</a>,  Next: <a href="#GPU">GPU</a>,  Up: <a href="#Library">Library</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
 <hr> <h3>OpenMP transparent directives</h3>
 OpenMP is a standard for parallel computation on shared-memory architectures. (see <a href="http://www.openmp.org">www.openmp.org</a>). It is built-in in many FORTRAN and C compilers, gcc included, and is activated through suitable command-line options. C-style OpenMP directives are transparently available in CPL. For example,
 
@@ -2813,4 +2814,36 @@ Implementation notes:
  3) The <q>omp for</q> directive can only be applied to a basic <q>LOOP FOR</q> construction (see <a href="#FOR">LOOP:FOR</a>.), which gets translated to <q>for</q> in the intermediate C code. Other types of LOOP or DO do not involve a <q>for</q> and are not recognized by OpenMP.
  4) If an <q>omp parallel</q> or other directive needs to be applied to a block of code that is not implicitly delimited by the subsequent instruction, this block can be delimited by <q>MODULE ... END MODULE</q> (see <a href="#MODULE">MODULE</a>).
  5) As an aid to directives that explicitly affect individual variables, if a CPL identifier is recognized in the parenthesized part of a #pragma, it gets translated to the corresponding C identifier; if this identifies a CPL ARRAY, its size and offset are automatically included in an OpenMP-compatible syntax. All other parts of the #pragma are copied verbatim. 
+</div><div class=page id="GPU">
+Page: (cpl)GPU,  Prev: <a href="#Library">Library</a>,  Up: <a href="#Top">Top</a> <a style="float:right" href="cpl.html#Keyword-Index">Index</a>
+<hr> <h3>CPL programming on GPUs</h3>
+As many existing introductions explain, GPU programming can be confronted at one of three levels: 1) through precompiled libraries called from your own conventional program, 2) by decorating your CPU program with directives (OpenMP or OpenACC being the two prevailing standards) that get a suitable compiler to produce a GPU program, or 3) through special dedicated languages like CUDA or OpenCL. (The real challenge being of course to program in a style that leads to efficient parallelization, but this would be true in any language.)
+
+All three alternatives are available in CPL. If you want to write your own CUDA program, or use some precompiled library, you can call either from within a CPL program just as you would from FORTRAN or C. Both FORTRAN and C interfaces can be transparently used by a CPL program, just as they would for any external library, GPU-related or otherwise. Of course this implies that a suitable interface has to be written outside CPL, but the same would be true if your higher-level main program was in a language other than CPL.
+
+The fastest way to adapt an existing program so it can run on a GPU is however through OpenMP or OpenACC directives. CPL directly supports the C syntax of both directive families, translates the CPL variable names (with automatic handling of array sizes) to their invisible C equivalents, and generates as usual an intermediate C program to be passed to an appropriate compiler. It suffices to replace the standard gcc by the C compiler that comes with your GPU in order to complete the process.
+
+As a minimal example, a parallel loop that copies one array to another could be written in CPL using OpenACC as
+
+ ! declare arrays on CPU
+ ARRAY(0..100) OF REAL A,B
+ ! allocate equivalent arrays in GPU memory and copy A over
+ #pragma acc enter data copyin(A) create(B)
+ ! execute following loop in parallel on GPU
+ #pragma acc parallel loop collapse(2)
+ LOOP FOR i=A.LO1 TO A.HI1 AND j=A.LO2 TO A.HI2
+   B(i,j)=A(i,j)
+ REPEAT
+ ! copy B back to CPU memory
+ #pragma acc exit data copyout(B)
+
+Of course, in practice one would do something more useful than just copying. Notice that if #pragma directives are ignored, the program executes its task normally on the CPU. This is default behaviour if the C compiler does not understand OpenACC, or if the appropriate command-line option to activate it is not given. The standard command <q>cpl make example</q>, if the above program has been written to <q>example.cpl</q>, produces a CPU version of the program.
+
+In order to produce the GPU version of the same program, for instance using Nvidia's nvc compiler, one can write
+
+ CC=nvc cpl make example -acc=gpu
+
+or prepare a Makefile with an equivalent effect. Here <q>CC=nvc</q> tells cpl to use nvc as its C compiler, and <q>-acc=gpu</q> is the nvc-specific option that activates OpenACC on the GPU. Any other nvc option can be given as well.
+
+To have both GPU and CPU versions available, by just changing a compilation option, is the strength of this programming model, as it eases testing. 
 </div></body></html>

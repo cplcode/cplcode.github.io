@@ -13,7 +13,7 @@
     <link rel="canonical" href="https://CPLcode.net/What-is-CPL">
     <link rel="stylesheet" href="singlecol.css">
     <style>
-      h1 {font-size:1.5em}
+      h2 {font-size:1.2em}
     </style>
 </head>
   <body translate="no">
@@ -42,7 +42,7 @@ p=p.next</span>
 </div></div></div>
 
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h3 itemprop="name">Is CPL easy to use?</h3>
+    <h2 itemprop="name">Is CPL easy to use?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <p itemprop="text">
 CPL aims for the ease of use of interpreted languages like <a href="https://www.mathworks.com/products/matlab.html">MATLAB</a> or <a href="https://www.python.org/">Python</a>, without giving up the error-catching benefits of mandatorily declared variables and the sheer speed of compiled execution. CPL was thought out as an easy-to-use, fast compiled language from the very beginning; in computationally intensive tasks, it inherits the speed of compiled C.
@@ -53,7 +53,7 @@ In fact, its  <a href="Documentation/cpl.html#cpl">compiler</a> is implemented a
 </div></div>
 
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h3 itemprop="name">Are CPL arrays versatile and bounds checked?</h3>
+    <h2 itemprop="name">Are CPL arrays versatile and bounds checked?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <p itemprop="text">
 
@@ -67,7 +67,7 @@ allow variable lower and upper bounds of each index, and are (on demand) fully b
 </div></div>
 
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h3 itemprop="name">Can the language syntax be extended with external libraries?</h3>
+    <h2 itemprop="name">Can the language syntax be extended with external libraries?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
 <p itemprop="text">
 The CPL compiler's most distinctive feature is its incremental extensibility. The <a href="Documentation/cpl.html#Library">included libraries</a> enhance it with <a href="Documentation/matrix.html#Top">matrix operations</a>, <a href="Documentation/graphics.html#Top">gnuplot graphics</a>, or <a href="Documentation/symbolic.html#Top">symbolic manipulation</a>,
@@ -75,11 +75,11 @@ The CPL compiler's most distinctive feature is its incremental extensibility. Th
 A=[(1.,2.),(3.,4.)]
 WRITE eigenvalues(A)</span>
 just to name three examples, all blended into the <a href="Documentation/cpl.html#Syntax">language syntax</a>.
-Additionally, any function provided by an external <a href="Documentation/cpl.html#C-interface">C</a> or <a href="Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be seamlessly called in a CPL program (or from the  <a href="Documentation/cpl.html#icpl"><code>cpl i</code></a> command prompt), giving access to a large number of public and proprietary libraries alike. And to encapsulate a (e.g. <a href="http://www.netlib.org/lapack/">LAPACK</a>) call in a CPL wrapper, as exemplified in this <a href="Applications/Tutorial/lapack.html">lapack Tutorial</a>, simplifies syntax and exacts no performance penalty.</p>
+Additionally, any function provided by an external <a href="Documentation/cpl.html#C-interface">C</a> or <a href="Documentation/cpl.html#FORTRAN-interface">FORTRAN</a> library can be seamlessly called in a CPL program (or from the  <a href="Documentation/cpl.html#icpl"><code>cpl i</code></a> command prompt), giving access to a large number of public and proprietary libraries alike. And to encapsulate a (e.g. <a href="http://www.netlib.org/lapack/">LAPACK</a>) call in a CPL wrapper, as exemplified in this <a href="Applications/Tutorial/lapack.html">lapack Tutorial</a>, simplifies syntax and exacts no performance penalty. By the same token, <a href="Documentation/cpl.html#GPU">GPUs</a> can be used seamlessly.</p>
 </div></div>
 
   <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-    <h3 itemprop="name">Does CPL use brackets intuitively?</h3>
+    <h2 itemprop="name">Does CPL use brackets intuitively?</h2>
     <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
       <p itemprop="text">
 
