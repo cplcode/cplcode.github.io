@@ -2819,25 +2819,29 @@ Page: (cpl)GPU,  Prev: <a href="#Library">Library</a>,  Up: <a href="#Top">Top</
 <hr> <h3>CPL programming on GPUs</h3>
 As many existing introductions explain, GPU programming can be confronted at one of three levels: 1) through precompiled libraries called from your own conventional program, 2) by decorating your CPU program with directives (OpenMP or OpenACC being the two prevailing standards) that get a suitable compiler to produce a GPU program, or 3) through special dedicated languages like CUDA or OpenCL. (The real challenge being of course to program in a style that leads to efficient parallelization, but this would be true in any language.)
 
-All three alternatives are available in CPL. If you want to write your own CUDA program, or use some precompiled library, you can call either from within a CPL program just as you would from FORTRAN or C. Both FORTRAN and C interfaces can be transparently used by a CPL program, just as they would for any external library, GPU-related or otherwise. Of course this implies that a suitable interface has to be written outside CPL, but the same would be true if your higher-level main program was in a language other than CPL.
+All three alternatives are available in CPL. If you want to write your own CUDA program, or use some precompiled library, you can call either of them from within a CPL program just as you would from FORTRAN or C. Both FORTRAN and C interfaces can be transparently used by a CPL program, just as they would for any external library, GPU-related or otherwise. Of course this implies that a suitable interface has to be written outside CPL, but the same would be true if your higher-level main program was written in a language other than CPL.
 
 The fastest way to adapt an existing program so it can run on a GPU is however through OpenMP or OpenACC directives. CPL directly supports the C syntax of both directive families, translates the CPL variable names (with automatic handling of array sizes) to their invisible C equivalents, and generates as usual an intermediate C program to be passed to an appropriate compiler. It suffices to replace the standard gcc by the C compiler that comes with your GPU in order to complete the process.
 
 As a minimal example, a parallel loop that copies one array to another could be written in CPL using OpenACC as
 
  ! declare arrays on CPU
- ARRAY(0..100) OF REAL A,B
- ! allocate equivalent arrays in GPU memory and copy A over
+ ARRAY(0..50,0..100) OF REAL A,B
+ ! initialize some values
+ DO A(i,j)=i&lowast;j^2 FOR ALL i,j
+ ! allocate shadow arrays in GPU memory and copy A over
  #pragma acc enter data copyin(A) create(B)
  ! execute following loop in parallel on GPU
  #pragma acc parallel loop collapse(2)
  LOOP FOR i=A.LO1 TO A.HI1 AND j=A.LO2 TO A.HI2
    B(i,j)=A(i,j)
  REPEAT
- ! copy B back to CPU memory
- #pragma acc exit data copyout(B)
+ ! copy B back to CPU and free GPU memory
+ #pragma acc exit data delete(A) copyout(B)
 
-Of course, in practice one would do something more useful than just copying. Notice that if #pragma directives are ignored, the program executes its task normally on the CPU. This is default behaviour if the C compiler does not understand OpenACC, or if the appropriate command-line option to activate it is not given. The standard command <q>cpl make example</q>, if the above program has been written to <q>example.cpl</q>, produces a CPU version of the program.
+Of course, in practice one would do something more useful than just copying. In addition multiple constructs (potentially the whole working core of the code) may appear between the <q>enter data</q> and <q>exit data</q> directives (or data can be managed in a number of more implicit ways for which you are invited to see the OpenACC and OpenMP specifications).
+
+Pay attention that if #pragma directives are ignored, the program executes its task normally on the CPU. This is default behaviour if the C compiler does not understand OpenACC, or if the appropriate command-line option to activate it is not given. The standard command <q>cpl make example</q>, if the above code has been written to <q>example.cpl</q>, produces a CPU version of the program.
 
 In order to produce the GPU version of the same program, for instance using Nvidia's nvc compiler, one can write
 
@@ -2845,5 +2849,5 @@ In order to produce the GPU version of the same program, for instance using Nvid
 
 or prepare a Makefile with an equivalent effect. Here <q>CC=nvc</q> tells cpl to use nvc as its C compiler, and <q>-acc=gpu</q> is the nvc-specific option that activates OpenACC on the GPU. Any other nvc option can be given as well.
 
-To have both GPU and CPU versions available, by just changing a compilation option, is the strength of this programming model, as it eases testing. 
+To have both GPU and CPU versions available, by just changing a compilation option, is the strength of this programming model as it eases testing. 
 </div></body></html>
