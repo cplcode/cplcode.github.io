@@ -94,7 +94,7 @@ SUBROUTINE poissonmg(POINTER TO ARRAY(*,*,*) OF REAL fvar, frhs; SUBROUTINE(POIN
   LOOP FOR ixc=cvar.LO+1 TO cvar.HI-1 AND iyc=cvar(0).LO+1 TO cvar(0).HI-1 AND izc=cvar(0,0).LO+1 TO cvar(0,0).HI-1
     ixf=2*ixc; iyf=2*iyc; izf=2*izc
     crhs(ixc,iyc,izc)=2*[frhs(ixf,iyf,izf)-rsd(fvar,ixf,iyf,izf)]
-    cvar(ixc,iyc)=-crhs(ixc,iyc)
+    cvar(ixc,iyc,izc)=-crhs(ixc,iyc,izc)
   REPEAT LOOP
   makeghosts(cvar)
   !  compat(crhs)

@@ -1,2 +1,2 @@
-2026-09-16 is available.
-Added GPU instructions to the documentation.
+2026-10-30 is available.
+Minor corrections.
